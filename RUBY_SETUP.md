@@ -31,4 +31,4 @@ Run the manual **Ruby sandbox artifacts** workflow. It builds `rbx` from this so
 
 Hosting and paid resource creation remain deferred. This guide describes required inputs, not services that already exist.
 
-Verified repository limitation: GitHub currently reports that private-repository rulesets are not enforced on this organization's account plan. Production release is blocked until enforced protection is available and configured; creating a rule alone does not satisfy this requirement.
+Verified repository limitation: GitHub currently reports that private-repository rulesets are not enforced on the current account plan. Production release is blocked until enforced protection is available and configured; creating a rule alone does not satisfy this requirement.
