@@ -22,7 +22,7 @@ inputs:
     description: "Slack bot token"
     required: true
   infra_token:
-    description: "Token that reads dust-infra, for the cells and the tags currently deployed"
+    description: "Token that reads ruby-infra, for the cells and the tags currently deployed"
     required: true
 
 outputs:
@@ -30,7 +30,7 @@ outputs:
     description: "Timestamp of the card, the thread every later message replies to"
     value: ${{ steps.card.outputs.thread_ts }}
   card:
-    description: "Card facts as JSON for dust-infra to redraw the card"
+    description: "Card facts as JSON for ruby-infra to redraw the card"
     value: ${{ steps.card.outputs.card }}
 
 runs:
@@ -71,18 +71,18 @@ runs:
           };
           const infra = getOctokit(process.env.INFRA_TOKEN);
           const infraFile = async (path) => {
-            const { data } = await infra.rest.repos.getContent({ owner, repo: 'dust-infra', path, ref: 'main' });
+            const { data } = await infra.rest.repos.getContent({ owner, repo: 'ruby-infra', path, ref: 'main' });
             return Buffer.from(data.content, 'base64').toString();
           };
           const infraDir = async (path) => {
-            const { data } = await infra.rest.repos.getContent({ owner, repo: 'dust-infra', path, ref: 'main' });
+            const { data } = await infra.rest.repos.getContent({ owner, repo: 'ruby-infra', path, ref: 'main' });
             return data.map((f) => f.name);
           };
 
-          // The cells, the same way dust-infra resolves them: the legacy clusters are the
+          // The cells, the same way ruby-infra resolves them: the legacy clusters are the
           // Novu cells without a descriptor, a descriptor cell is in only if it lists the
           // component (egress-proxy goes by its feature flag).
-          const legacyOf = { 'cell-00000': 'dust-kube-us-central1', 'cell-00001': 'dust-kube-europe-west1' };
+          const legacyOf = { 'cell-00000': 'ruby-kube-us-central1', 'cell-00001': 'ruby-kube-europe-west1' };
           const described = {};
           try {
             for (const name of (await infraDir('cells')).filter((n) => n.endsWith('.yaml'))) {
@@ -108,7 +108,7 @@ runs:
           }
           const target = process.env.CELLS === 'all' ? 'all cells' : cells.join(', ');
 
-          // What each cell runs today, from the versions files dust-infra keeps on main.
+          // What each cell runs today, from the versions files ruby-infra keeps on main.
           const currentTags = new Set();
           for (const cell of cells) {
             const file = `versions/${legacyOf[cell] || cell}.yaml`;
@@ -121,9 +121,9 @@ runs:
           // A deploy of this component still rolling out has not pinned the versions
           // files yet, so they still hold what IT is replacing: diffing against them
           // would announce and ping its commits a second time. The rollout lives in
-          // dust-infra (the dust-side run ends at the dispatch), its runs are named
+          // ruby-infra (the ruby-side run ends at the dispatch), its runs are named
           // "Deploy <component> <tag> to <cells>", so the tag comes from the titles of
-          // its queued and running runs. The dust-side check covers the parallel edge
+          // its queued and running runs. The ruby-side check covers the parallel edge
           // components, restricted to runs started before this one so a deploy queued
           // behind us cannot steal our baseline. Reverts are exempt, a revert diffs
           // against the file to show what it rolls back. When an in-flight rollout
@@ -131,7 +131,7 @@ runs:
           // over changelog width across cells.
           const inflightTags = new Set();
           if (!revert) {
-            // Zombie guard: a real rollout lives minutes (dust-infra caps a deploy at 40),
+            // Zombie guard: a real rollout lives minutes (ruby-infra caps a deploy at 40),
             // but GitHub keeps abandoned runs queued for weeks and their ancient head
             // shas would explode the changelog (a 5-week-old queued run once produced a
             // 1770-commit card). Anything older than 3 hours is not a rollout in flight.
@@ -152,8 +152,8 @@ runs:
                 }
               }
             };
-            try { await collect(github, repo, 'deploy.yml'); } catch (e) { core.warning(`in-flight dust deploys: ${e.message}`); }
-            try { await collect(infra, 'dust-infra', 'deploy.yaml'); } catch (e) { core.warning(`in-flight dust-infra rollouts: ${e.message}`); }
+            try { await collect(github, repo, 'deploy.yml'); } catch (e) { core.warning(`in-flight ruby deploys: ${e.message}`); }
+            try { await collect(infra, 'ruby-infra', 'deploy.yaml'); } catch (e) { core.warning(`in-flight ruby-infra rollouts: ${e.message}`); }
           }
           const baselines = inflightTags.size > 0 ? inflightTags : currentTags;
 

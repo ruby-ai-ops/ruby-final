@@ -1,16 +1,2 @@
-# GitHub CODEOWNERS — see https://docs.github.com/articles/about-code-owners
-#
-# Rules are evaluated last-match-wins. To enforce that listed reviewers are
-# required, enable "Require review from Code Owners" in branch protection
-# for the default branch.
-
-# Data models and DB schema migrations in front.
-# Any change touching these paths must be reviewed by @dust-tt/data-model-owners.
-/front/lib/models/                    @dust-tt/data-model-owners
-/front/lib/resources/storage/models/  @dust-tt/data-model-owners
-/front/migrations/db/                 @dust-tt/data-model-owners
-
-/front/lib/api/llm/                   @dust-tt/llm-router-owners
-/front/lib/llms/                      @dust-tt/llm-router-owners
-/front/lib/model_constructors/        @dust-tt/llm-router-owners
-/front/types/assistant/models/        @dust-tt/llm-router-owners
+# Ruby-owned changes require repository-owner review.
+* @ruby-ai-ops

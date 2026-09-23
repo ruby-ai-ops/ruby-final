@@ -1,0 +1,51 @@
+name: Ruby upstream sync
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+concurrency:
+  group: ruby-upstream-sync
+  cancel-in-progress: false
+jobs:
+  propose:
+    if: github.ref == 'refs/heads/ruby-main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ruby-main
+          fetch-depth: 0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: '24.16.0'
+          package-manager-cache: false
+      - name: Keep the existing review intact
+        id: pending
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          count=$(gh pr list --state open --base ruby-main --json headRefName --jq '[.[] | select(.headRefName | startswith("ruby-sync/"))] | length')
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+      - name: Transform and merge in isolation
+        id: candidate
+        if: steps.pending.outputs.count == '0'
+        run: |
+          git config user.name 'Ruby Upstream Sync'
+          git config user.email 'sync@ruby.ad'
+          node --test maintenance/upstream/*.test.mjs
+          node maintenance/upstream/sync.mjs
+      - name: Open the review and explicitly dispatch CI
+        if: steps.candidate.outputs.branch != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          CANDIDATE_BRANCH: ${{ steps.candidate.outputs.branch }}
+        run: |
+          git push origin "$CANDIDATE_BRANCH"
+          gh pr create --base ruby-main --head "$CANDIDATE_BRANCH" --title 'Review upstream application updates' --body-file maintenance/upstream/sync-pr.md
+          gh workflow run ruby-ci.yml --ref "$CANDIDATE_BRANCH"

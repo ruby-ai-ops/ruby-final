@@ -1,0 +1,396 @@
+name: Deploy
+run-name: Deploy ${{ inputs.component }} to ${{ inputs.cells }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      cells:
+        description: "Cells to deploy to (cell-00000 is us-central1, cell-00001 europe-west1)"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - "cell-00000"
+          - "cell-00001"
+          - "cell-00002"
+          - "all"
+      component:
+        description: "Name of the component to deploy"
+        required: true
+        type: choice
+        options:
+          - front
+          - front-edge
+          - marketing
+          - marketing-edge
+          - connectors
+          - core
+          - front-sse
+          - prodbox
+          - oauth
+          - viz
+          - dante
+          - egress-proxy
+          - ui-storybook
+      check_deployment_blocked:
+        description: "Check #deployment locks or force deploy"
+        required: true
+        default: "check"
+        type: choice
+        options:
+          - "check"
+          - "force (dangerous)"
+      depot_region:
+        description: "Depot region to use for building"
+        required: true
+        default: "eu"
+        type: choice
+        options:
+          - "us"
+          - "eu"
+      deploy_spa_app:
+        description: "Deploy SPA for app (front/front-edge)"
+        required: false
+        default: true
+        type: boolean
+      deploy_spa_admin:
+        description: "Deploy SPA for admin (front/front-edge)"
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  actions: read # the deploy card lists in-flight deploy runs
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: "deploy_${{ inputs.component }}${{ (inputs.component == 'front-edge' || inputs.component == 'marketing-edge') && format('_{0}', github.run_id) || '' }}"
+  cancel-in-progress: false
+
+jobs:
+  verify-sandbox-images:
+    if: inputs.component == 'front' || inputs.component == 'front-edge'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/sandbox-img-verify.yml
+    secrets: inherit
+
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if deployment is from main branch
+        if: ${{ github.ref != 'refs/heads/main' && inputs.component != 'front-edge' && inputs.component != 'marketing-edge' }}
+        run: |
+          echo "Error: Deployments for ${{ inputs.component }} are only allowed from the main branch"
+          exit 1
+
+  prepare:
+    needs: [check-branch]
+    runs-on: ubuntu-latest
+    outputs:
+      short_sha: ${{ steps.commit_sha.outputs.short_sha }}
+      long_sha: ${{ steps.commit_sha.outputs.long_sha }}
+    steps:
+      - name: Get commit SHAs
+        id: commit_sha
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          echo "short_sha=${COMMIT_SHA::7}" >> "$GITHUB_OUTPUT"
+          echo "long_sha=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+
+  notify-start:
+    needs: [prepare]
+    runs-on: ubuntu-latest
+    outputs:
+      thread_ts: ${{ steps.card.outputs.thread_ts }}
+      card: ${{ steps.card.outputs.card }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          sparse-checkout: |
+            /.authors
+            /.github/actions/deploy-card/
+            /.github/actions/slack-check-deployment-blocked/
+          sparse-checkout-cone-mode: false
+
+      # Reads ruby-infra's versions files for what each cell runs today.
+      - name: Generate infra token
+        id: infra-token
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        with:
+          client-id: ${{ secrets.INFRA_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.INFRA_DISPATCH_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ruby-infra
+
+      - name: Post the deployment card
+        id: card
+        uses: ./.github/actions/deploy-card
+        with:
+          component: ${{ inputs.component }}
+          image_tag: ${{ needs.prepare.outputs.short_sha }}
+          cells: ${{ inputs.cells }}
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
+          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
+          infra_token: ${{ steps.infra-token.outputs.token }}
+
+      - name: Slack Check Deployment Blocked
+        if: ${{ inputs.check_deployment_blocked == 'check' }}
+        id: check_deployment_blocked
+        uses: ./.github/actions/slack-check-deployment-blocked
+        with:
+          component: ${{ inputs.component }}
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
+          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
+
+  create-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: |
+          # Marketing builds per region, and only the legacy cells have one.
+          CELLS="${{ inputs.cells }}"
+          if [ "$CELLS" = "all" ]; then CELLS="cell-00000,cell-00001"; fi
+          REGIONS=$(tr ',' '\n' <<< "$CELLS" \
+            | sed -n 's/^cell-00000$/us-central1/p; s/^cell-00001$/europe-west1/p' \
+            | jq -R . | jq -sc 'unique')
+          echo "matrix=$REGIONS" >> "$GITHUB_OUTPUT"
+
+  # Components on the build-once path: one build, pushed to the global registry.
+  # Marketing stays on the regional matrix: next build inlines region-specific
+  # NEXT_PUBLIC_* values into its client bundle.
+  build-once:
+    permissions:
+      contents: read
+      id-token: write
+    needs: [prepare, notify-start]
+    if: ${{ !failure() && !cancelled() && contains(fromJSON('["front","front-edge","front-sse","connectors","core","oauth","viz","prodbox","dante","egress-proxy","ui-storybook"]'), inputs.component) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 50 # Fetch last 50 commits for commit diff functionality
+
+      - name: Build Image
+        id: build
+        uses: ./.github/actions/build-image
+        with:
+          commit_sha_long: ${{ needs.prepare.outputs.long_sha }}
+          commit_sha: ${{ needs.prepare.outputs.short_sha }}
+          component: ${{ inputs.component == 'front-sse' && 'front' || inputs.component }}
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_client_token: ${{ secrets.DD_CLIENT_TOKEN }}
+          depot_eu_project_id: ${{ secrets.DEPOT_EU_PROJECT_ID }}
+          depot_eu_token: ${{ secrets.DEPOT_EU_PROJECT_TOKEN }}
+          depot_region: ${{ inputs.depot_region }}
+          depot_us_project_id: ${{ secrets.DEPOT_PROJECT_ID }}
+          depot_us_token: ${{ secrets.DEPOT_PROJECT_TOKEN }}
+          # Global registry, lives in the ruby-infra project next to the helm charts.
+          project_id: ruby-infra
+          region: us-central1
+          virtuoso_license_key: ${{ secrets.VIRTUOSO_LICENSE_KEY }}
+          contentful_space_id: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          contentful_access_token: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
+          workload_identity_provider: "projects/357744735673/locations/global/workloadIdentityPools/github-pool-apps/providers/github-provider-apps"
+
+      - name: Notify Failure
+        if: failure()
+        uses: ./.github/actions/slack-notify
+        with:
+          step: "failure"
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
+          component: ${{ inputs.component }}
+          image_tag: ${{ needs.prepare.outputs.short_sha }}
+          region: ${{ inputs.cells }}
+          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
+          thread_ts: "${{ needs.notify-start.outputs.thread_ts }}"
+
+  build:
+    permissions:
+      contents: read
+      id-token: write
+    needs: [prepare, notify-start, create-matrix, verify-sandbox-images]
+    if: ${{ !failure() && !cancelled() && !contains(fromJSON('["front","front-edge","front-sse","connectors","core","oauth","viz","prodbox","dante","egress-proxy","ui-storybook"]'), inputs.component) && (needs.verify-sandbox-images.result == 'success' || needs.verify-sandbox-images.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        region: ${{ fromJson(needs.create-matrix.outputs.matrix) }}
+      fail-fast: true
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 50 # Fetch last 50 commits for commit diff functionality
+
+      - name: Set project ID
+        id: project
+        run: |
+          if [ "${{ matrix.region }}" = "us-central1" ]; then
+            echo "PROJECT_ID=${{ secrets.GCLOUD_US_PROJECT_ID }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "PROJECT_ID=${{ secrets.GCLOUD_EU_PROJECT_ID }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build Image
+        id: build
+        uses: ./.github/actions/build-image
+        with:
+          commit_sha_long: ${{ needs.prepare.outputs.long_sha }}
+          commit_sha: ${{ needs.prepare.outputs.short_sha }}
+          component: ${{ inputs.component == 'front-sse' && 'front' || inputs.component }}
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_client_token: ${{ secrets.DD_CLIENT_TOKEN }}
+          depot_eu_project_id: ${{ secrets.DEPOT_EU_PROJECT_ID }}
+          depot_eu_token: ${{ secrets.DEPOT_EU_PROJECT_TOKEN }}
+          depot_region: ${{ inputs.depot_region }}
+          depot_us_project_id: ${{ secrets.DEPOT_PROJECT_ID }}
+          depot_us_token: ${{ secrets.DEPOT_PROJECT_TOKEN }}
+          project_id: ${{ steps.project.outputs.PROJECT_ID }}
+          region: ${{ matrix.region }}
+          virtuoso_license_key: ${{ secrets.VIRTUOSO_LICENSE_KEY }}
+          contentful_space_id: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          contentful_access_token: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
+          workload_identity_provider: "projects/357744735673/locations/global/workloadIdentityPools/github-pool-apps/providers/github-provider-apps"
+
+      - name: Notify Failure
+        if: failure()
+        uses: ./.github/actions/slack-notify
+        with:
+          step: "failure"
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
+          component: ${{ inputs.component }}
+          image_tag: ${{ needs.prepare.outputs.short_sha }}
+          region: ${{ inputs.cells }}
+          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
+          thread_ts: "${{ needs.notify-start.outputs.thread_ts }}"
+
+  deploy:
+    needs:
+      [
+        prepare,
+        notify-start,
+        build,
+        build-once,
+        deploy-app,
+        deploy-admin,
+        verify-sandbox-images,
+      ]
+    if: ${{ !failure() && !cancelled() && (needs.verify-sandbox-images.result == 'success' || needs.verify-sandbox-images.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          sparse-checkout: .github/actions/slack-notify
+
+      - name: Generate token
+        id: generate-token
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3.1.1
+        with:
+          client-id: ${{ secrets.INFRA_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.INFRA_DISPATCH_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ruby-infra
+
+      - name: Trigger ruby-infra workflow
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          OWNER: ${{ github.repository_owner }}
+          COMPONENT: ${{ inputs.component }}
+          CELLS: ${{ inputs.cells }}
+          IMAGE_TAG: ${{ needs.prepare.outputs.short_sha }}
+          SLACK_THREAD_TS: ${{ needs.notify-start.outputs.thread_ts }}
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL_ID }}
+          CARD: ${{ needs.notify-start.outputs.card }}
+          DEPLOY_SPA_APP: ${{ inputs.deploy_spa_app }}
+          DEPLOY_SPA_ADMIN: ${{ inputs.deploy_spa_admin }}
+          SPA_APP_VERSION_ID: ${{ needs.deploy-app.outputs.version_id }}
+          SPA_ADMIN_VERSION_ID: ${{ needs.deploy-admin.outputs.version_id }}
+          PLAYWRIGHT_SHA: ${{ github.sha }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          github-token: ${{ steps.generate-token.outputs.token }}
+          script: |
+            const component = process.env.COMPONENT;
+            const isFront = component === 'front';
+            const deploySpaApp = process.env.DEPLOY_SPA_APP === 'true';
+            const deploySpaAppAdmin = process.env.DEPLOY_SPA_ADMIN === 'true';
+
+            const payload = {
+              cells: process.env.CELLS,
+              component,
+              image_tag: process.env.IMAGE_TAG,
+              slack_thread_ts: process.env.SLACK_THREAD_TS,
+              slack_channel: process.env.SLACK_CHANNEL,
+              card: process.env.CARD,
+              playwright_sha: process.env.PLAYWRIGHT_SHA,
+            };
+
+            // When deploying front (production) with SPA enabled, tell ruby-infra to dispatch back
+            // after a successful rollout so the SPA is deployed to production only once the API
+            // is live.
+            if (isFront && (deploySpaApp || deploySpaAppAdmin)) {
+              const app = deploySpaApp && deploySpaAppAdmin ? 'all'
+                : deploySpaApp ? 'app' : 'admin';
+
+              payload.on_success_dispatch = JSON.stringify({
+                owner: process.env.OWNER,
+                repo: 'ruby',
+                event_type: 'deploy-spa-production',
+                payload: {
+                  app,
+                  image_tag: process.env.IMAGE_TAG,
+                  sha: process.env.PLAYWRIGHT_SHA,
+                  slack_thread_ts: process.env.SLACK_THREAD_TS,
+                  slack_channel: process.env.SLACK_CHANNEL,
+                  spa_app_version_id: process.env.SPA_APP_VERSION_ID,
+                  spa_admin_version_id: process.env.SPA_ADMIN_VERSION_ID,
+                },
+              });
+            }
+
+            await github.rest.repos.createDispatchEvent({
+              owner: process.env.OWNER,
+              repo: 'ruby-infra',
+              event_type: 'trigger-component-deploy',
+              client_payload: payload,
+            });
+
+      - name: Notify Failure
+        if: failure()
+        uses: ./.github/actions/slack-notify
+        with:
+          step: "failure"
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
+          component: ${{ inputs.component }}
+          image_tag: ${{ needs.prepare.outputs.short_sha }}
+          region: ${{ inputs.cells }}
+          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
+          thread_ts: "${{ needs.notify-start.outputs.thread_ts }}"
+
+  # Upload SPA version to CF Workers (not yet promoted to production).
+  # Starts in parallel with Docker build to save time.
+  deploy-app:
+    if: (inputs.component == 'front' || inputs.component == 'front-edge') && inputs.deploy_spa_app
+    needs: [notify-start]
+    uses: ./.github/workflows/deploy-spa.yaml
+    with:
+      app: "app"
+      env: ${{ inputs.component == 'front-edge' && 'edge' || 'prod' }}
+      region: "us"
+      thread_ts: ${{ needs.notify-start.outputs.thread_ts }}
+    secrets: inherit
+
+  deploy-admin:
+    if: (inputs.component == 'front' || inputs.component == 'front-edge') && inputs.deploy_spa_admin
+    needs: [notify-start]
+    uses: ./.github/workflows/deploy-spa.yaml
+    with:
+      app: "admin"
+      env: ${{ inputs.component == 'front-edge' && 'edge' || 'prod' }}
+      region: "us"
+      thread_ts: ${{ needs.notify-start.outputs.thread_ts }}
+    secrets: inherit

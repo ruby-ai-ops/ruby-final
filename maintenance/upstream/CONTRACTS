@@ -1,0 +1,8 @@
+@cc [owner:ruby-ai-ops,label:security] no-production-mutation
+Maintenance commands MUST NOT modify ruby-main or deploy services. A failed transformation or merge MUST leave the accepted upstream cursor unchanged.
+
+@cc [owner:ruby-ai-ops,label:architecture] reproducible-transform
+The same source snapshot and versioned transformation rules MUST produce the same output. Reapplying branding MUST be a no-op.
+
+@cc [owner:ruby-ai-ops,label:security] source-names-maintenance-only
+Original product names may appear in this maintenance directory for transformation and provenance, but MUST NOT be copied into Ruby application artifacts.

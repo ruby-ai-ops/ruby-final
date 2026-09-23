@@ -79,10 +79,10 @@ describe("parseReviewRequests", () => {
 
   it("ignores team mentions and invalid tokens", () => {
     assert.deepEqual(
-      parseReviewRequests("r? @dust-tt/eng or @spolu @not_valid"),
+      parseReviewRequests("r? @ruby-ai/eng or @spolu @not_valid"),
       [
         {
-          line: "r? @dust-tt/eng or @spolu @not_valid",
+          line: "r? @ruby-ai/eng or @spolu @not_valid",
           reviewers: ["spolu"],
           contractReview: false,
         },

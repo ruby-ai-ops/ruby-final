@@ -33,7 +33,7 @@ Each eligible request naming at least one reviewer also posts to `#engineering_p
 (`C09GELMTTRT`):
 
 ```text
-r? @reviewer please take a look https://github.com/dust-tt/dust/pull/123 (req:@requester)
+r? @reviewer please take a look https://github.com/ruby-ai-ops/ruby-final/pull/123 (req:@requester)
 ```
 
 The requester and reviewer handles become real Slack mentions through `.authors` email mappings

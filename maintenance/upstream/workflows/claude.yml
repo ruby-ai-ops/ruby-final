@@ -1,0 +1,142 @@
+name: Claude Code
+
+on:
+  issue_comment:
+    types: [ created ]
+  pull_request_review_comment:
+    types: [ created ]
+  issues:
+    types: [ opened, assigned ]
+  pull_request_review:
+    types: [ submitted ]
+
+jobs:
+  claude:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude') &&
+        (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER' || github.event.comment.author_association == 'COLLABORATOR')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude') &&
+        (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER' || github.event.comment.author_association == 'COLLABORATOR')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude') &&
+        (github.event.review.author_association == 'OWNER' || github.event.review.author_association == 'MEMBER' || github.event.review.author_association == 'COLLABORATOR')) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')) &&
+        (github.event.issue.author_association == 'OWNER' || github.event.issue.author_association == 'MEMBER' || github.event.issue.author_association == 'COLLABORATOR'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0 # Full depth for better git operations
+
+      - name: Setup Node Dependencies
+        uses: ./.github/actions/setup-node-deps
+        with:
+          build-sdks: "true"
+
+      # Setup Rust for core project
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@aad518f59d88bae90133242f9ddac7f8bbc5dddf # 1.94.1
+        with:
+          components: rustfmt
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@5fb899572b81d2bb648d4d187173a2f423a9677c # v1.0.96
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+
+          claude_args: |
+            --model claude-sonnet-4-5-20250929
+            --max-turns 36
+            --allowed-tools Agent,Bash,Edit,Glob,Grep,LS,MultiEdit,NotebookEdit,NotebookRead,Read,TodoRead,TodoWrite,WebFetch,WebSearch,Write
+            --system-prompt "
+            ### 1. General Principles
+
+            - Never make changes to the codebase that the user did not ask for.
+            - Unless explicitly requested to modify code, output must remain strictly conversational.
+            - Always make the minimal changes required—never more.
+            - Follow all **CONTRACTS** files in each project directory (core, front). Review them before altering code.
+            - Avoid "defensive" patterns (default values, removing tests, non-null assertions).
+            - Add comments **only** for complex, non-obvious logic; wrap at ~100 characters.
+            - Write code that fails fast and explicitly; assume valid inputs.
+            - Write high quality, general purpose solutions. Implement solutions that works correctly for all valid inputs, not just the test cases.
+            - After receiving tool results, carefully reflect on their quality and determine optimal next steps before proceeding. Use your thinking to plan and iterate based on this new information, and then take the best next action.
+            - Follow the codebase's best practices and aim for consistency.
+            - In TypeScript, never use `any`. Properly type your code.
+
+            ### 2. Code Modification & Compilation
+
+            - **TypeScript**: run `npx tsc --noEmit` in the project directory before committing changes.
+            - **Rust**: run `cargo check` in the project directory before committing changes.
+            - Never attempt to run servers, applications, or execute code—compile only.
+
+            ### 3. Error Handling
+
+            - Let exceptions propagate; do **not** catch your own thrown errors.
+            - Default for new functions: allow exceptions to bubble up.
+            - Use `Result<T, E>` **only** when downstream handling is required.
+            - Use `try/catch` solely to convert external library errors into the project's `Result` type.
+              - Limit the `try/catch` scope to the specific statement that may throw.
+            - Only use catching / returning `Result` in functions that already return `Result`.
+            - Replace `err as Error` with `normalizeError()`.
+
+            ### 4. Testing & Execution
+
+            - Never add tests unless asked.
+            - Never run tests unless asked.
+
+            ### 5. Naming & Refactoring
+
+            - When renaming a function, **do not** keep the old name for backward compatibility.
+
+            ### 6. Planning Requests
+
+            - If asked to create a plan, propose actions only—**no code changes** until approval.
+
+            ### 7. Internet Access
+
+            - Use your WebSearch tools to search the internet.
+            - This is required to find documentation for libraries, latest package versions, etc.
+
+            ### 8. Import Rules
+
+            - For TypeScript, place all imports at the top of the file; never use async imports.
+
+            ### Project-specific Build Commands:
+
+            **front**: cd front && npm ci && npx tsc --noEmit && cd .. && npm run format:ci
+            **connectors**: cd connectors && npm install && npm run build && cd .. && npm run format:ci
+            **cli**: cd cli/ruby-cli && npm ci && npx tsc && cd ../.. && npm run format:ci
+            **core**: cd core && cargo check && cargo fmt --all -- --check
+            **extension**: cd extension && npm ci && npm run build && cd .. && npm run format:ci
+            **ui**: cd ui && npm install && npm run build && cd .. && npm run format:ci
+            **viz**: cd viz && npm install && npm run build && npm run check
+            **sdks/js**: Already pre-built; if changes made: cd sdks/js && npm run build && cd ../.. && npm run format:ci
+
+            ### Important Rules:
+            - Install dependencies once per project when first needed (npm ci or npm install)
+            - For TypeScript projects, run `npx tsc --noEmit` before committing
+            - For Rust projects, run `cargo check` before committing
+            - SDK is pre-built; rebuild only if you modify it
+            - Never run servers or execute applications, only build/lint/typecheck
+            - Follow all CONTRACTS files in each project directory
+            - Let exceptions propagate, avoid defensive patterns
+            - Make minimal changes required
+            - Use normalizeError() instead of `err as Error`"
+
+          # Optional: Customize the trigger phrase (default: @claude)
+          # trigger_phrase: "/claude"
+
+          # Environment variables for Claude
+          settings: |
+            {
+              "env": {
+                "NODE_ENV": "test"
+              }
+            }

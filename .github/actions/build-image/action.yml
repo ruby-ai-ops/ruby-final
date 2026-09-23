@@ -88,7 +88,7 @@ runs:
       if: contains(inputs.component, 'front')
       shell: bash
       run: |
-        gcloud storage cp gs://bkt-dust-infra-model-configs/custom.json front/custom-models.json 2>/dev/null || echo '{"models":[]}' > front/custom-models.json
+        gcloud storage cp gs://bkt-ruby-infra-model-configs/custom.json front/custom-models.json 2>/dev/null || echo '{"models":[]}' > front/custom-models.json
 
     - name: "Setup Depot"
       uses: "depot/setup-action@15c09a5f77a0840ad4bce955686522a257853461" # v1.7.1
@@ -161,7 +161,7 @@ runs:
           fi
         fi
 
-        # Override NEXT_PUBLIC_DUST_APP_URL for *-edge components (the .env.edge
+        # Override NEXT_PUBLIC_RUBY_APP_URL for *-edge components (the .env.edge
         # files don't set it; only .env.prod does). marketing-edge needs it for
         # the same reason as front-edge: `next build` inlines it into the
         # client bundle at compile time.
@@ -169,8 +169,8 @@ runs:
         # lowercase, replace non-alphanumeric with '-', collapse multiple '-', trim '-', truncate to 28 chars.
         if [[ "$COMPONENT" == "front-edge" || "$COMPONENT" == "marketing-edge" ]]; then
           CF_BRANCH=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g; s/--*/-/g; s/^-//; s/-$//' | cut -c1-28 | sed 's/-$//')
-          echo "🏗️ Setting build arg NEXT_PUBLIC_DUST_APP_URL=https://${CF_BRANCH}--app.preview.dust.tt"
-          build_args+=("--build-arg NEXT_PUBLIC_DUST_APP_URL=https://${CF_BRANCH}--app.preview.dust.tt")
+          echo "🏗️ Setting build arg NEXT_PUBLIC_RUBY_APP_URL=https://${CF_BRANCH}--app.preview.ruby.ad"
+          build_args+=("--build-arg NEXT_PUBLIC_RUBY_APP_URL=https://${CF_BRANCH}--app.preview.ruby.ad")
         fi
 
         # Tag with latest for main branch prod builds
@@ -178,7 +178,7 @@ runs:
         PUSH_LATEST=false
         if [[ "$ENV" == "prod" && "$COMPONENT" == "$BASE_COMPONENT" && "${{ github.ref_name }}" == "main" ]]; then
           PUSH_LATEST=true
-          REGISTRY="${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/dust-images"
+          REGISTRY="${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/ruby-images"
           LATEST_TAGS+=("-t" "${REGISTRY}/${COMPONENT}:latest")
         fi
 
@@ -191,15 +191,15 @@ runs:
           # and the edge image is `front-api-edge` (parallel to `front`/`front-edge`).
           API_COMPONENT="${BASE_COMPONENT}-api${COMPONENT#${BASE_COMPONENT}}"
 
-          WORKERS_IMAGE_TAG="${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/dust-images/${COMPONENT}-workers:${{ inputs.commit_sha }}"
-          FRONT_API_IMAGE_TAG="${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/dust-images/${API_COMPONENT}:${{ inputs.commit_sha }}"
+          WORKERS_IMAGE_TAG="${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/ruby-images/${COMPONENT}-workers:${{ inputs.commit_sha }}"
+          FRONT_API_IMAGE_TAG="${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/ruby-images/${API_COMPONENT}:${{ inputs.commit_sha }}"
           WORKERS_LATEST_IMAGE_TAG=""
           FRONT_API_LATEST_IMAGE_TAG=""
 
           BAKE_OVERRIDES=(
             --set "*.args.COMMIT_HASH=${{ inputs.commit_sha }}"
             --set "*.args.COMMIT_HASH_LONG=${{ inputs.commit_sha_long }}"
-            --set "*.args.DD_GIT_REPOSITORY_URL=https://github.com/dust-tt/dust"
+            --set "*.args.DD_GIT_REPOSITORY_URL=https://github.com/ruby-ai-ops/ruby-final"
             --set "*.args.DD_GIT_COMMIT_SHA=${{ inputs.commit_sha_long }}"
           )
 
@@ -233,11 +233,11 @@ runs:
             --platform linux/amd64 \
             --provenance=false \
             -f ./dockerfiles/${BASE_COMPONENT}.Dockerfile \
-            -t ${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/dust-images/${COMPONENT}:${{ inputs.commit_sha }} \
+            -t ${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/ruby-images/${COMPONENT}:${{ inputs.commit_sha }} \
             "${LATEST_TAGS[@]}" \
             --build-arg COMMIT_HASH=${{ inputs.commit_sha }} \
             --build-arg COMMIT_HASH_LONG=${{ inputs.commit_sha_long }} \
-            --build-arg DD_GIT_REPOSITORY_URL=https://github.com/dust-tt/dust \
+            --build-arg DD_GIT_REPOSITORY_URL=https://github.com/ruby-ai-ops/ruby-final \
             --build-arg DD_GIT_COMMIT_SHA=${{ inputs.commit_sha_long }} \
             ${build_args[@]} \
             --push \
@@ -253,7 +253,7 @@ runs:
         echo "🔍 Getting current deployed version for ${COMPONENT} in ${{ inputs.region }}..."
 
         # Get all tags, exclude the current one we're building, get the most recent
-        ALL_TAGS=$(gcloud container images list-tags "${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/dust-images/${COMPONENT}" \
+        ALL_TAGS=$(gcloud container images list-tags "${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/ruby-images/${COMPONENT}" \
           --limit=10 \
           --sort-by=~timestamp \
           --format="value(tags[0])" 2>/dev/null || echo "")

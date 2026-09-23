@@ -2,13 +2,13 @@
 
 A good bug report saves everyone time. The clearer your report, the faster we can
 reproduce, understand, and fix the problem. This guide explains how to file an
-excellent bug report for [Dust](https://dust.tt) — whether it lands in a Dust
+excellent bug report for [Ruby](https://ruby.ad) — whether it lands in a Ruby
 workspace via a triage agent, in our support queue, or in the
-[issue tracker](https://github.com/dust-tt/dust/issues).
+[issue tracker](https://github.com/ruby-ai-ops/ruby-final/issues).
 
 > **Reporting a security vulnerability?** Do **not** open a public issue or post it
 > in a shared workspace. Follow [`SECURITY.md`](../SECURITY.md) and use our
-> vulnerability disclosure program at https://dust.tt/home/vulnerability.
+> vulnerability disclosure program at https://ruby.ad/home/vulnerability.
 
 ## TL;DR — the copy-paste template
 
@@ -17,7 +17,7 @@ workspace via a triage agent, in our support queue, or in the
 <one sentence: what's broken + the symptom>
 
 ### Area / component
-<e.g. Agent builder, Slack connector, dust-cli, Browser extension, Frames, API>
+<e.g. Agent builder, Slack connector, ruby-cli, Browser extension, Frames, API>
 
 ### Environment
 - Region: US (us-central1) / EU (europe-west1)
@@ -51,7 +51,7 @@ workspace via a triage agent, in our support queue, or in the
 
 ## What's most often missing
 
-Based on past Dust reports, these are the details we most frequently have to ask
+Based on past Ruby reports, these are the details we most frequently have to ask
 for. Including them up front avoids a round-trip and gets your bug fixed sooner:
 
 1. **The exact error message and code.** "It fails" isn't enough. Paste the literal
@@ -59,7 +59,7 @@ for. Including them up front avoids a round-trip and gets your bug fixed sooner:
    error text is usually the single most useful line in the report.
 2. **Reproduction steps.** Even strong reports often skip these. Without a reliable
    repro, a bug is much harder to fix.
-3. **Region.** Many Dust bugs are region-specific (US `us-central1` vs EU
+3. **Region.** Many Ruby bugs are region-specific (US `us-central1` vs EU
    `europe-west1`). Always say which one — especially for CLI, API, and connector
    issues.
 4. **A URL pointing at the problem.** Paste a link, not raw identifiers: the
@@ -80,14 +80,14 @@ often (e.g. "about 1 in 5 runs").
 
 ### Check you're on a supported / latest version
 
-- **Web app (dust.tt):** Hard-refresh to rule out a stale build, and note the
+- **Web app (ruby.ad):** Hard-refresh to rule out a stale build, and note the
   date/time (with timezone) you saw the issue so we can correlate with deploys.
 - **CLI / SDKs / extension:** Update to the latest published version and report the
   exact version number.
 
 ### Check if the bug is already known
 
-Search the [issue tracker](https://github.com/dust-tt/dust/issues) (including
+Search the [issue tracker](https://github.com/ruby-ai-ops/ruby-final/issues) (including
 closed issues) before opening a new one. If you find a matching report, add your
 details there instead of opening a duplicate. Only open a new issue if your problem
 is meaningfully different.
@@ -102,30 +102,30 @@ hard to track and tend to get partially fixed and forgotten.
 ### Title / summary
 
 The title gets the most attention, so make it specific. Include the affected area
-and a concrete symptom or error code. A common, effective Dust convention is a
+and a concrete symptom or error code. A common, effective Ruby convention is a
 `[Area]` prefix:
 
 - ❌ "Something is broken" · "Connector issue"
 - ✅ "[Microsoft/SharePoint] PDFs are findable but return no results in semantic search"
-- ✅ "[dust-cli] API-key auth can't reach EU (europe-west1) workspaces"
+- ✅ "[ruby-cli] API-key auth can't reach EU (europe-west1) workspaces"
 - ✅ "[Agent builder] Saving a tool with an empty name throws 500"
 
 ### Area / component
 
-Which part of Dust is affected? This maps to the top-level directories in the repo:
+Which part of Ruby is affected? This maps to the top-level directories in the repo:
 
 | Area | Directory | Examples |
 | --- | --- | --- |
 | Web app (front-end & API) | `front/`, `front-api/`, `front-spa/` | Agent builder, conversations, Frames, settings, REST API |
 | Data source connectors | `connectors/` | Slack, Microsoft/Teams/SharePoint, Notion, Google Drive, GitHub, Confluence, Intercom, Zendesk, Front, Freshservice |
 | Core service | `core/` | Document storage/search, data sources, runs, OAuth providers |
-| Design system | `sparkle/` | Shared UI components |
+| Design system | `ui/` | Shared UI components |
 | Browser extension | `extension/` | Chrome/Firefox extension |
-| Command-line tool | `cli/` | `dust` CLI |
+| Command-line tool | `cli/` | `ruby` CLI |
 | SDKs | `sdks/` | TypeScript client, API usage |
 | Visualization | `viz/` | Rendered charts / Frames output |
 | Code sandbox | `sandbox/` | Agent code execution |
-| Marketing / docs | `marketing/` | dust.tt pages, docs.dust.tt |
+| Marketing / docs | `marketing/` | ruby.ad pages, docs.ruby.ad |
 
 If you're not sure, give your best guess — we'll relabel as needed. When relevant,
 also specify the **connector/provider**, and for agent issues the **model**
@@ -134,7 +134,7 @@ also specify the **connector/provider**, and for agent issues the **model**
 ### Steps to reproduce
 
 Numbered, click-by-click instructions someone unfamiliar with the feature could
-follow. Re-read them as if you've never used Dust before — a missing step is the
+follow. Re-read them as if you've never used Ruby before — a missing step is the
 most common reason a bug can't be reproduced. Start from a known state.
 
 ```
@@ -162,7 +162,7 @@ Error requesting event stream: status_code=404
 
 ### Impact
 
-Who/what is affected, how badly, and how often. Note any workaround. (Dust reports
+Who/what is affected, how badly, and how often. Note any workaround. (Ruby reports
 conventionally include an **Impact** section — it helps us prioritize. For
 customer-facing issues, add a **Customer reference**.)
 

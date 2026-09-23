@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "upstreamUrl": "https://github.com/dust-tt/dust.git",
+  "upstreamBranch": "main",
+  "acceptedCommit": "33ca751b3fa75e00e9dac746d5ba3d7adbc5ec54",
+  "rulesVersion": 1,
+  "rubyRepository": "ruby-ai-ops/ruby-final",
+  "productionBranch": "ruby-main"
+}

@@ -5,8 +5,8 @@ inputs:
     description: "Build SDK/JS"
     required: false
     default: "false"
-  build-sparkle:
-    description: "Build Sparkle"
+  build-ui:
+    description: "Build RubyUI"
     required: false
     default: "false"
   node-version:
@@ -31,7 +31,7 @@ runs:
 
     - name: Upgrade npm
       shell: bash
-      run: npm install -g npm@11.10.0
+      run: npm install -g npm@11.11.0
 
     - name: Cache node_modules
       id: cache-node-modules
@@ -44,8 +44,8 @@ runs:
           front-spa/node_modules
           marketing/node_modules
           connectors/node_modules
-          sparkle/node_modules
-          cli/dust-cli/node_modules
+          ui/node_modules
+          cli/ruby-cli/node_modules
           extension/node_modules
           viz/node_modules
           sdks/js/node_modules
@@ -64,8 +64,8 @@ runs:
       shell: bash
       run: npm run build
 
-    - name: Build Sparkle
-      if: inputs.build-sparkle == 'true'
-      working-directory: sparkle
+    - name: Build RubyUI
+      if: inputs.build-ui == 'true'
+      working-directory: ui
       shell: bash
       run: npm run build

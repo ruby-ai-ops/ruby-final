@@ -1,0 +1,1015 @@
+{
+  "sourcePath": "C:/Users/hydra/Documents/Codex/2026-09-04/i-want-you-to-create-a/.worktrees/everglade-preview",
+  "sourceCommit": "b8c2fdc769633da5ed87cc1b7f2d2033f921086d",
+  "sourceStatus": [
+    "M app/artifacts/loom.tsx",
+    " M app/artifacts/registry.tsx",
+    " M app/artifacts/reviewed.tsx",
+    " M app/artifacts/vector.tsx",
+    " M app/demo-scenarios.ts",
+    " M app/globals.css",
+    " M app/page.test.tsx",
+    " M app/page.tsx",
+    " M app/scenario-artifact.test.tsx",
+    " M tests/layout-css.test.ts",
+    " M tests/scenario-library.test.ts",
+    "?? app/artifacts/cartly.css",
+    "?? app/artifacts/cartly.tsx",
+    "?? app/artifacts/cedarshield/",
+    "?? app/artifacts/chart-tooltip.test.tsx",
+    "?? app/artifacts/chart-tooltip.tsx",
+    "?? app/artifacts/content-types.ts",
+    "?? app/artifacts/harborview/",
+    "?? app/artifacts/keyline/",
+    "?? app/artifacts/ledger/",
+    "?? app/artifacts/media-card.tsx",
+    "?? app/artifacts/rebuild-content.ts",
+    "?? app/artifacts/talentspring/",
+    "?? app/artifacts/workspace-primitives.tsx",
+    "?? app/artifacts/workspace-widgets.css",
+    "?? app/workspace-rebuild.test.tsx",
+    "?? public/demo-cedarshield/",
+    "?? public/demo-dairy/",
+    "?? public/demo-harborview/",
+    "?? public/demo-keyline/",
+    "?? public/demo-logistics/",
+    "?? public/demo-talentspring/"
+  ],
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 98,
+      "sha256": "b3805cf69d92b0cf940b549fa8a6a8c49cee8191e7b39e1f17ed45384a9ef2c7"
+    },
+    {
+      "path": ".oxfmtrc.json",
+      "bytes": 260,
+      "sha256": "0962fdddb1840a06b5afb918ff3f2ff56bce346082651ec5c3567c01dd809f17"
+    },
+    {
+      "path": ".oxlintrc.json",
+      "bytes": 1370,
+      "sha256": "1a7aa1c7d83b05939e4e697eed9316224caea8958c4ad12837f8be740c13a47d"
+    },
+    {
+      "path": "app/artifacts/cartly.css",
+      "bytes": 18201,
+      "sha256": "106d37c2f728d0639daac98717aaddb6fd761e0dd8e749d7d1cbfbc86c614e4f"
+    },
+    {
+      "path": "app/artifacts/cartly.tsx",
+      "bytes": 31362,
+      "sha256": "8c463d29e149d2cdf85358f8415e0f028a1eb87a226a66a5c0ed4f336f0f2eb7"
+    },
+    {
+      "path": "app/artifacts/cedarshield/BrokerCallCoaching.tsx",
+      "bytes": 2099,
+      "sha256": "ca75189a23d87da46f708e0d806497f3747d556f74011936738fe00926ce1220"
+    },
+    {
+      "path": "app/artifacts/cedarshield/CatastropheOperationsMap.tsx",
+      "bytes": 2190,
+      "sha256": "398948e60c2e42c9a205b7691015cf7bacc1230567e5753a652741949716d4fb"
+    },
+    {
+      "path": "app/artifacts/cedarshield/ClaimDeadlineRescue.tsx",
+      "bytes": 2945,
+      "sha256": "8d9fd8d3bb8bf8c1ce96f909c7f71252d184a316c548ebfebba7aee7eecc2d9c"
+    },
+    {
+      "path": "app/artifacts/cedarshield/ClaimEvidenceConnections.tsx",
+      "bytes": 1818,
+      "sha256": "136ef152bdcc9a2b408e6fc53e9a18cdbedfd388d00866082fa68b5d35298e4b"
+    },
+    {
+      "path": "app/artifacts/cedarshield/ClaimsProcessControlGate.tsx",
+      "bytes": 2235,
+      "sha256": "9de0e7dc79a4b28a16d7bf26ee9901a61ed63264bb2c4f0ed581c1ba06f08f83"
+    },
+    {
+      "path": "app/artifacts/cedarshield/ClientRiskServiceReview.tsx",
+      "bytes": 2029,
+      "sha256": "e0a87be06ccc4e4a65a6972308ccec40c4df31c76330c279832af1b3aa6d104b"
+    },
+    {
+      "path": "app/artifacts/cedarshield/CoverageChangeComparator.tsx",
+      "bytes": 2002,
+      "sha256": "831ce8605c78a31e16d5ad7b99b9a6e7fb12147f4544c55eb9ddb8ca6bbd2cbd"
+    },
+    {
+      "path": "app/artifacts/cedarshield/StormClaimAssignment.tsx",
+      "bytes": 3587,
+      "sha256": "a6893e8502949ef40043b590bf0353e1f62b967534568006db97e317c27122d4"
+    },
+    {
+      "path": "app/artifacts/cedarshield/cedarshield.test.tsx",
+      "bytes": 4236,
+      "sha256": "e6a7f500a83b085547c38458b912297e783d0191b12bc3d0ca0782d395d87523"
+    },
+    {
+      "path": "app/artifacts/cedarshield/fixtures.ts",
+      "bytes": 15306,
+      "sha256": "e8f152a15b94284b0aa7a9c9c876405fee0fe0c7d8ad507a44305be0a9781fdc"
+    },
+    {
+      "path": "app/artifacts/cedarshield/index.ts",
+      "bytes": 608,
+      "sha256": "cdfaadf1cda74b75e3e786b1f4e200d03e75b5121c699e6ab43c81c481b29c79"
+    },
+    {
+      "path": "app/artifacts/cedarshield/styles.css",
+      "bytes": 9301,
+      "sha256": "b005001852f2c982bc27b096203a5b38c1207fdb996a51b33f133530a97dba1c"
+    },
+    {
+      "path": "app/artifacts/chart-tooltip.test.tsx",
+      "bytes": 1277,
+      "sha256": "7716ecb1c641bc45a78819cdc3f1fac4dcc29b57f670f296cd940515e8aa8a93"
+    },
+    {
+      "path": "app/artifacts/chart-tooltip.tsx",
+      "bytes": 1983,
+      "sha256": "23b0dd6683b9f5752638ec613c35fae85546ef25066f9ed4ec99236ffd3a8513"
+    },
+    {
+      "path": "app/artifacts/content-types.ts",
+      "bytes": 213,
+      "sha256": "926312d25d4d63c1315f218073fb44e31c9920a38cefe586cdd940200bef628d"
+    },
+    {
+      "path": "app/artifacts/harborview/AppointmentGapMatcher.tsx",
+      "bytes": 2839,
+      "sha256": "f0f2f80809fde9b61600a4842ee5035e68aaaa4678ddb80038bedff48a97cdd8"
+    },
+    {
+      "path": "app/artifacts/harborview/ClinicThroughputExplorer.tsx",
+      "bytes": 2498,
+      "sha256": "4c33a0b491f6292e786f3676e1a7642cf1a56dffa34ea9e2f8df5c55cd365df2"
+    },
+    {
+      "path": "app/artifacts/harborview/ClinicalAuditReadiness.tsx",
+      "bytes": 2183,
+      "sha256": "badeabe2413168f9d289e25654a8c8aa1497b7dfe6687218fb96125509c31369"
+    },
+    {
+      "path": "app/artifacts/harborview/ClinicalCoverageBalancer.tsx",
+      "bytes": 3639,
+      "sha256": "80fa9d0e2d74b81058677032d14d38fd4e1e2d90c6c50e4222e025569c9b0cac"
+    },
+    {
+      "path": "app/artifacts/harborview/EquipmentServiceImpact.tsx",
+      "bytes": 2182,
+      "sha256": "3f74bcae64c27f390872201e864fedb39e80bb06cf10e17976ea30e268622b79"
+    },
+    {
+      "path": "app/artifacts/harborview/HealthOperationsBoardBrief.tsx",
+      "bytes": 1765,
+      "sha256": "2e614a8a42e93f95cf01fc40747a92a5b358dff660c1f9f89d8f81293f421ec7"
+    },
+    {
+      "path": "app/artifacts/harborview/ReferralDocumentIntake.tsx",
+      "bytes": 2619,
+      "sha256": "46e6c7d4f59f5efeda741d97541fa060c231aaf8389e39914d0af223d3223276"
+    },
+    {
+      "path": "app/artifacts/harborview/fixtures.ts",
+      "bytes": 7798,
+      "sha256": "e04141d8df130022c25aae8d50e080e0009f9e9ef196db010cac0cb839e86ec7"
+    },
+    {
+      "path": "app/artifacts/harborview/index.ts",
+      "bytes": 492,
+      "sha256": "4ef2396e3e5bf1cf373af43b3c37364852006eb14e8c2dbff88338b43a4a9600"
+    },
+    {
+      "path": "app/artifacts/harborview/styles.css",
+      "bytes": 5474,
+      "sha256": "d2624669c105dff0c88cf9da9d426e4d4971b8219e89ef55c3873d30c746cb55"
+    },
+    {
+      "path": "app/artifacts/keyline/BuildingHealthAtlas.tsx",
+      "bytes": 3098,
+      "sha256": "3ced90797ae4886c10293a97f8e77aef2ff0715427a6683ea4856150aabd19e7"
+    },
+    {
+      "path": "app/artifacts/keyline/ElevatorQuoteNormalizer.tsx",
+      "bytes": 1809,
+      "sha256": "ae6ecc7aaa1919df2c7909b0541e67def2142bb6426cd5e55e945957fd7ba9bc"
+    },
+    {
+      "path": "app/artifacts/keyline/InspectionPhotoReview.tsx",
+      "bytes": 2115,
+      "sha256": "ec2ccd58120eec521443cb6adb2ab68e707480f5011d793a4c5d6f9ea8220cd6"
+    },
+    {
+      "path": "app/artifacts/keyline/LakesideOwnerStatement.tsx",
+      "bytes": 2533,
+      "sha256": "29dd8f471b8352e0e3ae0fbdb28d9a77328d39ac2be585417f4c521e8e88d099"
+    },
+    {
+      "path": "app/artifacts/keyline/LeaseRenewalPlanner.tsx",
+      "bytes": 2305,
+      "sha256": "e8cfe8ab81a12711e7c169980d462a520ae0b6eca71afd60babcce8f41a8b886"
+    },
+    {
+      "path": "app/artifacts/keyline/ListingConversionStudio.tsx",
+      "bytes": 2364,
+      "sha256": "064475ae5b8c40c20cf123ed1e3061fb3a326d89665046d7a4b9b535e0633ccf"
+    },
+    {
+      "path": "app/artifacts/keyline/MaintenanceDispatchDesk.tsx",
+      "bytes": 3937,
+      "sha256": "3df57eb4c4fb9e39249e724e31db9e470a1b7c7ec56579f7fd35f300886b2c7d"
+    },
+    {
+      "path": "app/artifacts/keyline/PropertyViewingMatchmaker.tsx",
+      "bytes": 4070,
+      "sha256": "7652bed21319c0dda6d23e0a2aa426c3fa322be3d615860306e1ab95b0477c9d"
+    },
+    {
+      "path": "app/artifacts/keyline/fixtures.ts",
+      "bytes": 7948,
+      "sha256": "e06363cb582c968e04b696111791ff0468e9c0b0dd51e0785d6cc811f745a9e7"
+    },
+    {
+      "path": "app/artifacts/keyline/index.ts",
+      "bytes": 541,
+      "sha256": "81677dbe76c6c3199b52f3ec69052110ba1fa020def40b468b672d96a696c155"
+    },
+    {
+      "path": "app/artifacts/keyline/styles.css",
+      "bytes": 6091,
+      "sha256": "4155386841bb9a977aef525d7e1584bd4aa00feb4c9047dda83ba3beadd9d2b6"
+    },
+    {
+      "path": "app/artifacts/ledger/CloseDependencyPath.tsx",
+      "bytes": 2390,
+      "sha256": "3daed60081088f80d872139bbf08a7eafb7a7cb1a517ab882e036f4703e1f72e"
+    },
+    {
+      "path": "app/artifacts/ledger/CloudChargebackLedger.tsx",
+      "bytes": 3451,
+      "sha256": "68a0985d9073459e8fababdcde0711d031b5cf63cc6087c8ab70a4fccb693f2d"
+    },
+    {
+      "path": "app/artifacts/ledger/ExpenseReceiptInspector.tsx",
+      "bytes": 2445,
+      "sha256": "94c1aa11e91f1fbcbf2f8460c136b662c6c94cc9f553a5cb738ab0bdb7dca4c5"
+    },
+    {
+      "path": "app/artifacts/ledger/FinancialAuditEvidenceIndex.tsx",
+      "bytes": 2695,
+      "sha256": "1e2516883a84fdcfa2838bebf89aed274b35ec80b09b0e6d4622fcb95b427c8d"
+    },
+    {
+      "path": "app/artifacts/ledger/FinancialBoardStatements.tsx",
+      "bytes": 3123,
+      "sha256": "91c2613636019d3e2e831a83b558ee1059846e37ce4bf44c928abe2893818828"
+    },
+    {
+      "path": "app/artifacts/ledger/PayableDuplicateReview.tsx",
+      "bytes": 2917,
+      "sha256": "e38b8e871f6dad1f677d7eb26a79f8dc320e0648bcd0330bff7c96250ff2512a"
+    },
+    {
+      "path": "app/artifacts/ledger/RevenueSettlementReconciler.tsx",
+      "bytes": 4223,
+      "sha256": "2f515735a552cacf611a6a91e6772efe1e228516cd51723f6bd51c6b2b820fef"
+    },
+    {
+      "path": "app/artifacts/ledger/ThirteenWeekCashModel.tsx",
+      "bytes": 3438,
+      "sha256": "7b84222dfd48c2d5af9d3aa44ae0c3d227833e154d5a953d1c90c67494410d83"
+    },
+    {
+      "path": "app/artifacts/ledger/fixtures.test.ts",
+      "bytes": 2013,
+      "sha256": "12f2f31f2dc636a4afc1755b478e38183f03591e52a43c468c60961346e9256c"
+    },
+    {
+      "path": "app/artifacts/ledger/fixtures.ts",
+      "bytes": 15124,
+      "sha256": "4edc8aa6c61c0a9fbcfef3629da88abcb6ea4b5e8d4cc28de8fcff0cf51d3c91"
+    },
+    {
+      "path": "app/artifacts/ledger/index.ts",
+      "bytes": 601,
+      "sha256": "b2abbab43f1bd1c937dda4f114f0fff14c61cb0f21560d1f06ff6b0d41078610"
+    },
+    {
+      "path": "app/artifacts/ledger/ledger.test.tsx",
+      "bytes": 3945,
+      "sha256": "07138d4f45d95a1a6c6fd8dce10e7c1199ffa0966835b641cde492f38ce1aab7"
+    },
+    {
+      "path": "app/artifacts/ledger/styles.css",
+      "bytes": 11627,
+      "sha256": "d7a505deec9249124f06af7b4ab5450dccf08ffcd99e92ad8a5870da7bb32748"
+    },
+    {
+      "path": "app/artifacts/loom.tsx",
+      "bytes": 13031,
+      "sha256": "2c3225687baec34a34d3006e118df3b3619a53df1559083689124f479cb0e27c"
+    },
+    {
+      "path": "app/artifacts/media-card.tsx",
+      "bytes": 703,
+      "sha256": "9feb1d182b6c2a08eb12ed182e1e48cdb698804459664c0510cd9068f9bd898d"
+    },
+    {
+      "path": "app/artifacts/rebuild-content.ts",
+      "bytes": 517,
+      "sha256": "126af40a91e60238e34f2ffd3726d5e75b80d02edb07a2d82dc81defd4d17007"
+    },
+    {
+      "path": "app/artifacts/registry.tsx",
+      "bytes": 36901,
+      "sha256": "dff740944c0e62a8e2803780ea562025f5b95f632d0cf5f5be9e87c6b4d4e42e"
+    },
+    {
+      "path": "app/artifacts/reviewed.tsx",
+      "bytes": 25529,
+      "sha256": "7166bb0726b46b7cc78d84b032be0dd04788ed6c5012ac50db84df06c90404b7"
+    },
+    {
+      "path": "app/artifacts/stonebridge.tsx",
+      "bytes": 6597,
+      "sha256": "f896489a206bc9fd5e93199ffe663104d2a4c5e2f06e7a5c2318e5d1540f2f31"
+    },
+    {
+      "path": "app/artifacts/talentspring/CandidateEvidenceComparison.tsx",
+      "bytes": 3179,
+      "sha256": "ef23f61ba02b7d51403ea037edc32b15d6ee7217bdf9a14b8ddede82af5fc3e1"
+    },
+    {
+      "path": "app/artifacts/talentspring/CandidateWaitingRoom.tsx",
+      "bytes": 3061,
+      "sha256": "08a89df7cb73788ea6578991ffdaf3f1d89d2c6e0889cbc653b9838c130ef8f6"
+    },
+    {
+      "path": "app/artifacts/talentspring/FirstWeekOnboardingHub.tsx",
+      "bytes": 2995,
+      "sha256": "3f5f52349dd70a9e5677439a5ae08fc04ba5fed14818f3958639683755c82ffd"
+    },
+    {
+      "path": "app/artifacts/talentspring/JobPublicationStudio.tsx",
+      "bytes": 2466,
+      "sha256": "03db24141f567ef238494438463bfb3b1fa42cf08cda574f9fefff8f42a07b75"
+    },
+    {
+      "path": "app/artifacts/talentspring/OfferPackageBuilder.tsx",
+      "bytes": 3374,
+      "sha256": "94742774cc91a1de1a4885a038e67aa238b06415357c31d99d054a9870966b98"
+    },
+    {
+      "path": "app/artifacts/talentspring/PanelOverlapScheduler.tsx",
+      "bytes": 4024,
+      "sha256": "179f7b7fdc7c47187aa3f83590ca8cf31e791a6a5df132a81b01c39bd80f48eb"
+    },
+    {
+      "path": "app/artifacts/talentspring/WorkforceGapPlanner.tsx",
+      "bytes": 3924,
+      "sha256": "e864e0b0418bb789a99863defe9ef5eeac4174ccfe6cccd2b721190f5b0b408f"
+    },
+    {
+      "path": "app/artifacts/talentspring/fixtures.ts",
+      "bytes": 12164,
+      "sha256": "156f8f762210fa3d9e318449c98bd04f38a74e9c8c55bba3a10d7e09338e9263"
+    },
+    {
+      "path": "app/artifacts/talentspring/index.ts",
+      "bytes": 514,
+      "sha256": "4f5f729b580f23a1c7e1995206c6517382fc1b11f1b2761022ab78de387fcfb0"
+    },
+    {
+      "path": "app/artifacts/talentspring/styles.css",
+      "bytes": 10473,
+      "sha256": "910703eaa07f25973a3c6dab67fe8c3609dcfbb5e88f2679320c0240206836c1"
+    },
+    {
+      "path": "app/artifacts/talentspring/talentspring.test.tsx",
+      "bytes": 3603,
+      "sha256": "35e5461fde6b3f0cd6b7c28389b7a1e34e2485554a89c5b63df436c9fedd9e23"
+    },
+    {
+      "path": "app/artifacts/vector.tsx",
+      "bytes": 12094,
+      "sha256": "54053b72d11c35906d934d9aed03f91c04a82bd383a581f186c3dc3bc2801ea6"
+    },
+    {
+      "path": "app/artifacts/workspace-primitives.tsx",
+      "bytes": 2860,
+      "sha256": "936f48e4f5d6d7b873e24d5b9681fc277fadba178dd1bb3f3ba3d3d78a69b9af"
+    },
+    {
+      "path": "app/artifacts/workspace-widgets.css",
+      "bytes": 5006,
+      "sha256": "e08b8c274e6e81329d2332a3f10bf1399380318790aeb82cdff0bea90b4a3c30"
+    },
+    {
+      "path": "app/conversation-content.test.tsx",
+      "bytes": 2284,
+      "sha256": "50721ef75ffc81110dc28e135b8a063adbba77440f062b11e9d5c7b0ea87df4c"
+    },
+    {
+      "path": "app/conversation-content.tsx",
+      "bytes": 3138,
+      "sha256": "599ed3f4899772386a01c23cce6789c9582b12945cd9d99a3c2384c0e7f9a516"
+    },
+    {
+      "path": "app/demo-scenarios.ts",
+      "bytes": 111831,
+      "sha256": "f73923e41319cf3604c4b467b1fcd548c126cb58ba0422cbd86e52c964c971e5"
+    },
+    {
+      "path": "app/globals.css",
+      "bytes": 188180,
+      "sha256": "b55f817ddda819a6fa3aa95772454475772d372f969e3ed26134c9fbbfe3bffb"
+    },
+    {
+      "path": "app/integration-icon.tsx",
+      "bytes": 2879,
+      "sha256": "4379e1c85bd19210affa560414e4deb45a88e02db08678946146143a552bbc0a"
+    },
+    {
+      "path": "app/layout.tsx",
+      "bytes": 603,
+      "sha256": "5b7ffe891113d6878ca371fae4bfa22421b1bd9783f6809c68264aa58a923b97"
+    },
+    {
+      "path": "app/next-batch-artifacts.test.tsx",
+      "bytes": 7802,
+      "sha256": "3af4b2b7af67aa8c69b859562e98ccd930ed2776dc9832bf48ec49957d0204bd"
+    },
+    {
+      "path": "app/page.test.tsx",
+      "bytes": 36013,
+      "sha256": "ac244ec62962d332aeb7ed022f19b9fc5cd20eff36321cf84814642b1d1929b8"
+    },
+    {
+      "path": "app/page.tsx",
+      "bytes": 63434,
+      "sha256": "e2c71bdb26793ee28dc245b8dd0adef9fd7165446409c7601c507f126495e2a7"
+    },
+    {
+      "path": "app/rich-text.tsx",
+      "bytes": 1405,
+      "sha256": "f548a3418370983a1df8fabd7ee38e20cff30e51522ed8fed33c270e8b704fa3"
+    },
+    {
+      "path": "app/scenario-artifact.test.tsx",
+      "bytes": 8660,
+      "sha256": "5d4db970f0c856b272b41f8307564d790dcdb69d80c98af3cb2c2969ada02ab9"
+    },
+    {
+      "path": "app/scenario-artifact.tsx",
+      "bytes": 699,
+      "sha256": "b3a83e9d083d63f415691d540a55adacdc2b482b62ed7b7f726cf99909528d43"
+    },
+    {
+      "path": "app/workspace-rebuild.test.tsx",
+      "bytes": 1338,
+      "sha256": "c4de7888a122cb9496e5358a9ef275e049160d54d7d9194eb486b1f131522af4"
+    },
+    {
+      "path": "components.json",
+      "bytes": 516,
+      "sha256": "9928283696d86836422959a2c520df83a718d31ffbcab533a14ca8dca2c8d475"
+    },
+    {
+      "path": "components/ui/accordion.tsx",
+      "bytes": 2664,
+      "sha256": "33e1c60ba503f4eb36f9a8b1f68b236174b11656d8efea6bac65abddda2f9019"
+    },
+    {
+      "path": "components/ui/alert-dialog.tsx",
+      "bytes": 5301,
+      "sha256": "ed0f1fc432bca4c72f9dd8741ae2268a00d2d3429ff1149bf463c4271b13d8e9"
+    },
+    {
+      "path": "components/ui/alert.tsx",
+      "bytes": 2060,
+      "sha256": "e760c470414c9e617d7292094146d906352fee3b1526b790a611d4a118e79196"
+    },
+    {
+      "path": "components/ui/aspect-ratio.tsx",
+      "bytes": 406,
+      "sha256": "b7fb499905e441a0602392ce118828425ad059079060109694d01f9fac00ad20"
+    },
+    {
+      "path": "components/ui/attachment.tsx",
+      "bytes": 6132,
+      "sha256": "dcb9e899f1322158f016d75c400fa8cce9b797ea49bec65528bac686cee2ec5c"
+    },
+    {
+      "path": "components/ui/avatar.tsx",
+      "bytes": 3056,
+      "sha256": "342f32b683937b826cdff2999d5e3057836d459aa43eadb0c3538b818d195b9a"
+    },
+    {
+      "path": "components/ui/badge.tsx",
+      "bytes": 1934,
+      "sha256": "5706189b86e8670499fb33f37147dd6f65c39d59eef5211e34157f2952c35e32"
+    },
+    {
+      "path": "components/ui/breadcrumb.tsx",
+      "bytes": 2602,
+      "sha256": "b28b76d6f8d0feafbbeff2220cf83f9a6b03d8c81f0145b3af4c7d19933ab2c0"
+    },
+    {
+      "path": "components/ui/bubble.tsx",
+      "bytes": 4828,
+      "sha256": "dfb9f52ae3b89e4a419b336c3893ab6fb658fc324fb402759d878d54e3b2db5a"
+    },
+    {
+      "path": "components/ui/button-group.tsx",
+      "bytes": 2494,
+      "sha256": "79ad8fb6644a775cc49131c1aa737ca26cae6a563beec0fa52ef6e8d85202fab"
+    },
+    {
+      "path": "components/ui/button.tsx",
+      "bytes": 3247,
+      "sha256": "081d2a1cb4f3aec636a6894d9eff4e90d476d5db85b82d0399c1f4d18517112e"
+    },
+    {
+      "path": "components/ui/calendar.tsx",
+      "bytes": 8503,
+      "sha256": "e7bc682eff8f2215e6b0aab40d1afb7ee927c5f5bef348ccff207631b9261658"
+    },
+    {
+      "path": "components/ui/card.tsx",
+      "bytes": 2645,
+      "sha256": "625fce5e16577a45108a86d7afcd70b8931cb2032abe0d6a3faf1010f666d672"
+    },
+    {
+      "path": "components/ui/carousel.tsx",
+      "bytes": 5727,
+      "sha256": "7444126492d4e0b85b1270f0d83a0955350fa95b3d3fb7b88edc2a5c2b4e5d14"
+    },
+    {
+      "path": "components/ui/chart.tsx",
+      "bytes": 10581,
+      "sha256": "56ab0e0b41f0cc7902414e046ea4f710bdbf0b756028672ea8c7e5137a278f2b"
+    },
+    {
+      "path": "components/ui/checkbox.tsx",
+      "bytes": 1538,
+      "sha256": "56b2869e5478f38238e6a3d8aefabfbe8af565b38b2ffad06466487b3eacf154"
+    },
+    {
+      "path": "components/ui/collapsible.tsx",
+      "bytes": 664,
+      "sha256": "3fdf7ef1ca89c4d85de5ecbb25813d0f572003a53b021baf43c5f3523e48ec97"
+    },
+    {
+      "path": "components/ui/combobox.tsx",
+      "bytes": 9135,
+      "sha256": "282041e2e8c52cc12e7bbc717bbd3f8c9c5ba18e7fa75b97053bc79687e1181e"
+    },
+    {
+      "path": "components/ui/command.tsx",
+      "bytes": 5029,
+      "sha256": "9c1eae65aa105935a34c6b736f673b71a2ef939dde53dce29d986221edbf1f9f"
+    },
+    {
+      "path": "components/ui/context-menu.tsx",
+      "bytes": 8166,
+      "sha256": "05c3646b452f5e3b9eb952eeba3d90657606d2b0875cb77652cdb5eadba0eb5c"
+    },
+    {
+      "path": "components/ui/dialog.tsx",
+      "bytes": 4087,
+      "sha256": "8bc85def62538b4e62e8530c6b0ba167a192c38519c05f104bf6e10de73b811f"
+    },
+    {
+      "path": "components/ui/direction.tsx",
+      "bytes": 105,
+      "sha256": "2dea8a95accb1723db2454ccc858697d5b1f1454568cf4da5e8fcbd0cf7cc1ee"
+    },
+    {
+      "path": "components/ui/drawer.tsx",
+      "bytes": 11396,
+      "sha256": "b7ac53d0e5d1fed25fc3f2ac5f5a36e247ca684c677ac376829fa8a7c039b79e"
+    },
+    {
+      "path": "components/ui/dropdown-menu.tsx",
+      "bytes": 8809,
+      "sha256": "efc088f3d79f64cf96e222701ae23dcf385b53947b3cd57ffb7be6f5dadcbfe2"
+    },
+    {
+      "path": "components/ui/empty.tsx",
+      "bytes": 2415,
+      "sha256": "bf54bac4881b79f6a53f55e70c18640f58a058add88aed763c71be35c4f64f59"
+    },
+    {
+      "path": "components/ui/field.tsx",
+      "bytes": 6303,
+      "sha256": "79023ca89aae39f9cffa83a9483c9c672099b4547cc821486283db61c6ae9327"
+    },
+    {
+      "path": "components/ui/hover-card.tsx",
+      "bytes": 1863,
+      "sha256": "d8cb7270c5893213fc00b5f270f9bc461e2d7ce5b81f77b8778253a1aeda6a2c"
+    },
+    {
+      "path": "components/ui/input-group.tsx",
+      "bytes": 5289,
+      "sha256": "2e65ddecb4401220be374cc6cfc42344538266cafeb2e590b3c760c7ed6b490a"
+    },
+    {
+      "path": "components/ui/input-otp.tsx",
+      "bytes": 2558,
+      "sha256": "867f568259caac95f682d128d72e681b3fe7c31701a396eacc9284401d917a6a"
+    },
+    {
+      "path": "components/ui/input.tsx",
+      "bytes": 1046,
+      "sha256": "6763c86c34c1c07826386d376f5da8fe2e41585bff3615716d5da88915e088d8"
+    },
+    {
+      "path": "components/ui/item.tsx",
+      "bytes": 4888,
+      "sha256": "9c5e45e6c4aae5b9c4c1304e1f1208d32681ab616a6e0de9de6e0d6b22690592"
+    },
+    {
+      "path": "components/ui/kbd.tsx",
+      "bytes": 842,
+      "sha256": "bdfb38a4f7b9b604e196b5cee0d86f12311dae72946f0dbf5928c8ad0638178f"
+    },
+    {
+      "path": "components/ui/label.tsx",
+      "bytes": 524,
+      "sha256": "e4a6fb662c44a44c468d16d79d02b3a3e5bf7b77bd50aef1e586c4d9613df0f6"
+    },
+    {
+      "path": "components/ui/marker.tsx",
+      "bytes": 1962,
+      "sha256": "cd1e872384cf5001e48b4dc3cc2bb011eba9700561d41c83a89e872b60baf175"
+    },
+    {
+      "path": "components/ui/menubar.tsx",
+      "bytes": 8315,
+      "sha256": "a3715f8e8b78261f5784929c532e100759c58e831c91e842438730797bc9a124"
+    },
+    {
+      "path": "components/ui/message-scroller.tsx",
+      "bytes": 4070,
+      "sha256": "9512c586d1b0885cf3ae4f1c3dd4281cbdfec7428fe98ff48a66b4ba2a7319f4"
+    },
+    {
+      "path": "components/ui/message.tsx",
+      "bytes": 2246,
+      "sha256": "2fedcc64ed8563a44f6697615e77574d96f819fe6e5e2fa8a555e30f8ed6bbd7"
+    },
+    {
+      "path": "components/ui/native-select.tsx",
+      "bytes": 2133,
+      "sha256": "3aafb74b98c039dae4eb2c64c47ec6f5d61fdc888c057de47550346f702f434b"
+    },
+    {
+      "path": "components/ui/navigation-menu.tsx",
+      "bytes": 7436,
+      "sha256": "c8e64bf5241145b512ae18f1062da8275691edf927736496a3860bec76ad6fa1"
+    },
+    {
+      "path": "components/ui/pagination.tsx",
+      "bytes": 2928,
+      "sha256": "1f3c1713e8824cca7c3c0edacf9da7b0114bfda58640771b8fe0bc6179b370ce"
+    },
+    {
+      "path": "components/ui/popover.tsx",
+      "bytes": 2586,
+      "sha256": "7376624438588e2d64b6e0c5cdf82cbc5fd4530bbcf1f0235c5f3ee08d12e877"
+    },
+    {
+      "path": "components/ui/progress.tsx",
+      "bytes": 1751,
+      "sha256": "0d8ddec9731940e104b851cf3ac67d2fa8589b289824317a9e8f326e090ba65a"
+    },
+    {
+      "path": "components/ui/radio-group.tsx",
+      "bytes": 1843,
+      "sha256": "43f2d6c2f5bdd4a26c57d93e6f141be20472f9bb8777d9a0d61cd8a5e281a999"
+    },
+    {
+      "path": "components/ui/resizable.tsx",
+      "bytes": 1681,
+      "sha256": "ea7b85817d4dc70866e0bcf15264e7e1bd7e1893eb4404261fbc23a4d6ff9029"
+    },
+    {
+      "path": "components/ui/scroll-area.tsx",
+      "bytes": 1632,
+      "sha256": "730c4cc49f8f1b705eb1389cd32c774056a0a2a7a48a9b092cbe44c608be3a0b"
+    },
+    {
+      "path": "components/ui/select.tsx",
+      "bytes": 6700,
+      "sha256": "45489c502a21fdd5271481d64ad8f762181c9653d8d26bdc6f75450b78c3c852"
+    },
+    {
+      "path": "components/ui/separator.tsx",
+      "bytes": 551,
+      "sha256": "92ad5065f03d7edc98f367e729f3ec84ece1d99ee8cd0d3a8137f266d4ab3d8a"
+    },
+    {
+      "path": "components/ui/sheet.tsx",
+      "bytes": 4446,
+      "sha256": "adb432b6f9d7a4733caa45ba8bf510a8a7ff0f6d0dd3aa1f013959fb61268234"
+    },
+    {
+      "path": "components/ui/sidebar.tsx",
+      "bytes": 21779,
+      "sha256": "aa3322ca63f098aa1d2abf750f9d097da07362fce25939357f2cefc9b6a03988"
+    },
+    {
+      "path": "components/ui/skeleton.tsx",
+      "bytes": 278,
+      "sha256": "4c342102b2bbf5bd8c04fa151fe5c13c42faee2f9587a3586c27322020ca35d1"
+    },
+    {
+      "path": "components/ui/slider.tsx",
+      "bytes": 1879,
+      "sha256": "af657e73d672f4dd205f19abf151d21a172cf36abfdca49fd7014a20e12367a9"
+    },
+    {
+      "path": "components/ui/spinner.tsx",
+      "bytes": 360,
+      "sha256": "8ddbb330e5564a1f53026da36c2322ed4b027687e91a88f63348ab10f26ae0cb"
+    },
+    {
+      "path": "components/ui/switch.tsx",
+      "bytes": 1818,
+      "sha256": "04b085443a1c6a72d408e6eb7dd45df881ca27814415b81b39f614806b52c8fc"
+    },
+    {
+      "path": "components/ui/table.tsx",
+      "bytes": 2418,
+      "sha256": "88f2ba7877eea7f34a5da18b7fa096eb2c7bed602677ce54f5494b494c5afc2e"
+    },
+    {
+      "path": "components/ui/tabs.tsx",
+      "bytes": 3510,
+      "sha256": "dd914d769bc223b5d5ea56839a7752e534eb475f8d2897d5675606c368bbca1f"
+    },
+    {
+      "path": "components/ui/textarea.tsx",
+      "bytes": 847,
+      "sha256": "7ae7f0f5d907be24658652c771fee1685193102bf3200aafbf578d144d379fbf"
+    },
+    {
+      "path": "components/ui/toast.tsx",
+      "bytes": 7353,
+      "sha256": "9126b09f47f0b117bf748cf19aaa4987a1f72d0813d10bfc4b4b0128e6439e48"
+    },
+    {
+      "path": "components/ui/toggle-group.tsx",
+      "bytes": 3201,
+      "sha256": "9b006523be0fe3230cd75f7adf78a501829d594fd3506c56c55bb38211ff1850"
+    },
+    {
+      "path": "components/ui/toggle.tsx",
+      "bytes": 1770,
+      "sha256": "6bf41d6f6ffe602c3e28274a82ac029e6ee1331ba3c670a6d814048e1823cc28"
+    },
+    {
+      "path": "components/ui/tooltip.tsx",
+      "bytes": 2855,
+      "sha256": "b86e51969931c3d62e88d0bdacd1cd8219105dc6d6b6a588a80011bf92e987cd"
+    },
+    {
+      "path": "hooks/use-mobile.ts",
+      "bytes": 585,
+      "sha256": "82bff42ff087bd5dc90a5d17609cc428b8688de92d1333073a839af5ad3c9cbd"
+    },
+    {
+      "path": "lib/utils.ts",
+      "bytes": 169,
+      "sha256": "9304a861c8673bee09e0f12de31773abbde503b02e59dfd74763ddec2e37cf05"
+    },
+    {
+      "path": "next.config.ts",
+      "bytes": 104,
+      "sha256": "d063bebef3a4878ae82f9f9547c2c9675b8b6945ab23702932dcb63a011a9fc9"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 385110,
+      "sha256": "26b437c4778beff9fc282934a6fcaa0090aa0d0022a0ea3a393e51c6ea8e4dc7"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1616,
+      "sha256": "03901d803b614b83a77e37d6db38d688afee6e11d65aa692b677837cf84e9ea7"
+    },
+    {
+      "path": "public/demo-cedarshield/response-staging.webp",
+      "bytes": 101590,
+      "sha256": "0da82fd03a2455a6b3160f31b86300b2bbe959d40e8e5e9bd367fc017d56f914"
+    },
+    {
+      "path": "public/demo-cedarshield/roof-damage.webp",
+      "bytes": 148736,
+      "sha256": "1d4c730c5896512250e90c0b8a737e87fff827e1bf40d60ba0038ded6c692a19"
+    },
+    {
+      "path": "public/demo-cedarshield/vehicle-hail.webp",
+      "bytes": 88026,
+      "sha256": "76d0f50ac7bf9965acac413de0c3703b9ad9d511fbe61a00f9b8f4d603da6851"
+    },
+    {
+      "path": "public/demo-cedarshield/water-intrusion.webp",
+      "bytes": 43136,
+      "sha256": "73f4613767f9cd7a7bfcd2793b0c8871ce340c2e5e31aeac4b388bc30b4b5832"
+    },
+    {
+      "path": "public/demo-dairy/chocolate-milk.webp",
+      "bytes": 13954,
+      "sha256": "ea4e41076c0a5d485056a27285f2a3b173288e0848385b43fa770f716573c0ba"
+    },
+    {
+      "path": "public/demo-dairy/whole-milk.webp",
+      "bytes": 5808,
+      "sha256": "2da1694731924fd8e1a54e729f148609af9d8bfd351e29b269e8613d002853c1"
+    },
+    {
+      "path": "public/demo-harborview/clinic-exterior.webp",
+      "bytes": 120832,
+      "sha256": "8fb403c6f3d946b18f2199e03f5eb1044307c11e4185ab2e09306872c4fab627"
+    },
+    {
+      "path": "public/demo-harborview/diagnostic-equipment.webp",
+      "bytes": 35306,
+      "sha256": "88c399b33d5b28d6daff79b00f600a04b23426ccc99c7ba69e65266c8986a6fb"
+    },
+    {
+      "path": "public/demo-harborview/exam-room.webp",
+      "bytes": 40786,
+      "sha256": "4e898cfed4b085577d9809458204e5b00554b73496696382d70a309a1f7bf29b"
+    },
+    {
+      "path": "public/demo-harborview/reception.webp",
+      "bytes": 58776,
+      "sha256": "9d657aff1feb9878d7b69d1825b010c4cc867e4457aff8f6c316ca9449f76ee4"
+    },
+    {
+      "path": "public/demo-keyline/inspection-door.webp",
+      "bytes": 22100,
+      "sha256": "fb27d39bcc37cc93260549eeaebc88a9626923d61d7669cf3be5dbe1c2e2fd96"
+    },
+    {
+      "path": "public/demo-keyline/inspection-leak.webp",
+      "bytes": 24654,
+      "sha256": "92920abdcbb980a9dcf341a3f399d41ac4d08b9cd9b24cc9b3467974c4a03f19"
+    },
+    {
+      "path": "public/demo-keyline/lakeside-exterior.webp",
+      "bytes": 108070,
+      "sha256": "5a249eac1325d00b307031b79e5c6fec3d49fb7dda35d315d651a1fdc4ef5e0f"
+    },
+    {
+      "path": "public/demo-keyline/lakeside-interior.webp",
+      "bytes": 58748,
+      "sha256": "6099b204efd89f180e8b1aebf87b30f8dbe48ca543365b526f97c305ba7b66bc"
+    },
+    {
+      "path": "public/demo-keyline/millhouse-exterior.webp",
+      "bytes": 126310,
+      "sha256": "d9ac158f5a7f92cba71cefaa43a75a815d5418dc7c529e5779247dfb1972fa65"
+    },
+    {
+      "path": "public/demo-keyline/millhouse-interior.webp",
+      "bytes": 108820,
+      "sha256": "1914431246c811b1629274f44b8be85d34128f4bbb23a6cf105ddae8b705e143"
+    },
+    {
+      "path": "public/demo-keyline/parkview-exterior.webp",
+      "bytes": 117626,
+      "sha256": "842796326332e0402c89493d6d1860ece11cd93ee9cf251be589429e730f80ec"
+    },
+    {
+      "path": "public/demo-keyline/parkview-interior.webp",
+      "bytes": 61360,
+      "sha256": "88d14c79c58bae52e1331c5cedc4989f93fcf42357c26bf443c6006d055c8066"
+    },
+    {
+      "path": "public/demo-logistics/delta-dock-handoff.webp",
+      "bytes": 44820,
+      "sha256": "8a893397ae87c9807cb142d886ced425d7f9974877bbcb0cccb9ef77e09b2b0b"
+    },
+    {
+      "path": "public/demo-logistics/delta-route-aerial.webp",
+      "bytes": 169024,
+      "sha256": "55b4bda961463f4d20134eecbd36d1ccd6701e023d4475361c6f4108e6616f4a"
+    },
+    {
+      "path": "public/demo-logistics/delta-tractor.webp",
+      "bytes": 41632,
+      "sha256": "fa4e44bb388471678e6e89fa25137a7e34c300cd6f6182d3331c1809c49f5e45"
+    },
+    {
+      "path": "public/demo-logistics/dock-controls.webp",
+      "bytes": 36590,
+      "sha256": "2b2cbd03369104e7a280b4f97e52e298e4cb8802e5e7e89eae1d31ee5f7828fb"
+    },
+    {
+      "path": "public/demo-logistics/dock-recovery.webp",
+      "bytes": 44662,
+      "sha256": "47307dc21ded53bd6a2de001a25d7c477ee156f43c682ddfe13bb2bc8948959d"
+    },
+    {
+      "path": "public/demo-logistics/dock-reroute.webp",
+      "bytes": 65328,
+      "sha256": "9906e14d68805f97d45a91ef813f298ee479e44608f7122ad16a12b0110e0d24"
+    },
+    {
+      "path": "public/demo-logistics/truck-eg-4821.webp",
+      "bytes": 39682,
+      "sha256": "d90e5f77e0ac2301aae46078415ffecde6652cc0c08f27d1070ebe38654c74f5"
+    },
+    {
+      "path": "public/demo-logistics/truck-eg-4828.webp",
+      "bytes": 59482,
+      "sha256": "01f28c25587eb9dfe2673b9f975b964a819939bda16fe04e106069cc95f9b377"
+    },
+    {
+      "path": "public/demo-logistics/truck-eg-4835.webp",
+      "bytes": 73938,
+      "sha256": "819df34adf27b5803402589b83ecacb157bc0eeb2ee5a2cd5544dcba3da0843b"
+    },
+    {
+      "path": "public/demo-products/high-rise-denim.webp",
+      "bytes": 28730,
+      "sha256": "d3ae337ae99dccdf64bce0845f587747929553e8176cc728595336023e2c433a"
+    },
+    {
+      "path": "public/demo-products/leather-tote.webp",
+      "bytes": 32014,
+      "sha256": "58f78b2a3488e02e817578af9739fe029f7e9644382e1c2e78d048a0dab6c892"
+    },
+    {
+      "path": "public/demo-products/linen-overshirt.webp",
+      "bytes": 29332,
+      "sha256": "d29ca3c33f02e7c37e408bd854825c7e0d4719c244777bebd93aeaa680030ca8"
+    },
+    {
+      "path": "public/demo-talentspring/onboarding-workspace.webp",
+      "bytes": 50538,
+      "sha256": "c476fd3f6fd6b55ebcd3e154fa78771b3d5f5e68fe587848f00359339caf2b05"
+    },
+    {
+      "path": "public/demo-talentspring/workplace-arrival.webp",
+      "bytes": 45906,
+      "sha256": "5eec1ca4014700a31f0aa57b5e599e13b20479c793a5dac6a784a891d358c4bb"
+    },
+    {
+      "path": "public/favicon.svg",
+      "bytes": 712,
+      "sha256": "e6d2e59b7b5bbb0342e0fb496dfc262decbfe4426bbb7b047aec8d467d1dc6f7"
+    },
+    {
+      "path": "public/fonts/RubySerif.ttf",
+      "bytes": 93832,
+      "sha256": "9d7ec42b2c82d51dc05227a11ea396e31ec2246f8140d5cd154a42d0374a5c4f"
+    },
+    {
+      "path": "public/fonts/Sohne-Regular.ttf",
+      "bytes": 194288,
+      "sha256": "7b93b5794d8473f5fe8f76e02a77b9f76e7ad795dfd2f2a62406848696385a5f"
+    },
+    {
+      "path": "public/ruby-logo.png",
+      "bytes": 42913,
+      "sha256": "ae5fd5e6cc0ca431b492404a6b3bccad9b2adcb2009b1904a42aea3a22d418d8"
+    },
+    {
+      "path": "tests/assets.test.ts",
+      "bytes": 318,
+      "sha256": "f011a58cddc49d3bd18f491332c766017bb6c6c6d9ac47079372b5e9a0330829"
+    },
+    {
+      "path": "tests/layout-css.test.ts",
+      "bytes": 25784,
+      "sha256": "b6c79b10aec26124c17e08f769b718d5aa6ed050f26d7766b75eb2bfe7a78057"
+    },
+    {
+      "path": "tests/scenario-library.test.ts",
+      "bytes": 16215,
+      "sha256": "4787fb7b59632a7c0a777a123fd11cc54036569fda5253c484883bfca1b02154"
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 671,
+      "sha256": "81aca06cd76be09d9b65c7dff6a031c38664263b506ea792a28f36b17be25f2a"
+    },
+    {
+      "path": "vite.config.ts",
+      "bytes": 1807,
+      "sha256": "3c028e727dde6c92022197ba7241a424ccd1e3d335f1f46cc9bbf91a8a3a968c"
+    },
+    {
+      "path": "vitest.config.ts",
+      "bytes": 122,
+      "sha256": "eb73e22bd2c1fd664654eecbb5c526c649f0347a116c0508eab62c016dd85274"
+    }
+  ]
+}

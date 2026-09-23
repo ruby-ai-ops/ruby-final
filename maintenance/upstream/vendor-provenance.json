@@ -1,0 +1,11 @@
+{
+  "eventsource-client": {
+    "source": "https://github.com/dust-tt/rust-eventsource-client",
+    "commit": "148050f8fb9f8abb25ca171aa68ea817277ca4f6",
+    "sourceDirectory": "eventsource-client",
+    "destination": "vendor/eventsource-client",
+    "license": "Apache-2.0",
+    "changes": "None to dependency source; use a local Cargo path dependency."
+  },
+  "upstreamPermission": "User states permission to remove upstream-owned license and author files. Third-party notices are retained."
+}
