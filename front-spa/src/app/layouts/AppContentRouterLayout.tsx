@@ -1,5 +1,6 @@
 import { AppContentLayout } from "@ruby-ai/front/components/ui/AppContentLayout";
 import { AppLayoutProvider } from "@ruby-ai/front/components/ui/AppLayoutContext";
+import { ConversationFontProvider } from "@ruby-ai/front/components/ui/ConversationFontContext";
 import { Outlet } from "react-router-dom";
 
 /**
@@ -12,9 +13,11 @@ import { Outlet } from "react-router-dom";
 export function AppContentRouterLayout() {
   return (
     <AppLayoutProvider>
-      <AppContentLayout>
-        <Outlet />
-      </AppContentLayout>
+      <ConversationFontProvider>
+        <AppContentLayout>
+          <Outlet />
+        </AppContentLayout>
+      </ConversationFontProvider>
     </AppLayoutProvider>
   );
 }

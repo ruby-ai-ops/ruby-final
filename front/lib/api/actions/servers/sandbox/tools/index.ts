@@ -452,7 +452,7 @@ export async function runSandboxBashTool(
     workingDirectory: workingDirectory ?? DEFAULT_WORKING_DIRECTORY,
     envVars: {
       RUBY_SANDBOX_TOKEN: sandboxToken,
-      RUBY_VIZ_URL: config.getVizPublicUrl(),
+      RUBY_VIZ_URL: config.getSandboxVizUrl(),
       RUBY_API_URL: `${sandboxAPIBase}/api/v1/w/${auth.getNonNullableWorkspace().sId}`,
     },
     timeoutMs: execTimeoutMs,

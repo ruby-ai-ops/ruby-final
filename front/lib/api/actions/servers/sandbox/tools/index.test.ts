@@ -47,7 +47,7 @@ const {
 vi.mock("@app/lib/api/config", () => ({
   default: {
     getApiBaseUrl: () => "https://ruby.ad",
-    getVizPublicUrl: () => "https://viz.ruby.ad",
+    getSandboxVizUrl: () => "https://viz.ruby.ad",
     getSandboxDevFrontHostName: () => undefined,
   },
 }));

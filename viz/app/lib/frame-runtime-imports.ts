@@ -7,6 +7,8 @@ export const FRAME_RUNTIME_IMPORT_NAMES = [
   "@viz/lib/utils",
   "lucide-react",
   "motion/react",
+  "@ruby-ai/document/v1",
+  "@ruby-ai/frame",
   "@ruby-ai/slideshow/v1",
   "@ruby-ai/slideshow/v2",
   "@ruby-ai/react-hooks",

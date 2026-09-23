@@ -4,7 +4,7 @@ import { RubyGoogleGeminiThreeDotOneFlashLiteGlobalGoogleAiStudioBatch } from "@
 import { RubyGoogleGeminiThreeDotOneProGlobalGoogleAiStudioBatch } from "@app/lib/llms/batch/endpoints/google_gemini_3_1_pro_global_google_ai_studio";
 import { RubyGoogleGeminiThreeDotFiveFlashGlobalGoogleAiStudioBatch } from "@app/lib/llms/batch/endpoints/google_gemini_3_5_flash_global_google_ai_studio";
 import { RubyGoogleGeminiThreeDotFiveFlashLiteGlobalGoogleAiStudioBatch } from "@app/lib/llms/batch/endpoints/google_gemini_3_5_flash_lite_global_google_ai_studio";
-import { RubyMistralMistralMedium35EuropeMistralBatch } from "@app/lib/llms/batch/endpoints/mistral_mistral_medium_3_5_eu_mistral";
+import { RubyMistralMistralMedium35GlobalMistralBatch } from "@app/lib/llms/batch/endpoints/mistral_mistral_medium_3_5_global_mistral";
 import { RubyOpenAIGptFiveDotFiveEuropeOpenAIResponsesBatch } from "@app/lib/llms/batch/endpoints/openai_gpt_five_dot_five_eu_openai_responses";
 import { RubyOpenAIGptFiveDotFiveGlobalOpenAIResponsesBatch } from "@app/lib/llms/batch/endpoints/openai_gpt_five_dot_five_global_openai_responses";
 import { RubyOpenAIGptFiveDotSixLunaEuropeOpenAIResponsesBatch } from "@app/lib/llms/batch/endpoints/openai_gpt_five_dot_six_luna_eu_openai_responses";
@@ -42,8 +42,8 @@ export const RUBY_BATCH_ENDPOINTS = {
     RubyOpenAIGptSixLunaGlobalOpenAIResponsesBatch,
   [RubyOpenAIGptSixLunaEuropeOpenAIResponsesBatch.id]:
     RubyOpenAIGptSixLunaEuropeOpenAIResponsesBatch,
-  [RubyMistralMistralMedium35EuropeMistralBatch.id]:
-    RubyMistralMistralMedium35EuropeMistralBatch,
+  [RubyMistralMistralMedium35GlobalMistralBatch.id]:
+    RubyMistralMistralMedium35GlobalMistralBatch,
 } as const satisfies Record<BatchEndpointId, RubyBatchEndpointConstructor>;
 
 export function getBatchEndpoints(
