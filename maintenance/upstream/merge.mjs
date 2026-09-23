@@ -3,7 +3,7 @@ import path from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { readSnapshot } from './snapshot.mjs';
 
-const git = (root, args, extra = {}) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'], ...extra }).trim();
+const git = (root, args, extra = {}) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024, ...extra }).trim();
 
 function writeSnapshot(root, entries) {
   const tracked = git(root, ['ls-files', '-z']).split('\0').filter(Boolean);
@@ -42,6 +42,7 @@ export function mergeSnapshots(root, base, ruby, incoming) {
   git(root, ['config', 'user.email', 'sync@ruby.ad']);
   git(root, ['config', 'core.autocrlf', 'false']);
   git(root, ['config', 'core.longpaths', 'true']);
+  git(root, ['config', 'gc.auto', '0']);
   writeSnapshot(root, base);
   git(root, ['commit', '--quiet', '--allow-empty', '-m', 'Transformed baseline']);
   const baseCommit = git(root, ['rev-parse', 'HEAD']);

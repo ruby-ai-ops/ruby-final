@@ -31,6 +31,10 @@ jobs:
           package-manager-cache: false
       - run: node --test maintenance/upstream/*.test.mjs
       - run: node maintenance/upstream/check.mjs
+      - name: Verify Ruby boundaries against production
+        env:
+          CI_BASE: ${{ github.event.pull_request.base.sha }}
+        run: node maintenance/upstream/check-boundaries.mjs
       - name: Verify transformation is a no-op
         run: |
           node maintenance/upstream/rebrand.mjs

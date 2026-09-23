@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { readSnapshot } from './snapshot.mjs';
 import { mergeSnapshots } from './merge.mjs';
 import { assertSafeUpdate, assertBranded, transformSnapshot } from './policy.mjs';
+import { assertRubyBoundaries } from './boundaries.mjs';
 
 const git = (root, args, extra = {}) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['pipe','pipe','pipe'], ...extra }).trim();
 const STATE = 'maintenance/upstream/state.json';
@@ -36,6 +37,7 @@ export function createSyncCandidate(root, target, { validate = assertBranded } =
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'ruby-sync-'));
   try {
     const candidate = mergeSnapshots(temporary, base, ruby, incoming);
+    assertRubyBoundaries(ruby, candidate);
     validate(candidate);
     const commits = git(root, ['rev-list', '--reverse', `${state.acceptedCommit}..${target}`]).split('\n').filter(Boolean);
     const nextState = { ...state, acceptedCommit: target, consumedRange: { fromExclusive: state.acceptedCommit, toInclusive: target, commits } };

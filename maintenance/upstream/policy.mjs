@@ -5,6 +5,7 @@ export function protectedPath(name, assets = []) {
   return name.startsWith('.github/') || name.startsWith('maintenance/') ||
     name.startsWith('vendor/') || name === '.gitattributes' ||
     name.startsWith('ui/src/logo/') || name.startsWith('ui/src/lottie/') ||
+    name.startsWith('ui/src/styles/') || name === 'ui/src/components/Sheet.tsx' ||
     name === 'ui/src/icons/src/v2-stroke/intersect-ruby.svg' ||
     name === 'ui/src/icons/v2-stroke/IntersectRuby.tsx' || assets.includes(name);
 }
