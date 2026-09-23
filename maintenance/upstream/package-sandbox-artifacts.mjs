@@ -8,7 +8,7 @@ const version = fs.readFileSync('cli/ruby-sandbox/Cargo.toml','utf8').match(/^ve
 if (!version) throw new Error('Missing rbx version');
 const sources = {
   rbx: {path:'cli/ruby-sandbox/target/x86_64-unknown-linux-musl/release/rbx',version,commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim()},
-  apply_patch: {path:'.artifacts/codex-source/codex-rs/target/x86_64-unknown-linux-musl/release/apply_patch',version:'0.1.0',commit:'91892c6dc38c2b24ffb271ec027ae1a1ad996660'},
+  apply_patch: {path:'.artifacts/codex-source/codex-rs/target/x86_64-unknown-linux-musl/release/apply_patch',version:'0.1.0',commit:'f028679abb30051cec2434e624cd99975986b41b'},
 };
 const manifest = {};
 for (const [name,source] of Object.entries(sources)) {
