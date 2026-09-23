@@ -56,6 +56,8 @@ import {
 } from "@app/lib/metronome/types";
 import {
   CP_ENTERPRISE_BASIS,
+  CP_ENTERPRISE_MAX_SEAT_COST_YEARLY_DOLLARS,
+  CP_ENTERPRISE_PRO_SEAT_COST_YEARLY_DOLLARS,
   CP_MAX_SEAT_COST_MONTHLY,
   CP_MAX_SEAT_COST_YEARLY,
   CP_PRO_SEAT_COST_MONTHLY,
@@ -668,11 +670,17 @@ export function getNewPackages(): PackageDef[] {
       overrides: buildSeatEntitlementOverrides(CREDIT_TYPE_USD_ID, [
         {
           product_name: PRO_SEAT_PRODUCT_NAME + SEAT_PRODUCT_YEARLY_SUFFIX,
-          price: (CP_ENTERPRISE_BASIS + CP_PRO_SEAT_COST_YEARLY) * 12 * 100,
+          price:
+            (CP_ENTERPRISE_BASIS + CP_ENTERPRISE_PRO_SEAT_COST_YEARLY_DOLLARS) *
+            12 *
+            100,
         },
         {
           product_name: MAX_SEAT_PRODUCT_NAME + SEAT_PRODUCT_YEARLY_SUFFIX,
-          price: (CP_ENTERPRISE_BASIS + CP_MAX_SEAT_COST_YEARLY) * 12 * 100,
+          price:
+            (CP_ENTERPRISE_BASIS + CP_ENTERPRISE_MAX_SEAT_COST_YEARLY_DOLLARS) *
+            12 *
+            100,
         },
         { product_name: FREE_SEAT_PRODUCT_NAME, price: 0 },
       ]),
@@ -690,19 +698,23 @@ export function getNewPackages(): PackageDef[] {
       overrides: buildSeatEntitlementOverrides(CREDIT_TYPE_EUR_ID, [
         {
           product_name: PRO_SEAT_PRODUCT_NAME + SEAT_PRODUCT_YEARLY_SUFFIX,
-          price: (CP_ENTERPRISE_BASIS + CP_PRO_SEAT_COST_YEARLY) * 12,
+          price:
+            (CP_ENTERPRISE_BASIS + CP_ENTERPRISE_PRO_SEAT_COST_YEARLY_DOLLARS) *
+            12,
         },
         {
           product_name: MAX_SEAT_PRODUCT_NAME + SEAT_PRODUCT_YEARLY_SUFFIX,
-          price: (CP_ENTERPRISE_BASIS + CP_MAX_SEAT_COST_YEARLY) * 12,
+          price:
+            (CP_ENTERPRISE_BASIS + CP_ENTERPRISE_MAX_SEAT_COST_YEARLY_DOLLARS) *
+            12,
         },
         { product_name: FREE_SEAT_PRODUCT_NAME, price: 0 },
       ]),
       ...BILLING_CYCLE_CONFIG,
     },
     // Business USD / EUR — Pro and Max seats (plus the free starter seat) priced
-    // via overrides; per-seat INDIVIDUAL AWU credit allocations (Pro: 8000 /
-    // Max: 40000 AWU/month) live in the shared credit set. Customers can
+    // via overrides; per-seat INDIVIDUAL AWU credit allocations (Pro: 500 /
+    // Max: 2500 AWU/month) live in the shared credit set. Customers can
     // upgrade/downgrade between seat tiers via seat moves.
     {
       name: "Business USD",

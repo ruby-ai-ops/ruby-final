@@ -27,18 +27,18 @@ import type { CouponType } from "@app/types/coupon";
 import type { BillingPeriod } from "@app/types/plan";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import type { LightWorkspaceType } from "@app/types/user";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   CheckCircle,
   Chip,
-  RubyLogoSquare,
   Icon,
   Input,
+  RubyLogoSquare,
   Spinner,
   Tag01,
   XCircle,
 } from "@ruby-ai/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
@@ -716,7 +716,7 @@ function CheckoutSuccessPage({
           </span>{" "}
           seat is ready with{" "}
           <span className="font-semibold">
-            {seatType === "max" ? "40,000" : "8,000"}
+            {seatType === "max" ? "2,500" : "500"}
           </span>{" "}
           credits a month. Let&apos;s build something.
         </p>

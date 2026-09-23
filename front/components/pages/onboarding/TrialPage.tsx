@@ -1,6 +1,6 @@
 import { useAuth, useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useAppRouter } from "@app/lib/platform";
-import { Button, Check, RubyLogoSquare, Icon, Page } from "@ruby-ai/ui";
+import { Button, Check, Icon, Page, RubyLogoSquare } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 
@@ -31,7 +31,7 @@ export function TrialPage() {
   // TODO: improve copy and design in a follow-up
   const freePlanFeatures = [
     "Up to 5 users",
-    "300 AI credits per user (lifetime)",
+    "100 AI credits per user (lifetime)",
     "Advanced models (GPT-5, Claude..)",
     "Custom agents which can execute actions",
     "No credit card required · No time limit",

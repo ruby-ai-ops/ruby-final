@@ -1726,7 +1726,7 @@ const ALERTS: AlertDef[] = [
     seat_filter: { seat_group_key: "user_id" },
   },
   {
-    // Low-balance warning for max seats (8 000 AWU remaining).
+    // Low-balance warning for max seats (500 AWU remaining).
     name: `Default: Low seat balance max seats (${0.2 * MAX_SEAT_MONTHLY_AWU_CREDITS} AWU)`,
     alert_type: "low_remaining_seat_balance_reached",
     threshold: 0.2 * MAX_SEAT_MONTHLY_AWU_CREDITS,
@@ -1735,7 +1735,7 @@ const ALERTS: AlertDef[] = [
     seat_filter: { seat_group_key: "user_id" },
   },
   {
-    // Low-balance warning for pro seats (1 600 AWU remaining).
+    // Low-balance warning for pro seats (100 AWU remaining).
     name: `Default: Low seat balance pro seats (${0.2 * PRO_SEAT_MONTHLY_AWU_CREDITS} AWU)`,
     alert_type: "low_remaining_seat_balance_reached",
     threshold: 0.2 * PRO_SEAT_MONTHLY_AWU_CREDITS,
@@ -1753,14 +1753,21 @@ const POOL_DEFAULT_ALERT_KEYS: string[] = [
   DEFAULT_ALERT_UNIQUENESS_KEYS.poolCritical,
 ];
 
-// Archive the account-level default pool alerts so the subsequent `syncAlerts`
-// recreates them with the current `custom_field_filters`. Default alerts carry
+// Old account-wide seat warnings must be archived before the new 500/100 AWU
+// keys are created, or both thresholds remain active for every customer.
+const REPLACED_SEAT_LOW_ALERT_KEYS = [
+  "default-low-seat-balance-8000-awu",
+  "default-low-seat-balance-1600-awu",
+];
+
+// Archive replaced seat warnings on every run, and optionally pool defaults so
+// `syncAlerts` recreates them with the current `custom_field_filters`. Default alerts carry
 // no `customer_id`, and the SDK only lists alerts per customer — but a default
 // alert is evaluated against (and returned for) every customer, so we probe one
 // customer's alert list to discover them, then archive by id (which releases
 // the uniqueness key globally).
-async function archivePoolDefaultAlerts(): Promise<void> {
-  console.log("\n=== Archiving default pool alerts (for recreation) ===");
+async function archiveReplacedDefaultAlerts(): Promise<void> {
+  console.log("\n=== Archiving replaced default alerts (for recreation) ===");
 
   let probeCustomerId: string | undefined;
   for await (const customer of client.v1.customers.list()) {
@@ -1781,12 +1788,19 @@ async function archivePoolDefaultAlerts(): Promise<void> {
     alert_statuses: ["ENABLED", "DISABLED"],
   })) {
     const key = entry.alert.uniqueness_key;
-    if (!key || !POOL_DEFAULT_ALERT_KEYS.includes(baseUniquenessKey(key))) {
+    if (
+      !key ||
+      !(
+        REPLACED_SEAT_LOW_ALERT_KEYS.includes(baseUniquenessKey(key)) ||
+        (RECREATE_POOL_DEFAULTS &&
+          POOL_DEFAULT_ALERT_KEYS.includes(baseUniquenessKey(key)))
+      )
+    ) {
       continue;
     }
     matched++;
     console.log(
-      `  ! ${EXECUTE ? "Archiving" : "[DRYRUN] Would archive"} default pool alert: ${entry.alert.name} (${entry.alert.id}, uniqueness_key="${key}")`
+      `  ! ${EXECUTE ? "Archiving" : "[DRYRUN] Would archive"} replaced default alert: ${entry.alert.name} (${entry.alert.id}, uniqueness_key="${key}")`
     );
     if (EXECUTE) {
       await client.v1.alerts.archive({
@@ -1798,7 +1812,7 @@ async function archivePoolDefaultAlerts(): Promise<void> {
 
   if (matched === 0) {
     console.log(
-      `  (no existing default pool alerts found for probe customer ${probeCustomerId} — ` +
+      `  (no replaced default alerts found for probe customer ${probeCustomerId} — ` +
         `syncAlerts will create them fresh with the current filter)`
     );
   }
@@ -1869,9 +1883,7 @@ async function main(): Promise<void> {
   const productsMutated = await syncProducts();
   await syncRateCards();
   await syncPackages();
-  if (RECREATE_POOL_DEFAULTS) {
-    await archivePoolDefaultAlerts();
-  }
+  await archiveReplacedDefaultAlerts();
   await syncAlerts();
 
   // Drop the cached `productId → seatType` map so live processes pick up

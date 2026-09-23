@@ -1,3 +1,4 @@
+import { createEmbeddedMetronomeSetupCheckoutSession } from "@app/lib/plans/stripe";
 import { FeatureFlagFactory } from "@app/tests/utils/FeatureFlagFactory";
 import { createPrivateApiMockRequest } from "@app/tests/utils/generic_private_api_tests";
 import { grantWorkspacePermission } from "@app/tests/utils/permissions";
@@ -77,6 +78,29 @@ describe("POST /api/w/:wId/subscriptions", () => {
     expect(data.mode).toEqual("embedded");
     expect(data.clientSecret).toEqual(TEST_CLIENT_SECRET);
     expect(data.sessionId).toEqual(TEST_SESSION_ID);
+  });
+
+  it.each([
+    ["pro", "monthly", 2_000],
+    ["pro", "yearly", 19_200],
+    ["max", "monthly", 4_000],
+    ["max", "yearly", 38_400],
+  ] as const)("passes %s %s price to checkout", async (seatType, billingPeriod, pricePerSeatCents) => {
+    const { workspace, user } = await createPrivateApiMockRequest({
+      method: "POST",
+      role: "admin",
+    });
+
+    const response = await post(workspace, {
+      billingPeriod,
+      seatType,
+      targetUserId: user.sId,
+    });
+
+    expect(response.status).toBe(200);
+    expect(createEmbeddedMetronomeSetupCheckoutSession).toHaveBeenCalledWith(
+      expect.objectContaining({ pricePerSeatCents, seatType, billingPeriod })
+    );
   });
 
   it("returns 400 when seat fields are missing while metronome billing is enabled", async () => {

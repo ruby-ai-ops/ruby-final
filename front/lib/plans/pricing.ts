@@ -10,10 +10,15 @@ export const BUSINESS_PLAN_COST_MONTHLY = 45;
 
 // Credit-priced (CP) self-serve seat prices
 export const CP_ENTERPRISE_BASIS = 20;
-export const CP_PRO_SEAT_COST_MONTHLY = 30;
-export const CP_PRO_SEAT_COST_YEARLY = 24;
-export const CP_MAX_SEAT_COST_MONTHLY = 150;
-export const CP_MAX_SEAT_COST_YEARLY = 120;
+/** @cc [label:product] enterprise-seat-prices-independent
+ * Enterprise seat prices stay fixed when self-serve Pro and Max prices change.
+ */
+export const CP_ENTERPRISE_PRO_SEAT_COST_YEARLY_DOLLARS = 24;
+export const CP_ENTERPRISE_MAX_SEAT_COST_YEARLY_DOLLARS = 120;
+export const CP_PRO_SEAT_COST_MONTHLY = 20;
+export const CP_PRO_SEAT_COST_YEARLY = 16;
+export const CP_MAX_SEAT_COST_MONTHLY = 40;
+export const CP_MAX_SEAT_COST_YEARLY = 32;
 
 /**
  * Client-side mirror of the server-side `isMetronomeBillingEnabled` gate: the

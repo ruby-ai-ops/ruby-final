@@ -10,8 +10,8 @@ export const DEFAULT_ALERT_UNIQUENESS_KEYS = {
   poolLow: "default-low-contract-credit-and-commit-balance-100-awu-pooled",
   poolCritical: "default-low-contract-credit-and-commit-balance-10-awu-pooled",
   seatEmpty: "default-low-seat-balance-zero-awu",
-  seatLowMax: "default-low-seat-balance-8000-awu",
-  seatLowPro: "default-low-seat-balance-1600-awu",
+  seatLowMax: "default-low-seat-balance-500-awu",
+  seatLowPro: "default-low-seat-balance-100-awu",
 } as const;
 
 type DefaultAlertSlot = keyof typeof DEFAULT_ALERT_UNIQUENESS_KEYS;
