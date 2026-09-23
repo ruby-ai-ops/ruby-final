@@ -1,0 +1,19 @@
+/* Share authored tokens with document content, keeping RubyUI controls isolated. */
+@scope (.viz-document .tiptap) to ([data-viz-ui-slot]) {
+  :scope {
+    --viz-ui-font-sans: var(--font-sans);
+    --viz-ui-font-serif: var(--font-serif);
+    --viz-ui-font-mono: var(--font-mono);
+    --viz-ui-color-foreground: var(--foreground);
+    --viz-ui-color-muted-foreground: var(--muted-foreground);
+    --viz-ui-color-muted-background: var(--muted);
+    --viz-ui-color-border: var(--border);
+
+    font-family: var(--font-sans);
+    color: var(--foreground);
+  }
+
+  a {
+    color: var(--primary);
+  }
+}

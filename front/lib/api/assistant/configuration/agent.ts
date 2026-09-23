@@ -16,6 +16,7 @@ import { AgentSuggestionModel } from "@app/lib/models/agent/agent_suggestion";
 import { AgentResource } from "@app/lib/resources/agent_resource";
 import { invalidateAgentResourceCaches } from "@app/lib/resources/agent_resource_cache";
 import { AgentUserRelationResource } from "@app/lib/resources/agent_user_relation_resource";
+import { DiscoveryItemResource } from "@app/lib/resources/discovery_item_resource";
 import { GroupPermissionResource } from "@app/lib/resources/group_permission_resource";
 import { canReadRequestedSpaces } from "@app/lib/resources/permission_utils";
 import { SpaceResource } from "@app/lib/resources/space_resource";
@@ -574,6 +575,11 @@ export async function destroyAgentConfigurationRow(
     return { agentDeleted: false };
   }
 
+  await DiscoveryItemResource.deleteAllForItem(auth, {
+    type: "agent",
+    itemId: agent.sId,
+    transaction,
+  });
   await agent.destroyPermissionsAndGroups(auth, { transaction });
   await AgentModel.destroy({
     where: { sId: agent.sId, workspaceId },
@@ -682,15 +688,11 @@ export async function updateAgentConfigurationsScope(
 
   // Publishing/unpublishing needs the workspace `publish` capability (checked below) plus edit
   // rights on each agent. Admins may additionally act on agents built on spaces they cannot read
-  // (the manage agents page lists those behind "Show hidden agents"); changing the scope touches
-  // nothing the spaces protect.
-  const agentConfigs = await getAgentConfigurations(auth, {
-    agentIds,
-    variant: "light",
-    dangerouslySkipPermissionFiltering: auth.isAdmin(),
-  });
+  // (the manage agents page lists those behind "Show hidden agents"): `fetchByIds` returns those to
+  // admins via the agent `admin` verb, and changing the scope touches nothing the spaces protect.
+  const agentResources = await AgentResource.fetchByIds(auth, agentIds);
 
-  const archivedAgentNames = agentConfigs
+  const archivedAgentNames = agentResources
     .filter((agent) => agent.status === "archived")
     .map((agent) => agent.name);
   if (archivedAgentNames.length > 0) {
@@ -701,7 +703,7 @@ export async function updateAgentConfigurationsScope(
     );
   }
 
-  const editableAgents = filterEditableAgents(auth, agentConfigs);
+  const editableAgents = filterEditableAgents(auth, agentResources);
   if (editableAgents.length === 0) {
     return new Ok(undefined);
   }

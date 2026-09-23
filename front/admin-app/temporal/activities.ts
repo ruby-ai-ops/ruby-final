@@ -64,6 +64,7 @@ import { SpaceResource } from "@app/lib/resources/space_resource";
 import { AgentMemoryModel } from "@app/lib/resources/storage/models/agent_memories";
 import { ProviderModel } from "@app/lib/resources/storage/models/apps";
 import { GroupMembershipModel } from "@app/lib/resources/storage/models/group_memberships";
+import { GroupPinnedItemModel } from "@app/lib/resources/storage/models/group_pinned_items";
 import { GroupModel } from "@app/lib/resources/storage/models/groups";
 import {
   LabsTranscriptsConfigurationModel,
@@ -378,6 +379,7 @@ export async function deleteAgentsActivity({
         mcpServerConfigurationId: {
           [Op.in]: mcpServerConfigurations.map((r) => r.id),
         },
+        workspaceId: workspace.id,
       },
     });
     await AgentTablesQueryConfigurationTableModel.destroy({
@@ -385,6 +387,7 @@ export async function deleteAgentsActivity({
         mcpServerConfigurationId: {
           [Op.in]: mcpServerConfigurations.map((r) => r.id),
         },
+        workspaceId: workspace.id,
       },
     });
 
@@ -406,6 +409,7 @@ export async function deleteAgentsActivity({
     await AgentUserRelationModel.destroy({
       where: {
         agentConfiguration: agent.sId,
+        workspaceId: workspace.id,
       },
     });
 
@@ -812,6 +816,9 @@ export async function deleteWorkspaceActivity({
   await MembershipUpgradeRequestResource.deleteAllForWorkspace(auth);
   await GroupPermissionResource.deleteAllForWorkspace(auth);
   await GroupMembershipModel.destroy({
+    where: { workspaceId: workspace.id },
+  });
+  await GroupPinnedItemModel.destroy({
     where: { workspaceId: workspace.id },
   });
   await GroupModel.destroy({

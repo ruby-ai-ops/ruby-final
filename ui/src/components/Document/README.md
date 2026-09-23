@@ -22,9 +22,11 @@ Cmd/Ctrl+S. Undoing back to saved content also clears the error without a reques
 Later edits are not acknowledged by an earlier save. Parent renders and changes
 to the save callback do not restart the debounce timer.
 
-`className` applies to the outer container. Typography and editor configuration
-remain controlled by Document. Initial content is captured at mount. Remount with
-a new key to open a different document. Invalid stored JSON disables editing.
+`className` applies to the outer container. Typography layout and editor configuration
+remain controlled by Document. Hosts may theme fonts and colors inside `.tiptap`,
+the document content subtree. Editing controls stay outside that subtree and retain
+RubyUI's theme. Initial content is captured at mount. Remount with a new key to
+open a different document. Invalid stored JSON disables editing.
 Navigation protection and synchronization with external changes belong to the host.
 
 For a Markdown file, the host supplies persistence for the string it receives:
@@ -52,10 +54,35 @@ Markdown save, the same check prevents a conversion from changing the draft's
 content or formatting. Conversion failures preserve the draft and never call
 `onSave`. These checks use the existing TipTap Markdown parser and serializer.
 
+## Comments
+
+Comments live inside the document JSON. Each thread is stored under the root node's
+`attrs.comments` with its id, body, author, creation time, resolved flag and replies.
+The commented text carries a `comment` mark holding only the thread id, so several
+comments can overlap and a thread survives edits around it. Deleting a thread removes
+its marks. Resolving keeps them so the thread can be reopened in place. Documents
+whose stored comments do not match this shape do not open, like any invalid JSON.
+
+Pass `commentAuthor` to let the current user comment. Commenting also requires an
+editable document saved as JSON, since Markdown cannot carry comments. Selected text
+shows a Comment action after the formatting controls, also reachable with
+Cmd/Ctrl+Alt+M. A one-line composer appears under the selection: Enter posts,
+Shift+Enter adds a line, Escape or clicking away discards the draft.
+
+Unresolved comments highlight their text and, in containers at least `@sm` wide, add a
+marker in the right gutter. Markers on the same line merge and show a count. Clicking a highlight or a marker opens the
+comments panel on that thread, cycling through overlapping comments. The Comments
+button in the header opens the panel with every thread, resolved ones collapsed at the
+end. Selecting a thread scrolls to its text and, for authors, shows the reply field.
+Read-only documents and documents without `commentAuthor` keep comments browsable
+without reply, resolve or delete controls. Comment changes go through the regular
+autosave and undo history.
+
 File access, version checks, and synchronization with agent edits belong to the
 eventual host integration.
 
-Stories and interaction tests live in `src/stories/Document.stories.tsx` and
-`src/stories/DocumentMarkdown.stories.tsx`. They cover formatting, block commands,
+Stories and interaction tests live in `src/stories/Document.stories.tsx`,
+`src/stories/DocumentMarkdown.stories.tsx`, `src/stories/DocumentVisuals.stories.tsx`
+and `src/stories/DocumentComments.stories.tsx`. They cover formatting, block commands,
 autosave, errors, concurrent edits, read-only content, themes, layout, Markdown
-output, and source preservation.
+output, source preservation, visuals and comments.
