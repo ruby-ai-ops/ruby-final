@@ -18,6 +18,8 @@ Use Ruby-owned accounts and secrets. Do not reuse upstream credentials or IDs. S
 
 See the existing component configuration modules for provider-specific variables. Do not put secret values in tracked files. Public browser configuration belongs in build-time inputs; server secrets belong in the hosting secret store.
 
+Tracked environment files contain empty OAuth, analytics, notification, payment and challenge-service identifiers. Supply Ruby-owned values in the build environment; the extension and CLI accept those overrides. At the hosting layer, route `app.ruby.ad/api/*` to the API service before the SPA fallback. The SPA asset worker does not provide the API service itself.
+
 ## Sandbox artifacts
 
 Run the manual **Ruby sandbox artifacts** workflow. It builds `rbx` from this source and `apply_patch` from the pinned OpenAI source, preserving its notice. Download the private artifact with authenticated GitHub access into `.artifacts/sandbox/` before sandbox-image assembly. The loader verifies version, SHA-256 and ELF format before copying binaries as root-owned executables. It never downloads from nonexistent public releases. Build and register Ruby's base/bedrock images before enabling sandbox execution.

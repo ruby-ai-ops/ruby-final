@@ -158,6 +158,7 @@ export const getConfig = ({ env }: { env: Environment }) => {
         VIZ_PUBLIC_URL: process.env.VIZ_PUBLIC_URL || "",
       }),
       new Dotenv({
+        systemvars: true,
         path: isDevelopment
           ? path.resolve(__dirname, "../../.env.development")
           : path.resolve(__dirname, "../../.env.production"),

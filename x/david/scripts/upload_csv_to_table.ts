@@ -23,7 +23,7 @@ import { parse } from "csv-parse/sync";
 import * as fs from "fs";
 import * as path from "path";
 
-const RUBY_API_URL_DEFAULT = "https://ruby.ad";
+const RUBY_API_URL_DEFAULT = "https://app.ruby.ad";
 const BATCH_SIZE_DEFAULT = 500;
 
 interface Args {

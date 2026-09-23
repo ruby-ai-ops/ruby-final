@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { transformText, transformPath, isExcluded, transformEntries } from './rebrand.mjs';
+import { transformText, transformPath, isExcluded, transformEntries, retiredServiceIdentifiers } from './rebrand.mjs';
 
 test('encoded artwork and integrity hashes remain byte-for-byte unchanged', () => {
   const content = 'Dust data:image/png;base64,AAADustAAAdsBxAAAA== sha512-AAADUSTAAAA==';
@@ -10,6 +10,10 @@ test('encoded artwork and integrity hashes remain byte-for-byte unchanged', () =
 test('binary assets without NUL bytes are preserved', () => {
   const bytes=Buffer.from([0xff,0xfe,68,117,115,116]);
   assert.deepEqual(transformEntries(new Map([['asset.png',bytes]])).get('asset.png'),bytes);
+});
+
+test('upstream public service identities become empty Ruby configuration inputs', () => {
+  for (const value of retiredServiceIdentifiers) assert.equal(transformText(`CONFIG="${value}"`),'CONFIG=""');
 });
 
 test('renames owned identifiers without corrupting industry words or third-party icons', () => {
@@ -22,6 +26,7 @@ test('resolves owned scopes, UI exports, and private repository references toget
 });
 test('avoids merging the admin application into existing administration scripts', () => {
   assert.equal(transformPath('front/poke/temporal/index.ts'), 'front/admin-app/temporal/index.ts');
+  assert.equal(transformText('path.join(baseDir, "poke/temporal")'), 'path.join(baseDir, "admin-app/temporal")');
   assert.equal(transformPath('cli/dust-sandbox/src/main.rs'), 'cli/ruby-sandbox/src/main.rs');
 });
 test('filters marketing and promotional documents but retains document processing fixtures', () => {

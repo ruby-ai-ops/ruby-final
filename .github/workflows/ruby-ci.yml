@@ -75,6 +75,7 @@ jobs:
       - run: node maintenance/upstream/build-component.mjs '${{ matrix.component }}'
         env:
           FRONT_DATABASE_URI: postgres://test:test@localhost:5433/front_test
+          CONNECTORS_DATABASE_URI: postgres://test:test@localhost:5433/connectors_test
       - run: node maintenance/upstream/check-artifacts.mjs
   contracts:
     needs: [policy, packages]
@@ -92,7 +93,7 @@ jobs:
       redis:
         image: redis:7.2.5
         ports: ['5434:6379']
-        options: --health-cmd 'redis-cli ping' --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - uses: ./.github/actions/setup-node-deps

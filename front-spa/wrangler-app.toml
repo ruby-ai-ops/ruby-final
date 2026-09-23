@@ -8,4 +8,4 @@ not_found_handling = "none"
 binding = "ASSETS"
 
 [vars]
-RUBY_API_URL = "https://ruby.ad"
+RUBY_API_URL = "https://app.ruby.ad"

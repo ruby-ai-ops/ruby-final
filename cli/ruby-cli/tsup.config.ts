@@ -22,7 +22,12 @@ export default defineConfig({
   dts: true,
   clean: true,
   // Inject environment variables into the build
-  env: parsed,
+  env: Object.fromEntries(
+    Object.entries(parsed ?? {}).map(([key, value]) => [
+      key,
+      process.env[key] ?? value,
+    ])
+  ),
   define: {
     __CLI_VERSION__: JSON.stringify(pkg.version),
   },

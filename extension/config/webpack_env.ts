@@ -19,7 +19,7 @@ export function getImportMetaEnv(envPath: string): Record<string, string> {
     : {};
 
   const resolve = (key: string): string =>
-    fileVars[key] ?? process.env[key] ?? "";
+    process.env[key] ?? fileVars[key] ?? "";
 
   const usUrl = resolve("RUBY_API_URL_US");
   const euUrl = resolve("RUBY_API_URL_EU");

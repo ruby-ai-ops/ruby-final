@@ -1,8 +1,9 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ownedFiles, removedFiles, readOwnedFile } from './rebrand.mjs';
+import { ownedFiles, removedFiles, readOwnedFile, retiredServiceIdentifiers } from './rebrand.mjs';
 
 export function hasLegacyBranding(text) {
+  if (retiredServiceIdentifiers.some(value => text.includes(value))) return true;
   const meaningful = text
     .replace(/data:[^\s"'<>;,]+(?:;[^\s"'<>;,]+)*;base64,[a-zA-Z0-9+/=\r\n]+|sha(?:256|384|512)-[a-zA-Z0-9+/=]+/g, '')
     .replace(/industr(?:y|ies|ial\w*|ious\w*)|sawdust|stardust/gi, '');

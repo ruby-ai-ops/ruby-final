@@ -207,6 +207,7 @@ export const getConfig = async ({
         Buffer: ["buffer", "Buffer"],
       }),
       new Dotenv({
+        systemvars: true,
         path: isDevelopment
           ? resolvePath("../../.env.development")
           : resolvePath("../../.env.production"),

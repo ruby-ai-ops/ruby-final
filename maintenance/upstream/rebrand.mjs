@@ -5,8 +5,10 @@ import { fileURLToPath } from 'node:url';
 
 export const removedFiles = new Set(['LICENSE', '.authors', 'AUTHORS.md', 'authors.md', 'cli/dust-cli/LICENSE', 'cli/ruby-cli/LICENSE']);
 export const maintenancePath = (name) => name.startsWith('maintenance/upstream/');
+export const retiredServiceIdentifiers = JSON.parse(fs.readFileSync(new URL('./retired-service-identifiers.json', import.meta.url), 'utf8'));
 
 export function transformText(text) {
+  for (const identity of retiredServiceIdentifiers) text = text.replaceAll(identity, '');
   const encoded = [];
   const protectedText = text.replace(/data:[^\s"'<>;,]+(?:;[^\s"'<>;,]+)*;base64,[a-zA-Z0-9+/=\r\n]+|sha(?:256|384|512)-[a-zA-Z0-9+/=]+/g, value => {
     encoded.push(value);
@@ -19,6 +21,7 @@ export function transformText(text) {
     .replaceAll('@dust-tt/', '@ruby-ai/')
     .replaceAll('@dust/', '@ruby-ai/')
     .replaceAll('front/poke/', 'front/admin-app/')
+    .replaceAll('"poke/temporal"', '"admin-app/temporal"')
     .replaceAll('@app/poke/', '@app/admin-app/')
     .replaceAll('@dust-tt/front/poke/', '@ruby-ai/front/admin-app/')
     .replaceAll('@ruby-ai/front/poke/', '@ruby-ai/front/admin-app/')

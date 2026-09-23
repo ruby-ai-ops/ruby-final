@@ -17,4 +17,5 @@ for (const [name,source] of Object.entries(sources)) {
   manifest[name]={version:source.version,commit:source.commit,sha256:createHash('sha256').update(bytes).digest('hex')};
 }
 fs.copyFileSync('.artifacts/codex-source/LICENSE',`${output}/apply_patch-LICENSE`);
+fs.copyFileSync('.artifacts/codex-source/ruby-lock-provenance.json',`${output}/apply_patch-lock-provenance.json`);
 fs.writeFileSync(`${output}/manifest.json`,JSON.stringify(manifest,null,2)+'\n');

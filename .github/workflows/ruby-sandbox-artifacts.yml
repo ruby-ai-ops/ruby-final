@@ -28,12 +28,13 @@ jobs:
         run: bun install --frozen-lockfile && bun run build
       - working-directory: cli/ruby-sandbox
         run: cargo build --locked --release --target x86_64-unknown-linux-musl
-      - working-directory: .artifacts/codex-source/codex-rs
-        run: cargo build --locked --release --target x86_64-unknown-linux-musl -p codex-apply-patch
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: '24.16.0'
           package-manager-cache: false
+      - run: node maintenance/upstream/prepare-codex-lock.mjs
+      - working-directory: .artifacts/codex-source/codex-rs
+        run: cargo build --locked --release --target x86_64-unknown-linux-musl -p codex-apply-patch
       - run: node maintenance/upstream/package-sandbox-artifacts.mjs
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
