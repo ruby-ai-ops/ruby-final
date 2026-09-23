@@ -18,7 +18,7 @@ describe("skill authoring result output", () => {
     expect(output).toEqual({
       type: "resource",
       resource: {
-        mimeType: "application/vnd.dust.tool-output.skill-authoring-result",
+        mimeType: "application/vnd.ruby.tool-output.skill-authoring-result",
         uri: "",
         text: 'Created skill "Write Updates".',
         operation: "create",

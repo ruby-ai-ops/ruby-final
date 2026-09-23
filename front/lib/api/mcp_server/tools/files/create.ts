@@ -3,12 +3,12 @@ import {
   frameFileCreateRejectedError,
   frameFileEditRejectedError,
 } from "@app/lib/api/actions/servers/files/tools/utils";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { isInteractiveContentType, normalizeMimeType } from "@app/types/files";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { mcpError, mcpJsonResponse } from "../response";
-import { getDustFileSystemForScope, validatePathMatchesScope } from "./context";
+import { getRubyFileSystemForScope, validatePathMatchesScope } from "./context";
 import { FILES_SCOPE_SCHEMA } from "./schemas";
 
 const inputSchema = {
@@ -29,7 +29,7 @@ const inputSchema = {
 };
 
 export function registerFilesCreateTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "files_create",
     {
@@ -52,18 +52,18 @@ export function registerFilesCreateTool(server: McpServer) {
         );
       }
 
-      const fsResult = await getDustFileSystemForScope(auth, scope);
+      const fsResult = await getRubyFileSystemForScope(auth, scope);
       if (fsResult.isErr()) {
         return mcpError(fsResult.error);
       }
-      const dustFs = fsResult.value;
+      const rubyFs = fsResult.value;
 
       const normalizedContentType = normalizeMimeType(content_type);
       if (isInteractiveContentType(normalizedContentType)) {
         return mcpError(frameFileCreateRejectedError().message);
       }
 
-      const statResult = await dustFs.stat(path);
+      const statResult = await rubyFs.stat(path);
       const exists = statResult.isOk() && statResult.value !== null;
 
       if (statResult.isOk() && statResult.value !== null) {
@@ -75,7 +75,7 @@ export function registerFilesCreateTool(server: McpServer) {
         }
       }
 
-      const writeResult = await dustFs.write(
+      const writeResult = await rubyFs.write(
         path,
         contentBuffer,
         normalizedContentType

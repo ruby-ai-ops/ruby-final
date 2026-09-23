@@ -34,13 +34,13 @@ const apps = {
     },
     port: 3011,
   },
-  poke: {
-    assets: [["poke.html", "index.html"]],
+  admin: {
+    assets: [["admin.html", "index.html"]],
     inputs: {
-      main: path.resolve(__dirname, "poke.html"),
+      main: path.resolve(__dirname, "admin.html"),
     },
     serveMapping: () => {
-      return "/poke.html";
+      return "/admin.html";
     },
     port: 3010,
   },
@@ -81,7 +81,7 @@ function detectServerImportsPlugin(): Plugin {
     // The blake3-dependent functions (generateRandomModelSId, generateSecureSecret) have been
     // moved to string_ids_server.ts which is not imported from the SPA.
     "front/lib/resources/string_ids.ts",
-    // run.ts uses fs/path for Dust app execution. Only imported transitively, never called in SPA.
+    // run.ts uses fs/path for Ruby app execution. Only imported transitively, never called in SPA.
     "fs",
     "path",
     // Buffer is used by sdks/js (client.esm.js) for file download. Shimmed via globalThis.Buffer in HTML.
@@ -180,7 +180,7 @@ function reactScanPlugin(enabled: boolean): Plugin {
 
 // Plugin to organize multi-entry HTML output into subdirectories
 function organizeMultiEntryOutputPlugin(
-  appDefinition: typeof apps.poke | typeof apps.app
+  appDefinition: typeof apps.admin | typeof apps.app
 ): Plugin {
   const { assets } = appDefinition;
 
@@ -188,7 +188,7 @@ function organizeMultiEntryOutputPlugin(
     name: "organize-multi-entry-output",
     enforce: "post",
     generateBundle(_, bundle) {
-      // Move poke.html to index.html
+      // Move admin.html to index.html
       assets.forEach(([source, target]) => {
         const asset = bundle[source];
         if (asset) {
@@ -203,7 +203,7 @@ function organizeMultiEntryOutputPlugin(
 
 // Plugin to serve the correct HTML file in dev mode (SPA fallback)
 function serveHtmlPlugin(
-  appDefinition: typeof apps.poke | typeof apps.app
+  appDefinition: typeof apps.admin | typeof apps.app
 ): Plugin {
   return {
     name: "serve-html",
@@ -238,9 +238,9 @@ export default defineConfig(({ mode }) => {
   // Merge with process.env to include shell environment variables (for build scripts)
   const env = { ...fileEnv, ...process.env };
 
-  // Determine which app to build: "poke" or "app" (default: "app")
+  // Determine which app to build: "admin" or "app" (default: "app")
   const appName = env.VITE_APP_NAME ?? "app";
-  if (appName !== "poke" && appName !== "app") {
+  if (appName !== "admin" && appName !== "app") {
     throw new Error(`Invalid app name: ${appName}`);
   }
 
@@ -279,7 +279,7 @@ export default defineConfig(({ mode }) => {
     : "treemap";
 
   return {
-    // Scoped per app: `dev:app` and `dev:poke` run concurrently from this same
+    // Scoped per app: `dev:app` and `dev:admin` run concurrently from this same
     // config. A shared cache dir makes each server treat the other's metadata
     // as stale and re-optimize over it, which 504s the other's in-flight dep
     // chunks and forces a full page reload.
@@ -311,7 +311,7 @@ export default defineConfig(({ mode }) => {
       port: appDefinition.port,
       host: true,
       allowedHosts: ["host.docker.internal"],
-      // No proxy - client calls API directly using VITE_DUST_API_URL.
+      // No proxy - client calls API directly using VITE_RUBY_API_URL.
       fs: {
         // Allow serving files from the front directory (for shared code)
         allow: [
@@ -347,9 +347,9 @@ export default defineConfig(({ mode }) => {
           find: "@app",
           replacement: path.resolve(__dirname, "../front"),
         },
-        // @dust-tt/front maps to the front workspace
+        // @ruby-ai/front maps to the front workspace
         {
-          find: "@dust-tt/front",
+          find: "@ruby-ai/front",
           replacement: path.resolve(__dirname, "../front"),
         },
         // Resolve SDK dependencies from root node_modules (hoisted by npm workspaces)

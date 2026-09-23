@@ -11,8 +11,8 @@ const RECONNECT_DELAY_MS = 5_000; // 5 seconds.
  * Browser-specific MCP transport implementation.
  * Uses private API with session authentication (credentials: 'include').
  *
- * - Uses native EventSource for SSE (receives requests from Dust)
- * - Uses fetch with credentials for HTTP POST (sends results back to Dust)
+ * - Uses native EventSource for SSE (receives requests from Ruby)
+ * - Uses fetch with credentials for HTTP POST (sends results back to Ruby)
  */
 export class BrowserMCPTransport implements Transport {
   private eventSource: EventSourcePolyfill | null = null;
@@ -264,7 +264,7 @@ export class BrowserMCPTransport implements Transport {
     this.eventSource = await clientEventSource(
       `/api/sse/w/${this.workspaceId}/mcp/requests?${params.toString()}`,
       // The MCP SSE connection is idle most of the time (waiting for requests
-      // from Dust). Disable the polyfill's heartbeat timeout so it doesn't
+      // from Ruby). Disable the polyfill's heartbeat timeout so it doesn't
       // treat silence as a dead connection (default is 45s).
       { heartbeatTimeout: HEARTBEAT_INTERVAL_MS * 2 }
     );

@@ -1,4 +1,4 @@
-# Shared Dust in-container / cloud-agent development environment
+# Shared Ruby in-container / cloud-agent development environment
 
 Agent-agnostic Dockerfile + scripts used by:
 
@@ -11,7 +11,7 @@ Mac-native workflows stay separate: `tools/start-mprocs.sh` (mprocs + Docker Com
 
 ## Quick start (Dev Containers)
 
-Export the same host secrets as for `docker-run.sh`, open [`dust.code-workspace`](../dust.code-workspace) (single-root), then **Dev Containers: Reopen in Container** (or **Open Workspace in Container...**).
+Export the same host secrets as for `docker-run.sh`, open [`ruby.code-workspace`](../ruby.code-workspace) (single-root), then **Dev Containers: Reopen in Container** (or **Open Workspace in Container...**).
 
 On create: `install.sh`. On each start: `infra.sh`. Apps/mprocs are not auto-started — in a container terminal run:
 
@@ -29,8 +29,8 @@ bash dev/scripts/docker-run.sh --shell
 ```
 
 Local builds use Docker's native architecture (`linux/arm64` on Apple Silicon,
-`linux/amd64` on Intel) by default. Set `DUST_DEV_PLATFORM=linux/amd64` or
-`DUST_DEV_PLATFORM=linux/arm64` to override it. When switching architecture,
+`linux/amd64` on Intel) by default. Set `RUBY_DEV_PLATFORM=linux/amd64` or
+`RUBY_DEV_PLATFORM=linux/arm64` to override it. When switching architecture,
 rebuild and reset the named volumes because `node_modules` and Rust build
 artifacts contain architecture-specific binaries:
 
@@ -41,21 +41,21 @@ bash dev/scripts/docker-run.sh --build --reset-volumes
 ## Persistent data
 
 Postgres, Redis, Elasticsearch, Temporal and Qdrant all keep their state under
-`DUST_DATA_ROOT` (`/var/lib/dust-dev`), backed by the single `dust-dev-data`
+`RUBY_DATA_ROOT` (`/var/lib/ruby-dev`), backed by the single `ruby-dev-data`
 volume. `init-data-dirs.sh` creates the per-service subdirectories and, on an
 empty volume, `initdb`s a fresh Postgres cluster. `infra.sh` then recreates
 databases, Elasticsearch indices, and the Qdrant collection. Without the
 volume this state lives in the container layer and is lost on every rebuild.
 
-`core/target` is a separate named volume (`dust-dev-cargo-target`). Cargo
+`core/target` is a separate named volume (`ruby-dev-cargo-target`). Cargo
 leaves old incremental and dep artifacts behind on rebuilds; `infra.sh` runs
 `cargo-sweep` on start to drop unused files older than 14 days, artifacts from
 uninstalled toolchains, and anything over 12GiB. Override with
-`DUST_CARGO_SWEEP_DAYS` / `DUST_CARGO_SWEEP_MAXSIZE`.
+`RUBY_CARGO_SWEEP_DAYS` / `RUBY_CARGO_SWEEP_MAXSIZE`.
 
 Elasticsearch is started early in `infra.sh` (before Postgres) so JVM cold boot
 overlaps other services. Dev flags disable ML, GeoIP downloads, and monitoring
-collection. Wait timeout defaults to 240s (`DUST_ES_WAIT_SECONDS`) for Codespace
+collection. Wait timeout defaults to 240s (`RUBY_ES_WAIT_SECONDS`) for Codespace
 first-boot contention.
 
 `--reset-volumes` drops that data too: the next `infra.sh` starts from a
@@ -69,7 +69,7 @@ documents.
 | `install.sh` | `npm install` + lefthook |
 | `infra.sh` | Postgres/Redis/Qdrant/ES/Temporal + Chrome managed policies + materialize 1Password + migrations |
 | `sweep-cargo-target.sh` | Prune stale `core/target` artifacts on the Cargo volume (14d / 12GiB cap) |
-| `init-data-dirs.sh` | Create `DUST_DATA_ROOT` dirs; `initdb` a fresh Postgres cluster if empty |
+| `init-data-dirs.sh` | Create `RUBY_DATA_ROOT` dirs; `initdb` a fresh Postgres cluster if empty |
 | `init-qdrant-collections.sh` | Create the Qdrant embedding collection (idempotent) |
 | `apps.sh` | Wait for infra, optional WorkOS seed, ngrok front tunnel, mprocs |
 | `ensure-ngrok.sh` | Start ngrok → `:3000` + `:3007` and persist `SBX_DEV_FRONT_URL` / viz URL for sandboxes |
@@ -80,8 +80,8 @@ documents.
 ## Secrets
 
 - **Runtime / host-injected:** `OP_SERVICE_ACCOUNT_TOKEN`, `DEV_WORKOS_*` (already in process env; not re-exported).
-- **1Password Environment:** materialized once to `/tmp/dust-op-environment.env`, loaded via `BASH_ENV=/tmp/dust-shell-env.sh` for non-interactive bash (infra/mprocs) and via `/root/.zshrc` / `dev/zshrc` for interactive terminals. Store `GCP_SERVICE_ACCOUNT_B64` as base64-encoded JSON; on materialize it is decoded to `SERVICE_ACCOUNT` (`/tmp/dust-dev-sa.json`). Include `NGROK_AUTHTOKEN` so `apps.sh` can open the sandbox front-api tunnel.
-- **Local overrides:** `dev/scripts/env.sh` → `apply_local_overrides` forces in-container DB/API URLs after OP load. When `/tmp/dust-infra/sbx-dev-front-url` exists (from `ensure-ngrok.sh`), it exports `SBX_DEV_FRONT_URL` and defaults `SBX_DEV_UNRESTRICTED_EGRESS=true` so sandboxes can reach the tunnel (agent-proxied traffic otherwise goes through the cloud egress proxy, which only allowlists `dust.tt`). When `/tmp/dust-infra/sbx-dev-viz-url` exists, it overrides `VIZ_PUBLIC_URL` (sandbox `DUST_VIZ_URL`) while leaving `NEXT_PUBLIC_VIZ_URL` on localhost for the SPA.
+- **1Password Environment:** materialized once to `/tmp/ruby-op-environment.env`, loaded via `BASH_ENV=/tmp/ruby-shell-env.sh` for non-interactive bash (infra/mprocs) and via `/root/.zshrc` / `dev/zshrc` for interactive terminals. Store `GCP_SERVICE_ACCOUNT_B64` as base64-encoded JSON; on materialize it is decoded to `SERVICE_ACCOUNT` (`/tmp/ruby-dev-sa.json`). Include `NGROK_AUTHTOKEN` so `apps.sh` can open the sandbox front-api tunnel.
+- **Local overrides:** `dev/scripts/env.sh` → `apply_local_overrides` forces in-container DB/API URLs after OP load. When `/tmp/ruby-infra/sbx-dev-front-url` exists (from `ensure-ngrok.sh`), it exports `SBX_DEV_FRONT_URL` and defaults `SBX_DEV_UNRESTRICTED_EGRESS=true` so sandboxes can reach the tunnel (agent-proxied traffic otherwise goes through the cloud egress proxy, which only allowlists `ruby.ad`). When `/tmp/ruby-infra/sbx-dev-viz-url` exists, it overrides `VIZ_PUBLIC_URL` (sandbox `RUBY_VIZ_URL`) while leaving `NEXT_PUBLIC_VIZ_URL` on localhost for the SPA.
 
 ## Infra models
 
@@ -90,7 +90,7 @@ documents.
 | In-container | This image / cloud agents | `infra.sh` starts daemons in the VM |
 | Mac compose | Host Docker Desktop | root `docker-compose.yml` via `tools/start-mprocs.sh` |
 
-Inside the container, compose-based mprocs procs (`docker-infra`, `kibana`, …) no-op when `DUST_IN_CONTAINER=1`.
+Inside the container, compose-based mprocs procs (`docker-infra`, `kibana`, …) no-op when `RUBY_IN_CONTAINER=1`.
 
 ## Base image
 

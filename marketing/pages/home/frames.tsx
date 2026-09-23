@@ -1,5 +1,3 @@
-import { CONTENTFUL_REVALIDATE_SECONDS } from "@marketing/lib/contentful/client";
-import { fetchLogoLists } from "@marketing/lib/logo_bars_server";
 import {
   Grid,
   H1,
@@ -12,16 +10,24 @@ import { DemoVideoSection } from "@marketing/components/home/content/Solutions/D
 import type { LandingLayoutProps } from "@marketing/components/home/LandingLayout";
 import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
+import {
+  MARKETING_SURFACES,
+  isMarketingSurfaceVisible,
+} from "@marketing/lib/marketing_visibility";
 import TrustedBy from "@marketing/components/home/TrustedBy";
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
 import { classNames } from "@marketing/lib/utils";
 import {
   LegacyButton as Button,
   CheckCircle,
+  BarChart01,
+  Edit04,
+  File02,
   Icon,
   Lock01,
+  MessageChatSquare,
   Planet,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useRouter } from "next/router";
 import type { ReactElement } from "react";
 
@@ -38,19 +44,20 @@ const GRID_SECTION_CLASSES = classNames(
 const DEMO_VIDEO = {
   sectionTitle: "See how it works",
   // TODO: Replace video URL with Marketing one.
-  videoUrl: "https://fast.wistia.net/embed/iframe/4prx3jilqq",
+  videoUrl: "/static/workspace-demo/index.html",
   showCaptions: true,
+};
+
+const ANNOTATED_HEADING_STYLE = {
+  fontFamily: '"RubySerif", var(--font-display)',
+  letterSpacing: "-0.05em",
 };
 
 export async function getStaticProps() {
   return {
     props: {
       gtmTrackingId: process.env.NEXT_PUBLIC_GTM_TRACKING_ID ?? null,
-      logoLists: await fetchLogoLists(),
     },
-    // The logo bar is editor-managed in Contentful, so the page has to
-    // revalidate for a GTM change to go live without a deploy.
-    revalidate: CONTENTFUL_REVALIDATE_SECONDS,
   };
 }
 
@@ -62,6 +69,7 @@ function HeroSection() {
           <H1
             mono
             className="mb-4 text-4xl font-medium leading-tight md:text-5xl lg:text-6xl xl:text-7xl"
+            style={ANNOTATED_HEADING_STYLE}
           >
             Create and share living documents
           </H1>
@@ -92,21 +100,23 @@ function HeroSection() {
           </div>
         </div>
 
-        <div className="relative col-span-12 mt-8 py-2 lg:col-span-6 lg:col-start-7 lg:mt-0">
-          <div className="relative aspect-video w-full overflow-hidden rounded-2xl">
-            <iframe
-              src="https://fast.wistia.net/embed/iframe/dye6ti8zv7?autoplay=true&muted=true"
-              title="Frames Release"
-              allow="autoplay; fullscreen"
-              allowFullScreen
-              className="absolute inset-0 -top-[10%] h-[120%] w-full rounded-2xl"
-              style={{
-                border: "none",
-                outline: "none",
-              }}
-            />
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.demoVideo) && (
+          <div className="relative col-span-12 mt-8 py-2 lg:col-span-6 lg:col-start-7 lg:mt-0">
+            <div className="relative aspect-video w-full overflow-hidden rounded-2xl">
+              <iframe
+                src="/static/workspace-demo/index.html"
+                title="Frames Release"
+                allow="autoplay; fullscreen"
+                allowFullScreen
+                className="absolute inset-0 -top-[10%] h-[120%] w-full rounded-2xl"
+                style={{
+                  border: "none",
+                  outline: "none",
+                }}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </Grid>
     </div>
   );
@@ -120,7 +130,7 @@ function ContentInAction() {
           <H2>Frames in action</H2>
           <P size="lg" className="mt-4 text-muted-foreground">
             AI agents shouldn't hand you static charts you paste into a slide
-            and forget about. They should hand you something you can poke, edit,
+            and forget about. They should hand you something you can admin, edit,
             and tailor on the spot.
           </P>
         </div>
@@ -142,7 +152,10 @@ function ContentInAction() {
               <H3 className="mb-6">Sales</H3>
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-tr-full bg-red-500"></div>
+                  <Icon
+                    visual={Edit04}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Create deeply personal, shareable content as superior
@@ -152,7 +165,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-bl-full bg-yellow-400"></div>
+                  <Icon
+                    visual={MessageChatSquare}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Personalize by prospect, adapt tone/language and context
@@ -162,7 +178,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-br-full bg-green-500"></div>
+                  <Icon
+                    visual={File02}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Transform conversation transcripts into enriched,
@@ -172,7 +191,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 bg-blue-500"></div>
+                  <Icon
+                    visual={BarChart01}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Visualize qualitative and quantitative Sales insights in a
@@ -186,7 +208,7 @@ function ContentInAction() {
                   variant="primary"
                   size="md"
                   label="See example"
-                  href="https://dust.tt/share/frame/4ce02864-6181-451b-812d-b862f0370736"
+                  href="https://ruby.ad/share/frame/4ce02864-6181-451b-812d-b862f0370736"
                   className="w-full sm:w-auto"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -200,7 +222,10 @@ function ContentInAction() {
               <H3 className="mb-6">Marketing</H3>
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 bg-pink-400"></div>
+                  <Icon
+                    visual={Edit04}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Generate personalized marketing materials and template
@@ -210,7 +235,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-br-full bg-red-500"></div>
+                  <Icon
+                    visual={File02}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Build scalable templates that personalize at scale while
@@ -220,7 +248,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-tl-full bg-blue-500"></div>
+                  <Icon
+                    visual={MessageChatSquare}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Create new shareable formats, optimized for different
@@ -230,7 +261,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-tr-full bg-green-500"></div>
+                  <Icon
+                    visual={BarChart01}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Turn campaign results into an editable infographic you can
@@ -244,7 +278,7 @@ function ContentInAction() {
                   variant="primary"
                   size="md"
                   label="See example"
-                  href="https://dust.tt/share/frame/1d641570-96d0-4491-a0ec-9c9426ab1009"
+                  href="https://ruby.ad/share/frame/1d641570-96d0-4491-a0ec-9c9426ab1009"
                   className="w-full sm:w-auto"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -280,7 +314,10 @@ function ContentInAction() {
               <H3 className="mb-6">Customer Success</H3>
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-br-full bg-pink-400"></div>
+                  <Icon
+                    visual={BarChart01}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Aggregate analytics and support data in engaging formats
@@ -290,7 +327,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 bg-red-500"></div>
+                  <Icon
+                    visual={MessageChatSquare}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Create modular onboarding sessions based on previous
@@ -300,7 +340,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-tr-full bg-yellow-500"></div>
+                  <Icon
+                    visual={File02}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Create a renewal summary that pulls wins and gaps into one
@@ -314,7 +357,7 @@ function ContentInAction() {
                   variant="primary"
                   size="md"
                   label="See example"
-                  href="https://dust.tt/share/frame/a8ac6c1e-93e9-473b-92af-dd1e55216ec6"
+                  href="https://ruby.ad/share/frame/a8ac6c1e-93e9-473b-92af-dd1e55216ec6"
                   className="w-full sm:w-auto"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -328,7 +371,10 @@ function ContentInAction() {
               <H3 className="mb-6">Product & Data</H3>
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 bg-purple-400"></div>
+                  <Icon
+                    visual={Edit04}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Build simple proofs of concept without Figma or complex
@@ -338,7 +384,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-br-full bg-orange-500"></div>
+                  <Icon
+                    visual={File02}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Convert raw notes, roadmap ideas, receipts into polished
@@ -348,7 +397,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-tl-full bg-teal-500"></div>
+                  <Icon
+                    visual={MessageChatSquare}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       Create shareable content for all-hands and team meetings.
@@ -357,7 +409,10 @@ function ContentInAction() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex items-center gap-3">
-                  <div className="h-6 w-6 flex-shrink-0 rounded-tr-full bg-blue-500"></div>
+                  <Icon
+                    visual={BarChart01}
+                    className="h-6 w-6 flex-shrink-0 text-sky-400"
+                  />
                   <div>
                     <P size="sm" className="font-medium">
                       See data exactly how you want, merging tools into your
@@ -371,7 +426,7 @@ function ContentInAction() {
                   variant="primary"
                   size="md"
                   label="See example"
-                  href="https://dust.tt/share/frame/a3819cae-2716-472d-b71d-aa6f960a7079"
+                  href="https://ruby.ad/share/frame/a3819cae-2716-472d-b71d-aa6f960a7079"
                   className="w-full sm:w-auto"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -397,6 +452,10 @@ function ContentInAction() {
 }
 
 function VideoSection() {
+  if (!isMarketingSurfaceVisible(MARKETING_SURFACES.demoVideo)) {
+    return null;
+  }
+
   return (
     <Grid>
       <div className={GRID_SECTION_CLASSES}>
@@ -482,17 +541,16 @@ function SharingAndAccessSection() {
   );
 }
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function Frames() {
+export default function FramesNextJS() {
   const router = useRouter();
 
   return (
     <>
       <PageMetadata
-        title="Dust Frames: Collaborative AI-Generated Visuals"
-        description="Create frames with Dust. Turn static outputs from your Dust AI agents into collaborative, editable visuals, tailored to whoever you're sharing them with."
+        title="Ruby Frames: Collaborative AI-Generated Visuals"
+        description="Create frames with Ruby. Turn static outputs from your Ruby AI agents into collaborative, editable visuals, tailored to whoever you're sharing them with."
         pathname={router.asPath}
-        ogImage="https://dust.tt/static/landing/hero_dust.png"
+        ogImage="https://ruby.ad/static/landing/hero_ruby.png"
       />
 
       <div className="container flex w-full flex-col gap-16 px-2 py-2">
@@ -501,15 +559,22 @@ export default function Frames() {
         <AllTheBellsAndWhistlesSection />
         <SharingAndAccessSection />
         <VideoSection />
-        <TrustedBy logoSet="landing" />
-        <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
-          <HomeAIOperatorsCTASection />
-        </div>
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.trustedSection) && (
+          <TrustedBy logoSet="landing" />
+        )}
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.aiOperatorsCta) && (
+          <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
+            <HomeAIOperatorsCTASection />
+          </div>
+        )}
       </div>
     </>
   );
 }
 
-Frames.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
+FramesNextJS.getLayout = (
+  page: ReactElement,
+  pageProps: LandingLayoutProps
+) => {
   return <LandingLayout pageProps={pageProps}>{page}</LandingLayout>;
 };

@@ -1,5 +1,5 @@
 {
-  "name": "@dust-tt/front",
+  "name": "@ruby-ai/front",
   "version": "0.1.0",
   "engines": {
     "node": ">=24.16.0"
@@ -25,8 +25,8 @@
     "coverage": "vitest --coverage",
     "initdb": "./admin/init_db.sh",
     "create-db-migration": "../scripts/db/create_db_migration_file.sh",
-    "migration:generate:pre-deploy": "MIGRATION_DB_URI_VAR=FRONT_DATABASE_URI MIGRATION_SHADOW_PREFIX=dust_front_shadow_to MIGRATION_ADMIN_DB_PATH=admin/db.ts ../scripts/db/generate-migration.sh pre-deploy",
-    "migration:generate:post-deploy": "MIGRATION_DB_URI_VAR=FRONT_DATABASE_URI MIGRATION_SHADOW_PREFIX=dust_front_shadow_to MIGRATION_ADMIN_DB_PATH=admin/db.ts ../scripts/db/generate-migration.sh post-deploy",
+    "migration:generate:pre-deploy": "MIGRATION_DB_URI_VAR=FRONT_DATABASE_URI MIGRATION_SHADOW_PREFIX=ruby_front_shadow_to MIGRATION_ADMIN_DB_PATH=admin/db.ts ../scripts/db/generate-migration.sh pre-deploy",
+    "migration:generate:post-deploy": "MIGRATION_DB_URI_VAR=FRONT_DATABASE_URI MIGRATION_SHADOW_PREFIX=ruby_front_shadow_to MIGRATION_ADMIN_DB_PATH=admin/db.ts ../scripts/db/generate-migration.sh post-deploy",
     "migration:apply:pre-deploy": "node ../scripts/db/run-migrate.cjs --command pre-deploy --execute",
     "migration:apply:post-deploy": "node ../scripts/db/run-migrate.cjs --command post-deploy --execute",
     "migration:apply": "npm run migration:apply:pre-deploy && npm run migration:apply:post-deploy",
@@ -45,8 +45,8 @@
     "@anthropic-ai/sdk": "^0.110.0",
     "@anthropic-ai/vertex-sdk": "^0.19.0",
     "@datadog/browser-logs": "^6.13.0",
-    "@dust-tt/client": "file:../sdks/js",
-    "@dust-tt/sparkle": "^0.7.7",
+    "@ruby-ai/client": "file:../sdks/js",
+    "@ruby-ai/ui": "^0.7.7",
     "@elastic/elasticsearch": "^8.15.0",
     "@elevenlabs/elevenlabs-js": "^2.49.1",
     "@elevenlabs/react": "^1.6.4",
@@ -232,9 +232,9 @@
     "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
-    "@dust-frame-runtime/lucide-react": "npm:lucide-react@0.483.0",
-    "@dust-frame-runtime/motion": "npm:motion@12.40.0",
-    "@dust-frame-runtime/recharts": "npm:recharts@2.15.4",
+    "@ruby-ai/frame-runtime-lucide-react": "npm:lucide-react@0.483.0",
+    "@ruby-ai/frame-runtime-motion": "npm:motion@12.40.0",
+    "@ruby-ai/frame-runtime-recharts": "npm:recharts@2.15.4",
     "@faker-js/faker": "^9.3.0",
     "@google-cloud/storage": "^7.11.2",
     "@tailwindcss/postcss": "^4.3.0",
@@ -286,5 +286,6 @@
   },
   "overrides": {
     "whatwg-url": "^14.0.0"
-  }
+  },
+  "private": true
 }

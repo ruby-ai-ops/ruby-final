@@ -13,8 +13,8 @@ import type { UseFormReturn } from "react-hook-form";
 import { FormProvider, useForm } from "react-hook-form";
 import { describe, expect, it, vi } from "vitest";
 
-// Stub Sparkle UI primitives so they render plain DOM and let us click the checkbox.
-vi.mock("@dust-tt/sparkle", () => ({
+// Stub RubyUI UI primitives so they render plain DOM and let us click the checkbox.
+vi.mock("@ruby-ai/ui", () => ({
   Button: ({ label, isSelect: _isSelect, ...rest }: any) => (
     <button {...rest}>{label}</button>
   ),

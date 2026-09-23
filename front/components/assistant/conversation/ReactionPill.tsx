@@ -1,4 +1,4 @@
-import { Button, cn, Tooltip } from "@dust-tt/sparkle";
+import { Button, cn, Tooltip } from "@ruby-ai/ui";
 
 interface ReactionPillProps {
   emoji: string;

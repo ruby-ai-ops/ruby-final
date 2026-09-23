@@ -53,7 +53,7 @@ vi.mock("@app/lib/api/regions/config", () => ({
 }));
 
 vi.mock("@app/lib/api/sandbox/egress_secrets", () => ({
-  EGRESS_SECRETS_PATH: "/run/dust/egress-secrets.json",
+  EGRESS_SECRETS_PATH: "/run/ruby/egress-secrets.json",
   writeEgressSecretsFile: mockWriteEgressSecretsFile,
 }));
 
@@ -171,8 +171,8 @@ describe("sandbox egress helpers", () => {
     });
     const payload = jwt.verify(token, "egress-secret", {
       algorithms: ["HS256"],
-      audience: "dust-egress-proxy",
-      issuer: "dust-front",
+      audience: "ruby-egress-proxy",
+      issuer: "ruby-front",
     }) as jwt.JwtPayload;
 
     expect(payload.sbId).toBe("provider-sandbox-id");
@@ -193,8 +193,8 @@ describe("sandbox egress helpers", () => {
     });
     const payload = jwt.verify(token, "egress-secret", {
       algorithms: ["HS256"],
-      audience: "dust-egress-proxy",
-      issuer: "dust-front",
+      audience: "ruby-egress-proxy",
+      issuer: "ruby-front",
     }) as jwt.JwtPayload;
 
     expect(payload.ownerId).toBe("conversation-id");
@@ -232,7 +232,7 @@ describe("sandbox egress helpers", () => {
     const result = await setup(sandbox);
 
     expect(result).toEqual(new Ok(undefined));
-    expect(mockLookup).toHaveBeenCalledWith("eu.sandbox-egress.dust.tt", {
+    expect(mockLookup).toHaveBeenCalledWith("eu.sandbox-egress.ruby.ad", {
       family: 4,
     });
     // Token now lands via a single root `install -m600 /dev/stdin` (was a
@@ -247,7 +247,7 @@ describe("sandbox egress helpers", () => {
     expect(tokenCall).toContain(
       "/usr/bin/install -o root -g root -m 600 /dev/stdin"
     );
-    expect(tokenCall).toContain("/etc/dust/egress-token");
+    expect(tokenCall).toContain("/etc/ruby/egress-token");
     expect(mockWriteEgressSecretsFile).toHaveBeenCalledWith(
       auth,
       sandbox,
@@ -260,9 +260,9 @@ describe("sandbox egress helpers", () => {
     );
     const spawnCall = getRootCommandCall(sandbox.execRoot, 1);
     expect(spawnCall).toContain("--proxy-addr 203.0.113.10:4443");
-    expect(spawnCall).toContain("--proxy-tls-name eu.sandbox-egress.dust.tt");
-    expect(spawnCall).toContain("--secrets-file /run/dust/egress-secrets.json");
-    // The dsbx spawn must strip every trust env var that buildSandboxEnvVars
+    expect(spawnCall).toContain("--proxy-tls-name eu.sandbox-egress.ruby.ad");
+    expect(spawnCall).toContain("--secrets-file /run/ruby/egress-secrets.json");
+    // The rbx spawn must strip every trust env var that buildSandboxEnvVars
     // exports on the agent process. Pinning the strip list to the canonical
     // SANDBOX_TRUST_ENV_VARS keys here catches drift between the two sites.
     expect(spawnCall).toContain("/usr/bin/nohup /usr/bin/env");
@@ -271,10 +271,10 @@ describe("sandbox egress helpers", () => {
       expect(spawnCall).toContain(`-u ${key}`);
     }
     expect(getRootCommandCall(sandbox.execRoot, 4)).toContain(
-      "/run/dust/egress-ca.pem"
+      "/run/ruby/egress-ca.pem"
     );
     const healthCall = getRootCommandCall(sandbox.execRoot, 2);
-    expect(healthCall).toContain("/opt/bin/dsbx healthcheck");
+    expect(healthCall).toContain("/opt/bin/rbx healthcheck");
     expect(healthCall).toContain("--forwarder-listen 127.0.0.1:9990");
     expect(healthCall).toContain("--resolver-listen 127.0.0.1:1053");
     expect(healthCall).toContain("--proxied-uid 1002");
@@ -292,16 +292,16 @@ describe("sandbox egress helpers", () => {
       { timeoutMs: 1_000 }
     );
     const installCall = getRootCommandCall(sandbox.execRoot, 4);
-    expect(installCall).toContain("/usr/local/bin/dust-install-trust-bundle");
-    expect(installCall).toContain("/etc/dust/.ca-bundle.merged");
+    expect(installCall).toContain("/usr/local/bin/ruby-install-trust-bundle");
+    expect(installCall).toContain("/etc/ruby/.ca-bundle.merged");
     expect(
-      installCall.indexOf("/usr/local/bin/dust-install-trust-bundle")
-    ).toBeLessThan(installCall.indexOf("/etc/dust/.ca-bundle.merged"));
+      installCall.indexOf("/usr/local/bin/ruby-install-trust-bundle")
+    ).toBeLessThan(installCall.indexOf("/etc/ruby/.ca-bundle.merged"));
     // Pre-0.8.8 sandbox fallback: when the helper script is missing, the
     // exec must inline the system-store + merged-bundle install so old
     // sandboxes don't fail on wake. Remove with the fallback in egress.ts.
     expect(installCall).toContain(
-      "if [ -x '/usr/local/bin/dust-install-trust-bundle' ]"
+      "if [ -x '/usr/local/bin/ruby-install-trust-bundle' ]"
     );
     expect(installCall).toContain(
       "/usr/bin/install -d -o root -g root -m 755 '/usr/local/share/ca-certificates'"
@@ -313,13 +313,13 @@ describe("sandbox egress helpers", () => {
       "/usr/bin/find '/usr/local/share/ca-certificates' -mindepth 1 -maxdepth 1 -exec /bin/rm -rf"
     );
     expect(installCall).toContain(
-      "/bin/rm -f '/usr/local/share/ca-certificates/dust-egress.crt'"
+      "/bin/rm -f '/usr/local/share/ca-certificates/ruby-egress.crt'"
     );
     expect(installCall).toContain(
-      "/usr/bin/openssl x509 -in '/run/dust/egress-ca.pem' -out \"$_ca_tmp\" -outform PEM"
+      "/usr/bin/openssl x509 -in '/run/ruby/egress-ca.pem' -out \"$_ca_tmp\" -outform PEM"
     );
     expect(installCall).toContain(
-      "/usr/bin/install -o root -g root -m 644 \"$_ca_tmp\" '/usr/local/share/ca-certificates/dust-egress.crt'"
+      "/usr/bin/install -o root -g root -m 644 \"$_ca_tmp\" '/usr/local/share/ca-certificates/ruby-egress.crt'"
     );
     expect(installCall).toContain('/bin/cat "$_ca_tmp"');
     expect(installCall).toContain("update-ca-certificates");
@@ -335,7 +335,7 @@ describe("sandbox egress helpers", () => {
     );
   });
 
-  it("treats an empty health-probe stdout as fail-closed and restarts dsbx", async () => {
+  it("treats an empty health-probe stdout as fail-closed and restarts rbx", async () => {
     // Defends the contract that an unparseable health probe (timeout-then-empty,
     // exotic shell, etc.) routes through the same path as "port not listening"
     // rather than silently passing.
@@ -346,7 +346,7 @@ describe("sandbox egress helpers", () => {
         .fn()
         // First call: health probe with empty stdout.
         .mockResolvedValueOnce(new Ok({ exitCode: 0, stdout: "", stderr: "" }))
-        // Restart path: chmod token, kill old forwarder, start dsbx, then health
+        // Restart path: chmod token, kill old forwarder, start rbx, then health
         // returns healthy except for the not-yet-installed bundle.
         .mockResolvedValueOnce(new Ok({ exitCode: 0, stdout: "", stderr: "" }))
         .mockResolvedValueOnce(new Ok({ exitCode: 0, stdout: "", stderr: "" }))
@@ -394,7 +394,7 @@ describe("sandbox egress helpers", () => {
       timeoutMs: 2_000,
     });
     expect(getRootCommandCall(sandbox.execRoot, 0)).toContain(
-      "dust-egress-denied.log"
+      "ruby-egress-denied.log"
     );
   });
 
@@ -414,7 +414,7 @@ describe("sandbox egress helpers", () => {
       `if [ "$_total" -lt "$_off" ] || [ "$_size" -lt "$_size_off" ]; then _off=0; fi;`
     );
     expect(command).toContain(
-      `echo "$_total $_size" > '/tmp/.dust-egress-deny-offset'`
+      `echo "$_total $_size" > '/tmp/.ruby-egress-deny-offset'`
     );
   });
 
@@ -526,7 +526,7 @@ describe("sandbox egress helpers", () => {
     }
   });
 
-  it("rewrites secrets and restarts dsbx after wake even if health would be ok", async () => {
+  it("rewrites secrets and restarts rbx after wake even if health would be ok", async () => {
     const sandbox = {
       providerId: "provider-sandbox-id",
       sId: "sandbox-id",
@@ -558,9 +558,9 @@ describe("sandbox egress helpers", () => {
       sandbox,
       runtimeOwner
     );
-    expect(getRootCommandCall(sandbox.execRoot, 1)).toContain("dsbx forward");
+    expect(getRootCommandCall(sandbox.execRoot, 1)).toContain("rbx forward");
     expect(getRootCommandCall(sandbox.execRoot, 2)).toContain(
-      "/opt/bin/dsbx forward"
+      "/opt/bin/rbx forward"
     );
   });
 
@@ -585,17 +585,17 @@ describe("sandbox egress helpers", () => {
     expect(result).toEqual(new Ok(undefined));
     expect(sandbox.execRoot).toHaveBeenCalledTimes(2);
     const installCall = getRootCommandCall(sandbox.execRoot, 1);
-    expect(installCall).toContain("/usr/local/bin/dust-install-trust-bundle");
-    expect(installCall).toContain("/etc/dust/.ca-bundle.merged");
+    expect(installCall).toContain("/usr/local/bin/ruby-install-trust-bundle");
+    expect(installCall).toContain("/etc/ruby/.ca-bundle.merged");
     expect(installCall).not.toContain("pkill");
-    expect(installCall).not.toContain("/opt/bin/dsbx forward");
+    expect(installCall).not.toContain("/opt/bin/rbx forward");
     expect(mockLoggerWarn).toHaveBeenCalledWith(
       expect.objectContaining({ event: "egress.bundle_missing" }),
       expect.any(String)
     );
   });
 
-  it("logs stderr when dsbx healthcheck exits zero but reports unhealthy", async () => {
+  it("logs stderr when rbx healthcheck exits zero but reports unhealthy", async () => {
     const sandbox = {
       providerId: "provider-sandbox-id",
       sId: "sandbox-id",
@@ -713,7 +713,7 @@ describe("sandbox egress helpers", () => {
     const result = await ensure(sandbox, { wokeFromSleep: false });
 
     expect(result).toEqual(new Ok(undefined));
-    expect(getRootCommandCall(sandbox.execRoot, 2)).toContain("dsbx forward");
+    expect(getRootCommandCall(sandbox.execRoot, 2)).toContain("rbx forward");
     expect(mockLoggerWarn).toHaveBeenCalledWith(
       expect.objectContaining({ event: "egress.health_fail" }),
       expect.any(String)
@@ -769,8 +769,8 @@ describe("sandbox egress helpers", () => {
       const sandbox = {
         execRoot: vi.fn(async (_auth: unknown, command: RootCommand) => {
           const rewritten = renderRootCommand(command)
-            .replace(/'\/tmp\/dust-egress-denied\.log'/g, `'${logPath}'`)
-            .replace(/'\/tmp\/\.dust-egress-deny-offset'/g, `'${offsetPath}'`);
+            .replace(/'\/tmp\/ruby-egress-denied\.log'/g, `'${logPath}'`)
+            .replace(/'\/tmp\/\.ruby-egress-deny-offset'/g, `'${offsetPath}'`);
           const result = spawnSync("sh", ["-c", rewritten], {
             encoding: "utf8",
           });
@@ -888,11 +888,11 @@ describe("sandbox egress helpers", () => {
       expect(sandbox.execRoot).toHaveBeenCalledTimes(1);
       const command = getRootCommandCall(sandbox.execRoot, 0);
       expect(command).toContain(
-        "/usr/bin/systemctl disable --now dust-egress-resolver.service dust-egress-nftables.service"
+        "/usr/bin/systemctl disable --now ruby-egress-resolver.service ruby-egress-nftables.service"
       );
-      expect(command).toContain("/usr/sbin/nft delete table ip dust-egress");
-      expect(command).toContain("/usr/sbin/nft delete table ip6 dust-egress");
-      expect(command).toContain("/usr/local/bin/dust-gcs-token-firewall.sh");
+      expect(command).toContain("/usr/sbin/nft delete table ip ruby-egress");
+      expect(command).toContain("/usr/sbin/nft delete table ip6 ruby-egress");
+      expect(command).toContain("/usr/local/bin/ruby-gcs-token-firewall.sh");
       expect(command).not.toContain("tcp dport 9876 drop");
       expect(sandbox.execRoot).toHaveBeenCalledWith(auth, expect.any(Object));
     });

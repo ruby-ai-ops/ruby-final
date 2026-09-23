@@ -4,7 +4,7 @@ import type { ConversationWithoutContentType } from "@app/types/assistant/conver
 export type FileSystemStorageMode = "database" | "gcs";
 
 /** Prefix used to opt a fresh Pod into the database-backed filesystem. */
-export const DATABASE_FILE_SYSTEM_POD_PREFIX = "[Dust FS] ";
+export const DATABASE_FILE_SYSTEM_POD_PREFIX = "[Ruby FS] ";
 
 export function isDatabaseFileSystemPodName(name: string): boolean {
   return name.startsWith(DATABASE_FILE_SYSTEM_POD_PREFIX);

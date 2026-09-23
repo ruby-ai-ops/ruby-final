@@ -33,7 +33,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface SetModelAssistantsDialogProps {

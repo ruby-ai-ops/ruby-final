@@ -3,7 +3,7 @@ import {
   getSimulatedFailureModelStatus,
   SIMULATED_FAILURE_MODEL_ENDPOINT,
 } from "@app/lib/api/llm/simulated_failure_model";
-import { DustOpenAISimulatedFailureModelGlobalOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_simulated_failure_model_global_openai_responses";
+import { RubyOpenAISimulatedFailureModelGlobalOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_simulated_failure_model_global_openai_responses";
 import { streamErrorToErrorEvent } from "@app/lib/model_constructors/sdk/openai_responses/converters/output/utils";
 import type { EndpointMetadata } from "@app/lib/model_constructors/types/endpoint_metadata";
 import { ModelDegradationResource } from "@app/lib/resources/model_degradation_resource";
@@ -22,7 +22,7 @@ const metadata: EndpointMetadata = {
   model: "simulated-failure-model",
 };
 
-class TestableSimulatedFailureStream extends DustOpenAISimulatedFailureModelGlobalOpenAIResponsesStream {
+class TestableSimulatedFailureStream extends RubyOpenAISimulatedFailureModelGlobalOpenAIResponsesStream {
   readonly providerCall = vi.fn();
 
   protected override async *streamFromOpenAI(

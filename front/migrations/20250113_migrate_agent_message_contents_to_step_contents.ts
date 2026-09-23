@@ -2,7 +2,7 @@
 
 // import { AgentBrowseAction } from "@app/lib/models/assistant/actions/browse";
 // import { AgentConversationIncludeFileAction } from "@app/lib/models/assistant/actions/conversation/include_file";
-// import { AgentDustAppRunAction } from "@app/lib/models/assistant/actions/dust_app_run";
+// import { AgentRubyAppRunAction } from "@app/lib/models/assistant/actions/ruby_app_run";
 // import { AgentMCPAction } from "@app/lib/models/assistant/actions/mcp";
 // import { AgentProcessAction } from "@app/lib/models/assistant/actions/process";
 // import { AgentReasoningAction } from "@app/lib/models/assistant/actions/reasoning";
@@ -24,7 +24,7 @@
 
 // type ActionModelType =
 //   | AgentRetrievalAction
-//   | AgentDustAppRunAction
+//   | AgentRubyAppRunAction
 //   | AgentTablesQueryAction
 //   | AgentProcessAction
 //   | AgentWebsearchAction
@@ -36,7 +36,7 @@
 
 // type ActionType =
 //   | "retrieval"
-//   | "dustAppRun"
+//   | "rubyAppRun"
 //   | "tablesQuery"
 //   | "process"
 //   | "websearch"
@@ -60,7 +60,7 @@
 //   // Fetch from all action tables in parallel
 //   const [
 //     retrievalActions,
-//     dustAppRunActions,
+//     rubyAppRunActions,
 //     tablesQueryActions,
 //     processActions,
 //     websearchActions,
@@ -76,7 +76,7 @@
 //         workspaceId,
 //       },
 //     }),
-//     AgentDustAppRunAction.findAll({
+//     AgentRubyAppRunAction.findAll({
 //       where: {
 //         agentMessageId: { [Op.in]: agentMessageIds },
 //         workspaceId,
@@ -153,11 +153,11 @@
 //     }
 //   });
 
-//   dustAppRunActions.forEach((action) => {
+//   rubyAppRunActions.forEach((action) => {
 //     const agentActions = actionsByAgentMessageId.get(action.agentMessageId);
 //     if (agentActions) {
 //       agentActions.push({
-//         actionType: "dustAppRun",
+//         actionType: "rubyAppRun",
 //         action,
 //         step: action.step,
 //         createdAt: action.createdAt,
@@ -314,12 +314,12 @@
 //         };
 //         break;
 //       }
-//       case "dustAppRun": {
-//         const dustAppRunAction = action as AgentDustAppRunAction;
+//       case "rubyAppRun": {
+//         const rubyAppRunAction = action as AgentRubyAppRunAction;
 //         functionCall = {
-//           id: dustAppRunAction.functionCallId || `call_${dustAppRunAction.id}`,
-//           name: dustAppRunAction.functionCallName || "run_dust_app",
-//           arguments: JSON.stringify(dustAppRunAction.params || {}),
+//           id: rubyAppRunAction.functionCallId || `call_${rubyAppRunAction.id}`,
+//           name: rubyAppRunAction.functionCallName || "run_ruby_app",
+//           arguments: JSON.stringify(rubyAppRunAction.params || {}),
 //         };
 //         break;
 //       }

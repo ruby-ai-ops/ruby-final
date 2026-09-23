@@ -184,8 +184,8 @@ In addition to the exhaustive JSON Schema of the payload, you will be provided a
     Logical AND:
       (and
         (eq "ticket" "opened")
-        (eq "user.mail" "soupinou@dust.tt"))
-      Result: true if ticket is "opened" AND user email is "soupinou@dust.tt"
+        (eq "user.mail" "soupinou@ruby.ad"))
+      Result: true if ticket is "opened" AND user email is "soupinou@ruby.ad"
 
     Logical OR:
       (or

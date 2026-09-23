@@ -2,7 +2,7 @@ import { detectSkillsFromGitHubRepo } from "@app/lib/api/skills/detection/github
 import { initGitHubRepoClient } from "@app/lib/api/skills/detection/github/github_api";
 import { makeScript } from "@app/scripts/helpers";
 
-// TODO(2026-02-25 aubin): move to a poke plugin or a CLI command if ends up being needed for debugging.
+// TODO(2026-02-25 aubin): move to a admin plugin or a CLI command if ends up being needed for debugging.
 makeScript(
   {
     repoUrl: {

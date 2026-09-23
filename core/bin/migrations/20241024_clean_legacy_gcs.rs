@@ -1,7 +1,7 @@
 use std::{collections::HashSet, time::Duration};
 
 use anyhow::{anyhow, Context, Result};
-use dust::{
+use ruby::{
     data_sources::{
         data_source::make_document_id_hash, file_storage_document::FileStorageDocument,
     },
@@ -120,7 +120,7 @@ async fn clean_stored_versions_for_data_source(
 
                     // 2024-07-26:00:00.000Z
                     // IF we are after this date we just skip version deletion as no legacy version was
-                    // created after this date. https://github.com/dust-tt/dust/pull/6405
+                    // created after this date. https://github.com/ruby-ai-ops/ruby-final/pull/6405
                     if version_created > 1721952000000 {
                         return false;
                     }

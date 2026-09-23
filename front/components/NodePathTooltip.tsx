@@ -8,7 +8,7 @@ import {
   TooltipProvider,
   TooltipRoot,
   TooltipTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React, { useEffect, useState } from "react";
 
 interface NodePathTooltipProps {

@@ -5,7 +5,7 @@ import {
   getSkillBuilderRoute,
 } from "@app/lib/utils/router";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { MenuItem } from "@dust-tt/sparkle";
+import type { MenuItem } from "@ruby-ai/ui";
 import {
   Clipboard,
   ClipboardCheck,
@@ -13,7 +13,7 @@ import {
   Eye,
   Trash01,
   useCopyToClipboard,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useState } from "react";
 
 export function useSkillMenuItems({ owner }: { owner: LightWorkspaceType }) {

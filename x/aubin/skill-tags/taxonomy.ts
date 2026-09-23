@@ -261,9 +261,9 @@ export const FACETS: Facet[] = [
           "Employees and teammates: performance, onboarding, engagement, team goals and updates, rosters, schedules.",
       },
       {
-        id: "dust-agents-skills",
+        id: "ruby-agents-skills",
         description:
-          "Dust agents and skills as configured objects: inventories, audits, optimization, setup guides, demo agents.",
+          "Ruby agents and skills as configured objects: inventories, audits, optimization, setup guides, demo agents.",
       },
       {
         id: "credits-usage-billing",
@@ -326,17 +326,17 @@ export const FACETS: Facet[] = [
       {
         id: "pod-workspace",
         description:
-          "Dust Pods as workspaces: creating, populating, structuring, and maintaining Pods and their banners.",
+          "Ruby Pods as workspaces: creating, populating, structuring, and maintaining Pods and their banners.",
       },
       {
-        id: "dust-frames-apps",
+        id: "ruby-frames-apps",
         description:
-          "Dust Frames and Frame apps as a technology: building, scaffolding, multiplayer, exporting, banner sizing.",
+          "Ruby Frames and Frame apps as a technology: building, scaffolding, multiplayer, exporting, banner sizing.",
       },
       {
-        id: "dust-product-knowledge",
+        id: "ruby-product-knowledge",
         description:
-          "The Dust product itself: features, how it works, help, public docs, demo use cases, product positioning.",
+          "The Ruby product itself: features, how it works, help, public docs, demo use cases, product positioning.",
       },
       {
         id: "legal-security-document",
@@ -370,7 +370,7 @@ export const FACETS: Facet[] = [
     max: 2,
     weight: 0.6,
     tags: [
-      { id: "frame-dashboard", description: "An interactive Dust Frame, dashboard, or Frame app." },
+      { id: "frame-dashboard", description: "An interactive Ruby Frame, dashboard, or Frame app." },
       { id: "slides-deck", description: "A PowerPoint, Google Slides, or PDF slide deck." },
       { id: "email-draft", description: "An email draft or sequence." },
       { id: "slack-message", description: "A Slack message, thread, DM, or announcement." },
@@ -437,11 +437,11 @@ export const FACETS: Facet[] = [
       { id: "posthog", description: "PostHog product analytics." },
       { id: "web-search", description: "Web search and browsing." },
       {
-        id: "dust-platform",
+        id: "ruby-platform",
         description:
-          "Dust internal or public APIs, Poke back office, workspace administration, data source management.",
+          "Ruby internal or public APIs, Admin back office, workspace administration, data source management.",
       },
-      { id: "dust-pods", description: "Dust Pods files, tasks, and banners." },
+      { id: "ruby-pods", description: "Ruby Pods files, tasks, and banners." },
       { id: "computer-sandbox", description: "The Computer sandbox or code execution." },
       { id: "agent-memory", description: "Agent memory tool." },
       { id: "x-twitter", description: "X (Twitter) API." },
@@ -457,7 +457,7 @@ export const FACETS: Facet[] = [
     weight: 0.4,
     tags: [
       { id: "self-personal", description: "Built for one named person's own workflow." },
-      { id: "internal-team", description: "Dust employees or a team inside the company." },
+      { id: "internal-team", description: "Ruby employees or a team inside the company." },
       {
         id: "customer-facing",
         description:

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Ruby</title>
+  <path fill="#9B123B" d="M32 4 55 18 48 50 32 60 16 50 9 18Z" />
+  <path fill="#E11D48" d="m32 4 23 14-16 6H25L9 18Z" />
+  <path fill="#BE123C" d="m9 18 16 6 7 36-16-10Z" />
+  <path fill="#FB7185" d="m55 18-16 6-7 36 16-10Z" />
+  <path fill="#FDA4AF" d="m25 24 7-20 7 20-7 36Z" />
+</svg>

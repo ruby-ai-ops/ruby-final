@@ -1,6 +1,6 @@
 import datadogLogger from "@app/logger/datadogLogger";
-import type { NotificationType } from "@dust-tt/sparkle";
-import { useSendNotification as useSendNotificationWithoutLogging } from "@dust-tt/sparkle";
+import type { NotificationType } from "@ruby-ai/ui";
+import { useSendNotification as useSendNotificationWithoutLogging } from "@ruby-ai/ui";
 import { useCallback } from "react";
 
 export const useSendNotification = (disableLogging: boolean = false) => {

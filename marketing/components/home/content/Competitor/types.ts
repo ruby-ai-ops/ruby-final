@@ -15,9 +15,9 @@ interface OptionallyTitledSection {
   title?: string;
 }
 
-// Base for comparison rows (dust vs competitor)
+// Base for comparison rows (ruby vs competitor)
 interface ComparisonRow {
-  dust: string;
+  ruby: string;
   competitor: string;
 }
 
@@ -29,7 +29,7 @@ export interface CTAConfig {
 
 // ===== Comparison types =====
 
-export type ComparisonWinner = "dust" | "competitor" | "tie";
+export type ComparisonWinner = "ruby" | "competitor" | "tie";
 
 export type FeatureStatus = "yes" | "partial" | "no";
 
@@ -39,7 +39,7 @@ export interface CorePositioningRow extends ComparisonRow {
 
 export interface FeatureComparisonRow extends TitledItem {
   feature: string;
-  dust: FeatureStatus;
+  ruby: FeatureStatus;
   competitor: FeatureStatus;
 }
 
@@ -95,7 +95,7 @@ export interface FAQItem {
 export interface DiscoveryQuestion {
   number: number;
   question: string;
-  dustAdvantage: string;
+  rubyAdvantage: string;
   competitorAdvantage: string;
   whyItMatters: string;
 }
@@ -142,7 +142,7 @@ export type IntegrationComparisonConfig =
   TitledSectionWithRows<IntegrationComparisonRow>;
 
 export type UseCaseFitConfig = TitledSection & {
-  dustUseCases: UseCaseFitItem[];
+  rubyUseCases: UseCaseFitItem[];
   competitorUseCases: UseCaseFitItem[];
 };
 

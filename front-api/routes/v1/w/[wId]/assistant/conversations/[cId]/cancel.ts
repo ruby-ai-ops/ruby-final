@@ -4,7 +4,7 @@ import { ConversationError } from "@app/types/assistant/conversation";
 import {
   CancelMessageGenerationRequestSchema,
   type CancelMessageGenerationResponseType,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { apiErrorForConversation } from "@front-api/lib/api/assistant/conversation/helper";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { streamingTag } from "@front-api/middlewares/streaming";

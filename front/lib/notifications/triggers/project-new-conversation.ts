@@ -1,5 +1,5 @@
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { getNovuClient } from "@app/lib/notifications";
 import { fireAndForgetNotification } from "@app/lib/notifications/fire_and_forget";
 import { triggerActivationNewConversationEmail } from "@app/lib/notifications/workflows/activation-new-conversation";
@@ -89,7 +89,7 @@ const triggerProjectNewConversationNotifications = async (
   }: {
     conversation: ConversationWithoutContentType;
   }
-): Promise<Result<void, DustError<"internal_error" | "space_not_found">>> => {
+): Promise<Result<void, RubyError<"internal_error" | "space_not_found">>> => {
   // Only notify for project conversations.
   if (!isPodConversation(conversation)) {
     return new Ok(undefined);
@@ -128,7 +128,7 @@ const triggerProjectNewConversationNotifications = async (
   const space = await SpaceResource.fetchById(auth, conversation.spaceId);
 
   if (!space) {
-    return new Err(new DustError("space_not_found", "Space not found"));
+    return new Err(new RubyError("space_not_found", "Space not found"));
   }
 
   // Activation pods send a dedicated email to the target user after the agent has replied.
@@ -203,14 +203,14 @@ const triggerProjectNewConversationNotifications = async (
         .map(({ error }) => error?.join("; "))
         .join("; ");
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: `Failed to trigger project new conversation notification: ${eventErrors}`,
       });
     }
   } catch (err) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: "Failed to trigger project new conversation notification",
       cause: normalizeError(err),
@@ -294,7 +294,7 @@ export async function notifyActivationConversationAgentReplied(
     return;
   }
 
-  // Only a conversation Dust opened with a nudge gets the notification, not one
+  // Only a conversation Ruby opened with a nudge gets the notification, not one
   // the user started themselves.
   const openingOrigin =
     await conversationResource.openingUserMessageOrigin(auth);

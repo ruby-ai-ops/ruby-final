@@ -1,7 +1,7 @@
 import { RootLayout } from "@app/components/app/RootLayout";
 import { CellProvider, useCellContext } from "@app/lib/auth/CellContext";
 import { ClientTypeProvider } from "@app/lib/context/clientType";
-import { SparkleContext } from "@dust-tt/sparkle";
+import { RubyUIContext } from "@ruby-ai/ui";
 import { PortProvider } from "@extension/platforms/firefox/context/PortContext";
 import { FirefoxPlatformService } from "@extension/platforms/firefox/services/platform";
 import { AuthenticatedImage } from "@extension/shared/AuthenticatedImage";
@@ -34,7 +34,7 @@ const FirefoxAppInner = () => {
   }, [cells]);
   const router = useMemo(() => createBrowserRouter(routes), []);
 
-  const sparkleContextValue = useMemo(
+  const uiContextValue = useMemo(
     () => ({
       components: {
         link: ReactRouterLinkWrapper,
@@ -49,13 +49,13 @@ const FirefoxAppInner = () => {
       <PortProvider>
         <ExtensionAuthProvider>
           <ExtensionFetcherProvider>
-            <SparkleContext.Provider value={sparkleContextValue}>
+            <RubyUIContext.Provider value={uiContextValue}>
               <RootLayout>
                 <FirefoxExtensionWrapper>
                   <RouterProvider router={router} />
                 </FirefoxExtensionWrapper>
               </RootLayout>
-            </SparkleContext.Provider>
+            </RubyUIContext.Provider>
           </ExtensionFetcherProvider>
         </ExtensionAuthProvider>
       </PortProvider>

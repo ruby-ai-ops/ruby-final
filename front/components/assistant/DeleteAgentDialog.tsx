@@ -13,7 +13,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface DeleteAssistantDialogProps {

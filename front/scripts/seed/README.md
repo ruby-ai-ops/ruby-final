@@ -8,7 +8,7 @@ Each folder contains a `seed.ts` file. Run with:
 npx tsx scripts/seed/<folder>/seed.ts --execute
 ```
 
-By default, seeds target the `DevWkSpace` workspace created by dust-hive. To target a different workspace, set `DEV_WORKSPACE_SID`:
+By default, seeds target the `DevWkSpace` workspace created by ruby-hive. To target a different workspace, set `DEV_WORKSPACE_SID`:
 
 ```bash
 DEV_WORKSPACE_SID=MyWorkspace npx tsx scripts/seed/<folder>/seed.ts --execute
@@ -19,10 +19,10 @@ DEV_WORKSPACE_SID=MyWorkspace npx tsx scripts/seed/<folder>/seed.ts --execute
 - `analytics/` - Creates members, teams, skills, agents and triggers, then fills the consumption index behind the Analytics page
 - `basics/` - Creates a custom agent with skills and sample conversations
 - `byok/` - Setup workspace to test Bring your own key
-- `conversational_building/` - Creates a skill with conversational suggestions and a Dust conversation rendering them, for testing the conversational builder
+- `conversational_building/` - Creates a skill with conversational suggestions and a Ruby conversation rendering them, for testing the conversational builder
 - `governance/` - Creates users and skills for testing admin governance
 - `mcp_tools/` - Creates data-source-backed agents with internal MCP tools
-- `reinforcement/` - Creates skills with conversations, feedbacks, Dust conversations with JIT skills for testing reinforcement
+- `reinforcement/` - Creates skills with conversations, feedbacks, Ruby conversations with JIT skills for testing reinforcement
 - `sidekick/` - Creates agents and conversations for testing the agent builder sidekick feature
 - `triggers/` - Creates schedule triggers for basics agents
 

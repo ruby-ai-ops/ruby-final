@@ -1,9 +1,9 @@
 import { H2 } from "@marketing/components/home/ContentComponents";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 
 interface ComparisonTableRow {
   name: string;
-  dust: string;
+  ruby: string;
   ms: string;
   google: string;
   claude: string;
@@ -13,11 +13,13 @@ interface ComparisonTableRow {
 interface ChatGptEnterpriseComparisonTableProps {
   title: string;
   rows: ComparisonTableRow[];
+  showRubyBadge?: boolean;
 }
 
 export function ChatGptEnterpriseComparisonTable({
   title,
   rows,
+  showRubyBadge = true,
 }: ChatGptEnterpriseComparisonTableProps) {
   return (
     <section className="w-full">
@@ -34,11 +36,20 @@ export function ChatGptEnterpriseComparisonTable({
                 <div className="text-xs uppercase tracking-wider text-gray-500">
                   Alternative
                 </div>
-                <div className="flex items-center justify-center gap-1 text-center text-xs font-bold uppercase tracking-wider text-[#1C91FF]">
-                  Dust{" "}
-                  <span className="rounded bg-[#1C91FF]/10 px-1.5 py-0.5 text-[10px] text-[#1C91FF]">
-                    #1 Pick
-                  </span>
+                <div
+                  className={cn(
+                    "flex items-center justify-center gap-1 text-center text-xs uppercase tracking-wider",
+                    showRubyBadge
+                      ? "font-bold text-[#1C91FF]"
+                      : "font-normal text-gray-700"
+                  )}
+                >
+                  Ruby{" "}
+                  {showRubyBadge && (
+                    <span className="rounded bg-[#1C91FF]/10 px-1.5 py-0.5 text-[10px] text-[#1C91FF]">
+                      #1 Pick
+                    </span>
+                  )}
                 </div>
                 <div className="text-center text-xs uppercase tracking-wider text-gray-700">
                   Microsoft 365 Copilot
@@ -67,8 +78,15 @@ export function ChatGptEnterpriseComparisonTable({
                     <div className="pr-4 font-semibold text-gray-800">
                       {row.name}
                     </div>
-                    <div className="-mx-2 -my-4 flex h-full items-center justify-center border-x border-[#1C91FF]/10 bg-[#1C91FF]/5 px-2 py-6 text-center font-bold text-gray-900">
-                      {row.dust}
+                    <div
+                      className={cn(
+                        "-mx-2 -my-4 flex h-full items-center justify-center px-2 py-6 text-center",
+                        showRubyBadge
+                          ? "border-x border-[#1C91FF]/10 bg-[#1C91FF]/5 font-bold text-gray-900"
+                          : "text-gray-600"
+                      )}
+                    >
+                      {row.ruby}
                     </div>
                     <div className="px-2 text-center text-gray-600">
                       {row.ms}

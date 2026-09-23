@@ -1,5 +1,5 @@
-import { apiErrorToDustError } from "../errors/errors";
-import type { DustAPI } from "../index";
+import { apiErrorToRubyError } from "../errors/errors";
+import type { RubyAPI } from "../index";
 import type { ConversationInfo, CreateConversationParams } from "./types";
 
 function toConversationInfo(conversation: {
@@ -19,9 +19,9 @@ function toConversationInfo(conversation: {
 }
 
 export class ConversationsAPI {
-  private _client: DustAPI;
+  private _client: RubyAPI;
 
-  constructor(client: DustAPI) {
+  constructor(client: RubyAPI) {
     this._client = client;
   }
 
@@ -34,7 +34,7 @@ export class ConversationsAPI {
     });
 
     if (result.isErr()) {
-      throw apiErrorToDustError(result.error);
+      throw apiErrorToRubyError(result.error);
     }
 
     return toConversationInfo(result.value.conversation);
@@ -44,7 +44,7 @@ export class ConversationsAPI {
     const result = await this._client.getConversation({ conversationId });
 
     if (result.isErr()) {
-      throw apiErrorToDustError(result.error);
+      throw apiErrorToRubyError(result.error);
     }
 
     return toConversationInfo(result.value);
@@ -54,7 +54,7 @@ export class ConversationsAPI {
     const result = await this._client.getConversations();
 
     if (result.isErr()) {
-      throw apiErrorToDustError(result.error);
+      throw apiErrorToRubyError(result.error);
     }
 
     return result.value.map(toConversationInfo);

@@ -1,6 +1,6 @@
 import { getModelConfigByModelId } from "@app/lib/llms/model_configurations";
-import { DustOpenAIGptSixAstraEuropeOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_six_astra_eu_openai_responses";
-import { DustOpenAIGptSixAstraGlobalOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_six_astra_global_openai_responses";
+import { RubyOpenAIGptSixAstraEuropeOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_six_astra_eu_openai_responses";
+import { RubyOpenAIGptSixAstraGlobalOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_six_astra_global_openai_responses";
 import { OpenAIGptSixAstraGlobalOpenAIResponsesStream } from "@app/lib/model_constructors/stream/endpoints/openai_gpt_six_astra_global_openai_responses";
 import type { InputConfig } from "@app/lib/model_constructors/types/input/configuration";
 import {
@@ -10,11 +10,11 @@ import {
 import { describe, expect, it } from "vitest";
 
 describe("GPT 6 Astra", () => {
-  it("exposes GPT-5.6's context and input budget on both Dust endpoints", () => {
+  it("exposes GPT-5.6's context and input budget on both Ruby endpoints", () => {
     const reference = GPT_5_6_SOL_MODEL_CONFIG;
     for (const endpoint of [
-      DustOpenAIGptSixAstraGlobalOpenAIResponsesStream,
-      DustOpenAIGptSixAstraEuropeOpenAIResponsesStream,
+      RubyOpenAIGptSixAstraGlobalOpenAIResponsesStream,
+      RubyOpenAIGptSixAstraEuropeOpenAIResponsesStream,
     ]) {
       expect(endpoint.contextSize).toBe(reference.contextSize);
       expect(endpoint.maxOutputTokens).toBe(reference.generationTokensCount);
@@ -34,8 +34,8 @@ describe("GPT 6 Astra", () => {
     );
   });
 
-  it("drops Dust's temperature and serializes the supported reasoning effort", () => {
-    const endpoint = DustOpenAIGptSixAstraGlobalOpenAIResponsesStream;
+  it("drops Ruby's temperature and serializes the supported reasoning effort", () => {
+    const endpoint = RubyOpenAIGptSixAstraGlobalOpenAIResponsesStream;
     const instance = new endpoint({ OPENAI_API_KEY: "test" });
     const config = endpoint.configSchema.parse(
       endpoint.configParsers.reduce<InputConfig>(

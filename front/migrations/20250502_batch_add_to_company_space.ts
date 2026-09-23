@@ -32,7 +32,7 @@ async function getParentsToAdd({
       filter: {
         data_source_views: [
           {
-            data_source_id: slackDataSource.dustAPIDataSourceId,
+            data_source_id: slackDataSource.rubyAPIDataSourceId,
             search_scope: "nodes_titles",
             view_filter: [],
           },

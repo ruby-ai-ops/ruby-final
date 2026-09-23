@@ -1,5 +1,5 @@
 import {
-  driveObjectToDustType,
+  driveObjectToRubyType,
   getDriveClient,
 } from "@connectors/connectors/google_drive/temporal/utils";
 import { ExternalOAuthTokenError } from "@connectors/lib/error";
@@ -37,7 +37,7 @@ async function _getGoogleDriveObject({
     }
     const file = res.data;
 
-    return await driveObjectToDustType(connectorId, file, authCredentials);
+    return await driveObjectToRubyType(connectorId, file, authCredentials);
   } catch (e) {
     if (e instanceof GaxiosError && e.response?.status === 401) {
       throw new ExternalOAuthTokenError();

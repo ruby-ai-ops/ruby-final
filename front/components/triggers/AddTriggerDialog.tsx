@@ -14,7 +14,7 @@ import {
   DialogTitle,
   Plus,
   SearchInput,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useRef, useState } from "react";
 
 type TriggerOption = {

@@ -9,7 +9,7 @@ export const OpenAIGptFiveDotSixLunaEuropeOpenAIResponsesStreamSetup: StreamSetu
   {
     createInstance: () =>
       new OpenAIGptFiveDotSixLunaEuropeOpenAIResponsesStream({
-        OPENAI_API_KEY: process.env.DUST_MANAGED_OPENAI_API_KEY ?? "",
+        OPENAI_API_KEY: process.env.RUBY_MANAGED_OPENAI_API_KEY ?? "",
       }),
     // Re-characterized against the live EU API (2026-09-22): identical to the
     // global endpoint, as both share `WithOpenAIGptFiveDotSixLunaConfig`.

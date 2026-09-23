@@ -32,13 +32,13 @@ describe("extractMetadataFromTools", () => {
     expect(result[0].inputSchema).toEqual(tools[0].inputSchema);
   });
 
-  it("surfaces the eager flag from _meta.dust when set", () => {
+  it("surfaces the eager flag from _meta.ruby when set", () => {
     const tools: Tool[] = [
       {
         name: "eagerTool",
         description: "An eager tool",
         inputSchema: { type: "object", properties: {} },
-        _meta: { dust: { eager: true } },
+        _meta: { ruby: { eager: true } },
       },
     ];
 
@@ -46,17 +46,17 @@ describe("extractMetadataFromTools", () => {
     expect(result[0].eager).toBe(true);
   });
 
-  it("omits the eager flag when _meta.dust does not set it", () => {
+  it("omits the eager flag when _meta.ruby does not set it", () => {
     const tools: Tool[] = [
       {
         name: "plainTool",
         description: "A plain tool",
         inputSchema: { type: "object", properties: {} },
-        _meta: { dust: { stake: "never_ask" } },
+        _meta: { ruby: { stake: "never_ask" } },
       },
       {
         name: "noMetaTool",
-        description: "A tool without dust meta",
+        description: "A tool without ruby meta",
         inputSchema: { type: "object", properties: {} },
       },
     ];

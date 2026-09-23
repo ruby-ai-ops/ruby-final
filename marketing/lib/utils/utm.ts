@@ -1,5 +1,5 @@
 import {
-  buildDustAidCookieString,
+  buildRubyAidCookieString,
   getRootCookieDomain,
 } from "@marketing/lib/utils/anonymous_id";
 import { posthog } from "posthog-js";
@@ -73,20 +73,20 @@ export function persistClickIdCookies(params: UTMParams): void {
       const expires = new Date(
         Date.now() + expiryDays * 24 * 60 * 60 * 1000
       ).toUTCString();
-      document.cookie = `_dust_${key}=${encodeURIComponent(value)}; expires=${expires}; path=/${domainPart}; SameSite=Lax; Secure`;
+      document.cookie = `_ruby_${key}=${encodeURIComponent(value)}; expires=${expires}; path=/${domainPart}; SameSite=Lax; Secure`;
     }
   }
 }
 
-export function persistDustAidFromURL(): void {
+export function persistRubyAidFromURL(): void {
   if (typeof window === "undefined") {
     return;
   }
 
   const params = new URLSearchParams(window.location.search);
-  const dustAid = params.get("dust_aid");
-  if (dustAid) {
-    document.cookie = buildDustAidCookieString(encodeURIComponent(dustAid));
+  const rubyAid = params.get("ruby_aid");
+  if (rubyAid) {
+    document.cookie = buildRubyAidCookieString(encodeURIComponent(rubyAid));
   }
 }
 
@@ -104,7 +104,7 @@ export function persistUTMCookies(params: UTMParams): void {
       const expires = new Date(
         Date.now() + UTM_COOKIE_EXPIRY_DAYS * 24 * 60 * 60 * 1000
       ).toUTCString();
-      document.cookie = `_dust_${key}=${encodeURIComponent(value)}; expires=${expires}; path=/${domainPart}; SameSite=Lax; Secure`;
+      document.cookie = `_ruby_${key}=${encodeURIComponent(value)}; expires=${expires}; path=/${domainPart}; SameSite=Lax; Secure`;
     }
   }
 }
@@ -118,7 +118,7 @@ function getUTMCookies(): UTMParams {
   const cookies = document.cookie.split("; ");
 
   for (const key of UTM_KEYS) {
-    const prefix = `_dust_${key}=`;
+    const prefix = `_ruby_${key}=`;
     const cookie = cookies.find((c) => c.startsWith(prefix));
     if (cookie) {
       params[key] = decodeURIComponent(cookie.slice(prefix.length));
@@ -137,7 +137,7 @@ function getClickIdCookies(): UTMParams {
   const cookies = document.cookie.split("; ");
 
   for (const key of CLICK_ID_KEYS) {
-    const prefix = `_dust_${key}=`;
+    const prefix = `_ruby_${key}=`;
     const cookie = cookies.find((c) => c.startsWith(prefix));
     if (cookie) {
       params[key] = decodeURIComponent(cookie.slice(prefix.length));
@@ -164,7 +164,7 @@ export const getStoredUTMParams = (): UTMParams => {
   }
 };
 
-const LANDING_COOKIE = "_dust_landing";
+const LANDING_COOKIE = "_ruby_landing";
 const LANDING_COOKIE_EXPIRY_DAYS = 30;
 
 interface LandingContext {
@@ -187,7 +187,7 @@ export function persistLandingContext(): void {
   if (document.referrer) {
     try {
       const refHost = new URL(document.referrer).hostname;
-      if (refHost !== "localhost" && !refHost.endsWith(".dust.tt")) {
+      if (refHost !== "localhost" && !refHost.endsWith(".ruby.ad")) {
         referrer = document.referrer;
       }
     } catch {

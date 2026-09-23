@@ -4,7 +4,7 @@ import { timeAgoFrom } from "@app/lib/utils";
 import type { ConnectorType } from "@app/types/data_source";
 import { fileSizeToHumanReadable } from "@app/types/files";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import { Chip, Tooltip } from "@dust-tt/sparkle";
+import { Chip, Tooltip } from "@ruby-ai/ui";
 
 interface ConnectorSyncingChipProps {
   activeSeats: number;
@@ -118,14 +118,14 @@ export default function ConnectorSyncingChip({
       case "workspace_quota_exceeded":
         return (
           <Tooltip
-            label={`You've exceeded the total storage quota of ${fileSizeToHumanReadable(activeSeats * DATASOURCE_QUOTA_PER_SEAT)} for your workspace. Contact support@dust.tt to upgrade your plan.`}
+            label={`You've exceeded the total storage quota of ${fileSizeToHumanReadable(activeSeats * DATASOURCE_QUOTA_PER_SEAT)} for your workspace. Contact support@ruby.ad to upgrade your plan.`}
             trigger={<Chip color="warning">Quota exceeded</Chip>}
           />
         );
       case "workspace_plan_no_api_access":
         return (
           <Tooltip
-            label="Your current plan does not allow API access, which is required to synchronize data. Contact support@dust.tt to upgrade your plan."
+            label="Your current plan does not allow API access, which is required to synchronize data. Contact support@ruby.ad to upgrade your plan."
             trigger={<Chip color="warning">Synchronization failed</Chip>}
           />
         );

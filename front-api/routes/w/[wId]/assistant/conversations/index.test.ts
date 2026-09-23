@@ -208,7 +208,7 @@ describe("POST /api/w/:wId/assistant/conversations", () => {
       method: "POST",
       role: "admin",
     });
-    await FeatureFlagFactory.basic(auth, "dust_filesystem");
+    await FeatureFlagFactory.basic(auth, "ruby_filesystem");
 
     const response = await honoApp.request(
       `/api/w/${workspace.sId}/assistant/conversations`,
@@ -238,7 +238,7 @@ describe("POST /api/w/:wId/assistant/conversations", () => {
       method: "POST",
       role: "admin",
     });
-    await FeatureFlagFactory.basic(auth, "dust_filesystem");
+    await FeatureFlagFactory.basic(auth, "ruby_filesystem");
 
     const response = await honoApp.request(
       `/api/w/${workspace.sId}/assistant/conversations`,

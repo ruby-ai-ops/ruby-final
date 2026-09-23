@@ -1,0 +1,268 @@
+import Foundation
+import os
+
+private let logger = Logger(subsystem: AppConfig.bundleId, category: "ConversationList")
+
+enum ConversationDateGroup: String, CaseIterable {
+    case today = "Today"
+    case yesterday = "Yesterday"
+    case lastWeek = "Last Week"
+    case lastMonth = "Last Month"
+    case last12Months = "Last 12 Months"
+    case older = "Older"
+}
+
+enum ConversationGrouping {
+    static func filtered(_ conversations: [Conversation], by searchText: String) -> [Conversation] {
+        guard !searchText.isEmpty else { return conversations }
+        let query = searchText.lowercased()
+        return conversations.filter { conversation in
+            guard let title = conversation.title else { return false }
+            return title.lowercased().contains(query)
+        }
+    }
+
+    static func groupedByDate(_ conversations: [Conversation]) -> [(String, [Conversation])] {
+        let calendar = Calendar.current
+        let now = Date()
+        let startOfToday = calendar.startOfDay(for: now)
+
+        guard let startOfYesterday = calendar.date(byAdding: .day, value: -1, to: startOfToday),
+              let startOfLastWeek = calendar.date(byAdding: .day, value: -7, to: startOfToday),
+              let startOfLastMonth = calendar.date(byAdding: .month, value: -1, to: startOfToday),
+              let startOfLastYear = calendar.date(byAdding: .year, value: -1, to: startOfToday)
+        else {
+            return [(ConversationDateGroup.today.rawValue, conversations)]
+        }
+
+        var groups: [ConversationDateGroup: [Conversation]] = [:]
+        for group in ConversationDateGroup.allCases {
+            groups[group] = []
+        }
+
+        for conversation in conversations {
+            let date = conversation.effectiveDate
+            if date >= startOfToday {
+                groups[.today, default: []].append(conversation)
+            } else if date >= startOfYesterday {
+                groups[.yesterday, default: []].append(conversation)
+            } else if date >= startOfLastWeek {
+                groups[.lastWeek, default: []].append(conversation)
+            } else if date >= startOfLastMonth {
+                groups[.lastMonth, default: []].append(conversation)
+            } else if date >= startOfLastYear {
+                groups[.last12Months, default: []].append(conversation)
+            } else {
+                groups[.older, default: []].append(conversation)
+            }
+        }
+
+        var result: [(String, [Conversation])] = []
+        for group in ConversationDateGroup.allCases {
+            guard let convos = groups[group], !convos.isEmpty else { continue }
+            result.append((group.rawValue, convos))
+        }
+        return result
+    }
+}
+
+@MainActor
+final class ConversationListViewModel: ObservableObject {
+    enum State {
+        case loading
+        case loaded
+        case error(String)
+    }
+
+    @Published var state: State = .loading
+    @Published var conversations: [Conversation] = []
+    @Published var searchText: String = ""
+    @Published var workspace: Workspace?
+    @Published var workspaces: [Workspace] = []
+    @Published var pods: [Space] = []
+    @Published var isPodsExpanded: Bool = true
+    /// Ruby sId of the signed-in user, used to scope tool-approval prompts to their own turns.
+    @Published var currentUserSId: String?
+
+    private let tokenProvider: TokenProvider
+    private var titleObserver: ConversationTitleObserver?
+    private var readObserver: ConversationReadObserver?
+    private var hasLoaded = false
+
+    init(tokenProvider: TokenProvider) {
+        self.tokenProvider = tokenProvider
+        self.titleObserver = ConversationTitleObserver { [weak self] conversationId, title in
+            self?.conversations.updateTitle(conversationId: conversationId, title: title)
+        }
+        self.readObserver = ConversationReadObserver { [weak self] conversationId in
+            self?.markConversationsAsRead([conversationId])
+        }
+    }
+
+    func load() async {
+        // Initial load only. The view re-renders into the loading state on every
+        // workspace switch, which re-triggers the load `.task`; without this guard
+        // that re-fetches /api/user and reverts `workspace` to the session's default,
+        // sending us back to the previous workspace's endpoints.
+        guard !hasLoaded else { return }
+        state = .loading
+        do {
+            let rubyUser = try await AuthService.fetchRubyUser(tokenProvider: tokenProvider)
+            currentUserSId = rubyUser.sId
+            workspaces = rubyUser.workspaces
+
+            let workspaceId = rubyUser.selectedWorkspace ?? rubyUser.workspaces.first?.sId
+            guard let workspaceId else {
+                state = .error("No workspace found")
+                return
+            }
+
+            workspace = rubyUser.workspaces.first { $0.sId == workspaceId }
+            async let convosTask: Void = loadConversations()
+            async let podsTask: Void = loadPods()
+            try await convosTask
+            await podsTask
+            hasLoaded = true
+        } catch {
+            logger.error("Failed to load conversations: \(error)")
+            state = .error(error.localizedDescription)
+        }
+    }
+
+    func switchWorkspace(_ newWorkspace: Workspace) async {
+        workspace = newWorkspace
+        conversations = []
+        pods = []
+        state = .loading
+        do {
+            async let convosTask: Void = loadConversations()
+            async let podsTask: Void = loadPods()
+            try await convosTask
+            await podsTask
+        } catch {
+            logger.error("Failed to load conversations: \(error)")
+            state = .error(error.localizedDescription)
+        }
+    }
+
+    func refresh() async {
+        do {
+            async let convosTask: Void = loadConversations()
+            async let podsTask: Void = loadPods()
+            try await convosTask
+            await podsTask
+        } catch {
+            logger.error("Failed to refresh conversations: \(error)")
+        }
+    }
+
+    private func loadConversations() async throws {
+        guard let workspaceId = workspace?.sId else { return }
+        let response = try await ConversationService.fetchConversations(
+            workspaceId: workspaceId,
+            tokenProvider: tokenProvider
+        )
+        conversations = response.conversations
+        state = .loaded
+    }
+
+    private func loadPods() async {
+        guard let workspaceId = workspace?.sId else { return }
+        do {
+            pods = try await SpaceService.fetchPods(
+                workspaceId: workspaceId,
+                tokenProvider: tokenProvider
+            )
+        } catch {
+            logger.error("Failed to load pods: \(error)")
+        }
+    }
+
+    func markConversationsAsRead(_ ids: Set<String>) {
+        for index in conversations.indices where ids.contains(conversations[index].sId) {
+            conversations[index].unread = false
+            conversations[index].actionRequired = false
+        }
+    }
+
+    func toggleReadStatus(for conversation: Conversation) async {
+        guard let workspaceId = workspace?.sId else { return }
+
+        // Optimistically update local state.
+        let wasUnread = conversation.unread || conversation.actionRequired
+        if let index = conversations.firstIndex(where: { $0.sId == conversation.sId }) {
+            conversations[index].unread = !wasUnread
+            conversations[index].actionRequired = false
+        }
+
+        do {
+            if wasUnread {
+                try await ConversationService.markAsRead(
+                    workspaceId: workspaceId,
+                    conversationId: conversation.sId,
+                    tokenProvider: tokenProvider
+                )
+            } else {
+                try await ConversationService.markAsUnread(
+                    workspaceId: workspaceId,
+                    conversationId: conversation.sId,
+                    tokenProvider: tokenProvider
+                )
+            }
+        } catch {
+            // Revert on failure.
+            logger.error("Failed to toggle read status: \(error)")
+            if let index = conversations.firstIndex(where: { $0.sId == conversation.sId }) {
+                conversations[index].unread = conversation.unread
+                conversations[index].actionRequired = conversation.actionRequired
+            }
+        }
+    }
+
+    func deleteConversation(_ conversation: Conversation) async {
+        guard let workspaceId = workspace?.sId else { return }
+
+        // Optimistically remove from local state.
+        let snapshot = conversations
+        conversations.removeAll { $0.sId == conversation.sId }
+
+        do {
+            try await ConversationService.deleteConversation(
+                workspaceId: workspaceId,
+                conversationId: conversation.sId,
+                tokenProvider: tokenProvider
+            )
+        } catch {
+            // Revert on failure.
+            logger.error("Failed to delete conversation: \(error)")
+            conversations = snapshot
+        }
+    }
+
+    var unreadConversations: [Conversation] {
+        conversations.filter { $0.unread || $0.actionRequired }
+    }
+
+    var filteredConversations: [Conversation] {
+        ConversationGrouping.filtered(conversations, by: searchText)
+    }
+
+    var groupedConversations: [(String, [Conversation])] {
+        let filtered = filteredConversations
+        let dateGroups = ConversationGrouping.groupedByDate(filtered)
+
+        // Prepend Inbox section: unread or actionRequired conversations.
+        let inboxIds = Set(unreadConversations.map(\.sId))
+        let inboxConversations = filtered.filter { inboxIds.contains($0.sId) }
+        guard !inboxConversations.isEmpty else { return dateGroups }
+
+        var result: [(String, [Conversation])] = [("Inbox (\(inboxConversations.count))", inboxConversations)]
+        for (label, convos) in dateGroups {
+            let nonInbox = convos.filter { !inboxIds.contains($0.sId) }
+            if !nonInbox.isEmpty {
+                result.append((label, nonInbox))
+            }
+        }
+        return result
+    }
+}

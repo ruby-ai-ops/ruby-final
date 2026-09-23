@@ -8,7 +8,7 @@ import {
   registerDevFlagOverrides,
 } from "./devFlagOverrideStore";
 
-const FEATURE_FLAG_OVERRIDES_KEY = "dust_ff_overrides";
+const FEATURE_FLAG_OVERRIDES_KEY = "ruby_ff_overrides";
 
 type FeatureFlagOverrides = Partial<Record<WhitelistableFeature, boolean>>;
 

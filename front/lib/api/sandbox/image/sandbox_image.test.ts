@@ -80,13 +80,13 @@ describe("SandboxImage.fromSandboxImage()", () => {
 
   test("clones image preserving imageId", () => {
     const original = SandboxImage.fromDocker("ubuntu:22.04").register({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "production",
     });
     const cloned = SandboxImage.fromSandboxImage(original);
 
     expect(cloned.imageId).toEqual({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "production",
     });
   });
@@ -132,15 +132,15 @@ describe("SandboxImage.runCmd()", () => {
 describe("SandboxImage.registerTool()", () => {
   test("registers single tool without installCmd", () => {
     const image = SandboxImage.fromDocker("ubuntu:22.04").registerTool({
-      name: "dsbx",
-      description: "Dust CLI",
+      name: "rbx",
+      description: "Ruby CLI",
       runtime: "system",
     });
 
     expect(image.operations).toHaveLength(0);
     expect(image.tools).toHaveLength(1);
-    expect(image.tools[0].name).toBe("dsbx");
-    expect(image.tools[0].description).toBe("Dust CLI");
+    expect(image.tools[0].name).toBe("rbx");
+    expect(image.tools[0].description).toBe("Ruby CLI");
     expect(image.tools[0].runtime).toBe("system");
   });
 
@@ -594,14 +594,14 @@ describe("SandboxImage.toCreateConfig()", () => {
 
   test("returns imageId when registered", () => {
     const image = SandboxImage.fromDocker("ubuntu:22.04").register({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "production",
     });
 
     const config = image.toCreateConfig();
 
     expect(config.imageId).toEqual({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "production",
     });
   });
@@ -610,12 +610,12 @@ describe("SandboxImage.toCreateConfig()", () => {
 describe("SandboxImage.register()", () => {
   test("sets imageId with string tag", () => {
     const image = SandboxImage.fromDocker("ubuntu:22.04").register({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "production",
     });
 
     expect(image.imageId).toEqual({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "production",
     });
   });
@@ -623,14 +623,14 @@ describe("SandboxImage.register()", () => {
   test("returns new image instance", () => {
     const original = SandboxImage.fromDocker("ubuntu:22.04");
     const modified = original.register({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "production",
     });
 
     expect(modified).not.toBe(original);
     expect(original.imageId).toBeUndefined();
     expect(modified.imageId).toEqual({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "production",
     });
   });
@@ -643,10 +643,10 @@ describe("SandboxImage.register()", () => {
         runtime: "system",
       })
       .withResources({ vcpu: 2, memoryMb: 1024 })
-      .register({ imageName: "dust-base", tag: "staging" })
+      .register({ imageName: "ruby-base", tag: "staging" })
       .setRunEnv({ DEBUG: "true" });
 
-    expect(image.imageId).toEqual({ imageName: "dust-base", tag: "staging" });
+    expect(image.imageId).toEqual({ imageName: "ruby-base", tag: "staging" });
     expect(image.tools).toHaveLength(1);
     expect(image.resources.vcpu).toBe(2);
     expect(image.runEnv).toEqual({ DEBUG: "true" });

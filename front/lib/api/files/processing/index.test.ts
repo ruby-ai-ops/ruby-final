@@ -193,7 +193,7 @@ describe("conversation use case", () => {
     it("Slack thread attachment is supported", () => {
       expect(
         isUploadSupportedForContentType({
-          contentType: "text/vnd.dust.attachment.slack.thread",
+          contentType: "text/vnd.ruby.attachment.slack.thread",
           useCase: "conversation",
         })
       ).toBe(true);
@@ -414,7 +414,7 @@ describe("other use cases", () => {
     it("section JSON is supported for tool_output", () => {
       expect(
         isUploadSupportedForContentType({
-          contentType: "application/vnd.dust.section.json",
+          contentType: "application/vnd.ruby.section.json",
           useCase: "tool_output",
         })
       ).toBe(true);

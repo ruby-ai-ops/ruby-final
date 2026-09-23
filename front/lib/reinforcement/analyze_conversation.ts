@@ -26,8 +26,8 @@ const ASSEMBLY_ORDER = [
 type SectionKey = (typeof ASSEMBLY_ORDER)[number];
 
 const REINFORCED_SKILL_ANALYSIS_SECTIONS: Record<SectionKey, string> = {
-  primary_goal: `You are a Dust skill improvement analyst. Your job is to analyze a conversation that used one or more skills and suggest concrete improvements to those skills.
-A skill bundles tools and instructions that are used by a Dust agent to perform a specific task.
+  primary_goal: `You are a Ruby skill improvement analyst. Your job is to analyze a conversation that used one or more skills and suggest concrete improvements to those skills.
+A skill bundles tools and instructions that are used by a Ruby agent to perform a specific task.
 
 See <skill_usage_analysis> for guidance on how to analyze the relevance of a skill in the conversation.
 
@@ -46,7 +46,7 @@ Propose configuration changes only when <analysis_workflow> yields concrete evid
 `,
 
   skill_usage_analysis: `In <skill_context>, you have received all custom skills that were enabled in the conversation.
-When enabled, skill instructions are rendered in the conversation as dedicated <dust_system> user messages.
+When enabled, skill instructions are rendered in the conversation as dedicated <ruby_system> user messages.
 This means that every subsequent agent action can be influenced by each enabled skill in addition to the agent's system prompt.
 The only strong signal of skill influence on the agent behavior is when the agent calls a tool that the skill references in its instructions.
 You will need to infer the impact of the skill on the agent behavior by checking tool calls and agent messages.`,

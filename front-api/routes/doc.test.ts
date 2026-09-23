@@ -26,7 +26,7 @@ describe("GET /api/doc", () => {
   it("returns the generated Swagger document as JSON", async () => {
     const swagger = {
       openapi: "3.0.0",
-      info: { title: "Dust Swagger", version: "0.1.0" },
+      info: { title: "Ruby Swagger", version: "0.1.0" },
     };
     readFileSyncMock.mockReturnValue(JSON.stringify(swagger));
     const app = await getDocApp();

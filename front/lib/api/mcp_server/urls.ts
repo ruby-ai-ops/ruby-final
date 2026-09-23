@@ -20,11 +20,11 @@ const MCP_OAUTH_PROXY_ENABLED = true;
  * document's `redirect_uris`, which lists every region's finalize callback.
  */
 export const MCP_CLIENT_ID_METADATA_DOCUMENT_URL =
-  "https://app.dust.tt/.well-known/oauth-client.json";
+  "https://app.ruby.ad/.well-known/oauth-client.json";
 
 /**
  * Whether MCP OAuth metadata/token/registration should be proxied through the
- * Dust MCP host. Enabled in development only; never active in production.
+ * Ruby MCP host. Enabled in development only; never active in production.
  * Toggle via `MCP_OAUTH_PROXY_ENABLED` in this file.
  */
 export function shouldUseProxy(): boolean {
@@ -34,8 +34,8 @@ export function shouldUseProxy(): boolean {
 /**
  * AuthKit Connect domain for MCP OAuth (e.g. `your-env.authkit.app`).
  *
- * This is NOT the same as `WORKOS_ISSUER_URL` / `auth-api.dust.tt`, which is
- * Dust's WorkOS API hostname used for SDK calls and SSO session JWT issuer.
+ * This is NOT the same as `WORKOS_ISSUER_URL` / `auth-api.ruby.ad`, which is
+ * Ruby's WorkOS API hostname used for SDK calls and SSO session JWT issuer.
  * Connect OAuth metadata and JWKS live on the AuthKit domain — find it in the
  * WorkOS dashboard under Connect → Configuration.
  */
@@ -60,11 +60,11 @@ export function getMcpResourceServerUrl(): string {
   // In dev, we do not have the magical ingress redirect so we need to use the API url.
   if (isDevelopment()) {
     return normalizeOAuthUrl(
-      EnvironmentConfig.getEnvVariable("DUST_FRONT_API").trim() + "/mcp"
+      EnvironmentConfig.getEnvVariable("RUBY_FRONT_API").trim() + "/mcp"
     );
   }
   return normalizeOAuthUrl(
-    EnvironmentConfig.getEnvVariable("DUST_CLIENT_FACING_URL").trim() + "/mcp"
+    EnvironmentConfig.getEnvVariable("RUBY_CLIENT_FACING_URL").trim() + "/mcp"
   );
 }
 

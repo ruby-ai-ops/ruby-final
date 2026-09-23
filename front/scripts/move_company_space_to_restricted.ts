@@ -113,7 +113,7 @@ makeScript(
         "DRY RUN — planned actions"
       );
       logger.warn(
-        "WARNING: @dust agent will lose data access after this migration (by design)."
+        "WARNING: @ruby agent will lose data access after this migration (by design)."
       );
       return;
     }
@@ -236,7 +236,7 @@ makeScript(
       );
 
       logger.warn(
-        "WARNING: @dust agent now has no data sources (by design). " +
+        "WARNING: @ruby agent now has no data sources (by design). " +
           "Users must be added to the restricted space to access existing data."
       );
     });

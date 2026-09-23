@@ -1,6 +1,6 @@
 import { applyMembershipSeatChangesForWorkspace } from "@app/lib/api/membership_seats";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { getActiveContract } from "@app/lib/metronome/plan_type";
 import {
   getProductSeatTypes,
@@ -415,7 +415,7 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       { group: GroupResource; addedUsers: UserType[] },
-      DustError<
+      RubyError<
         | "unauthorized"
         | "name_conflict"
         | "user_not_found"
@@ -429,7 +429,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     // (ROLE_REGISTRY entry) instead of the role, in a follow-up PR.
     if (!auth.isManager()) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           `Only workspace admins and ${MANAGER_ROLE_NAME}s can create groups.`
         )
@@ -440,7 +440,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
     if (await GroupResource.groupExistsByName(auth, name)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "name_conflict",
           `A group named "${name}" already exists in this workspace.`
         )
@@ -453,7 +453,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     const users = await UserResource.fetchByIds(uniqueMemberIds);
     if (users.length !== uniqueMemberIds.length) {
       return new Err(
-        new DustError("user_not_found", "Some users were not found.")
+        new RubyError("user_not_found", "Some users were not found.")
       );
     }
     const { memberships: workspaceMemberships } =
@@ -463,7 +463,7 @@ export class GroupResource extends BaseResource<GroupModel> {
       });
     if (workspaceMemberships.length !== users.length) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_found",
           "Cannot add: users are not members of the workspace"
         )
@@ -709,7 +709,7 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       GroupResource,
-      DustError<"group_not_found" | "unauthorized" | "invalid_id">
+      RubyError<"group_not_found" | "unauthorized" | "invalid_id">
     >
   > {
     const groupRes = await this.fetchByIds(auth, [id]);
@@ -727,14 +727,14 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       GroupResource[],
-      DustError<"group_not_found" | "unauthorized" | "invalid_id">
+      RubyError<"group_not_found" | "unauthorized" | "invalid_id">
     >
   > {
     const groupModelIds = removeNulls(
       ids.map((id) => getResourceIdFromSId(id))
     );
     if (groupModelIds.length !== ids.length) {
-      return new Err(new DustError("invalid_id", "Invalid id"));
+      return new Err(new RubyError("invalid_id", "Invalid id"));
     }
 
     const groups = await this.baseFetch(auth, {
@@ -747,7 +747,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
     if (groups.length !== ids.length) {
       return new Err(
-        new DustError(
+        new RubyError(
           "group_not_found",
           ids.length === 1 ? "Group not found" : "Some groups were not found"
         )
@@ -765,7 +765,7 @@ export class GroupResource extends BaseResource<GroupModel> {
         "[GroupResource.fetchByIds] User cannot read some groups"
       );
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Only `admins` or members can view groups"
         )
@@ -853,7 +853,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
   static async fetchWorkspaceGlobalGroup(
     auth: Authenticator
-  ): Promise<Result<GroupResource, DustError<"group_not_found">>> {
+  ): Promise<Result<GroupResource, RubyError<"group_not_found">>> {
     const [group] = await this.baseFetch(auth, {
       where: {
         kind: "global",
@@ -862,7 +862,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
     if (!group) {
       return new Err(
-        new DustError("group_not_found", "Global group not found")
+        new RubyError("group_not_found", "Global group not found")
       );
     }
 
@@ -929,7 +929,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
     // Single combined query to fetch both the global group (implicit membership for all workspace members)
     // and groups the user explicitly belongs to via group_memberships.
-    // eslint-disable-next-line dust/no-raw-sql -- Raw query to optimize memory usage as people may have a lot of groups.
+    // eslint-disable-next-line ruby/no-raw-sql -- Raw query to optimize memory usage as people may have a lot of groups.
     // biome-ignore lint/plugin: Raw query to optimize memory usage as people may have a lot of groups.
     const groups = await frontSequelize.query<{ id: ModelId; kind: string }>(
       `
@@ -1438,7 +1438,7 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       undefined,
-      DustError<
+      RubyError<
         | "unauthorized"
         | "user_not_found"
         | "user_already_member"
@@ -1466,7 +1466,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
     if (userResources.length !== userIds.length) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_found",
           userIds.length === 1 ? "User not found" : "Some users were not found"
         )
@@ -1484,7 +1484,7 @@ export class GroupResource extends BaseResource<GroupModel> {
       new Set(workspaceMemberships.map((m) => m.userId)).size !== userIds.length
     ) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_found",
           userIds.length === 1
             ? "Cannot add: user is not a member of the workspace"
@@ -1501,7 +1501,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     );
     if (alreadyActiveUserIds.length > 0) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_already_member",
           alreadyActiveUserIds.length === 1
             ? "Cannot add: user is already a member of the group"
@@ -1571,7 +1571,7 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       undefined,
-      DustError<
+      RubyError<
         | "unauthorized"
         | "user_not_found"
         | "user_already_member"
@@ -1611,7 +1611,7 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       undefined,
-      DustError<
+      RubyError<
         | "unauthorized"
         | "user_not_found"
         | "user_not_member"
@@ -1636,7 +1636,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     });
     if (userResources.length !== userIds.length) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_found",
           userIds.length === 1 ? "User not found" : "Users not found"
         )
@@ -1650,7 +1650,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
     if (total !== userIds.length) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_member",
           userIds.length === 1
             ? "Cannot remove: user is not a member of the workspace"
@@ -1673,7 +1673,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     });
     if (groupMembershipCount !== userIds.length) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_member",
           userIds.length === 1
             ? "Cannot remove: user is not a member of the group"
@@ -1748,7 +1748,7 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       undefined,
-      DustError<
+      RubyError<
         | "unauthorized"
         | "user_not_found"
         | "user_not_member"
@@ -1778,7 +1778,7 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       { addedUsers: UserType[]; removedUsers: UserType[] },
-      DustError<
+      RubyError<
         | "unauthorized"
         | "user_not_found"
         | "user_not_member"
@@ -2045,7 +2045,7 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       { addedUsers: UserType[]; removedUsers: UserType[] },
-      DustError<
+      RubyError<
         | "unauthorized"
         | "name_conflict"
         | "user_not_found"
@@ -2059,14 +2059,14 @@ export class GroupResource extends BaseResource<GroupModel> {
     >
   > {
     if (!this.isRegularManual()) {
-      return new Err(new DustError("group_not_found", "Group not found."));
+      return new Err(new RubyError("group_not_found", "Group not found."));
     }
 
     // Editing a regular_manual group (name/members) requires `write` on it
     // (workspace admins and managers).
     if (!auth.can("write", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           `Only workspace admins and ${MANAGER_ROLE_NAME}s can update groups.`
         )
@@ -2080,7 +2080,7 @@ export class GroupResource extends BaseResource<GroupModel> {
       !this.canManageMembersGivenGrantedRole(auth)
     ) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Only workspace admins can manage members of a group that grants the admin role."
         )
@@ -2090,7 +2090,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     // Checked before any mutation so a rejected update leaves both name and members untouched.
     if (memberIds !== undefined && memberIds.length === 0) {
       return new Err(
-        new DustError("last_group_member", LAST_GROUP_MEMBER_ERROR_MESSAGE)
+        new RubyError("last_group_member", LAST_GROUP_MEMBER_ERROR_MESSAGE)
       );
     }
 
@@ -2102,7 +2102,7 @@ export class GroupResource extends BaseResource<GroupModel> {
         (await GroupResource.groupExistsByName(auth, name))
       ) {
         return new Err(
-          new DustError(
+          new RubyError(
             "name_conflict",
             `A group named "${name}" already exists in this workspace.`
           )
@@ -2111,7 +2111,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
       const updateRes = await this.updateName(auth, name);
       if (updateRes.isErr()) {
-        return new Err(new DustError("unauthorized", updateRes.error.message));
+        return new Err(new RubyError("unauthorized", updateRes.error.message));
       }
     }
 
@@ -2120,7 +2120,7 @@ export class GroupResource extends BaseResource<GroupModel> {
       const users = await UserResource.fetchByIds(uniqueMemberIds);
       if (users.length !== uniqueMemberIds.length) {
         return new Err(
-          new DustError("user_not_found", "Some users were not found.")
+          new RubyError("user_not_found", "Some users were not found.")
         );
       }
 
@@ -2155,7 +2155,7 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       { addedUsers: UserType[]; removedUsers: UserType[] },
-      DustError<
+      RubyError<
         | "unauthorized"
         | "group_not_found"
         | "user_not_found"
@@ -2168,14 +2168,14 @@ export class GroupResource extends BaseResource<GroupModel> {
     >
   > {
     if (!this.isRegularManual()) {
-      return new Err(new DustError("group_not_found", "Group not found."));
+      return new Err(new RubyError("group_not_found", "Group not found."));
     }
 
     // Editing a regular_manual group (name/members) requires `write` on it
     // (workspace admins and managers).
     if (!auth.can("write", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           `Only workspace admins and ${MANAGER_ROLE_NAME}s can update groups.`
         )
@@ -2186,7 +2186,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     // admins, so it is restricted to workspace admins.
     if (!this.canManageMembersGivenGrantedRole(auth)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Only workspace admins can manage members of a group that grants the admin role."
         )
@@ -2212,7 +2212,7 @@ export class GroupResource extends BaseResource<GroupModel> {
       removedUsers.length !== uniqueRemoveUserIds.length
     ) {
       return new Err(
-        new DustError("user_not_found", "Some users were not found.")
+        new RubyError("user_not_found", "Some users were not found.")
       );
     }
 
@@ -2235,7 +2235,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     };
     if (!uniqueAddUserIds.every(isActiveWorkspaceMember)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_found",
           "Cannot add: users are not members of the workspace"
         )
@@ -2243,7 +2243,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     }
     if (!uniqueRemoveUserIds.every(isActiveWorkspaceMember)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_member",
           "Cannot remove: users are not members of the workspace"
         )
@@ -2255,7 +2255,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     );
     if (uniqueAddUserIds.some((userId) => currentMemberIds.has(userId))) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_already_member",
           "Cannot add: users are already members of the group"
         )
@@ -2263,7 +2263,7 @@ export class GroupResource extends BaseResource<GroupModel> {
     }
     if (!uniqueRemoveUserIds.every((userId) => currentMemberIds.has(userId))) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_member",
           "Cannot remove: users are not members of the group"
         )
@@ -2278,7 +2278,7 @@ export class GroupResource extends BaseResource<GroupModel> {
       uniqueAddUserIds.filter((userId) => !removedUserIds.has(userId)).length;
     if (remainingCount === 0) {
       return new Err(
-        new DustError("last_group_member", LAST_GROUP_MEMBER_ERROR_MESSAGE)
+        new RubyError("last_group_member", LAST_GROUP_MEMBER_ERROR_MESSAGE)
       );
     }
 
@@ -2308,18 +2308,18 @@ export class GroupResource extends BaseResource<GroupModel> {
   ): Promise<
     Result<
       undefined,
-      DustError<"unauthorized" | "group_not_found" | "internal_error">
+      RubyError<"unauthorized" | "group_not_found" | "internal_error">
     >
   > {
     if (!this.isRegularManual()) {
-      return new Err(new DustError("group_not_found", "Group not found."));
+      return new Err(new RubyError("group_not_found", "Group not found."));
     }
 
     // Deleting a regular_manual group requires `admin` on it (workspace admins
     // and managers).
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           `Only workspace admins and ${MANAGER_ROLE_NAME}s can delete groups.`
         )
@@ -2328,7 +2328,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
     const deleteRes = await this.delete(auth);
     if (deleteRes.isErr()) {
-      return new Err(new DustError("internal_error", deleteRes.error.message));
+      return new Err(new RubyError("internal_error", deleteRes.error.message));
     }
 
     return new Ok(undefined);
@@ -2624,7 +2624,7 @@ export class GroupResource extends BaseResource<GroupModel> {
   /**
    * @cc [owner:tdraier,label:security] role-sync-admin-role-actor-guard
    * This sync MUST NOT change a user's role to or from "admin" unless the acting
-   * `auth` is a workspace admin or a Poke super user — mirroring the direct
+   * `auth` is a workspace admin or a Admin super user — mirroring the direct
    * role-change guard (`members/[uId]` PATCH). A manager triggering a role-
    * granting group membership change (add/remove on a manager-granting group,
    * which managers may edit) MUST NOT be able to demote an admin as a side
@@ -2677,11 +2677,11 @@ export class GroupResource extends BaseResource<GroupModel> {
     const actingUser = auth.user();
     const author = actingUser?.toJSON() ?? "no-author";
 
-    // Only admins (and Poke super users) may change the admin role — mirroring
+    // Only admins (and Admin super users) may change the admin role — mirroring
     // the direct role-change guard. Without this, a manager could demote an
     // admin (even the last admin) by adding them to / removing them from a
     // manager-granting group, bypassing that guard.
-    const canModifyAdminRole = auth.isAdmin() || auth.isDustSuperUser();
+    const canModifyAdminRole = auth.isAdmin() || auth.isRubySuperUser();
 
     // Load the workspace's role-granting groups (and their active memberships)
     // once, then derive each user's roles from that, rather than refetching a
@@ -2794,11 +2794,11 @@ export class GroupResource extends BaseResource<GroupModel> {
     auth: Authenticator,
     grantedRole: GroupGrantableRole | null
   ): Promise<
-    Result<undefined, DustError<"unauthorized" | "invalid_group_kind">>
+    Result<undefined, RubyError<"unauthorized" | "invalid_group_kind">>
   > {
     if (!auth.isAdmin()) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Only workspace admins can map a group to a role."
         )
@@ -2807,7 +2807,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
     if (!isManageableGroupKind(this.kind)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_group_kind",
           "Only provisioned and manually-managed groups can be mapped to a role."
         )
@@ -3255,11 +3255,11 @@ export class GroupResource extends BaseResource<GroupModel> {
     auth: Authenticator,
     grantedSeatType: GroupGrantableSeatType | null
   ): Promise<
-    Result<undefined, DustError<"unauthorized" | "invalid_group_kind">>
+    Result<undefined, RubyError<"unauthorized" | "invalid_group_kind">>
   > {
     if (!auth.isAdmin()) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Only workspace admins can map a group to a seat type."
         )
@@ -3268,7 +3268,7 @@ export class GroupResource extends BaseResource<GroupModel> {
 
     if (!isManageableGroupKind(this.kind)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_group_kind",
           "Only provisioned and manually-managed groups can be mapped to a seat type."
         )

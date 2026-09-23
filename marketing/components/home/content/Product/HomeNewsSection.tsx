@@ -14,7 +14,7 @@ const SEE_ALL_PRESS_HREF = "/home/about";
 
 // News & press section per Figma node 3554:4468, conformed to the page's
 // section conventions (bg-background, py-24, max-w-1180). Quiet editorial
-// list with hover delight: outlet color cycles through the Dust palette,
+// list with hover delight: outlet color cycles through the Ruby palette,
 // chevron slides in on hover, title nudges right, border accents under.
 //
 // News data is marketing-managed in a Google Sheet and fetched at build
@@ -71,7 +71,7 @@ export function HomeNewsSection({ news }: HomeNewsSectionProps = {}) {
                     className="group flex items-center gap-6 border-b border-border py-5 transition-[border-color,transform] duration-300 ease-out hover:border-foreground/30 active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
                   >
                     <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                      <div className="flex items-center gap-2 font-mono text-[11px] font-medium uppercase leading-[16px] tracking-[0.04em]">
+                      <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] font-medium uppercase leading-[16px] tracking-[0.04em]">
                         <span className="text-blue-800">{item.source}</span>
                         <span aria-hidden className="text-muted-foreground/60">
                           ·
@@ -93,7 +93,7 @@ export function HomeNewsSection({ news }: HomeNewsSectionProps = {}) {
                       strokeWidth="1.6"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="-translate-x-2 flex-shrink-0 text-foreground/60 opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:text-foreground group-hover:opacity-100 motion-reduce:translate-x-0 motion-reduce:transition-none"
+                      className="-translate-x-2 flex-shrink-0 text-foreground/60 opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:text-foreground group-hover:opacity-100 motion-reduce:translate-x-0 motion-reduce:transition-none [@media(pointer:coarse)]:translate-x-0 [@media(pointer:coarse)]:opacity-100"
                       aria-hidden="true"
                     >
                       <line x1="3" y1="9" x2="14" y2="9" />

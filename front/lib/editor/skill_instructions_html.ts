@@ -16,7 +16,7 @@ import {
   postProcessMarkdown,
   preprocessMarkdownForEditor,
 } from "@app/lib/editor/skill_instructions_preprocessing";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { generateShortBlockId } from "@app/lib/generate_short_block_id";
 import { parseSkillReferenceTag } from "@app/lib/skills/format";
 import { parseToolTag } from "@app/lib/tools/format";
@@ -280,7 +280,7 @@ export interface AppliedSkillInstructions {
 export function applyInstructionEditsToHtml(
   instructionsHtml: string,
   edits: { targetBlockId: string; content: string }[]
-): Result<AppliedSkillInstructions, DustError<"invalid_request_error">> {
+): Result<AppliedSkillInstructions, RubyError<"invalid_request_error">> {
   const {
     createTransform,
     document,
@@ -304,7 +304,7 @@ export function applyInstructionEditsToHtml(
     });
     if (newBlocks.length === 0) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_request_error",
           `The edit targeting "${targetBlockId}" has no content.`
         )
@@ -314,7 +314,7 @@ export function applyInstructionEditsToHtml(
     const target = findBlockByBlockId(doc, targetBlockId);
     if (!target) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_request_error",
           `The instructions no longer contain the block "${targetBlockId}" this edit targets.`
         )

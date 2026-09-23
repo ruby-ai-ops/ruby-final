@@ -1,7 +1,7 @@
 import { getLightConversation } from "@app/lib/api/assistant/conversation/fetch";
 import { getConversationApiError } from "@app/lib/api/assistant/conversation/helper";
 import { renderConversationAsText } from "@app/lib/api/assistant/conversation/render_as_text";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { mcpJsonResponse } from "../response";
@@ -22,7 +22,7 @@ const inputSchema = {
 };
 
 export function registerConversationsGetMessagesTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "get_conversation_messages",
     {

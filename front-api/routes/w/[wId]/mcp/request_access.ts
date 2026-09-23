@@ -80,7 +80,7 @@ app.post(
       to: mcpServerView.editedByUser.email,
       from: config.getSupportEmailAddress(),
       replyTo: emailRequester,
-      subject: `[Dust] Tools request from ${emailRequester}`,
+      subject: `[Ruby] Tools request from ${emailRequester}`,
       body,
     });
 

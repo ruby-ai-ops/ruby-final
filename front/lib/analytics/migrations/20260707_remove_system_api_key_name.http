@@ -2,7 +2,7 @@ POST /front.agent_message_analytics_2/_update_by_query
 {
   "query": {
     "term": {
-      "api_key_name": "DustSystemKey"
+      "api_key_name": "RubySystemKey"
     }
   },
   "script": {

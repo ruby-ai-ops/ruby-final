@@ -4,7 +4,7 @@ import { useCellContext } from "@app/lib/auth/CellContext";
 import { useUpdateWorkspaceRegionalModelsOnly } from "@app/lib/swr/workspaces";
 import type { RegionType } from "@app/types/region";
 import type { LightWorkspaceType } from "@app/types/user";
-import { ContextItem, SliderToggle } from "@dust-tt/sparkle";
+import { ContextItem, SliderToggle } from "@ruby-ai/ui";
 
 interface RegionalModelsOnlyToggleConfig {
   label: string;

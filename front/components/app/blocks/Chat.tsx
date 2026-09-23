@@ -2,7 +2,7 @@ import "@uiw/react-textarea-code-editor/dist.css";
 
 import ModelPicker from "@app/components/app/ModelPicker";
 import { SuspensedCodeEditor } from "@app/components/SuspensedCodeEditor";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { supportsResponseFormat } from "@app/lib/providers";
 import { classNames, shallowBlockClone } from "@app/lib/utils";
 import type {
@@ -20,7 +20,7 @@ import {
   Input,
   Label,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 import Block from "./Block";

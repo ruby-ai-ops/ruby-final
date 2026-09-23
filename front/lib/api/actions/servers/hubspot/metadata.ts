@@ -969,7 +969,7 @@ export const HUBSPOT_SERVER = {
       supported_use_cases: ["platform_actions", "personal_actions"] as const,
     },
     icon: "HubspotLogo",
-    documentationUrl: "https://docs.dust.tt/docs/hubspot",
+    documentationUrl: "https://docs.ruby.ad/docs/hubspot",
   },
   tools: HUBSPOT_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

@@ -3,9 +3,9 @@ import { config as multiRegionsConfig } from "@app/lib/api/regions/config";
 import type { Authenticator } from "@app/lib/auth";
 import { getFeatureFlags } from "@app/lib/auth";
 import { getBatchEndpoints } from "@app/lib/llms/batch";
-import type { DustBatchEndpointConstructor } from "@app/lib/llms/batch/dust_batch_endpoint";
+import type { RubyBatchEndpointConstructor } from "@app/lib/llms/batch/ruby_batch_endpoint";
 import { getStreamEndpoints } from "@app/lib/llms/stream";
-import type { DustStreamEndpointConstructor } from "@app/lib/llms/stream/dust_stream_endpoint";
+import type { RubyStreamEndpointConstructor } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import type {
   EndpointConfig,
   Where,
@@ -16,7 +16,7 @@ import { sortEndpointsByPreferredRegion } from "@app/lib/llms/utils/sort_endpoin
 import type { Region } from "@app/lib/model_constructors/types/regions";
 import {
   isCreditPricedPlanPrefix,
-  isEnterpriseOrDust,
+  isEnterpriseOrRuby,
 } from "@app/lib/plans/plan_codes";
 import type { ModelIdType } from "@app/types/assistant/models/types";
 
@@ -40,7 +40,7 @@ export async function selectPreferredEndpointForWorkspace<
   const endpoints = getEndpoints(
     {
       featureFlags,
-      isEnterprise: isEnterpriseOrDust(plan),
+      isEnterprise: isEnterpriseOrRuby(plan),
       isCreditPriced: isCreditPricedPlanPrefix(plan.code),
       isAdvancedModels: plan.hasAdvancedModelAccess,
     },
@@ -59,7 +59,7 @@ export async function selectPreferredStreamEndpointForWorkspace(
   filter: Where<EndpointConfig>
 ) {
   const streamEndpoint =
-    await selectPreferredEndpointForWorkspace<DustStreamEndpointConstructor>(
+    await selectPreferredEndpointForWorkspace<RubyStreamEndpointConstructor>(
       auth,
       getStreamEndpoints,
       filter
@@ -73,7 +73,7 @@ export async function selectPreferredBatchEndpointForWorkspace(
   filter: Where<EndpointConfig>
 ) {
   const batchEndpoint =
-    await selectPreferredEndpointForWorkspace<DustBatchEndpointConstructor>(
+    await selectPreferredEndpointForWorkspace<RubyBatchEndpointConstructor>(
       auth,
       getBatchEndpoints,
       filter

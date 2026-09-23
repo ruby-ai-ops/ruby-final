@@ -67,11 +67,11 @@ export function renderEquippedSkillsUserMessage(
   );
 
   return renderSkillMessage(
-    `<dust_system>\n` +
+    `<ruby_system>\n` +
       `The following skills are available for use with the ${enableSkillToolName} tool:\n\n` +
       `${renderSkillList(equippedSkills)}\n\n` +
       `${EXACT_SKILL_NAME_INSTRUCTION}\n` +
-      `</dust_system>`,
+      `</ruby_system>`,
     { name: "system" }
   );
 }
@@ -89,10 +89,10 @@ export function renderFavoriteSkillsUserMessage(
   );
 
   return renderSkillMessage(
-    `<dust_system>\n` +
+    `<ruby_system>\n` +
       `The following skills were set as favorites by the user and are also available for use with the ${enableSkillToolName} tool:\n\n` +
       `${renderSkillList(favoriteSkills)}\n` +
-      `</dust_system>`,
+      `</ruby_system>`,
     { name: "user" }
   );
 }
@@ -105,7 +105,7 @@ export function renderEnabledSkillUserMessageFromInstructions({
   const skillInstructions = getEnabledSkillInstructions(skill);
 
   return renderSkillMessage(
-    `<dust_system>\n${skillInstructions}\n</dust_system>`,
+    `<ruby_system>\n${skillInstructions}\n</ruby_system>`,
     { name: "system" }
   );
 }

@@ -10,7 +10,7 @@ import type { CreditUsageTarget } from "@app/types/api/credits/usage_status";
 import type { MaxAwuCreditsTimeframeType } from "@app/types/plan";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import { pluralize } from "@app/types/shared/utils/string_utils";
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 
 interface CreditUsageStateBase {
   usedPercentage: number;

@@ -1,6 +1,6 @@
 import { ImgBlock } from "@marketing/components/home/ContentBlocks";
 import { H2, P } from "@marketing/components/home/ContentComponents";
-import { Div3D, Hover3D } from "@dust-tt/sparkle";
+import { Div3D, Hover3D } from "@ruby-ai/ui";
 
 export interface UseCaseProps {
   sectionTitle?: string;
@@ -26,7 +26,15 @@ export function UseCasesSection({ useCase }: { useCase: UseCaseProps }) {
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {useCase.items.map((item, index) => (
-          <ImgBlock key={index} title={item.title} content={item.content}>
+          <ImgBlock
+            key={index}
+            title={
+              <span className="font-['Bricolage_Grotesque'] tracking-[-0.05em]">
+                {item.title}
+              </span>
+            }
+            content={item.content}
+          >
             <Hover3D depth={-20} perspective={1000} className="relative">
               {item.images.map((src, imgIndex) => (
                 <Div3D

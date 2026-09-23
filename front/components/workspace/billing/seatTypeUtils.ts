@@ -1,6 +1,6 @@
 import type { MembershipSeatType } from "@app/types/memberships";
 import { toBaseSeatType } from "@app/types/memberships";
-import type { Chip } from "@dust-tt/sparkle";
+import type { Chip } from "@ruby-ai/ui";
 import {
   AlertCircle,
   CoinsStacked01,
@@ -8,7 +8,7 @@ import {
   LayerSingle,
   LayersThree01,
   LayersTwo01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import type { ComponentType } from "react";
 

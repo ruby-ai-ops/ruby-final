@@ -21,14 +21,14 @@ const REGIONAL_MODEL_PRICING: Record<
   eu: EU_MODEL_PRICING,
 };
 
-export const DUST_MARKUP_PERCENT = 30;
+export const RUBY_MARKUP_PERCENT = 30;
 
 // Maximum discount percent that can be applied to credit purchases.
 // A discount above this threshold would result in selling below cost.
 // Formula: (1 - 1 / (1 + MARKUP/100)) * 100
 // With 30% markup: (1 - 1/1.30) * 100 ≈ 23.08%
 export const MAX_DISCOUNT_PERCENT = Math.ceil(
-  (1 - 1 / (1 + DUST_MARKUP_PERCENT / 100)) * 100
+  (1 - 1 / (1 + RUBY_MARKUP_PERCENT / 100)) * 100
 );
 
 // If model is not found in MODEL_PRICING, use the default pricing.

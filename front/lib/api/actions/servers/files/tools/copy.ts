@@ -10,7 +10,7 @@ import {
   FILES_SERVER_NAME,
 } from "@app/lib/api/actions/servers/files/metadata";
 import {
-  getDustFileSystemForAgentLoop,
+  getRubyFileSystemForAgentLoop,
   requireAgentLoopConversation,
   scopedPathsFromArgs,
 } from "@app/lib/api/actions/servers/files/tools/agent_loop_fs";
@@ -21,7 +21,7 @@ import {
   stripMimeParameters,
 } from "@app/types/files";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 export async function copyHandler(
   { source, dest }: { source: string; dest: string },
@@ -40,7 +40,7 @@ export async function copyHandler(
     );
   }
 
-  const fsResult = await getDustFileSystemForAgentLoop(
+  const fsResult = await getRubyFileSystemForAgentLoop(
     auth,
     conversationRes.value,
     scopedPathsFromArgs(source, dest)
@@ -49,9 +49,9 @@ export async function copyHandler(
     return fsResult;
   }
 
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
-  const statResult = await dustFs.stat(source);
+  const statResult = await rubyFs.stat(source);
   if (statResult.isErr()) {
     const err = statResult.error;
     switch (err.code) {
@@ -88,7 +88,7 @@ export async function copyHandler(
     );
   }
 
-  const copyResult = await dustFs.copy({ src: source, dest });
+  const copyResult = await rubyFs.copy({ src: source, dest });
   if (copyResult.isErr()) {
     const err = copyResult.error;
     switch (err.code) {

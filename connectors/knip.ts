@@ -3,10 +3,10 @@ import type { KnipConfig } from "knip";
 const config: KnipConfig = {
   entry: ["migrations/*.ts", "scripts/**/*.ts", "src/admin/db.ts"],
   ignoreFiles: [
-    "src/connectors/dust_project/**",
-    "src/resources/dust_project_configuration_resource.ts",
-    "src/resources/dust_project_conversation_resource.ts",
-    "src/resources/dust_project_mount_file_resource.ts",
+    "src/connectors/ruby_project/**",
+    "src/resources/ruby_project_configuration_resource.ts",
+    "src/resources/ruby_project_conversation_resource.ts",
+    "src/resources/ruby_project_mount_file_resource.ts",
     "src/lib/conversation_rendering.ts",
   ],
   project: ["**/*.{js,jsx,ts,tsx}"],
@@ -17,7 +17,7 @@ const config: KnipConfig = {
   ignoreDependencies: [
     "@types/eslint",
     "@typescript-eslint/parser",
-    "@dust-tt/client",
+    "@ruby-ai/client",
     "@eslint/js",
     "pino-pretty",
     "danger",

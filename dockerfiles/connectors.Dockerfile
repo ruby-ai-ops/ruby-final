@@ -40,7 +40,7 @@ RUN if [ -n "$DATADOG_API_KEY" ]; then \
   export DATADOG_SITE=datadoghq.eu DATADOG_API_KEY=$DATADOG_API_KEY; \
   npx --yes @datadog/datadog-ci sourcemaps upload ./dist \
   --minified-path-prefix=/app/connectors/dist/ \
-  --repository-url=https://github.com/dust-tt/dust \
+  --repository-url=https://github.com/ruby-ai-ops/ruby-final \
   --project-path=connectors \
   --release-version=$COMMIT_HASH \
   --service=connectors \
@@ -50,7 +50,7 @@ RUN if [ -n "$DATADOG_API_KEY" ]; then \
 EXPOSE 3002
 
 ARG COMMIT_HASH_LONG
-ARG DD_GIT_REPOSITORY_URL=https://github.com/dust-tt/dust
+ARG DD_GIT_REPOSITORY_URL=https://github.com/ruby-ai-ops/ruby-final
 ARG DD_GIT_COMMIT_SHA=${COMMIT_HASH_LONG}
 ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL}
 ENV DD_GIT_COMMIT_SHA=${DD_GIT_COMMIT_SHA}

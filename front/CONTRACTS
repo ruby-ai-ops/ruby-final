@@ -270,7 +270,7 @@ The Type interface is not to be used in the backend.
 
 **Every serialized shape belongs to the Resource, not to its callers.** A Resource has a small,
 named set of ways to be serialized — `toJSON`, and audience-specific variants following the
-`to<Audience>JSON` convention already in use (`toPokeJSON`, `toLogJSON`, `toJSONForLLM`). Callers
+`to<Audience>JSON` convention already in use (`toAdminJSON`, `toLogJSON`, `toJSONForLLM`). Callers
 pick one; they do not assemble their own. Concretely, code in `lib/api/*`, handlers or components
 must not build a wire shape by reading a Resource's fields, and must not spread `toJSON()` and add
 fields to it. If a caller needs a shape that no existing method produces, add a new
@@ -420,7 +420,7 @@ Every new audit action requires the following three artifacts:
 - A JSON schema file at `front/admin/audit_log_schemas/<action>.json`
 - The action string added to the `AuditAction` union type in `front/lib/api/audit/workos_audit.ts`
 - A `void emitAuditLogEvent(...)` or `void emitAuditLogEventDirect(...)` call at the mutation site
-- See the `dust-audit-log-event` skill for the step-by-step checklist
+- See the `ruby-audit-log-event` skill for the step-by-step checklist
 
 @cc [label:audit-logging;security] audit-after-successful-mutations
 Place the emit call after the mutation succeeds, not before.

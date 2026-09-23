@@ -29,7 +29,7 @@ const AUDIT_EMIT_CONCURRENCY = 4;
 // (workspace_sandbox_env_vars.placeholder_nonce) whose bytea value is not 16
 // bytes. Workspace relocation serialized the Buffer through JSON, so the
 // destination stored the JSON text `{"type":"Buffer","data":[...]}` as bytes
-// and the rendered `__DSEC_<160hex>__` placeholder is rejected by dsbx.
+// and the rendered `__DSEC_<160hex>__` placeholder is rejected by rbx.
 //
 // The nonce is not key material and is only rendered at sandbox start (env
 // manifest and egress-secrets file), so a fresh random value restores the

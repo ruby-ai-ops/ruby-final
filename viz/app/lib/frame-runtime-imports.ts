@@ -7,9 +7,9 @@ export const FRAME_RUNTIME_IMPORT_NAMES = [
   "@viz/lib/utils",
   "lucide-react",
   "motion/react",
-  "@dust/slideshow/v1",
-  "@dust/slideshow/v2",
-  "@dust/react-hooks",
+  "@ruby-ai/slideshow/v1",
+  "@ruby-ai/slideshow/v2",
+  "@ruby-ai/react-hooks",
 ] as const;
 
 export type FrameRuntimeImportName =

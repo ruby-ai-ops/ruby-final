@@ -39,8 +39,8 @@ vi.mock("@app/lib/api/file_system", async (importOriginal) => {
     await importOriginal<typeof import("@app/lib/api/file_system")>();
   return {
     ...actual,
-    DustFileSystem: {
-      ...actual.DustFileSystem,
+    RubyFileSystem: {
+      ...actual.RubyFileSystem,
       fromScopedPath: mockFromScopedPath,
     },
   };
@@ -68,7 +68,7 @@ describe("getFileFromConversationAttachment", () => {
   });
 
   describe("canonical scoped path (conversation-{id}/...)", () => {
-    it("reads the file content via DustFileSystem", async () => {
+    it("reads the file content via RubyFileSystem", async () => {
       const { authenticator: auth } = await createResourceTest({
         role: "admin",
       });
@@ -336,7 +336,7 @@ describe("resolveConversationFileRef", () => {
   });
 
   describe("canonical scoped path (conversation-{id}/...)", () => {
-    it("returns metadata, getSignedUrl, and createReadStream via DustFileSystem", async () => {
+    it("returns metadata, getSignedUrl, and createReadStream via RubyFileSystem", async () => {
       const { authenticator: auth } = await createResourceTest({
         role: "admin",
       });

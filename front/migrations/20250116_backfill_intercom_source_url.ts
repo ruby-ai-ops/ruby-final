@@ -105,7 +105,7 @@ async function getCoreDataSourceId(
   const rows: { id: number }[] = await coreSequelize.query(
     `SELECT id FROM data_sources WHERE data_source_id = :dataSourceId;`,
     {
-      replacements: { dataSourceId: frontDataSource.dustAPIDataSourceId },
+      replacements: { dataSourceId: frontDataSource.rubyAPIDataSourceId },
       type: QueryTypes.SELECT,
     }
   );

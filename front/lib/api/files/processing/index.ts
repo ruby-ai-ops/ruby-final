@@ -11,7 +11,7 @@ import { isSupportedForUpsertTable } from "@app/lib/api/files/use_cases/upsert_t
 import { isSupportedForWorkspaceBranding } from "@app/lib/api/files/use_cases/workspace_branding";
 import { parseUploadRequest } from "@app/lib/api/files/utils";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { withRetryOnTransientGCSError } from "@app/lib/file_storage";
 import type { FileResource } from "@app/lib/resources/file_resource";
 import { transcribeFile } from "@app/lib/utils/transcribe_service";
@@ -482,7 +482,7 @@ type ProcessAndStoreFileContent =
       value: Readable;
     };
 
-export type ProcessAndStoreFileError = Omit<DustError, "code"> & {
+export type ProcessAndStoreFileError = Omit<RubyError, "code"> & {
   code:
     | "internal_server_error"
     | "invalid_request_error"
@@ -503,7 +503,7 @@ export async function processAndStoreFile(
 ): Promise<Result<FileResource, ProcessAndStoreFileError>> {
   if (file.isReady || file.isFailed) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_request_error",
       message: "The file has already been uploaded or the upload has failed.",
     });
@@ -512,7 +512,7 @@ export async function processAndStoreFile(
   if (file.createdAt.getTime() + UPLOAD_DELAY_AFTER_CREATION_MS < Date.now()) {
     await file.markAsFailed();
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_request_error",
       message: "File upload has expired. Create a new file.",
     });
@@ -561,7 +561,7 @@ export async function processAndStoreFile(
     );
 
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_server_error",
       message: `Failed to upload file to storage.`,
     });
@@ -579,7 +579,7 @@ export async function processAndStoreFile(
   if (processingRes === "timeout") {
     await file.markAsFailed();
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "file_too_large",
       message:
         "File processing timed out. The file may be too large to process. Please try with a smaller file.",
@@ -598,7 +598,7 @@ export async function processAndStoreFile(
     }
 
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code,
       message: `Failed to process the file: ${message}`,
     });

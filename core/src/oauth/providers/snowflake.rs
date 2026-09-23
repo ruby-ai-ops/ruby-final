@@ -126,7 +126,7 @@ impl Provider for SnowflakeConnectionProvider {
     }
 
     // Snowflake OAuth requests must use the static-IP proxy (default trait impl) — customers
-    // with network policies like NETWORK_POLICY = DUST_ONLY allowlist Dust's documented static
+    // with network policies like NETWORK_POLICY = RUBY_ONLY allowlist Ruby's documented static
     // egress IPs and reject requests coming from the untrusted egress proxy.
 
     async fn finalize(

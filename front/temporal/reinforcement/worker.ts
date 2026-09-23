@@ -30,7 +30,7 @@ export async function runReinforcementWorker() {
   const { connection, namespace } = await getTemporalWorkerConnection();
 
   initializeOpenTelemetryInstrumentation({
-    serviceName: "dust-reinforcement",
+    serviceName: "ruby-reinforcement",
   });
 
   const spanExporter = new NoopSpanExporter();

@@ -26,13 +26,13 @@ const PostAppBodySchema = z.object({
 // Mounted under /api/w/:wId/spaces/:spaceId/apps.
 const app = workspaceApp();
 
-// Legacy Dust Apps are gated behind the `legacy_dust_apps` feature flag. This
+// Legacy Ruby Apps are gated behind the `legacy_ruby_apps` feature flag. This
 // gates the whole surface: listing, creation, and every per-app sub-route
 // (datasets, runs, state) mounted under /:aId below.
 app.use(
   "*",
-  withFeatureFlag("legacy_dust_apps", {
-    message: "Dust Apps are not enabled for this workspace.",
+  withFeatureFlag("legacy_ruby_apps", {
+    message: "Ruby Apps are not enabled for this workspace.",
   })
 );
 
@@ -61,7 +61,7 @@ app.post(
 
     if (
       !auth.can("write", space) ||
-      !auth.hasWorkspacePermission("admin", "dust_app")
+      !auth.hasWorkspacePermission("admin", "ruby_app")
     ) {
       return apiError(ctx, {
         status_code: 403,
@@ -103,7 +103,7 @@ app.post(
         sId: generateRandomModelSId(),
         name,
         description: description || null,
-        dustAPIProjectId: p.value.project.project_id.toString(),
+        rubyAPIProjectId: p.value.project.project_id.toString(),
         workspaceId: owner.id,
         visibility: "private",
       },

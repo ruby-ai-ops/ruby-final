@@ -64,7 +64,7 @@ function buildSystemPrompt(
       feedback =
         "Give brief constructive feedback: acknowledge their effort, note they need 3/5 to pass, suggest reviewing areas they missed, and encourage them to try again.";
     }
-    return `You are a quiz master for Dust Academy. ${studentContext} The user completed the quiz about the ${contentType} "${title}" with ${correctAnswers}/${TOTAL_QUESTIONS} correct. They need 3/${TOTAL_QUESTIONS} to pass.
+    return `You are a quiz master for Ruby Academy. ${studentContext} The user completed the quiz about the ${contentType} "${title}" with ${correctAnswers}/${TOTAL_QUESTIONS} correct. They need 3/${TOTAL_QUESTIONS} to pass.
 
 ${feedback}
 
@@ -84,7 +84,7 @@ Keep your response brief.`;
     progressInstruction = `The student has answered ${totalQuestions}/${TOTAL_QUESTIONS} questions (${correctAnswers} correct). Evaluate their answer, then ask question ${totalQuestions + 1} of ${TOTAL_QUESTIONS}.`;
   }
 
-  return `You are a quiz master for Dust Academy testing the user's understanding of "${title}". ${studentContext}
+  return `You are a quiz master for Ruby Academy testing the user's understanding of "${title}". ${studentContext}
 
 RULES:
 - Ask ONE question at a time testing comprehension (not memorization)
@@ -227,9 +227,9 @@ app.post("/", async (ctx) => {
     userName,
   } = bodyValidation.data;
 
-  const anthropicApiKey = config.getDustManagedAnthropicApiKey();
+  const anthropicApiKey = config.getRubyManagedAnthropicApiKey();
   if (!anthropicApiKey) {
-    logger.error("DUST_MANAGED_ANTHROPIC_API_KEY is not configured");
+    logger.error("RUBY_MANAGED_ANTHROPIC_API_KEY is not configured");
     return apiError(ctx, {
       status_code: 500,
       api_error: {

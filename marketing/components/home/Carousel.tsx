@@ -1,10 +1,10 @@
 import { classNames } from "@marketing/lib/utils";
-import type { LegacyRegularButtonProps } from "@dust-tt/sparkle";
+import type { LegacyRegularButtonProps } from "@ruby-ai/ui";
 import {
   LegacyButton as Button,
   ChevronLeft,
   ChevronRight,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { UseEmblaCarouselType } from "embla-carousel-react";
 import useEmblaCarousel from "embla-carousel-react";
 import * as React from "react";

@@ -3,8 +3,8 @@ import { resolveLegacyDataSourceSpaceId } from "@app/lib/api/data_sources";
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import logger from "@app/logger/logger";
 import { CoreAPI } from "@app/types/core/core_api";
-import type { PostParentsResponseType } from "@dust-tt/client";
-import { PostTableParentsRequestSchema } from "@dust-tt/client";
+import type { PostParentsResponseType } from "@ruby-ai/client";
+import { PostTableParentsRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsSystemKey } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";
@@ -99,8 +99,8 @@ app.post(
 
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const updateRes = await coreAPI.updateTableParents({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       tableId: tId,
       parentId: parentId ?? null,
       parents,

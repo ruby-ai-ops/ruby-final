@@ -1,4 +1,4 @@
-import { Avatar, Button, ListItem, User01, XClose } from "@dust-tt/sparkle";
+import { Avatar, Button, ListItem, User01, XClose } from "@ruby-ai/ui";
 import type { ComponentProps, ReactNode } from "react";
 
 interface FrameSharingRowProps {

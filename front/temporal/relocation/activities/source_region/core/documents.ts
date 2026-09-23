@@ -44,7 +44,7 @@ export async function getDataSourceDocuments({
   const filter: CoreAPINodesSearchFilter = {
     data_source_views: [
       {
-        data_source_id: dataSourceCoreIds.dustAPIDataSourceId,
+        data_source_id: dataSourceCoreIds.rubyAPIDataSourceId,
         // Only paginate through data source nodes.
         search_scope: "nodes_titles",
         // Leaving empty to get all documents.
@@ -88,8 +88,8 @@ export async function getDataSourceDocuments({
     nodes,
     async (n) =>
       coreAPI.getDataSourceDocumentBlob({
-        projectId: dataSourceCoreIds.dustAPIProjectId,
-        dataSourceId: dataSourceCoreIds.dustAPIDataSourceId,
+        projectId: dataSourceCoreIds.rubyAPIProjectId,
+        dataSourceId: dataSourceCoreIds.rubyAPIDataSourceId,
         documentId: n.node_id,
       }),
     { concurrency: CORE_API_CONCURRENCY_LIMIT }

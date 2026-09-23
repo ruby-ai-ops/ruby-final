@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
 use clap::{Parser, Subcommand};
-use dust::{
+use ruby::{
     data_sources::qdrant::{
         vectors_output_to_vectors, QdrantClients, QdrantCluster, QdrantDataSourceConfig,
     },

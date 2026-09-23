@@ -30,12 +30,12 @@ import { normalizeError } from "@app/types/shared/utils/error_utils";
 
 /**
  * Pod state runtime plumbing: SQLite databases under /sandbox-state/databases,
- * continuously replicated by a litestream daemon (running as dust-state) to a
+ * continuously replicated by a litestream daemon (running as ruby-state) to a
  * gcsfuse-mounted GCS prefix at /sandbox-state/replica.
  *
  * The daemon runs litestream's directory watcher over /sandbox-state/databases
  * (static /etc/litestream.yml baked at image build): databases created at any
- * point — including publish-time `dsbx db reconcile` — are discovered and
+ * point — including publish-time `rbx db reconcile` — are discovered and
  * replicated automatically within seconds. Replica subdirectories are named
  * by database FILENAME: /sandbox-state/replica/{db}.db/ltx/...
  *
@@ -55,12 +55,12 @@ import { normalizeError } from "@app/types/shared/utils/error_utils";
  */
 
 /** System user running the litestream daemon and owning the replica mount. */
-const POD_STATE_USER = "dust-state";
+const POD_STATE_USER = "ruby-state";
 
 const LITESTREAM_BIN = "/opt/bin/litestream";
 const LITESTREAM_UNIT_NAME = "litestream";
 // Short by necessity: unix socket paths are capped around 104 chars. Created
-// by the unit's RuntimeDirectory=litestream as dust-state; enabled by the
+// by the unit's RuntimeDirectory=litestream as ruby-state; enabled by the
 // static /etc/litestream.yml baked at image build.
 const LITESTREAM_SOCKET_PATH = "/run/litestream/litestream.sock";
 
@@ -152,8 +152,8 @@ export function isFuseStatfsMagic(statOutput: string): boolean {
 }
 
 /**
- * Run a command as dust-state. Everything touching the replica mount must run
- * as dust-state: the mount has no allow_other, so even root is denied by the
+ * Run a command as ruby-state. Everything touching the replica mount must run
+ * as ruby-state: the mount has no allow_other, so even root is denied by the
  * FUSE layer.
  */
 function asPodStateUser(
@@ -200,7 +200,7 @@ export async function setupSandboxStateOnColdStart(
   });
 
   return traceSandboxStartupPhase("pod_state_setup", async () => {
-    // 1. Enumerate replicated databases (as dust-state, through the mount).
+    // 1. Enumerate replicated databases (as ruby-state, through the mount).
     const namesResult = await traceSandboxStartupPhase(
       "pod_state.enumerate",
       () => listReplicaDatabases(auth, sandbox)
@@ -317,7 +317,7 @@ async function restorePodDatabase(
   };
 
   // Restore into a temp file in the SAME directory so the final rename is an
-  // atomic same-filesystem move. Runs as dust-state (replica mount access).
+  // atomic same-filesystem move. Runs as ruby-state (replica mount access).
   // -if-replica-exists tolerates a replica directory with no restorable
   // backup (e.g. a crash during the very first LTX upload leaving only a
   // stray .tmp object): litestream then exits 0 WITHOUT writing the output
@@ -383,7 +383,7 @@ async function restorePodDatabase(
   }
 
   // 660: the restored file must be writable by group `agent` (function code
-  // runs as agent-proxied) as well as by dust-state; the databases dir is
+  // runs as agent-proxied) as well as by ruby-state; the databases dir is
   // setgid so the group is already `agent`.
   const finalizeResult = await sandbox.execRoot(
     auth,
@@ -612,7 +612,7 @@ export async function checkReplicaMountLiveness(
   auth: Authenticator,
   sandbox: SandboxResource
 ): Promise<Result<void, Error>> {
-  // As dust-state: without allow_other the FUSE layer denies every other uid,
+  // As ruby-state: without allow_other the FUSE layer denies every other uid,
   // including root. `stat -f -c %t` prints the statfs filesystem magic.
   const result = await statReplicaMount(
     auth,

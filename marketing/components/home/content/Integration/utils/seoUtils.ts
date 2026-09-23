@@ -47,7 +47,7 @@ const SEO_SUBTITLE_PATTERNS: Record<
   security: (name) =>
     `AI-powered security monitoring with ${name}. Stay compliant and respond to threats faster.`,
   ai: (name) =>
-    `Combine ${name} with Dust AI agents for powerful automation workflows.`,
+    `Combine ${name} with Ruby AI agents for powerful automation workflows.`,
   transcripts: (name) =>
     `Turn ${name} recordings into actionable insights with AI. Summarize calls, extract action items, and never miss follow-ups.`,
   recruiting: (name) =>
@@ -58,31 +58,31 @@ const SEO_SUBTITLE_PATTERNS: Record<
 const SEO_META_PATTERNS: Record<IntegrationCategory, (name: string) => string> =
   {
     crm: (name) =>
-      `Connect ${name} to Dust AI agents. Automate CRM tasks, update records, log activities, and get AI-powered sales insights. Start free trial.`,
+      `Connect ${name} to Ruby AI agents. Automate CRM tasks, update records, log activities, and get AI-powered sales insights. Get started with Ruby.`,
     support: (name) =>
-      `AI-powered ${name} integration. Automate ticket responses, smart routing, and customer support workflows. Try Dust free for 14 days.`,
+      `AI-powered ${name} integration. Automate ticket responses, smart routing, and customer support workflows. Get started with Ruby.`,
     communication: (name) =>
-      `Integrate ${name} with Dust AI. Get AI assistants in your team channels, automate messages, and improve collaboration. Free trial.`,
+      `Integrate ${name} with Ruby AI. Get AI assistants in your team channels, automate messages, and improve collaboration.`,
     productivity: (name) =>
-      `${name} AI automation with Dust. Create content, manage tasks, and organize work automatically with AI agents. No credit card required.`,
+      `${name} AI automation with Ruby. Create content, manage tasks, and organize work automatically with AI agents.`,
     development: (name) =>
-      `${name} AI assistant by Dust. Automate issues, pull requests, code reviews, and development workflows. Start your free trial.`,
+      `${name} AI assistant by Ruby. Automate issues, pull requests, code reviews, and development workflows. Get started with Ruby.`,
     data: (name) =>
-      `Query ${name} with natural language using Dust AI. No SQL needed. Get instant insights from your data warehouse. Try free.`,
+      `Query ${name} with natural language using Ruby AI. No SQL needed. Get instant insights from your data warehouse.`,
     email: (name) =>
-      `AI email assistant for ${name}. Draft replies, summarize threads, and manage your inbox with AI agents. 14-day free trial.`,
+      `AI email assistant for ${name}. Draft replies, summarize threads, and manage your inbox with AI agents.`,
     calendar: (name) =>
-      `${name} AI scheduling assistant. Automate meeting management, find availability, and handle calendar tasks. Start free.`,
+      `${name} AI scheduling assistant. Automate meeting management, find availability, and handle calendar tasks.`,
     storage: (name) =>
-      `AI document search for ${name}. Find, summarize, and analyze files across your storage with Dust AI agents. Try free.`,
+      `AI document search for ${name}. Find, summarize, and analyze files across your storage with Ruby AI agents.`,
     security: (name) =>
-      `${name} AI security integration. Monitor compliance, track vulnerabilities, and automate security workflows. Free trial.`,
+      `${name} AI security integration. Monitor compliance, track vulnerabilities, and automate security workflows.`,
     ai: (name) =>
-      `Combine ${name} with Dust for powerful AI automation. Build custom workflows and agents. Start your 14-day free trial.`,
+      `Combine ${name} with Ruby for powerful AI automation. Build custom workflows and agents. Get started with Ruby.`,
     transcripts: (name) =>
-      `AI meeting assistant for ${name}. Automatically summarize calls, extract action items, and sync insights to your tools. Try free.`,
+      `AI meeting assistant for ${name}. Automatically summarize calls, extract action items, and sync insights to your tools.`,
     recruiting: (name) =>
-      `AI recruiting assistant for ${name}. Screen candidates, summarize interviews, and accelerate your hiring process. Try Dust free.`,
+      `AI recruiting assistant for ${name}. Screen candidates, summarize interviews, and accelerate your hiring process.`,
   };
 
 export function getDefaultSEOTitle(

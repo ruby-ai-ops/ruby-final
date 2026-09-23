@@ -1,5 +1,5 @@
 import type { ActionDetailsDisplayContext } from "@app/components/actions/mcp/details/types";
-import { cn, Icon, Spinner } from "@dust-tt/sparkle";
+import { cn, Icon, Spinner } from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 

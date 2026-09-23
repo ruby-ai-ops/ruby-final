@@ -1,7 +1,7 @@
 import type { AppStatus } from "@app/lib/api/status";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import {
-  isDustCompanyPlan,
+  isRubyCompanyPlan,
   isEnterprisePlanPrefix,
 } from "@app/lib/plans/plan_codes";
 import { useProgrammaticUsageLimit } from "@app/lib/swr/usage_settings";
@@ -13,7 +13,7 @@ import type { ByokModelProviderIdType } from "@app/types/assistant/models/types"
 import { PRETTIFIED_PROVIDER_NAMES } from "@app/types/provider_selection";
 import type { LightWorkspaceType, WorkspaceType } from "@app/types/user";
 import { isAdmin } from "@app/types/user";
-import { cn, LinkWrapper } from "@dust-tt/sparkle";
+import { cn, LinkWrapper } from "@ruby-ai/ui";
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 
@@ -68,19 +68,19 @@ interface AppStatusBannerProps {
 }
 
 function AppStatusBanner({ appStatus }: AppStatusBannerProps) {
-  const { providersStatus, dustStatus } = appStatus;
+  const { providersStatus, rubyStatus } = appStatus;
 
-  if (dustStatus) {
+  if (rubyStatus) {
     return (
       <StatusBanner
         variant="orange"
-        title={dustStatus.name}
-        description={dustStatus.description}
+        title={rubyStatus.name}
+        description={rubyStatus.description}
         footer={
           <>
             Check our{" "}
             <LinkWrapper
-              href={dustStatus.link}
+              href={rubyStatus.link}
               target="_blank"
               className="underline"
             >
@@ -179,7 +179,7 @@ function SubscriptionPastDueBanner() {
           After 3 attempts, your workspace will be downgraded to the free plan.
           Connections will be deleted and members will be revoked. Details{" "}
           <LinkWrapper
-            href="https://docs.dust.tt/docs/subscriptions#what-happens-when-we-cancel-our-dust-subscription"
+            href="https://docs.ruby.ad/docs/subscriptions#what-happens-when-we-cancel-our-ruby-subscription"
             target="_blank"
             className="underline"
           >
@@ -326,7 +326,7 @@ export function StatusBanners() {
       {appStatus && <AppStatusBanner appStatus={appStatus} />}
       {subscription.paymentFailingSince &&
         isAdmin(owner) &&
-        !isDustCompanyPlan(subscription.plan.code) &&
+        !isRubyCompanyPlan(subscription.plan.code) &&
         !isEnterprisePlanPrefix(subscription.plan.code) && (
           <SubscriptionPastDueBanner />
         )}

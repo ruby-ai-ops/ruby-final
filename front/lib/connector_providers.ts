@@ -114,9 +114,9 @@ export const CONNECTOR_CONFIGURATIONS: Record<
     status: "built",
     isDeletable: false,
   },
-  dust_project: {
+  ruby_project: {
     name: "Project",
-    connectorProvider: "dust_project",
+    connectorProvider: "ruby_project",
     status: "preview",
     isDeletable: false,
   },
@@ -177,7 +177,7 @@ export const isConnectorProviderAllowedForPlan = (
     case "zendesk":
     case "bigquery":
     case "gong":
-    case "dust_project":
+    case "ruby_project":
       return true;
     default:
       assertNever(provider);
@@ -207,7 +207,7 @@ export const isConnectorProviderAssistantDefaultSelected = (
     case "salesforce":
     case "snowflake":
     case "webcrawler":
-    case "dust_project": //TODO(project): maybe re-evaluate this for dust_project
+    case "ruby_project": //TODO(project): maybe re-evaluate this for ruby_project
       return false;
     default:
       assertNever(provider);
@@ -223,7 +223,7 @@ export const isBotIntegration = (provider: ConnectorProvider): boolean => {
       return true;
     case "bigquery":
     case "confluence":
-    case "dust_project":
+    case "ruby_project":
     case "github":
     case "gong":
     case "google_drive":

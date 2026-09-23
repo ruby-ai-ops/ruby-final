@@ -7,7 +7,7 @@ export const LinkExtension = Link.extend({
       ...this.parent?.(),
       "Mod-Shift-u": () => {
         // This event is caught by the toolbar content to open the link dialog.
-        const event = new CustomEvent("dust:openLinkDialog");
+        const event = new CustomEvent("ruby:openLinkDialog");
         window.dispatchEvent(event);
         return true;
       },

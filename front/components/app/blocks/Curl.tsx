@@ -1,7 +1,7 @@
 import "@uiw/react-textarea-code-editor/dist.css";
 
 import { SuspensedCodeEditor } from "@app/components/SuspensedCodeEditor";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { shallowBlockClone } from "@app/lib/utils";
 import type {
   AppType,
@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
   Input,
   Label,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect } from "react";
 
 import Block from "./Block";

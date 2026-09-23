@@ -593,7 +593,7 @@ describe("EventCoalescer", () => {
       const openingDelimiter: GenerationTokensEvent = {
         type: "generation_tokens",
         created: Date.now(),
-        configurationId: "dust",
+        configurationId: "ruby",
         messageId: "msg123",
         text: "<thinking>",
         classification: "opening_delimiter",
@@ -630,7 +630,7 @@ describe("EventCoalescer", () => {
       const closingDelimiter: GenerationTokensEvent = {
         type: "generation_tokens",
         created: Date.now(),
-        configurationId: "dust",
+        configurationId: "ruby",
         messageId: "msg123",
         text: "</thinking>",
         classification: "closing_delimiter",

@@ -1,6 +1,10 @@
 import { H2, P } from "@marketing/components/home/ContentComponents";
 import { HomeEyebrow } from "@marketing/components/home/content/Product/HomeEyebrow";
 import { HomeReveal } from "@marketing/components/home/content/Product/HomeReveal";
+import {
+  MARKETING_SURFACES,
+  isMarketingSurfaceVisible,
+} from "@marketing/lib/marketing_visibility";
 
 type Accent = "red" | "green" | "blue";
 
@@ -54,35 +58,42 @@ interface ComplianceColumn {
 const COLUMNS: ComplianceColumn[] = [
   {
     code: "01",
-    title: "Security and privacy",
+    title: "Security & compliance",
     accent: "red",
     items: [
       "SOC 2 Type II certified",
-      "Data residency in the US or EU",
-      "Dedicated single-tenant deployment",
-      "Custom data retention policies",
+      "GDPR compliant, EU data residency",
+      "HIPAA-ready deployment",
+      "SSO (SAML, OIDC) + SCIM",
+      "Audit logs, 365-day retention",
+      "RBAC + dual-layer agent permissions",
+      "AES-256 at rest, TLS 1.3 in transit",
+      "Zero model training on your data",
     ],
   },
   {
     code: "02",
-    title: "Governance and access",
+    title: "Performance & scale",
     accent: "green",
     items: [
-      "Single sign-on with your identity provider",
-      "Automated user provisioning and deprovisioning",
-      "Separate data and permissions by team",
-      "Audit logs and advanced security controls",
+      "99.9% uptime SLA",
+      "10,000+ users per workspace",
+      "Concurrent agent execution",
+      "Sub-2s response time (p95)",
     ],
   },
   {
     code: "03",
-    title: "Enterprise deployment",
+    title: "Integration architecture",
     accent: "blue",
     items: [
-      "Connect to your existing tools",
-      "Shared workspace credits and volume pricing",
-      "Dedicated customer success support",
-      "Priority support with an SLA",
+      "RESTful API for custom integrations",
+      "MCP for proprietary systems",
+      "Webhook support for event-driven workflows",
+      "OAuth2 for third-party permissions",
+      "Bi-directional sync, read + write",
+      "Incremental data refresh",
+      "100+ production connectors",
     ],
   },
 ];
@@ -130,6 +141,8 @@ function PadlockIcon({ accent }: { accent: Accent }) {
   );
 }
 
+const TOTAL_CONTROLS = COLUMNS.reduce((sum, c) => sum + c.items.length, 0);
+
 export function HomeSecuritySection() {
   return (
     <section className="w-full bg-background py-14 lg:py-24">
@@ -140,7 +153,7 @@ export function HomeSecuritySection() {
           </HomeReveal>
           <HomeReveal delay={80}>
             <H2 className="max-w-[820px] text-balance font-semibold leading-[1.08] tracking-[-0.03em] text-foreground">
-              Use AI on your terms, without giving up control of your data
+              Let Ruby do the work. Keep control of what it can touch.
             </H2>
           </HomeReveal>
           <HomeReveal delay={160}>
@@ -148,11 +161,8 @@ export function HomeSecuritySection() {
               size="sm"
               className="max-w-[820px] leading-[1.6] text-muted-foreground"
             >
-              Dust&apos;s dual-layer permission model separates what agents can
-              access from who can use them. SCIM-synced groups, admin-gated
-              overrides, zero privilege escalation, and audit logs let teams
-              move quickly while keeping company data locked down. Granular
-              enough for your CISO, invisible to everyone else.
+              Choose what Ruby can see and do, control the tools it can use, and
+              keep visibility into its activity.
             </P>
           </HomeReveal>
         </div>
@@ -161,29 +171,42 @@ export function HomeSecuritySection() {
           {/* Caption strip — small, kept on-brand: foreground sans, mono only on the link */}
           <div className="flex flex-wrap items-baseline justify-between gap-3 px-1">
             <span className="text-sm text-muted-foreground">
-              Trust datasheet
-            </span>
-            <a
-              href="https://dust.tt/security"
-              className="group inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-blue-500"
-            >
-              Visit Trust Center
-              <span
-                aria-hidden="true"
-                className="transition-transform duration-200 group-hover:translate-x-0.5"
-              >
-                →
+              Trust datasheet,{" "}
+              <span className="font-medium text-foreground">
+                {TOTAL_CONTROLS} controls live
               </span>
-            </a>
+            </span>
+            {isMarketingSurfaceVisible(MARKETING_SURFACES.trustCenterLink) && (
+              <a
+                href="https://ruby.ad/security"
+                className="group inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-blue-500"
+              >
+                Visit Trust Center
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                >
+                  →
+                </span>
+              </a>
+            )}
           </div>
 
           {/* Tinted columns sitting flush — no separator. Each column's
               tinted bg lands directly next to its neighbor. */}
-          <div className="grid grid-cols-1 overflow-hidden rounded-3xl md:grid-cols-3">
+          <div
+            role="region"
+            aria-label="Security controls catalogue"
+            tabIndex={0}
+            className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden rounded-3xl [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-3 lg:overflow-hidden lg:gap-0"
+          >
             {COLUMNS.map((column, colIdx) => {
               const theme = ACCENT[column.accent];
               return (
-                <div key={column.code} className={`flex flex-col ${theme.bg}`}>
+                <div
+                  key={column.code}
+                  className={`flex w-[88%] flex-none snap-start flex-col rounded-3xl ${theme.bg} lg:w-auto lg:rounded-none`}
+                >
                   {/* Column header */}
                   <header className="flex items-center gap-4 px-7 pb-6 pt-7">
                     <PadlockIcon accent={column.accent} />

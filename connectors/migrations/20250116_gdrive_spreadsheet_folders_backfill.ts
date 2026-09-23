@@ -44,16 +44,16 @@ async function upsertFoldersForConnector(
       const {
         connectorId,
         driveFileId,
-        dustFileId,
+        rubyFileId,
         name: spreadsheetName,
       } = spreadsheet;
       // getLocalParents returns internal IDs
-      const parents = await getLocalParents(connectorId, dustFileId, memo);
+      const parents = await getLocalParents(connectorId, rubyFileId, memo);
 
       if (execute) {
         await upsertDataSourceFolder({
           dataSourceConfig,
-          folderId: dustFileId,
+          folderId: rubyFileId,
           parents,
           parentId: parents[1] || null,
           title: spreadsheetName,
@@ -61,11 +61,11 @@ async function upsertFoldersForConnector(
           sourceUrl: getSourceUrlForGoogleDriveSheet(driveFileId),
         });
         localLogger.info(
-          `Upserted spreadsheet folder ${dustFileId} for ${spreadsheetName}`
+          `Upserted spreadsheet folder ${rubyFileId} for ${spreadsheetName}`
         );
       } else {
         localLogger.info(
-          `Would upsert spreadsheet folder ${dustFileId} for ${spreadsheetName}`
+          `Would upsert spreadsheet folder ${rubyFileId} for ${spreadsheetName}`
         );
       }
     },

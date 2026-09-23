@@ -13,7 +13,7 @@ import {
   AnimatedText,
   ContentMessage,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface CompactionMessageProps {
   message: CompactionMessageType;

@@ -27,10 +27,10 @@ export default defineConfig(() => {
         VERBOSE: process.env.VERBOSE ?? "false",
         REINFORCEMENT_MODEL_ID: process.env.REINFORCEMENT_MODEL_ID ?? "",
         // API keys forwarded from the shell environment.
-        DUST_MANAGED_ANTHROPIC_API_KEY:
-          process.env.DUST_MANAGED_ANTHROPIC_API_KEY ?? "",
-        DUST_MANAGED_OPENAI_API_KEY:
-          process.env.DUST_MANAGED_OPENAI_API_KEY ?? "",
+        RUBY_MANAGED_ANTHROPIC_API_KEY:
+          process.env.RUBY_MANAGED_ANTHROPIC_API_KEY ?? "",
+        RUBY_MANAGED_OPENAI_API_KEY:
+          process.env.RUBY_MANAGED_OPENAI_API_KEY ?? "",
       },
       testTimeout: 300000,
     },

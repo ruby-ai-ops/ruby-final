@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface DisableProviderDialogProps {
   providerId: ModelProviderIdType | null;

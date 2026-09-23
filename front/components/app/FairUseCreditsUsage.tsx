@@ -3,7 +3,7 @@ import { FairUsageModal } from "@app/components/FairUsageModal";
 import { formatCredits, formatFairUseTimeframe } from "@app/lib/client/credits";
 import { AGENT_MESSAGE_COMPLETED_EVENT } from "@app/lib/notifications/events";
 import { useFairUseCredits } from "@app/lib/swr/fair_use_credits";
-import { Hoverable } from "@dust-tt/sparkle";
+import { Hoverable } from "@ruby-ai/ui";
 import { useEffect, useRef, useState } from "react";
 
 const CREDITS_USAGE_DISPLAY_THRESHOLD = 0.75;

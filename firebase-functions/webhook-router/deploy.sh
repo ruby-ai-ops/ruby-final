@@ -34,4 +34,4 @@ echo "🚀 Deploying webhook-router to Firebase Functions..."
 firebase deploy --except storage
 
 echo "✅ Deployment complete!"
-echo "🌍 Function available at: https://us-central1-dust-infra.cloudfunctions.net/webhookRouter"
+echo "🌍 Function available at: https://us-central1-ruby-infra.cloudfunctions.net/webhookRouter"

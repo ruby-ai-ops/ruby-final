@@ -8,9 +8,9 @@ function expectedWrappedCommand(
   timeoutSec = 60
 ): string {
   return [
-    `DUST_PROFILE=${profile} source ${PROFILE_DIR}/common.sh && shell "$(cat <<'DUST_CMD_EOF'`,
+    `RUBY_PROFILE=${profile} source ${PROFILE_DIR}/common.sh && shell "$(cat <<'RUBY_CMD_EOF'`,
     cmd,
-    "DUST_CMD_EOF",
+    "RUBY_CMD_EOF",
     `)" ${timeoutSec}`,
   ].join("\n");
 }
@@ -39,9 +39,9 @@ describe("wrapCommand", () => {
 
   it("throws when the command contains the reserved heredoc delimiter", () => {
     expect(() =>
-      wrapCommand("echo before\nDUST_CMD_EOF\necho after", "anthropic")
+      wrapCommand("echo before\nRUBY_CMD_EOF\necho after", "anthropic")
     ).toThrow(
-      "Command contains the reserved heredoc delimiter 'DUST_CMD_EOF'."
+      "Command contains the reserved heredoc delimiter 'RUBY_CMD_EOF'."
     );
   });
 });

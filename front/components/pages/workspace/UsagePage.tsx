@@ -123,7 +123,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { PaginationState, SortingState } from "@tanstack/react-table";
 import {
   useCallback,
@@ -221,7 +221,7 @@ const DEFAULT_PAGE_SIZE = 25;
 
 // Keep every tab panel at least as tall as the scrolling panel so switching to a
 // shorter (or still loading) tab never shrinks the page and clamps the scroll offset.
-// Sparkle renders TabsContent as `contents`, so `block` is required for the min-height to apply.
+// RubyUI renders TabsContent as `contents`, so `block` is required for the min-height to apply.
 const TAB_CONTENT_CLASS = "block min-h-panel";
 
 export function UsagePage() {
@@ -325,7 +325,7 @@ export function UsagePage() {
       workspaceId: owner.sId,
       disabled: spendLimitRecapMember === null || !hasMetronomeContract,
     });
-  // Same availability rule as the workspace read endpoint and poke's
+  // Same availability rule as the workspace read endpoint and admin's
   // PoolUsagePage: the default pool limit only exists for Metronome-billed
   // workspaces.
   const defaultUserSpendLimitState: DefaultUserSpendLimitState =

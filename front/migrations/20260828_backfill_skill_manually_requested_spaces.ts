@@ -101,7 +101,7 @@ async function fetchLiveSpaceIds(
  *
  * Versions snapshot their tools and instructions but not their attached knowledge, so a space that
  * only some knowledge required at the time reads as hand-picked here. Version rows are only ever
- * displayed — the history endpoint and Poke — and never written back into a skill, so the
+ * displayed — the history endpoint and Admin — and never written back into a skill, so the
  * imprecision stays cosmetic, and erring this way lists the space rather than hiding it.
  */
 async function backfillSkillVersions(

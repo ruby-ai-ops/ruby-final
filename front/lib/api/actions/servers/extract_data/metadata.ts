@@ -6,7 +6,7 @@ import {
   FIND_TAGS_BASE_DESCRIPTION,
   findTagsSchema,
 } from "@app/lib/api/actions/tools/find_tags/metadata";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { z } from "zod";
 
 const EXTRACT_DATA_SERVER_NAME = "extract_data" as const;

@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { ensureSandboxStateHealthOnSleep } from "@app/lib/api/sandbox/db";
 import { frameSandboxOnlyMounts } from "@app/lib/api/sandbox/frame_mounts";
 import { getSandboxImage } from "@app/lib/api/sandbox/image";
@@ -215,7 +215,7 @@ export class FrameSandboxAdapter {
           if (imageResult.isErr()) {
             return imageResult;
           }
-          const fsResult = await DustFileSystem.forFrameSandboxProvisioning(
+          const fsResult = await RubyFileSystem.forFrameSandboxProvisioning(
             auth,
             frame,
             { sandboxOnlyMounts: frameSandboxOnlyMounts(frame) }
@@ -235,7 +235,7 @@ export class FrameSandboxAdapter {
     return this.fetchSandboxByFrame(auth, frame);
   }
 
-  /** One query for the whole page of Frames — the Poke list must not wake or fetch per row. */
+  /** One query for the whole page of Frames — the Admin list must not wake or fetch per row. */
   static async fetchSandboxStatusesByFrameModelIds(
     auth: Authenticator,
     frameModelIds: ModelId[]

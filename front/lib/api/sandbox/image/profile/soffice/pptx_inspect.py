@@ -391,7 +391,7 @@ def _deck_fonts_line(prs: PresentationType, file_path: str) -> Optional[str]:
     layouts and report them alongside the theme's major/minor fallback.
 
     The theme's `major:`/`minor:` typefaces from <a:fontScheme> are only what
-    runs outside placeholders inherit - many decks (e.g. the Dust template)
+    runs outside placeholders inherit - many decks (e.g. the Ruby template)
     declare Arial there but override every layout with Lexend. Reporting
     them as the deck's font misleads the agent into picking Arial for
     custom shapes. So we surface what the layouts actually resolve to, and
@@ -772,7 +772,7 @@ def print_text(prs: PresentationType, slide_idx: Optional[int] = None) -> str:
     # Pass 1: find distinctive copy repeated across the deck - template
     # scaffolding the author forgot to replace ("Subject title", "Summary",
     # "Title of the slide"). Count total occurrences (catches repeats within a
-    # single slide too); require length >= 8 so content words ("Dust") don't trip.
+    # single slide too); require length >= 8 so content words ("Ruby") don't trip.
     repeat_counts: Dict[str, int] = {}
     for slide in prs.slides:
         for shape in slide.shapes:

@@ -1,9 +1,9 @@
-import type { ConversationEvent } from "@dust-tt/client";
-import { Ok } from "@dust-tt/client";
+import type { ConversationEvent } from "@ruby-ai/client";
+import { Ok } from "@ruby-ai/client";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@connectors/lib/bot/conversation_utils", () => ({
-  makeConversationUrl: () => "https://dust.test/conversation",
+  makeConversationUrl: () => "https://ruby.test/conversation",
 }));
 
 import { resolveSlackPendingUserMessage } from "./bot_pending_message";
@@ -34,7 +34,7 @@ async function resolvePending({
   stopRejects?: boolean;
   timeoutMs?: number;
 } = {}) {
-  const dustAPI = {
+  const rubyAPI = {
     streamConversationEvents: vi.fn(
       async ({ signal }: { signal?: AbortSignal }) => {
         return new Ok({ eventStream: pendingEventsStream(events, signal) });
@@ -58,7 +58,7 @@ async function resolvePending({
   const res = await resolveSlackPendingUserMessage({
     connector,
     conversation: makeConversation([[pendingUserMessage]]),
-    dustAPI,
+    rubyAPI,
     slack: {
       slackChannelId: "C123",
       slackClient,
@@ -114,7 +114,7 @@ describe("resolveSlackPendingUserMessage", () => {
       expect.objectContaining({
         channel: "C123",
         thread_ts: "1700000000.000001",
-        text: expect.stringContaining("Continue on Dust"),
+        text: expect.stringContaining("Continue on Ruby"),
       })
     );
   });

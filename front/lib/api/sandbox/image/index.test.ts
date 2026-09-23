@@ -13,13 +13,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 const DEV_SUFFIX = "test-dev";
 
 function releaseImageId() {
-  const imageResult = getSandboxImageFromRegistry({ name: "dust-base" });
+  const imageResult = getSandboxImageFromRegistry({ name: "ruby-base" });
   if (imageResult.isErr()) {
     throw imageResult.error;
   }
   const { imageId } = imageResult.value;
   if (!imageId) {
-    throw new Error("dust-base is not registered");
+    throw new Error("ruby-base is not registered");
   }
   return imageId;
 }
@@ -75,11 +75,11 @@ describe("dev sandbox image alias", () => {
 });
 
 describe("getToolsForProvider", () => {
-  it("filters dsbx from manifest inputs when requested", async () => {
+  it("filters rbx from manifest inputs when requested", async () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const hiddenToolsResult = getToolsForProvider(auth, "openai", {
-      includeDsbxTools: false,
+      includeRbxTools: false,
     });
     expect(hiddenToolsResult.isOk()).toBe(true);
 
@@ -90,10 +90,10 @@ describe("getToolsForProvider", () => {
     const hiddenManifest = toolManifestToYAML(
       createToolManifest(hiddenToolsResult.value)
     );
-    expect(hiddenManifest).not.toContain("name: dsbx");
+    expect(hiddenManifest).not.toContain("name: rbx");
 
     const visibleToolsResult = getToolsForProvider(auth, "openai", {
-      includeDsbxTools: true,
+      includeRbxTools: true,
     });
     expect(visibleToolsResult.isOk()).toBe(true);
 
@@ -104,6 +104,6 @@ describe("getToolsForProvider", () => {
     const visibleManifest = toolManifestToYAML(
       createToolManifest(visibleToolsResult.value)
     );
-    expect(visibleManifest).toContain("name: dsbx");
+    expect(visibleManifest).toContain("name: rbx");
   });
 });

@@ -1,6 +1,6 @@
 import { SandboxFunctionPersonalAuthCard } from "@app/components/actions/blocked/SandboxFunctionPersonalAuthCard";
 import { SandboxFunctionToolApprovalCard } from "@app/components/actions/blocked/SandboxFunctionToolApprovalCard";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useVisualizationRetry } from "@app/hooks/conversations";
 import { useEventSource } from "@app/hooks/useEventSource";
 import { useSendNotification } from "@app/hooks/useNotification";
@@ -61,7 +61,7 @@ import {
   SheetHeader,
   SheetTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import type { SetStateAction } from "react";
 import {

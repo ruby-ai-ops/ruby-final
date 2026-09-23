@@ -1,6 +1,6 @@
 import { useSeedInitialPodTasks } from "@app/lib/swr/pods";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, MagicWand02 } from "@dust-tt/sparkle";
+import { Button, MagicWand02 } from "@ruby-ai/ui";
 
 interface PodEmptyCalloutProps {
   owner: LightWorkspaceType;

@@ -30,7 +30,7 @@ export const SkillsSnapshot = z.object({
     z.object({ kind: z.literal("input-file"), path: z.string() }),
     z.object({
       kind: z.literal("api"),
-      dustUrl: z.string(),
+      rubyUrl: z.string(),
       status: z.string(),
       includeUnpublished: z.boolean(),
     }),

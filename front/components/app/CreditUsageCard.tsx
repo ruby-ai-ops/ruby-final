@@ -1,5 +1,5 @@
 import { formatCredits } from "@app/lib/client/credits";
-import { CoinsStacked01, cn, ProgressBar, Tooltip } from "@dust-tt/sparkle";
+import { CoinsStacked01, cn, ProgressBar, Tooltip } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 
 export type CreditUsageTone = "on_target" | "elevated" | "critical";

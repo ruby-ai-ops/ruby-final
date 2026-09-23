@@ -114,22 +114,22 @@ export default function AcademyListing({
   return (
     <>
       <Head>
-        <title>Dust Academy</title>
+        <title>Ruby Academy</title>
         <meta
           name="description"
-          content="Master AI agents with Dust through hands-on courses and interactive lessons"
+          content="Master AI agents with Ruby through hands-on courses and interactive lessons"
         />
-        <meta property="og:title" content="Dust Academy" />
+        <meta property="og:title" content="Ruby Academy" />
         <meta
           property="og:description"
-          content="Master AI agents with Dust through hands-on courses and interactive lessons"
+          content="Master AI agents with Ruby through hands-on courses and interactive lessons"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://dust.tt/academy" />
+        <meta property="og:url" content="https://ruby.ad/academy" />
         <meta property="og:image" content="/static/og_image.png" />
-        <link rel="canonical" href="https://dust.tt/academy" />
+        <link rel="canonical" href="https://ruby.ad/academy" />
         {totalPages > 1 && (
-          <link rel="next" href="https://dust.tt/academy/page/2" />
+          <link rel="next" href="https://ruby.ad/academy/page/2" />
         )}
       </Head>
 

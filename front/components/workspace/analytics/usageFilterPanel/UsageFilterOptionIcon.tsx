@@ -4,11 +4,11 @@ import {
   isCustomResourceIconType,
   isInternalAllowedIcon,
 } from "@app/components/resources/resources_icons";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import type { UsageFilterOption } from "@app/components/workspace/analytics/usageFilter";
 import { getSkillIcon } from "@app/lib/skill";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import { Avatar, Icon, Lock01, Tooltip } from "@dust-tt/sparkle";
+import { Avatar, Icon, Lock01, Tooltip } from "@ruby-ai/ui";
 
 interface UsageFilterOptionIconProps {
   option: UsageFilterOption;

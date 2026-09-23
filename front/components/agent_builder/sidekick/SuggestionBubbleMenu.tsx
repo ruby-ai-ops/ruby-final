@@ -1,6 +1,6 @@
 import { useSidekickHighlight } from "@app/components/agent_builder/sidekick/SidekickHighlightContext";
 import { useSidekickSuggestions } from "@app/components/agent_builder/sidekick/SidekickSuggestionsContext";
-import { Button, Check, HoveringBar, XClose } from "@dust-tt/sparkle";
+import { Button, Check, HoveringBar, XClose } from "@ruby-ai/ui";
 import type { Editor } from "@tiptap/react";
 import type { RefObject } from "react";
 import {

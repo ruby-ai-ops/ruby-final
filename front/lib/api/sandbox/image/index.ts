@@ -7,7 +7,7 @@ import {
 import type { SandboxImage } from "@app/lib/api/sandbox/image/sandbox_image";
 import type { ToolEntry } from "@app/lib/api/sandbox/image/types";
 import {
-  DSBX_TOOL_NAME,
+  RBX_TOOL_NAME,
   devSandboxImageId,
 } from "@app/lib/api/sandbox/image/types";
 import type { Authenticator } from "@app/lib/auth";
@@ -20,12 +20,12 @@ export function getToolsForProvider(
   _auth: Authenticator,
   providerId: ModelProviderIdType,
   {
-    includeDsbxTools = true,
+    includeRbxTools = true,
   }: {
-    includeDsbxTools?: boolean;
+    includeRbxTools?: boolean;
   } = {}
 ): Result<readonly ToolEntry[], Error> {
-  const imageResult = getSandboxImageFromRegistry({ name: "dust-base" });
+  const imageResult = getSandboxImageFromRegistry({ name: "ruby-base" });
   if (imageResult.isErr()) {
     return new Err(new Error("Default sandbox image not found in registry"));
   }
@@ -43,20 +43,20 @@ export function getToolsForProvider(
     return tool.profile === profile;
   });
 
-  return new Ok(filterDsbxToolEntries(providerTools, { includeDsbxTools }));
+  return new Ok(filterRbxToolEntries(providerTools, { includeRbxTools }));
 }
 
-// Hacky temporary filtering: strip the `dsbx` tool entry from the manifest by
+// Hacky temporary filtering: strip the `rbx` tool entry from the manifest by
 // name when sandbox tools are off so it is not advertised to the model.
-export function filterDsbxToolEntries(
+export function filterRbxToolEntries(
   tools: readonly ToolEntry[],
-  { includeDsbxTools }: { includeDsbxTools: boolean }
+  { includeRbxTools }: { includeRbxTools: boolean }
 ): readonly ToolEntry[] {
-  if (includeDsbxTools) {
+  if (includeRbxTools) {
     return tools;
   }
 
-  return tools.filter((tool) => tool.name !== DSBX_TOOL_NAME);
+  return tools.filter((tool) => tool.name !== RBX_TOOL_NAME);
 }
 
 // Dev-only: resolve the developer's own image alias, so a locally built image
@@ -77,7 +77,7 @@ function withDevImageId(image: SandboxImage): SandboxImage {
 export function getSandboxImage(
   _auth?: Authenticator
 ): Result<SandboxImage, Error> {
-  const imageResult = getSandboxImageFromRegistry({ name: "dust-base" });
+  const imageResult = getSandboxImageFromRegistry({ name: "ruby-base" });
   if (imageResult.isErr()) {
     return imageResult;
   }
@@ -88,11 +88,11 @@ export function getSandboxImage(
 
   const image = withDevImageId(imageResult.value);
 
-  // Dev-only: bypass all egress restrictions. Pairs with skipping the dsbx
+  // Dev-only: bypass all egress restrictions. Pairs with skipping the rbx
   // forwarder + tearing down in-sandbox nftables in tools/index.ts.
   // Required when SBX_DEV_FRONT_URL points at a local tunnel: agent-proxied
   // traffic otherwise goes through the cloud egress proxy (default allowlist
-  // dust.tt only), which closes the connection and surfaces as TLS EOF in dsbx.
+  // ruby.ad only), which closes the connection and surfaces as TLS EOF in rbx.
   if (config.getSandboxDevUnrestrictedEgress()) {
     return new Ok(image.withNetwork({ mode: "allow_all" }));
   }

@@ -7,8 +7,8 @@ import {
 } from "@app/lib/swr/files";
 import { LightWorkspaceFactory } from "@app/tests/utils/LightWorkspaceFactory";
 import {
-  DUST_FILE_CONTENT_TYPE_HEADER,
-  DUST_FILE_ID_HEADER,
+  RUBY_FILE_CONTENT_TYPE_HEADER,
+  RUBY_FILE_ID_HEADER,
   frameV2ContentType,
 } from "@app/types/files";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -65,8 +65,8 @@ describe("file path HEAD metadata", () => {
       new Response(null, {
         status: 200,
         headers: {
-          [DUST_FILE_CONTENT_TYPE_HEADER]: frameV2ContentType,
-          [DUST_FILE_ID_HEADER]: "fil_frame",
+          [RUBY_FILE_CONTENT_TYPE_HEADER]: frameV2ContentType,
+          [RUBY_FILE_ID_HEADER]: "fil_frame",
           "Content-Type": "text/plain",
         },
       })
@@ -92,8 +92,8 @@ describe("file path HEAD metadata", () => {
       new Response(null, {
         status: 200,
         headers: {
-          [DUST_FILE_CONTENT_TYPE_HEADER]: frameV2ContentType,
-          [DUST_FILE_ID_HEADER]: "fil_frame",
+          [RUBY_FILE_CONTENT_TYPE_HEADER]: frameV2ContentType,
+          [RUBY_FILE_ID_HEADER]: "fil_frame",
           "Content-Type": "text/plain",
         },
       })
@@ -148,10 +148,10 @@ describe("fetchFileMetadataFromPath", () => {
       new Response(null, {
         status: 200,
         headers: {
-          [DUST_FILE_CONTENT_TYPE_HEADER]: "text/markdown",
+          [RUBY_FILE_CONTENT_TYPE_HEADER]: "text/markdown",
           "Content-Type": "text/plain",
           "Content-Length": "42",
-          [DUST_FILE_ID_HEADER]: "fil_md",
+          [RUBY_FILE_ID_HEADER]: "fil_md",
         },
       })
     );

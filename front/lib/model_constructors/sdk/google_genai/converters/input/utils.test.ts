@@ -83,7 +83,7 @@ describe("conversationToContents — function responses", () => {
         {
           role: "user",
           type: "text",
-          content: { value: "<dust_system>Skill instructions.</dust_system>" },
+          content: { value: "<ruby_system>Skill instructions.</ruby_system>" },
         },
       ],
     };
@@ -119,7 +119,7 @@ describe("conversationToContents — function responses", () => {
       },
       {
         role: "user",
-        parts: [{ text: "<dust_system>Skill instructions.</dust_system>" }],
+        parts: [{ text: "<ruby_system>Skill instructions.</ruby_system>" }],
       },
     ]);
   });

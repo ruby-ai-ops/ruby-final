@@ -1,8 +1,8 @@
 import path from "node:path";
 import { PassThrough, Readable } from "node:stream";
 import { finished } from "node:stream/promises";
-import type { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
-import type { DustFileSystemError } from "@app/types/file_system";
+import type { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
+import type { RubyFileSystemError } from "@app/types/file_system";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
@@ -58,11 +58,11 @@ export function isFolderArchiveError(
 }
 
 export type FolderArchiveFileSystem = Pick<
-  DustFileSystem,
+  RubyFileSystem,
   "getMounts" | "list" | "read" | "stat"
 >;
 
-export type FolderArchivePlanError = DustFileSystemError | FolderArchiveError;
+export type FolderArchivePlanError = RubyFileSystemError | FolderArchiveError;
 
 /**
  * @cc [owner:davidebbo,label:product] mounted-root-is-downloadable

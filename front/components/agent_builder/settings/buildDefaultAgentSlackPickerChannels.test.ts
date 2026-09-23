@@ -46,7 +46,7 @@ describe("buildDefaultAgentSlackPickerChannels", () => {
     ]);
   });
 
-  it("adds private channels the admin and Dust bot both belong to", () => {
+  it("adds private channels the admin and Ruby bot both belong to", () => {
     const channels = buildDefaultAgentSlackPickerChannels({
       connectorResources: [
         connectorChannel({

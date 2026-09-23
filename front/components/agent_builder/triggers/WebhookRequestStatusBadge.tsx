@@ -1,5 +1,5 @@
 import type { WebhookRequestTriggerStatus } from "@app/types/assistant/triggers";
-import { Chip } from "@dust-tt/sparkle";
+import { Chip } from "@ruby-ai/ui";
 import type { ComponentProps } from "react";
 
 interface WebhookRequestStatusBadgeProps {

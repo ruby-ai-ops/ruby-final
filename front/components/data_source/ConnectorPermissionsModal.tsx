@@ -11,7 +11,7 @@ import { useSensitivityLabelsController } from "@app/components/shared/labels/us
 import { setupConnection } from "@app/components/spaces/AddConnectionMenu";
 import { AdvancedNotionManagement } from "@app/components/spaces/AdvancedNotionManagement";
 import { ConnectorDataUpdatedModal } from "@app/components/spaces/ConnectorDataUpdatedModal";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useSendNotification } from "@app/hooks/useNotification";
 import { useAuth, useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useCellContext } from "@app/lib/auth/CellContext";
@@ -54,7 +54,7 @@ import { isOAuthProvider } from "@app/types/oauth/lib";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import { isString } from "@app/types/shared/utils/general";
 import type { LightWorkspaceType, WorkspaceType } from "@app/types/user";
-import type { NotificationType } from "@dust-tt/sparkle";
+import type { NotificationType } from "@ruby-ai/ui";
 import {
   Avatar,
   Button,
@@ -83,7 +83,7 @@ import {
   SheetTitle,
   Spinner,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -218,7 +218,7 @@ export async function updateConnectorConnectionId(
 
   return {
     success: false,
-    error: `Failed to update the permissions of the Data Source. Please retry to reconnect, or contact support@dust.tt for assistance if the problem persists.`,
+    error: `Failed to update the permissions of the Data Source. Please retry to reconnect, or contact support@ruby.ad for assistance if the problem persists.`,
   };
 }
 
@@ -389,7 +389,7 @@ function UpdateConnectionOAuthModal({
                 icon={InfoCircle}
               >
                 You are using a legacy way to connect your Slack workspace to
-                Dust. Starting December 2025, all Slack connections require
+                Ruby. Starting December 2025, all Slack connections require
                 customers to create their own Slack app. This change ensures
                 optimal performance and reliable real-time syncing.
                 <br />
@@ -397,7 +397,7 @@ function UpdateConnectionOAuthModal({
                 Please follow the instructions of the section{" "}
                 <b>"Setting up the Connection"</b> in our{" "}
                 <Hoverable
-                  href="https://docs.dust.tt/docs/slack-connection#setting-up-the-connection"
+                  href="https://docs.ruby.ad/docs/slack-connection#setting-up-the-connection"
                   target="_blank"
                   variant="highlight"
                 >
@@ -416,7 +416,7 @@ function UpdateConnectionOAuthModal({
                 Important
               </div>
               <div className="copy-sm p-4 text-info-900">
-                <b>Editing</b> can break the existing data structure in Dust and
+                <b>Editing</b> can break the existing data structure in Ruby and
                 Agents using them.
               </div>
 
@@ -477,7 +477,7 @@ function UpdateConnectionOAuthModal({
               icon={InfoCircle}
             >
               Editing permission rights with a different account will likely
-              break the existing data structure in Dust and Agents using them.
+              break the existing data structure in Ruby and Agents using them.
               {connectorUIConfiguration.guideLink && (
                 <div>
                   Read our{" "}
@@ -654,8 +654,8 @@ function DataSourceDeletionModal({
             >
               Removing a connection permanently deletes its synced data and may
               break agents or spaces that rely on it. Contact{" "}
-              <Hoverable href="mailto:support@dust.tt" variant="highlight">
-                support@dust.tt
+              <Hoverable href="mailto:support@ruby.ad" variant="highlight">
+                support@ruby.ad
               </Hoverable>{" "}
               to be assisted with the removal of this connection.
             </ContentMessage>
@@ -1253,7 +1253,7 @@ export function ConnectorPermissionsModal({
             return null;
           case "discord_bot":
             return null;
-          case "dust_project":
+          case "ruby_project":
             return null;
           default:
             assertNeverAndIgnore(c.type);

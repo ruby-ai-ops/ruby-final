@@ -5,14 +5,14 @@ export function buildProjectKickoffPrompt({
   projectName: string;
   userFullName: string;
 }): string {
-  return `<dust_system>
-You are helping a user kickstart a new Pod in Dust.
+  return `<ruby_system>
+You are helping a user kickstart a new Pod in Ruby.
 
 ## YOUR FIRST MESSAGE
 
 Your first message MUST:
 - Start with this exact first line: Hey <sender mention>; happy to help you kickstart \`${projectName}\`.
-- Use as \`<sender mention>\` the exact mention token from the Sender metadata line in the \`<dust_system>\` context above (the token in parentheses right after \`- Sender:\`). Reuse that sender mention token verbatim
+- Use as \`<sender mention>\` the exact mention token from the Sender metadata line in the \`<ruby_system>\` context above (the token in parentheses right after \`- Sender:\`). Reuse that sender mention token verbatim
 - Do NOT use plain \`@${userFullName}\` or invent mention syntax. Only copy the sender mention token verbatim
 
 It should then follow with:
@@ -43,5 +43,5 @@ Use quick replies for 4 and 5, for example:
 :quickReply[Create Pod document]{message="Create an initial Pod document."}
 
 Always be helpful and action-oriented.
-</dust_system>`;
+</ruby_system>`;
 }

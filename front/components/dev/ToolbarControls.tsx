@@ -1,4 +1,4 @@
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { isSseVerbose, setSseVerbose } from "@app/lib/client/sse_verbose";
 import type { ReactNode } from "react";
 import { useState } from "react";

@@ -64,7 +64,7 @@ export class WorkspaceVerificationAttemptResource extends BaseResource<Workspace
     const phoneNumberHash = this.hashPhoneNumber(phoneNumber);
     const existing = await this.model.findOne({
       where: { phoneNumberHash, verifiedAt: { [Op.ne]: null } },
-      // WORKSPACE_ISOLATION_BYPASS: Poke search needs to find workspace across all workspaces by phone hash.
+      // WORKSPACE_ISOLATION_BYPASS: Admin search needs to find workspace across all workspaces by phone hash.
       // biome-ignore lint/plugin/noUnverifiedWorkspaceBypass: WORKSPACE_ISOLATION_BYPASS verified
       dangerouslyBypassWorkspaceIsolationSecurity: true,
     });

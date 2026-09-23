@@ -1,8 +1,8 @@
-import type { AgentActionPublicType } from "@dust-tt/client";
+import type { AgentActionPublicType } from "@ruby-ai/client";
 import {
   isSearchResultResourceType,
   isWebsearchResultResourceType,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 
 export interface MessageFootnote {
   index: number;

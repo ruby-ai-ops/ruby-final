@@ -17,8 +17,8 @@ import mainLogger from "@connectors/logger/logger";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { ModelId } from "@connectors/types";
 import { getNotionWorkflowId, normalizeError } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import type {
   WorkflowExecutionDescription,
   WorkflowHandle,

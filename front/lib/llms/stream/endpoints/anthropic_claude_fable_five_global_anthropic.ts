@@ -1,8 +1,8 @@
-import { WithDustClaudeFableFiveConfig } from "@app/lib/llms/providers/anthropic/models/claude_fable_five";
-import { defineDustStreamEndpoint } from "@app/lib/llms/stream/dust_stream_endpoint";
+import { WithRubyClaudeFableFiveConfig } from "@app/lib/llms/providers/anthropic/models/claude_fable_five";
+import { defineRubyStreamEndpoint } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import { AnthropicClaudeFableFiveGlobalAnthropicStream } from "@app/lib/model_constructors/stream/endpoints/anthropic_claude_fable_five_global_anthropic";
 
-export class DustAnthropicClaudeFableFiveGlobalAnthropicStream extends WithDustClaudeFableFiveConfig(
+export class RubyAnthropicClaudeFableFiveGlobalAnthropicStream extends WithRubyClaudeFableFiveConfig(
   AnthropicClaudeFableFiveGlobalAnthropicStream
 ) {
   static readonly endpointFilter = {
@@ -10,4 +10,4 @@ export class DustAnthropicClaudeFableFiveGlobalAnthropicStream extends WithDustC
   };
 }
 
-defineDustStreamEndpoint(DustAnthropicClaudeFableFiveGlobalAnthropicStream);
+defineRubyStreamEndpoint(RubyAnthropicClaudeFableFiveGlobalAnthropicStream);

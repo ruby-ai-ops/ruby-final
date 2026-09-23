@@ -169,7 +169,7 @@ async function createConversation(
       userContextUsername: user.username ?? "dev-user",
       userContextTimezone: "UTC",
       userContextFullName: user.fullName() ?? "Dev User",
-      userContextEmail: user.email ?? "dev@dust.tt",
+      userContextEmail: user.email ?? "dev@ruby.ad",
       userContextProfilePictureUrl: null,
       userContextOrigin: "web",
       clientSideMCPServerIds: [],
@@ -186,7 +186,7 @@ async function createConversation(
 
     const agentMessageRow = await AgentMessageModel.create({
       status: "succeeded",
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       agentConfigurationVersion: 0,
       conversationId: conversation.id,
       workspaceId: workspace.id,

@@ -9,7 +9,7 @@ import type { CoreAPIDataSourceDocumentSection } from "@app/types/core/data_sour
  * Generate a CSV file and a snippet of the file.
  * Save the file to the database and return the file and the snippet.
  *
- * TODO(FILE_SYSTEM/COMPUTER): migrate to DustFileSystem once query_tables is ported to the computer world.
+ * TODO(FILE_SYSTEM/COMPUTER): migrate to RubyFileSystem once query_tables is ported to the computer world.
  * Kept on FileResource because tabular results are indexed into the conversation SQLite data
  * source so query_tables can re-query them.
  */
@@ -131,7 +131,7 @@ export async function generateSectionFile(
   const sectionFile = await FileResource.makeNew({
     workspaceId: workspace.id,
     userId: user?.id ?? null,
-    contentType: "application/vnd.dust.section.json",
+    contentType: "application/vnd.ruby.section.json",
     fileName: title,
     fileSize: Buffer.byteLength(content),
     useCase: "tool_output",

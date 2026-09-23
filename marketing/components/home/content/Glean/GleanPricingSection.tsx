@@ -1,5 +1,5 @@
 import { H2, H3, H4, P } from "@marketing/components/home/ContentComponents";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 
 interface PricingRow {
   product: string;

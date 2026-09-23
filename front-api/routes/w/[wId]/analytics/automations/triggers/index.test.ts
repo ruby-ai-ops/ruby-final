@@ -41,7 +41,7 @@ const TRIGGERS: GetAutomationTriggersResponse = {
       },
       owner: {
         name: "Nic Siegle",
-        email: "nic@dust.tt",
+        email: "nic@ruby.ad",
         pictureUrl: null,
       },
       scheduleDescription: "Every day at 9:00",
@@ -67,7 +67,7 @@ const TRIGGERS: GetAutomationTriggersResponse = {
       },
       owner: {
         name: "Adrien Simon",
-        email: "adrien@dust.tt",
+        email: "adrien@ruby.ad",
         pictureUrl: null,
       },
       scheduleDescription: null,

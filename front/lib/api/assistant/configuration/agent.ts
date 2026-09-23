@@ -48,7 +48,7 @@ import { Op, QueryTypes } from "sequelize";
 const PENDING_AGENT_PLACEHOLDER_NAME = "__PENDING__";
 const PENDING_AGENT_PLACEHOLDER_DESCRIPTION = "";
 const PENDING_AGENT_PLACEHOLDER_PICTURE_URL =
-  "https://dust.tt/static/systemavatar/dust_avatar_full.png";
+  "https://ruby.ad/static/systemavatar/ruby_avatar_full.png";
 
 /**
  * Creates a pending agent configuration.
@@ -496,8 +496,8 @@ export async function resolveAgentConfigurationIdByName(
   agentName: string
 ): Promise<string | null> {
   const normalizedAgentName = agentName.trim().toLowerCase();
-  if (normalizedAgentName === "dust" || normalizedAgentName === "dust agent") {
-    return GLOBAL_AGENTS_SID.DUST;
+  if (normalizedAgentName === "ruby" || normalizedAgentName === "ruby agent") {
+    return GLOBAL_AGENTS_SID.RUBY;
   }
 
   const workspaceMatches = await searchAgentConfigurationsByName(

@@ -140,9 +140,9 @@ describe("consumption top rankings", () => {
         [
           "agent1",
           {
-            name: "@dust",
-            pictureUrl: "http://pic/dust",
-            description: "Answers questions about Dust",
+            name: "@ruby",
+            pictureUrl: "http://pic/ruby",
+            description: "Answers questions about Ruby",
             modelId: "claude-4-sonnet",
             modelDisplayName: "Claude 4 Sonnet",
           },
@@ -177,9 +177,9 @@ describe("consumption top rankings", () => {
     expect(result.value.agents).toEqual([
       {
         agentId: "agent1",
-        name: "@dust",
-        pictureUrl: "http://pic/dust",
-        description: "Answers questions about Dust",
+        name: "@ruby",
+        pictureUrl: "http://pic/ruby",
+        description: "Answers questions about Ruby",
         modelId: "claude-4-sonnet",
         modelDisplayName: "Claude 4 Sonnet",
         credits: 3,
@@ -829,7 +829,7 @@ describe("consumption top rankings", () => {
 
   it("reports a zero average for a group with no counted unit", async () => {
     const { auth } = await setup();
-    mockLabels({ agent1: "@dust" });
+    mockLabels({ agent1: "@ruby" });
     mockAggs({
       buckets: [
         {
@@ -856,7 +856,7 @@ describe("consumption top rankings", () => {
 
   it("still returns the ranking when the previous-period lookup fails", async () => {
     const { auth } = await setup();
-    mockLabels({ agent1: "@dust" });
+    mockLabels({ agent1: "@ruby" });
     // The ranking query succeeds, then the previous-period query fails.
     vi.mocked(searchConsumptionAnalytics).mockResolvedValueOnce(
       esResponse({
@@ -893,7 +893,7 @@ describe("consumption top rankings", () => {
 
   it("ranks ascending when sortOrder is asc", async () => {
     const { auth } = await setup();
-    mockLabels({ agent1: "@dust" });
+    mockLabels({ agent1: "@ruby" });
     mockAggs({
       buckets: [
         {

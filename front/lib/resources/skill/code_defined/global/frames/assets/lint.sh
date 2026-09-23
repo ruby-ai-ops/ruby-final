@@ -7,7 +7,7 @@ if [ "$(id -u)" = 0 ]; then
 fi
 
 # GCS Fuse makes repeated config reads slow. Cache the skill files on local disk.
-checker_cache=${DUST_FRAME_CHECKER_CACHE:-${XDG_CACHE_HOME:-$HOME/.cache}/dust/frame-checker}
+checker_cache=${RUBY_FRAME_CHECKER_CACHE:-${XDG_CACHE_HOME:-$HOME/.cache}/ruby/frame-checker}
 # Bump whenever this script, its configs or bundled rules change to refresh cached checkers.
 checker_version=3
 checker="$checker_cache/checker-$checker_version"
@@ -33,17 +33,17 @@ fi
 templates=$(cd -- "$(dirname -- "$0")" && pwd)
 project=$(cd -- "${1:-.}" && pwd)
 # Local copies can override the scoped root derived from the /files mount.
-frame_root=${DUST_FRAME_ROOT:-${project#/files/}}
+frame_root=${RUBY_FRAME_ROOT:-${project#/files/}}
 frame_root=${frame_root%/}
 case "${frame_root%%/*}" in
   conversation-?*|pod-?*) ;;
   *)
-    echo "Set DUST_FRAME_ROOT to the scoped Frame folder, for example conversation-abc/MyFrame" >&2
+    echo "Set RUBY_FRAME_ROOT to the scoped Frame folder, for example conversation-abc/MyFrame" >&2
     exit 1
     ;;
 esac
-viz_url=${DUST_VIZ_URL:?Set DUST_VIZ_URL to the Viz origin}
-cache=${DUST_FRAME_TYPES_CACHE:-${XDG_CACHE_HOME:-$HOME/.cache}/dust/frame-types}
+viz_url=${RUBY_VIZ_URL:?Set RUBY_VIZ_URL to the Viz origin}
+cache=${RUBY_FRAME_TYPES_CACHE:-${XDG_CACHE_HOME:-$HOME/.cache}/ruby/frame-types}
 
 if [ ! -f "$project/manifest.json" ] && [ ! -f "$project/index.tsx" ]; then
   echo "Expected a Frame folder containing manifest.json or index.tsx" >&2
@@ -117,22 +117,22 @@ lint_config=$(find "$work" -type l -print0 | jq -Rs \
   --slurpfile config "$templates/oxlintrc.json" '
     split("\u0000")[:-1] | map({key: ltrimstr($root), value: true}) | from_entries as $files |
     $config[0] | .jsPlugins[0].specifier = $plugin | .jsPlugins[1] = $tailwindPlugin |
-    .rules["dust/relative-package-files"] = ["error", {frameRoot: $frameRoot, packageFiles: $files}] |
-    .rules["dust/declared-frame-functions"] = (if $functions == null then "off" else ["error", $functions] end) |
+    .rules["ruby/relative-package-files"] = ["error", {frameRoot: $frameRoot, packageFiles: $files}] |
+    .rules["ruby/declared-frame-functions"] = (if $functions == null then "off" else ["error", $functions] end) |
     .rules["no-restricted-imports"][1].patterns[0].group += ($modules | map("!" + .))')
 # Remove the config symlinks before writing so the originals stay untouched.
 find "$work" -type l \( -name tsconfig.json -o -name .oxlintrc.json \) -delete
 jq --arg config "$types/tsconfig.json" '.extends = $config' \
   "$templates/tsconfig.json" > "$work/tsconfig.json"
 # JS plugin rules ignore --allow, so select the rules in the config for each pass.
-jq '.rules |= with_entries(select(.key == "dust/relative-package-files"))' \
+jq '.rules |= with_entries(select(.key == "ruby/relative-package-files"))' \
   <<< "$lint_config" > "$work/.oxlintrc.json"
 
 cd -- "$work"
 # Check package paths in backend code too, without loading UI types for those files.
-oxlint --allow all --deny dust/relative-package-files \
+oxlint --allow all --deny ruby/relative-package-files \
   --disable-nested-config --format unix --config .oxlintrc.json .
-jq 'del(.rules["dust/relative-package-files"])' <<< "$lint_config" > .oxlintrc.json
+jq 'del(.rules["ruby/relative-package-files"])' <<< "$lint_config" > .oxlintrc.json
 oxlint --type-aware --type-check --disable-nested-config --format unix \
   --ignore-pattern 'functions/**' \
   --ignore-pattern 'databases/**' --config .oxlintrc.json .

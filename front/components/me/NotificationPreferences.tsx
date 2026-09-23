@@ -33,7 +33,7 @@ import {
   Lock01,
   SettingsList,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import cloneDeep from "lodash/cloneDeep";
 import { useEffect, useState } from "react";
@@ -290,7 +290,7 @@ export function NotificationPreferences({
 
         <SettingsList.Row
           title="In-app popup"
-          description="Show a popup inside Dust"
+          description="Show a popup inside Ruby"
           action={
             <SliderToggle
               selected={isInAppEnabled}
@@ -370,7 +370,7 @@ export function NotificationPreferences({
         {displayForYouOption && (
           <SettingsList.Row
             title="For you"
-            description="Email when Dust has a new recommendation for you"
+            description="Email when Ruby has a new recommendation for you"
             action={
               <SliderToggle
                 selected={isForYouEnabled}

@@ -39,7 +39,7 @@ export function WithZAiGlm53Config<
 
     static readonly configSchema = configSchema;
 
-    // Typed as `number` so the Dust layer can apply product caps.
+    // Typed as `number` so the Ruby layer can apply product caps.
     static readonly contextSize: number = CONTEXT_SIZE;
     static readonly maxOutputTokens: number = MAX_OUTPUT_TOKENS;
   }

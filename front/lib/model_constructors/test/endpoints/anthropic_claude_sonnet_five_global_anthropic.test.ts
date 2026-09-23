@@ -9,7 +9,7 @@ export const AnthropicClaudeSonnetFiveGlobalAnthropicStreamSetup: StreamSetup =
   {
     createInstance: () =>
       new AnthropicClaudeSonnetFiveGlobalAnthropicStream({
-        ANTHROPIC_API_KEY: process.env.DUST_MANAGED_ANTHROPIC_API_KEY ?? "",
+        ANTHROPIC_API_KEY: process.env.RUBY_MANAGED_ANTHROPIC_API_KEY ?? "",
       }),
     // `null` runs the case with its default checkers; a checker array overrides
     // them. Every case always runs.

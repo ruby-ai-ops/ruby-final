@@ -61,7 +61,7 @@ export class FirefoxMcpService extends McpService {
 
     const transport = new BrowserMCPTransport(
       owner.sId,
-      "dust-firefox-extension",
+      "ruby-firefox-extension",
       (serverId) => {
         this.serverId = serverId;
         onServerIdReceived(serverId);

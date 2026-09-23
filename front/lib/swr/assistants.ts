@@ -1154,7 +1154,7 @@ export function useMemberDetails({
       | { kind: "batch"; membersById: Record<string, MemberDisplayInfo> }
     > => {
       if (key.includes("/members/batch?")) {
-        const url = new URL(key, "https://dust.local");
+        const url = new URL(key, "https://ruby.local");
         const sIdsParam = url.searchParams.get("sIds");
         if (!sIdsParam) {
           return { kind: "batch", membersById: {} };

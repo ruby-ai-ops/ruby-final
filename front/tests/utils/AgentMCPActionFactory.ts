@@ -38,7 +38,7 @@ export class AgentMCPActionFactory {
       agentMessageModelId,
       status = "blocked_validation_required",
       step = 1,
-      dustRunId = null,
+      rubyRunId = null,
       output = [],
       inputs = {},
       functionCallName = "test_tool",
@@ -54,7 +54,7 @@ export class AgentMCPActionFactory {
       agentMessageModelId: ModelId;
       status?: ToolExecutionStatus;
       step?: number;
-      dustRunId?: string | null;
+      rubyRunId?: string | null;
       output?: CallToolResult["content"];
       inputs?: Record<string, unknown>;
       functionCallName?: string;
@@ -79,7 +79,7 @@ export class AgentMCPActionFactory {
         step,
         index: currentIndex,
         version: 0,
-        dustRunId,
+        rubyRunId,
         type: "function_call",
         value: {
           type: "function_call",
@@ -103,9 +103,9 @@ export class AgentMCPActionFactory {
       jsonSchema: null,
       additionalConfiguration: {},
       mcpServerViewId: "test-server-view",
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
       internalMCPServerId: null,
       availability: "auto",
       permission: "low",

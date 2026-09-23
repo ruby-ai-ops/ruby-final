@@ -15,47 +15,6 @@ interface MenuConfig {
   items: NavItemWithChildren[];
 }
 
-const CareersMenuConfig: MenuConfig = {
-  title: "Careers",
-  items: [
-    {
-      title: "About Us",
-      href: "/home/about",
-      isExternal: false,
-    },
-    {
-      title: "Jobs",
-      href: "/jobs",
-      isExternal: true,
-    },
-    {
-      title: "Why Dust?",
-      href: "/blog/why-dust",
-    },
-  ],
-};
-
-const SocialMenuConfig: MenuConfig = {
-  title: "Social",
-  items: [
-    {
-      title: "X",
-      href: "https://x.com/DustHQ",
-      isExternal: true,
-    },
-    {
-      title: "LinkedIn",
-      href: "https://www.linkedin.com/company/dust-tt/",
-      isExternal: true,
-    },
-    {
-      title: "YouTube",
-      href: "https://www.youtube.com/@dust-tt",
-      isExternal: true,
-    },
-  ],
-};
-
 // If you change this, make sure to update the links in the extension as well.
 const LegalMenuConfig: MenuConfig = {
   title: "Legal & Security",
@@ -69,13 +28,8 @@ const LegalMenuConfig: MenuConfig = {
       href: "/home/vulnerability",
     },
     {
-      title: "Terms & Policies",
-      href: "/terms",
-      isExternal: true,
-    },
-    {
       title: "Trust Center",
-      href: "https://trust.dust.com",
+      href: "https://trust.ruby.ad",
       isExternal: true,
     },
     {
@@ -193,20 +147,20 @@ const DevelopersMenuConfig: MenuConfig = {
   items: [
     {
       title: "Developer Platform",
-      href: "/home/solutions/dust-platform",
+      href: "/home/solutions/ruby-platform",
     },
     {
-      title: "Dust for Engineers",
+      title: "Ruby for Engineers",
       href: "/home/solutions/engineering",
     },
     {
       title: "Platform Documentation",
-      href: "https://docs.dust.tt",
+      href: "https://docs.ruby.ad",
       isExternal: true,
     },
     {
       title: "Github Repo",
-      href: "https://github.com/dust-tt/dust",
+      href: "https://github.com/adithyawasundara-work/ruby-ai",
       isExternal: true,
     },
   ],
@@ -239,12 +193,12 @@ const BuildMenuConfig: MenuConfig = {
   items: [
     {
       title: "Get Started ",
-      href: "https://docs.dust.tt/docs/intro",
+      href: "https://docs.ruby.ad/docs/intro",
       isExternal: true,
     },
     {
       title: "Guides & Tutorials",
-      href: "https://docs.dust.tt/docs/use-cases",
+      href: "https://docs.ruby.ad/docs/use-cases",
       isExternal: true,
     },
     {
@@ -259,17 +213,17 @@ const ExploreMenuConfig: MenuConfig = {
   items: [
     {
       title: "Blog",
-      href: "https://dust.tt/blog",
+      href: "https://ruby.ad/blog",
       isExternal: true,
     },
     {
       title: "Online Events",
-      href: "https://app.getcontrast.io/dust",
+      href: "https://app.getcontrast.io/ruby",
       isExternal: true,
     },
     {
       title: "Events",
-      href: "https://lu.ma/dust",
+      href: "https://lu.ma/ruby",
       isExternal: true,
     },
     {
@@ -284,7 +238,7 @@ const ConnectMenuConfig: MenuConfig = {
   items: [
     {
       title: "Slack Community",
-      href: "https://dust-community.tightknit.community/join",
+      href: "https://ruby-community.tightknit.community/join",
       isExternal: true,
     },
 
@@ -377,28 +331,12 @@ export const menuConfig: DocsConfig = {
       items: SolutionsMenuConfig.items,
     },
     {
-      title: BuildMenuConfig.title,
-      items: BuildMenuConfig.items,
-    },
-    {
-      title: ExploreMenuConfig.title,
-      items: ExploreMenuConfig.items,
-    },
-    {
-      title: ConnectMenuConfig.title,
-      items: ConnectMenuConfig.items,
-    },
-    {
-      title: CareersMenuConfig.title,
-      items: CareersMenuConfig.items,
-    },
-    {
-      title: SocialMenuConfig.title,
-      items: SocialMenuConfig.items,
-    },
-    {
       title: LegalMenuConfig.title,
-      items: LegalMenuConfig.items,
+      items: LegalMenuConfig.items.filter(
+        (item) =>
+          item.title !== "Trust Center" &&
+          item.title !== "Vulnerability Disclosure"
+      ),
     },
   ],
   footerNav: [
@@ -459,22 +397,22 @@ export const menuConfig: DocsConfig = {
       items: [
         {
           title: "Slack Community",
-          href: "https://dust-community.tightknit.community/join",
+          href: "https://ruby-community.tightknit.community/join",
           isExternal: true,
         },
         {
           title: "X",
-          href: "https://x.com/DustHQ",
+          href: "https://x.com/RubyHQ",
           isExternal: true,
         },
         {
           title: "LinkedIn",
-          href: "https://www.linkedin.com/company/dust-tt/",
+          href: "https://www.linkedin.com/company/adithyawasundara-work/",
           isExternal: true,
         },
         {
           title: "YouTube",
-          href: "https://www.youtube.com/@dust-tt",
+          href: "https://www.youtube.com/@ruby-ai",
           isExternal: true,
         },
       ],
@@ -483,18 +421,13 @@ export const menuConfig: DocsConfig = {
       title: "Legal",
       items: [
         {
-          title: "Terms & Policies",
-          href: "/terms",
-          isExternal: true,
-        },
-        {
           title: "Privacy Policy",
           href: "/home/platform-privacy",
           isExternal: false,
         },
         {
           title: "Trust Center",
-          href: "https://trust.dust.com",
+          href: "https://trust.ruby.ad",
           isExternal: true,
         },
         {

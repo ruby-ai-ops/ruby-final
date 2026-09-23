@@ -4,7 +4,7 @@ import { clientFetch } from "@app/lib/egress/client";
 import { useConnectorConfig } from "@app/lib/swr/connectors";
 import type { DataSourceType } from "@app/types/data_source";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, ContextItem, Input, ZendeskLogo } from "@dust-tt/sparkle";
+import { Button, ContextItem, Input, ZendeskLogo } from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 export function ZendeskRateLimitConfig({

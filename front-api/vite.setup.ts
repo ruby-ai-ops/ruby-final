@@ -8,7 +8,7 @@ import "../front/vite.setup.ts";
 vi.mock("@app/components/dev/devModeConstants", () => {
   return {
     DEV_MODE_ACTIVE: false,
-    DEV_MODE_STORAGE_KEY: "dust_dev_mode",
+    DEV_MODE_STORAGE_KEY: "ruby_dev_mode",
   };
 });
 
@@ -31,20 +31,20 @@ vi.mock("@app/lib/api/config", async (importOriginal) => {
     }),
     getDocumentRendererUrl: () => "http://localhost:3100",
     getEgressPolicyBucket: () => "test-egress-policy-bucket",
-    getDustInviteTokenSecret: () => "test-invite-secret-32chars!!!!!",
+    getRubyInviteTokenSecret: () => "test-invite-secret-32chars!!!!!",
     getInvitationEmailTemplate: () => "d-test",
     getOAuthAPIConfig: () => ({
       url: "https://oauth-api.example.com",
       apiKey: "test-api-key",
     }),
-    getPokeAppUrl: () => "http://localhost:3000/poke",
+    getAdminAppUrl: () => "http://localhost:3000/admin",
     getSendgridApiKey: () => "SG.test",
     getSupportEmailAddress: () => ({
-      name: "Dust team",
-      email: "test@dust.tt",
+      name: "Ruby team",
+      email: "test@ruby.ad",
     }),
     getVizJwtSecret: () => "test-secret",
-    getVizPublicUrl: () => "https://viz.dust.tt",
+    getVizPublicUrl: () => "https://viz.ruby.ad",
   });
 });
 

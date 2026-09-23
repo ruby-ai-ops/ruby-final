@@ -1,0 +1,58 @@
+import RubyUITokens
+import SwiftUI
+
+struct ContentView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
+
+    var body: some View {
+        switch authViewModel.state {
+        case .loading:
+            LoadingView()
+
+        case .unauthenticated:
+            LoginView(onLogin: { authViewModel.login() })
+
+        case .authenticating:
+            LoadingView()
+
+        case let .authenticated(user, tokenProvider):
+            MainContainerView(
+                user: user,
+                tokenProvider: tokenProvider,
+                onLogout: { authViewModel.logout() }
+            )
+
+        case let .error(message):
+            ErrorView(message: message, onRetry: { authViewModel.logout() })
+        }
+    }
+}
+
+private struct ErrorView: View {
+    let message: String
+    let onRetry: () -> Void
+
+    var body: some View {
+        VStack(spacing: 20) {
+            RubyUIIcon.exclamationCircle.image
+                .resizable()
+                .frame(width: 48, height: 48)
+                .foregroundStyle(Color.warning)
+
+            Text("Something went wrong")
+                .uiHeadingXl()
+                .foregroundStyle(Color.rubyForeground)
+
+            Text(message)
+                .uiCopyBase()
+                .foregroundStyle(Color.rubyFaint)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+
+            Button("Try Again", action: onRetry)
+                .buttonStyle(.borderedProminent)
+                .tint(Color.highlight)
+        }
+        .background(Color.rubyBackground)
+    }
+}

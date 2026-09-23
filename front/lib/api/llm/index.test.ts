@@ -14,7 +14,7 @@ import {
 } from "@app/lib/model_constructors/types/models";
 import {
   isCreditPricedPlanPrefix,
-  isEnterpriseOrDust,
+  isEnterpriseOrRuby,
 } from "@app/lib/plans/plan_codes";
 import { ProviderCredentialFactory } from "@app/tests/utils/ProviderCredentialFactory";
 import { WorkspaceFactory } from "@app/tests/utils/WorkspaceFactory";
@@ -30,7 +30,7 @@ async function getWorkspaceConfig(
 
   return {
     featureFlags: await getFeatureFlags(auth),
-    isEnterprise: isEnterpriseOrDust(plan),
+    isEnterprise: isEnterpriseOrRuby(plan),
     isCreditPriced: isCreditPricedPlanPrefix(plan.code),
     isAdvancedModels: plan.hasAdvancedModelAccess,
   };
@@ -139,7 +139,7 @@ describe("getWorkspaceFilter", () => {
     await ProviderCredentialFactory.basic(workspace, "anthropic");
     const auth = await Authenticator.internalAdminForWorkspace(workspace.sId);
 
-    // Agent-platform endpoints run on Dust's Vertex project, so they must stay
+    // Agent-platform endpoints run on Ruby's Vertex project, so they must stay
     // out even for a workspace whose plan and flags would otherwise unlock
     // them: the filter, not the endpoint availability rules, is the guarantee.
     const workspaceConfig: WorkspaceConfig = {
@@ -168,7 +168,7 @@ describe("getWorkspaceFilter", () => {
     );
     expect(eapModels.length).toBeGreaterThan(0);
 
-    // Every flag and entitlement on: an EAP model is served on Dust's own Anthropic key, so no
+    // Every flag and entitlement on: an EAP model is served on Ruby's own Anthropic key, so no
     // plan or flag may unlock it for a workspace running on its own keys.
     const workspaceConfig: WorkspaceConfig = {
       featureFlags: WHITELISTABLE_FEATURES,

@@ -529,7 +529,7 @@ export const GITHUB_TOOLS_METADATA = [
     description:
       "Search GitHub issues and pull requests using GitHub's advanced search syntax with AND/OR operators and nested filters. " +
       "Use 'is:issue' for issues, 'is:pr' for pull requests, or omit to search both. " +
-      "The `@me` qualifier resolves to the authenticated account on a personal connection, but on a workspace (shared) connection it resolves to the Dust GitHub App bot, so pass the GitHub username explicitly there.",
+      "The `@me` qualifier resolves to the authenticated account on a personal connection, but on a workspace (shared) connection it resolves to the Ruby GitHub App bot, so pass the GitHub username explicitly there.",
     schema: {
       query: z
         .string()

@@ -298,7 +298,7 @@ content file using the \`Slideshow\` and \`Slide\` components.
 
 **MIME type:** Always set \`mime_type\` to \`${VIZ_SLIDESHOW_MIME_TYPE}\` when creating a slideshow.
 
-**Import:** \`import { Slideshow, Slide } from "@dust/slideshow/v2";\`
+**Import:** \`import { Slideshow, Slide } from "@ruby-ai/slideshow/v2";\`
 
 **Components:**
 - \`<Slideshow>\` wraps all slides. It handles navigation (prev/next arrows, dot indicators, keyboard
@@ -317,12 +317,12 @@ content file using the \`Slideshow\` and \`Slide\` components.
 
 **Do not:**
 - Do not build navigation controls (buttons, arrows, dots, keyboard handlers). They are built in.
-- Do not import from \`@dust/slideshow/v1\`. Always use \`@dust/slideshow/v2\`.
+- Do not import from \`@ruby-ai/slideshow/v1\`. Always use \`@ruby-ai/slideshow/v2\`.
 - Do not set explicit heights on \`<Slide>\`, it fills the viewport automatically.
 - Do not use gradients unless the user explicitly requests them.
 
 \`\`\`tsx
-import { Slideshow, Slide } from "@dust/slideshow/v2";
+import { Slideshow, Slide } from "@ruby-ai/slideshow/v2";
 
 export default function Deck() {
   return (

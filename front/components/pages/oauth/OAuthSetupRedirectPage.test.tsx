@@ -18,7 +18,7 @@ vi.mock("@app/lib/swr/oauth", () => ({
   useOAuthSetup: mocks.useOAuthSetup,
 }));
 
-vi.mock("@dust-tt/sparkle", () => ({
+vi.mock("@ruby-ai/ui", () => ({
   Spinner: () => <div role="status" />,
 }));
 

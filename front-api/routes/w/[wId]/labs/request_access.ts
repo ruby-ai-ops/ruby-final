@@ -55,9 +55,9 @@ app.post(
   ${escape(emailMessage)}`;
 
     const result = await sendEmailWithTemplate({
-      to: "support@dust.tt",
+      to: "support@ruby.ad",
       from: config.getSupportEmailAddress(),
-      subject: `[Dust] Labs Feature Request: ${featureName} from ${emailRequester}`,
+      subject: `[Ruby] Labs Feature Request: ${featureName} from ${emailRequester}`,
       replyTo: emailRequester,
       body,
     });

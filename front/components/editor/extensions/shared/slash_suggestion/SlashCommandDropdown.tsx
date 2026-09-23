@@ -21,7 +21,7 @@ import {
   DropdownTooltipTrigger,
   Spinner,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { SuggestionProps } from "@tiptap/suggestion";
 import type React from "react";
 import {

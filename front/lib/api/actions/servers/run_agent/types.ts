@@ -9,8 +9,8 @@ import type {
   ToolAskUserQuestionEvent,
   ToolFileAuthRequiredEvent,
   ToolPersonalAuthRequiredEvent,
-} from "@dust-tt/client";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 export interface ChildAgentBlob {
   name: string;

@@ -170,6 +170,6 @@ production diagnostics.
 print("Token refresh failed: \(error)")
 
 // GOOD
-private let logger = Logger(subsystem: "com.dust.mobile", category: "Auth")
+private let logger = Logger(subsystem: "com.ruby.mobile", category: "Auth")
 logger.error("Token refresh failed: \(error)")
 ```

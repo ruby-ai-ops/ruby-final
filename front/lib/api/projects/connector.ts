@@ -33,10 +33,10 @@ import { Err, Ok } from "@app/types/shared/result";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 /**
- * Creates a dust_project connector and associated data source for a project space.
+ * Creates a ruby_project connector and associated data source for a project space.
  * This function is idempotent - it will ensure all components exist, creating any that are missing.
  * This is called automatically when a project is created.
  */
@@ -95,8 +95,8 @@ export async function createDataSourceAndConnectorForProject(
 
       if (frontDataSource) {
         // Front data source exists, use its Core API IDs
-        coreProjectId = frontDataSource.dustAPIProjectId;
-        coreDataSourceId = frontDataSource.dustAPIDataSourceId;
+        coreProjectId = frontDataSource.rubyAPIProjectId;
+        coreDataSourceId = frontDataSource.rubyAPIDataSourceId;
 
         // Verify Core API data source exists
         const coreDataSourceCheck = await coreAPI.getDataSource({
@@ -125,15 +125,15 @@ export async function createDataSourceAndConnectorForProject(
       // Create Core API project if needed
       if (!frontDataSource) {
         createdCoreComponents = true;
-        const dustProject = await coreAPI.createProject();
-        if (dustProject.isErr()) {
+        const rubyProject = await coreAPI.createProject();
+        if (rubyProject.isErr()) {
           return new Err(
             new Error(
-              `Failed to create internal project for the data source: ${dustProject.error.message}`
+              `Failed to create internal project for the data source: ${rubyProject.error.message}`
             )
           );
         }
-        coreProjectId = dustProject.value.project.project_id.toString();
+        coreProjectId = rubyProject.value.project.project_id.toString();
 
         // Create Core API data source
         let credentials: LLMCredentialsType;
@@ -147,7 +147,7 @@ export async function createDataSourceAndConnectorForProject(
           return new Err(new Error(MISSING_EMBEDDING_API_KEY_ERROR_MESSAGE));
         }
 
-        const dustDataSource = await coreAPI.createDataSource({
+        const rubyDataSource = await coreAPI.createDataSource({
           projectId: coreProjectId,
           config: {
             embedder_config: {
@@ -167,7 +167,7 @@ export async function createDataSourceAndConnectorForProject(
           name: dataSourceName,
         });
 
-        if (dustDataSource.isErr()) {
+        if (rubyDataSource.isErr()) {
           // Clean up Core API project if data source creation fails
           await coreAPI.deleteProject({
             projectId: coreProjectId,
@@ -175,15 +175,15 @@ export async function createDataSourceAndConnectorForProject(
           });
           return new Err(
             new Error(
-              `Failed to create the data source: ${dustDataSource.error.message}`
+              `Failed to create the data source: ${rubyDataSource.error.message}`
             )
           );
         }
-        coreDataSourceId = dustDataSource.value.data_source.data_source_id;
+        coreDataSourceId = rubyDataSource.value.data_source.data_source_id;
       } else {
         // Use existing Core API IDs
-        coreProjectId = frontDataSource.dustAPIProjectId;
-        coreDataSourceId = frontDataSource.dustAPIDataSourceId;
+        coreProjectId = frontDataSource.rubyAPIProjectId;
+        coreDataSourceId = frontDataSource.rubyAPIDataSourceId;
       }
 
       // Ensure project context folder exists (idempotent via upsert)
@@ -193,7 +193,7 @@ export async function createDataSourceAndConnectorForProject(
         folderId: PROJECT_CONTEXT_FOLDER_ID,
         parentId: null,
         parents: [PROJECT_CONTEXT_FOLDER_ID],
-        mimeType: INTERNAL_MIME_TYPES.DUST_PROJECT.CONTEXT_FOLDER,
+        mimeType: INTERNAL_MIME_TYPES.RUBY_PROJECT.CONTEXT_FOLDER,
         sourceUrl: config.getAppUrl() + getPodRoute(workspace.sId, space.sId),
         timestamp: null,
         providerVisibility: null,
@@ -228,11 +228,11 @@ export async function createDataSourceAndConnectorForProject(
           await DataSourceViewResource.createDataSourceAndDefaultView(
             {
               assistantDefaultSelected:
-                isConnectorProviderAssistantDefaultSelected("dust_project"),
-              connectorProvider: "dust_project",
+                isConnectorProviderAssistantDefaultSelected("ruby_project"),
+              connectorProvider: "ruby_project",
               description: `Conversations from project ${space.sId}`,
-              dustAPIProjectId: coreProjectId,
-              dustAPIDataSourceId: coreDataSourceId,
+              rubyAPIProjectId: coreProjectId,
+              rubyAPIDataSourceId: coreDataSourceId,
               name: dataSourceName,
               workspaceId: workspace.id,
             },
@@ -258,7 +258,7 @@ export async function createDataSourceAndConnectorForProject(
       // Ensure connector exists
       if (!frontDataSource.connectorId) {
         const connectorsRes = await connectorsAPI.createConnector({
-          provider: "dust_project",
+          provider: "ruby_project",
           workspaceId: workspace.sId,
           workspaceAPIKey: systemAPIKeyRes.value.secret,
           dataSourceId: frontDataSource.sId,
@@ -311,7 +311,7 @@ export async function createDataSourceAndConnectorForProject(
               connectorId: connectorsRes.value.id,
               error: syncResult.error,
             },
-            "Failed to trigger initial sync for dust_project connector, connector was created but sync may need to be triggered manually"
+            "Failed to trigger initial sync for ruby_project connector, connector was created but sync may need to be triggered manually"
           );
           // Don't fail connector creation if sync trigger fails - connector can be synced later
         } else {
@@ -320,7 +320,7 @@ export async function createDataSourceAndConnectorForProject(
               connectorId: connectorsRes.value.id,
               workflowId: syncResult.value.workflowId,
             },
-            "Triggered initial full sync workflow for dust_project connector (incremental sync will start automatically after full sync completes)"
+            "Triggered initial full sync workflow for ruby_project connector (incremental sync will start automatically after full sync completes)"
           );
         }
 
@@ -329,7 +329,7 @@ export async function createDataSourceAndConnectorForProject(
             connectorId: connectorsRes.value.id,
             dataSourceId: frontDataSource.sId,
           },
-          "Successfully created dust_project connector for project"
+          "Successfully created ruby_project connector for project"
         );
       } else {
         // Verify connector exists
@@ -349,7 +349,7 @@ export async function createDataSourceAndConnectorForProject(
           await frontDataSource.setConnectorId(null);
 
           const connectorsRes = await connectorsAPI.createConnector({
-            provider: "dust_project",
+            provider: "ruby_project",
             workspaceId: workspace.sId,
             workspaceAPIKey: systemAPIKeyRes.value.secret,
             dataSourceId: frontDataSource.sId,
@@ -386,7 +386,7 @@ export async function createDataSourceAndConnectorForProject(
               connectorId: frontDataSource.connectorId,
               dataSourceId: frontDataSource.sId,
             },
-            "All components already exist for dust_project connector"
+            "All components already exist for ruby_project connector"
           );
         }
       }
@@ -395,7 +395,7 @@ export async function createDataSourceAndConnectorForProject(
     } catch (error) {
       localLogger.error(
         { error },
-        "Failed to create dust_project connector for project"
+        "Failed to create ruby_project connector for project"
       );
       return new Err(normalizeError(error));
     }

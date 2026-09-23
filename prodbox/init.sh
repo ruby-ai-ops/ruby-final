@@ -17,7 +17,7 @@ chmod 600 ~/.ssh/*
 
 # Only allow to pull via fast-forward
 git config pull.ff only
-git remote set-url origin git@github.com:dust-tt/dust.git
+git remote set-url origin git@github.com:ruby-ai/ruby.git
 
 git pull origin main
 

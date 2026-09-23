@@ -14,7 +14,7 @@ import {
 } from "@app/lib/swr/mcp_servers";
 import type { MCPOAuthUseCase } from "@app/types/oauth/lib";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, Chip, LogIn01, XClose } from "@dust-tt/sparkle";
+import { Button, Chip, LogIn01, XClose } from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
 interface MCPServerSettingsProps {

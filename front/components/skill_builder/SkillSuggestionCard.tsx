@@ -25,7 +25,7 @@ import {
   LoadingBlock,
   Tooltip,
   XCircle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { EditorContent, useEditor } from "@tiptap/react";
 import type { ComponentType } from "react";
 import { useMemo } from "react";

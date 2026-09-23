@@ -47,7 +47,7 @@ import {
   parseTimeFrame,
   timeFrameFromNow,
 } from "@app/types/shared/utils/time_frame";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 import uniqBy from "lodash/uniqBy";
 

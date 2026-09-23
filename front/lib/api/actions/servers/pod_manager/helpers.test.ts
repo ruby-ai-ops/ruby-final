@@ -3,7 +3,7 @@ import { getProjectConversationFolderInternalId } from "@app/lib/api/projects/co
 import { createPrivateApiMockRequest } from "@app/tests/utils/generic_private_api_tests";
 import { SpaceFactory } from "@app/tests/utils/SpaceFactory";
 import { DATA_SOURCE_NODE_ID } from "@app/types/core/content_node";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { buildProjectRetrieveDataSources, getPod } from "./helpers";
@@ -87,15 +87,15 @@ describe("buildProjectRetrieveDataSources", () => {
 
     expect(dataSources).toEqual([
       {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_views/dsv_project/filter/%7B%22parents%22%3Anull%2C%22tags%22%3Anull%7D`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_views/dsv_project/filter/%7B%22parents%22%3Anull%2C%22tags%22%3Anull%7D`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       },
       {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_views/dsv_node_1/filter/%7B%22parents%22%3A%7B%22in%22%3A%5B%22node_1%22%5D%2C%22not%22%3A%5B%5D%7D%2C%22tags%22%3Anull%7D`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_views/dsv_node_1/filter/%7B%22parents%22%3A%7B%22in%22%3A%5B%22node_1%22%5D%2C%22not%22%3A%5B%5D%7D%2C%22tags%22%3Anull%7D`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       },
       {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_views/dsv_node_2/filter/%7B%22parents%22%3A%7B%22in%22%3A%5B%22node_1%22%5D%2C%22not%22%3A%5B%5D%7D%2C%22tags%22%3Anull%7D`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_views/dsv_node_2/filter/%7B%22parents%22%3A%7B%22in%22%3A%5B%22node_1%22%5D%2C%22not%22%3A%5B%5D%7D%2C%22tags%22%3Anull%7D`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       },
     ]);
@@ -130,7 +130,7 @@ describe("buildProjectRetrieveDataSources", () => {
 
     expect(dataSources).toEqual([
       {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_views/dsv_node_1/filter/%7B%22parents%22%3Anull%2C%22tags%22%3Anull%7D`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_views/dsv_node_1/filter/%7B%22parents%22%3Anull%2C%22tags%22%3Anull%7D`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       },
     ]);
@@ -160,7 +160,7 @@ describe("buildProjectRetrieveDataSources", () => {
 
     expect(dataSources).toEqual([
       {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_views/dsv_node_1/filter/%7B%22parents%22%3A%7B%22in%22%3A%5B%22node_1%22%5D%2C%22not%22%3A%5B%5D%7D%2C%22tags%22%3Anull%7D`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_views/dsv_node_1/filter/%7B%22parents%22%3A%7B%22in%22%3A%5B%22node_1%22%5D%2C%22not%22%3A%5B%5D%7D%2C%22tags%22%3Anull%7D`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       },
     ]);
@@ -195,7 +195,7 @@ describe("buildProjectRetrieveDataSources", () => {
 
     expect(dataSources).toEqual([
       {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_views/dsv_project/filter/${encodeURIComponent(JSON.stringify(filter))}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_views/dsv_project/filter/${encodeURIComponent(JSON.stringify(filter))}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       },
     ]);
@@ -220,7 +220,7 @@ describe("buildProjectRetrieveDataSources", () => {
 
     expect(dataSources).toEqual([
       {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_views/dsv_project/filter/%7B%22parents%22%3Anull%2C%22tags%22%3Anull%7D`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_views/dsv_project/filter/%7B%22parents%22%3Anull%2C%22tags%22%3Anull%7D`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       },
     ]);
@@ -261,18 +261,18 @@ describe("buildProjectRetrieveDataSources", () => {
 
     expect(dataSources).toEqual([
       {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_views/dsv_project/filter/${encodeURIComponent(JSON.stringify(projectFilter))}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_views/dsv_project/filter/${encodeURIComponent(JSON.stringify(projectFilter))}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       },
       {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_views/dsv_node_1/filter/%7B%22parents%22%3A%7B%22in%22%3A%5B%22node_1%22%5D%2C%22not%22%3A%5B%5D%7D%2C%22tags%22%3Anull%7D`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_views/dsv_node_1/filter/%7B%22parents%22%3A%7B%22in%22%3A%5B%22node_1%22%5D%2C%22not%22%3A%5B%5D%7D%2C%22tags%22%3Anull%7D`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       },
     ]);
   });
 });
 
-describe("getPod with a caller-supplied dustPod", () => {
+describe("getPod with a caller-supplied rubyPod", () => {
   it("returns not-found for a pod the caller cannot read", async () => {
     const { auth, workspace } = await createPrivateApiMockRequest({
       role: "admin",
@@ -282,9 +282,9 @@ describe("getPod with a caller-supplied dustPod", () => {
     const otherPod = await SpaceFactory.project(workspace);
 
     const result = await getPod(auth, {
-      dustPod: {
+      rubyPod: {
         uri: makePodConfigurationURI(workspace.sId, otherPod.sId),
-        mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD,
+        mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD,
       },
     });
 
@@ -300,9 +300,9 @@ describe("getPod with a caller-supplied dustPod", () => {
     });
 
     const result = await getPod(auth, {
-      dustPod: {
+      rubyPod: {
         uri: makePodConfigurationURI(workspace.sId, globalSpace.sId),
-        mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD,
+        mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD,
       },
     });
 

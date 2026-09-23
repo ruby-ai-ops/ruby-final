@@ -129,7 +129,7 @@ def test_self_overflow_dropped_line_below_flagged():
     assert round(res[0]["over_in"], 2) == 0.40  # word.bottom 0.9 - box bottom 0.5
 
 
-def test_self_overflow_descender_poke_not_flagged():
+def test_self_overflow_descender_admin_not_flagged():
     # a word dipping only 0.05in past the bottom (< the half-line/floor gate) is a
     # descender or a wide substitute glyph, not a dropped line -> ignored.
     shapes = [shp(1, 0, 0, 1, 0.5, {"alpha"})]

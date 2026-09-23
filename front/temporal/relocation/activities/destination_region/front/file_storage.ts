@@ -14,5 +14,5 @@ export async function getDestinationPrivateBucket() {
 }
 
 export async function getDestinationTablesBucket() {
-  return fileStorageConfig.getDustTablesBucket();
+  return fileStorageConfig.getRubyTablesBucket();
 }

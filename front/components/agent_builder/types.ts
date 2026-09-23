@@ -9,11 +9,11 @@ import { validateConfiguredJsonSchema } from "@app/lib/actions/mcp_internal_acti
 import type { ProjectConfiguration } from "@app/lib/api/assistant/configuration/types";
 import type { MCPServerViewType } from "@app/lib/api/mcp";
 import type { AdditionalConfigurationType } from "@app/lib/models/agent/actions/mcp";
-import type { DustAppRunConfigurationType } from "@app/types/app";
+import type { RubyAppRunConfigurationType } from "@app/types/app";
 import type { DataSourceViewSelectionConfigurations } from "@app/types/data_source_view";
 import type { WhitelistableFeature } from "@app/types/shared/feature_flags";
 import type { TimeFrame } from "@app/types/shared/utils/time_frame";
-import type { Icon } from "@dust-tt/sparkle";
+import type { Icon } from "@ruby-ai/ui";
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 import uniqueId from "lodash/uniqueId";
 import type { ComponentProps } from "react";
@@ -166,8 +166,8 @@ export type AgentBuilderMCPServerConfiguration = {
   childAgentId: string | null;
   timeFrame: TimeFrame | null;
   additionalConfiguration: AdditionalConfigurationType;
-  dustAppConfiguration: DustAppRunConfigurationType | null;
-  dustProject: ProjectConfiguration | null;
+  rubyAppConfiguration: RubyAppRunConfigurationType | null;
+  rubyProject: ProjectConfiguration | null;
   jsonSchema: JSONSchema | null;
   _jsonSchemaString: string | null;
   secretName: string | null;

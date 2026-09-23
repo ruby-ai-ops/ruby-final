@@ -21,21 +21,21 @@ export async function sendCancelSubscriptionEmail(
 ): Promise<void> {
   const cancelMessage = {
     from: {
-      name: "Dust team",
-      email: "team@dust.tt",
+      name: "Ruby team",
+      email: "team@ruby.ad",
     },
-    subject: `[Dust] Subscription canceled - important information`,
-    html: `<p>Hello from Dust,</p>
+    subject: `[Ruby] Subscription canceled - important information`,
+    html: `<p>Hello from Ruby,</p>
       <p>You recently canceled your subscription. It will be terminated at the end of your current billing period. You can reactivate your subscription at any time before then. If you do not reactivate your subscription, you will then be switched back to our free plan:</p>
       <ul>
-      <li>all users will be removed from the workspace except for the most tenured admin (more about this <a href="https://docs.dust.tt/docs/subscriptions#what-happens-when-we-cancel-our-dust-subscription">here</a>);</li>
-      <li>connections will be removed and data safety deleted from Dust;</li>
+      <li>all users will be removed from the workspace except for the most tenured admin (more about this <a href="https://docs.ruby.ad/docs/subscriptions#what-happens-when-we-cancel-our-ruby-subscription">here</a>);</li>
+      <li>connections will be removed and data safety deleted from Ruby;</li>
       <li>conversations, custom agents, and data sources will still be accessible with limitations;</li>
-      <li>your usage of Dust will have the restrictions of the free plan.</li>
+      <li>your usage of Ruby will have the restrictions of the free plan.</li>
       </ul>
-      <p>More details are available on <a href="https://docs.dust.tt/docs/subscriptions#what-happens-when-we-cancel-our-dust-subscription">our subscription cancelling FAQ</a>.</p>
+      <p>More details are available on <a href="https://docs.ruby.ad/docs/subscriptions#what-happens-when-we-cancel-our-ruby-subscription">our subscription cancelling FAQ</a>.</p>
       <p>Please reply to this email if you have any questions.
-      <p>The Dust team</p>`,
+      <p>The Ruby team</p>`,
   };
   return sendEmail(email, cancelMessage);
 }

@@ -24,7 +24,7 @@ const CUTOFF = 10;
 
 const { values } = parseArgs({
   options: {
-    queries: { type: "string", default: "assets/eval_queries_dust.json" },
+    queries: { type: "string", default: "assets/eval_queries_ruby.json" },
     profile: { type: "string" },
     spaces: { type: "string", default: "" },
     groups: { type: "string", default: "" },

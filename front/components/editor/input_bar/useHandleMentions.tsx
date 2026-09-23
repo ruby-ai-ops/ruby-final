@@ -25,10 +25,10 @@ interface UseHandleMentionsOptions {
     agentMention?: RichAgentMention | null;
   } | null;
   // The user's personal default agent for new conversations (sId), or null when unset.
-  // Resolved against `allAgents`, falling back to @dust.
+  // Resolved against `allAgents`, falling back to @ruby.
   defaultAgentId?: string | null;
   // While true, the personal default is still loading; we hold off on committing a
-  // new-conversation default so we don't pick @dust first and then visibly swap.
+  // new-conversation default so we don't pick @ruby first and then visibly swap.
   isDefaultAgentLoading?: boolean;
   isAgentBuilder: boolean;
   pendingInputText?: PendingInputText | null;
@@ -53,13 +53,13 @@ const useHandleMentions = ({
   // When present, useAgentFromSearchParam owns the selection on the new-conversation page.
   const agentSearchParam = useSearchParam("agent");
 
-  // Priority: draft > sticky mentions > @dust fallback.
+  // Priority: draft > sticky mentions > @ruby fallback.
   // Also resets when the conversation changes so stale state doesn't leak.
   const prevConversationIdRef = useRef(conversation?.sId ?? null);
 
   // Tracks when an agent has been explicitly set via the URL ?agent= param.
   // When set, the priority resolution effect must not override it with
-  // stickyMentions or the @Dust fallback.
+  // stickyMentions or the @Ruby fallback.
   const externalAgentSetRef = useRef(false);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const useHandleMentions = ({
 
     // New conversation with ?agent= in the URL: leave selection to
     // useAgentFromSearchParam / the selectedAgent effect. Applying draft, sticky,
-    // or @dust here races that path and can overwrite the custom agent in the URL.
+    // or @ruby here races that path and can overwrite the custom agent in the URL.
     if (agentSearchParam && !conversation && !isAgentBuilder) {
       return;
     }
@@ -110,17 +110,17 @@ const useHandleMentions = ({
 
     // 3. New conversation (not agent builder) → use the user's default agent.
     if (!conversation && !isAgentBuilder) {
-      // Hold off until the personal default has loaded, otherwise we'd commit @dust
+      // Hold off until the personal default has loaded, otherwise we'd commit @ruby
       // first and then visibly swap once it arrives. This effect re-runs when loading
       // completes (deps below).
       if (isDefaultAgentLoading) {
         return;
       }
 
-      // Prefer the user's personal default (if set and still accessible), else @dust.
+      // Prefer the user's personal default (if set and still accessible), else @ruby.
       const defaultAgent =
         (defaultAgentId && allAgents.find((a) => a.sId === defaultAgentId)) ||
-        allAgents.find((a) => a.sId === GLOBAL_AGENTS_SID.DUST);
+        allAgents.find((a) => a.sId === GLOBAL_AGENTS_SID.RUBY);
       if (defaultAgent) {
         setSelectedSingleAgent(toRichAgentMentionType(defaultAgent));
       }

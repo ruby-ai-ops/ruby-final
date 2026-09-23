@@ -1,6 +1,6 @@
 import { trackModelPickerExposure } from "@app/components/model_picker/modelPickerTracking";
 import { useClientType } from "@app/lib/context/clientType";
-import { DiscoveryGlint } from "@dust-tt/sparkle";
+import { DiscoveryGlint } from "@ruby-ai/ui";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 

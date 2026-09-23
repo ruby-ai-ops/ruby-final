@@ -84,8 +84,8 @@ makeScript(
           {
             dataSourceCoreIds: {
               id: dataSourceId,
-              dustAPIProjectId: dataSource.dustAPIProjectId,
-              dustAPIDataSourceId: dataSource.dustAPIDataSourceId,
+              rubyAPIProjectId: dataSource.rubyAPIProjectId,
+              rubyAPIDataSourceId: dataSource.rubyAPIDataSourceId,
             },
             destCell,
             sourceCell,

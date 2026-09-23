@@ -21,7 +21,7 @@ const RESPONSE: GetConsumptionFacetsResponse = {
     agent: [
       {
         value: "agent_1",
-        label: "Dust",
+        label: "Ruby",
         pictureUrl: null,
         documentCount: 3,
         disabled: false,

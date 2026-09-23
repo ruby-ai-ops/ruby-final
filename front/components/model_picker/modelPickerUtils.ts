@@ -48,10 +48,10 @@ const MODEL_TIER_LOCKED_TOOLTIP =
   "Contact your administrator to get access.";
 
 export const AUTO_MODELS_DOC_URL =
-  "https://docs.dust.tt/docs/user-documentation/agents/model-selection#auto-models";
+  "https://docs.ruby.ad/docs/user-documentation/agents/model-selection#auto-models";
 
 export const AUTO_MODELS_HINT =
-  "Dust selects a model and automatically switches to another if the " +
+  "Ruby selects a model and automatically switches to another if the " +
   "selected model is unstable.";
 
 export function getDegradedModelTooltip(displayName: string): string {
@@ -137,7 +137,7 @@ export function isModelHostedInRegion(
 // meta-model that is resolved to a concrete model at message-send time. Tier ids
 // keep the meta-model wording; `name` is what users see:
 //   - "Basic"     -> auto_fast (curated pool of small, cheap models)
-//   - "Standard"  -> auto       (Dust picks any available model — the old "Auto")
+//   - "Standard"  -> auto       (Ruby picks any available model — the old "Auto")
 //   - "Premium"   -> auto_complex  (curated pool of powerful models)
 export type ModelTierId = "fast" | "standard" | "complex";
 

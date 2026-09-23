@@ -134,12 +134,12 @@ export async function getAgentMessageConsumptionWithModels(
     totalBilledCredits,
     details: null,
   };
-  if (facts.items.length === 0 || facts.dustRunIds.length === 0) {
+  if (facts.items.length === 0 || facts.rubyRunIds.length === 0) {
     return unavailableResponse;
   }
 
-  const runs = await RunResource.listByDustRunIds(auth, {
-    dustRunIds: facts.dustRunIds,
+  const runs = await RunResource.listByRubyRunIds(auth, {
+    rubyRunIds: facts.rubyRunIds,
   });
   const usages = await RunResource.listRunUsagesForRuns(auth, { runs });
   if (usages.length === 0) {
@@ -183,7 +183,7 @@ export async function getAgentMessageConsumptionWithModels(
   const details = buildLatestAvailableMessageConsumptionDetails({
     actions: facts.actions,
     billedCredits: facts.billedCredits,
-    dustRunIds: facts.dustRunIds,
+    rubyRunIds: facts.rubyRunIds,
     items: facts.items,
     runs,
     toolDetailsOverridesByActionModelId,

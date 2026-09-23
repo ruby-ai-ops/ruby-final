@@ -1,10 +1,10 @@
 /**
- * High-level file system operations that combine DustFileSystem (GCS) with
+ * High-level file system operations that combine RubyFileSystem (GCS) with
  * FileResource (DB) sync. Used by the unified `/files/path/` endpoint and the
  * files MCP tools.
  */
 
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import {
   readFileWithRevision,
   writeFileWithRevision,
@@ -21,8 +21,8 @@ import {
   validateFrameV2Name,
 } from "@app/types/api/frame_manifest";
 import {
-  DustFileSystemError,
-  isDustFileSystemError,
+  RubyFileSystemError,
+  isRubyFileSystemError,
   SCOPED_PREFIX_CONVERSATION,
   SCOPED_PREFIX_POD,
 } from "@app/types/file_system";
@@ -74,10 +74,10 @@ class ThumbnailError extends Error {
  */
 export async function streamThumbnail(
   auth: Authenticator,
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   canonicalPath: string
 ): Promise<Result<ThumbnailStreamResult, ThumbnailError>> {
-  const statResult = await dustFs.stat(canonicalPath);
+  const statResult = await rubyFs.stat(canonicalPath);
   if (statResult.isErr()) {
     return new Err(new ThumbnailError("internal", statResult.error.message));
   }
@@ -99,7 +99,7 @@ export async function streamThumbnail(
   }
 
   // Attempt to find a FileResource so we can serve its processed (resized) version.
-  const gcsPath = dustFs.toMountFilePath(canonicalPath);
+  const gcsPath = rubyFs.toMountFilePath(canonicalPath);
   if (gcsPath) {
     const candidates = [gcsPath];
     // Also probe the legacy projects/ mirror path for pod files written before
@@ -132,7 +132,7 @@ export async function streamThumbnail(
   }
 
   // No FileResource found, stream raw GCS object (sandbox-generated image).
-  const readResult = await dustFs.read(canonicalPath);
+  const readResult = await rubyFs.read(canonicalPath);
   if (readResult.isErr()) {
     return new Err(new ThumbnailError("internal", readResult.error.message));
   }
@@ -158,7 +158,7 @@ export async function streamThumbnail(
  */
 export async function enrichListWithFileResourceIds(
   auth: Authenticator,
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   entries: FileSystemEntry[]
 ): Promise<FileSystemEntry[]> {
   const fileEntries = entries.filter((e) => !e.isDirectory);
@@ -169,7 +169,7 @@ export async function enrichListWithFileResourceIds(
   // Collect all GCS paths to probe, including legacy projects/ variants for pod files.
   const mountPaths: string[] = [];
   for (const entry of fileEntries) {
-    const gcsPath = dustFs.toMountFilePath(entry.path);
+    const gcsPath = rubyFs.toMountFilePath(entry.path);
     if (gcsPath) {
       mountPaths.push(gcsPath);
       const legacyPath = gcsPath.replace(/\/pods\//, "/projects/");
@@ -207,7 +207,7 @@ export async function enrichListWithFileResourceIds(
     if (entry.isDirectory) {
       return entry;
     }
-    const gcsPath = dustFs.toMountFilePath(entry.path);
+    const gcsPath = rubyFs.toMountFilePath(entry.path);
     if (!gcsPath) {
       return entry;
     }
@@ -230,10 +230,10 @@ export async function enrichListWithFileResourceIds(
 
 export async function fetchLinkedFileResource(
   auth: Authenticator,
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   scopedPath: string
 ): Promise<FileResource | undefined> {
-  const gcsPath = dustFs.toMountFilePath(scopedPath);
+  const gcsPath = rubyFs.toMountFilePath(scopedPath);
   if (!gcsPath) {
     return undefined;
   }
@@ -288,22 +288,22 @@ function inferDestMountInfo(
   return null;
 }
 
-function toDustFileSystemError(
+function toRubyFileSystemError(
   error: MoveFrameV2SourceError
-): DustFileSystemError {
-  if (isDustFileSystemError(error)) {
+): RubyFileSystemError {
+  if (isRubyFileSystemError(error)) {
     return error;
   }
 
   const { code } = error;
   switch (code) {
     case "conflict":
-      return new DustFileSystemError("already_exists", error.message);
+      return new RubyFileSystemError("already_exists", error.message);
     case "invalid_source":
-      return new DustFileSystemError("invalid_path", error.message);
+      return new RubyFileSystemError("invalid_path", error.message);
     case "commit_failed":
     case "copy_failed":
-      return new DustFileSystemError("internal", error.message);
+      return new RubyFileSystemError("internal", error.message);
     default:
       assertNever(code);
   }
@@ -312,10 +312,10 @@ function toDustFileSystemError(
 /** The registered Frames v2 package rooted at `folderScopedPath`, or null if there is none. */
 async function fetchFrameV2PackageAt(
   auth: Authenticator,
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   folderScopedPath: string
 ): Promise<FileResource | null> {
-  const manifestMountPath = dustFs.toMountFilePath(
+  const manifestMountPath = rubyFs.toMountFilePath(
     path.posix.join(folderScopedPath, FRAME_MANIFEST_FILE)
   );
   if (!manifestMountPath) {
@@ -347,12 +347,12 @@ async function fetchFrameV2PackageAt(
  */
 async function moveFrameV2PackageFolder(
   auth: Authenticator,
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   {
     sourceDirectoryPath,
     destinationDirectoryPath,
   }: { sourceDirectoryPath: string; destinationDirectoryPath: string }
-): Promise<Result<{ sourceDeletionFailed: boolean }, DustFileSystemError>> {
+): Promise<Result<{ sourceDeletionFailed: boolean }, RubyFileSystemError>> {
   // The destination folder becomes the Frame's name, so it has to be a name a Frame can have.
   // Move to the validated name rather than the requested one: validation trims, so passing the
   // raw destination through would let trailing whitespace carry a name past its length bound.
@@ -360,11 +360,11 @@ async function moveFrameV2PackageFolder(
     path.posix.basename(destinationDirectoryPath)
   );
   if (validated.isErr()) {
-    return new Err(new DustFileSystemError("invalid_path", validated.error));
+    return new Err(new RubyFileSystemError("invalid_path", validated.error));
   }
 
   const moved = await moveFrameV2Source(auth, {
-    dustFs,
+    rubyFs,
     destinationDirectoryPath: path.posix.join(
       path.posix.dirname(destinationDirectoryPath),
       validated.value
@@ -372,7 +372,7 @@ async function moveFrameV2PackageFolder(
     sourceDirectoryPath,
   });
   if (moved.isErr()) {
-    return new Err(toDustFileSystemError(moved.error));
+    return new Err(toRubyFileSystemError(moved.error));
   }
 
   return new Ok({ sourceDeletionFailed: moved.value.sourceDeletionFailed });
@@ -382,29 +382,29 @@ async function moveFrameV2PackageFolder(
  * Rename a file at `scopedPath` to `newFileName` (same directory) and sync the
  * linked FileResource record if one exists.
  *
- * Returns the same result shape as `DustFileSystem.rename()`.
+ * Returns the same result shape as `RubyFileSystem.rename()`.
  */
 export async function renameCanonicalFile(
   auth: Authenticator,
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   scopedPath: string,
   newFileName: string
 ): Promise<
-  Result<{ dest: string; sourceDeletionFailed: boolean }, DustFileSystemError>
+  Result<{ dest: string; sourceDeletionFailed: boolean }, RubyFileSystemError>
 > {
   // A Frames v2 package is a folder whose registered resource is the manifest inside it, so a
   // plain folder rename would move the bytes and leave that resource pointing at nothing.
-  if (await fetchFrameV2PackageAt(auth, dustFs, scopedPath)) {
+  if (await fetchFrameV2PackageAt(auth, rubyFs, scopedPath)) {
     const validated = validateFrameV2Name(newFileName);
     if (validated.isErr()) {
-      return new Err(new DustFileSystemError("invalid_path", validated.error));
+      return new Err(new RubyFileSystemError("invalid_path", validated.error));
     }
 
     const destinationDirectoryPath = path.posix.join(
       path.posix.dirname(scopedPath),
       validated.value
     );
-    const moved = await moveFrameV2PackageFolder(auth, dustFs, {
+    const moved = await moveFrameV2PackageFolder(auth, rubyFs, {
       sourceDirectoryPath: scopedPath,
       destinationDirectoryPath,
     });
@@ -419,18 +419,18 @@ export async function renameCanonicalFile(
 
   const linkedFileResource = await fetchLinkedFileResource(
     auth,
-    dustFs,
+    rubyFs,
     scopedPath
   );
 
-  const renameResult = await dustFs.rename(scopedPath, newFileName);
+  const renameResult = await rubyFs.rename(scopedPath, newFileName);
   if (renameResult.isErr()) {
     return renameResult;
   }
 
   if (linkedFileResource) {
     const { dest } = renameResult.value;
-    const destGcsPath = dustFs.toMountFilePath(dest);
+    const destGcsPath = rubyFs.toMountFilePath(dest);
     const destInfo = inferDestMountInfo(dest);
 
     if (destGcsPath && destInfo) {
@@ -450,32 +450,32 @@ export async function renameCanonicalFile(
  * Move a file from `src` to `dest` and sync the linked FileResource record
  * (if any) to reflect the new path, filename, use-case, and use-case metadata.
  *
- * Returns the same result shape as `DustFileSystem.move()`.
+ * Returns the same result shape as `RubyFileSystem.move()`.
  */
 export async function moveCanonicalFile(
   auth: Authenticator,
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   src: string,
   dest: string
-): Promise<Result<{ sourceDeletionFailed: boolean }, DustFileSystemError>> {
-  if (await fetchFrameV2PackageAt(auth, dustFs, src)) {
-    return moveFrameV2PackageFolder(auth, dustFs, {
+): Promise<Result<{ sourceDeletionFailed: boolean }, RubyFileSystemError>> {
+  if (await fetchFrameV2PackageAt(auth, rubyFs, src)) {
+    return moveFrameV2PackageFolder(auth, rubyFs, {
       sourceDirectoryPath: src,
       destinationDirectoryPath: dest,
     });
   }
 
   // Look up the linked FileResource before the bytes move.
-  const linkedFileResource = await fetchLinkedFileResource(auth, dustFs, src);
+  const linkedFileResource = await fetchLinkedFileResource(auth, rubyFs, src);
 
-  const moveResult = await dustFs.move({ src, dest });
+  const moveResult = await rubyFs.move({ src, dest });
   if (moveResult.isErr()) {
     return moveResult;
   }
 
   // Update the FileResource to point to the new location.
   if (linkedFileResource) {
-    const destGcsPath = dustFs.toMountFilePath(dest);
+    const destGcsPath = rubyFs.toMountFilePath(dest);
     const destInfo = inferDestMountInfo(dest);
 
     if (destGcsPath && destInfo) {
@@ -498,15 +498,15 @@ export async function moveCanonicalFile(
  * available, it MUST identify exactly the streamed bytes. Other backends omit it.
  */
 export async function readCanonicalFileContent(
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   scopedPath: string
 ): Promise<
   Result<
     { stream: Readable; contentType: string; revision?: string } | null,
-    DustFileSystemError
+    RubyFileSystemError
   >
 > {
-  const statResult = await dustFs.stat(scopedPath);
+  const statResult = await rubyFs.stat(scopedPath);
   if (statResult.isErr()) {
     return statResult;
   }
@@ -514,14 +514,14 @@ export async function readCanonicalFileContent(
     return new Ok(null);
   }
 
-  const normalizedPath = DustFileSystem.normalizeScopedPath(scopedPath);
+  const normalizedPath = RubyFileSystem.normalizeScopedPath(scopedPath);
   const mountFilePath =
-    normalizedPath && dustFs.toMountFilePath(normalizedPath);
-  if (dustFs.isGCSBacked() && mountFilePath) {
+    normalizedPath && rubyFs.toMountFilePath(normalizedPath);
+  if (rubyFs.isGCSBacked() && mountFilePath) {
     return readFileWithRevision(mountFilePath);
   }
 
-  const readResult = await dustFs.read(scopedPath);
+  const readResult = await rubyFs.read(scopedPath);
   if (readResult.isErr()) {
     return readResult;
   }
@@ -600,7 +600,7 @@ function validatePathWritableContentType(
  */
 export async function writeCanonicalFileContent(
   _auth: Authenticator,
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   scopedPath: string,
   content: Uint8Array,
   contentTypeFromRequest?: string,
@@ -608,7 +608,7 @@ export async function writeCanonicalFileContent(
 ): Promise<
   Result<
     { created: boolean; revision?: string },
-    DustFileSystemError | WriteCanonicalFileContentError
+    RubyFileSystemError | WriteCanonicalFileContentError
   >
 > {
   if (content.byteLength > WRITE_CANONICAL_FILE_CONTENT_MAX_BYTES) {
@@ -622,7 +622,7 @@ export async function writeCanonicalFileContent(
 
   const contentBuffer = Buffer.from(decodeBuffer(content), "utf8");
 
-  const statResult = await dustFs.stat(scopedPath);
+  const statResult = await rubyFs.stat(scopedPath);
   if (statResult.isErr()) {
     return statResult;
   }
@@ -638,15 +638,15 @@ export async function writeCanonicalFileContent(
     return validationResult;
   }
 
-  const writeAccess = dustFs.checkWriteAccess(scopedPath);
+  const writeAccess = rubyFs.checkWriteAccess(scopedPath);
   if (writeAccess.isErr()) {
     return writeAccess;
   }
 
-  const normalizedPath = DustFileSystem.normalizeScopedPath(scopedPath);
+  const normalizedPath = RubyFileSystem.normalizeScopedPath(scopedPath);
   const mountFilePath =
-    normalizedPath && dustFs.toMountFilePath(normalizedPath);
-  if (dustFs.isGCSBacked() && mountFilePath) {
+    normalizedPath && rubyFs.toMountFilePath(normalizedPath);
+  if (rubyFs.isGCSBacked() && mountFilePath) {
     const writeResult = await writeFileWithRevision(mountFilePath, {
       content: contentBuffer,
       contentType,
@@ -674,7 +674,7 @@ export async function writeCanonicalFileContent(
     );
   }
 
-  const writeResult = await dustFs.write(
+  const writeResult = await rubyFs.write(
     scopedPath,
     contentBuffer,
     contentType
@@ -739,11 +739,11 @@ type OfficePdfResult = {
  * caller is responsible for checking it is configured before calling this.
  */
 export async function convertCanonicalFileToPdf(
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   canonicalPath: string,
   rendererUrl: string
 ): Promise<Result<OfficePdfResult, OfficePdfError>> {
-  const statResult = await dustFs.stat(canonicalPath);
+  const statResult = await rubyFs.stat(canonicalPath);
   if (statResult.isErr()) {
     return new Err(new OfficePdfError("internal", statResult.error.message));
   }
@@ -776,7 +776,7 @@ export async function convertCanonicalFileToPdf(
 
   // TODO: Consider streaming the GCS read directly into Gotenberg's multipart body and piping its
   // response back to the client to avoid buffering the full file in memory.
-  const readResult = await dustFs.read(canonicalPath);
+  const readResult = await rubyFs.read(canonicalPath);
   if (readResult.isErr()) {
     return new Err(new OfficePdfError("internal", readResult.error.message));
   }
@@ -818,22 +818,22 @@ export async function convertCanonicalFileToPdf(
 // TODO(FILE_SYSTEM): Remove once no more dependencies on FileResource.
 export async function deleteCanonicalFile(
   auth: Authenticator,
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   scopedPath: string
-): Promise<Result<void, DustFileSystemError>> {
+): Promise<Result<void, RubyFileSystemError>> {
   const linkedFileResource = await fetchLinkedFileResource(
     auth,
-    dustFs,
+    rubyFs,
     scopedPath
   );
   if (!linkedFileResource) {
-    return dustFs.delete(scopedPath);
+    return rubyFs.delete(scopedPath);
   }
 
   const deleteResult = await linkedFileResource.delete(auth);
   if (deleteResult.isErr()) {
     return new Err(
-      new DustFileSystemError("internal", deleteResult.error.message)
+      new RubyFileSystemError("internal", deleteResult.error.message)
     );
   }
 

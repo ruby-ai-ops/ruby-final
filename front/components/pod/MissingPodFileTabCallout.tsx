@@ -1,5 +1,5 @@
 import { getScopedRelativePath } from "@app/components/file_explorer/utils";
-import { AlertCircle, ContentMessage } from "@dust-tt/sparkle";
+import { AlertCircle, ContentMessage } from "@ruby-ai/ui";
 
 interface MissingPodFileTabCalloutProps {
   path: string;

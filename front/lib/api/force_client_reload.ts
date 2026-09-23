@@ -66,7 +66,7 @@ export async function getDeployedTags(): Promise<
     // 1. Get all spa/app/* tags. These are the actually-deployed commits.
     const { data: refs } = await github.request(
       "GET /repos/{owner}/{repo}/git/matching-refs/{ref}",
-      { owner: "dust-tt", repo: "dust", ref: "tags/spa/app/" }
+      { owner: "ruby-ai", repo: "ruby", ref: "tags/spa/app/" }
     );
     const deployedShas = new Set(
       refs.map((r) => r.ref.replace("refs/tags/spa/app/", ""))
@@ -76,7 +76,7 @@ export async function getDeployedTags(): Promise<
     const tags: { shortHash: string; title: string; date: string }[] = [];
     const { data: commits } = await github.request(
       "GET /repos/{owner}/{repo}/commits",
-      { owner: "dust-tt", repo: "dust", sha: "main", per_page: 100 }
+      { owner: "ruby-ai", repo: "ruby", sha: "main", per_page: 100 }
     );
     for (const commit of commits) {
       const shortHash = commit.sha.substring(0, 7);

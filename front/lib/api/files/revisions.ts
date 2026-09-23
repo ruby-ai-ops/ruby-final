@@ -3,7 +3,7 @@ import {
   isGCSNotFoundError,
   isGCSPreconditionFailedError,
 } from "@app/lib/file_storage/types";
-import { DustFileSystemError } from "@app/types/file_system";
+import { RubyFileSystemError } from "@app/types/file_system";
 import { stripMimeParameters } from "@app/types/files";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
@@ -13,11 +13,11 @@ import type { Readable } from "stream";
 
 const parseRevision = (
   generation: string | number | undefined
-): Result<string, DustFileSystemError> => {
+): Result<string, RubyFileSystemError> => {
   const revision = String(generation);
   if (!/^[1-9][0-9]*$/.test(revision)) {
     return new Err(
-      new DustFileSystemError(
+      new RubyFileSystemError(
         "internal",
         "File storage did not return a revision."
       )
@@ -36,7 +36,7 @@ export const readFileWithRevision = async (
 ): Promise<
   Result<
     { stream: Readable; contentType: string; revision: string } | null,
-    DustFileSystemError
+    RubyFileSystemError
   >
 > => {
   const file = getPrivateUploadBucket().file(mountFilePath);
@@ -47,7 +47,7 @@ export const readFileWithRevision = async (
     return isGCSNotFoundError(error)
       ? new Ok(null)
       : new Err(
-          new DustFileSystemError("internal", normalizeError(error).message)
+          new RubyFileSystemError("internal", normalizeError(error).message)
         );
   }
 
@@ -81,7 +81,7 @@ export const writeFileWithRevision = async (
     contentType,
     revision,
   }: { content: Buffer; contentType: string; revision?: string }
-): Promise<Result<string, DustFileSystemError | "conflict">> => {
+): Promise<Result<string, RubyFileSystemError | "conflict">> => {
   const file = getPrivateUploadBucket().file(mountFilePath);
   try {
     await file.save(content, {
@@ -95,7 +95,7 @@ export const writeFileWithRevision = async (
     return isGCSPreconditionFailedError(error)
       ? new Err("conflict")
       : new Err(
-          new DustFileSystemError("internal", normalizeError(error).message)
+          new RubyFileSystemError("internal", normalizeError(error).message)
         );
   }
 

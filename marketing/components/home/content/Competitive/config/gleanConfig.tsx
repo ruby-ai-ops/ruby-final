@@ -14,12 +14,12 @@ interface HeroConfig {
 interface ComparisonFeature {
   name: string;
   description?: string;
-  dust: "yes" | "no" | "partial";
+  ruby: "yes" | "no" | "partial";
   competitor: "yes" | "no" | "partial";
 }
 
 interface ComparisonConfig {
-  dustHeader: string;
+  rubyHeader: string;
   competitorHeader: string;
   features: ComparisonFeature[];
 }
@@ -64,90 +64,87 @@ export interface GleanConfig {
 
 export const gleanConfig: GleanConfig = {
   hero: {
-    chip: "Dust vs Glean Comparison",
+    chip: "Ruby vs Glean Comparison",
     headline: (
       <>
         <span className="text-gray-900">Glean finds answers.</span>
         <br />
         <span className="bg-linear-to-r from-blue-500 to-emerald-500 bg-clip-text text-transparent">
-          Dust builds teammates.
+          Ruby builds teammates.
         </span>
       </>
     ),
     postItText:
       '"AI Search is so 2018, let\'s actually get deliverables from AI"',
     valuePropTitle:
-      "Why fast-growing teams like Clay, Vanta, and WhatNot choose Dust:",
+      "Why fast-growing teams like Clay, Vanta, and WhatNot choose Ruby:",
     valueProps: [
       "Build AI agents that actually do work, not just answer questions",
       "Agent-first, not search-first: AI that does work, not just finds",
       "No code required, build powerful AI teammates in minutes, not months",
     ],
-    ctaButtonText: "Start Free Trial",
-    trustBadges: [
-      "No credit card required",
-      "Set up in minutes",
-      "SOC 2 Type II certified",
-    ],
+    ctaButtonText: "Get started",
+    trustBadges: [],
   },
 
   comparison: {
-    dustHeader: "DUST",
+    rubyHeader: "RUBY",
     competitorHeader: "glean",
     features: [
       {
         name: "Agent-first architecture",
         description: "Built from day one for agentic automation, not search",
-        dust: "yes",
+        ruby: "yes",
         competitor: "no",
       },
       {
         name: "No-code agent builder",
         description: "Create agents in 5 minutes without technical knowledge",
-        dust: "yes",
+        ruby: "yes",
         competitor: "no",
       },
       {
         name: "Multi-agent orchestration",
         description: "Flexible sub-agents for complex cross-domain workflows",
-        dust: "yes",
+        ruby: "yes",
         competitor: "no",
       },
       {
-        name: "20+ AI models",
-        description: "GPT-4, Claude, Gemini, Mistral—choose per task",
-        dust: "yes",
+        name: "Ruby-managed AI",
+        description: "Ruby manages model routing for every task",
+        ruby: "yes",
         competitor: "partial",
       },
       {
         name: "Transparent pricing",
-        description: "$29/mo per user with no hidden fees or minimums",
-        dust: "yes",
+        description:
+          "Paid Lite, Pro, Plus, and Max seats with published credit allowances",
+        ruby: "yes",
         competitor: "no",
       },
       {
         name: "50+ integrations",
         description: "Slack, Notion, Salesforce, GitHub, and more",
-        dust: "yes",
+        ruby: "yes",
         competitor: "yes",
       },
       {
         name: "Out-of-the-box vertical agents",
         description:
           "Ready-to-use agents for onboarding, writing SDRs, and more",
-        dust: "yes",
+        ruby: "yes",
         competitor: "no",
       },
       {
         name: "Interactive dashboards (Frames)",
         description: "Real-time React components for data visualization",
-        dust: "yes",
+        ruby: "yes",
         competitor: "no",
       },
       {
         name: "SOC 2 Type II certified",
         description: "Enterprise-grade security and compliance",
-        dust: "yes",
+        ruby: "yes",
         competitor: "yes",
       },
     ],
@@ -156,21 +153,21 @@ export const gleanConfig: GleanConfig = {
   testimonials: [
     {
       quote:
-        "Dust is the most impactful software we've adopted since building Clay. It delivers immediate value while continuously getting smarter and more valuable over time.",
+        "Ruby is the most impactful software we've adopted since building Clay. It delivers immediate value while continuously getting smarter and more valuable over time.",
       name: "Everett Berry",
       title: "Head of GTM Engineering at Clay",
       logo: "/static/landing/logos/color/clay.png",
     },
     {
       quote:
-        "We asked ourselves for years: what if your team had 20% more time? Dust has made it possible, empowering our employees to work smarter, innovate, and push boundaries.",
+        "We asked ourselves for years: what if your team had 20% more time? Ruby has made it possible, empowering our employees to work smarter, innovate, and push boundaries.",
       name: "Matthieu Birach",
       title: "Chief People Officer at Doctolib",
       logo: "/static/landing/logos/color/doctolib.png",
     },
     {
       quote:
-        "It became evident that Dust could serve as a knowledgeable buddy for all staff, enhancing productivity whether you're newly onboarded or a veteran team member.",
+        "It became evident that Ruby could serve as a knowledgeable buddy for all staff, enhancing productivity whether you're newly onboarded or a veteran team member.",
       name: "Boris Lipiainen",
       title: "Chief Product and Technology Officer at Kyriba",
       logo: "/static/landing/logos/color/kyriba.png",
@@ -237,13 +234,13 @@ export const gleanConfig: GleanConfig = {
 
   faq: [
     {
-      question: "How is Dust different from Glean?",
+      question: "How is Ruby different from Glean?",
       answer: (
         <>
           <p>
             While Glean focuses primarily on enterprise search and finding
-            information, Dust is built around AI agents that can actually
-            execute tasks. With Dust, you're not just getting answers—you're
+            information, Ruby is built around AI agents that can actually
+            execute tasks. With Ruby, you're not just getting answers—you're
             getting AI teammates that can:
           </p>
           <ul>
@@ -256,11 +253,11 @@ export const gleanConfig: GleanConfig = {
       ),
     },
     {
-      question: "Can Dust replace our existing search tools?",
+      question: "Can Ruby replace our existing search tools?",
       answer: (
         <>
           <p>
-            Yes. Dust includes powerful search capabilities across all your
+            Yes. Ruby includes powerful search capabilities across all your
             connected data sources, but goes further by letting you build agents
             that can act on that information. You get the best of both worlds:
             instant answers when you need them, plus AI agents that can handle
@@ -270,11 +267,11 @@ export const gleanConfig: GleanConfig = {
       ),
     },
     {
-      question: "What makes Dust's agents different from chatbots?",
+      question: "What makes Ruby's agents different from chatbots?",
       answer: (
         <>
           <p>
-            Traditional chatbots can only answer questions. Dust agents are
+            Traditional chatbots can only answer questions. Ruby agents are
             fundamentally different:
           </p>
           <ul>
@@ -299,7 +296,7 @@ export const gleanConfig: GleanConfig = {
       ),
     },
     {
-      question: "How quickly can we get started with Dust?",
+      question: "How quickly can we get started with Ruby?",
       answer: (
         <>
           <p>
@@ -313,10 +310,10 @@ export const gleanConfig: GleanConfig = {
       ),
     },
     {
-      question: "Is Dust secure for enterprise use?",
+      question: "Is Ruby secure for enterprise use?",
       answer: (
         <>
-          <p>Absolutely. Dust is built for enterprise security requirements:</p>
+          <p>Absolutely. Ruby is built for enterprise security requirements:</p>
           <ul>
             <li>
               <strong>SOC 2 Type II certified</strong> with annual audits
@@ -345,6 +342,6 @@ export const gleanConfig: GleanConfig = {
     subtitle:
       "Join the teams who switched from search tools to AI agents that actually get work done.",
     buttonText: "Get Started",
-    trustBadges: ["14-day free trial", "No credit card required", "SOC 2"],
+    trustBadges: [],
   },
 };

@@ -9,11 +9,11 @@ import { CoreAPI } from "@app/types/core/core_api";
 import type {
   ListTablesResponseType,
   UpsertTableResponseType,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import {
-  DUST_TABLE_MIME_TYPE,
+  RUBY_TABLE_MIME_TYPE,
   UpsertDatabaseTableRequestSchema,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";
@@ -196,8 +196,8 @@ app.get(
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
     const tablesRes = await coreAPI.getTables({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
     });
 
     if (tablesRes.isErr()) {
@@ -347,7 +347,7 @@ app.post(
           },
         });
       }
-      mimeType = DUST_TABLE_MIME_TYPE;
+      mimeType = RUBY_TABLE_MIME_TYPE;
     }
     // If the title is provided, we use it.
     // Otherwise, we default to either:
@@ -425,8 +425,8 @@ app.post(
 
     // Enforce that the table is a parent of itself by default.
     const upsertRes = await coreAPI.upsertTable({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       tableId,
       name,
       description,

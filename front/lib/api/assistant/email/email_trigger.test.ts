@@ -51,11 +51,11 @@ const TEST_EMAIL_AUTH = { SPF: "pass", dkim: [], dkimRaw: "" };
 beforeEach(() => {
   vi.clearAllMocks();
 
-  mockGetAppUrl.mockReturnValue("https://dust.tt");
+  mockGetAppUrl.mockReturnValue("https://ruby.ad");
   mockGetCurrentCell.mockReturnValue({
     name: "cell-00001",
     region: "europe-west1",
-    url: "https://eu.dust.tt",
+    url: "https://app.ruby.ad",
   });
   mockGetEmailValidationSecret.mockReturnValue("test-email-validation-secret");
   mockSendEmail.mockResolvedValue(undefined);
@@ -74,14 +74,14 @@ describe("buildEmailUserMessage", () => {
           references: null,
         },
         sender: {
-          email: "sender@dust.tt",
-          full: "Sender <sender@dust.tt>",
+          email: "sender@ruby.ad",
+          full: "Sender <sender@ruby.ad>",
         },
         envelope: {
-          from: "bounce@mailer.dust.tt",
-          to: [`agent@${ASSISTANT_EMAIL_SUBDOMAIN}`, "teammate@dust.tt"],
-          cc: [`other-agent@${ASSISTANT_EMAIL_SUBDOMAIN}`, "observer@dust.tt"],
-          bcc: ["hidden@dust.tt"],
+          from: "bounce@mailer.ruby.ad",
+          to: [`agent@${ASSISTANT_EMAIL_SUBDOMAIN}`, "teammate@ruby.ad"],
+          cc: [`other-agent@${ASSISTANT_EMAIL_SUBDOMAIN}`, "observer@ruby.ad"],
+          bcc: ["hidden@ruby.ad"],
         },
         attachments: [],
       },
@@ -91,16 +91,16 @@ describe("buildEmailUserMessage", () => {
     });
 
     expect(message).toContain(
-      `<email_to>agent@${ASSISTANT_EMAIL_SUBDOMAIN}, teammate@dust.tt</email_to>`
+      `<email_to>agent@${ASSISTANT_EMAIL_SUBDOMAIN}, teammate@ruby.ad</email_to>`
     );
     expect(message).toContain(
-      `<email_cc>other-agent@${ASSISTANT_EMAIL_SUBDOMAIN}, observer@dust.tt</email_cc>`
+      `<email_cc>other-agent@${ASSISTANT_EMAIL_SUBDOMAIN}, observer@ruby.ad</email_cc>`
     );
     expect(message).toContain(
-      `<dust_agent_recipients>agent@${ASSISTANT_EMAIL_SUBDOMAIN}, other-agent@${ASSISTANT_EMAIL_SUBDOMAIN}</dust_agent_recipients>`
+      `<ruby_agent_recipients>agent@${ASSISTANT_EMAIL_SUBDOMAIN}, other-agent@${ASSISTANT_EMAIL_SUBDOMAIN}</ruby_agent_recipients>`
     );
     expect(message).toContain(
-      "<email_response_to>sender@dust.tt</email_response_to>"
+      "<email_response_to>sender@ruby.ad</email_response_to>"
     );
     expect(message).not.toContain("<email_response_cc>");
     expect(message).toContain("only to me, the sender above.");
@@ -113,11 +113,11 @@ describe("parseEmailReplyContext", () => {
       JSON.stringify({
         subject: "Test",
         originalText: "Hello",
-        fromEmail: "sender@dust.tt",
-        fromFull: "Sender <sender@dust.tt>",
-        replyTo: ["sender@dust.tt", "observer@dust.tt"],
-        replyCc: ["security@dust.tt"],
-        threadingMessageId: "<incoming-message-id@dust.tt>",
+        fromEmail: "sender@ruby.ad",
+        fromFull: "Sender <sender@ruby.ad>",
+        replyTo: ["sender@ruby.ad", "observer@ruby.ad"],
+        replyCc: ["security@ruby.ad"],
+        threadingMessageId: "<incoming-message-id@ruby.ad>",
         threadingInReplyTo: null,
         threadingReferences: null,
         agentConfigurationId: "agent-config-1",
@@ -129,7 +129,7 @@ describe("parseEmailReplyContext", () => {
     );
 
     expect(parsed).toMatchObject({
-      fromEmail: "sender@dust.tt",
+      fromEmail: "sender@ruby.ad",
       agentConfigurationId: "agent-config-1",
       workspaceId: "workspace-1",
       conversationId: "conversation-1",
@@ -146,16 +146,16 @@ describe("buildReplyThreadingHeaders", () => {
       text: "Hello",
       auth: TEST_EMAIL_AUTH,
       threadingHeaders: {
-        messageId: "<incoming-message-id@dust.tt>",
+        messageId: "<incoming-message-id@ruby.ad>",
         inReplyTo: null,
         references: null,
       },
       sender: {
-        email: "sender@dust.tt",
-        full: "Sender <sender@dust.tt>",
+        email: "sender@ruby.ad",
+        full: "Sender <sender@ruby.ad>",
       },
       envelope: {
-        from: "bounce@mailer.dust.tt",
+        from: "bounce@mailer.ruby.ad",
         to: [],
         cc: [],
         bcc: [],
@@ -164,8 +164,8 @@ describe("buildReplyThreadingHeaders", () => {
     });
 
     expect(threadingHeaders).toEqual({
-      inReplyTo: "<incoming-message-id@dust.tt>",
-      references: "<incoming-message-id@dust.tt>",
+      inReplyTo: "<incoming-message-id@ruby.ad>",
+      references: "<incoming-message-id@ruby.ad>",
     });
   });
 
@@ -175,16 +175,16 @@ describe("buildReplyThreadingHeaders", () => {
       text: "Hello",
       auth: TEST_EMAIL_AUTH,
       threadingHeaders: {
-        messageId: "<incoming-message-id@dust.tt>",
+        messageId: "<incoming-message-id@ruby.ad>",
         inReplyTo: null,
-        references: "<older-message-id@dust.tt>",
+        references: "<older-message-id@ruby.ad>",
       },
       sender: {
-        email: "sender@dust.tt",
-        full: "Sender <sender@dust.tt>",
+        email: "sender@ruby.ad",
+        full: "Sender <sender@ruby.ad>",
       },
       envelope: {
-        from: "bounce@mailer.dust.tt",
+        from: "bounce@mailer.ruby.ad",
         to: [],
         cc: [],
         bcc: [],
@@ -193,8 +193,8 @@ describe("buildReplyThreadingHeaders", () => {
     });
 
     expect(threadingHeaders).toEqual({
-      inReplyTo: "<incoming-message-id@dust.tt>",
-      references: "<older-message-id@dust.tt> <incoming-message-id@dust.tt>",
+      inReplyTo: "<incoming-message-id@ruby.ad>",
+      references: "<older-message-id@ruby.ad> <incoming-message-id@ruby.ad>",
     });
   });
 
@@ -204,16 +204,16 @@ describe("buildReplyThreadingHeaders", () => {
       text: "Hello",
       auth: TEST_EMAIL_AUTH,
       threadingHeaders: {
-        messageId: "<incoming-message-id@dust.tt>",
+        messageId: "<incoming-message-id@ruby.ad>",
         inReplyTo: null,
-        references: "<older-message-id@dust.tt> <incoming-message-id@dust.tt>",
+        references: "<older-message-id@ruby.ad> <incoming-message-id@ruby.ad>",
       },
       sender: {
-        email: "sender@dust.tt",
-        full: "Sender <sender@dust.tt>",
+        email: "sender@ruby.ad",
+        full: "Sender <sender@ruby.ad>",
       },
       envelope: {
-        from: "bounce@mailer.dust.tt",
+        from: "bounce@mailer.ruby.ad",
         to: [],
         cc: [],
         bcc: [],
@@ -222,8 +222,8 @@ describe("buildReplyThreadingHeaders", () => {
     });
 
     expect(threadingHeaders).toEqual({
-      inReplyTo: "<incoming-message-id@dust.tt>",
-      references: "<older-message-id@dust.tt> <incoming-message-id@dust.tt>",
+      inReplyTo: "<incoming-message-id@ruby.ad>",
+      references: "<older-message-id@ruby.ad> <incoming-message-id@ruby.ad>",
     });
   });
 });
@@ -233,8 +233,8 @@ describe("splitThreadContent", () => {
     const { userMessage, restOfThread } = await splitThreadContent(
       "Can you go deeper on point 2?\n" +
         "\n" +
-        "On Mon, Jun 8, 2026 at 10:12 AM agent (Dust agent)\n" +
-        "<agent@dust.team> wrote:\n" +
+        "On Mon, Jun 8, 2026 at 10:12 AM agent (Ruby agent)\n" +
+        "<agent@ruby.team> wrote:\n" +
         "> Here is my answer.\n"
     );
 
@@ -308,7 +308,7 @@ describe("sendToolValidationEmail", () => {
     expect(sendEmail).toHaveBeenCalledOnce();
 
     const [[recipient, message]] = mockSendEmail.mock.calls;
-    expect(recipient).toBe("sender@dust.tt");
+    expect(recipient).toBe("sender@ruby.ad");
     expect(message).toMatchObject({ html: expect.any(String) });
 
     const validationUrls = [...message.html.matchAll(/href="([^"]+)"/g)]
@@ -319,7 +319,7 @@ describe("sendToolValidationEmail", () => {
     const approvalStates = validationUrls.map((href) => {
       const url = new URL(href);
       expect(url.origin + url.pathname).toBe(
-        "https://dust.tt/email/validation"
+        "https://ruby.ad/email/validation"
       );
       expect(url.searchParams.get("cell")).toBe("cell-00001");
       expect(url.searchParams.has("region")).toBe(false);
@@ -343,16 +343,16 @@ function makeInboundEmail(): InboundEmail {
     text: "Please approve the pending tool.",
     auth: TEST_EMAIL_AUTH,
     threadingHeaders: {
-      messageId: "<incoming-message-id@dust.tt>",
+      messageId: "<incoming-message-id@ruby.ad>",
       inReplyTo: null,
       references: null,
     },
     sender: {
-      email: "sender@dust.tt",
-      full: "Sender <sender@dust.tt>",
+      email: "sender@ruby.ad",
+      full: "Sender <sender@ruby.ad>",
     },
     envelope: {
-      from: "bounce@mailer.dust.tt",
+      from: "bounce@mailer.ruby.ad",
       to: [`approvals@${ASSISTANT_EMAIL_SUBDOMAIN}`],
       cc: [],
       bcc: [],

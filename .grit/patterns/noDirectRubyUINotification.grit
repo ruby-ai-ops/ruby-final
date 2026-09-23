@@ -1,0 +1,21 @@
+engine biome(1.0)
+language js
+
+// Discourages direct import of useSendNotification from @ruby-ai/ui.
+// Use @app/hooks/useNotification instead for better logging and monitoring.
+//
+// Note: Due to Biome GritQL bug #5801, import patterns with multiple named
+// specifiers don't match. This handles single-specifier imports only.
+// Multi-specifier cases (import { useSendNotification, X } from "@ruby-ai/ui")
+// are not caught but are uncommon in practice.
+pattern direct_ui_notification() {
+    `import { useSendNotification } from "@ruby-ai/ui"`
+}
+
+direct_ui_notification() as $import where {
+    register_diagnostic(
+        span = $import,
+        message = "Avoid importing useSendNotification from @ruby-ai/ui. Use 'import { useSendNotification } from \"@app/hooks/useNotification\"' instead.",
+        severity = "error"
+    )
+}

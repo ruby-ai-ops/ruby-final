@@ -32,7 +32,7 @@ import {
   SheetHeader,
   SheetTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 import type { KeyedMutator } from "swr";
 

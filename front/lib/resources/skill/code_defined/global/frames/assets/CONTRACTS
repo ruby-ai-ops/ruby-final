@@ -27,7 +27,7 @@ MUST stay on local disk and MUST be removed when the lint command exits.
 
 @cc [owner:flvndvd,label:product] frame-lint-function-refs
 When manifest.json exists, UI calls to useFrameFunction, useFrameFunctionMutation and their legacy
-usePodFunction counterparts imported from @dust/react-hooks MUST fail linting if a literal string
+usePodFunction counterparts imported from @ruby-ai/react-hooks MUST fail linting if a literal string
 or template without interpolation names a function absent from manifest.functions. Aliased and
 namespace imports MUST be checked. Diagnostics MUST include file, line, column and declared names.
 Computed names, shadowed bindings and imports from other modules MUST NOT trigger this rule.

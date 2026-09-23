@@ -1,5 +1,5 @@
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
-import type { GetDataSourcesResponseType } from "@dust-tt/client";
+import type { GetDataSourcesResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { withSpace } from "@front-api/middlewares/with_space";

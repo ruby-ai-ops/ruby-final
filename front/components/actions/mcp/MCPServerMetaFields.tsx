@@ -1,5 +1,5 @@
 import type { MetaRow } from "@app/types/shared/utils/http_headers";
-import { Button, Input, XClose } from "@dust-tt/sparkle";
+import { Button, Input, XClose } from "@ruby-ai/ui";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 type FormWithMetaFields = {

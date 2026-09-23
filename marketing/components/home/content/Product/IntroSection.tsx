@@ -1,22 +1,25 @@
 import { HeroOfficeSection } from "@marketing/components/home/content/Product/HeroOfficeSection";
 import { HomeAgentsImproveSection } from "@marketing/components/home/content/Product/HomeAgentsImproveSection";
 import { HomeAIOperatorsCTASection } from "@marketing/components/home/content/Product/HomeAIOperatorsCTASection";
-import { HomeCoordinatedSection } from "@marketing/components/home/content/Product/HomeCoordinatedSection";
+import { HomeIntegrationsMarquee } from "@marketing/components/home/content/Product/HomeIntegrationsMarquee";
 import { HomeNewsSection } from "@marketing/components/home/content/Product/HomeNewsSection";
 import { HomeQuotesSection } from "@marketing/components/home/content/Product/HomeQuotesSection";
 import { HomeRevealStyles } from "@marketing/components/home/content/Product/HomeReveal";
 import { HomeSecuritySection } from "@marketing/components/home/content/Product/HomeSecuritySection";
-import { HomeTeamSportSection } from "@marketing/components/home/content/Product/HomeTeamSportSection";
 import { HomeTeamUsageSection } from "@marketing/components/home/content/Product/HomeTeamUsageSection";
 import { HomeTrustedSection } from "@marketing/components/home/content/Product/HomeTrustedSection";
 import type { NewsItem } from "@marketing/lib/homepage_news";
+import {
+  MARKETING_SURFACES,
+  isMarketingSurfaceVisible,
+} from "@marketing/lib/marketing_visibility";
 
 const TESTIMONIAL_IMAGE = "/static/landing/people/quote-testimonial.png";
 
 const QUOTES = [
   {
     quote:
-      "Dust is the most impactful software we've adopted since building Clay.",
+      "Ruby is the most impactful software we've adopted since building Clay.",
     authorName: "Everett Berry",
     authorRole: "Head of GTM Engineering at Clay",
     imageSrc: TESTIMONIAL_IMAGE,
@@ -38,19 +41,24 @@ interface IntroSectionProps {
 
 export function IntroSection({ news }: IntroSectionProps = {}) {
   return (
-    <section className="w-full">
+    <section className="home-marketing-page w-full">
       <HomeRevealStyles />
       <div className="flex flex-col">
         <HeroOfficeSection />
-        <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex w-screen flex-col">
-          <HomeTrustedSection />
-          <HomeCoordinatedSection />
-          <HomeQuotesSection quotes={QUOTES} />
-          <HomeAgentsImproveSection />
-          <HomeTeamSportSection />
-          <HomeSecuritySection />
+        <div className="relative flex w-full flex-col lg:left-1/2 lg:right-1/2 lg:-ml-[50vw] lg:-mr-[50vw] lg:w-screen">
+          <HomeIntegrationsMarquee />
           <HomeTeamUsageSection />
-          <HomeNewsSection news={news} />
+          {isMarketingSurfaceVisible(MARKETING_SURFACES.trustedSection) && (
+            <HomeTrustedSection />
+          )}
+          {isMarketingSurfaceVisible(
+            MARKETING_SURFACES.testimonialCarousel
+          ) && <HomeQuotesSection quotes={QUOTES} />}
+          <HomeAgentsImproveSection />
+          {isMarketingSurfaceVisible(MARKETING_SURFACES.newsSection) && (
+            <HomeNewsSection news={news} />
+          )}
+          <HomeSecuritySection />
           <HomeAIOperatorsCTASection />
         </div>
       </div>

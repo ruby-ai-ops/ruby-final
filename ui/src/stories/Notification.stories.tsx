@@ -1,0 +1,186 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import React from "react";
+import { fn } from "storybook/test";
+
+import {
+  NotificationContent,
+  useSendNotification,
+} from "@ui/components/Notification";
+
+import { Button, Notification } from "../index_with_tw_base";
+
+const meta: Meta<typeof Notification> = {
+  title: "Feedback & Status/Notification",
+  parameters: {
+    docs: {
+      description: {
+        component: `A transient toast that confirms the outcome of an action. Toasts are dispatched imperatively with the **useSendNotification** hook ( \`title\`, \`description\`, and **type** — \`success\`, \`error\`, \`info\`, \`warning\`, or \`hello\`) and rendered inside a **Notification.Area** mounted near the app root. **NotificationContent** is the underlying presentational card, useful for inline previews.
+
+**When to use**
+- For brief, self-dismissing feedback after an action completes (saved, failed, copied).
+
+**Guidelines**
+- Mount a single **Notification.Area** high in the tree, then call **useSendNotification** wherever an action resolves.
+- Match \`type\` to the outcome and keep \`title\`/\`description\` concise — long copy is line-clamped.
+- For persistent, inline status attached to a region, use a **ContentMessage** instead.`,
+      },
+    },
+  },
+} satisfies Meta<typeof Notification>;
+
+export default meta;
+
+/**
+ * Notification shown inline (no toast) for design iteration: every `type`
+ * variant of the underlying NotificationContent card, plus one with an
+ * `action` button.
+ * @summary All notification types rendered inline.
+ */
+export const Inline: StoryObj = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <NotificationContent
+        type="success"
+        title="Success"
+        description="Operation completed successfully"
+      />
+      <NotificationContent
+        type="error"
+        title="Error"
+        description="Something went wrong"
+      />
+      <NotificationContent
+        type="info"
+        title="Info"
+        description="Some information"
+      />
+      <NotificationContent
+        type="warning"
+        title="Warning"
+        description="Something needs your attention"
+      />
+      <NotificationContent
+        type="hello"
+        title="You have a message"
+        description="A friendly notification"
+      />
+      <NotificationContent
+        type="success"
+        title="Added to favorites"
+        description="Research assistant"
+        action={{ label: "View", onClick: fn() }}
+      />
+    </div>
+  ),
+};
+
+/**
+ * Same as Inline but with longer titles and descriptions (tests line-clamp).
+ * @summary Line-clamp stress test for long copy.
+ */
+export const InlineLongText: StoryObj = {
+  tags: ["!manifest"],
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <NotificationContent
+        type="success"
+        title="Your workspace has been successfully updated and all changes were saved"
+        description="We've applied the new settings across all projects and notified your team members. You can review the full changelog in the activity feed or revert any change within 30 days."
+      />
+      <NotificationContent
+        type="error"
+        title="Failed to sync data with the external service"
+        description="The connection timed out after several retries. Please check your network and API credentials, then try again. If the problem persists, contact support with the request ID shown in the logs."
+      />
+      <NotificationContent
+        type="info"
+        title="A new version of the app is available with performance improvements"
+        description="This release includes faster load times, updated dependencies, and bug fixes. We recommend updating when convenient. The update will be applied automatically on your next session."
+      />
+      <NotificationContent
+        type="warning"
+        title="Your storage is nearly full and uploads may fail soon"
+        description="You have used 94% of your 10 GB quota. Remove old files or upgrade your plan to avoid disruption to your workflow and prevent data loss."
+      />
+      <NotificationContent
+        type="hello"
+        title="You have a message"
+        description="Your team left a few comments and assigned you new tasks. Head over to your inbox to see what's new and respond when you have a moment."
+      />
+    </div>
+  ),
+};
+
+/**
+ * The canonical usage pattern: mount a **Notification.Area** near the app
+ * root, then dispatch toasts imperatively from anywhere below it with the
+ * **useSendNotification** hook. Click each button to fire a toast of that
+ * type.
+ * @summary Dispatching toasts with useSendNotification inside Notification.Area.
+ */
+export const SendNotificationHook: StoryObj = {
+  render: () => (
+    <Notification.Area>
+      <NotificationTriggers />
+    </Notification.Area>
+  ),
+};
+
+const NotificationTriggers = () => {
+  const sendNotification = useSendNotification();
+
+  return (
+    <div className="flex flex-col gap-4">
+      <Button
+        onClick={() =>
+          sendNotification({
+            title: "Success",
+            description: "Operation completed successfully",
+            type: "success",
+          })
+        }
+        label="Show Success"
+      />
+      <Button
+        onClick={() =>
+          sendNotification({
+            title: "Error",
+            description: "Something went wrong",
+            type: "error",
+          })
+        }
+        label="Show Error"
+      />
+      <Button
+        onClick={() =>
+          sendNotification({
+            title: "Info",
+            description: "Some information",
+            type: "info",
+          })
+        }
+        label="Show Info"
+      />
+      <Button
+        onClick={() =>
+          sendNotification({
+            title: "Warning",
+            description: "Something needs your attention",
+            type: "warning",
+          })
+        }
+        label="Show Warning"
+      />
+      <Button
+        onClick={() =>
+          sendNotification({
+            title: "Hello",
+            description: "A friendly notification",
+            type: "hello",
+          })
+        }
+        label="Show Hello"
+      />
+    </div>
+  );
+};

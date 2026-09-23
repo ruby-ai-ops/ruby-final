@@ -3,14 +3,14 @@
  * a far-future (2999) "forever" access window.
  *
  * The initial-credits, AWU top-up and business-activation seat commits used to be
- * created with `ending_before = 2999-01-01` and `DUST_CARRY_ON_RENEWAL=forever`,
+ * created with `ending_before = 2999-01-01` and `RUBY_CARRY_ON_RENEWAL=forever`,
  * so they never expired and carried their full balance forever across renewals.
  * We now grant them a one-year window instead. This rewrites the existing forever
  * entries to expire one year after they start, and stamps the same absolute date
- * on `DUST_CARRY_ON_RENEWAL` so the expiry is preserved (not reset) when a balance
+ * on `RUBY_CARRY_ON_RENEWAL` so the expiry is preserved (not reset) when a balance
  * is carried onto a renewed contract.
  *
- * Targets only contract entries flagged `DUST_CARRY_ON_RENEWAL` whose access
+ * Targets only contract entries flagged `RUBY_CARRY_ON_RENEWAL` whose access
  * window is far-future. Idempotent: entries whose window is already finite are
  * skipped.
  *

@@ -176,7 +176,7 @@ describe("fetchUserDayCells", () => {
   });
 
   it("splits users above the ES cap into multiple calls and merges facts", async () => {
-    // The poke cohort path previously failed with
+    // The admin cohort path previously failed with
     // "activation evaluation supports at most 100 users per call, got 239".
     const userIds = Array.from({ length: 239 }, (_, i) => `user-${i}`);
     const dayMs = Date.UTC(2026, 6, 15);

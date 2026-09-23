@@ -47,7 +47,7 @@ describe("websearch tool", () => {
 
   it("forwards the step context result count to the provider", async () => {
     const result = await getWebsearchTool().handler(
-      { query: "dust" },
+      { query: "ruby" },
       makeExtra(auth, conversation, {
         stepContext: makeStepContext(WEBSEARCH_ACTION_NUM_RESULTS),
       })
@@ -61,7 +61,7 @@ describe("websearch tool", () => {
 
   it("falls back to the default when the step context carries a zero count", async () => {
     const result = await getWebsearchTool().handler(
-      { query: "dust" },
+      { query: "ruby" },
       makeExtra(auth, conversation, { stepContext: makeStepContext(0) })
     );
 

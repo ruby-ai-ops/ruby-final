@@ -7,7 +7,7 @@ import {
   useWriteFileContentByPath,
 } from "@app/lib/swr/files";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, ContentMessage, Spinner } from "@dust-tt/sparkle";
+import { Button, ContentMessage, Spinner } from "@ruby-ai/ui";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface MarkdownFileEditorProps

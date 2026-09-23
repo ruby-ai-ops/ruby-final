@@ -17,7 +17,7 @@ import {
   SearchInput,
   Spinner,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface PodsBrowsePopoverProps {

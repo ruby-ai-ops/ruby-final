@@ -1,5 +1,5 @@
 import apiConfig from "@app/lib/api/config";
-import { getDustAppSecrets } from "@app/lib/api/dust_app_secrets";
+import { getRubyAppSecrets } from "@app/lib/api/ruby_app_secrets";
 import { getLlmCredentials } from "@app/lib/api/provider_credentials";
 import { consumeRunStream } from "@app/lib/api/run";
 import { getFeatureFlags } from "@app/lib/auth";
@@ -9,7 +9,7 @@ import { rateLimiter } from "@app/lib/utils/rate_limiter";
 import logger from "@app/logger/logger";
 import {
   credentialsFromProviders,
-  dustManagedServiceCredentials,
+  rubyManagedServiceCredentials,
 } from "@app/types/api/credentials";
 import { CoreAPI } from "@app/types/core/core_api";
 import type { CredentialsType } from "@app/types/provider";
@@ -168,7 +168,7 @@ app.post(
           workspaceId: owner.id,
         },
       }),
-      getDustAppSecrets(auth, true),
+      getRubyAppSecrets(auth, true),
     ]);
 
     if (!appResource || appResource.space.sId !== space.sId) {
@@ -191,11 +191,11 @@ app.post(
       });
     }
 
-    // This variable defines whether to use the dust managed credentials or the workspace credentials.
-    // Dust managed credentials can only be used with a system API key.
-    // The `use_workspace_credentials` query parameter is used in the context of the DustAppRun action, to
+    // This variable defines whether to use the ruby managed credentials or the workspace credentials.
+    // Ruby managed credentials can only be used with a system API key.
+    // The `use_workspace_credentials` query parameter is used in the context of the RubyAppRun action, to
     // use the workspace credentials even though we use a system API key.
-    const useDustCredentials =
+    const useRubyCredentials =
       auth.isSystemKey() && useWorkspaceCredentials !== "true";
 
     const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
@@ -220,12 +220,12 @@ app.post(
     const keyWorkspaceFlags = await getFeatureFlags(auth);
 
     let credentials: CredentialsType | null = null;
-    if (useDustCredentials) {
+    if (useRubyCredentials) {
       const llmCredentials = await getLlmCredentials(auth);
-      // Dust managed credentials: system API key (packaged apps).
+      // Ruby managed credentials: system API key (packaged apps).
       credentials = {
         ...llmCredentials,
-        ...dustManagedServiceCredentials(),
+        ...rubyManagedServiceCredentials(),
       };
     } else {
       credentials = credentialsFromProviders(providers);
@@ -266,7 +266,7 @@ app.post(
     );
 
     const runRes = await coreAPI.createRunStream(owner, keyWorkspaceFlags, {
-      projectId: appResource.dustAPIProjectId,
+      projectId: appResource.rubyAPIProjectId,
       runType: "deploy",
       specificationHash: specificationHash,
       config: { blocks: config },
@@ -291,7 +291,7 @@ app.post(
       auth,
       appModelId: appResource.id,
       workspaceModelId: owner.id,
-      useDustCredentials,
+      useRubyCredentials,
       blocksConfig: config,
       runStream: runRes.value,
     };
@@ -310,29 +310,29 @@ app.post(
               },
             });
           } catch (err) {
-            logger.error({ error: err }, "Error streaming from Dust API");
+            logger.error({ error: err }, "Error streaming from Ruby API");
           }
         });
       }
 
       case "blocking": {
         let traces;
-        let dustRunId: string;
+        let rubyRunId: string;
         try {
           const result = await consumeRunStream({
             ...runStreamArgs,
             collectTraces: true,
           });
           traces = result.traces;
-          dustRunId = result.dustRunId;
+          rubyRunId = result.rubyRunId;
         } catch (err) {
-          logger.error({ error: err }, "Error streaming from Dust API");
+          logger.error({ error: err }, "Error streaming from Ruby API");
           throw err;
         }
 
         const statusRunRes = await coreAPI.getRunStatus({
-          projectId: appResource.dustAPIProjectId,
-          runId: dustRunId,
+          projectId: appResource.rubyAPIProjectId,
+          runId: rubyRunId,
         });
 
         if (statusRunRes.isErr()) {
@@ -375,9 +375,9 @@ app.post(
       case "non-blocking": {
         // Get the runId so we can return the status, then kick off the background
         // stream consumption (which records run usage) without awaiting.
-        let dustRunId: string;
+        let rubyRunId: string;
         try {
-          dustRunId = await runRes.value.dustRunId;
+          rubyRunId = await runRes.value.rubyRunId;
         } catch (err) {
           logger.error(
             { error: err, workspaceId: owner.sId },
@@ -393,8 +393,8 @@ app.post(
         }
 
         const statusRunRes = await coreAPI.getRunStatus({
-          projectId: appResource.dustAPIProjectId,
-          runId: dustRunId,
+          projectId: appResource.rubyAPIProjectId,
+          runId: rubyRunId,
         });
 
         if (statusRunRes.isErr()) {
@@ -423,7 +423,7 @@ app.post(
               collectTraces: false,
             });
           } catch (err) {
-            logger.error({ error: err }, "Error streaming from Dust API");
+            logger.error({ error: err }, "Error streaming from Ruby API");
           }
         })();
 

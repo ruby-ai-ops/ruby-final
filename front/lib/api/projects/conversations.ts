@@ -7,8 +7,8 @@ import {
   fileSystemStorageModeForStandaloneConversation,
 } from "@app/lib/api/file_system/storage_mode";
 import { Authenticator } from "@app/lib/auth";
-import type { DustErrorCode } from "@app/lib/error";
-import { DustError } from "@app/lib/error";
+import type { RubyErrorCode } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import {
   AgentMessageModel,
   MessageModel,
@@ -45,14 +45,14 @@ import { getAgentConfigurations } from "../assistant/configuration/agent";
 // not-found, and a destroy failure is internal — fail closed, the
 // association is unchanged and the kill request left behind lets the next
 // access finish the sandbox reset.
-function toMoveError<E extends DustError<DustErrorCode>>(
+function toMoveError<E extends RubyError<RubyErrorCode>>(
   error: E | ConversationGoneError | ScopeTransitionDestroyError
-): E | DustError<"conversation_not_found" | "internal_error"> {
+): E | RubyError<"conversation_not_found" | "internal_error"> {
   if (error instanceof ConversationGoneError) {
-    return new DustError("conversation_not_found", "Conversation not found");
+    return new RubyError("conversation_not_found", "Conversation not found");
   }
   if (error instanceof ScopeTransitionDestroyError) {
-    return new DustError(
+    return new RubyError(
       "internal_error",
       `Could not recycle the conversation's sandbox for the move: ${error.message}`
     );
@@ -74,7 +74,7 @@ export async function moveConversationToProject(
 ): Promise<
   Result<
     void,
-    DustError<
+    RubyError<
       | "internal_error"
       | "unauthorized"
       | "conversation_not_found"
@@ -89,7 +89,7 @@ export async function moveConversationToProject(
     conversation.sId !== currentAgentConversationId
   ) {
     return new Err(
-      new DustError(
+      new RubyError(
         "conversation_agent_running",
         "Wait for the agent to finish before moving this conversation."
       )
@@ -101,12 +101,12 @@ export async function moveConversationToProject(
   const project = await SpaceResource.fetchById(auth, spaceId);
 
   if (!project || !project.isProject()) {
-    return new Err(new DustError("space_not_found", "Space not found"));
+    return new Err(new RubyError("space_not_found", "Space not found"));
   }
 
   if (!project.isMember(auth)) {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         `You must be a member of "${project.name}".`
       )
@@ -114,7 +114,7 @@ export async function moveConversationToProject(
   }
   if (fileSystemStorageModeForPod(project) === "database") {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "Conversations cannot be moved into or out of a Pod that uses the database-backed filesystem yet."
       )
@@ -136,7 +136,7 @@ export async function moveConversationToProject(
       ): Promise<
         Result<
           undefined,
-          DustError<
+          RubyError<
             | "internal_error"
             | "invalid_request_error"
             | "space_not_found"
@@ -151,7 +151,7 @@ export async function moveConversationToProject(
             "database"
         ) {
           return new Err(
-            new DustError(
+            new RubyError(
               "invalid_request_error",
               "A standalone conversation using the database-backed filesystem cannot be moved into a Pod yet."
             )
@@ -159,7 +159,7 @@ export async function moveConversationToProject(
         }
         if (sourceSpaceId === project.sId) {
           return new Err(
-            new DustError(
+            new RubyError(
               "internal_error",
               "Conversation is already in the project"
             )
@@ -172,12 +172,12 @@ export async function moveConversationToProject(
           );
           if (!previousProject) {
             return new Err(
-              new DustError("space_not_found", "Previous project not found")
+              new RubyError("space_not_found", "Previous project not found")
             );
           }
           if (fileSystemStorageModeForPod(previousProject) === "database") {
             return new Err(
-              new DustError(
+              new RubyError(
                 "invalid_request_error",
                 "Conversations cannot be moved into or out of a Pod that uses the database-backed filesystem yet."
               )
@@ -185,7 +185,7 @@ export async function moveConversationToProject(
           }
           if (!auth.can("admin", previousProject)) {
             return new Err(
-              new DustError(
+              new RubyError(
                 "unauthorized",
                 `You must be an editor of "${previousProject.name}".`
               )
@@ -268,7 +268,7 @@ export async function moveConversationOutOfProject(
 ): Promise<
   Result<
     void,
-    DustError<
+    RubyError<
       | "internal_error"
       | "unauthorized"
       | "conversation_not_found"
@@ -297,7 +297,7 @@ export async function moveConversationOutOfProject(
             oldUpdatedAt: Date;
             participants: (UserType & { lastReadAt: Date | null })[];
           },
-          DustError<
+          RubyError<
             | "internal_error"
             | "invalid_request_error"
             | "space_not_found"
@@ -308,16 +308,16 @@ export async function moveConversationOutOfProject(
         const sourceSpaceId = freshConversation.spaceSId;
         if (!sourceSpaceId) {
           return new Err(
-            new DustError("internal_error", "Conversation is not in a project")
+            new RubyError("internal_error", "Conversation is not in a project")
           );
         }
         const project = await SpaceResource.fetchById(auth, sourceSpaceId);
         if (!project) {
-          return new Err(new DustError("space_not_found", "Project not found"));
+          return new Err(new RubyError("space_not_found", "Project not found"));
         }
         if (fileSystemStorageModeForPod(project) === "database") {
           return new Err(
-            new DustError(
+            new RubyError(
               "invalid_request_error",
               "Conversations cannot be moved into or out of a Pod that uses the database-backed filesystem yet."
             )
@@ -325,7 +325,7 @@ export async function moveConversationOutOfProject(
         }
         if (!auth.can("admin", project)) {
           return new Err(
-            new DustError(
+            new RubyError(
               "unauthorized",
               `You must be an editor of "${project.name}".`
             )

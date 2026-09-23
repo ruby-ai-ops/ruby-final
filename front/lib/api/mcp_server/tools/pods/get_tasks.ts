@@ -1,4 +1,4 @@
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { listNonArchivedMemberSpacesWithMetadata } from "@app/lib/api/projects/list";
 import { ProjectTaskResource } from "@app/lib/resources/project_task_resource";
 import { ONE_DAY_MS } from "@app/types/shared/utils/date_utils";
@@ -31,7 +31,7 @@ const inputSchema = {
 };
 
 export function registerPodsGetTasksTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "get_pod_tasks",
     {

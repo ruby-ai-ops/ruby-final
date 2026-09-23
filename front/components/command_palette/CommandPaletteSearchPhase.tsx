@@ -12,7 +12,7 @@ import type {
   SkillWithoutInstructionsAndToolsType,
 } from "@app/types/assistant/skill_configuration";
 import type { PodType } from "@app/types/space";
-import { Avatar, cn, Icon, LoadingBlock, SearchInput } from "@dust-tt/sparkle";
+import { Avatar, cn, Icon, LoadingBlock, SearchInput } from "@ruby-ai/ui";
 import { useEffect, useMemo, useRef } from "react";
 
 type CommandPaletteSkill =

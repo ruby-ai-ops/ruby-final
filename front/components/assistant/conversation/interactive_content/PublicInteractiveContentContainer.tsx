@@ -8,7 +8,7 @@ import {
   frameSlideshowContentType,
   frameV2ContentType,
 } from "@app/types/files";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 interface PublicInteractiveContentContainerProps {
   shareToken: string;

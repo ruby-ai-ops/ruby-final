@@ -1,6 +1,6 @@
 import { useClientType } from "@app/lib/context/clientType";
 import { LinkWrapper, useAppRouter } from "@app/lib/platform";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 
 interface AgentHandleProps {
   agent: {

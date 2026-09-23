@@ -1,5 +1,5 @@
 import { H2 } from "@marketing/components/home/ContentComponents";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import type { FC } from "react";
 
 export interface DemoVideoProps {
@@ -19,7 +19,7 @@ export const DemoVideoSection: FC<DemoVideoSectionProps> = ({
   id,
 }) => {
   // Construct the video URL with consistent parameters
-  const videoUrl = new URL(demoVideo.videoUrl);
+  const videoUrl = new URL(demoVideo.videoUrl, "https://ruby.ad");
   videoUrl.searchParams.set("seo", "true");
   videoUrl.searchParams.set("videoFoam", "true");
   if (demoVideo.autoPlay) {
@@ -40,8 +40,8 @@ export const DemoVideoSection: FC<DemoVideoSectionProps> = ({
         <div className="relative w-full rounded-2xl pt-[56.25%]">
           {/* 16:9 aspect ratio */}
           <iframe
-            src={videoUrl.toString()}
-            title="Dust product tour"
+            src={demoVideo.videoUrl.startsWith("/") ? `${videoUrl.pathname}${videoUrl.search}` : videoUrl.toString()}
+            title="Ruby product tour"
             allow="autoplay; fullscreen"
             frameBorder="0"
             className="absolute inset-0 h-full w-full overflow-hidden rounded-2xl"

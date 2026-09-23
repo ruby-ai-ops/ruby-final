@@ -1,7 +1,7 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
 import { appendUTMParams } from "@marketing/lib/utils/utm";
-import { LegacyButton as Button } from "@dust-tt/sparkle";
+import { LegacyButton as Button } from "@ruby-ai/ui";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import type { ReactNode } from "react";
@@ -94,7 +94,7 @@ export function ChatGptEnterpriseHeroSection({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Headline with orbiting Dust logo */}
+            {/* Headline with orbiting Ruby logo */}
             <div className="relative flex w-full flex-col items-center justify-center py-8 md:py-12">
               <motion.h1
                 className="relative z-10 max-w-4xl text-center text-4xl font-bold leading-[1.1] tracking-tight text-[#111418] sm:text-5xl md:text-6xl lg:text-[72px]"
@@ -108,7 +108,7 @@ export function ChatGptEnterpriseHeroSection({
                 {headline}
               </motion.h1>
 
-              {/* Orbiting Dust logo */}
+              {/* Orbiting Ruby logo */}
               <div className="pointer-events-none absolute inset-0 z-20 hidden md:block">
                 <div className="absolute bottom-0 left-[-5%] right-[-5%] top-0 rounded-[120px] border-2 border-dashed border-[#1C91FF]/20" />
               </div>
@@ -154,8 +154,8 @@ export function ChatGptEnterpriseHeroSection({
                   </div>
                   <div className="rounded-xl border border-[#1C91FF]/40 bg-white/95 p-2 shadow-[0_4px_20px_rgba(28,145,255,0.4)] backdrop-blur-sm">
                     <Image
-                      src="/static/landing/chatgpt-enterprise/dust_logo.svg"
-                      alt="Dust"
+                      src="/static/landing/chatgpt-enterprise/ruby_logo.svg"
+                      alt="Ruby"
                       width={40}
                       height={40}
                       unoptimized
@@ -174,14 +174,14 @@ export function ChatGptEnterpriseHeroSection({
             {/* CTA buttons */}
             <div className="relative z-20 flex w-full flex-col justify-center gap-4 px-4 pt-4 sm:flex-row sm:px-0">
               <Button
-                variant="highlight"
+                variant="primary"
                 size="md"
                 label={ctaButtonText}
                 onClick={withTracking(
                   TRACKING_AREAS.COMPETITIVE,
                   "chatgpt_enterprise_hero_comparison",
                   () => {
-                    const el = document.getElementById("dust-deep-dive");
+                    const el = document.getElementById("ruby-deep-dive");
                     if (el) {
                       el.scrollIntoView({ behavior: "smooth" });
                     }

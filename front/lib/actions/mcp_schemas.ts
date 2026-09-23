@@ -3,7 +3,7 @@ import {
   ProjectConfigurationSchema,
   TableDataSourceConfigurationSchema,
 } from "@app/lib/api/assistant/configuration/types";
-import { DustAppRunConfigurationSchema } from "@app/types/app";
+import { RubyAppRunConfigurationSchema } from "@app/types/app";
 import {
   CUSTOM_RESOURCE_ALLOWED,
   INTERNAL_ALLOWED_ICONS,
@@ -44,9 +44,9 @@ export const ServerSideMCPServerConfigurationSchema =
       z.union([z.boolean(), z.number(), z.string(), z.array(z.string())])
     ),
     mcpServerViewId: z.string(),
-    dustAppConfiguration: DustAppRunConfigurationSchema.nullable(),
+    rubyAppConfiguration: RubyAppRunConfigurationSchema.nullable(),
     secretName: z.string().nullable(),
-    dustProject: ProjectConfigurationSchema.nullable(),
+    rubyProject: ProjectConfigurationSchema.nullable(),
     internalMCPServerId: z.string().nullable(),
   });
 

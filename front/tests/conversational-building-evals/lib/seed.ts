@@ -83,7 +83,7 @@ export async function seedScenario(
     const knowledgeByKey = new Map<string, SeededKnowledgeNode>();
     for (const knowledge of testCase.workspaceSeed.knowledge ?? []) {
       const view = await DataSourceViewFactory.folder(workspace, globalSpace);
-      const coreDataSourceId = view.dataSource.dustAPIDataSourceId;
+      const coreDataSourceId = view.dataSource.rubyAPIDataSourceId;
       const now = Date.now();
       seededDocumentsByDataSourceId.set(
         coreDataSourceId,

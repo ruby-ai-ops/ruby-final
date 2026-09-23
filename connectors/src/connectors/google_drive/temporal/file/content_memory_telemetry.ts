@@ -15,7 +15,7 @@ type MemorySnapshot = ReturnType<typeof process.memoryUsage>;
 export type GoogleDriveContentPhase =
   | "download_export"
   | "extraction"
-  | "dust_upsert";
+  | "ruby_upsert";
 
 export type GoogleDriveContentPayloadKind =
   | "google_response"

@@ -1,10 +1,10 @@
-import { PostHogTracker } from "@dust-tt/front/components/app/PostHogTracker";
-import { RootLayout } from "@dust-tt/front/components/app/RootLayout";
-import { ErrorBoundary } from "@dust-tt/front/components/error_boundary/ErrorBoundary";
-import { CellProvider } from "@dust-tt/front/lib/auth/CellContext";
-import { FetcherProvider } from "@dust-tt/front/lib/swr/FetcherContext";
-import { fetcher, fetcherWithBody } from "@dust-tt/front/lib/swr/fetcher";
-import { SparkleContext } from "@dust-tt/sparkle";
+import { PostHogTracker } from "@ruby-ai/front/components/app/PostHogTracker";
+import { RootLayout } from "@ruby-ai/front/components/app/RootLayout";
+import { ErrorBoundary } from "@ruby-ai/front/components/error_boundary/ErrorBoundary";
+import { CellProvider } from "@ruby-ai/front/lib/auth/CellContext";
+import { FetcherProvider } from "@ruby-ai/front/lib/swr/FetcherContext";
+import { fetcher, fetcherWithBody } from "@ruby-ai/front/lib/swr/fetcher";
+import { RubyUIContext } from "@ruby-ai/ui";
 import { GlobalErrorFallback } from "@spa/app/components/GlobalErrorFallback";
 import { AppReadyProvider } from "@spa/app/contexts/AppReadyContext";
 import { routes } from "@spa/app/routes";
@@ -17,7 +17,7 @@ const router = createBrowserRouter(routes, {
 });
 
 export default function App() {
-  const sparkleContextValue = useMemo(
+  const uiContextValue = useMemo(
     () => ({ components: { link: ReactRouterLinkWrapper } }),
     []
   );
@@ -27,13 +27,13 @@ export default function App() {
       <CellProvider>
         <FetcherProvider fetcher={fetcher} fetcherWithBody={fetcherWithBody}>
           <PostHogTracker authenticated>
-            <SparkleContext.Provider value={sparkleContextValue}>
+            <RubyUIContext.Provider value={uiContextValue}>
               <RootLayout>
                 <ErrorBoundary fallback={<GlobalErrorFallback />}>
                   <RouterProvider router={router} />
                 </ErrorBoundary>
               </RootLayout>
-            </SparkleContext.Provider>
+            </RubyUIContext.Provider>
           </PostHogTracker>
         </FetcherProvider>
       </CellProvider>

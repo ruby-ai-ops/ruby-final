@@ -29,7 +29,7 @@ import {
   Spinner,
   Terminal,
   Upload01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext } from "@tanstack/react-table";
 import type { ComponentType } from "react";
 import React from "react";
@@ -106,7 +106,7 @@ export const SpaceCategoriesList = ({
   const { user } = useAuth();
   const { hasFeature } = useFeatureFlags();
   const { hasPermission } = useWorkspacePermissions();
-  const canAdministrateApps = hasPermission("admin", "dust_app");
+  const canAdministrateApps = hasPermission("admin", "ruby_app");
   const { setIsSearchDisabled } = React.useContext(SpaceSearchContext);
 
   const [agentId, setAgentId] = React.useState<string | null>(null);
@@ -185,12 +185,12 @@ export const SpaceCategoriesList = ({
             icon={Globe01}
             label="Scrape a website"
           />
-          {hasFeature("legacy_dust_apps") && (
+          {hasFeature("legacy_ruby_apps") && (
             <DropdownMenuItem
               disabled={!canAdministrateApps || !canWriteInSpace}
               href={`/w/${owner.sId}/spaces/${space.sId}/categories/apps?modal=apps`}
               icon={Terminal}
-              label="Create a Dust App"
+              label="Create a Ruby App"
             />
           )}
           <DropdownMenuItem

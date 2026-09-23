@@ -1,18 +1,18 @@
 import type { IndustryPageConfig } from "@marketing/components/home/content/Industry/configs/utils";
 import { createLayoutConfig } from "@marketing/components/home/content/Industry/configs/utils";
-import { BarChart01 } from "@dust-tt/sparkle";
+import { BarChart01 } from "@ruby-ai/ui";
 
 export const investmentConfig: IndustryPageConfig = {
   seo: {
-    title: "Dust for Investment Firms",
+    title: "Ruby for Investment Firms",
     description:
       "Accelerate research, enhance due diligence, and streamline operations with AI-powered workflows designed for investment professionals.",
   },
   layout: createLayoutConfig([
     "hero",
     "painPoints",
-    "dustInAction",
-    "justUseDust",
+    "rubyInAction",
+    "justUseRuby",
   ]),
   hero: {
     chip: {
@@ -22,7 +22,7 @@ export const investmentConfig: IndustryPageConfig = {
     },
     title: (
       <>
-        Dust for
+        Ruby for
         <br /> Investment
         <br /> Firms
       </>
@@ -40,7 +40,7 @@ export const investmentConfig: IndustryPageConfig = {
       },
     },
     heroImage: {
-      src: "/static/landing/industry/Dust_Connectors.webp",
+      src: "/static/landing/industry/Ruby_Connectors.webp",
       alt: "Investment Firms AI-powered workflows illustration",
     },
   },
@@ -70,8 +70,8 @@ export const investmentConfig: IndustryPageConfig = {
       },
     ],
   },
-  dustInAction: {
-    title: "Dust in action",
+  rubyInAction: {
+    title: "Ruby in action",
     useCases: [
       {
         title: "Target Identification & Research",
@@ -185,8 +185,8 @@ export const investmentConfig: IndustryPageConfig = {
       },
     ],
   },
-  justUseDust: {
-    title: "#JustUseDust",
+  justUseRuby: {
+    title: "#JustUseRuby",
     titleColor: "text-blue-600",
     ctaButtons: {
       primary: {

@@ -1,5 +1,5 @@
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { isModelTierOverrideGroupKind } from "@app/lib/model_tiers/group_kinds";
 import { resolveAllowedModelTiers } from "@app/lib/model_tiers/resolve_allowed";
 import {
@@ -209,7 +209,7 @@ export async function setUserMaxAllowedTier(
 ): Promise<
   Result<
     undefined,
-    DustError<"invalid_request_error" | "user_not_found" | "user_not_member">
+    RubyError<"invalid_request_error" | "user_not_found" | "user_not_member">
   >
 > {
   assertIsAdmin(auth);
@@ -217,7 +217,7 @@ export async function setUserMaxAllowedTier(
   const workspace = auth.getNonNullableWorkspace();
   const user = await UserResource.fetchById(userId);
   if (!user) {
-    return new Err(new DustError("user_not_found", "User not found."));
+    return new Err(new RubyError("user_not_found", "User not found."));
   }
 
   const membership =
@@ -227,7 +227,7 @@ export async function setUserMaxAllowedTier(
     });
   if (!membership) {
     return new Err(
-      new DustError(
+      new RubyError(
         "user_not_member",
         "User is not an active member of the workspace."
       )
@@ -243,7 +243,7 @@ export async function setUserMaxAllowedTier(
   });
   if (result.isErr()) {
     return new Err(
-      new DustError("invalid_request_error", result.error.message)
+      new RubyError("invalid_request_error", result.error.message)
     );
   }
 
@@ -256,7 +256,7 @@ export async function clearUserMaxAllowedTier(
 ): Promise<
   Result<
     undefined,
-    DustError<"invalid_request_error" | "user_not_found" | "user_not_member">
+    RubyError<"invalid_request_error" | "user_not_found" | "user_not_member">
   >
 > {
   assertIsAdmin(auth);
@@ -264,7 +264,7 @@ export async function clearUserMaxAllowedTier(
   const workspace = auth.getNonNullableWorkspace();
   const user = await UserResource.fetchById(userId);
   if (!user) {
-    return new Err(new DustError("user_not_found", "User not found."));
+    return new Err(new RubyError("user_not_found", "User not found."));
   }
 
   const membership =
@@ -274,7 +274,7 @@ export async function clearUserMaxAllowedTier(
     });
   if (!membership) {
     return new Err(
-      new DustError(
+      new RubyError(
         "user_not_member",
         "User is not an active member of the workspace."
       )
@@ -292,7 +292,7 @@ export async function setGroupMaxAllowedTier(
 ): Promise<
   Result<
     undefined,
-    DustError<
+    RubyError<
       | "invalid_request_error"
       | "group_not_found"
       | "invalid_id"
@@ -308,7 +308,7 @@ export async function setGroupMaxAllowedTier(
   }
   if (!isModelTierOverrideGroupKind(groupRes.value.kind)) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "Model tier overrides only apply to provisioned or manual groups."
       )
@@ -330,7 +330,7 @@ export async function clearGroupMaxAllowedTier(
 ): Promise<
   Result<
     undefined,
-    DustError<
+    RubyError<
       | "invalid_request_error"
       | "group_not_found"
       | "invalid_id"
@@ -373,12 +373,12 @@ async function loadWorkspaceTierGrants(
 export async function setWorkspaceMaxAllowedTierName(
   auth: Authenticator,
   maxTierName: ModelsTierName
-): Promise<Result<undefined, DustError<"invalid_request_error">>> {
+): Promise<Result<undefined, RubyError<"invalid_request_error">>> {
   assertIsAdmin(auth);
 
   if (!getTier(maxTierName)) {
     return new Err(
-      new DustError("invalid_request_error", "Unknown models tier.")
+      new RubyError("invalid_request_error", "Unknown models tier.")
     );
   }
 

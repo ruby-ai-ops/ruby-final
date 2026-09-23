@@ -21,7 +21,7 @@ import {
   MessagePlusCircle,
   Trash01,
   useCopyToClipboard,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface SkillDetailsButtonBarProps {

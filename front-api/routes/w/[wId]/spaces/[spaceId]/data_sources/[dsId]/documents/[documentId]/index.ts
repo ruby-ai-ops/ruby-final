@@ -148,8 +148,8 @@ app.delete(
 
     const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
     const deleteRes = await coreAPI.deleteDataSourceDocument({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       documentId,
       caller: "private-api",
     });

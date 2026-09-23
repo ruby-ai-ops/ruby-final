@@ -4,7 +4,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   LinkExternal01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 function formatFieldValue(value: string | number | boolean): string {
   if (typeof value === "boolean") {

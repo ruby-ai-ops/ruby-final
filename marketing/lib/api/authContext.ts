@@ -144,7 +144,7 @@ export function hasWorkosSessionCookie(cookieHeader: string): boolean {
  *
  * Marketing has no WorkOS code of its own, so it asks `front` via
  * `/api/auth-context`, forwarding the incoming cookies — the
- * `workos_session` cookie is scoped to the shared `*.dust.tt` domain.
+ * `workos_session` cookie is scoped to the shared `*.ruby.ad` domain.
  */
 export async function fetchAuthContext(
   cookieHeader: string,

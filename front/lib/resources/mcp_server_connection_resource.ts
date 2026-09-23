@@ -12,7 +12,7 @@ import {
   emitAuditLogEvent,
 } from "@app/lib/api/audit/workos_audit";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { MCPServerConnectionModel } from "@app/lib/models/agent/actions/mcp_server_connection";
 import { BaseResource } from "@app/lib/resources/base_resource";
 import { UserModel } from "@app/lib/resources/storage/models/user";
@@ -70,7 +70,7 @@ export class MCPServerConnectionResource extends BaseResource<MCPServerConnectio
     >
   ) {
     if (blob.connectionType === "workspace" && !auth.isAdmin()) {
-      throw new DustError(
+      throw new RubyError(
         "internal_error",
         "Only the admin can create a workspace connection"
       );
@@ -153,7 +153,7 @@ export class MCPServerConnectionResource extends BaseResource<MCPServerConnectio
     auth: Authenticator,
     id: string,
     { connectionType }: { connectionType: MCPServerConnectionConnectionType }
-  ): Promise<Result<MCPServerConnectionResource, DustError>> {
+  ): Promise<Result<MCPServerConnectionResource, RubyError>> {
     const connRes = await this.fetchByIds(auth, [id], { connectionType });
 
     if (connRes.isErr()) {
@@ -167,10 +167,10 @@ export class MCPServerConnectionResource extends BaseResource<MCPServerConnectio
     auth: Authenticator,
     ids: string[],
     { connectionType }: { connectionType: MCPServerConnectionConnectionType }
-  ): Promise<Result<MCPServerConnectionResource[], DustError>> {
+  ): Promise<Result<MCPServerConnectionResource[], RubyError>> {
     const connModelIds = removeNulls(ids.map((id) => getResourceIdFromSId(id)));
     if (connModelIds.length !== ids.length) {
-      return new Err(new DustError("invalid_id", "Invalid id"));
+      return new Err(new RubyError("invalid_id", "Invalid id"));
     }
 
     const connections = await this.baseFetch(auth, {
@@ -184,7 +184,7 @@ export class MCPServerConnectionResource extends BaseResource<MCPServerConnectio
 
     if (connections.length !== ids.length) {
       return new Err(
-        new DustError(
+        new RubyError(
           "connection_not_found",
           ids.length === 1
             ? "Connection not found"
@@ -205,7 +205,7 @@ export class MCPServerConnectionResource extends BaseResource<MCPServerConnectio
       mcpServerId: string;
       connectionType: MCPServerConnectionConnectionType;
     }
-  ): Promise<Result<MCPServerConnectionResource, DustError>> {
+  ): Promise<Result<MCPServerConnectionResource, RubyError>> {
     const { serverType, id } = getServerTypeAndIdFromSId(mcpServerId);
 
     const user = auth.user();
@@ -231,7 +231,7 @@ export class MCPServerConnectionResource extends BaseResource<MCPServerConnectio
 
     return connections.length > 0
       ? new Ok(connections[0])
-      : new Err(new DustError("connection_not_found", "Connection not found"));
+      : new Err(new RubyError("connection_not_found", "Connection not found"));
   }
 
   static async findByInternalServerName(
@@ -269,7 +269,7 @@ export class MCPServerConnectionResource extends BaseResource<MCPServerConnectio
     }: {
       mcpServerId: string;
     }
-  ): Promise<Result<MCPServerConnectionResource[], DustError>> {
+  ): Promise<Result<MCPServerConnectionResource[], RubyError>> {
     const { serverType, id } = getServerTypeAndIdFromSId(mcpServerId);
 
     const connections = await this.baseFetch(auth, {
@@ -399,7 +399,7 @@ export class MCPServerConnectionResource extends BaseResource<MCPServerConnectio
   ): Promise<Result<undefined, Error>> {
     if (this.connectionType === "workspace" && !auth.isAdmin()) {
       return new Err(
-        new DustError(
+        new RubyError(
           "internal_error",
           "Only admins can delete a workspace connection"
         )
@@ -409,7 +409,7 @@ export class MCPServerConnectionResource extends BaseResource<MCPServerConnectio
       this.userId !== auth.getNonNullableUser().id
     ) {
       return new Err(
-        new DustError(
+        new RubyError(
           "internal_error",
           "Only the user or admins can delete a personal connection"
         )

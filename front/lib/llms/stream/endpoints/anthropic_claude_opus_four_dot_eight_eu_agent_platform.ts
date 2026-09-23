@@ -1,12 +1,12 @@
-import { WithDustClaudeOpusFourDotEightConfig } from "@app/lib/llms/providers/anthropic/models/claude_opus_four_dot_eight";
-import { defineDustStreamEndpoint } from "@app/lib/llms/stream/dust_stream_endpoint";
+import { WithRubyClaudeOpusFourDotEightConfig } from "@app/lib/llms/providers/anthropic/models/claude_opus_four_dot_eight";
+import { defineRubyStreamEndpoint } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import {
   EU_AGENT_PLATFORM_ENDPOINT_FILTER,
   PREMIUM_MODEL_ENDPOINT_FILTER,
 } from "@app/lib/llms/utils/endpoint_filters";
 import { AnthropicClaudeOpusFourDotEightEuropeAgentPlatformStream } from "@app/lib/model_constructors/stream/endpoints/anthropic_claude_opus_four_dot_eight_eu_agent_platform";
 
-export class DustAnthropicClaudeOpusFourDotEightEuropeAgentPlatformStream extends WithDustClaudeOpusFourDotEightConfig(
+export class RubyAnthropicClaudeOpusFourDotEightEuropeAgentPlatformStream extends WithRubyClaudeOpusFourDotEightConfig(
   AnthropicClaudeOpusFourDotEightEuropeAgentPlatformStream
 ) {
   static readonly endpointFilter = {
@@ -14,6 +14,6 @@ export class DustAnthropicClaudeOpusFourDotEightEuropeAgentPlatformStream extend
   };
 }
 
-defineDustStreamEndpoint(
-  DustAnthropicClaudeOpusFourDotEightEuropeAgentPlatformStream
+defineRubyStreamEndpoint(
+  RubyAnthropicClaudeOpusFourDotEightEuropeAgentPlatformStream
 );

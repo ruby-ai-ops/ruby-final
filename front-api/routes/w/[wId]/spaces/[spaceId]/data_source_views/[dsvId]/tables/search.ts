@@ -50,7 +50,7 @@ app.get(
       filter: {
         data_source_views: [
           {
-            data_source_id: dataSourceView.dataSource.dustAPIDataSourceId,
+            data_source_id: dataSourceView.dataSource.rubyAPIDataSourceId,
             view_filter: dataSourceView.parentsIn ?? [],
           },
         ],

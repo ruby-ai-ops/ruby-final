@@ -1,5 +1,5 @@
 import { PodMenu, usePodMenu } from "@app/components/pod/PodMenu";
-import { SidebarContext } from "@app/components/sparkle/SidebarContext";
+import { SidebarContext } from "@app/components/ui/SidebarContext";
 import { useConversation } from "@app/hooks/conversations";
 import { usePodConversations } from "@app/hooks/conversations/usePodConversations";
 import { useActiveConversationId } from "@app/hooks/useActiveConversationId";
@@ -11,7 +11,7 @@ import type { GetBySpacesSummaryResponseBody } from "@app/types/api/assistant/co
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
 import type { PodType } from "@app/types/space";
 import type { WorkspaceType } from "@app/types/user";
-import { NavigationListItem, NavigationListItemAction } from "@dust-tt/sparkle";
+import { NavigationListItem, NavigationListItemAction } from "@ruby-ai/ui";
 import { memo, useCallback, useContext, useRef, useState } from "react";
 
 interface PodListItemProps {
@@ -108,7 +108,7 @@ const PodListItem = memo(
         setIsDragOver(false);
         dragCounterRef.current = 0;
         const conversationId = e.dataTransfer.getData(
-          "application/x-dust-conversation"
+          "application/x-ruby-conversation"
         );
         if (!conversationId) {
           return;

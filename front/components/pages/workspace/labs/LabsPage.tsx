@@ -2,7 +2,7 @@ import { FeatureAccessButton } from "@app/components/labs/FeatureAccessButton";
 import {
   useSetContentWidth,
   useSetPageTitle,
-} from "@app/components/sparkle/AppLayoutContext";
+} from "@app/components/ui/AppLayoutContext";
 import {
   useAuth,
   useFeatureFlags,
@@ -10,7 +10,7 @@ import {
 } from "@app/lib/auth/AuthContext";
 import type { LabsFeatureItemType } from "@app/types/labs";
 import type { WhitelistableFeature } from "@app/types/shared/feature_flags";
-import { ContextItem, Eye, Icon, Page } from "@dust-tt/sparkle";
+import { ContextItem, Eye, Icon, Page } from "@ruby-ai/ui";
 
 const LABS_FEATURES: LabsFeatureItemType[] = [
   {
@@ -20,7 +20,7 @@ const LABS_FEATURES: LabsFeatureItemType[] = [
     visibleWithoutAccess: true,
     icon: Eye,
     description:
-      "Receive meeting minutes processed by email automatically and store them in a Dust Folder.",
+      "Receive meeting minutes processed by email automatically and store them in a Ruby Folder.",
   },
 ];
 
@@ -39,7 +39,7 @@ export function LabsPage() {
   const visibleFeatures = getVisibleFeatures(featureFlags);
 
   useSetContentWidth("centered");
-  useSetPageTitle("Dust - Exploratory features");
+  useSetPageTitle("Ruby - Exploratory features");
 
   return (
     <>

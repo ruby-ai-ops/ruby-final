@@ -15,7 +15,7 @@ import { useSkill } from "@app/lib/swr/skill_configurations";
 import type { PatchSkillSuggestionResponseBody } from "@app/types/api/assistant/skills/suggestions";
 import type { SkillSuggestionType } from "@app/types/suggestions/skill_suggestion";
 import type { LightWorkspaceType } from "@app/types/user";
-import { LoadingBlock } from "@dust-tt/sparkle";
+import { LoadingBlock } from "@ruby-ai/ui";
 import { useCallback, useState } from "react";
 import { SKIP, visit } from "unist-util-visit";
 

@@ -18,7 +18,7 @@ import {
   SearchInput,
   Spinner,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 interface SandboxImageCardProps {
@@ -27,7 +27,7 @@ interface SandboxImageCardProps {
 }
 
 function SandboxImageCard({ entry, onClick }: SandboxImageCardProps) {
-  // thumbnailUrl is populated by DustFileSystem for image entries.
+  // thumbnailUrl is populated by RubyFileSystem for image entries.
   // Fall back to the processed-file URL when the entry has a fileId (legacy
   // records uploaded before the unified path endpoint existed).
   const src = entry.thumbnailUrl ?? null;

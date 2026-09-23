@@ -28,7 +28,7 @@ import { SuggestedSkillsSection } from "@app/components/skills/SuggestedSkillsSe
 import {
   useSetContentWidth,
   useSetPageTitle,
-} from "@app/components/sparkle/AppLayoutContext";
+} from "@app/components/ui/AppLayoutContext";
 import { useHashParam } from "@app/hooks/useHashParams";
 import { useQueryParams } from "@app/hooks/useQueryParams";
 import {
@@ -62,7 +62,7 @@ import {
   TabsList,
   TabsTrigger,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { RowSelectionState } from "@tanstack/react-table";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -310,7 +310,7 @@ function LegacyManageSkillsPage() {
   }, [isImportDialogOpen]);
 
   useSetContentWidth("wide");
-  useSetPageTitle("Dust - Manage Skills");
+  useSetPageTitle("Ruby - Manage Skills");
 
   const isActiveTabEmpty = skillsByTab[activeTab].length === 0;
 

@@ -11,7 +11,7 @@ import { z } from "zod";
 
 const MAIL_CONCURRENCY = 5;
 
-const { DUST_CLIENT_FACING_URL } = process.env;
+const { RUBY_CLIENT_FACING_URL } = process.env;
 
 const CsvRecordSchema = z.object({
   author_first_name: z.string(),
@@ -59,12 +59,12 @@ async function sendReasoningToolRemovalEmail(
   const minReasoningEffort = record.min_reasoning_effort?.trim().toLowerCase();
   const workspaceId = record.workspace_id.trim();
 
-  const baseUrl = DUST_CLIENT_FACING_URL;
+  const baseUrl = RUBY_CLIENT_FACING_URL;
   if (!baseUrl) {
-    throw new Error("DUST_CLIENT_FACING_URL is not defined");
+    throw new Error("RUBY_CLIENT_FACING_URL is not defined");
   }
 
-  let body = `<p>We're reaching out because you've built the following agents that use the Reasoning tool, which we'll be removing from Dust on Friday, November 28th.</p>
+  let body = `<p>We're reaching out because you've built the following agents that use the Reasoning tool, which we'll be removing from Ruby on Friday, November 28th.</p>
 
 <ul>
 ${agentList
@@ -136,9 +136,9 @@ ${agentList
   // Footer.
   body += `
 
-<p>If you have any concerns, please reach out to us at support@dust.tt</p>
+<p>If you have any concerns, please reach out to us at support@ruby.ad</p>
 
-<p>Thank you for building with Dust!</p><br/>
+<p>Thank you for building with Ruby!</p><br/>
 
 <p>Best regards,`;
 
@@ -146,8 +146,8 @@ ${agentList
     const emailResult = await sendEmailWithTemplate({
       to: email,
       from: {
-        name: "Dust team",
-        email: "team@dust.tt",
+        name: "Ruby team",
+        email: "team@ruby.ad",
       },
       subject: "Reasoning tool removal on November 28th",
       body,

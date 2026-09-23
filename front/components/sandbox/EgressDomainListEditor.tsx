@@ -6,7 +6,7 @@ import {
   ContentMessage,
   Trash01,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface EgressDomainListEditorProps {
   allowedDomains: string[];

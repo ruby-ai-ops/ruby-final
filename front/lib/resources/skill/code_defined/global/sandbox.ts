@@ -1,8 +1,8 @@
-import { isDustLikeAgent } from "@app/lib/api/assistant/global_agents/prompt_context";
+import { isRubyLikeAgent } from "@app/lib/api/assistant/global_agents/prompt_context";
 import { readWorkspacePolicy } from "@app/lib/api/sandbox/egress_policy";
 import {
   createToolManifest,
-  filterDsbxToolEntries,
+  filterRbxToolEntries,
   getSandboxImage,
   getToolsForProvider,
   toolManifestToCompactText,
@@ -20,10 +20,10 @@ import { isComputerFeatureEnabled } from "@app/types/shared/feature_flags";
 import { Ok } from "@app/types/shared/result";
 
 function buildSandboxInstructionProse({
-  hasDsbxTools,
+  hasRbxTools,
   hasFramesV2,
 }: {
-  hasDsbxTools: boolean;
+  hasRbxTools: boolean;
   hasFramesV2: boolean;
 }): string {
   const instructions = [
@@ -32,22 +32,22 @@ function buildSandboxInstructionProse({
     "The sandbox persists for the conversation duration.",
   ];
 
-  if (hasDsbxTools) {
+  if (hasRbxTools) {
     instructions.push(
-      "You can use the `dsbx` command line tool to list and run tools programmatically in the sandbox.",
-      "Use it with `dsbx tools [SERVER_NAME] [TOOL_NAME] [ARGS]...`. Run `dsbx tools --help` for more information.",
-      "`dsbx` tool calls only work while the `bash` command that started them is running: once it returns or hits its timeout, its credentials are revoked and any leftover call fails. Do not background them, and do not start more calls than fit in the timeout — split large batches across several `bash` calls, or raise `timeoutMs`.",
+      "You can use the `rbx` command line tool to list and run tools programmatically in the sandbox.",
+      "Use it with `rbx tools [SERVER_NAME] [TOOL_NAME] [ARGS]...`. Run `rbx tools --help` for more information.",
+      "`rbx` tool calls only work while the `bash` command that started them is running: once it returns or hits its timeout, its credentials are revoked and any leftover call fails. Do not background them, and do not start more calls than fit in the timeout — split large batches across several `bash` calls, or raise `timeoutMs`.",
       "For very large argument values, write the value to a file in the sandbox and pass the path with a `__file__:` prefix (e.g. `--query __file__:/tmp/q.txt`) instead of inlining the value on the command line. Any value starting with `__file__:` is read from the file (UTF-8, max 100 MB) and used as the value for that key. File contents that are a JSON object or array are parsed into structured data (e.g. `--files __file__:/tmp/files.json` for a tool expecting an array), exactly as if the same JSON had been passed inline; any other content is used as a string. The file must already exist in the sandbox filesystem.",
-      "Pass `--json` (before the server and tool names, e.g. `dsbx tools --json [SERVER_NAME] [TOOL_NAME] [ARGS]...`) to get the tool result as structured JSON (`{ content, isError }`) instead of plain text, which is easier to parse programmatically. Placed after the positional arguments it is treated as a tool argument instead."
+      "Pass `--json` (before the server and tool names, e.g. `rbx tools --json [SERVER_NAME] [TOOL_NAME] [ARGS]...`) to get the tool result as structured JSON (`{ content, isError }`) instead of plain text, which is easier to parse programmatically. Placed after the positional arguments it is treated as a tool argument instead."
     );
 
     if (hasFramesV2) {
       instructions.push(
-        "The `dsbx tools` CLI is for the Computer (this bash session) only. Inside Frame function source, call Dust tools with `tools.call` from `@dust/pod` — see the Create Frames skill. Do not shell out to `dsbx tools` from a Frame function's `fetch()`."
+        "The `rbx tools` CLI is for the Computer (this bash session) only. Inside Frame function source, call Ruby tools with `tools.call` from `@ruby-ai/pod` — see the Create Frames skill. Do not shell out to `rbx tools` from a Frame function's `fetch()`."
       );
     } else {
       instructions.push(
-        "For any Frame task, enable the `Create Frames` skill and use its interactive-content tools; publish or republish with `publish_interactive_content_file`. Never use `dsbx frame`."
+        "For any Frame task, enable the `Create Frames` skill and use its interactive-content tools; publish or republish with `publish_interactive_content_file`. Never use `rbx frame`."
       );
     }
   }
@@ -258,10 +258,10 @@ There are two prefixes:
   value on the wire.
 
 To see which \`DST_*\` and \`DSEC_*\` variables are configured for this
-workspace, run \`dsbx env\`. It lists each variable by name and, for every
+workspace, run \`rbx env\`. It lists each variable by name and, for every
 \`DSEC_*\` placeholder, the HTTPS domain(s) it is approved for. It never
 prints values, so it is safe to run before deciding which variable to use.
-Prefer \`dsbx env\` over guessing names or dumping the environment with
+Prefer \`rbx env\` over guessing names or dumping the environment with
 \`env\` / \`printenv\` (those would just produce redacted output).
 
 Hard rules for environment variables:
@@ -340,11 +340,11 @@ async function buildSandboxInstructions(
   auth: Authenticator,
   providerId: ModelProviderIdType | undefined,
   {
-    hasDsbxTools,
+    hasRbxTools,
     hasFramesV2,
     isProject,
   }: {
-    hasDsbxTools: boolean;
+    hasRbxTools: boolean;
     hasFramesV2: boolean;
     isProject: boolean;
   }
@@ -353,7 +353,7 @@ async function buildSandboxInstructions(
   const environmentVariablesSection = buildEnvironmentVariablesSection();
   const filesSection = buildFilesSection({ hasPod: isProject });
   const sandboxInstructions = buildSandboxInstructionProse({
-    hasDsbxTools,
+    hasRbxTools,
     hasFramesV2,
   });
 
@@ -361,7 +361,7 @@ async function buildSandboxInstructions(
 
   if (providerId) {
     toolsResult = getToolsForProvider(auth, providerId, {
-      includeDsbxTools: hasDsbxTools,
+      includeRbxTools: hasRbxTools,
     });
   } else {
     const imageResult = getSandboxImage(auth);
@@ -369,8 +369,8 @@ async function buildSandboxInstructions(
       return `${sandboxInstructions}\n\n${filesSection}\n\n${networkAccessSection}\n\n${environmentVariablesSection}`;
     }
     toolsResult = new Ok(
-      filterDsbxToolEntries(imageResult.value.tools, {
-        includeDsbxTools: hasDsbxTools,
+      filterRbxToolEntries(imageResult.value.tools, {
+        includeRbxTools: hasRbxTools,
       })
     );
   }
@@ -381,9 +381,9 @@ async function buildSandboxInstructions(
 
   const manifest = createToolManifest(toolsResult.value);
   const compactManifest = toolManifestToCompactText(manifest);
-  const dustToolDetailsSection = buildToolDetailsSection(
-    "Dust",
-    toolsResult.value.filter((tool) => tool.isDustTool)
+  const rubyToolDetailsSection = buildToolDetailsSection(
+    "Ruby",
+    toolsResult.value.filter((tool) => tool.isRubyTool)
   );
 
   return `${sandboxInstructions}
@@ -401,9 +401,9 @@ ${compactManifest}
 Versions are shown when pinned. Installing packages in the sandbox is NOT
 possible. Call \`describe_toolset\` for full descriptions and usage metadata.
 System tools include standard preinstalled command-line utilities and
-non-standard helpers provided by Dust.
+non-standard helpers provided by Ruby.
 
-${dustToolDetailsSection}Run \`<command> --help\` for detailed modes and flags. Use ONLY the tools listed
+${rubyToolDetailsSection}Run \`<command> --help\` for detailed modes and flags. Use ONLY the tools listed
 above, NOTHING ELSE.
 
 `;
@@ -431,14 +431,14 @@ export const sandboxSkill = {
   ) => {
     const providerId = agentLoopData?.modelInfo.endpoint.modelConfig.providerId;
     const flags = await getFeatureFlags(auth);
-    const hasDsbxTools = isComputerFeatureEnabled(flags);
+    const hasRbxTools = isComputerFeatureEnabled(flags);
     const hasFramesV2 = flags.includes("frames_v2");
     const isProject = agentLoopData?.conversation
       ? isPodConversation(agentLoopData.conversation)
       : false;
 
     return buildSandboxInstructions(auth, providerId, {
-      hasDsbxTools,
+      hasRbxTools,
       hasFramesV2,
       isProject,
     });
@@ -447,13 +447,13 @@ export const sandboxSkill = {
   warmsConversationSandbox: async () => true,
   version: 2,
   icon: "TerminalSquareIcon",
-  // Auto-enabled for dust-like agents, which are heavy users of it.
+  // Auto-enabled for ruby-like agents, which are heavy users of it.
   // This allows adding the bash tool eagerly, as it's used for a wide variety of use cases and deferring it would
   // increase significantly the number of tool searches ran overall.
   // Auto-equipped for every other agent unless the workspace has disabled the
   // Computer, but not enabled until the agent decides to use it.
   getAutoEnabledOrEquippedForAgentLoop: ({ agentConfiguration }) =>
-    isDustLikeAgent(agentConfiguration.sId) ? "enabled" : "equipped",
+    isRubyLikeAgent(agentConfiguration.sId) ? "enabled" : "equipped",
   isRestricted: async (auth: Authenticator) => {
     const flags = await getFeatureFlags(auth);
 

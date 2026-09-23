@@ -71,7 +71,7 @@ describe("ConsumptionAttributionBreakdown", () => {
       <ConsumptionAttributionBreakdownView
         workspaceId="workspace-id"
         selectedDimension="agent"
-        selectedRow={{ ...SELECTED_MODEL, id: "agent-id", name: "Dust" }}
+        selectedRow={{ ...SELECTED_MODEL, id: "agent-id", name: "Ruby" }}
         period={period}
         onViewAll={vi.fn()}
         BreakdownColumnComponent={BreakdownColumn}

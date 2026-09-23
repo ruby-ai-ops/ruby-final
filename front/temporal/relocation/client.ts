@@ -46,7 +46,7 @@ export async function launchCoreDataSourceRelocationWorkflow({
   const client = await getTemporalRelocationClient();
 
   const workflowId = `workspaceRelocateCoreDataSourceResourcesWorkflow-${workspaceId}-${
-    dataSourceCoreIds.dustAPIDataSourceId
+    dataSourceCoreIds.rubyAPIDataSourceId
   }`;
 
   await client.workflow.start(

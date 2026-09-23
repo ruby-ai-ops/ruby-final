@@ -194,12 +194,12 @@ app.get("/", async (ctx): HandlerResult<GetAgentConfigurationsResponseBody> => {
   let viewParam = view ? view : "all";
   // @ts-expect-error: added for backwards compatibility
   viewParam = viewParam === "assistant-search" ? "list" : viewParam;
-  if (viewParam === "admin_internal" && !auth.isDustSuperUser()) {
+  if (viewParam === "admin_internal" && !auth.isRubySuperUser()) {
     return apiError(ctx, {
       status_code: 404,
       api_error: {
         type: "app_auth_error",
-        message: "Only Dust Super Users can see admin_internal agents.",
+        message: "Only Ruby Super Users can see admin_internal agents.",
       },
     });
   }

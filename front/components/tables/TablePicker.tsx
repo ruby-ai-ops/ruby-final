@@ -21,7 +21,7 @@ import {
   ScrollBar,
   SearchInput,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useEffect, useState } from "react";

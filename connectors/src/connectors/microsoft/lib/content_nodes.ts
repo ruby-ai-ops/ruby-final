@@ -9,7 +9,7 @@ import { internalIdFromTypeAndPath } from "@connectors/connectors/microsoft/lib/
 import type { MicrosoftNodeResource } from "@connectors/resources/microsoft_resource";
 import type { ContentNode, ContentNodeType } from "@connectors/types";
 import { INTERNAL_MIME_TYPES } from "@connectors/types";
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 import type { Drive, List, Site } from "@microsoft/microsoft-graph-types";
 
 export function getRootNodes(): ContentNode[] {

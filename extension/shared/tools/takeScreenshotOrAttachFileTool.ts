@@ -3,7 +3,7 @@ import type { ToolHandlerResult } from "@app/lib/actions/mcp_internal_actions/to
 import { clientFetch } from "@app/lib/egress/client";
 import type { FileUploadRequestResponseBody } from "@app/types/api/files/upload_metadata";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { normalizeError } from "@extension/shared/lib/utils";
 import type { CaptureService } from "@extension/shared/services/capture";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
@@ -13,7 +13,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 const MAX_EXTRACTED_TEXT_CHARS = 100_000;
 
 /**
- * Uploads a PDF to the Dust file API and fetches the server-extracted text.
+ * Uploads a PDF to the Ruby file API and fetches the server-extracted text.
  * Returns the file ID, name, and extracted text, or null on failure.
  */
 async function uploadPdf(
@@ -145,7 +145,7 @@ export async function takeScreenshotOrAttachFileTool({
           const data = await uploadPdf(workspaceId, base64, mimeType, url);
           if (data) {
             // The MCP SDK strips non-standard fields from resource objects during
-            // parsing. We store Dust-specific fields (fileId, title, etc.) in _meta
+            // parsing. We store Ruby-specific fields (fileId, title, etc.) in _meta
             // so they survive the MCP protocol round-trip. The server will move
             // them back to the root level in mcp_actions.ts (tryCallMCPTool).
             const resource = {

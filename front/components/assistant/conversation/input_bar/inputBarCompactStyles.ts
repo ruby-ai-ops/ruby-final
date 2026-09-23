@@ -1,4 +1,4 @@
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 
 /** Matches the expanded input bar surface (see InputBar.tsx). */
 export const INPUT_BAR_SURFACE_CLASSES =

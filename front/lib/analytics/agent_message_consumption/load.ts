@@ -69,7 +69,7 @@ export type AgentMessageConsumptionAnalyticsInput =
   ConsumptionAnalyticsMessageMetadata & {
     actions: AgentMCPActionResource[];
     billedCredits: number;
-    dustRunIds: string[];
+    rubyRunIds: string[];
     enabledSkillIdsByActionId: ReadonlyMap<string, string[]>;
     items: AgentMessageConsumptionItemResource[];
     runs: RunResource[];
@@ -222,8 +222,8 @@ export async function loadAgentMessageConsumptionAnalyticsInput(
     throw new Error("Settled agent message is missing completedAt");
   }
 
-  const dustRunIds = [...new Set(agentMessage.runIds ?? [])];
-  const runs = await RunResource.listByDustRunIds(auth, { dustRunIds });
+  const rubyRunIds = [...new Set(agentMessage.runIds ?? [])];
+  const runs = await RunResource.listByRubyRunIds(auth, { rubyRunIds });
   const usages = await RunResource.listRunUsagesForRuns(auth, { runs });
   const billedUsages = usages.filter(isBilledRunUsage);
   if (billedUsages.length === 0) {
@@ -310,7 +310,7 @@ export async function loadAgentMessageConsumptionAnalyticsInput(
     completedAt: agentMessage.completedAt,
     contextOrigin: triggeringUserMessage.origin,
     conversationId: conversation.conversationId,
-    dustRunIds,
+    rubyRunIds,
     enabledSkillIdsByActionId,
     items,
     messageStatus: agentMessage.status,

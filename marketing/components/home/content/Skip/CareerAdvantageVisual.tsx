@@ -1,4 +1,4 @@
-import { Check, cn, Icon } from "@dust-tt/sparkle";
+import { Check, cn, Icon } from "@ruby-ai/ui";
 
 const TOOL_PILLS = [
   { name: "Slack", color: "bg-purple-100 text-purple-700" },

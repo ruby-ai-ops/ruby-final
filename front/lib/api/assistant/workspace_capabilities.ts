@@ -273,11 +273,11 @@ export async function searchKnowledge(
   const dataSourceViews = await listKnowledgeDataSourceViews(auth, category);
 
   const dataSourceEntries = dataSourceViews.map((view) => ({
-    apiId: view.dataSource.dustAPIDataSourceId,
+    apiId: view.dataSource.rubyAPIDataSourceId,
     dataSourceView: view.toKnowledgeJSON(),
     searchArg: {
-      projectId: view.dataSource.dustAPIProjectId,
-      dataSourceId: view.dataSource.dustAPIDataSourceId,
+      projectId: view.dataSource.rubyAPIProjectId,
+      dataSourceId: view.dataSource.rubyAPIDataSourceId,
       view_filter: view.toViewFilter(),
     },
     documentTitles: <string[]>[],
@@ -299,7 +299,7 @@ export async function searchKnowledge(
   }
 
   // Search mode: semantic search, return matching views + individual nodes.
-  const dataSourceByDustAPIId = new Map(
+  const dataSourceByRubyAPIId = new Map(
     dataSourceEntries.map((entry) => [entry.apiId, entry])
   );
 
@@ -320,7 +320,7 @@ export async function searchKnowledge(
   const nodes: SearchKnowledgeNode[] = [];
 
   for (const document of searchResults.value.documents) {
-    const entry = dataSourceByDustAPIId.get(document.data_source_id);
+    const entry = dataSourceByRubyAPIId.get(document.data_source_id);
     if (entry) {
       entry.documentTitles.push(document.title ?? document.document_id);
       const ancestors = document.parents.filter(

@@ -186,7 +186,7 @@ export const STATUSPAGE_SERVER = {
     description: "Monitor and manage Atlassian Statuspage incidents.",
     authorization: null,
     icon: "StatuspageLogo",
-    documentationUrl: "https://docs.dust.tt/docs/statuspage-mcp",
+    documentationUrl: "https://docs.ruby.ad/docs/statuspage-mcp",
   },
   tools: STATUSPAGE_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

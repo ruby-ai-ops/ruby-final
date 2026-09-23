@@ -75,7 +75,7 @@ function enrich_message(tag, timestamp, record)
     elseif event_type == "process_exit" and command then
         record["message"] = string.format("[pid:%s] Exited (code %s): %s", pid or "?", exit_code or "?", command)
     elseif event_type == "tool_invocation" and tool then
-        record["message"] = string.format("[dust_tool] %s profile=%s exit=%s duration_ms=%s", tool, profile or "?", exit_code or "?", duration_ms or "?")
+        record["message"] = string.format("[ruby_tool] %s profile=%s exit=%s duration_ms=%s", tool, profile or "?", exit_code or "?", duration_ms or "?")
     elseif (event_type == "stdout" or event_type == "stderr") and data then
         record["message"] = string.format("[%s] %s", event_type, data)
     elseif event_type and msg then

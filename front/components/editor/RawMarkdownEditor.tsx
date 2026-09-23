@@ -1,4 +1,4 @@
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import type { UIEventHandler } from "react";
 import { forwardRef } from "react";
 

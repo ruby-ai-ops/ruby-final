@@ -12,7 +12,7 @@
  * Has access to the list of spaces configured by workspace admins.
  */
 
-const DustGroupIdsHeader = "X-Dust-Group-Ids";
+const RubyGroupIdsHeader = "X-Ruby-Group-Ids";
 
 export function getHeaderFromGroupIds(groupIds: string[] | undefined) {
   if (!groupIds) {
@@ -20,20 +20,20 @@ export function getHeaderFromGroupIds(groupIds: string[] | undefined) {
   }
 
   return {
-    [DustGroupIdsHeader]: groupIds.join(","),
+    [RubyGroupIdsHeader]: groupIds.join(","),
   };
 }
 
-const DustUserEmailHeader = "x-api-user-email";
+const RubyUserEmailHeader = "x-api-user-email";
 
 export function getHeaderFromUserEmail(email: string | undefined) {
   if (!email) {
     return undefined;
   }
 
-  // The email may exceed Latin-1 (internationalized addresses); DustAPI
-  // encodes extra header values on the wire (see @dust-tt/client baseHeaders).
+  // The email may exceed Latin-1 (internationalized addresses); RubyAPI
+  // encodes extra header values on the wire (see @ruby-ai/client baseHeaders).
   return {
-    [DustUserEmailHeader]: email,
+    [RubyUserEmailHeader]: email,
   };
 }

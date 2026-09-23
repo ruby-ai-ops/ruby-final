@@ -76,7 +76,7 @@ export function getPodFilesBasePath({
 /**
  * Dedicated prefix for published sandbox function bundles, separate from the R/W pod files prefix.
  * `front` is the sole writer here, via the GCS API. The invocation path later mounts this prefix
- * read-only into sandboxes as DUST_FUNCTIONS_DIR, so a function can be executed but never
+ * read-only into sandboxes as RUBY_FUNCTIONS_DIR, so a function can be executed but never
  * overwritten by a sandbox.
  */
 export function getPodSandboxFunctionsBasePath({
@@ -98,7 +98,7 @@ export function getFramePublicationsMountPoint(frameId: string): string {
   return `/frames/${frameId}/publications`;
 }
 
-/** Locator for `$DUST_FUNCTIONS_DIR`: sibling `functions.tar` is the published payload. */
+/** Locator for `$RUBY_FUNCTIONS_DIR`: sibling `functions.tar` is the published payload. */
 export function getFramePublicationFunctionsMountPoint({
   frameId,
   publicationId,
@@ -147,10 +147,10 @@ export function getFramePersistentFilesMountPoint(frameId: string): string {
  * @cc [owner:pmilliotte,label:architecture] frame-persistent-files-dir-single-source
  * The Frame persistent files folder's in-sandbox path MUST be hardcoded only by
  * `getFramePersistentFilesMountPoint` and reach the workload only through this env var, set per
- * exec. No layer below front (dsbx, `@dust/pod`, function source) may carry a default or fallback
+ * exec. No layer below front (rbx, `@ruby-ai/pod`, function source) may carry a default or fallback
  * path: a stale copy would silently resolve to a directory that is not this Frame's mount.
  */
-export const FRAME_PERSISTENT_FILES_DIR_ENV = "DUST_FRAME_PERSISTENT_FILES_DIR";
+export const FRAME_PERSISTENT_FILES_DIR_ENV = "RUBY_FRAME_PERSISTENT_FILES_DIR";
 
 /**
  * Frame-owned SQLite uses the same isolated local runtime directories as Pod SQLite. A Frame has
@@ -161,51 +161,51 @@ export const SANDBOX_STATE_REPLICA_MOUNT_POINT = "/sandbox-state/replica";
 
 /**
  * Absolute in-sandbox path of the owner's live SQLite databases (`{name}.db` files opened by
- * `@dust/pod`'s `db()`). Local disk, not a gcsfuse mount — Litestream replicates it to GCS.
+ * `@ruby-ai/pod`'s `db()`). Local disk, not a gcsfuse mount — Litestream replicates it to GCS.
  * Lives next to `SANDBOX_STATE_REPLICA_MOUNT_POINT` under the owner-neutral `/sandbox-state`
  * root (`/pod-state/databases` was a remnant of the pre-Frame, Pod-only implementation).
  * Front is the only layer that hardcodes this location (the paths-env.v1 contract): it is
- * passed per exec to `dsbx function run` as `DUST_POD_DATABASES_DIR`, dsbx forwards it to
- * the bun child, and `@dust/pod` reads the env var — neither carries a fallback copy.
+ * passed per exec to `rbx function run` as `RUBY_POD_DATABASES_DIR`, rbx forwards it to
+ * the bun child, and `@ruby-ai/pod` reads the env var — neither carries a fallback copy.
  */
 export const SANDBOX_STATE_DATABASES_DIR = "/sandbox-state/databases";
 
 /**
  * Per-database size quota in bytes (1 GiB). The other half of the paths-env.v1 contract: like
  * the databases dir, front owns this value and passes it per exec as
- * `DUST_POD_DATABASE_MAX_SIZE_BYTES`; both `@dust/pod`'s `db()` and the `dsbx db query` runner
- * require it and carry no fallback (see `cli/dust-sandbox/pod/db.ts`). A single source here
+ * `RUBY_POD_DATABASE_MAX_SIZE_BYTES`; both `@ruby-ai/pod`'s `db()` and the `rbx db query` runner
+ * require it and carry no fallback (see `cli/ruby-sandbox/pod/db.ts`). A single source here
  * keeps the quota the workload writes against identical to the one `db_query` enforces.
  */
 const SANDBOX_DATABASE_MAX_SIZE_BYTES = 1024 * 1024 * 1024;
 
 /**
- * The env vars every sandbox-database exec (`dsbx function run` and every `dsbx db` subcommand)
+ * The env vars every sandbox-database exec (`rbx function run` and every `rbx db` subcommand)
  * must carry so the bun child resolves the databases dir and the size quota. Returned as a
  * fresh object so callers can spread it into their own env without sharing a reference.
  *
- * The `DUST_POD_*` names are the existing DSBX/@dust/pod ABI and also apply to Frame-owned state.
- * `DUST_POD_DATABASE_PREFIX` is always empty: it carried the Pod app prefix that namespaced the
+ * The `RUBY_POD_*` names are the existing RBX/@ruby-ai/pod ABI and also apply to Frame-owned state.
+ * `RUBY_POD_DATABASE_PREFIX` is always empty: it carried the Pod app prefix that namespaced the
  * databases an exec resolved by their app-relative name, and Frame functions have no app prefix. It
  * is still sent because the shim reads it, and dropping a name from the ABI needs a runner-first
  * rollout for no gain.
  */
 export function sandboxDatabaseExecEnvVars(): {
-  DUST_POD_DATABASES_DIR: string;
-  DUST_POD_DATABASE_MAX_SIZE_BYTES: string;
-  DUST_POD_DATABASE_PREFIX: string;
+  RUBY_POD_DATABASES_DIR: string;
+  RUBY_POD_DATABASE_MAX_SIZE_BYTES: string;
+  RUBY_POD_DATABASE_PREFIX: string;
 } {
   return {
-    DUST_POD_DATABASES_DIR: SANDBOX_STATE_DATABASES_DIR,
-    DUST_POD_DATABASE_MAX_SIZE_BYTES: String(SANDBOX_DATABASE_MAX_SIZE_BYTES),
+    RUBY_POD_DATABASES_DIR: SANDBOX_STATE_DATABASES_DIR,
+    RUBY_POD_DATABASE_MAX_SIZE_BYTES: String(SANDBOX_DATABASE_MAX_SIZE_BYTES),
     // Empty means unprefixed, which is what the shim reads an absent value as.
-    DUST_POD_DATABASE_PREFIX: "",
+    RUBY_POD_DATABASE_PREFIX: "",
   };
 }
 
 /**
  * Prefix for the pod's Litestream state replica (LTX chains for the pod's SQLite databases). The
- * sandbox's litestream daemon is the only writer, through the dust-state-only gcsfuse mount at
+ * sandbox's litestream daemon is the only writer, through the ruby-state-only gcsfuse mount at
  * /sandbox-state/replica. Never mounted under /files, never a FileResource: cleanup is a wholesale
  * prefix delete at pod deletion (see deletePodStatePrefix).
  */

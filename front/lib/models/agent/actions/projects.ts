@@ -7,7 +7,7 @@ import type { CreationOptional, ForeignKey, NonAttribute } from "sequelize";
 
 /**
  * Configuration of Projects (Spaces) used for MCP server actions.
- * This stores which projects are configured for tools that use DUST_PROJECT input type.
+ * This stores which projects are configured for tools that use RUBY_PROJECT input type.
  */
 export class AgentProjectConfigurationModel extends WorkspaceAwareModel<AgentProjectConfigurationModel> {
   declare createdAt: CreationOptional<Date>;

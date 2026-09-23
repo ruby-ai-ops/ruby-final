@@ -36,8 +36,8 @@ async function main() {
 
         const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
         const dds = await coreAPI.deleteDataSource({
-          projectId: ds.dustAPIProjectId,
-          dataSourceId: ds.dustAPIDataSourceId,
+          projectId: ds.rubyAPIProjectId,
+          dataSourceId: ds.rubyAPIDataSourceId,
         });
 
         if (dds.isErr()) {
@@ -54,15 +54,15 @@ async function main() {
         const dataSourceModelId = "text-embedding-ada-002";
         const dataSourceMaxChunkSize = 256;
 
-        const dustProject = await coreAPI.createProject();
-        if (dustProject.isErr()) {
+        const rubyProject = await coreAPI.createProject();
+        if (rubyProject.isErr()) {
           throw new Error("Failed to create new Core project.");
         }
 
         const credentials = await getLlmCredentials(auth);
 
-        const dustDataSource = await coreAPI.createDataSource({
-          projectId: dustProject.value.project.project_id.toString(),
+        const rubyDataSource = await coreAPI.createDataSource({
+          projectId: rubyProject.value.project.project_id.toString(),
           config: {
             embedder_config: {
               embedder: {
@@ -78,7 +78,7 @@ async function main() {
           name: dataSourceName,
         });
 
-        if (dustDataSource.isErr()) {
+        if (rubyDataSource.isErr()) {
           throw new Error("Failed to create Core DataSource");
         }
 
@@ -86,9 +86,9 @@ async function main() {
         let dataSource = await DataSourceModel.create({
           name: dataSourceName,
           description: dataSourceDescription,
-          dustAPIProjectId: dustProject.value.project.project_id.toString(),
-          dustAPIDataSourceId:
-            dustDataSource.value.data_source.data_source_id.toString(),
+          rubyAPIProjectId: rubyProject.value.project.project_id.toString(),
+          rubyAPIDataSourceId:
+            rubyDataSource.value.data_source.data_source_id.toString(),
           workspaceId,
         });
 

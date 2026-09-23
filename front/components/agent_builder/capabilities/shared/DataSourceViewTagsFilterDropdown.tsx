@@ -17,7 +17,7 @@ import {
   PopoverRoot,
   PopoverTrigger,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useMemo } from "react";
 import { useWatch } from "react-hook-form";
 
@@ -50,14 +50,14 @@ export function DataSourceViewTagsFilterDropdown() {
         const sourceIndexes = sources.in.reduce((acc, source, index) => {
           if (
             source.type === "data_source" &&
-            source.dataSourceView.dataSource.dustAPIDataSourceId ===
-              tag.dustAPIDataSourceId
+            source.dataSourceView.dataSource.rubyAPIDataSourceId ===
+              tag.rubyAPIDataSourceId
           ) {
             acc.push(index);
           } else if (
             source.type === "node" &&
-            source.node.dataSourceView.dataSource.dustAPIDataSourceId ===
-              tag.dustAPIDataSourceId
+            source.node.dataSourceView.dataSource.rubyAPIDataSourceId ===
+              tag.rubyAPIDataSourceId
           ) {
             acc.push(index);
           }
@@ -127,8 +127,8 @@ export function DataSourceViewTagsFilterDropdown() {
             tagsIn.push(
               ...source.tagsFilter.in.map((tag) => ({
                 tag,
-                dustAPIDataSourceId:
-                  source.dataSourceView.dataSource.dustAPIDataSourceId,
+                rubyAPIDataSourceId:
+                  source.dataSourceView.dataSource.rubyAPIDataSourceId,
                 connectorProvider:
                   source.dataSourceView.dataSource.connectorProvider,
               }))
@@ -137,8 +137,8 @@ export function DataSourceViewTagsFilterDropdown() {
             tagsNotIn.push(
               ...source.tagsFilter.not.map((tag) => ({
                 tag,
-                dustAPIDataSourceId:
-                  source.dataSourceView.dataSource.dustAPIDataSourceId,
+                rubyAPIDataSourceId:
+                  source.dataSourceView.dataSource.rubyAPIDataSourceId,
                 connectorProvider:
                   source.dataSourceView.dataSource.connectorProvider,
               }))
@@ -150,8 +150,8 @@ export function DataSourceViewTagsFilterDropdown() {
             tagsIn.push(
               ...source.tagsFilter.in.map((tag) => ({
                 tag,
-                dustAPIDataSourceId:
-                  source.node.dataSourceView.dataSource.dustAPIDataSourceId,
+                rubyAPIDataSourceId:
+                  source.node.dataSourceView.dataSource.rubyAPIDataSourceId,
                 connectorProvider:
                   source.node.dataSourceView.dataSource.connectorProvider,
               }))
@@ -160,8 +160,8 @@ export function DataSourceViewTagsFilterDropdown() {
             tagsNotIn.push(
               ...source.tagsFilter.not.map((tag) => ({
                 tag,
-                dustAPIDataSourceId:
-                  source.node.dataSourceView.dataSource.dustAPIDataSourceId,
+                rubyAPIDataSourceId:
+                  source.node.dataSourceView.dataSource.rubyAPIDataSourceId,
                 connectorProvider:
                   source.node.dataSourceView.dataSource.connectorProvider,
               }))

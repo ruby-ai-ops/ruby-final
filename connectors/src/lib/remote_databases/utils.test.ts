@@ -28,14 +28,14 @@ describe("Remote Database Utils", () => {
       expect(result).toBe("my_database.public.users");
     });
 
-    it("should handle dots in names by replacing them with __DUST_DOT__", () => {
+    it("should handle dots in names by replacing them with __RUBY_DOT__", () => {
       const result = buildInternalId({
         databaseName: "my.database",
         schemaName: "public.schema",
         tableName: "user.table",
       });
       expect(result).toBe(
-        "my__DUST_DOT__database.public__DUST_DOT__schema.user__DUST_DOT__table"
+        "my__RUBY_DOT__database.public__RUBY_DOT__schema.user__RUBY_DOT__table"
       );
     });
 
@@ -43,7 +43,7 @@ describe("Remote Database Utils", () => {
       const result = buildInternalId({
         databaseName: "foo.bar.baz",
       });
-      expect(result).toBe("foo__DUST_DOT__bar__DUST_DOT__baz");
+      expect(result).toBe("foo__RUBY_DOT__bar__RUBY_DOT__baz");
     });
   });
 

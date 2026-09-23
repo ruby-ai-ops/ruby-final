@@ -7,7 +7,7 @@ import type {
   OAuthUseCase,
 } from "@app/types/oauth/lib";
 import { isOAuthProvider, isOAuthUseCase } from "@app/types/oauth/lib";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useEffect } from "react";
 
 export function OAuthSetupRedirectPage() {

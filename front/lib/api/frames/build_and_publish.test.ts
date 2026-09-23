@@ -128,7 +128,7 @@ async function setup(): Promise<{
   const sandbox = await SandboxResource.makeNew(auth, {
     providerId: "test-provider-id",
     status: "running",
-    baseImage: "dust-base",
+    baseImage: "ruby-base",
     version: "0.0.0-test",
   });
   vi.spyOn(sandbox, "writeFile").mockResolvedValue(new Ok(undefined));
@@ -248,7 +248,7 @@ describe("buildAndPublishFramePublication", () => {
         {
           ...sourceFiles[0],
           content: Buffer.from(
-            'import { useFrameFunction } from "@dust/react-hooks";\n' +
+            'import { useFrameFunction } from "@ruby-ai/react-hooks";\n' +
               "export default function App() {\n" +
               '  useFrameFunction("list-tasks", {});\n' +
               "  return <main>Tasks</main>;\n" +

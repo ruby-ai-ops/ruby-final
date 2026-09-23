@@ -1,10 +1,10 @@
 import {
-  DUST_COOKIES_ACCEPTED,
+  RUBY_COOKIES_ACCEPTED,
   hasCookiesAccepted,
 } from "@marketing/lib/cookies";
 import { useAppRouter } from "@marketing/lib/platform";
 import {
-  DUST_ANONYMOUS_ID_COOKIE,
+  RUBY_ANONYMOUS_ID_COOKIE,
   getOrCreateAnonymousId,
   getPostHogCookieDomain,
 } from "@marketing/lib/utils/anonymous_id";
@@ -21,8 +21,8 @@ import { useCookies } from "react-cookie";
 const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 
 const EXCLUDED_PATHS = [
-  "/poke",
-  "/poke/",
+  "/admin",
+  "/admin/",
   "/sso-enforced",
   "/maintenance",
   "/oauth/",
@@ -44,7 +44,7 @@ export function PostHogTrackerEffects({
   authenticated,
 }: PostHogTrackerEffectsProps) {
   const router = useAppRouter();
-  const [cookies] = useCookies([DUST_COOKIES_ACCEPTED]);
+  const [cookies] = useCookies([RUBY_COOKIES_ACCEPTED]);
 
   const { wId } = router.query;
   const workspaceId = isString(wId) ? wId : undefined;
@@ -64,7 +64,7 @@ export function PostHogTrackerEffects({
     workspaces?: { sId: string; role: string }[];
   };
   const user = null as MarketingTrackerUser | null;
-  const cookieValue = cookies[DUST_COOKIES_ACCEPTED];
+  const cookieValue = cookies[RUBY_COOKIES_ACCEPTED];
   const hasAcceptedCookies = authenticated
     ? true
     : hasCookiesAccepted(cookieValue, null);
@@ -105,7 +105,7 @@ export function PostHogTrackerEffects({
     // tab (including cmd+click) still started a fresh session. "localStorage" is
     // shared across same-origin tabs, so the session survives new tabs while
     // staying cookieless (session recording stays off until consent, Phase 2)
-    // and a smaller footprint than the persistent _dust_aid cookie already set.
+    // and a smaller footprint than the persistent _ruby_aid cookie already set.
     const persistence = hasAcceptedCookies
       ? "localStorage+cookie"
       : "localStorage";
@@ -114,17 +114,12 @@ export function PostHogTrackerEffects({
       // /subtle1 is rewritten to PostHog by marketing's own next.config.js.
       // Use a relative path so requests hit marketing's origin (not front).
       api_host: "/subtle1",
-      // Direct PostHog app URL (EU region). Required because api_host points
-      // at our own /subtle1 reverse proxy: the toolbar (heatmaps, inspect mode)
-      // authenticates against ui_host, and without it tries to reach the
-      // PostHog app at dust.tt and fails.
-      ui_host: "https://eu.posthog.com",
       person_profiles: "identified_only",
       defaults: "2025-05-24",
       persistence,
-      // Pre-consent, use the persistent _dust_aid cookie as distinct_id so
+      // Pre-consent, use the persistent _ruby_aid cookie as distinct_id so
       // anonymous events share an identity across page loads and across
-      // dust.tt / app.dust.tt (client-side storage is per-origin). Post-consent we
+      // ruby.ad / app.ruby.ad (client-side storage is per-origin). Post-consent we
       // must not bootstrap: posthog-js applies bootstrap.distinctID
       // unconditionally at init, which would clobber an identified user's sId
       // back to the anonymous id on every load. PostHog's own cross-subdomain
@@ -132,9 +127,9 @@ export function PostHogTrackerEffects({
       ...(anonymousId && !hasAcceptedCookies
         ? { bootstrap: { distinctID: anonymousId } }
         : {}),
-      // Share PostHog cookies (including distinct_id) across all *.dust.tt
-      // subdomains so the same identity persists through dust.tt → signin →
-      // app.dust.tt. Takes effect when persistence upgrades to cookie in Phase 2.
+      // Share PostHog cookies (including distinct_id) across all *.ruby.ad
+      // subdomains so the same identity persists through ruby.ad → signin →
+      // app.ruby.ad. Takes effect when persistence upgrades to cookie in Phase 2.
       ...(cookieDomain ? { cookie_domain: cookieDomain } : {}),
       // "history_change" lets posthog-js capture client-side navigations
       // itself, by patching pushState/replaceState and listening to popstate.
@@ -199,7 +194,7 @@ export function PostHogTrackerEffects({
         }
 
         // Inject first-touch landing context so the real values survive
-        // the dust.tt -> signin -> app.dust.tt auth redirect flow.
+        // the ruby.ad -> signin -> app.ruby.ad auth redirect flow.
         const landing = getStoredLandingContext();
         if (landing) {
           if (landing.referrer) {
@@ -224,13 +219,13 @@ export function PostHogTrackerEffects({
           };
         }
 
-        // Inject the persistent anonymous device ID from the _dust_aid cookie
+        // Inject the persistent anonymous device ID from the _ruby_aid cookie
         // so pre-signup events can be stitched to identified users later.
         const aidCookie = document.cookie
           .split("; ")
-          .find((c) => c.startsWith(`${DUST_ANONYMOUS_ID_COOKIE}=`));
+          .find((c) => c.startsWith(`${RUBY_ANONYMOUS_ID_COOKIE}=`));
         if (aidCookie) {
-          event.properties["dust_anonymous_id"] = aidCookie.split("=")[1];
+          event.properties["ruby_anonymous_id"] = aidCookie.split("=")[1];
         }
 
         // Inject referrer and user-agent as non-PII event properties.
@@ -242,9 +237,9 @@ export function PostHogTrackerEffects({
         // Inject blog article classification flags from page-level meta tags.
         if (event.event === "$pageview") {
           const articleFlags = [
-            ["dust:is_seo_article", "is_seo_article"],
-            ["dust:is_geo_article", "is_geo_article"],
-            ["dust:is_thought_leadership", "is_thought_leadership"],
+            ["ruby:is_seo_article", "is_seo_article"],
+            ["ruby:is_geo_article", "is_geo_article"],
+            ["ruby:is_thought_leadership", "is_thought_leadership"],
           ] as const;
           for (const [metaName, propertyName] of articleFlags) {
             const meta = document.querySelector(`meta[name="${metaName}"]`);
@@ -273,7 +268,7 @@ export function PostHogTrackerEffects({
   // front end as soon as possible after auth completes."
   //
   // This must run BEFORE the persistence upgrade (Phase 2) so that the current
-  // distinct_id (the _dust_aid bootstrap value) is correctly merged with the
+  // distinct_id (the _ruby_aid bootstrap value) is correctly merged with the
   // user's sId in the $identify event sent to PostHog's server.
   useEffect(() => {
     if (!posthog.__loaded || !hasInitialized.current || !user) {
@@ -350,7 +345,7 @@ export function PostHogTrackerEffects({
     // across events after persistence upgrade.
     const anonymousId = getOrCreateAnonymousId();
     if (anonymousId) {
-      posthog.register({ dust_anonymous_id: anonymousId });
+      posthog.register({ ruby_anonymous_id: anonymousId });
     }
 
     hasUpgradedPersistence.current = true;

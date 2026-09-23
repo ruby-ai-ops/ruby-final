@@ -21,7 +21,7 @@ import {
   Fingerprint03,
   FolderOpen,
   Globe01,
-  IntersectDust,
+  IntersectRuby,
   Lock01,
   Palette,
   PieChart01,
@@ -33,7 +33,7 @@ import {
   Toggle01Left,
   Users01,
   Zap,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 /**
  * Check if an actual route path matches any of the given route patterns.
@@ -189,7 +189,7 @@ export const getTopNavigationTabs = (
     id: "conversations",
     label: "Work",
     href: getConversationRoute(owner.sId),
-    icon: IntersectDust,
+    icon: IntersectRuby,
     sizing: "hug",
     isCurrent: (currentRoute) =>
       matchesRoutePattern(currentRoute, [
@@ -369,7 +369,7 @@ export const subNavigationAdmin = ({
     menus: [
       {
         id: "api_keys",
-        label: "Dust API Keys",
+        label: "Ruby API Keys",
         icon: Lock01,
         href: `/w/${owner.sId}/developers/api-keys`,
         current: isCurrent("api_keys"),
@@ -408,7 +408,7 @@ export const subNavigationAdmin = ({
         icon: Shapes,
         href: `/w/${owner.sId}/developers/providers`,
         current: isCurrent("providers"),
-        featureFlag: "legacy_dust_apps",
+        featureFlag: "legacy_ruby_apps",
         disabled: !hasAdminRole,
       },
       {

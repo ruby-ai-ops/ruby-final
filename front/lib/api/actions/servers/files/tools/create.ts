@@ -6,7 +6,7 @@ import type {
 } from "@app/lib/actions/mcp_internal_actions/tool_definition";
 import { CREATE_CONTENT_MAX_BYTES } from "@app/lib/api/actions/servers/files/metadata";
 import {
-  getDustFileSystemForAgentLoop,
+  getRubyFileSystemForAgentLoop,
   requireAgentLoopConversation,
   scopedPathsFromArgs,
 } from "@app/lib/api/actions/servers/files/tools/agent_loop_fs";
@@ -19,7 +19,7 @@ import {
   stripMimeParameters,
 } from "@app/types/files";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 export async function createHandler(
   {
@@ -34,7 +34,7 @@ export async function createHandler(
     return conversationRes;
   }
 
-  const fsResult = await getDustFileSystemForAgentLoop(
+  const fsResult = await getRubyFileSystemForAgentLoop(
     auth,
     conversationRes.value,
     scopedPathsFromArgs(path)
@@ -43,10 +43,10 @@ export async function createHandler(
     return fsResult;
   }
 
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
   // Check existence before writing so we can report "Created" vs "Updated".
-  const statResult = await dustFs.stat(path);
+  const statResult = await rubyFs.stat(path);
   const exists = statResult.isOk() && statResult.value !== null;
 
   let isFrameSourceOverwrite = false;
@@ -73,7 +73,7 @@ export async function createHandler(
     );
   }
 
-  const writeResult = await dustFs.write(path, contentBuffer, writeContentType);
+  const writeResult = await rubyFs.write(path, contentBuffer, writeContentType);
   if (writeResult.isErr()) {
     const err = writeResult.error;
     switch (err.code) {

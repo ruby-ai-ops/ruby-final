@@ -14,7 +14,7 @@ import type {
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import { ONE_DAY_MS } from "@app/types/shared/utils/date_utils";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { DataTableSkeletonCellProps } from "@dust-tt/sparkle";
+import type { DataTableSkeletonCellProps } from "@ruby-ai/ui";
 import {
   AlertCircle,
   ContentMessage,
@@ -23,7 +23,7 @@ import {
   DataTableSkeleton,
   LoadingBlock,
   Page,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useCallback, useState } from "react";
 

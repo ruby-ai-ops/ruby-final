@@ -1,0 +1,275 @@
+import { WorkspaceVerificationAttemptResource } from "@app/lib/resources/workspace_verification_attempt_resource";
+import { DataSourceViewFactory } from "@app/tests/utils/DataSourceViewFactory";
+import { GroupFactory } from "@app/tests/utils/GroupFactory";
+import { createAdminApiMockRequest } from "@app/tests/utils/generic_admin_api_tests";
+import { SpaceFactory } from "@app/tests/utils/SpaceFactory";
+import { WorkspaceFactory } from "@app/tests/utils/WorkspaceFactory";
+import { faker } from "@faker-js/faker";
+import { honoApp } from "@front-api/app";
+import { describe, expect, it } from "vitest";
+
+function searchRequest(query: string) {
+  return honoApp.request(
+    `/api/admin/search?search=${encodeURIComponent(query)}`
+  );
+}
+
+describe("GET /api/admin/search - phone number", () => {
+  it("returns workspace when searching by phone number in E.164 format", async () => {
+    const { auth } = await createAdminApiMockRequest({
+      isSuperUser: true,
+      role: "admin",
+    });
+
+    const phoneNumber = "+33612345678";
+    const phoneHash =
+      WorkspaceVerificationAttemptResource.hashPhoneNumber(phoneNumber);
+
+    await WorkspaceVerificationAttemptResource.makeVerified(auth, {
+      phoneNumberHash: phoneHash,
+    });
+
+    const response = await searchRequest(phoneNumber);
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.results).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: expect.stringContaining("(phone trial)"),
+          type: "Workspace",
+        }),
+      ])
+    );
+  });
+
+  it("returns workspace when searching by phone number without +", async () => {
+    const { auth } = await createAdminApiMockRequest({
+      isSuperUser: true,
+      role: "admin",
+    });
+
+    const phoneNumber = "+33612345678";
+    const phoneHash =
+      WorkspaceVerificationAttemptResource.hashPhoneNumber(phoneNumber);
+
+    await WorkspaceVerificationAttemptResource.makeVerified(auth, {
+      phoneNumberHash: phoneHash,
+    });
+
+    // Search with digits only (no "+").
+    const response = await searchRequest("33612345678");
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.results).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: expect.stringContaining("(phone trial)"),
+          type: "Workspace",
+        }),
+      ])
+    );
+  });
+
+  it("returns no results for unverified phone numbers", async () => {
+    const { auth } = await createAdminApiMockRequest({
+      isSuperUser: true,
+      role: "admin",
+    });
+
+    const phoneNumber = "+33611111111";
+    const phoneHash =
+      WorkspaceVerificationAttemptResource.hashPhoneNumber(phoneNumber);
+
+    // Create an unverified attempt.
+    await WorkspaceVerificationAttemptResource.makeNew(auth, {
+      phoneNumberHash: phoneHash,
+      twilioVerificationSid: "VEtest123",
+    });
+
+    const response = await searchRequest(phoneNumber);
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    const phoneResults = data.results.filter(
+      (r: { name: string }) =>
+        typeof r.name === "string" && r.name.includes("(phone trial)")
+    );
+    expect(phoneResults).toHaveLength(0);
+  });
+
+  it("returns both workspace and phone trial when digits match both", async () => {
+    const { workspace, auth } = await createAdminApiMockRequest({
+      isSuperUser: true,
+      role: "admin",
+    });
+
+    // Use a phone number whose digits (without +) equal the workspace model ID.
+    // Both the workspace-by-ID and the phone-trial search should return results.
+    const phoneNumber = "+33612345678";
+    const phoneHash =
+      WorkspaceVerificationAttemptResource.hashPhoneNumber(phoneNumber);
+
+    await WorkspaceVerificationAttemptResource.makeVerified(auth, {
+      phoneNumberHash: phoneHash,
+    });
+
+    // Search with the workspace's own model ID — should still return the
+    // workspace.
+    const response = await searchRequest(String(workspace.id));
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    // The workspace should appear via the workspace-by-ID search.
+    expect(data.results).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: "Workspace",
+          id: workspace.id,
+        }),
+      ])
+    );
+  });
+
+  it("returns no results for random non-phone strings", async () => {
+    await createAdminApiMockRequest({ isSuperUser: true });
+
+    const response = await searchRequest("hello world");
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.results).toEqual([]);
+  });
+});
+
+describe("GET /api/admin/search - data source", () => {
+  it("returns the data source when searching by rubyAPIProjectId", async () => {
+    const { workspace, globalSpace } = await createAdminApiMockRequest({
+      isSuperUser: true,
+      role: "admin",
+    });
+
+    const rubyAPIProjectId = faker.string.numeric(9);
+    const dataSourceView = await DataSourceViewFactory.folder(
+      workspace,
+      globalSpace,
+      null,
+      { rubyAPIProjectId }
+    );
+
+    const response = await searchRequest(rubyAPIProjectId);
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.results).toEqual(
+      expect.arrayContaining([
+        {
+          id: dataSourceView.dataSource.id,
+          link: expect.stringContaining(dataSourceView.dataSource.sId),
+          name: `${workspace.name}'s folder (${dataSourceView.dataSource.name})`,
+          type: "Data Source",
+        },
+      ])
+    );
+  });
+
+  it("returns no data source for an unknown rubyAPIProjectId", async () => {
+    await createAdminApiMockRequest({ isSuperUser: true });
+
+    const response = await searchRequest(faker.string.numeric(9));
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.results).toEqual([]);
+  });
+});
+
+describe("GET /api/admin/search - resource sId", () => {
+  it("returns the data source view when searching by its sId", async () => {
+    await createAdminApiMockRequest({ isSuperUser: true, role: "admin" });
+
+    // The resource lives in a different workspace than the admin session's:
+    // the search must re-scope on the workspace embedded in the sId.
+    const workspace = await WorkspaceFactory.basic();
+    await GroupFactory.defaults(workspace);
+    const space = await SpaceFactory.regular(workspace);
+    const dataSourceView = await DataSourceViewFactory.folder(workspace, space);
+
+    const response = await searchRequest(dataSourceView.sId);
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.results).toEqual([
+      expect.objectContaining({
+        id: dataSourceView.id,
+        type: "Data Source View",
+      }),
+    ]);
+  });
+
+  it("returns the data source when searching by its sId", async () => {
+    await createAdminApiMockRequest({ isSuperUser: true, role: "admin" });
+
+    const workspace = await WorkspaceFactory.basic();
+    await GroupFactory.defaults(workspace);
+    const space = await SpaceFactory.regular(workspace);
+    const dataSourceView = await DataSourceViewFactory.folder(workspace, space);
+
+    const response = await searchRequest(dataSourceView.dataSource.sId);
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.results).toEqual([
+      expect.objectContaining({
+        id: dataSourceView.dataSource.id,
+        type: "Data Source",
+      }),
+    ]);
+  });
+
+  it("returns the space when searching by its sId", async () => {
+    await createAdminApiMockRequest({ isSuperUser: true, role: "admin" });
+
+    const workspace = await WorkspaceFactory.basic();
+    await GroupFactory.defaults(workspace);
+    const space = await SpaceFactory.regular(workspace);
+
+    const response = await searchRequest(space.sId);
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.results).toEqual([
+      {
+        id: space.id,
+        link: expect.stringContaining(`/${workspace.sId}/spaces/${space.sId}`),
+        name: `${workspace.name}'s ${space.name} space`,
+        type: "Space",
+      },
+    ]);
+  });
+
+  it("returns the group when searching by its sId", async () => {
+    await createAdminApiMockRequest({ isSuperUser: true, role: "admin" });
+
+    const workspace = await WorkspaceFactory.basic();
+    await GroupFactory.defaults(workspace);
+    const group = await GroupFactory.regularManual(
+      workspace,
+      faker.company.name()
+    );
+
+    const response = await searchRequest(group.sId);
+
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data.results).toEqual([
+      {
+        id: group.id,
+        link: expect.stringContaining(`/${workspace.sId}/groups/${group.sId}`),
+        name: `${workspace.name}'s ${group.name} group`,
+        type: "Group",
+      },
+    ]);
+  });
+});

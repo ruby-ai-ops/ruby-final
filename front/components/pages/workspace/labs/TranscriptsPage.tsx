@@ -5,7 +5,7 @@ import { StorageConfiguration } from "@app/components/labs/transcripts/StorageCo
 import {
   useSetContentWidth,
   useSetPageTitle,
-} from "@app/components/sparkle/AppLayoutContext";
+} from "@app/components/ui/AppLayoutContext";
 import { useSendNotification } from "@app/hooks/useNotification";
 import { useFeatureFlags, useWorkspace } from "@app/lib/auth/AuthContext";
 import { clientFetch } from "@app/lib/egress/client";
@@ -15,7 +15,7 @@ import { useDataSourceViews } from "@app/lib/swr/data_source_views";
 import { useLabsTranscriptsConfiguration } from "@app/lib/swr/labs";
 import { useSpaces } from "@app/lib/swr/spaces";
 import { isProviderWithDefaultWorkspaceConfiguration } from "@app/types/oauth/lib";
-import { Breadcrumbs, Page, Spinner } from "@dust-tt/sparkle";
+import { Breadcrumbs, Page, Spinner } from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 export function TranscriptsPage() {
@@ -104,7 +104,7 @@ export function TranscriptsPage() {
     !featureFlags.includes("labs_transcripts");
 
   useSetContentWidth("centered");
-  useSetPageTitle("Dust - Transcripts processing");
+  useSetPageTitle("Ruby - Transcripts processing");
 
   return (
     <>
@@ -128,7 +128,7 @@ export function TranscriptsPage() {
           <Page>
             <Page.Header
               title="Meeting transcripts processing"
-              description="Receive meeting minutes processed by email automatically and store them in a Dust Folder."
+              description="Receive meeting minutes processed by email automatically and store them in a Ruby Folder."
             />
             <Page.Layout direction="vertical">
               <ProviderSelection

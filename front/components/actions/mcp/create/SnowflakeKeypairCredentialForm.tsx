@@ -7,7 +7,7 @@ import type { WithAPIErrorResponse } from "@app/types/error";
 import { isAPIErrorResponse } from "@app/types/error";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Input, TextArea } from "@dust-tt/sparkle";
+import { Input, TextArea } from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   forwardRef,

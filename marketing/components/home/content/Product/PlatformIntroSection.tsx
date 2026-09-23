@@ -1,6 +1,6 @@
 import { H1, P } from "@marketing/components/home/ContentComponents";
 import { classNames } from "@marketing/lib/utils";
-import { LegacyButton as Button } from "@dust-tt/sparkle";
+import { LegacyButton as Button } from "@ruby-ai/ui";
 
 export function PlatformIntroSection() {
   return (
@@ -11,12 +11,9 @@ export function PlatformIntroSection() {
       )}
     >
       <P size="lg" className="text-muted-foreground">
-        Dust Platform
+        Ruby Platform
       </P>
-      <H1
-        mono
-        className="text-5xl font-medium leading-tight md:text-6xl lg:text-7xl"
-      >
+      <H1 className="font-['Bricolage_Grotesque'] text-5xl font-medium leading-tight tracking-[-0.05em] md:text-6xl lg:text-7xl">
         For Developers
       </H1>
       <P size="lg" className="text-muted-foreground">
@@ -29,7 +26,7 @@ export function PlatformIntroSection() {
           label="Go to Documentation"
           size="md"
           className="mt-8"
-          href="https://docs.dust.tt"
+          href="https://docs.ruby.ad"
           target="_blank"
         />
       </div>

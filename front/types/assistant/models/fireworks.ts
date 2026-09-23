@@ -195,7 +195,7 @@ export const FIREWORKS_KIMI_K2P5_MODEL_CONFIG: ModelConfigurationType = {
 // calling, image input) and https://platform.kimi.ai/docs/guide/kimi-k3-quickstart
 // (JSON-schema structured output, thinking always enabled).
 // US-only, like every other Fireworks-served model.
-// Dust caps usable context at 256k of the model's 1040k, leaving a 192k prompt
+// Ruby caps usable context at 256k of the model's 1040k, leaving a 192k prompt
 // budget once the 64k generation reserve is taken out.
 export const FIREWORKS_KIMI_K3_MODEL_CONFIG: ModelConfigurationType = {
   providerId: "fireworks",
@@ -266,7 +266,7 @@ export const FIREWORKS_MINIMAX_M2P5_MODEL_CONFIG: ModelConfigurationType = {
 // Specs and pricing verified 2026-09-11 against
 // https://docs.z.ai/guides/llm/glm-5.3 and
 // https://fireworks.ai/models/fireworks/glm-5p3. The provider supports
-// 1,048,576 context / 131,072 output; Dust rounds those down to 1M / 128k.
+// 1,048,576 context / 131,072 output; Ruby rounds those down to 1M / 128k.
 export const FIREWORKS_GLM_5P3_MODEL_CONFIG: ModelConfigurationType = {
   providerId: "fireworks",
   modelMaker: "zai",
@@ -285,7 +285,7 @@ export const FIREWORKS_GLM_5P3_MODEL_CONFIG: ModelConfigurationType = {
   // GLM-5.3 is text-only; visual understanding lives in GLM-5.3 Flash.
   supportsVision: false,
   // GLM-5.3 documents low/high/max with thinking always enabled, so there is no
-  // `none` tier. Dust maps light/medium/high onto those native efforts in the
+  // `none` tier. Ruby maps light/medium/high onto those native efforts in the
   // llms layer.
   supportedReasoningEfforts: {
     none: false,
@@ -306,7 +306,7 @@ export const FIREWORKS_GLM_5P3_MODEL_CONFIG: ModelConfigurationType = {
 // Specs, pricing, and availability verified 2026-08-31 against
 // https://docs.z.ai/guides/vlm/glm-5.3-flash and
 // https://fireworks.ai/models/fireworks/glm-5p3-flash. The provider supports
-// 1,048,576 context / 131,072 output; Dust caps those to 256k / 64k, matching
+// 1,048,576 context / 131,072 output; Ruby caps those to 256k / 64k, matching
 // the standard-context GPT and Claude models.
 export const FIREWORKS_GLM_5P3_FLASH_MODEL_CONFIG: ModelConfigurationType = {
   providerId: "fireworks",
@@ -326,7 +326,7 @@ export const FIREWORKS_GLM_5P3_FLASH_MODEL_CONFIG: ModelConfigurationType = {
   isLatest: true,
   generationTokensCount: 64_000,
   supportsVision: true,
-  // GLM-5.3 Flash documents low/high/max. Dust maps light/medium/high onto
+  // GLM-5.3 Flash documents low/high/max. Ruby maps light/medium/high onto
   // those native efforts in the llms layer; thinking cannot be disabled.
   supportedReasoningEfforts: {
     none: false,
@@ -379,7 +379,7 @@ export const FIREWORKS_GLM_5_MODEL_CONFIG: ModelConfigurationType = {
 // function calling, image input, $1/$0.17/$4.05 per 1M tokens) and
 // https://huggingface.co/thinkingmachines/Inkling (text/image/audio input,
 // text output, controllable thinking). The native endpoint limits are kept in
-// model_constructors; Dust caps generation at 64k tokens.
+// model_constructors; Ruby caps generation at 64k tokens.
 export const FIREWORKS_INKLING_MODEL_CONFIG: ModelConfigurationType = {
   providerId: "fireworks",
   modelMaker: "thinking_machines",
@@ -401,7 +401,7 @@ export const FIREWORKS_INKLING_MODEL_CONFIG: ModelConfigurationType = {
   supportsVision: true,
   supportedReasoningEfforts: {
     // Fireworks accepts `none` as the lowest effort, but Inkling still emits a
-    // reasoning trace at that level, so Dust does not present it as disabled.
+    // reasoning trace at that level, so Ruby does not present it as disabled.
     none: false,
     light: true,
     medium: true,

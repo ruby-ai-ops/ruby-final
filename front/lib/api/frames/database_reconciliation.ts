@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { withStagedFrameSource } from "@app/lib/api/frames/source_staging";
 import { ensureFrameSandboxReady } from "@app/lib/api/sandbox/lifecycle";
-import { reconcileDatabaseOnReadySandbox } from "@app/lib/api/sandbox_functions/dsbx_db";
+import { reconcileDatabaseOnReadySandbox } from "@app/lib/api/sandbox_functions/rbx_db";
 import { SandboxFunctionError } from "@app/lib/api/sandbox_functions/errors";
 import type { Authenticator } from "@app/lib/auth";
 import type { FileResource } from "@app/lib/resources/file_resource";

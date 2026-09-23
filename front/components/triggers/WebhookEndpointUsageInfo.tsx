@@ -1,4 +1,4 @@
-import { InfoCircle, Page } from "@dust-tt/sparkle";
+import { InfoCircle, Page } from "@ruby-ai/ui";
 
 type WebhookSourceDetailsInfoProps = {
   signatureAlgorithm: string;

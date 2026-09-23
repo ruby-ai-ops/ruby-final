@@ -5,7 +5,7 @@ import {
   getAuditLogContext,
 } from "@app/lib/api/audit/workos_audit";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import {
   AgentConfigurationModel,
   AgentModel,
@@ -439,7 +439,7 @@ export async function syncAgentTags(
  * @cc [owner:philipperolet,label:security;product] editor-add-requires-membership
  * Every editor added by this call (an editor in the new set who is not already one) MUST be an
  * active member of the workspace; otherwise the change MUST fail with a `user_not_found`
- * `DustError` before any editor grant is written.
+ * `RubyError` before any editor grant is written.
  */
 export async function syncAgentEditors(
   auth: Authenticator,
@@ -475,7 +475,7 @@ export async function syncAgentEditors(
       });
     if (activeMembershipCount !== addedEditorModelIds.length) {
       return new Err(
-        new DustError("user_not_found", "Editor is not a workspace member.")
+        new RubyError("user_not_found", "Editor is not a workspace member.")
       );
     }
   }

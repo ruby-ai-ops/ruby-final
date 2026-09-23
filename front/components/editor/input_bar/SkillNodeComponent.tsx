@@ -1,6 +1,6 @@
 import { getSkillIcon } from "@app/lib/skill";
 import { UNAVAILABLE_SKILL_LABEL } from "@app/lib/skills/format";
-import { AlertCircle, Chip, Tooltip } from "@dust-tt/sparkle";
+import { AlertCircle, Chip, Tooltip } from "@ruby-ai/ui";
 import { NodeViewWrapper } from "@tiptap/react";
 
 const UNAVAILABLE_SKILL_TOOLTIP_LABEL =

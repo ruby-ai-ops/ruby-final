@@ -118,7 +118,7 @@ export const SLAB_SERVER = {
     description: "Search and read from your Slab knowledge base",
     authorization: null,
     icon: "SlabLogo",
-    documentationUrl: "https://docs.dust.tt/docs/slab-mcp",
+    documentationUrl: "https://docs.ruby.ad/docs/slab-mcp",
   },
   tools: SLAB_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

@@ -6,8 +6,8 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 export const sendFreeplanEmail = async (user) => {
   const msg = {
     to: user.email,
-    from: "team@dust.tt",
-    subject: "[DUST] Good news: you're now on XP1's Free plan",
+    from: "team@ruby.ad",
+    subject: "[RUBY] Good news: you're now on XP1's Free plan",
     text: `Thank you for being among the first users of XP1!
 
 # Summary
@@ -27,10 +27,10 @@ We've canceled your Stripe subscription and you won't be charged going
 forward. If prompted to do so, please update your extension[1] as part
 of the transition.
 
-Dust's vision is to deliver a “productivity OS for smart teams” for
+Ruby's vision is to deliver a “productivity OS for smart teams” for
 people working at computers to get more done, faster, and get back to
 focusing on more interesting things. We will continue to iterate on
-our product (collectively, XP1 and Dust) and build features that may
+our product (collectively, XP1 and Ruby) and build features that may
 become part of a paid plan in the future. We'll keep you updated on
 that as we progress.
 
@@ -43,10 +43,10 @@ and hopefully impress you with delightful features on a regular basis.
 That's it! Don't hesitate to reach out with questions, feature
 requests, or simply to let us know how you save time with XP1.
 
-The Dust team
+The Ruby team
 
 [0] https://openai.com/blog/introducing-chatgpt-and-whisper-apis
-[1] https://chrome.google.com/webstore/detail/dust-xp1/okgjeakekjeppjocmfaeeeaianominge
+[1] https://chrome.google.com/webstore/detail/ruby-xp1/okgjeakekjeppjocmfaeeeaianominge
 `,
   };
 

@@ -1,5 +1,5 @@
 import { useCellContext } from "@app/lib/auth/CellContext";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useFrontContext } from "@extension/platforms/front/context/FrontProvider";
 import { FrontPlatformService } from "@extension/platforms/front/services/platform";
 import { PlatformProvider } from "@extension/shared/context/PlatformContext";

@@ -7,11 +7,11 @@ import { useWorkspaceLookup } from "@app/lib/swr/workspaces";
 import { isDevelopment } from "@app/types/shared/env";
 import {
   BarHeader,
-  DustLogoSquare,
+  RubyLogoSquare,
   Icon,
   Page,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 export function NoWorkspacePage() {
   const flow = useSearchParam("flow");
@@ -47,7 +47,7 @@ export function NoWorkspacePage() {
   return (
     <Page variant="normal">
       <BarHeader
-        title="Joining Dust"
+        title="Joining Ruby"
         className="ml-10 lg:ml-0"
         rightActions={
           <div className="flex flex-row items-center">
@@ -65,7 +65,7 @@ export function NoWorkspacePage() {
       <div className="mx-auto mt-40 flex max-w-2xl flex-col gap-8">
         <div className="flex flex-col gap-2">
           <div className="items-left justify-left flex flex-row">
-            <Icon visual={DustLogoSquare} size="md" />
+            <Icon visual={RubyLogoSquare} size="md" />
           </div>
           <span className="heading-2xl text-foreground">
             Hello {user?.firstName}!
@@ -75,7 +75,7 @@ export function NoWorkspacePage() {
           {status === "auto-join-disabled" && (
             <div className="flex flex-col gap-4">
               <span className="heading-lg text-muted-foreground">
-                {workspaceVerifiedDomain ?? workspace.name} already has a Dust
+                {workspaceVerifiedDomain ?? workspace.name} already has a Ruby
                 workspace.
               </span>
               <span className="copy-md text-muted-foreground">
@@ -93,7 +93,7 @@ export function NoWorkspacePage() {
           {status === "revoked" && (
             <div className="flex flex-col gap-4">
               <span className="heading-lg text-muted-foreground">
-                You no longer have access to {workspace.name}'s Dust workspace.
+                You no longer have access to {workspace.name}'s Ruby workspace.
               </span>
               <span className="copy-md text-muted-foreground">
                 You may have been removed from the workspace or the workspace

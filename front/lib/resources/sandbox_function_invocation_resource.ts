@@ -1,9 +1,9 @@
 import config from "@app/lib/api/config";
 import type {
-  PokeSandboxFunctionInvocation,
-  PokeSandboxFunctionInvocationDetails,
-  PokeSandboxFunctionMCPAction,
-} from "@app/lib/api/poke/sandbox_functions";
+  AdminSandboxFunctionInvocation,
+  AdminSandboxFunctionInvocationDetails,
+  AdminSandboxFunctionMCPAction,
+} from "@app/lib/api/admin/sandbox_functions";
 import {
   generateExecId,
   generateSandboxFunctionInvocationToken,
@@ -92,18 +92,18 @@ const SANDBOX_FUNCTION_EXEC_TIMEOUT_MS = 2 * 60 * 1000;
 // than handed to the workflow, since by then the function may already have written to pod state
 // and re-running it would repeat those writes.
 const SANDBOX_FUNCTION_INLINE_EXEC_TIMEOUT_MS = 10 * 1000;
-const DSBX_BIN_PATH = "/opt/bin/dsbx";
+const RBX_BIN_PATH = "/opt/bin/rbx";
 // Cap on runner output surfaced in the log fields on failure.
 const SANDBOX_FUNCTION_ERROR_LOG_MAX_CHARS = 16_384;
 const GCS_CONCURRENCY = 4;
 // Workspaces whose expired invocations are deleted in parallel within one retention batch.
 const RETENTION_WORKSPACE_CONCURRENCY = 4;
 const SANDBOX_FUNCTION_INVOCATION_DATA_VERSION = 2;
-const FUNCTION_WARM_ENABLED_ENV = "DUST_FUNCTION_WARM_ENABLED";
-const POD_USER_IDENTITY_ENV = "DUST_POD_USER_IDENTITY";
+const FUNCTION_WARM_ENABLED_ENV = "RUBY_FUNCTION_WARM_ENABLED";
+const POD_USER_IDENTITY_ENV = "RUBY_POD_USER_IDENTITY";
 
-// "admin" reads every invocation of the function without resolving a workspace user: poke
-// operators are dust superusers, not members of the workspace they inspect, so "viewer" would
+// "admin" reads every invocation of the function without resolving a workspace user: admin
+// operators are ruby superusers, not members of the workspace they inspect, so "viewer" would
 // find no user and return nothing. Kept distinct from "system", which is reserved for paths that
 // already validated a server-owned invocation token.
 type SandboxFunctionInvocationReadAccess = "viewer" | "system" | "admin";
@@ -215,16 +215,16 @@ function safeParseStoredInvocationData(
   return new Ok(parseResult.data);
 }
 
-function dustAPIBaseUrlForSandbox(): string {
+function rubyAPIBaseUrlForSandbox(): string {
   return isDevelopment() && config.getSandboxDevFrontHostName()
     ? `https://${config.getSandboxDevFrontHostName()}`
     : config.getApiBaseUrl();
 }
 
 function buildSandboxFunctionRunCommand(slug: string): string {
-  // dsbx resolves `function run <slug>` from `$DUST_FUNCTIONS_DIR` (typically via
+  // rbx resolves `function run <slug>` from `$RUBY_FUNCTIONS_DIR` (typically via
   // the sibling `functions.tar`); results always come back on the exec's own stdout.
-  return `${DSBX_BIN_PATH} function run --result-delivery stdout -- ${shellEscape(slug)}`;
+  return `${RBX_BIN_PATH} function run --result-delivery stdout -- ${shellEscape(slug)}`;
 }
 
 function getSandboxFunctionUserIdentity(
@@ -807,11 +807,11 @@ export class SandboxFunctionInvocationResource extends BaseResource<SandboxFunct
       const command = buildSandboxFunctionRunCommand(sandboxFunction.slug);
       const inputEnvelope = {
         method: "POST",
-        url: `https://dust.local/sandbox-functions/${sandboxFunction.sId}/invocations/${this.sId}`,
+        url: `https://ruby.local/sandbox-functions/${sandboxFunction.sId}/invocations/${this.sId}`,
         headers: {
           "content-type": "application/json",
-          "x-dust-sandbox-function-id": sandboxFunction.sId,
-          "x-dust-sandbox-function-invocation-id": this.sId,
+          "x-ruby-sandbox-function-id": sandboxFunction.sId,
+          "x-ruby-sandbox-function-invocation-id": this.sId,
         },
         ...(data.input === undefined
           ? {}
@@ -873,14 +873,14 @@ export class SandboxFunctionInvocationResource extends BaseResource<SandboxFunct
           return sandbox.exec(auth, command, {
             workingDirectory: SANDBOX_FUNCTION_WORKING_DIRECTORY,
             envVars: {
-              DUST_API_URL: `${dustAPIBaseUrlForSandbox()}/api/v1/w/${auth.getNonNullableWorkspace().sId}`,
-              DUST_FUNCTIONS_DIR: functionsDirectory,
+              RUBY_API_URL: `${rubyAPIBaseUrlForSandbox()}/api/v1/w/${auth.getNonNullableWorkspace().sId}`,
+              RUBY_FUNCTIONS_DIR: functionsDirectory,
               [FRAME_PERSISTENT_FILES_DIR_ENV]:
                 getFramePersistentFilesMountPoint(frame.sId),
               // The app prefix comes from the slug, so `db("chat")` in the bundle resolves to this
               // app's own database without the source naming the app.
               ...databaseEnvVars,
-              DUST_SANDBOX_TOKEN: token,
+              RUBY_SANDBOX_TOKEN: token,
               // Durable functions may still spawn tool clients that inherit the function process's
               // native environment. Keep them cold until all tool calls read the invocation context;
               // fast functions cannot call tools and are safe to serve from a resident worker.
@@ -938,13 +938,13 @@ export class SandboxFunctionInvocationResource extends BaseResource<SandboxFunct
       }
 
       const { exitCode, stdout, stderr } = execResult.value;
-      // Persist from the envelope even on non-zero exit: dsbx may still have
+      // Persist from the envelope even on non-zero exit: rbx may still have
       // written a well-formed invocation_failed envelope the worker should keep.
       const parsed = parseStdoutResultEnvelope(stdout);
       const { timings } = parsed;
       // phaseTimingsMs is front-side (ensure / mint / Process.Start). timingsMs is
       // in-VM (archive / resolve / child / import / handler / tools). execOverheadMs
-      // approximates Process/Start + dsbx startup outside the child's measured work.
+      // approximates Process/Start + rbx startup outside the child's measured work.
       const runnerTotalMs =
         typeof timings?.total === "number" ? timings.total : undefined;
       logger.info(
@@ -1318,7 +1318,7 @@ export class SandboxFunctionInvocationResource extends BaseResource<SandboxFunct
     const { where, ...rest } = options ?? {};
     // User-facing reads expose the caller's own invocations only. Execution paths use the
     // explicit system access after validating their server-owned invocation token or workflow
-    // input; Poke reads use the explicit admin access.
+    // input; Admin reads use the explicit admin access.
     let viewerModelId: ModelId | undefined;
     switch (access) {
       case "viewer": {
@@ -1735,12 +1735,12 @@ export class SandboxFunctionInvocationResource extends BaseResource<SandboxFunct
     }
   }
 
-  // Poke's listing shape. Static because the listing works off rows rather than resources (see
+  // Admin's listing shape. Static because the listing works off rows rather than resources (see
   // `SandboxFunctionInvocationRow`), and both entry points must produce the same shape.
-  static rowToPokeJSON(
+  static rowToAdminJSON(
     row: SandboxFunctionInvocationRow,
     user: UserResource | null
-  ): PokeSandboxFunctionInvocation {
+  ): AdminSandboxFunctionInvocation {
     return {
       sId: row.sId,
       status: row.status,
@@ -1754,13 +1754,13 @@ export class SandboxFunctionInvocationResource extends BaseResource<SandboxFunct
 
   // The listing shape plus the GCS-backed payload this resource carries once hydrated, and the
   // MCP actions the caller resolved for it.
-  async toPokeJSON(
+  async toAdminJSON(
     user: UserResource | null,
-    mcpActions: PokeSandboxFunctionMCPAction[]
-  ): Promise<PokeSandboxFunctionInvocationDetails> {
+    mcpActions: AdminSandboxFunctionMCPAction[]
+  ): Promise<AdminSandboxFunctionInvocationDetails> {
     const data = await this.getData();
     return {
-      ...SandboxFunctionInvocationResource.rowToPokeJSON(
+      ...SandboxFunctionInvocationResource.rowToAdminJSON(
         {
           sId: this.sId,
           status: this.status,

@@ -12,7 +12,7 @@ import {
   podFileTabBasename,
 } from "@app/types/pod_file_tab";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, cn, Plus } from "@dust-tt/sparkle";
+import { Button, cn, Plus } from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
 interface PodNavAddFileTabButtonProps {

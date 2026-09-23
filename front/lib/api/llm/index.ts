@@ -9,8 +9,8 @@ import {
 import type { LLMParameters } from "@app/lib/api/llm/types/options";
 import { config as multiRegionsConfig } from "@app/lib/api/regions/config";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustBatchEndpointConstructor } from "@app/lib/llms/batch/dust_batch_endpoint";
-import type { DustStreamEndpointConstructor } from "@app/lib/llms/stream/dust_stream_endpoint";
+import type { RubyBatchEndpointConstructor } from "@app/lib/llms/batch/ruby_batch_endpoint";
+import type { RubyStreamEndpointConstructor } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import type {
   EndpointConfig,
   ValueFilter,
@@ -39,7 +39,7 @@ import intersection from "lodash/intersection";
 
 // EAP (Early Access Program) models are served through a dedicated Anthropic
 // workspace key (ANTHROPIC_EAP_API_KEY) rather than the workspace's
-// Dust-managed / BYOK credentials.
+// Ruby-managed / BYOK credentials.
 //
 // Invariant: the env key must be set before any model opts into `useEapKey`
 // (see deploy plan). We throw rather than degrade to "unsupported" so the
@@ -49,11 +49,11 @@ function withEapAnthropicKey(
   credentials: LLMCredentialsType
 ): LLMCredentialsType {
   // Reaching this with BYOK credentials means an EAP endpoint escaped
-  // `getWorkspaceFilter`; the EAP key is Dust's, so fail loudly instead of
-  // billing Dust's Anthropic org for a BYOK workspace.
-  if (credentials.DUST_BYOK === "true") {
+  // `getWorkspaceFilter`; the EAP key is Ruby's, so fail loudly instead of
+  // billing Ruby's Anthropic org for a BYOK workspace.
+  if (credentials.RUBY_BYOK === "true") {
     throw new Error(
-      `Model ${modelId} requires the Dust-owned EAP Anthropic key and must not be reachable by a BYOK workspace.`
+      `Model ${modelId} requires the Ruby-owned EAP Anthropic key and must not be reachable by a BYOK workspace.`
     );
   }
 
@@ -73,10 +73,10 @@ const EAP_MODELS = compact(
 );
 
 function getRegionFilter(auth: Authenticator): ValueFilter<Region> | undefined {
-  const dustRegion = multiRegionsConfig.getCurrentRegion();
+  const rubyRegion = multiRegionsConfig.getCurrentRegion();
 
   const regionalModelsOnly = auth.getNonNullableWorkspace().regionalModelsOnly;
-  if (dustRegion === "us-central1" || !regionalModelsOnly) {
+  if (rubyRegion === "us-central1" || !regionalModelsOnly) {
     return undefined;
   }
 
@@ -147,25 +147,25 @@ function getLabAndHostFilter(
 
 // Temporary helper while we have both systems
 /**
- * @cc [owner:pmilliotte,label:security;product] byok-never-routes-to-dust-hosted-inference
+ * @cc [owner:pmilliotte,label:security;product] byok-never-routes-to-ruby-hosted-inference
  * A workspace on a BYOK plan (`plan.isByok`) must only reach endpoints served by the model lab's
- * own API, using the credentials the workspace provided. Endpoints hosted on Dust's infrastructure
+ * own API, using the credentials the workspace provided. Endpoints hosted on Ruby's infrastructure
  * — `agent-platform` (Vertex, keyed by `AGENT_PLATFORM_PROJECT_ID`) today — must be filtered out
  * here, not merely made unreachable by an endpoint's `endpointFilter`: plan and feature-flag
  * conditions can change, the BYOK guarantee cannot.
  *
- * Any new Dust-hosted `Host` value must be added to that exclusion, and every model reachable by a
+ * Any new Ruby-hosted `Host` value must be added to that exclusion, and every model reachable by a
  * BYOK workspace must keep at least one lab-hosted endpoint.
  */
 /**
  * @cc [owner:pmilliotte,label:security;product] eap-models-are-never-byok-reachable
- * A model whose config carries `useEapKey` is served from Dust's own Anthropic EAP organization, on
- * Dust's key. This filter must leave a BYOK workspace no endpoint for such a model, and must derive
+ * A model whose config carries `useEapKey` is served from Ruby's own Anthropic EAP organization, on
+ * Ruby's key. This filter must leave a BYOK workspace no endpoint for such a model, and must derive
  * the exclusion from `useEapKey` itself so a newly flagged model is covered without a second edit.
  * `isModelAvailable` must reject it too, so it never reaches the model picker.
  *
- * The `DUST_BYOK` check in `withEapAnthropicKey` is a backstop, not the guarantee: it turns a leak
- * into an error instead of a request billed to Dust's Anthropic organization.
+ * The `RUBY_BYOK` check in `withEapAnthropicKey` is a backstop, not the guarantee: it turns a leak
+ * into an error instead of a request billed to Ruby's Anthropic organization.
  */
 export function getWorkspaceFilter(auth: Authenticator): Where<EndpointConfig> {
   const byok = auth.getNonNullablePlan().isByok;
@@ -201,8 +201,8 @@ export function legacyModelIdToModel(modelId: string): Model | null {
 
 export function getStreamLLM(
   auth: Authenticator,
-  llmParameters: LLMParameters<DustStreamEndpointConstructor>
-): LLM<DustStreamEndpointConstructor> | null {
+  llmParameters: LLMParameters<RubyStreamEndpointConstructor>
+): LLM<RubyStreamEndpointConstructor> | null {
   const endpoint = llmParameters.modelInfo.endpoint;
 
   // The noop model needs a dedicated transition to preserve its static-response
@@ -225,7 +225,7 @@ export function getStreamLLM(
 
 export async function getBatchLLM(
   auth: Authenticator,
-  llmParameters: LLMParameters<DustBatchEndpointConstructor>
+  llmParameters: LLMParameters<RubyBatchEndpointConstructor>
 ): Promise<LLM | null> {
   const endpoint = llmParameters.modelInfo.endpoint;
 

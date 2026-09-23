@@ -7,7 +7,7 @@ import {
 import { isSandboxExecTokenPayload } from "@app/lib/api/sandbox/access_tokens";
 import { hasFeatureFlag } from "@app/lib/auth";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
-import { isDustFileSystemError } from "@app/types/file_system";
+import { isRubyFileSystemError } from "@app/types/file_system";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 import { sandboxApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
@@ -22,7 +22,7 @@ const FrameShareLinkRequestSchema = z.object({
 function frameShareLinkErrorStatus(
   error: GetFrameShareLinkFromSourceError
 ): 400 | 403 | 404 | 500 {
-  if (isDustFileSystemError(error)) {
+  if (isRubyFileSystemError(error)) {
     if (error.code === "unauthorized") {
       return 403;
     }

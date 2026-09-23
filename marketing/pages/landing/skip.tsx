@@ -27,8 +27,8 @@ export default function SkipLandingPage() {
   return (
     <>
       <PageMetadata
-        title="Welcome Skip Listeners | Dust"
-        description="Build AI agents in minutes, not months. Dust lets you create custom AI teammates that work across all your tools—no code required."
+        title="Welcome Skip Listeners | Ruby"
+        description="Build AI agents in minutes, not months. Ruby lets you create custom AI teammates that work across all your tools—no code required."
         pathname="/landing/skip"
       />
 

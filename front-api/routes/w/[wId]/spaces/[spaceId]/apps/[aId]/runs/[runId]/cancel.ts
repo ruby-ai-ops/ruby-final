@@ -47,7 +47,7 @@ app.post(
 
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const runStatus = await coreAPI.getRunStatus({
-      projectId: found.dustAPIProjectId,
+      projectId: found.rubyAPIProjectId,
       runId,
     });
     if (runStatus.isErr()) {
@@ -68,7 +68,7 @@ app.post(
     }
 
     const cancelResult = await coreAPI.cancelRun({
-      projectId: found.dustAPIProjectId,
+      projectId: found.rubyAPIProjectId,
       runId,
     });
     if (cancelResult.isErr()) {
@@ -76,7 +76,7 @@ app.post(
         {
           error: cancelResult.error,
           runId,
-          projectId: found.dustAPIProjectId,
+          projectId: found.rubyAPIProjectId,
         },
         "Failed to cancel run"
       );
@@ -91,7 +91,7 @@ app.post(
     }
 
     logger.info(
-      { runId, projectId: found.dustAPIProjectId },
+      { runId, projectId: found.rubyAPIProjectId },
       "Run cancelled successfully"
     );
     return ctx.json({ success: true });

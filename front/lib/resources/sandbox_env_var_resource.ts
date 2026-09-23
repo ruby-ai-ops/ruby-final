@@ -950,7 +950,7 @@ export class SandboxEnvVarResource extends BaseResource<SandboxEnvVarModel> {
    *
    * These ride the owner env layer, which beats the workspace env layer in buildSandboxEnvVars —
    * so a pod var shadows a workspace var of the same name, consistent with the egress-secrets file
-   * merge. Config vars are injected in cleartext; HTTPS secrets as their DSEC placeholders (dsbx
+   * merge. Config vars are injected in cleartext; HTTPS secrets as their DSEC placeholders (rbx
    * swaps them on the wire). Fail closed: a var we cannot resolve aborts sandbox creation rather
    * than booting without it.
    */

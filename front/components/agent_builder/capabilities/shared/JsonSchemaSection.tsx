@@ -3,7 +3,7 @@ import { ConfigurationSectionContainer } from "@app/components/agent_builder/cap
 import { useSendNotification } from "@app/hooks/useNotification";
 import { validateConfiguredJsonSchema } from "@app/lib/actions/mcp_internal_actions/input_schemas";
 import { clientFetch } from "@app/lib/egress/client";
-import { Button, Stars02, TextArea } from "@dust-tt/sparkle";
+import { Button, Stars02, TextArea } from "@ruby-ai/ui";
 import { useState } from "react";
 import { useController, useFormContext } from "react-hook-form";
 

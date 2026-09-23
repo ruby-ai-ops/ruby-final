@@ -114,7 +114,7 @@ async function updateLegacyVizByFrame(
                 tables: null,
                 childAgentId: null,
                 additionalConfiguration: {},
-                dustAppConfiguration: null,
+                rubyAppConfiguration: null,
                 timeFrame: null,
                 jsonSchema: null,
               } as ServerSideMCPServerConfigurationType,

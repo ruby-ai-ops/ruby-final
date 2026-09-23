@@ -1,18 +1,18 @@
 import type { IndustryPageConfig } from "@marketing/components/home/content/Industry/configs/utils";
 import { createLayoutConfig } from "@marketing/components/home/content/Industry/configs/utils";
-import { BookOpen01 } from "@dust-tt/sparkle";
+import { BookOpen01 } from "@ruby-ai/ui";
 
 export const mediaConfig: IndustryPageConfig = {
   seo: {
-    title: "Dust for Media Companies",
+    title: "Ruby for Media Companies",
     description:
       "Accelerate content creation, improve audience engagement, and streamline operations with AI-powered workflows.",
   },
   layout: createLayoutConfig([
     "hero",
     "painPoints",
-    "dustInAction",
-    "justUseDust",
+    "rubyInAction",
+    "justUseRuby",
   ]),
   hero: {
     chip: {
@@ -22,7 +22,7 @@ export const mediaConfig: IndustryPageConfig = {
     },
     title: (
       <>
-        Dust for
+        Ruby for
         <br /> Media
         <br /> Companies
       </>
@@ -40,7 +40,7 @@ export const mediaConfig: IndustryPageConfig = {
       },
     },
     heroImage: {
-      src: "/static/landing/industry/Dust_connectors_microsoft.webp",
+      src: "/static/landing/industry/Ruby_connectors_microsoft.webp",
       alt: "Media Companies AI-powered workflows illustration",
     },
   },
@@ -70,8 +70,8 @@ export const mediaConfig: IndustryPageConfig = {
       },
     ],
   },
-  dustInAction: {
-    title: "Dust in action",
+  rubyInAction: {
+    title: "Ruby in action",
     useCases: [
       {
         title: "Editorial & newsroom operations",
@@ -212,8 +212,8 @@ export const mediaConfig: IndustryPageConfig = {
       },
     ],
   },
-  justUseDust: {
-    title: "#JustUseDust",
+  justUseRuby: {
+    title: "#JustUseRuby",
     titleColor: "text-blue-600",
     ctaButtons: {
       primary: {

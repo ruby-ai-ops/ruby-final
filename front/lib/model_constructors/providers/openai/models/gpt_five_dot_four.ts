@@ -11,7 +11,7 @@ const MAX_OUTPUT_TOKENS = 128_000;
 const DEFAULT_REASONING_EFFORT = "none";
 
 // gpt-5.4 accepts none/low/medium/high/xhigh. "minimal" and the top "max" tier
-// (Dust's universal "maximal") are unsupported and surface as an input
+// (Ruby's universal "maximal") are unsupported and surface as an input
 // configuration error.
 const GPT_5_4_REASONING_EFFORTS = ["low", "medium", "high", "xhigh"] as const;
 

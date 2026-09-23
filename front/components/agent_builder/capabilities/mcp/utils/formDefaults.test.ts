@@ -27,11 +27,11 @@ describe("getDefaultConfiguration", () => {
         childAgentId: null,
         timeFrame: null,
         additionalConfiguration: {},
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         jsonSchema: null,
         _jsonSchemaString: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
       });
     });
 
@@ -45,11 +45,11 @@ describe("getDefaultConfiguration", () => {
         childAgentId: null,
         timeFrame: null,
         additionalConfiguration: {},
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         jsonSchema: null,
         _jsonSchemaString: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
       });
     });
   });
@@ -112,8 +112,8 @@ describe("getDefaultConfiguration", () => {
           ],
           requiredEnums: {},
           requiredLists: {},
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -160,8 +160,8 @@ describe("getDefaultConfiguration", () => {
           ],
           requiredEnums: {},
           requiredLists: {},
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -188,8 +188,8 @@ describe("getDefaultConfiguration", () => {
           requiredBooleans: [],
           requiredEnums: {},
           requiredLists: {},
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -241,8 +241,8 @@ describe("getDefaultConfiguration", () => {
             },
           },
           requiredLists: {},
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -285,8 +285,8 @@ describe("getDefaultConfiguration", () => {
             },
           },
           requiredLists: {},
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -331,8 +331,8 @@ describe("getDefaultConfiguration", () => {
             },
           },
           requiredLists: {},
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -382,8 +382,8 @@ describe("getDefaultConfiguration", () => {
               default: null,
             },
           },
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -430,8 +430,8 @@ describe("getDefaultConfiguration", () => {
           requiredBooleans: [],
           requiredEnums: {},
           requiredLists: {},
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -465,8 +465,8 @@ describe("getDefaultConfiguration", () => {
           requiredBooleans: [],
           requiredEnums: {},
           requiredLists: {},
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -518,8 +518,8 @@ describe("getDefaultConfiguration", () => {
               default: null,
             },
           },
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -631,8 +631,8 @@ describe("getDefaultConfiguration", () => {
               default: null,
             },
           },
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });
@@ -709,8 +709,8 @@ describe("getDefaultConfiguration", () => {
               default: null,
             },
           },
-          requiresDustAppConfiguration: false,
-          requiresDustProjectConfiguration: false,
+          requiresRubyAppConfiguration: false,
+          requiresRubyProjectConfiguration: false,
           developerSecretSelection: null,
           noRequirement: true,
         });

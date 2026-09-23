@@ -3,7 +3,7 @@ import { extractTextFromBuffer } from "@app/lib/actions/mcp_internal_actions/uti
 import { getDriveClient } from "@app/lib/api/actions/servers/google_drive/helpers";
 import { Err, Ok } from "@app/types/shared/result";
 import { isTextExtractionSupportedContentType } from "@app/types/shared/text_extraction";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { Common } from "googleapis";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

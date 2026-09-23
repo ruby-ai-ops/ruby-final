@@ -167,19 +167,19 @@ export class AgentYAMLConverter {
               .length > 0
               ? action.configuration.additionalConfiguration
               : undefined,
-          dust_app_configuration: action.configuration.dustAppConfiguration
+          ruby_app_configuration: action.configuration.rubyAppConfiguration
             ? {
-                type: "dust_app_run_configuration",
+                type: "ruby_app_run_configuration",
                 app_workspace_id:
-                  action.configuration.dustAppConfiguration.appWorkspaceId,
-                app_id: action.configuration.dustAppConfiguration.appId,
+                  action.configuration.rubyAppConfiguration.appWorkspaceId,
+                app_id: action.configuration.rubyAppConfiguration.appId,
               }
             : undefined,
           secret_name: action.configuration.secretName ?? undefined,
-          dust_project: action.configuration.dustProject
+          ruby_project: action.configuration.rubyProject
             ? {
-                workspace_id: action.configuration.dustProject.workspaceId,
-                project_id: action.configuration.dustProject.projectId,
+                workspace_id: action.configuration.rubyProject.workspaceId,
+                project_id: action.configuration.rubyProject.projectId,
               }
             : undefined,
         },
@@ -382,19 +382,19 @@ export class AgentYAMLConverter {
               configuration.additional_configuration
             )
           : {},
-        dustAppConfiguration: configuration.dust_app_configuration
+        rubyAppConfiguration: configuration.ruby_app_configuration
           ? {
-              type: "dust_app_run_configuration",
+              type: "ruby_app_run_configuration",
               appWorkspaceId:
-                configuration.dust_app_configuration.app_workspace_id,
-              appId: configuration.dust_app_configuration.app_id,
+                configuration.ruby_app_configuration.app_workspace_id,
+              appId: configuration.ruby_app_configuration.app_id,
             }
           : null,
         secretName: configuration.secret_name ?? null,
-        dustProject: configuration.dust_project
+        rubyProject: configuration.ruby_project
           ? {
-              workspaceId: configuration.dust_project.workspace_id,
-              projectId: configuration.dust_project.project_id,
+              workspaceId: configuration.ruby_project.workspace_id,
+              projectId: configuration.ruby_project.project_id,
             }
           : null,
         timeFrame: configuration.time_frame ?? null,

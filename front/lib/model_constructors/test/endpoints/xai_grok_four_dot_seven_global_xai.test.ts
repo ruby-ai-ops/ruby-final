@@ -8,7 +8,7 @@ import type { StreamSetup } from "@app/lib/model_constructors/test/setup";
 export const XaiGrokFourDotSevenGlobalXaiStreamSetup: StreamSetup = {
   createInstance: () =>
     new XaiGrokFourDotSevenGlobalXaiStream({
-      XAI_API_KEY: process.env.DUST_MANAGED_XAI_API_KEY ?? "",
+      XAI_API_KEY: process.env.RUBY_MANAGED_XAI_API_KEY ?? "",
     }),
   //
   // Same as 4.6, which was tested live on 2026-08-12, and xAI documents

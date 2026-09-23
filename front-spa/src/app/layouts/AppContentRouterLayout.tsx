@@ -1,5 +1,5 @@
-import { AppContentLayout } from "@dust-tt/front/components/sparkle/AppContentLayout";
-import { AppLayoutProvider } from "@dust-tt/front/components/sparkle/AppLayoutContext";
+import { AppContentLayout } from "@ruby-ai/front/components/ui/AppContentLayout";
+import { AppLayoutProvider } from "@ruby-ai/front/components/ui/AppLayoutContext";
 import { Outlet } from "react-router-dom";
 
 /**

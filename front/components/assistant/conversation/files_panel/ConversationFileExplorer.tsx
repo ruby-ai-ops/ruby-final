@@ -15,7 +15,7 @@ import type {
 import { useFileExplorerDownload } from "@app/components/file_explorer/useFileExplorerDownload";
 import { withVirtualExplorerPath } from "@app/components/file_explorer/utils";
 import { EditPodFileTabDialog } from "@app/components/pod/files/EditPodFileTabDialog";
-import { AppLayoutTitle } from "@app/components/sparkle/AppLayoutTitle";
+import { AppLayoutTitle } from "@app/components/ui/AppLayoutTitle";
 import { useConversationSandboxFiles } from "@app/hooks/conversations/useConversationSandboxFiles";
 import { useFolderPathUrlState } from "@app/hooks/useFolderPathUrlState";
 import { usePinPodBanner } from "@app/hooks/usePinPodBanner";
@@ -38,7 +38,7 @@ import {
   podFileTabBasename,
 } from "@app/types/pod_file_tab";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, LayoutAlt02, Pin02, XClose } from "@dust-tt/sparkle";
+import { Button, LayoutAlt02, Pin02, XClose } from "@ruby-ai/ui";
 import { useCallback, useContext, useMemo, useState } from "react";
 
 /** The confirm copy for each deletable entry kind, or null for kinds that cannot be deleted. */

@@ -1,7 +1,7 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
 import { EnterpriseChoiceModal } from "@marketing/components/home/content/Landing/EnterpriseChoiceModal";
 import { useEnrichmentSubmit } from "@marketing/components/home/content/Landing/useEnrichmentSubmit";
-import { DUST_HAS_SESSION, hasSessionIndicator } from "@marketing/lib/cookies";
+import { RUBY_HAS_SESSION, hasSessionIndicator } from "@marketing/lib/cookies";
 import type { TrackingArea } from "@marketing/lib/tracking";
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
 import {
@@ -10,7 +10,7 @@ import {
   cn,
   Icon,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
@@ -50,16 +50,16 @@ export function LandingEmailSignup({
     trackingObject: trackingLocation,
   });
 
-  const [cookies] = useCookies([DUST_HAS_SESSION], { doNotParse: true });
+  const [cookies] = useCookies([RUBY_HAS_SESSION], { doNotParse: true });
   const [hasSession, setHasSession] = useState(false);
 
   useEffect(() => {
-    setHasSession(hasSessionIndicator(cookies[DUST_HAS_SESSION]));
+    setHasSession(hasSessionIndicator(cookies[RUBY_HAS_SESSION]));
   }, [cookies]);
 
-  const handleOpenDust = withTracking(
+  const handleOpenRuby = withTracking(
     trackingArea,
-    `${trackingLocation}_open_dust`,
+    `${trackingLocation}_open_ruby`,
     () => {
       void router.push("/api/login");
     }
@@ -69,11 +69,11 @@ export function LandingEmailSignup({
     return (
       <div className={cn("flex flex-col items-center gap-3", className)}>
         <Button
-          variant="highlight"
+          variant="primary"
           size="md"
-          label="Open Dust"
+          label="Open Ruby"
           icon={ArrowRight}
-          onClick={handleOpenDust}
+          onClick={handleOpenRuby}
         />
         <p
           className={cn(
@@ -105,7 +105,7 @@ export function LandingEmailSignup({
             <button
               type="submit"
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 font-semibold text-white shadow-lg transition-all hover:bg-emerald-600 hover:shadow-xl disabled:opacity-70 sm:w-auto"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-800 px-6 py-3.5 font-semibold text-primary-50 shadow-lg transition-all hover:bg-primary-light hover:shadow-xl disabled:bg-primary-muted disabled:opacity-70 sm:w-auto"
             >
               {isLoading && <Spinner size="xs" />}
               {ctaButtonText}
@@ -125,7 +125,7 @@ export function LandingEmailSignup({
             <button
               type="submit"
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-500 px-5 py-2.5 font-semibold text-white shadow-sm transition-all hover:bg-blue-600 hover:shadow-md disabled:opacity-70 sm:w-auto"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-800 px-5 py-2.5 font-semibold text-primary-50 shadow-sm transition-all hover:bg-primary-light hover:shadow-md disabled:bg-primary-muted disabled:opacity-70 sm:w-auto"
             >
               {isLoading && <Spinner size="xs" />}
               {ctaButtonText}

@@ -31,7 +31,7 @@ export function WithDeepSeekDeepSeekV41FlashConfig<
 
     static readonly configSchema = configSchema;
 
-    // `number`, not the literal, so the Dust layer can cap them.
+    // `number`, not the literal, so the Ruby layer can cap them.
     static readonly contextSize: number = CONTEXT_SIZE;
     static readonly maxOutputTokens: number = MAX_OUTPUT_TOKENS;
   }

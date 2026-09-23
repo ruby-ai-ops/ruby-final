@@ -15,7 +15,7 @@ interface Mocks {
 
 const mocks = vi.hoisted<Mocks>(() => ({
   frameMetadata: {
-    contentType: "application/vnd.dust.frame.v2+json",
+    contentType: "application/vnd.ruby.frame.v2+json",
     fileName: "app.frame.json",
     sId: "fil_frame",
   },
@@ -56,7 +56,7 @@ describe("PublicInteractiveContentContainer", () => {
       shareToken: "share-token",
       title: "App",
       workspaceId: "w_current",
-      vizUrl: "https://viz.dust.tt",
+      vizUrl: "https://viz.ruby.ad",
     };
     const { rerender } = render(
       createElement(PublicInteractiveContentContainer, props)

@@ -64,8 +64,8 @@ export const seatAutoUpgradedWorkflow = workflow(
 
         const subject =
           count > 1
-            ? `[Dust] ${count} members were auto-upgraded to higher seats`
-            : `[Dust] ${formatMember(members[0])} was auto-upgraded to a ${members[0].newSeatType} seat`;
+            ? `[Ruby] ${count} members were auto-upgraded to higher seats`
+            : `[Ruby] ${formatMember(members[0])} was auto-upgraded to a ${members[0].newSeatType} seat`;
 
         const intro =
           count > 1
@@ -112,7 +112,7 @@ export const seatAutoUpgradedWorkflow = workflow(
 /**
  * Email a workspace's admins that a member's seat was automatically upgraded
  * after they hit their credit limit. One Novu event is triggered per admin
- * (subscribed by their Dust user sId), deduped via a `transactionId` keyed on
+ * (subscribed by their Ruby user sId), deduped via a `transactionId` keyed on
  * the member sId and the new seat type so redeliveries don't re-send.
  * Fire-and-forget — errors are logged but don't block the caller.
  */

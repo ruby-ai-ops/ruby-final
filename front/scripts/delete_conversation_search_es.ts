@@ -45,7 +45,7 @@ async function listConversationSearchIndices(): Promise<string[]> {
 /**
  * Deletes the conversation search Elasticsearch index and alias.
  *
- * Follow-up cleanup for https://github.com/dust-tt/dust/pull/28208, which
+ * Follow-up cleanup for https://github.com/ruby-ai-ops/ruby-final/pull/28208, which
  * removed the application read/write paths for `front.conversation_search`.
  *
  * Usage:

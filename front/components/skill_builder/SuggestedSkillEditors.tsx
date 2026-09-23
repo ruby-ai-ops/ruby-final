@@ -1,7 +1,7 @@
 import type { MemberDisplayInfo } from "@app/lib/swr/assistants";
 import { useMemberDetails } from "@app/lib/swr/assistants";
 import type { SkillEditorsSuggestionType } from "@app/types/suggestions/skill_suggestion";
-import { Avatar, Chip } from "@dust-tt/sparkle";
+import { Avatar, Chip } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 interface SuggestedEditorRowProps {

@@ -1,4 +1,4 @@
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 
 interface FilterFooterProps {
   onClearAll: () => void;

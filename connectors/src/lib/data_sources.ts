@@ -1,6 +1,6 @@
 import { apiConfig } from "@connectors/lib/api/config";
-import { getDustAPI } from "@connectors/lib/api/dust_api";
-import { DustConnectorWorkflowError, TablesError } from "@connectors/lib/error";
+import { getRubyAPI } from "@connectors/lib/api/ruby_api";
+import { RubyConnectorWorkflowError, TablesError } from "@connectors/lib/error";
 import logger from "@connectors/logger/logger";
 import { statsDClient } from "@connectors/logger/withlogging";
 import type { DataSourceConfig, ProviderVisibility } from "@connectors/types";
@@ -20,7 +20,7 @@ import type {
   PostDataSourceDocumentRequestType,
   UpsertDatabaseTableRequestType,
   UpsertTableFromCsvRequestType,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
 import axios from "axios";
 import tracer from "dd-trace";
@@ -120,7 +120,7 @@ async function _upsertDataSourceDocument({
       });
 
       const endpoint =
-        `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+        `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
         `/data_sources/${dataSourceConfig.dataSourceId}/documents/${documentId}`;
 
       const localLogger = logger.child({
@@ -135,7 +135,7 @@ async function _upsertDataSourceDocument({
       });
       const statsDTags = [`workspace_id:${dataSourceConfig.workspaceId}`];
 
-      localLogger.info("Attempting to upload document to Dust.");
+      localLogger.info("Attempting to upload document to Ruby.");
       statsDClient.increment(
         "data_source_upserts_attempt.count",
         1,
@@ -148,7 +148,7 @@ async function _upsertDataSourceDocument({
         ? (Math.floor(timestampMs) as Branded<number, IntBrand>)
         : null;
 
-      const dustRequestPayload: PostDataSourceDocumentRequestType = {
+      const rubyRequestPayload: PostDataSourceDocumentRequestType = {
         text: null,
         section: documentContent,
         source_url: documentUrl ?? null,
@@ -163,18 +163,18 @@ async function _upsertDataSourceDocument({
         async,
       };
 
-      const dustRequestConfig: AxiosRequestConfig = {
+      const rubyRequestConfig: AxiosRequestConfig = {
         headers: {
           Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
         },
       };
 
-      let dustRequestResult: AxiosResponse;
+      let rubyRequestResult: AxiosResponse;
       try {
-        dustRequestResult = await axiosWithTimeout.post(
+        rubyRequestResult = await axiosWithTimeout.post(
           endpoint,
-          dustRequestPayload,
-          dustRequestConfig
+          rubyRequestPayload,
+          rubyRequestConfig
         );
       } catch (e) {
         const elapsed = new Date().getTime() - now.getTime();
@@ -192,13 +192,13 @@ async function _upsertDataSourceDocument({
           elapsed,
           statsDTags
         );
-        localLogger.error({ error: e }, "Error uploading document to Dust.");
+        localLogger.error({ error: e }, "Error uploading document to Ruby.");
         throw e;
       }
 
       const elapsed = new Date().getTime() - now.getTime();
 
-      if (dustRequestResult.status >= 200 && dustRequestResult.status < 300) {
+      if (rubyRequestResult.status >= 200 && rubyRequestResult.status < 300) {
         statsDClient.increment(
           "data_source_upserts_success.count",
           1,
@@ -211,7 +211,7 @@ async function _upsertDataSourceDocument({
         );
         localLogger.info(
           { elapsed },
-          "Successfully uploaded document to Dust."
+          "Successfully uploaded document to Ruby."
         );
       } else {
         statsDClient.increment(
@@ -226,14 +226,14 @@ async function _upsertDataSourceDocument({
         );
         localLogger.error(
           {
-            statusCode: dustRequestResult.status,
+            statusCode: rubyRequestResult.status,
             elapsed,
           },
-          "Error uploading document to Dust."
+          "Error uploading document to Ruby."
         );
         throw new Error(
-          `Error uploading to dust: ${JSON.stringify(
-            dustRequestResult,
+          `Error uploading to ruby: ${JSON.stringify(
+            rubyRequestResult,
             null,
             2
           )}`
@@ -258,27 +258,27 @@ export async function getDataSourceDocument({
   });
 
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/documents?document_ids=${documentId}`;
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
     },
   };
 
-  let dustRequestResult: AxiosResponse<GetDocumentsResponseType>;
+  let rubyRequestResult: AxiosResponse<GetDocumentsResponseType>;
   try {
-    dustRequestResult = await axiosWithTimeout.get(endpoint, dustRequestConfig);
+    rubyRequestResult = await axiosWithTimeout.get(endpoint, rubyRequestConfig);
   } catch (e) {
-    localLogger.error({ error: e }, "Error getting document from Dust.");
+    localLogger.error({ error: e }, "Error getting document from Ruby.");
     throw e;
   }
-  if (dustRequestResult.data.documents.length === 0) {
-    localLogger.info("Document doesn't exist on Dust. Ignoring.");
+  if (rubyRequestResult.data.documents.length === 0) {
+    localLogger.info("Document doesn't exist on Ruby. Ignoring.");
     return;
   }
 
-  return dustRequestResult.data.documents[0];
+  return rubyRequestResult.data.documents[0];
 }
 
 export async function getDataSourceDocumentBlob({
@@ -293,28 +293,28 @@ export async function getDataSourceDocumentBlob({
   });
 
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/documents/${documentId}/blob`;
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
     },
   };
 
-  let dustRequestResult: AxiosResponse<GetDocumentBlobResponseType>;
+  let rubyRequestResult: AxiosResponse<GetDocumentBlobResponseType>;
   try {
-    dustRequestResult = await axiosWithTimeout.get(endpoint, dustRequestConfig);
+    rubyRequestResult = await axiosWithTimeout.get(endpoint, rubyRequestConfig);
   } catch (e) {
     if (axios.isAxiosError(e) && e.response?.status === 404) {
-      localLogger.info("Document doesn't exist on Dust. Ignoring.");
+      localLogger.info("Document doesn't exist on Ruby. Ignoring.");
       return undefined;
     }
 
-    localLogger.error({ error: e }, "Error getting document from Dust.");
+    localLogger.error({ error: e }, "Error getting document from Ruby.");
     throw e;
   }
 
-  return dustRequestResult.data.blob;
+  return rubyRequestResult.data.blob;
 }
 
 export async function deleteDataSourceDocument(
@@ -326,36 +326,36 @@ export async function deleteDataSourceDocument(
   const localLogger = logger.child({ ...loggerArgs, documentId });
 
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/documents/${documentId}`;
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
-      ...(caller ? { "X-Dust-Caller": caller } : {}),
+      ...(caller ? { "X-Ruby-Caller": caller } : {}),
     },
   };
 
-  let dustRequestResult: AxiosResponse;
+  let rubyRequestResult: AxiosResponse;
   try {
-    dustRequestResult = await axiosWithTimeout.delete(
+    rubyRequestResult = await axiosWithTimeout.delete(
       endpoint,
-      dustRequestConfig
+      rubyRequestConfig
     );
   } catch (e) {
-    localLogger.error({ error: e }, "Error deleting document from Dust.");
+    localLogger.error({ error: e }, "Error deleting document from Ruby.");
     throw e;
   }
 
-  if (dustRequestResult.status >= 200 && dustRequestResult.status < 300) {
-    localLogger.info("Successfully deleted document from Dust.");
+  if (rubyRequestResult.status >= 200 && rubyRequestResult.status < 300) {
+    localLogger.info("Successfully deleted document from Ruby.");
   } else {
     localLogger.error(
       {
-        statusCode: dustRequestResult.status,
+        statusCode: rubyRequestResult.status,
       },
-      "Error deleting document from Dust."
+      "Error deleting document from Ruby."
     );
-    throw new Error(`Error deleting from dust: ${dustRequestResult}`);
+    throw new Error(`Error deleting from ruby: ${rubyRequestResult}`);
   }
 }
 
@@ -425,23 +425,23 @@ async function _updateDocumentOrTableParentsField({
       ? logger.child({ ...loggerArgs, documentId: id })
       : logger.child({ ...loggerArgs, tableId: id });
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/${tableOrDocument}s/${id}/parents`;
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
     },
   };
 
-  let dustRequestResult: AxiosResponse;
+  let rubyRequestResult: AxiosResponse;
   try {
-    dustRequestResult = await axiosWithTimeout.post(
+    rubyRequestResult = await axiosWithTimeout.post(
       endpoint,
       {
         parents: parents,
         parent_id: parentId,
       },
-      dustRequestConfig
+      rubyRequestConfig
     );
   } catch (e) {
     localLogger.error(
@@ -451,18 +451,18 @@ async function _updateDocumentOrTableParentsField({
     throw e;
   }
 
-  if (dustRequestResult.status >= 200 && dustRequestResult.status < 300) {
+  if (rubyRequestResult.status >= 200 && rubyRequestResult.status < 300) {
     return;
   } else {
     localLogger.error(
       {
-        statusCode: dustRequestResult.status,
-        data: dustRequestResult.data,
+        statusCode: rubyRequestResult.status,
+        data: rubyRequestResult.data,
       },
       `Error updating ${tableOrDocument} parents field.`
     );
     throw new Error(
-      `Error updating ${tableOrDocument} parents field: ${dustRequestResult}`
+      `Error updating ${tableOrDocument} parents field: ${rubyRequestResult}`
     );
   }
 }
@@ -537,7 +537,7 @@ async function tokenize(text: string, ds: DataSourceConfig) {
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), TOKENIZE_TIMEOUT_MS);
-  const tokensRes = await getDustAPI(ds).tokenize(
+  const tokensRes = await getRubyAPI(ds).tokenize(
     sanitizedText,
     ds.dataSourceId,
     { signal: controller.signal }
@@ -552,7 +552,7 @@ async function tokenize(text: string, ds: DataSourceConfig) {
       },
       `Error tokenizing text for ${ds.dataSourceId}`
     );
-    throw new DustConnectorWorkflowError(
+    throw new RubyConnectorWorkflowError(
       `Error tokenizing text for ${ds.dataSourceId}`,
       "transient_upstream_activity_error",
       tokensRes.error
@@ -862,7 +862,7 @@ export async function upsertDataSourceRemoteTable({
     `workspace_id:${dataSourceConfig.workspaceId}`,
   ];
 
-  localLogger.info("Attempting to upsert table to Dust.");
+  localLogger.info("Attempting to upsert table to Ruby.");
   statsDClient.increment(
     "data_source_table_upserts_attempt.count",
     1,
@@ -872,9 +872,9 @@ export async function upsertDataSourceRemoteTable({
   const now = new Date();
 
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/tables`;
-  const dustRequestPayload: UpsertDatabaseTableRequestType = {
+  const rubyRequestPayload: UpsertDatabaseTableRequestType = {
     name: tableName,
     parents,
     parent_id: parentId,
@@ -886,19 +886,19 @@ export async function upsertDataSourceRemoteTable({
     mime_type: mimeType,
     tags: tags,
   };
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
     },
     validateStatus: null,
   };
 
-  let dustRequestResult: AxiosResponse;
+  let rubyRequestResult: AxiosResponse;
   try {
-    dustRequestResult = await axiosWithTimeout.post(
+    rubyRequestResult = await axiosWithTimeout.post(
       endpoint,
-      dustRequestPayload,
-      dustRequestConfig
+      rubyRequestPayload,
+      rubyRequestConfig
     );
   } catch (e) {
     const elapsed = new Date().getTime() - now.getTime();
@@ -921,35 +921,35 @@ export async function upsertDataSourceRemoteTable({
         {
           error: sanitizedError,
           payload: {
-            ...dustRequestPayload,
+            ...rubyRequestPayload,
           },
         },
-        "Axios error upserting table to Dust."
+        "Axios error upserting table to Ruby."
       );
     } else if (e instanceof Error) {
       localLogger.error(
         {
           error: e.message,
           payload: {
-            ...dustRequestPayload,
+            ...rubyRequestPayload,
           },
         },
-        "Error upserting table to Dust."
+        "Error upserting table to Ruby."
       );
     } else {
-      localLogger.error("Unknown error upserting table to Dust.");
+      localLogger.error("Unknown error upserting table to Ruby.");
     }
 
-    throw new Error("Error upserting table to Dust.");
+    throw new Error("Error upserting table to Ruby.");
   }
 
-  if (!dustRequestResult) {
+  if (!rubyRequestResult) {
     throw new Error("Upload attempt finished without a response");
   }
 
   const elapsed = new Date().getTime() - now.getTime();
 
-  if (dustRequestResult.status >= 200 && dustRequestResult.status < 300) {
+  if (rubyRequestResult.status >= 200 && rubyRequestResult.status < 300) {
     statsDClient.increment(
       "data_source_table_upserts_success.count",
       1,
@@ -960,7 +960,7 @@ export async function upsertDataSourceRemoteTable({
       elapsed,
       statsDTags
     );
-    localLogger.info("Successfully uploaded table to Dust.");
+    localLogger.info("Successfully uploaded table to Ruby.");
   } else {
     statsDClient.increment(
       "data_source_table_upserts_error.count",
@@ -974,15 +974,15 @@ export async function upsertDataSourceRemoteTable({
     );
     localLogger.error(
       {
-        statusCode: dustRequestResult.status,
+        statusCode: rubyRequestResult.status,
         elapsed,
       },
-      "Error upserting table to Dust."
+      "Error upserting table to Ruby."
     );
     throw new Error(
-      `Error uploading to dust, got ${
-        dustRequestResult.status
-      }: ${JSON.stringify(dustRequestResult.data, null, 2)}`
+      `Error uploading to ruby, got ${
+        rubyRequestResult.status
+      }: ${JSON.stringify(rubyRequestResult.data, null, 2)}`
     );
   }
 }
@@ -1059,7 +1059,7 @@ export async function upsertDataSourceTableFromCsv({
     `workspace_id:${dataSourceConfig.workspaceId}`,
   ];
 
-  localLogger.info("Attempting to upload table to Dust.");
+  localLogger.info("Attempting to upload table to Ruby.");
   statsDClient.increment(
     "data_source_structured_data_upserts_attempt.count",
     1,
@@ -1076,9 +1076,9 @@ export async function upsertDataSourceTableFromCsv({
     );
   }
 
-  const dustAPI = getDustAPI(dataSourceConfig);
+  const rubyAPI = getRubyAPI(dataSourceConfig);
 
-  const fileRes = await dustAPI.uploadFile({
+  const fileRes = await rubyAPI.uploadFile({
     contentType: "text/csv",
     fileName: `${tableId}.csv`,
     fileSize: blob.size,
@@ -1090,9 +1090,9 @@ export async function upsertDataSourceTableFromCsv({
   }
 
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/tables/csv`;
-  const dustRequestPayload: UpsertTableFromCsvRequestType = {
+  const rubyRequestPayload: UpsertTableFromCsvRequestType = {
     name: tableName,
     parentId,
     parents,
@@ -1108,22 +1108,22 @@ export async function upsertDataSourceTableFromCsv({
     sourceUrl: sourceUrl ?? null,
     allowEmptySchema,
   };
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
     },
     validateStatus: null,
   };
 
-  let dustRequestResult: AxiosResponse | undefined;
+  let rubyRequestResult: AxiosResponse | undefined;
   let currentTimeoutMs = 60000;
   try {
-    dustRequestResult = await withRetries(
+    rubyRequestResult = await withRetries(
       localLogger,
       async () => {
         currentTimeoutMs += 30000;
-        return axiosWithTimeout.post(endpoint, dustRequestPayload, {
-          ...dustRequestConfig,
+        return axiosWithTimeout.post(endpoint, rubyRequestPayload, {
+          ...rubyRequestConfig,
           timeout: currentTimeoutMs,
         });
       },
@@ -1149,9 +1149,9 @@ export async function upsertDataSourceTableFromCsv({
       localLogger.error(
         {
           error: sanitizedError,
-          payload: { ...dustRequestPayload, csv: tableCsv.substring(0, 100) },
+          payload: { ...rubyRequestPayload, csv: tableCsv.substring(0, 100) },
         },
-        "Axios error uploading table to Dust."
+        "Axios error uploading table to Ruby."
       );
     } else if (
       e instanceof WithRetriesError &&
@@ -1159,7 +1159,7 @@ export async function upsertDataSourceTableFromCsv({
     ) {
       localLogger.warn(
         { error: e.message },
-        "Upload to Dust failed after retries."
+        "Upload to Ruby failed after retries."
       );
       throw new TablesError(
         "invalid_csv",
@@ -1169,20 +1169,20 @@ export async function upsertDataSourceTableFromCsv({
       localLogger.error(
         {
           error: e.message,
-          payload: { ...dustRequestPayload, csv: tableCsv.substring(0, 100) },
+          payload: { ...rubyRequestPayload, csv: tableCsv.substring(0, 100) },
         },
-        "Error uploading table to Dust."
+        "Error uploading table to Ruby."
       );
     } else {
-      localLogger.error("Unknown error uploading table to Dust.");
+      localLogger.error("Unknown error uploading table to Ruby.");
     }
 
-    throw new Error("Error uploading table to Dust.");
+    throw new Error("Error uploading table to Ruby.");
   }
 
   const elapsed = new Date().getTime() - now.getTime();
 
-  if (dustRequestResult.status >= 200 && dustRequestResult.status < 300) {
+  if (rubyRequestResult.status >= 200 && rubyRequestResult.status < 300) {
     statsDClient.increment(
       "data_source_structured_data_upserts_success.count",
       1,
@@ -1193,7 +1193,7 @@ export async function upsertDataSourceTableFromCsv({
       elapsed,
       statsDTags
     );
-    localLogger.info("Successfully uploaded table to Dust.");
+    localLogger.info("Successfully uploaded table to Ruby.");
   } else {
     statsDClient.increment(
       "data_source_structured_data_upserts_error.count",
@@ -1207,30 +1207,30 @@ export async function upsertDataSourceTableFromCsv({
     );
     localLogger.error(
       {
-        statusCode: dustRequestResult.status,
+        statusCode: rubyRequestResult.status,
         elapsed,
       },
-      "Error uploading table to Dust."
+      "Error uploading table to Ruby."
     );
     if (
-      dustRequestResult.status === 400 &&
-      dustRequestResult.data.error?.type === "invalid_rows_request_error"
+      rubyRequestResult.status === 400 &&
+      rubyRequestResult.data.error?.type === "invalid_rows_request_error"
     ) {
       throw new TablesError(
         "invalid_csv",
-        dustRequestResult.data.error.message
+        rubyRequestResult.data.error.message
       );
-    } else if (dustRequestResult.status === 413) {
+    } else if (rubyRequestResult.status === 413) {
       throw new TablesError(
         "file_too_large",
-        dustRequestResult.data.error?.message ||
+        rubyRequestResult.data.error?.message ||
           "File size exceeds the maximum limit"
       );
     } else {
       throw new Error(
-        `Error uploading table to dust, got ${
-          dustRequestResult.status
-        }: ${JSON.stringify(dustRequestResult.data, null, 2)}`
+        `Error uploading table to ruby, got ${
+          rubyRequestResult.status
+        }: ${JSON.stringify(rubyRequestResult.data, null, 2)}`
       );
     }
   }
@@ -1257,7 +1257,7 @@ export async function deleteDataSourceTableRow({
     `workspace_id:${dataSourceConfig.workspaceId}`,
   ];
 
-  localLogger.info("Attempting to delete table from Dust.");
+  localLogger.info("Attempting to delete table from Ruby.");
   statsDClient.increment(
     "data_source_structured_data_deletes_attempt.count",
     1,
@@ -1267,20 +1267,20 @@ export async function deleteDataSourceTableRow({
   const now = new Date();
 
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/tables/${tableId}/rows/${rowId}`;
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
     },
     validateStatus: null,
   };
 
-  let dustRequestResult: AxiosResponse;
+  let rubyRequestResult: AxiosResponse;
   try {
-    dustRequestResult = await axiosWithTimeout.delete(
+    rubyRequestResult = await axiosWithTimeout.delete(
       endpoint,
-      dustRequestConfig
+      rubyRequestConfig
     );
   } catch (e) {
     const elapsed = new Date().getTime() - now.getTime();
@@ -1294,25 +1294,25 @@ export async function deleteDataSourceTableRow({
       elapsed,
       statsDTags
     );
-    localLogger.error({ error: e }, "Error deleting table from Dust.");
+    localLogger.error({ error: e }, "Error deleting table from Ruby.");
     throw e;
   }
 
   const elapsed = new Date().getTime() - now.getTime();
 
-  if (dustRequestResult.status === 404) {
-    localLogger.info("Table doesn't exist on Dust. Ignoring.");
+  if (rubyRequestResult.status === 404) {
+    localLogger.info("Table doesn't exist on Ruby. Ignoring.");
     return;
   }
 
-  if (dustRequestResult.status >= 200 && dustRequestResult.status < 300) {
+  if (rubyRequestResult.status >= 200 && rubyRequestResult.status < 300) {
     statsDClient.increment(
       "data_source_structured_data_deletes_success.count",
       1,
       statsDTags
     );
 
-    localLogger.info("Successfully deleted table from Dust.");
+    localLogger.info("Successfully deleted table from Ruby.");
   } else {
     statsDClient.increment(
       "data_source_structured_data_deletes_error.count",
@@ -1326,12 +1326,12 @@ export async function deleteDataSourceTableRow({
     );
     localLogger.error(
       {
-        statusCode: dustRequestResult.status,
+        statusCode: rubyRequestResult.status,
         elapsed,
       },
-      "Error deleting table from Dust."
+      "Error deleting table from Ruby."
     );
-    throw new Error(`Error deleting from dust: ${dustRequestResult}`);
+    throw new Error(`Error deleting from ruby: ${rubyRequestResult}`);
   }
 }
 
@@ -1351,30 +1351,30 @@ async function _getDataSourceTable({
   });
 
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/tables/${tableId}`;
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
     },
   };
 
-  let dustRequestResult: AxiosResponse<GetTableResponseType>;
+  let rubyRequestResult: AxiosResponse<GetTableResponseType>;
   try {
-    dustRequestResult = await axiosWithTimeout.get<GetTableResponseType>(
+    rubyRequestResult = await axiosWithTimeout.get<GetTableResponseType>(
       endpoint,
-      dustRequestConfig
+      rubyRequestConfig
     );
   } catch (e) {
     if (axios.isAxiosError(e) && e.response?.status === 404) {
-      localLogger.info("Table doesn't exist on Dust. Ignoring.");
+      localLogger.info("Table doesn't exist on Ruby. Ignoring.");
       return;
     }
-    localLogger.error({ error: e }, "Error getting table from Dust.");
+    localLogger.error({ error: e }, "Error getting table from Ruby.");
     throw e;
   }
 
-  return dustRequestResult.data.table;
+  return rubyRequestResult.data.table;
 }
 
 export async function deleteDataSourceTable({
@@ -1395,7 +1395,7 @@ export async function deleteDataSourceTable({
     `workspace_id:${dataSourceConfig.workspaceId}`,
   ];
 
-  localLogger.info("Attempting to delete table from Dust.");
+  localLogger.info("Attempting to delete table from Ruby.");
   statsDClient.increment(
     "data_source_structured_data_deletes_attempt.count",
     1,
@@ -1405,20 +1405,20 @@ export async function deleteDataSourceTable({
   const now = new Date();
 
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/tables/${tableId}`;
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
     },
     validateStatus: null,
   };
 
-  let dustRequestResult: AxiosResponse;
+  let rubyRequestResult: AxiosResponse;
   try {
-    dustRequestResult = await axiosWithTimeout.delete(
+    rubyRequestResult = await axiosWithTimeout.delete(
       endpoint,
-      dustRequestConfig
+      rubyRequestConfig
     );
   } catch (e) {
     const elapsed = new Date().getTime() - now.getTime();
@@ -1432,25 +1432,25 @@ export async function deleteDataSourceTable({
       elapsed,
       statsDTags
     );
-    localLogger.error({ error: e }, "Error deleting table from Dust.");
+    localLogger.error({ error: e }, "Error deleting table from Ruby.");
     throw e;
   }
 
   const elapsed = new Date().getTime() - now.getTime();
 
-  if (dustRequestResult.status === 404) {
-    localLogger.info("Table doesn't exist on Dust. Ignoring.");
+  if (rubyRequestResult.status === 404) {
+    localLogger.info("Table doesn't exist on Ruby. Ignoring.");
     return;
   }
 
-  if (dustRequestResult.status >= 200 && dustRequestResult.status < 300) {
+  if (rubyRequestResult.status >= 200 && rubyRequestResult.status < 300) {
     statsDClient.increment(
       "data_source_structured_data_deletes_success.count",
       1,
       statsDTags
     );
 
-    localLogger.info("Successfully deleted table from Dust.");
+    localLogger.info("Successfully deleted table from Ruby.");
   } else {
     statsDClient.increment(
       "data_source_structured_data_deletes_error.count",
@@ -1464,12 +1464,12 @@ export async function deleteDataSourceTable({
     );
     localLogger.error(
       {
-        statusCode: dustRequestResult.status,
+        statusCode: rubyRequestResult.status,
         elapsed,
       },
-      "Error deleting table from Dust."
+      "Error deleting table from Ruby."
     );
-    throw new Error(`Error deleting from dust: ${dustRequestResult}`);
+    throw new Error(`Error deleting from ruby: ${rubyRequestResult}`);
   }
 }
 
@@ -1489,27 +1489,27 @@ export async function _getDataSourceFolder({
   });
 
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/folders/${folderId}`;
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
     },
   };
 
-  let dustRequestResult: AxiosResponse<GetFolderResponseType>;
+  let rubyRequestResult: AxiosResponse<GetFolderResponseType>;
   try {
-    dustRequestResult = await axiosWithTimeout.get(endpoint, dustRequestConfig);
+    rubyRequestResult = await axiosWithTimeout.get(endpoint, rubyRequestConfig);
   } catch (e) {
     if (axios.isAxiosError(e) && e.response?.status === 404) {
-      localLogger.info("Folder doesn't exist on Dust. Ignoring.");
+      localLogger.info("Folder doesn't exist on Ruby. Ignoring.");
       return;
     }
-    localLogger.error({ error: e }, "Error getting folder from Dust.");
+    localLogger.error({ error: e }, "Error getting folder from Ruby.");
     throw e;
   }
 
-  return dustRequestResult.data.folder;
+  return rubyRequestResult.data.folder;
 }
 
 export const upsertDataSourceFolder = withRetries(
@@ -1543,7 +1543,7 @@ export async function _upsertDataSourceFolder({
 }) {
   const now = new Date();
 
-  const r = await getDustAPI(dataSourceConfig).upsertFolder({
+  const r = await getRubyAPI(dataSourceConfig).upsertFolder({
     dataSourceId: dataSourceConfig.dataSourceId,
     folderId,
     timestamp: timestampMs ? timestampMs : now.getTime(),
@@ -1568,7 +1568,7 @@ export async function deleteDataSourceFolder({
   folderId: string;
   loggerArgs?: Record<string, string | number>;
 }) {
-  const r = await getDustAPI(dataSourceConfig).deleteFolder({
+  const r = await getRubyAPI(dataSourceConfig).deleteFolder({
     dataSourceId: dataSourceConfig.dataSourceId,
     folderId,
   });
@@ -1596,9 +1596,9 @@ export async function checkDataSourceUpsertQueueStatus({
   });
 
   const endpoint =
-    `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
+    `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${dataSourceConfig.workspaceId}` +
     `/data_sources/${dataSourceConfig.dataSourceId}/check_upsert_queue`;
-  const dustRequestConfig: AxiosRequestConfig = {
+  const rubyRequestConfig: AxiosRequestConfig = {
     headers: {
       Authorization: `Bearer ${dataSourceConfig.workspaceAPIKey}`,
     },
@@ -1606,13 +1606,13 @@ export async function checkDataSourceUpsertQueueStatus({
   };
 
   try {
-    const dustRequestResult = await axiosWithTimeout.get(
+    const rubyRequestResult = await axiosWithTimeout.get(
       endpoint,
-      dustRequestConfig
+      rubyRequestConfig
     );
 
-    if (dustRequestResult.status >= 200 && dustRequestResult.status < 300) {
-      const runningCount = dustRequestResult.data.running_count as number;
+    if (rubyRequestResult.status >= 200 && rubyRequestResult.status < 300) {
+      const runningCount = rubyRequestResult.data.running_count as number;
       localLogger.info(
         { runningCount },
         "Checked upsert queue status for data source."
@@ -1621,7 +1621,7 @@ export async function checkDataSourceUpsertQueueStatus({
     } else {
       localLogger.error(
         {
-          statusCode: dustRequestResult.status,
+          statusCode: rubyRequestResult.status,
         },
         "Error checking upsert queue for data source."
       );

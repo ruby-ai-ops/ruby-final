@@ -6,7 +6,7 @@ export interface BaseErrorOptions {
   cause?: Error;
 }
 
-export abstract class DustError extends Error {
+export abstract class RubyError extends Error {
   abstract readonly code: string;
   readonly requestId?: string;
   readonly statusCode?: number;
@@ -41,11 +41,11 @@ export abstract class DustError extends Error {
   }
 }
 
-export class DustAuthenticationError extends DustError {
+export class RubyAuthenticationError extends RubyError {
   readonly code = "authentication_error";
 }
 
-export class DustRateLimitError extends DustError {
+export class RubyRateLimitError extends RubyError {
   readonly code = "rate_limit_error";
   readonly retryAfterMs?: number;
 
@@ -62,7 +62,7 @@ export class DustRateLimitError extends DustError {
   }
 }
 
-export class DustValidationError extends DustError {
+export class RubyValidationError extends RubyError {
   readonly code = "validation_error";
   readonly field?: string;
 
@@ -75,7 +75,7 @@ export class DustValidationError extends DustError {
   }
 }
 
-export class DustAgentError extends DustError {
+export class RubyAgentError extends RubyError {
   readonly code = "agent_error";
   readonly agentId?: string;
 
@@ -88,7 +88,7 @@ export class DustAgentError extends DustError {
   }
 }
 
-export class DustNetworkError extends DustError {
+export class RubyNetworkError extends RubyError {
   readonly code = "network_error";
   private readonly _isRetryable: boolean;
 
@@ -105,7 +105,7 @@ export class DustNetworkError extends DustError {
   }
 }
 
-export class DustCancelledError extends DustError {
+export class RubyCancelledError extends RubyError {
   readonly code = "cancelled";
 
   constructor(message = "Operation cancelled") {
@@ -113,7 +113,7 @@ export class DustCancelledError extends DustError {
   }
 }
 
-export class DustTimeoutError extends DustError {
+export class RubyTimeoutError extends RubyError {
   readonly code = "timeout";
   readonly timeoutMs?: number;
 
@@ -130,7 +130,7 @@ export class DustTimeoutError extends DustError {
   }
 }
 
-export class DustNotFoundError extends DustError {
+export class RubyNotFoundError extends RubyError {
   readonly code = "not_found";
   readonly resourceType?: string;
   readonly resourceId?: string;
@@ -145,11 +145,11 @@ export class DustNotFoundError extends DustError {
   }
 }
 
-export class DustPermissionError extends DustError {
+export class RubyPermissionError extends RubyError {
   readonly code = "permission_denied";
 }
 
-export class DustServerError extends DustError {
+export class RubyServerError extends RubyError {
   readonly code = "server_error";
 
   override get isRetryable(): boolean {
@@ -157,11 +157,11 @@ export class DustServerError extends DustError {
   }
 }
 
-export class DustContentTooLargeError extends DustError {
+export class RubyContentTooLargeError extends RubyError {
   readonly code = "content_too_large";
 }
 
-export class DustUnknownError extends DustError {
+export class RubyUnknownError extends RubyError {
   readonly code = "unknown_error";
   readonly originalError?: APIError;
 
@@ -174,57 +174,57 @@ export class DustUnknownError extends DustError {
   }
 }
 
-export type DustErrorType =
-  | DustAuthenticationError
-  | DustRateLimitError
-  | DustValidationError
-  | DustAgentError
-  | DustNetworkError
-  | DustCancelledError
-  | DustTimeoutError
-  | DustNotFoundError
-  | DustPermissionError
-  | DustServerError
-  | DustContentTooLargeError
-  | DustUnknownError;
+export type RubyErrorType =
+  | RubyAuthenticationError
+  | RubyRateLimitError
+  | RubyValidationError
+  | RubyAgentError
+  | RubyNetworkError
+  | RubyCancelledError
+  | RubyTimeoutError
+  | RubyNotFoundError
+  | RubyPermissionError
+  | RubyServerError
+  | RubyContentTooLargeError
+  | RubyUnknownError;
 
-export type DustErrorCode = DustErrorType["code"];
+export type RubyErrorCode = RubyErrorType["code"];
 
 const errorTypeMapping: Record<
   string,
   new (
     message: string,
     options?: BaseErrorOptions
-  ) => DustError
+  ) => RubyError
 > = {
-  not_authenticated: DustAuthenticationError,
-  invalid_api_key_error: DustAuthenticationError,
-  malformed_authorization_header_error: DustAuthenticationError,
-  workspace_auth_error: DustAuthenticationError,
-  rate_limit_error: DustRateLimitError,
-  invalid_request_error: DustValidationError,
-  invalid_pagination_parameters: DustValidationError,
-  missing_required_parameters: DustValidationError,
-  file_type_not_supported: DustValidationError,
-  conversation_not_found: DustNotFoundError,
-  agent_configuration_not_found: DustNotFoundError,
-  data_source_not_found: DustNotFoundError,
-  file_not_found: DustNotFoundError,
-  message_not_found: DustNotFoundError,
-  workspace_not_found: DustNotFoundError,
-  space_not_found: DustNotFoundError,
-  user_not_found: DustNotFoundError,
-  not_found: DustNotFoundError,
-  subscription_payment_failed: DustPermissionError,
-  plan_limit_error: DustPermissionError,
-  plan_message_limit_exceeded: DustPermissionError,
-  credits_exhausted: DustPermissionError,
-  user_cap_reached: DustPermissionError,
-  subscription_required: DustPermissionError,
-  workspace_can_use_product_required_error: DustPermissionError,
-  content_too_large: DustContentTooLargeError,
-  internal_server_error: DustServerError,
-  unexpected_network_error: DustNetworkError,
+  not_authenticated: RubyAuthenticationError,
+  invalid_api_key_error: RubyAuthenticationError,
+  malformed_authorization_header_error: RubyAuthenticationError,
+  workspace_auth_error: RubyAuthenticationError,
+  rate_limit_error: RubyRateLimitError,
+  invalid_request_error: RubyValidationError,
+  invalid_pagination_parameters: RubyValidationError,
+  missing_required_parameters: RubyValidationError,
+  file_type_not_supported: RubyValidationError,
+  conversation_not_found: RubyNotFoundError,
+  agent_configuration_not_found: RubyNotFoundError,
+  data_source_not_found: RubyNotFoundError,
+  file_not_found: RubyNotFoundError,
+  message_not_found: RubyNotFoundError,
+  workspace_not_found: RubyNotFoundError,
+  space_not_found: RubyNotFoundError,
+  user_not_found: RubyNotFoundError,
+  not_found: RubyNotFoundError,
+  subscription_payment_failed: RubyPermissionError,
+  plan_limit_error: RubyPermissionError,
+  plan_message_limit_exceeded: RubyPermissionError,
+  credits_exhausted: RubyPermissionError,
+  user_cap_reached: RubyPermissionError,
+  subscription_required: RubyPermissionError,
+  workspace_can_use_product_required_error: RubyPermissionError,
+  content_too_large: RubyContentTooLargeError,
+  internal_server_error: RubyServerError,
+  unexpected_network_error: RubyNetworkError,
 };
 
 const statusCodeMapping: Record<
@@ -232,20 +232,20 @@ const statusCodeMapping: Record<
   new (
     message: string,
     options?: BaseErrorOptions
-  ) => DustError
+  ) => RubyError
 > = {
-  401: DustAuthenticationError,
-  403: DustPermissionError,
-  404: DustNotFoundError,
-  408: DustTimeoutError,
-  413: DustContentTooLargeError,
-  429: DustRateLimitError,
+  401: RubyAuthenticationError,
+  403: RubyPermissionError,
+  404: RubyNotFoundError,
+  408: RubyTimeoutError,
+  413: RubyContentTooLargeError,
+  429: RubyRateLimitError,
 };
 
-export function apiErrorToDustError(
+export function apiErrorToRubyError(
   apiError: APIError,
   statusCode?: number
-): DustError {
+): RubyError {
   const ErrorClass = errorTypeMapping[apiError.type];
   if (ErrorClass) {
     return new ErrorClass(apiError.message, { statusCode });
@@ -257,22 +257,22 @@ export function apiErrorToDustError(
       return new StatusErrorClass(apiError.message, { statusCode });
     }
     if (statusCode >= 500) {
-      return new DustServerError(apiError.message, { statusCode });
+      return new RubyServerError(apiError.message, { statusCode });
     }
   }
 
-  return new DustUnknownError(apiError.message, {
+  return new RubyUnknownError(apiError.message, {
     statusCode,
     originalError: apiError,
   });
 }
 
-export function isDustError(error: unknown): error is DustError {
-  return error instanceof DustError;
+export function isRubyError(error: unknown): error is RubyError {
+  return error instanceof RubyError;
 }
 
 export function isRetryableError(error: unknown): boolean {
-  if (error instanceof DustError) {
+  if (error instanceof RubyError) {
     return error.isRetryable;
   }
   return false;

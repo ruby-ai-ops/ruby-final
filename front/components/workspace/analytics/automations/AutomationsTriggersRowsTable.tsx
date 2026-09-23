@@ -12,7 +12,7 @@ import {
   DataTable,
   Icon,
   LoadingBlock,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef, RowSelectionState } from "@tanstack/react-table";
 import {
   flexRender,
@@ -22,7 +22,7 @@ import {
 } from "@tanstack/react-table";
 import { Fragment } from "react";
 
-// The id sparkle's createSelectionColumn gives its checkbox column.
+// The id ui's createSelectionColumn gives its checkbox column.
 const SELECTION_COLUMN_ID = "select";
 
 const NO_ROW_SELECTION: RowSelectionState = {};

@@ -1,4 +1,4 @@
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import React from "react";
 
 interface ItemRowProps {

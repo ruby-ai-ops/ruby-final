@@ -8,8 +8,8 @@ import type {
 import type { Logger } from "@connectors/logger/logger";
 import type { BigQueryCredentialsWithLocation } from "@connectors/types";
 import { isBigqueryPermissionsError } from "@connectors/types/bigquery";
-import type { Result } from "@dust-tt/client";
-import { Err, normalizeError, Ok, removeNulls } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, normalizeError, Ok, removeNulls } from "@ruby-ai/client";
 import { BigQuery } from "@google-cloud/bigquery";
 import { ProjectsClient } from "@google-cloud/resource-manager";
 

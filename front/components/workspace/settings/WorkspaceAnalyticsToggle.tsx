@@ -1,7 +1,7 @@
 import { GovernanceSettingRowLayout } from "@app/components/pages/workspace/governance/GovernanceSettingRowLayout";
 import { useWorkspaceAnalyticsToggle } from "@app/hooks/useWorkspaceAnalyticsToggle";
 import type { WorkspaceType } from "@app/types/user";
-import { SliderToggle } from "@dust-tt/sparkle";
+import { SliderToggle } from "@ruby-ai/ui";
 
 export const WORKSPACE_ANALYTICS_LABEL = "Workspace Analyst";
 export const WORKSPACE_ANALYTICS_DESCRIPTION =

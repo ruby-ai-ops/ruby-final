@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
 use clap::Parser;
-use dust::{
+use ruby::{
     databases::{database::SqlDialect, remote_databases::remote_database::get_remote_database},
     project::Project,
     stores::{postgres, store},
@@ -94,7 +94,7 @@ async fn main() -> Result<()> {
             };
 
             let dialect_name = match remote_db.dialect() {
-                SqlDialect::DustSqlite => "DustSqlite",
+                SqlDialect::RubySqlite => "RubySqlite",
                 SqlDialect::Snowflake => "Snowflake",
                 SqlDialect::Bigquery => "BigQuery",
             };

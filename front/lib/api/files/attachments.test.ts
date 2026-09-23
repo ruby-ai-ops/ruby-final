@@ -59,7 +59,7 @@ describe("maybeUpsertFileAttachment", () => {
 
   it("generates snippets for pasted files", async () => {
     const file = await FileFactory.create(auth, null, {
-      contentType: "text/vnd.dust.attachment.pasted",
+      contentType: "text/vnd.ruby.attachment.pasted",
       fileName: "pasted-text-1_2026-06-22_10-00-00.txt",
       fileSize: 500,
       status: "ready",
@@ -85,7 +85,7 @@ describe("maybeUpsertFileAttachment", () => {
 
   it("generates missing snippets for pasted files already attached to a conversation", async () => {
     const file = await FileFactory.create(auth, null, {
-      contentType: "text/vnd.dust.attachment.pasted",
+      contentType: "text/vnd.ruby.attachment.pasted",
       fileName: "pasted-text-2_2026-06-22_10-00-00.txt",
       fileSize: 500,
       status: "ready",

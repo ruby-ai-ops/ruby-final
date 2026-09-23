@@ -46,7 +46,7 @@ async function paceMetronome<T>(fn: () => Promise<T>): Promise<T> {
 }
 
 type FreeCreditSubtype =
-  | "free-poke"
+  | "free-admin"
   | "free-yearly-renewal"
   | "free-renewal"
   | "unknown";
@@ -57,8 +57,8 @@ function getSubtypeFromDbCredit(
   if (!invoiceOrLineItemId) {
     return "unknown";
   }
-  if (invoiceOrLineItemId.startsWith("free-poke-")) {
-    return "free-poke";
+  if (invoiceOrLineItemId.startsWith("free-admin-")) {
+    return "free-admin";
   }
   if (invoiceOrLineItemId.startsWith("free-renewal-yearly-")) {
     return "free-yearly-renewal";
@@ -166,10 +166,10 @@ async function backfillFromMetronome(
     }
 
     const contractId = entry.contract?.id;
-    const isPokeCredit = entry.name?.toLowerCase().includes("poke") ?? false;
+    const isAdminCredit = entry.name?.toLowerCase().includes("admin") ?? false;
     let subtype: FreeCreditSubtype;
-    if (isPokeCredit) {
-      subtype = "free-poke";
+    if (isAdminCredit) {
+      subtype = "free-admin";
     } else if (contractId) {
       const periodDurationSeconds =
         (expirationDate.getTime() - startDate.getTime()) / 1000;
@@ -223,8 +223,8 @@ async function backfillFromMetronome(
 
     const periodStartSeconds = Math.floor(startDate.getTime() / 1000);
     let invoiceOrLineItemId: string | null;
-    if (subtype === "free-poke") {
-      invoiceOrLineItemId = `free-poke-${workspace.sId}-${periodStartSeconds * 1000}`;
+    if (subtype === "free-admin") {
+      invoiceOrLineItemId = `free-admin-${workspace.sId}-${periodStartSeconds * 1000}`;
     } else if (subtype === "free-yearly-renewal" && contractId) {
       invoiceOrLineItemId = `free-renewal-yearly-${contractId}-${periodStartSeconds}`;
     } else if (subtype === "free-renewal" && contractId) {

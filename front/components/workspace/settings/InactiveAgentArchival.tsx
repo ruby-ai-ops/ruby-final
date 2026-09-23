@@ -11,7 +11,7 @@ import { useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useUpdateInactiveAgentArchival } from "@app/lib/swr/assistants";
 import type { WorkspaceType } from "@app/types/user";
 import { getInactiveAgentArchivalThresholdDays } from "@app/types/user";
-import { cn, InputWithSave, SliderToggle } from "@dust-tt/sparkle";
+import { cn, InputWithSave, SliderToggle } from "@ruby-ai/ui";
 import { useState } from "react";
 
 export const INACTIVE_AGENT_ARCHIVAL_LABEL = "Archive unused agents";

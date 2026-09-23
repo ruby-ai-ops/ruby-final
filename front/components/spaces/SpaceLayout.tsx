@@ -3,7 +3,7 @@ import SpaceSideBarMenu from "@app/components/spaces/SpaceSideBarMenu";
 import {
   useSetContentWidth,
   useSetNavChildren,
-} from "@app/components/sparkle/AppLayoutContext";
+} from "@app/components/ui/AppLayoutContext";
 import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
 import { isEnterprisePlanPrefix } from "@app/lib/plans/plan_codes";
 import { useAppRouter, usePathParams } from "@app/lib/platform";
@@ -20,7 +20,7 @@ import {
   InfoCircle,
   Page,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useCallback, useMemo, useState } from "react";
 
@@ -141,7 +141,7 @@ export function SpaceLayout({ children }: SpaceLayoutProps) {
             <DialogContainer>
               {isEnterprise
                 ? "We're going to make changes to data permissions spaces soon and are limiting the creation of spaces for that reason. Reach out to us to learn more."
-                : "The maximum number of spaces for this workspace has been reached. Please reach out at support@dust.tt to learn more."}
+                : "The maximum number of spaces for this workspace has been reached. Please reach out at support@ruby.ad to learn more."}
             </DialogContainer>
             <DialogFooter
               rightButtonProps={{

@@ -1,4 +1,4 @@
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { WebhookSourcesViewResource } from "@app/lib/resources/webhook_sources_view_resource";
 import { createPrivateApiMockRequest } from "@app/tests/utils/generic_private_api_tests";
 import { SpaceFactory } from "@app/tests/utils/SpaceFactory";
@@ -207,7 +207,7 @@ describe("PATCH /api/w/[wId]/webhook_sources/views/[viewId]", () => {
       updateName: vi
         .fn()
         .mockResolvedValue(
-          new Err(new DustError("internal_error", "Test error"))
+          new Err(new RubyError("internal_error", "Test error"))
         ),
       toJSON: vi.fn().mockReturnValue(webhookSourceView.toJSONForAdmin()),
     };

@@ -94,28 +94,28 @@ vi.mock("e2b", () => ({
 
 describe("formatSandboxImageId()", () => {
   test("replaces dots with hyphens in tag", () => {
-    const id: SandboxImageId = { imageName: "dust-base", tag: "v0.1.1" };
-    expect(formatSandboxImageId(id)).toBe("dust-base_v0-1-1");
+    const id: SandboxImageId = { imageName: "ruby-base", tag: "v0.1.1" };
+    expect(formatSandboxImageId(id)).toBe("ruby-base_v0-1-1");
   });
 
   test("replaces underscores with hyphens in tag", () => {
-    const id: SandboxImageId = { imageName: "dust-base", tag: "my_tag" };
-    expect(formatSandboxImageId(id)).toBe("dust-base_my-tag");
+    const id: SandboxImageId = { imageName: "ruby-base", tag: "my_tag" };
+    expect(formatSandboxImageId(id)).toBe("ruby-base_my-tag");
   });
 
   test("lowercases uppercase characters", () => {
-    const id: SandboxImageId = { imageName: "dust-base", tag: "Staging" };
-    expect(formatSandboxImageId(id)).toBe("dust-base_staging");
+    const id: SandboxImageId = { imageName: "ruby-base", tag: "Staging" };
+    expect(formatSandboxImageId(id)).toBe("ruby-base_staging");
   });
 
   test("sanitizes both imageName and tag", () => {
-    const id: SandboxImageId = { imageName: "dust-base", tag: "v0.1.1" };
-    expect(formatSandboxImageId(id)).toBe("dust-base_v0-1-1");
+    const id: SandboxImageId = { imageName: "ruby-base", tag: "v0.1.1" };
+    expect(formatSandboxImageId(id)).toBe("ruby-base_v0-1-1");
   });
 
   test("handles alphanumeric and hyphens without modification", () => {
-    const id: SandboxImageId = { imageName: "dust-base", tag: "edge" };
-    expect(formatSandboxImageId(id)).toBe("dust-base_edge");
+    const id: SandboxImageId = { imageName: "ruby-base", tag: "edge" };
+    expect(formatSandboxImageId(id)).toBe("ruby-base_edge");
   });
 });
 
@@ -129,12 +129,12 @@ describe("listE2BTemplates()", () => {
       data: [
         {
           templateID: "tmpl-built",
-          aliases: ["dust-base_v0-1-1"],
+          aliases: ["ruby-base_v0-1-1"],
           envdVersion: "0.2.4",
         },
         {
           templateID: "tmpl-failed",
-          aliases: ["dust-base_v0-1-2"],
+          aliases: ["ruby-base_v0-1-2"],
           envdVersion: "",
         },
       ],
@@ -147,12 +147,12 @@ describe("listE2BTemplates()", () => {
       expect(result.value).toEqual([
         {
           templateId: "tmpl-built",
-          aliases: ["dust-base_v0-1-1"],
+          aliases: ["ruby-base_v0-1-1"],
           envdVersion: "0.2.4",
         },
         {
           templateId: "tmpl-failed",
-          aliases: ["dust-base_v0-1-2"],
+          aliases: ["ruby-base_v0-1-2"],
           envdVersion: null,
         },
       ]);
@@ -179,14 +179,14 @@ describe("findE2BTemplate()", () => {
         { templateID: "tmpl-other", aliases: ["other_v1"], envdVersion: "1.0" },
         {
           templateID: "tmpl-wanted",
-          aliases: ["dust-base_v0-1-1"],
+          aliases: ["ruby-base_v0-1-1"],
           envdVersion: "1.0",
         },
       ],
     });
 
     const result = await findE2BTemplate({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "v0.1.1",
     });
 
@@ -204,7 +204,7 @@ describe("findE2BTemplate()", () => {
     });
 
     const result = await findE2BTemplate({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "v0.1.1",
     });
 
@@ -250,7 +250,7 @@ describe("deleteUnbuiltE2BTemplate()", () => {
       data: [
         {
           templateID: "tmpl-failed",
-          aliases: ["dust-base_v0-1-1"],
+          aliases: ["ruby-base_v0-1-1"],
           envdVersion: "",
         },
       ],
@@ -258,7 +258,7 @@ describe("deleteUnbuiltE2BTemplate()", () => {
     mockApiDelete.mockResolvedValueOnce({ data: undefined });
 
     const result = await deleteUnbuiltE2BTemplate({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "v0.1.1",
     });
 
@@ -276,14 +276,14 @@ describe("deleteUnbuiltE2BTemplate()", () => {
       data: [
         {
           templateID: "tmpl-built",
-          aliases: ["dust-base_v0-1-1"],
+          aliases: ["ruby-base_v0-1-1"],
           envdVersion: "0.2.4",
         },
       ],
     });
 
     const result = await deleteUnbuiltE2BTemplate({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "v0.1.1",
     });
 
@@ -298,7 +298,7 @@ describe("deleteUnbuiltE2BTemplate()", () => {
     mockApiGet.mockResolvedValueOnce({ data: [] });
 
     const result = await deleteUnbuiltE2BTemplate({
-      imageName: "dust-base",
+      imageName: "ruby-base",
       tag: "v0.1.1",
     });
 
@@ -318,7 +318,7 @@ describe("buildSandboxImage()", () => {
   test("calls E2B Template builder methods in operation order", async () => {
     mockBuild.mockResolvedValueOnce({ templateId: "built-template-id" });
     const testImage = createTestImage();
-    const imageId: SandboxImageId = { imageName: "dust-base", tag: "edge" };
+    const imageId: SandboxImageId = { imageName: "ruby-base", tag: "edge" };
 
     const result = await buildSandboxImage(testImage, imageId, {
       apiKey: "test-api-key",
@@ -340,7 +340,7 @@ describe("buildSandboxImage()", () => {
   test("returns templateId from E2B build result", async () => {
     mockBuild.mockResolvedValueOnce({ templateId: "my-template-123" });
     const testImage = createTestImage();
-    const imageId: SandboxImageId = { imageName: "dust-base", tag: "staging" };
+    const imageId: SandboxImageId = { imageName: "ruby-base", tag: "staging" };
 
     const result = await buildSandboxImage(testImage, imageId, {
       apiKey: "test-api-key",
@@ -356,7 +356,7 @@ describe("buildSandboxImage()", () => {
   test("passes sanitized name_tag format to E2B build", async () => {
     mockBuild.mockResolvedValueOnce({ templateId: "built-template-id" });
     const testImage = createTestImage();
-    const imageId: SandboxImageId = { imageName: "dust-base", tag: "v0.1.1" };
+    const imageId: SandboxImageId = { imageName: "ruby-base", tag: "v0.1.1" };
 
     await buildSandboxImage(testImage, imageId, {
       apiKey: "test-api-key",
@@ -366,7 +366,7 @@ describe("buildSandboxImage()", () => {
 
     expect(mockBuild).toHaveBeenCalledWith(
       mockDockerRegistryBuilder,
-      "dust-base_v0-1-1",
+      "ruby-base_v0-1-1",
       expect.objectContaining({
         apiKey: "test-api-key",
         domain: "custom.e2b.dev",
@@ -379,7 +379,7 @@ describe("buildSandboxImage()", () => {
   test("returns Err when E2B build fails", async () => {
     mockBuild.mockRejectedValueOnce(new Error("Build failed"));
     const testImage = createTestImage();
-    const imageId: SandboxImageId = { imageName: "dust-base", tag: "edge" };
+    const imageId: SandboxImageId = { imageName: "ruby-base", tag: "edge" };
 
     const result = await buildSandboxImage(testImage, imageId, {
       apiKey: "test-api-key",
@@ -395,7 +395,7 @@ describe("buildSandboxImage()", () => {
   test("processes operations in correct order", async () => {
     mockBuild.mockResolvedValueOnce({ templateId: "built-template-id" });
     const testImage = createTestImage();
-    const imageId: SandboxImageId = { imageName: "dust-base", tag: "edge" };
+    const imageId: SandboxImageId = { imageName: "ruby-base", tag: "edge" };
 
     const callOrder: string[] = [];
     const trackingDockerRegistryFactory: DockerRegistryFactory = (

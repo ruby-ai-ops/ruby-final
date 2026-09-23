@@ -7,7 +7,7 @@ import { resumeAncestorConversations } from "@app/lib/api/assistant/conversation
 import { getMessageChannelId } from "@app/lib/api/assistant/streaming/helpers";
 import { getRedisHybridManager } from "@app/lib/api/redis-hybrid-manager";
 import { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import {
   AgentMessageModel,
   ConversationModel,
@@ -42,13 +42,13 @@ export async function getActionContextForEmailValidation(
       userId: string;
       messageId: string;
     },
-    DustError
+    RubyError
   >
 > {
   // The action sId encodes [regionBit, shardBit, workspaceModelId, resourceModelId].
   const idsResult = getIdsFromSId(actionId);
   if (idsResult.isErr()) {
-    return new Err(new DustError("invalid_id", "Invalid action ID format"));
+    return new Err(new RubyError("invalid_id", "Invalid action ID format"));
   }
   const { workspaceModelId } = idsResult.value;
 
@@ -56,7 +56,7 @@ export async function getActionContextForEmailValidation(
     workspaceModelId,
   ]);
   if (!workspace) {
-    return new Err(new DustError("internal_error", "Workspace not found"));
+    return new Err(new RubyError("internal_error", "Workspace not found"));
   }
 
   // Build internal admin auth to use resources for workspace-scoped queries.
@@ -65,7 +65,7 @@ export async function getActionContextForEmailValidation(
   const action = await AgentMCPActionResource.fetchById(auth, actionId);
   if (!action) {
     return new Err(
-      new DustError("action_not_found", "Action not found or incomplete")
+      new RubyError("action_not_found", "Action not found or incomplete")
     );
   }
 
@@ -91,7 +91,7 @@ export async function getActionContextForEmailValidation(
 
   if (!agentMessage?.message?.conversation) {
     return new Err(
-      new DustError(
+      new RubyError(
         "action_not_found",
         "Agent message or conversation not found"
       )
@@ -106,7 +106,7 @@ export async function getActionContextForEmailValidation(
   // Get the parent user message to find the user who triggered the agent.
   if (!message.parentId) {
     return new Err(
-      new DustError("internal_error", "Agent message has no parent")
+      new RubyError("internal_error", "Agent message has no parent")
     );
   }
 
@@ -123,7 +123,7 @@ export async function getActionContextForEmailValidation(
 
   if (!parentMessage?.userMessage) {
     return new Err(
-      new DustError("internal_error", "Parent user message not found")
+      new RubyError("internal_error", "Parent user message not found")
     );
   }
 
@@ -133,13 +133,13 @@ export async function getActionContextForEmailValidation(
   // so userId should never be null here. Guard for data integrity.
   if (!userMessage.userId) {
     return new Err(
-      new DustError("internal_error", "User not found for email validation")
+      new RubyError("internal_error", "User not found for email validation")
     );
   }
 
   const [user] = await UserResource.fetchByModelIds([userMessage.userId]);
   if (!user) {
-    return new Err(new DustError("user_not_found", "User resource not found"));
+    return new Err(new RubyError("user_not_found", "User resource not found"));
   }
 
   return new Ok({
@@ -164,14 +164,14 @@ export async function validateActionFromEmail(
     actionId: string;
     approvalState: Exclude<ActionApprovalStateType, "always_approved">;
   }
-): Promise<Result<{ conversationId: string; workspaceId: string }, DustError>> {
+): Promise<Result<{ conversationId: string; workspaceId: string }, RubyError>> {
   const owner = auth.getNonNullableWorkspace();
   const user = auth.user();
 
   const action = await AgentMCPActionResource.fetchById(auth, actionId);
   if (!action) {
     return new Err(
-      new DustError("action_not_found", `Action not found: ${actionId}`)
+      new RubyError("action_not_found", `Action not found: ${actionId}`)
     );
   }
 
@@ -199,7 +199,7 @@ export async function validateActionFromEmail(
 
   if (!agentMessage?.message?.conversation) {
     return new Err(
-      new DustError("internal_error", "Agent message or conversation not found")
+      new RubyError("internal_error", "Agent message or conversation not found")
     );
   }
 
@@ -222,7 +222,7 @@ export async function validateActionFromEmail(
 
   if (action.status !== "blocked_validation_required") {
     return new Err(
-      new DustError(
+      new RubyError(
         "action_not_blocked",
         `Action is not blocked: ${action.status}`
       )
@@ -234,7 +234,7 @@ export async function validateActionFromEmail(
   // that was already terminated.
   if (!(await action.canAgentMessageResume(auth))) {
     return new Err(
-      new DustError(
+      new RubyError(
         "action_not_blocked",
         "Action belongs to an agent message that can no longer resume"
       )
@@ -258,7 +258,7 @@ export async function validateActionFromEmail(
     );
 
     return new Err(
-      new DustError("action_not_blocked", "Action was already validated")
+      new RubyError("action_not_blocked", "Action was already validated")
     );
   }
 
@@ -281,7 +281,7 @@ export async function validateActionFromEmail(
   );
   if (!conversationResource) {
     return new Err(
-      new DustError("internal_error", "Conversation resource not found")
+      new RubyError("internal_error", "Conversation resource not found")
     );
   }
 
@@ -310,7 +310,7 @@ export async function validateActionFromEmail(
   // Get user message info for agent loop.
   if (!message.parentId) {
     return new Err(
-      new DustError("internal_error", "Agent message has no parent")
+      new RubyError("internal_error", "Agent message has no parent")
     );
   }
 
@@ -327,7 +327,7 @@ export async function validateActionFromEmail(
 
   if (!parentMessage?.userMessage) {
     return new Err(
-      new DustError("internal_error", "Parent user message not found")
+      new RubyError("internal_error", "Parent user message not found")
     );
   }
 

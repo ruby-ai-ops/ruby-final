@@ -9,15 +9,24 @@ import {
 import type { LandingLayoutProps } from "@marketing/components/home/LandingLayout";
 import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
+import {
+  MARKETING_SURFACES,
+  isMarketingSurfaceVisible,
+} from "@marketing/lib/marketing_visibility";
 import { classNames } from "@marketing/lib/utils";
 import {
   ArrowRight,
   LegacyButton as Button,
   Div3D,
   Hover3D,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useRouter } from "next/router";
 import type { ReactElement } from "react";
+
+const ANNOTATED_HEADING_STYLE = {
+  fontFamily: '"RubySerif", var(--font-display)',
+  letterSpacing: "-0.05em",
+};
 
 export async function getStaticProps() {
   return {
@@ -86,15 +95,14 @@ const MainVisualUsers = () => (
   </Hover3D>
 );
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function Security() {
+export default function SecurityNextJS() {
   const router = useRouter();
 
   return (
     <>
       <PageMetadata
-        title="Dust Security: Enterprise-Grade Data Protection"
-        description="GDPR compliant, SOC2 Type II certified, HIPAA-ready. Dust prioritizes your data security with encryption, regional hosting, role-based access, and zero model training."
+        title="Ruby Security: Enterprise-Grade Data Protection"
+        description="GDPR compliant, SOC2 Type II certified, HIPAA-ready. Ruby prioritizes your data security with encryption, regional hosting, role-based access, and zero model training."
         pathname={router.asPath}
       />
       <div className="container flex w-full flex-col gap-4 px-6 pb-24 md:gap-0">
@@ -109,6 +117,7 @@ export default function Security() {
             <H1
               mono
               className="text-5xl font-medium leading-tight md:text-6xl lg:text-7xl"
+              style={ANNOTATED_HEADING_STYLE}
             >
               Enterprise-grade Security
             </H1>
@@ -120,24 +129,45 @@ export default function Security() {
                 compliance.
               </Strong>
             </P>
-            <div className="flex flex-col items-center gap-12 py-8 lg:flex-row">
-              <div className="hidden gap-6 py-8 lg:flex">
-                <img src="/static/landing/security/gdpr.svg" className="h-28" />
-                <img src="/static/landing/security/soc2.svg" className="h-28" />
-                <img
-                  src="/static/landing/security/hipaa.svg"
-                  className="h-28"
-                />
+            {(isMarketingSurfaceVisible(
+              MARKETING_SURFACES.securityCertificationBadges
+            ) ||
+              isMarketingSurfaceVisible(
+                MARKETING_SURFACES.trustCenterLink
+              )) && (
+              <div className="flex flex-col items-center gap-12 py-8 lg:flex-row">
+                {isMarketingSurfaceVisible(
+                  MARKETING_SURFACES.securityCertificationBadges
+                ) && (
+                  <div className="hidden gap-6 py-8 lg:flex">
+                    <img
+                      src="/static/landing/security/gdpr.svg"
+                      className="h-28"
+                    />
+                    <img
+                      src="/static/landing/security/soc2.svg"
+                      className="h-28"
+                    />
+                    <img
+                      src="/static/landing/security/hipaa.svg"
+                      className="h-28"
+                    />
+                  </div>
+                )}
+                {isMarketingSurfaceVisible(
+                  MARKETING_SURFACES.trustCenterLink
+                ) && (
+                  <Button
+                    href="https://trust.ruby.ad"
+                    variant="primary"
+                    size="md"
+                    icon={ArrowRight}
+                    label="Visit our Trust Center"
+                    target="_blank"
+                  />
+                )}
               </div>
-              <Button
-                href="https://trust.dust.com"
-                variant="highlight"
-                size="md"
-                icon={ArrowRight}
-                label="Visit our Trust Center"
-                target="_blank"
-              />
-            </div>
+            )}
             <div className="flex gap-8"></div>
           </div>
         </Grid>
@@ -153,17 +183,17 @@ export default function Security() {
             <div className="hidden sm:block">
               <MainVisualData />
             </div>
-            <P size="md" dotCSS="text-brand-orange-golden" shape="triangle">
+            <P size="md" dotCSS="text-sky-500" shape="circle">
               <Strong>Granular Data Selection</Strong>
               <br />
-              Fully control which data Dust ingests from each source.
+              Fully control which data Ruby ingests from each source.
             </P>
-            <P size="md" dotCSS="text-brand-red-rose" shape="rectangle">
+            <P size="md" dotCSS="text-sky-500" shape="circle">
               <Strong>End-to-End Encryption</Strong>
               <br />
               Data is encrypted with AES-256 at rest, TLS in transit.
             </P>
-            <P size="md" dotCSS="text-brand-hunter-green" shape="circle">
+            <P size="md" dotCSS="text-sky-500" shape="circle">
               <Strong>Regional Hosting</Strong>
               <br />
               Host in the EU or US to meet your regulatory needs.
@@ -173,30 +203,38 @@ export default function Security() {
 
         <Grid className="mt-12 md:gap-y-4">
           <div className="col-span-12 flex flex-col justify-center py-4 sm:max-w-[100%] md:max-w-[90%]">
-            <H2>Select trusted models, keep data protected</H2>
+            <H2>Ruby-managed AI, with data protected</H2>
             <P size="lg" className="pb-6 text-muted-foreground">
-              Control risk: only trusted providers, with no data fed into
+              Ruby manages AI routing while keeping customer data out of model
               training.
             </P>
           </div>
           <div className={GRID_SECTION_CLASSES}>
             <div className="hidden sm:block">
-              <MainVisualModels />
+              {isMarketingSurfaceVisible(
+                MARKETING_SURFACES.publicModelDetails
+              ) ? (
+                <MainVisualModels />
+              ) : (
+                <div className="flex aspect-square items-center justify-center rounded-3xl bg-sky-50 text-center text-xl font-semibold text-sky-700">
+                  Ruby-managed AI
+                </div>
+              )}
             </div>
-            <P size="md" dotCSS="text-brand-orange-golden" shape="triangle">
+            <P size="md" dotCSS="text-sky-500" shape="circle">
               <Strong>No Model Training</Strong>
               <br />
               Your data is never used to train models.
             </P>
-            <P size="md" dotCSS="text-brand-red-rose" shape="rectangle">
+            <P size="md" dotCSS="text-sky-500" shape="circle">
               <Strong>Zero Data Retention</Strong>
               <br />
               No data is stored by third-party model providers.
             </P>
-            <P size="md" dotCSS="text-brand-hunter-green" shape="circle">
-              <Strong>Flexible Providers</Strong>
+            <P size="md" dotCSS="text-sky-500" shape="circle">
+              <Strong>Managed Routing</Strong>
               <br />
-              Pick the providers and embedding models you want.
+              Ruby selects and operates the approved AI configuration.
             </P>
           </div>
         </Grid>
@@ -205,7 +243,7 @@ export default function Security() {
           <div className="col-span-12 flex flex-col justify-center py-4 sm:max-w-[100%] md:max-w-[90%]">
             <H2>Maintain rigorous access control at all levels</H2>
             <P size="lg" className="pb-6 text-muted-foreground">
-              Tailor Dust's features to each user according to specified access
+              Tailor Ruby's features to each user according to specified access
               rights.
             </P>
           </div>
@@ -213,17 +251,17 @@ export default function Security() {
             <div className="hidden sm:block">
               <MainVisualUsers />
             </div>
-            <P size="md" dotCSS="text-brand-orange-golden" shape="triangle">
+            <P size="md" dotCSS="text-sky-500" shape="circle">
               <Strong>Single Sign-On (SSO)</Strong>
               <br />
               Use SSO to manage user access across the workspace.
             </P>
-            <P size="md" dotCSS="text-brand-red-rose" shape="rectangle">
+            <P size="md" dotCSS="text-sky-500" shape="circle">
               <Strong>Role-Based Access</Strong>
               <br />
               Assign user, builder, or admin roles to control permissions.
             </P>
-            <P size="md" dotCSS="text-brand-hunter-green" shape="circle">
+            <P size="md" dotCSS="text-sky-500" shape="circle">
               <Strong>Private Spaces</Strong>
               <br />
               Use private spaces for sensitive data, restricting access by role.
@@ -244,14 +282,16 @@ export default function Security() {
               size="md"
               label="Contact us"
             />
-            <Button
-              href="https://trust.dust.com"
-              variant="highlight"
-              size="md"
-              icon={ArrowRight}
-              label="Visit our Trust Center"
-              target="_blank"
-            />
+            {isMarketingSurfaceVisible(MARKETING_SURFACES.trustCenterLink) && (
+              <Button
+                href="https://trust.ruby.ad"
+                variant="primary"
+                size="md"
+                icon={ArrowRight}
+                label="Visit our Trust Center"
+                target="_blank"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -259,6 +299,9 @@ export default function Security() {
   );
 }
 
-Security.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
+SecurityNextJS.getLayout = (
+  page: ReactElement,
+  pageProps: LandingLayoutProps
+) => {
   return <LandingLayout pageProps={pageProps}>{page}</LandingLayout>;
 };

@@ -1,7 +1,7 @@
 import { MCPError } from "@app/lib/actions/mcp_errors";
 import { FILES_SERVER_NAME } from "@app/lib/api/actions/servers/files/metadata";
 import {
-  DustFileSystem,
+  RubyFileSystem,
   SCOPED_PREFIX_CONVERSATION,
   SCOPED_PREFIX_POD,
 } from "@app/lib/api/file_system";
@@ -24,7 +24,7 @@ export async function resolveFilePathsInParentScope(
   mainConversation: ConversationWithoutContentType,
   filePaths: string[]
 ): Promise<Result<string[], MCPError>> {
-  const fsResult = await DustFileSystem.forConversation(auth, mainConversation);
+  const fsResult = await RubyFileSystem.forConversation(auth, mainConversation);
   if (fsResult.isErr()) {
     return new Err(
       new MCPError("Failed to initialize file system.", { tracked: true })
@@ -107,7 +107,7 @@ export async function copyConversationFilesIntoSub(
     );
   }
 
-  const fsResult = await DustFileSystem.forConversations(auth, [
+  const fsResult = await RubyFileSystem.forConversations(auth, [
     parentConversation,
     subConversation.toJSON(),
   ]);

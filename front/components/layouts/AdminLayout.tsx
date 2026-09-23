@@ -1,5 +1,5 @@
 import { subNavigationAdmin } from "@app/components/navigation/config";
-import { useSetSubNavigation } from "@app/components/sparkle/AppLayoutContext";
+import { useSetSubNavigation } from "@app/components/ui/AppLayoutContext";
 import {
   useAuth,
   useFeatureFlags,

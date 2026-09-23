@@ -5,7 +5,7 @@ import type { ConsumptionAnalyticsScope } from "@app/lib/analytics/consumption_s
 import { WORKSPACE_CONSUMPTION_ANALYTICS_SCOPE } from "@app/lib/analytics/consumption_scope";
 import type { ConsumptionScopeFilter } from "@app/types/api/analytics/consumption";
 import { CONSUMPTION_DIMENSION_FILTER_KEYS } from "@app/types/api/analytics/consumption";
-import { Button, cn, LoadingBlock, ProgressBar } from "@dust-tt/sparkle";
+import { Button, cn, LoadingBlock, ProgressBar } from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 import type { ConsumptionDimension } from "./consumptionDimensions";
 

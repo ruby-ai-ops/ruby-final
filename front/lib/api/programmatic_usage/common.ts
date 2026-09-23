@@ -1,4 +1,4 @@
-import { DUST_MARKUP_PERCENT } from "@app/lib/api/assistant/token_pricing";
+import { RUBY_MARKUP_PERCENT } from "@app/lib/api/assistant/token_pricing";
 import type { Authenticator } from "@app/lib/auth";
 import type { UserMessageOrigin } from "@app/types/assistant/conversation";
 import { AGENT_MESSAGE_STATUSES_TO_TRACK } from "@app/types/assistant/conversation";
@@ -60,7 +60,7 @@ const PROGRAMMATIC_FALLBACK_ORIGINS: ReadonlySet<UserMessageOrigin> =
   new Set<UserMessageOrigin>(["slack"]);
 
 // The connector's auth method (e.g. Slack) when it posts a message on behalf
-// of a workspace member it couldn't attribute to a real Dust user.
+// of a workspace member it couldn't attribute to a real Ruby user.
 const SYSTEM_API_KEY_AUTH_METHOD = "system_api_key";
 
 export function isProgrammaticUsageFromContext({
@@ -89,8 +89,8 @@ export function isProgrammaticUsageFromContext({
   );
 }
 
-// Markup multiplier to convert raw ES costs to costs with Dust markup.
-export const MARKUP_MULTIPLIER = 1 + DUST_MARKUP_PERCENT / 100;
+// Markup multiplier to convert raw ES costs to costs with Ruby markup.
+export const MARKUP_MULTIPLIER = 1 + RUBY_MARKUP_PERCENT / 100;
 
 /**
  * Calculate seconds until midnight UTC.

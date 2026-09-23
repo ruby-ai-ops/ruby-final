@@ -1,7 +1,7 @@
 import { getBaseUrl } from "@app/lib/api/config";
 import { clientFetch } from "@app/lib/egress/client";
 import { isString } from "@app/types/shared/utils/general";
-import type { SparkleContextImageType } from "@dust-tt/sparkle";
+import type { RubyUIContextImageType } from "@ruby-ai/ui";
 import { forwardRef, type ImgHTMLAttributes, useEffect, useState } from "react";
 
 /**
@@ -9,7 +9,7 @@ import { forwardRef, type ImgHTMLAttributes, useEffect, useState } from "react";
  * Authorization header. Matches relative `/api/…` paths and absolute URLs
  * whose origin equals the configured base URL (cell-aware).
  */
-function isDustApiUrl(url: string): boolean {
+function isRubyApiUrl(url: string): boolean {
   if (url.startsWith("/api/")) {
     return true;
   }
@@ -34,14 +34,14 @@ function isDustApiUrl(url: string): boolean {
  * Manages its own loading/error state internally so that parent components
  * (ImagePreview, ImageZoomDialog) don't need any changes.
  */
-export const AuthenticatedImage: SparkleContextImageType = forwardRef<
+export const AuthenticatedImage: RubyUIContextImageType = forwardRef<
   HTMLImageElement,
   ImgHTMLAttributes<HTMLImageElement>
 >(function AuthenticatedImage({ src, ...props }, ref) {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [error, setError] = useState(false);
 
-  const needsAuth = !!src && isDustApiUrl(src);
+  const needsAuth = !!src && isRubyApiUrl(src);
 
   useEffect(() => {
     if (!src || !needsAuth) {

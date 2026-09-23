@@ -1,5 +1,5 @@
-use dust::oauth::app;
-use dust::open_telemetry::init_subscribers;
+use ruby::oauth::app;
+use ruby::open_telemetry::init_subscribers;
 use tokio::{
     net::TcpListener,
     signal::unix::{signal, SignalKind},

@@ -45,10 +45,10 @@ export function getFilesServer(
     timeFrame: null,
     jsonSchema: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     additionalConfiguration: {},
     mcpServerViewId: filesView.sId,
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: filesView.mcpServerId,
   };
 }

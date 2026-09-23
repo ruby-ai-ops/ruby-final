@@ -26,7 +26,7 @@ export class ThinkingMachinesInklingGlobalFireworksStream extends WithThinkingMa
     // Verified live 2026-08-31: sending Inkling's 1M completion limit exceeds
     // its shared prompt-plus-completion budget. Omitting the field lets the
     // deployment choose a valid limit, matching the Chat Completions behavior.
-    // Dust's derived endpoint has a lower product cap and keeps sending it.
+    // Ruby's derived endpoint has a lower product cap and keeps sending it.
     return requestWithoutLimit;
   }
 

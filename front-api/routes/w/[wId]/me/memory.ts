@@ -1,4 +1,4 @@
-import type { DustFileSystemError } from "@app/lib/api/file_system/dust_file_system";
+import type { RubyFileSystemError } from "@app/lib/api/file_system/ruby_file_system";
 import {
   exceedsUserMemoryLimit,
   getUserMemory,
@@ -30,7 +30,7 @@ const PatchMemoryBodySchema = z
 // The path is internally built and always valid, so no client-side filesystem
 // error (not_found, invalid_path, already_exists, ...) is reachable here: the
 // only outcomes are `unauthorized` (403) or a genuine GCS/internal failure (500).
-function fileSystemApiError(ctx: Context, error: DustFileSystemError) {
+function fileSystemApiError(ctx: Context, error: RubyFileSystemError) {
   if (error.code === "unauthorized") {
     return apiError(ctx, {
       status_code: 403,
@@ -44,7 +44,7 @@ function fileSystemApiError(ctx: Context, error: DustFileSystemError) {
 }
 
 // Mounted at /api/w/:wId/me/memory. Always scoped to the authenticated user's
-// own memory (via DustFileSystem.forUser). `enabled` is a field of the memory
+// own memory (via RubyFileSystem.forUser). `enabled` is a field of the memory
 // resource rather than a sub-resource with its own path.
 const app = workspaceApp();
 

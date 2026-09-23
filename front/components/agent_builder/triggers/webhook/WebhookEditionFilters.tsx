@@ -21,7 +21,7 @@ import {
   LinkWrapper,
   Spinner,
   TextArea,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useMemo, useState } from "react";
 import { useController, useFormContext, useWatch } from "react-hook-form";
@@ -171,7 +171,7 @@ export function WebhookEditionFilters({
           </p>
           <TextArea
             id="webhook-filter-description"
-            placeholder='Describe the conditions (e.g "Pull requests by John on dust repository")'
+            placeholder='Describe the conditions (e.g "Pull requests by John on ruby repository")'
             rows={3}
             value={naturalDescriptionValue ?? ""}
             disabled={!isEditor}
@@ -205,13 +205,13 @@ export function WebhookEditionFilters({
             title="Payload filtering Syntax"
           >
             This trigger uses a custom webhook without an integrated provider.
-            As a result, Dust is unable to automatically generate a payload
+            As a result, Ruby is unable to automatically generate a payload
             filter. You can manually write a filter expression using our syntax
             to specify conditions on your webhook's payload.
             <br />
             See documentation on{" "}
             <LinkWrapper
-              href="https://docs.dust.tt/docs/filter-webhooks-payload#/"
+              href="https://docs.ruby.ad/docs/filter-webhooks-payload#/"
               target="_blank"
               rel="noreferrer"
               className="underline"

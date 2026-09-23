@@ -25,16 +25,16 @@ import type { AgentMessageType } from "@app/types/assistant/conversation";
 import { isDevelopment } from "@app/types/shared/env";
 import type { ModelId } from "@app/types/shared/model_id";
 
-// Operator-only escape hatch for manual `dsbx` debugging: sandbox tokens are minted per
+// Operator-only escape hatch for manual `rbx` debugging: sandbox tokens are minted per
 // `SandboxResource.exec()` (or per function invocation), so a shell attached with
-// scripts/sandbox_exec.ts has no DUST_SANDBOX_TOKEN. This mints one out-of-band (JWT +
+// scripts/sandbox_exec.ts has no RUBY_SANDBOX_TOKEN. This mints one out-of-band (JWT +
 // the Redis registration `verifySandboxExecToken` requires) and prints the two env vars
-// `dsbx` reads. Runtime app code must keep minting tokens on the exec paths.
+// `rbx` reads. Runtime app code must keep minting tokens on the exec paths.
 //
-//   npx tsx scripts/sandbox_token.ts -s <sandbox-id> [--userEmail me@dust.tt] --execute
+//   npx tsx scripts/sandbox_token.ts -s <sandbox-id> [--userEmail me@ruby.ad] --execute
 //
 // Caveats, by token kind:
-// - Conversation sandbox (exec token): listing (`dsbx tools`) only needs the agent
+// - Conversation sandbox (exec token): listing (`rbx tools`) only needs the agent
 //   configuration version to exist, but calling a tool goes through
 //   `createSandboxChildAction`, which rejects a parent action in a final status. So tool
 //   calls only work while the resolved bash action is still running.
@@ -44,7 +44,7 @@ import type { ModelId } from "@app/types/shared/model_id";
 
 const DEFAULT_EXPIRY_MINUTES = 60;
 
-function dustAPIBaseUrlForSandbox(): string {
+function rubyAPIBaseUrlForSandbox(): string {
   return isDevelopment() && config.getSandboxDevFrontHostName()
     ? `https://${config.getSandboxDevFrontHostName()}`
     : config.getApiBaseUrl();
@@ -57,14 +57,14 @@ function printEnv({
   token: string;
   workspaceId: string;
 }): void {
-  const apiUrl = `${dustAPIBaseUrlForSandbox()}/api/v1/w/${workspaceId}`;
+  const apiUrl = `${rubyAPIBaseUrlForSandbox()}/api/v1/w/${workspaceId}`;
   process.stdout.write(
-    `\nexport DUST_SANDBOX_TOKEN='${token}'\nexport DUST_API_URL='${apiUrl}'\n\n`
+    `\nexport RUBY_SANDBOX_TOKEN='${token}'\nexport RUBY_API_URL='${apiUrl}'\n\n`
   );
 }
 
 /**
- * Resolve the sandbox from either its Dust sId or its provider (E2B) id — the latter is
+ * Resolve the sandbox from either its Ruby sId or its provider (E2B) id — the latter is
  * what scripts/sandbox_exec.ts takes, and is usually all the operator has.
  */
 async function fetchSandbox(
@@ -248,7 +248,7 @@ async function mintExecToken(
   if (isToolExecutionStatusFinal(sandboxAction.status)) {
     logger.warn(
       { actionId: sandboxAction.sId, actionStatus: sandboxAction.status },
-      "Parent sandbox action is final: `dsbx tools` can list, but tool calls will be rejected"
+      "Parent sandbox action is final: `rbx tools` can list, but tool calls will be rejected"
     );
   }
 
@@ -291,7 +291,7 @@ makeScript(
       alias: "s",
       demandOption: true,
       description:
-        "Provider (E2B) sandbox id — same value as scripts/sandbox_exec.ts -s — or the Dust sandbox sId",
+        "Provider (E2B) sandbox id — same value as scripts/sandbox_exec.ts -s — or the Ruby sandbox sId",
     },
     userEmail: {
       type: "string",

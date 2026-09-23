@@ -13,7 +13,7 @@ import {
   RefreshCw02,
   Separator,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { format } from "date-fns/format";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useState } from "react";
@@ -21,7 +21,7 @@ import { useFormContext } from "react-hook-form";
 
 const DEFAULT_INSTRUCTIONS_HISTORY_LIMIT = 50;
 const INSTRUCTIONS_HISTORY_LIMIT_STORAGE_KEY =
-  "dust_instructions_history_limit";
+  "ruby_instructions_history_limit";
 
 function readInstructionsHistoryLimit(): number {
   if (typeof window === "undefined") {
@@ -39,9 +39,9 @@ function readInstructionsHistoryLimit(): number {
 }
 
 // Escape hatch for users who want a higher limit They can run e.g.
-// localStorage.setItem("dust_instructions_history_limit", "100")
+// localStorage.setItem("ruby_instructions_history_limit", "100")
 // And to go back to default:
-// localStorage.removeItem("dust_instructions_history_limit")
+// localStorage.removeItem("ruby_instructions_history_limit")
 const INSTRUCTIONS_HISTORY_LIMIT = readInstructionsHistoryLimit();
 
 interface AgentBuilderInstructionsBlockProps {

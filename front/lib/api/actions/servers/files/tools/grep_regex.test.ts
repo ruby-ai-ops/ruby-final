@@ -11,17 +11,17 @@ import { describe, expect, it, vi } from "vitest";
 
 describe("grep regex", () => {
   it("matches common expressions and inline case-insensitive expressions", () => {
-    const regexResult = compileGrepPattern("(?i)^dust-[0-9]+$");
+    const regexResult = compileGrepPattern("(?i)^ruby-[0-9]+$");
     expect(regexResult.isOk()).toBe(true);
     if (regexResult.isErr()) {
       throw regexResult.error;
     }
 
-    expect(regexResult.value.test("DUST-42")).toBe(true);
+    expect(regexResult.value.test("RUBY-42")).toBe(true);
   });
 
   it("rejects unsupported and oversized patterns", () => {
-    const unsupportedResult = compileGrepPattern("dust(?=ai)");
+    const unsupportedResult = compileGrepPattern("ruby(?=ai)");
     expect(unsupportedResult.isErr()).toBe(true);
     if (unsupportedResult.isOk()) {
       throw new Error("Expected lookahead to be rejected.");
@@ -49,7 +49,7 @@ describe("grep regex", () => {
   });
 
   it("rejects an oversized line before receiving a newline", async () => {
-    const regexResult = compileGrepPattern("dust");
+    const regexResult = compileGrepPattern("ruby");
     if (regexResult.isErr()) {
       throw regexResult.error;
     }

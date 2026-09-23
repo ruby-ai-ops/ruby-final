@@ -9,12 +9,12 @@ workflow and activity.
 POST invocation
   -> create invocation
   -> await sandbox.exec()
-      -> dsbx tool blocks for approval
+      -> rbx tool blocks for approval
   -> return invocation ID
 ```
 
 The visualization cannot subscribe to the invocation event stream until the POST returns. If the
-function calls a tool that requires approval, `dsbx` waits for the action while the UI waits for the
+function calls a tool that requires approval, `rbx` waits for the action while the UI waits for the
 invocation ID, creating a deadlock.
 
 ## Target flow
@@ -39,13 +39,13 @@ while an activity owns the long-running execution.
 PR #28829 remains responsible for resolving the inner tool approval:
 
 1. The invocation activity waits inside `sandbox.exec()`.
-2. `dsbx` creates a tool action and polls it.
+2. `rbx` creates a tool action and polls it.
 3. The action becomes `blocked_validation_required` and emits an approval event.
 4. The visualization already has the invocation ID, so its SSE subscription displays the approval
    card.
 5. PR #28829 transitions the action to `running` and launches
    `runSandboxFunctionToolWorkflow`.
-6. The tool completes, the `dsbx` poll returns, and the outer invocation activity continues.
+6. The tool completes, the `rbx` poll returns, and the outer invocation activity continues.
 7. The runner publishes the terminal invocation result.
 
 ## Implementation

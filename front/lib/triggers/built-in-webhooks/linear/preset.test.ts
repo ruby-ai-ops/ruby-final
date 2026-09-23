@@ -35,7 +35,7 @@ describe("Linear webhook filters against delivered payload", () => {
     action: "update",
     type: "Issue",
     createdAt: "2026-07-07T00:00:00.000Z",
-    url: "https://linear.app/dust/issue/ABC-123",
+    url: "https://linear.app/ruby/issue/ABC-123",
     data: {
       id: "issue-uuid",
       identifier: "ABC-123",

@@ -27,7 +27,7 @@ export class RunFactory {
     const workspace = auth.getNonNullableWorkspace();
     const run = await RunResource.makeNew({
       appId: null,
-      dustRunId: generateRandomModelSId(),
+      rubyRunId: generateRandomModelSId(),
       runType: "deploy",
       useWorkspaceCredentials: false,
       workspaceId: workspace.id,

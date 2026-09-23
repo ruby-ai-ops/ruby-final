@@ -21,7 +21,7 @@ import type { ParsedUrlQuery } from "querystring";
  * OAuth provider for Slack Tools MCP server.
  *
  * This is a dedicated provider separate from the main `slack` provider to ensure
- * the Slack Tools MCP always uses the correct Slack App (Dust Slack Tools - A09361B9ULB)
+ * the Slack Tools MCP always uses the correct Slack App (Ruby Slack Tools - A09361B9ULB)
  * for both platform_actions and personal_actions use cases.
  *
  * This separation was needed because the slack_bot MCP server reused the `slack` provider's

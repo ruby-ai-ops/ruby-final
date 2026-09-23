@@ -63,7 +63,7 @@ import {
   Upload01,
   Users01,
   XCircle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -127,15 +127,15 @@ export function PodSettingsTab({
 
   // Default agent for new conversations started in this pod. Stored on pod metadata
   // (shared across pod members). Resolved downstream in `useHandleMentions`, falling
-  // back to @dust.
+  // back to @ruby.
   const { agentConfigurations, isLoading: isAgentConfigurationsLoading } =
     useUnifiedAgentConfigurations({
       workspaceId: owner.sId,
     });
-  const dustAgent =
-    agentConfigurations.find((a) => a.sId === GLOBAL_AGENTS_SID.DUST) ?? null;
+  const rubyAgent =
+    agentConfigurations.find((a) => a.sId === GLOBAL_AGENTS_SID.RUBY) ?? null;
   // When the pod has no default set, new conversations inherit the workspace
-  // default agent, else then @dust.
+  // default agent, else then @ruby.
   const isInheritingWorkspaceDefault =
     hasWorkspaceDefaultAgentFeature && !podMetadata?.defaultAgentId;
   const resolvedDefaultAgentId = resolveDefaultAgentId({
@@ -143,32 +143,32 @@ export function PodSettingsTab({
     podDefaultAgentId: podMetadata?.defaultAgentId,
     hasWorkspaceDefaultAgentFeature,
   });
-  // Fall back to @dust when the default agent isn't available to the
+  // Fall back to @ruby when the default agent isn't available to the
   // current user (e.g. unpublished/deleted). This is the agent shown in the
   // input bar and pod settings.
   const displayedDefaultAgent =
     (resolvedDefaultAgentId &&
       agentConfigurations.find((a) => a.sId === resolvedDefaultAgentId)) ||
-    dustAgent;
+    rubyAgent;
   // The configured default may be an agent the current user can't access (e.g.
   // an unpublished agent). `agentConfigurations` only contains viewable agents,
-  // so when the stored default is missing it falls back to @dust for this user.
+  // so when the stored default is missing it falls back to @ruby for this user.
   // Surface the same notice as the conversations input bar.
   const isDefaultAgentUnavailable =
     !isAgentConfigurationsLoading &&
     !isPodMetadataLoading &&
     !!podMetadata?.defaultAgentId &&
-    podMetadata.defaultAgentId !== GLOBAL_AGENTS_SID.DUST &&
+    podMetadata.defaultAgentId !== GLOBAL_AGENTS_SID.RUBY &&
     !agentConfigurations.some((a) => a.sId === podMetadata.defaultAgentId);
   const saveDefaultAgent = useCallback(
     async (agentId: string | null) => {
       // Warn about the implications of using another default agentbefore switching.
-      // Resetting back to @dust needs no confirmation.
-      if (agentId && agentId !== GLOBAL_AGENTS_SID.DUST) {
+      // Resetting back to @ruby needs no confirmation.
+      if (agentId && agentId !== GLOBAL_AGENTS_SID.RUBY) {
         const confirmed = await confirm({
           title: "Warning",
           message:
-            "@dust is designed to give your users the best experience by default. A custom default agent may not handle every request as reliably. Do you want to set it as the default anyway?",
+            "@ruby is designed to give your users the best experience by default. A custom default agent may not handle every request as reliably. Do you want to set it as the default anyway?",
           validateVariant: "warning",
           validateLabel: "Yes",
           cancelLabel: "No",
@@ -260,8 +260,8 @@ export function PodSettingsTab({
       tabIndex={interactive ? 0 : -1}
       aria-label={
         isInheritingWorkspaceDefault
-          ? `Default Agent: ${displayedDefaultAgent?.name ?? "Dust"} (workspace default)`
-          : `Default Agent: ${displayedDefaultAgent?.name ?? "Dust"}`
+          ? `Default Agent: ${displayedDefaultAgent?.name ?? "Ruby"} (workspace default)`
+          : `Default Agent: ${displayedDefaultAgent?.name ?? "Ruby"}`
       }
       aria-disabled={!interactive}
       className={cn(
@@ -273,7 +273,7 @@ export function PodSettingsTab({
     >
       <Avatar size="xs" visual={displayedDefaultAgent?.pictureUrl} />
       <span className="grow truncate notranslate">
-        {displayedDefaultAgent?.name ?? "Dust"}
+        {displayedDefaultAgent?.name ?? "Ruby"}
         {isInheritingWorkspaceDefault && (
           <span className="ml-1 text-muted-foreground">
             · Workspace default
@@ -298,7 +298,7 @@ export function PodSettingsTab({
               <Icon visual={InfoCircle} size="xs" />
             </span>
           }
-          label="This Pod's default agent isn't available to you, so @dust is used instead. Contact the editor of the pod for more information."
+          label="This Pod's default agent isn't available to you, so @ruby is used instead. Contact the editor of the pod for more information."
         />
       )}
       {interactive && (

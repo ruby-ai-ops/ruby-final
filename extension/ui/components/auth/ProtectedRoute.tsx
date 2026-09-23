@@ -1,4 +1,4 @@
-import { cn, Spinner } from "@dust-tt/sparkle";
+import { cn, Spinner } from "@ruby-ai/ui";
 import { usePlatform } from "@extension/shared/context/PlatformContext";
 import type { RouteChangeMesssage } from "@extension/shared/messages";
 import { useExtensionAuth } from "@extension/ui/components/auth/AuthProvider";

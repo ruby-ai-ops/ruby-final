@@ -8,12 +8,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const MANUAL_ACTION_SOUND_DEBOUNCE_MS = 1000;
 const MANUAL_ACTION_SOUND_LAST_CHIME_KEY =
-  "dust:manual-action-sound:last-chime-ms";
-const MANUAL_ACTION_SOUND_LOCK_NAME = "dust:manual-action-sound";
+  "ruby:manual-action-sound:last-chime-ms";
+const MANUAL_ACTION_SOUND_LOCK_NAME = "ruby:manual-action-sound";
 
 function showNotification(): void {
   if (Notification.permission === "granted") {
-    new Notification("Dust — Action required", {
+    new Notification("Ruby — Action required", {
       body: "A manual action requires your approval.",
       icon: "/favicon.ico",
     });

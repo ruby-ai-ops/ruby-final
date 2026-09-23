@@ -1,4 +1,4 @@
-import { cn, Label } from "@dust-tt/sparkle";
+import { cn, Label } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 
 interface SettingSectionContainerProps {

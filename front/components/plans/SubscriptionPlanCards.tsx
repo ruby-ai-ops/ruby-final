@@ -8,7 +8,7 @@ import {
 import { isWhitelistedBusinessPlan } from "@app/lib/plans/plan_codes";
 import type { BillingPeriod } from "@app/types/plan";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, Check, Icon } from "@dust-tt/sparkle";
+import { Button, Check, Icon } from "@ruby-ai/ui";
 
 const PRO_FEATURES = [
   "From 1 user",

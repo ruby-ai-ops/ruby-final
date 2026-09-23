@@ -354,14 +354,14 @@ async function handleDataSourceWithProvider({
   const embedderConfig = EMBEDDING_CONFIGS[dataSourceEmbedder];
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
-  const dustProject = await coreAPI.createProject();
-  if (dustProject.isErr()) {
+  const rubyProject = await coreAPI.createProject();
+  if (rubyProject.isErr()) {
     return apiError(ctx, {
       status_code: 500,
       api_error: {
         type: "internal_server_error",
         message: "Failed to create internal project for the data source.",
-        data_source_error: dustProject.error,
+        data_source_error: rubyProject.error,
       },
     });
   }
@@ -383,8 +383,8 @@ async function handleDataSourceWithProvider({
     });
   }
 
-  const dustDataSource = await coreAPI.createDataSource({
-    projectId: dustProject.value.project.project_id.toString(),
+  const rubyDataSource = await coreAPI.createDataSource({
+    projectId: rubyProject.value.project.project_id.toString(),
     config: {
       embedder_config: {
         embedder: {
@@ -403,24 +403,24 @@ async function handleDataSourceWithProvider({
     name: dataSourceName,
   });
 
-  if (dustDataSource.isErr()) {
+  if (rubyDataSource.isErr()) {
     return apiError(ctx, {
       status_code: 500,
       api_error: {
         type: "internal_server_error",
         message: "Failed to create the data source.",
-        data_source_error: dustDataSource.error,
+        data_source_error: rubyDataSource.error,
       },
     });
   }
 
-  const dustProjectId = dustProject.value.project.project_id.toString();
-  const dustDataSourceId = dustDataSource.value.data_source.data_source_id;
+  const rubyProjectId = rubyProject.value.project.project_id.toString();
+  const rubyDataSourceId = rubyDataSource.value.data_source.data_source_id;
 
   const rollbackCoreDataSource = async () => {
     const deleteRes = await coreAPI.deleteDataSource({
-      projectId: dustProjectId,
-      dataSourceId: dustDataSourceId,
+      projectId: rubyProjectId,
+      dataSourceId: rubyDataSourceId,
       caller: "private-api-create-rollback",
     });
     if (deleteRes.isErr()) {
@@ -458,8 +458,8 @@ async function handleDataSourceWithProvider({
             isConnectorProviderAssistantDefaultSelected(provider),
           connectorProvider: provider,
           description: dataSourceDescription,
-          dustAPIProjectId: dustProjectId,
-          dustAPIDataSourceId: dustDataSourceId,
+          rubyAPIProjectId: rubyProjectId,
+          rubyAPIDataSourceId: rubyDataSourceId,
           name: dataSourceName,
           workspaceId: owner.id,
         },
@@ -566,8 +566,8 @@ async function handleDataSourceWithProvider({
       }
 
       const deleteRes = await coreAPI.deleteDataSource({
-        projectId: dustProjectId,
-        dataSourceId: dustDataSourceId,
+        projectId: rubyProjectId,
+        dataSourceId: rubyDataSourceId,
         caller: "private-api-connector-rollback",
       });
       if (deleteRes.isErr()) {

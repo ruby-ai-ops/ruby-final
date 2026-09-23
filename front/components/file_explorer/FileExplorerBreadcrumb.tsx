@@ -13,7 +13,7 @@ import {
   BreadcrumbItem,
   BreadcrumbPage,
   cn,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 
 interface BreadcrumbDropZoneProps {

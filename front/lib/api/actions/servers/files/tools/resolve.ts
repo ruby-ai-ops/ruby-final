@@ -4,7 +4,7 @@ import type {
   ToolHandlerResult,
 } from "@app/lib/actions/mcp_internal_actions/tool_definition";
 import {
-  getDustFileSystemForAgentLoop,
+  getRubyFileSystemForAgentLoop,
   requireAgentLoopConversation,
   scopedPathsFromArgs,
 } from "@app/lib/api/actions/servers/files/tools/agent_loop_fs";
@@ -85,7 +85,7 @@ export async function resolveHandler(
     );
   }
 
-  const fsResult = await getDustFileSystemForAgentLoop(
+  const fsResult = await getRubyFileSystemForAgentLoop(
     extra.auth,
     conversationRes.value,
     scopedPathsFromArgs(canonicalPath)
@@ -93,9 +93,9 @@ export async function resolveHandler(
   if (fsResult.isErr()) {
     return fsResult;
   }
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
-  const statResult = await dustFs.stat(canonicalPath);
+  const statResult = await rubyFs.stat(canonicalPath);
   if (statResult.isErr()) {
     return new Err(new MCPError(statResult.error.message, { tracked: false }));
   }

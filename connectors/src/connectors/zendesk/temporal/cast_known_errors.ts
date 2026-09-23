@@ -3,7 +3,7 @@ import {
   isZendeskForbiddenError,
 } from "@connectors/connectors/zendesk/lib/errors";
 import {
-  DustConnectorWorkflowError,
+  RubyConnectorWorkflowError,
   ExternalOAuthTokenError,
 } from "@connectors/lib/error";
 import type {
@@ -25,7 +25,7 @@ export class ZendeskCastKnownErrorsInterceptor
       if (isZendeskForbiddenError(err)) {
         throw new ExternalOAuthTokenError(err);
       } else if (isZendeskExpiredCursorError(err)) {
-        throw new DustConnectorWorkflowError(
+        throw new RubyConnectorWorkflowError(
           "Cursor expired",
           "unhandled_internal_activity_error",
           err

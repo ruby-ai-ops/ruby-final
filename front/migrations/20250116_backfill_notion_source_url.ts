@@ -27,8 +27,8 @@ async function backfillDatabases(
        AND data_source_id = :dataSourceId;`,
     {
       replacements: {
-        dataSourceId: frontDataSource.dustAPIDataSourceId,
-        projectId: frontDataSource.dustAPIProjectId,
+        dataSourceId: frontDataSource.rubyAPIDataSourceId,
+        projectId: frontDataSource.rubyAPIProjectId,
       },
       type: QueryTypes.SELECT,
     }

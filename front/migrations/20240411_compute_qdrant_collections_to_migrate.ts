@@ -48,13 +48,13 @@ makeScript(
         chunk.map(async (ds) => {
           const fds = await DataSourceModel.findOne({
             where: {
-              dustAPIProjectId: ds.project_id.toString(),
+              rubyAPIProjectId: ds.project_id.toString(),
             },
           });
 
           if (!fds) {
             console.error(
-              `Data source with dustAPIProjectId ${ds.project_id} not found`
+              `Data source with rubyAPIProjectId ${ds.project_id} not found`
             );
             return;
           }

@@ -4,7 +4,7 @@ import {
   CREDIT_PRICED_FREE_PLAN_CODE,
   isEnterprisePlanPrefix,
 } from "@app/lib/plans/plan_codes";
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 import { useSubscriptionContext } from "./SubscriptionContext";
 
 export function BillingUpgrade() {

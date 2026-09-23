@@ -5,7 +5,7 @@ import type { AutomationTriggerCreditDestination } from "@app/lib/api/analytics/
 import type { AutomationTriggerRow } from "@app/lib/api/analytics/automations/triggers";
 import { formatCredits } from "@app/lib/client/credits";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import { LoadingBlock, Tooltip } from "@dust-tt/sparkle";
+import { LoadingBlock, Tooltip } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 
 const CAPTION_TOOLTIP_LABEL: Record<AutomationsScope, string> = {

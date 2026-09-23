@@ -19,327 +19,327 @@ const GLOBAL_AGENT_PROMPT_CONTEXT: Record<
   GLOBAL_AGENTS_SID,
   GlobalAgentPromptContext
 > = {
-  [GLOBAL_AGENTS_SID.DUST]: {
+  [GLOBAL_AGENTS_SID.RUBY]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_LEAN]: {
+  [GLOBAL_AGENTS_SID.RUBY_LEAN]: {
     injectsToolsets: false,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_OMITTED]: {
+  [GLOBAL_AGENTS_SID.RUBY_OMITTED]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_HIGH_OMITTED]: {
+  [GLOBAL_AGENTS_SID.RUBY_HIGH_OMITTED]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_EDGE]: {
+  [GLOBAL_AGENTS_SID.RUBY_EDGE]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_QUICK]: {
+  [GLOBAL_AGENTS_SID.RUBY_QUICK]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_QUICK_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_QUICK_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_OAI]: {
+  [GLOBAL_AGENTS_SID.RUBY_OAI]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_OAI_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_OAI_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_OAI_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_OAI_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_OAI_LUNA]: {
+  [GLOBAL_AGENTS_SID.RUBY_OAI_LUNA]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_OAI_LUNA_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_OAI_LUNA_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_OAI_NANO_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_OAI_NANO_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_GOOG]: {
+  [GLOBAL_AGENTS_SID.RUBY_GOOG]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_GOOG_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_GOOG_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_GOOG_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_GOOG_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_GOOG_LITE]: {
+  [GLOBAL_AGENTS_SID.RUBY_GOOG_LITE]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_GOOG_PRO]: {
+  [GLOBAL_AGENTS_SID.RUBY_GOOG_PRO]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_GOOG_PRO_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_GOOG_PRO_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_GOOG_PRO_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_GOOG_PRO_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_ANT]: {
+  [GLOBAL_AGENTS_SID.RUBY_ANT]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_ANT_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_ANT_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM_OMITTED]: {
+  [GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM_OMITTED]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_ANT_HIGH_OMITTED]: {
+  [GLOBAL_AGENTS_SID.RUBY_ANT_HIGH_OMITTED]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_ANT_SONNET_EDGE]: {
+  [GLOBAL_AGENTS_SID.RUBY_ANT_SONNET_EDGE]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_ANT_SONNET_EDGE_LIGHT]: {
+  [GLOBAL_AGENTS_SID.RUBY_ANT_SONNET_EDGE_LIGHT]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_HAIKU]: {
+  [GLOBAL_AGENTS_SID.RUBY_HAIKU]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_LIGHT]: {
+  [GLOBAL_AGENTS_SID.RUBY_LIGHT]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_KIMI]: {
+  [GLOBAL_AGENTS_SID.RUBY_KIMI]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_KIMI_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_KIMI_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_KIMI_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_KIMI_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_GLM]: {
+  [GLOBAL_AGENTS_SID.RUBY_GLM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_GLM_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_GLM_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_GLM_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_GLM_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_MINIMAX]: {
+  [GLOBAL_AGENTS_SID.RUBY_MINIMAX]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_MINIMAX_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_MINIMAX_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_MINIMAX_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_MINIMAX_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_DEEPSEEK]: {
+  [GLOBAL_AGENTS_SID.RUBY_DEEPSEEK]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_MISTRAL_MEDIUM_NONE]: {
+  [GLOBAL_AGENTS_SID.RUBY_MISTRAL_MEDIUM_NONE]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_MISTRAL_MEDIUM_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_MISTRAL_MEDIUM_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_NEXT]: {
+  [GLOBAL_AGENTS_SID.RUBY_NEXT]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_NEXT_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_NEXT_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_NEXT_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_NEXT_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_CHAWI]: {
+  [GLOBAL_AGENTS_SID.RUBY_CHAWI]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_CHAWI_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_CHAWI_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_CHAWI_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_CHAWI_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_SOUPINOU]: {
+  [GLOBAL_AGENTS_SID.RUBY_SOUPINOU]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_SOUPINOU_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_SOUPINOU_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_SOUPINOU_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_SOUPINOU_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_SOUPINOU_NONE]: {
+  [GLOBAL_AGENTS_SID.RUBY_SOUPINOU_NONE]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_SUNDAE]: {
+  [GLOBAL_AGENTS_SID.RUBY_SUNDAE]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_SUNDAE_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_SUNDAE_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_SUNDAE_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_SUNDAE_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_PISTACHE]: {
+  [GLOBAL_AGENTS_SID.RUBY_PISTACHE]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_PISTACHE_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_PISTACHE_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_PISTACHE_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_PISTACHE_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_CHALOM]: {
+  [GLOBAL_AGENTS_SID.RUBY_CHALOM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_CHALOM_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_CHALOM_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_CHALOM_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_CHALOM_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_LIONEL]: {
+  [GLOBAL_AGENTS_SID.RUBY_LIONEL]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_LIONEL_MEDIUM]: {
+  [GLOBAL_AGENTS_SID.RUBY_LIONEL_MEDIUM]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_LIONEL_HIGH]: {
+  [GLOBAL_AGENTS_SID.RUBY_LIONEL_HIGH]: {
     injectsToolsets: true,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
@@ -354,17 +354,17 @@ const GLOBAL_AGENT_PROMPT_CONTEXT: Record<
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_TASK]: {
+  [GLOBAL_AGENTS_SID.RUBY_TASK]: {
     injectsToolsets: false,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_BROWSER_SUMMARY]: {
+  [GLOBAL_AGENTS_SID.RUBY_BROWSER_SUMMARY]: {
     injectsToolsets: false,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
   },
-  [GLOBAL_AGENTS_SID.DUST_PLANNING]: {
+  [GLOBAL_AGENTS_SID.RUBY_PLANNING]: {
     injectsToolsets: false,
     injectsUserContext: false,
     injectsWorkspaceContext: false,
@@ -550,6 +550,6 @@ export function globalAgentInjectsWorkspaceContext(sId: string): boolean {
   );
 }
 
-export function isDustLikeAgent(sId: string): boolean {
+export function isRubyLikeAgent(sId: string): boolean {
   return globalAgentInjectsToolsets(sId);
 }

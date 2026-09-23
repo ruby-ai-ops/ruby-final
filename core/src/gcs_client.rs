@@ -28,7 +28,7 @@ enum GcsAuthenticationMode {
 /// Returns the shared GCS client used by core.
 ///
 /// Existing regions keep using cloud-storage's service-account authentication.
-/// When no legacy Dust credential is configured, the client uses ADC, including
+/// When no legacy Ruby credential is configured, the client uses ADC, including
 /// the GKE metadata server exposed by Workload Identity Federation.
 pub async fn gcs_client() -> Result<&'static Client> {
     GCS_CLIENT

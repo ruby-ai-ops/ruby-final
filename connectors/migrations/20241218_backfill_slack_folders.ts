@@ -35,7 +35,7 @@ makeScript({}, async ({ execute }, logger) => {
               title: `#${channel.slackChannelName}`,
               parentId: null,
               parents: [internalId],
-              mimeType: "application/vnd.dust.slack.channel",
+              mimeType: "application/vnd.ruby.slack.channel",
             });
           } catch (error) {
             logger.error(

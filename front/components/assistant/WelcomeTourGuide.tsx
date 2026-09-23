@@ -17,7 +17,7 @@ import {
   Table,
   Tooltip,
   TypingAnimation,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useRef, useState } from "react";
 
 // We want exactly 12 connections in the tour guide to have a clean grid layout.
@@ -199,7 +199,7 @@ export function WelcomeTourGuide({
             workspace.
           </div>
           <div className="copy-base px-3 text-muted-foreground">
-            Discover the basics of Dust in {canCreateAgent ? "3" : "2"} steps.
+            Discover the basics of Ruby in {canCreateAgent ? "3" : "2"} steps.
           </div>
         </>
       ),

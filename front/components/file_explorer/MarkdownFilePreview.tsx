@@ -7,7 +7,7 @@ import {
   Eye,
   LinkBlock,
   Markdown,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useLayoutEffect, useMemo, useRef } from "react";
 import type { Components } from "react-markdown";

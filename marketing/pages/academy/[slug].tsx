@@ -40,7 +40,7 @@ import {
   cn,
   Markdown,
   useCopyToClipboard,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -126,8 +126,8 @@ export default function CoursePage({
   quizSettings,
 }: CoursePageProps) {
   const [isCopied, copyToClipboard] = useCopyToClipboard();
-  const ogImageUrl = course.image?.url ?? "https://dust.tt/static/og_image.png";
-  const canonicalUrl = `https://dust.tt/academy/${course.slug}`;
+  const ogImageUrl = course.image?.url ?? "https://ruby.ad/static/og_image.png";
+  const canonicalUrl = `https://ruby.ad/academy/${course.slug}`;
   const tocItems = extractTableOfContents(course.courseContent);
   const hasChapters = chapters.length > 0;
   const browserId = useAcademyBrowserId();
@@ -153,7 +153,7 @@ export default function CoursePage({
         </div>
       )}
       <Head>
-        <title>{`${course.title} | Dust Academy`}</title>
+        <title>{`${course.title} | Ruby Academy`}</title>
         {preview && <meta name="robots" content="noindex, nofollow" />}
         {course.description && (
           <meta name="description" content={course.description} />
@@ -167,7 +167,7 @@ export default function CoursePage({
         <meta property="og:type" content="article" />
         <meta property="og:image" content={ogImageUrl} />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:site_name" content="Dust" />
+        <meta property="og:site_name" content="Ruby" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={course.title} />

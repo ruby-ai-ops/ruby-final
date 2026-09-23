@@ -5,7 +5,7 @@ import {
 } from "@app/lib/api/assistant/conversation/attachments";
 import { getContentFragmentBlob } from "@app/lib/api/assistant/conversation/content_fragment";
 import { getContentNodesForDataSourceView } from "@app/lib/api/data_source_view";
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import {
   deleteGCSMountFile,
   moveFile,
@@ -14,10 +14,10 @@ import {
 } from "@app/lib/api/files/gcs_mount/files";
 import { moveMountFileWithinScope } from "@app/lib/api/files/mount_file_ops";
 import { cleanupProjectFileFragments } from "@app/lib/api/projects/file_cleanup";
-import { requestDustProjectIncrementalSync } from "@app/lib/api/projects/request_incremental_sync";
+import { requestRubyProjectIncrementalSync } from "@app/lib/api/projects/request_incremental_sync";
 import type { Authenticator } from "@app/lib/auth";
 import { getDisplayNameForDataSource } from "@app/lib/data_sources";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { getPrivateUploadBucket } from "@app/lib/file_storage";
 import { MessageModel } from "@app/lib/models/agent/conversation";
 import { ContentFragmentResource } from "@app/lib/resources/content_fragment_resource";
@@ -35,7 +35,7 @@ import {
 } from "@app/types/content_fragment";
 import type { ContentNodeType } from "@app/types/core/content_node";
 import type { ConnectorProvider } from "@app/types/data_source";
-import { DustFileSystemError, podScopedPath } from "@app/types/file_system";
+import { RubyFileSystemError, podScopedPath } from "@app/types/file_system";
 import type { ResolveMountFilePathError } from "@app/types/mount_path";
 import {
   getPodFilesBasePath,
@@ -81,14 +81,14 @@ export type PostProjectContextContentNodeResponseBody = {
 };
 
 /**
- * Folder internal id under which conversation transcripts are indexed in the dust_project
- * data source (see connectors/dust_project/lib/conversation_formatting.ts).
+ * Folder internal id under which conversation transcripts are indexed in the ruby_project
+ * data source (see connectors/ruby_project/lib/conversation_formatting.ts).
  */
 export function getProjectConversationFolderInternalId(
-  dustProjectConnectorId: string,
+  rubyProjectConnectorId: string,
   spaceId: string
 ): string {
-  return `dust-project-${dustProjectConnectorId}-project-${spaceId}`;
+  return `ruby-project-${rubyProjectConnectorId}-project-${spaceId}`;
 }
 
 /**
@@ -227,7 +227,7 @@ export type ProjectKnowledgeFromConnectorItem = {
 /**
  * For a project space, return the connector-backed content nodes currently in
  * the project context, enriched with the source data source view's space,
- * display name and connector provider. Used by the poke admin UI.
+ * display name and connector provider. Used by the admin admin UI.
  */
 export async function listProjectKnowledgeFromConnectors(
   auth: Authenticator,
@@ -342,10 +342,10 @@ export async function addFileToProject(
     space: SpaceResource;
     sourceConversationId?: string;
   }
-): Promise<Result<ContentFragmentResource, DustError>> {
+): Promise<Result<ContentFragmentResource, RubyError>> {
   if (!space.isProject()) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_request_error",
       message: "Space is not a Pod.",
     });
@@ -364,7 +364,7 @@ export async function addFileToProject(
   if (!isAlreadyOnProjectMount) {
     if (!file.mountFilePath) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "invalid_request_error",
         message: "File has no mount path and cannot be moved to the Pod.",
       });
@@ -376,10 +376,10 @@ export async function addFileToProject(
     // Reject the move when a file with the same name already exists in the Pod, rather
     // than silently overwriting it. moveFile (raw GCS) does not check, so we check the
     // destination through a Pod-scoped file system first.
-    const fsRes = await DustFileSystem.forPod(auth, space);
+    const fsRes = await RubyFileSystem.forPod(auth, space);
     if (fsRes.isErr()) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: fsRes.error.message,
       });
@@ -388,14 +388,14 @@ export async function addFileToProject(
     const destExistsRes = await fsRes.value.exists(destScopedPath);
     if (destExistsRes.isErr()) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: destExistsRes.error.message,
       });
     }
     if (destExistsRes.value) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "invalid_request_error",
         message: "A file with this name already exists in the Pod.",
       });
@@ -415,7 +415,7 @@ export async function addFileToProject(
     });
     if (moveRes.isErr()) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: moveRes.error.message,
       });
@@ -432,13 +432,13 @@ export async function addFileToProject(
 
   if (fragmentRes.isErr()) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: fragmentRes.error.message,
     });
   }
 
-  requestDustProjectIncrementalSync(auth, space);
+  requestRubyProjectIncrementalSync(auth, space);
 
   return new Ok(fragmentRes.value);
 }
@@ -457,10 +457,10 @@ export async function addContentNodeToProject(
     contentFragment: ContentFragmentInputWithContentNode;
     space: SpaceResource;
   }
-): Promise<Result<ContentFragmentResource, DustError>> {
+): Promise<Result<ContentFragmentResource, RubyError>> {
   if (!space.isProject()) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_request_error",
       message: "Space is not a project.",
     });
@@ -469,7 +469,7 @@ export async function addContentNodeToProject(
   const blobRes = await getContentFragmentBlob(auth, contentFragment);
   if (blobRes.isErr()) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_request_error",
       message: blobRes.error.message,
     });
@@ -483,7 +483,7 @@ export async function addContentNodeToProject(
     blob.nodeType === null
   ) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: "Expected content node fragment blob.",
     });
@@ -506,7 +506,7 @@ export async function addContentNodeToProject(
 
   if (fragmentRes.isErr()) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: fragmentRes.error.message,
     });
@@ -557,7 +557,7 @@ export async function removeFileFromProject(
     return new Err(deleteRes.error);
   }
 
-  requestDustProjectIncrementalSync(auth, space);
+  requestRubyProjectIncrementalSync(auth, space);
 
   return new Ok(undefined);
 }
@@ -577,24 +577,24 @@ export async function createProjectFolder(
     folderName: string;
     parentRelativePath?: string;
   }
-): Promise<Result<FileSystemDirectoryEntry, DustFileSystemError>> {
+): Promise<Result<FileSystemDirectoryEntry, RubyFileSystemError>> {
   if (!space.isProject()) {
     return new Err(
-      new DustFileSystemError("invalid_path", "Space is not a project.")
+      new RubyFileSystemError("invalid_path", "Space is not a project.")
     );
   }
 
   const folderNameRes = validateMountFolderName(folderName);
   if (folderNameRes.isErr()) {
     return new Err(
-      new DustFileSystemError("invalid_path", folderNameRes.error.message)
+      new RubyFileSystemError("invalid_path", folderNameRes.error.message)
     );
   }
 
   const parentRes = normalizeMountParentRelativePath(parentRelativePath);
   if (parentRes.isErr()) {
     return new Err(
-      new DustFileSystemError("invalid_path", parentRes.error.message)
+      new RubyFileSystemError("invalid_path", parentRes.error.message)
     );
   }
 
@@ -603,7 +603,7 @@ export async function createProjectFolder(
     folderNameRes.value
   );
 
-  const fsResult = await DustFileSystem.forPod(auth, space);
+  const fsResult = await RubyFileSystem.forPod(auth, space);
   if (fsResult.isErr()) {
     return fsResult;
   }
@@ -633,10 +633,10 @@ export async function moveProjectFile(
     sourcePath: string;
     destRelativeFilePath: string;
   }
-): Promise<Result<void, DustError | ResolveMountFilePathError | Error>> {
+): Promise<Result<void, RubyError | ResolveMountFilePathError | Error>> {
   if (!space.isProject()) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_request_error",
       message: "Space is not a project.",
     });
@@ -834,7 +834,7 @@ export async function deleteProjectFile(
     { relativeFilePath: normalized }
   );
   if (deleteRes.isOk()) {
-    requestDustProjectIncrementalSync(auth, space);
+    requestRubyProjectIncrementalSync(auth, space);
   }
   return deleteRes;
 }

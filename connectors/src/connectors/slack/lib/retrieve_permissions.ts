@@ -11,8 +11,8 @@ import { ConnectorResource } from "@connectors/resources/connector_resource";
 import { SlackConfigurationResource } from "@connectors/resources/slack_configuration_resource";
 import type { ConnectorPermission, ContentNode } from "@connectors/types";
 import { INTERNAL_MIME_TYPES } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 
 export async function retrievePermissions({
   connectorId,

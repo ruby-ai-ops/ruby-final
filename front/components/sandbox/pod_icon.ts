@@ -1,5 +1,5 @@
 import type { SandboxAdminPod } from "@app/types/api/sandbox/egress_policy";
-import { Cube01, CubeOutline } from "@dust-tt/sparkle";
+import { Cube01, CubeOutline } from "@ruby-ai/ui";
 import type { ComponentType, SVGProps } from "react";
 
 // Central Computer admin Pods are always project spaces, so the icon is just

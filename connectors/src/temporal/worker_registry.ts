@@ -1,6 +1,6 @@
 import { runBigQueryWorker } from "@connectors/connectors/bigquery/temporal/worker";
 import { runConfluenceWorker } from "@connectors/connectors/confluence/temporal/worker";
-import { runDustProjectWorker } from "@connectors/connectors/dust_project/temporal/worker";
+import { runRubyProjectWorker } from "@connectors/connectors/ruby_project/temporal/worker";
 import { runGithubWorker } from "@connectors/connectors/github/temporal/worker";
 import { runGongWorker } from "@connectors/connectors/gong/temporal/worker";
 import { runGoogleWorkers } from "@connectors/connectors/google_drive/temporal/worker";
@@ -19,7 +19,7 @@ import { runZendeskWorkers } from "@connectors/connectors/zendesk/temporal/worke
 export type WorkerName =
   | "bigquery"
   | "confluence"
-  | "dust_project"
+  | "ruby_project"
   | "github"
   | "gong"
   | "google_drive"
@@ -36,7 +36,7 @@ export type WorkerName =
 export const workerFunctions: Record<WorkerName, () => Promise<void>> = {
   bigquery: runBigQueryWorker,
   confluence: runConfluenceWorker,
-  dust_project: runDustProjectWorker,
+  ruby_project: runRubyProjectWorker,
   github: runGithubWorker,
   gong: runGongWorker,
   google_drive: runGoogleWorkers,

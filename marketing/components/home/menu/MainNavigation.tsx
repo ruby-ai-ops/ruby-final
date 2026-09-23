@@ -1,26 +1,28 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
 import { menuConfig } from "@marketing/components/home/menu/config";
+import { getVisibleNavigationItems } from "@marketing/lib/marketing_visibility";
 import { classNames } from "@marketing/lib/utils";
-import { ChevronDown } from "@dust-tt/sparkle";
+import { ChevronDown } from "@ruby-ai/ui";
 import Link from "next/link";
 import * as React from "react";
 
 export function MainNavigation() {
   const [openId, setOpenId] = React.useState<string | null>(null);
+  const navigationItems = getVisibleNavigationItems(menuConfig.mainNav);
 
   return (
     <nav
       aria-label="Main"
-      className="relative z-10 mr-4 hidden items-center gap-1 xl:flex"
+      className="relative z-10 hidden items-center gap-1 xl:flex xl:justify-self-center"
     >
-      {menuConfig.mainNav.map((item, index) => {
+      {navigationItems.map((item, index) => {
         if (item.href) {
           return (
             <Link
               key={index}
               href={item.href}
               target={item.isExternal ? "_blank" : undefined}
-              className="inline-flex h-9 items-center px-4 text-sm font-medium text-foreground/70 transition-colors duration-150 hover:text-foreground"
+              className="inline-flex h-9 items-center px-4 text-base font-semibold text-black transition-colors duration-150 hover:text-black"
             >
               {item.title}
             </Link>
@@ -35,12 +37,21 @@ export function MainNavigation() {
             className="relative"
             onMouseEnter={() => setOpenId(item.title)}
             onMouseLeave={() => setOpenId(null)}
+            onFocus={() => setOpenId(item.title)}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) {
+                setOpenId(null);
+              }
+            }}
           >
             <button
               type="button"
               aria-expanded={isOpen}
               aria-haspopup="true"
-              className="inline-flex h-9 items-center gap-1 px-4 text-sm font-medium text-foreground/70 transition-colors duration-150 hover:text-foreground focus:outline-hidden"
+              onClick={() => {
+                setOpenId(item.title);
+              }}
+              className="inline-flex h-9 items-center gap-1 px-4 text-base font-semibold text-black transition-colors duration-150 hover:text-black focus:outline-hidden"
             >
               {item.title}
               <ChevronDown
@@ -56,7 +67,7 @@ export function MainNavigation() {
               role="menu"
               aria-label={item.title}
               className={classNames(
-                "absolute left-0 top-full pt-2 origin-top",
+                "absolute left-1/2 top-full -translate-x-1/2 origin-top pt-3",
                 "transition-[opacity,transform] duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)] will-change-[opacity,transform] motion-reduce:transition-none",
                 isOpen
                   ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
@@ -120,7 +131,7 @@ function DropdownItem({
         href={href}
         target={isExternal ? "_blank" : undefined}
         role="menuitem"
-        className="block whitespace-nowrap py-0.5 text-sm text-foreground/70 transition-colors duration-100 hover:text-foreground"
+        className="block whitespace-nowrap py-0.5 text-[15px] font-semibold text-black transition-colors duration-100 hover:text-black"
       >
         {title}
       </Link>

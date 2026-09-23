@@ -48,7 +48,7 @@ import {
   Spinner,
   Tooltip,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useCallback, useMemo, useState } from "react";
 
@@ -117,7 +117,7 @@ function RunningCell({
       return <LockedToggle label="Disabled following a plan downgrade." />;
     default:
       assertNeverAndIgnore(row.status);
-      return <LockedToggle label="This automation is managed by Dust." />;
+      return <LockedToggle label="This automation is managed by Ruby." />;
   }
 }
 

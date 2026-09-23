@@ -16,9 +16,9 @@ pub struct FileStorageDocument {
 
 impl FileStorageDocument {
     pub async fn get_bucket() -> Result<String> {
-        match std::env::var("DUST_DATA_SOURCES_BUCKET") {
+        match std::env::var("RUBY_DATA_SOURCES_BUCKET") {
             Ok(bucket) => Ok(bucket),
-            Err(_) => Err(anyhow!("DUST_DATA_SOURCES_BUCKET is not set")),
+            Err(_) => Err(anyhow!("RUBY_DATA_SOURCES_BUCKET is not set")),
         }
     }
 

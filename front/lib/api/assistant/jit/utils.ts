@@ -42,7 +42,7 @@ export async function getTablesFromMultiSheetSpreadsheet(
       parent_id: f.nodeId,
       data_source_views: [
         {
-          data_source_id: dataSourceView.dataSource.dustAPIDataSourceId,
+          data_source_id: dataSourceView.dataSource.rubyAPIDataSourceId,
           view_filter: [f.nodeId],
         },
       ],

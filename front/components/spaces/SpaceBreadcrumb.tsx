@@ -5,13 +5,13 @@ import type { DataSourceViewCategory } from "@app/types/api/public/spaces";
 import type { DataSourceViewType } from "@app/types/data_source_view";
 import type { EnrichedSpaceType } from "@app/types/space";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { BreadcrumbsItem } from "@dust-tt/sparkle";
+import type { BreadcrumbsItem } from "@ruby-ai/ui";
 import {
   Breadcrumbs,
   CloudArrowLeftRight,
   ShapesPlus,
   Zap,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React from "react";
 
 interface SpaceBreadcrumbProps {

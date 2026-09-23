@@ -50,7 +50,7 @@ import {
   TOOL_SIDE_PANEL_TYPE,
 } from "@app/types/conversation_side_panel";
 import type { WorkspaceType } from "@app/types/user";
-import { Markdown } from "@dust-tt/sparkle";
+import { Markdown } from "@ruby-ai/ui";
 import { useMemo } from "react";
 import type { Components } from "react-markdown";
 import type { PluggableList } from "react-markdown/lib/react-markdown";

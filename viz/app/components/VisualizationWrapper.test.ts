@@ -11,7 +11,7 @@ import { RPCDataAPI } from "@viz/app/lib/data-apis/rpc-data-api";
 import type { CommandResultMap } from "@viz/app/types";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const ALLOWED_ORIGIN = "https://app.dust.tt";
+const ALLOWED_ORIGIN = "https://app.ruby.ad";
 
 afterEach(() => {
   cleanup();
@@ -90,7 +90,7 @@ describe("makeSendCrossDocumentMessage", () => {
     await expect(
       sendMessage("callFunction", {
         functionIdOrSlug: "greet",
-        input: { name: "Dust" },
+        input: { name: "Ruby" },
       })
     ).resolves.toEqual({ greeting: "Hello" });
   });

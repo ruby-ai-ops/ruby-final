@@ -28,7 +28,7 @@ import {
   Spinner,
   Upload01,
   useCopyToClipboard,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useId, useState } from "react";
 
 interface ShareFramePopoverProps {

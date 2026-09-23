@@ -194,7 +194,7 @@ describe("fetchArchivableAgents", () => {
       createdAt: daysBeforeCutoff(90),
     });
     await MentionFactory.agentMentionedAt(authenticator, {
-      agentId: "dust",
+      agentId: "ruby",
       mentionedAt: daysBeforeCutoff(90),
     });
 

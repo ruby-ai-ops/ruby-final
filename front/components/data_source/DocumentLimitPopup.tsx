@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 type DocumentLimitPopupProps = {
   isOpen: boolean;
@@ -42,7 +42,7 @@ export const DocumentLimitPopup = ({
             onClick: onClose,
           }}
           rightButtonProps={{
-            label: "Check Dust plans",
+            label: "Check Ruby plans",
             variant: "primary",
             onClick: () => {
               void router.push(`/w/${owner.sId}/subscription`);

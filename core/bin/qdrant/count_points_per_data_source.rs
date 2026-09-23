@@ -2,7 +2,7 @@ use anyhow::{anyhow, Result};
 use chrono::{Duration, Utc};
 use clap::Parser;
 use csv::Writer;
-use dust::{
+use ruby::{
     data_sources::{
         data_source::{DataSource, DataSourceConfig},
         qdrant::{QdrantClients, QdrantTenant},

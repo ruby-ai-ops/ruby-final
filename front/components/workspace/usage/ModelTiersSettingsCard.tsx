@@ -9,7 +9,7 @@ import {
 } from "@app/lib/swr/model_tiers";
 import type { ModelsTierName } from "@app/types/assistant/models/model_tiers";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Page, SettingsList, SliderToggle } from "@dust-tt/sparkle";
+import { Page, SettingsList, SliderToggle } from "@ruby-ai/ui";
 
 interface ModelTiersSettingsCardProps {
   owner: LightWorkspaceType;

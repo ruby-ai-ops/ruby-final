@@ -54,7 +54,7 @@ describe("toAgentConfigurationsWithSkills", () => {
     const [serialized] = await toAgentConfigurationsWithSkills(authenticator, [
       {
         ...agent,
-        sId: GLOBAL_AGENTS_SID.DUST,
+        sId: GLOBAL_AGENTS_SID.RUBY,
         codeDefinedSkillIds: ["frames"],
       },
     ]);

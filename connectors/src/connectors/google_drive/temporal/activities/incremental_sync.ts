@@ -13,7 +13,7 @@ import { getFoldersToSync } from "@connectors/connectors/google_drive/temporal/a
 import { syncOneFile } from "@connectors/connectors/google_drive/temporal/file";
 import { getMimeTypesToSync } from "@connectors/connectors/google_drive/temporal/mime_types";
 import {
-  driveObjectToDustType,
+  driveObjectToRubyType,
   getAuthObject,
   getCachedLabels,
   getDriveClient,
@@ -192,7 +192,7 @@ export async function incrementalSync(
         continue;
       }
 
-      const file = await driveObjectToDustType(
+      const file = await driveObjectToRubyType(
         connectorId,
         change.file,
         authCredentials
@@ -248,7 +248,7 @@ export async function incrementalSync(
       const dataSourceConfig = dataSourceConfigFromConnector(connector);
 
       await heartbeat();
-      const driveFile: GoogleDriveObjectType = await driveObjectToDustType(
+      const driveFile: GoogleDriveObjectType = await driveObjectToRubyType(
         connectorId,
         change.file,
         authCredentials
@@ -527,7 +527,7 @@ async function recurseUpdateParentsInner(
 
   // Move updates recurse from the moved folder itself, so `parentIds[0]` is
   // the current node and only deeper repeats indicate a real parent cycle.
-  if (parentIds.slice(1).includes(file.dustFileId)) {
+  if (parentIds.slice(1).includes(file.rubyFileId)) {
     logger.warn(
       {
         fileId: file.driveFileId,
@@ -544,7 +544,7 @@ async function recurseUpdateParentsInner(
     await recurseUpdateParentsInner(
       connector,
       child,
-      [child.dustFileId, ...parentIds],
+      [child.rubyFileId, ...parentIds],
       logger,
       enqueueUpdate
     );

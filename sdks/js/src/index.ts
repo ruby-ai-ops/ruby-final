@@ -5,7 +5,7 @@ import { errorToString, normalizeError } from "./error_utils";
 import { AgentsAPI } from "./high_level/agents";
 import { ConversationsAPI } from "./high_level/conversations";
 import { FilesAPI } from "./high_level/files";
-import type { DustAPIOptions } from "./high_level/types";
+import type { RubyAPIOptions } from "./high_level/types";
 import { encodeUtf8HeaderValue } from "./http_headers";
 import type {
   AgentConfigurationViewType,
@@ -23,18 +23,18 @@ import type {
   CreateConversationResponseType,
   DataSourceContentNodeType,
   DataSourceViewType,
-  DustAPICredentials,
-  DustAppConfigType,
-  DustAppRunBlockExecutionEvent,
-  DustAppRunBlockStatusEvent,
-  DustAppRunErroredEvent,
-  DustAppRunFinalEvent,
-  DustAppRunFunctionCallArgumentsTokensEvent,
-  DustAppRunFunctionCallEvent,
-  DustAppRunReasoningItemEvent,
-  DustAppRunReasoningTokensEvent,
-  DustAppRunRunStatusEvent,
-  DustAppRunTokensEvent,
+  RubyAPICredentials,
+  RubyAppConfigType,
+  RubyAppRunBlockExecutionEvent,
+  RubyAppRunBlockStatusEvent,
+  RubyAppRunErroredEvent,
+  RubyAppRunFinalEvent,
+  RubyAppRunFunctionCallArgumentsTokensEvent,
+  RubyAppRunFunctionCallEvent,
+  RubyAppRunReasoningItemEvent,
+  RubyAppRunReasoningTokensEvent,
+  RubyAppRunRunStatusEvent,
+  RubyAppRunTokensEvent,
   FileUploadUrlRequestType,
   HeartbeatMCPResponseType,
   LoggerInterface,
@@ -114,7 +114,7 @@ export * from "./mcp_transport";
 export * from "./output_schemas";
 export * from "./types";
 
-interface DustResponse {
+interface RubyResponse {
   status: number;
   ok: boolean;
   url: string;
@@ -190,7 +190,7 @@ export type AgentEvent = AgentMessageEventData;
 
 export type ConversationEvent = ConversationEventData;
 
-const textFromResponse = async (response: DustResponse): Promise<string> => {
+const textFromResponse = async (response: RubyResponse): Promise<string> => {
   if (typeof response.body === "string") {
     return response.body;
   }
@@ -231,7 +231,7 @@ type RequestArgsType = {
   stream?: boolean;
 };
 
-function isDustAPIOptions(obj: unknown): obj is DustAPIOptions {
+function isRubyAPIOptions(obj: unknown): obj is RubyAPIOptions {
   return (
     typeof obj === "object" &&
     obj !== null &&
@@ -240,32 +240,32 @@ function isDustAPIOptions(obj: unknown): obj is DustAPIOptions {
   );
 }
 
-export class DustAPI {
+export class RubyAPI {
   _url: string;
-  _credentials: DustAPICredentials;
+  _credentials: RubyAPICredentials;
   _logger: LoggerInterface;
   _urlOverride: string | undefined | null;
 
   private _agents?: AgentsAPI;
   private _conversations?: ConversationsAPI;
   private _files?: FilesAPI;
-  private _options?: DustAPIOptions;
+  private _options?: RubyAPIOptions;
 
-  constructor(options: DustAPIOptions);
+  constructor(options: RubyAPIOptions);
   constructor(
     config: { url: string },
-    credentials: DustAPICredentials,
+    credentials: RubyAPICredentials,
     logger: LoggerInterface,
     urlOverride?: string | undefined | null
   );
   constructor(
-    configOrOptions: { url: string } | DustAPIOptions,
-    credentials?: DustAPICredentials,
+    configOrOptions: { url: string } | RubyAPIOptions,
+    credentials?: RubyAPICredentials,
     logger?: LoggerInterface,
     urlOverride?: string | undefined | null
   ) {
-    if (isDustAPIOptions(configOrOptions)) {
-      this._url = configOrOptions.baseUrl ?? "https://dust.tt";
+    if (isRubyAPIOptions(configOrOptions)) {
+      this._url = configOrOptions.baseUrl ?? "https://ruby.ad";
       this._credentials = {
         workspaceId: configOrOptions.workspaceId,
         apiKey: configOrOptions.apiKey,
@@ -401,10 +401,10 @@ export class DustAPI {
   }
 
   /**
-   * This functions talks directly to the Dust production API to create a run.
+   * This functions talks directly to the Ruby production API to create a run.
    *
-   * @param app DustAppType the app to run streamed
-   * @param config DustAppConfigType the app config
+   * @param app RubyAppType the app to run streamed
+   * @param config RubyAppConfigType the app config
    * @param inputs any[] the app inputs
    */
   async runApp(
@@ -419,7 +419,7 @@ export class DustAPI {
       appSpaceId: string;
       appHash: string;
     },
-    config: DustAppConfigType,
+    config: RubyAppConfigType,
     inputs: unknown[],
     { useWorkspaceCredentials }: { useWorkspaceCredentials: boolean } = {
       useWorkspaceCredentials: false,
@@ -450,10 +450,10 @@ export class DustAPI {
   }
 
   /**
-   * This functions talks directly to the Dust production API to create a streamed run.
+   * This functions talks directly to the Ruby production API to create a streamed run.
    *
-   * @param app DustAppType the app to run streamed
-   * @param config DustAppConfigType the app config
+   * @param app RubyAppType the app to run streamed
+   * @param config RubyAppConfigType the app config
    * @param inputs any[] the app inputs
    */
   async runAppStreamed(
@@ -468,7 +468,7 @@ export class DustAPI {
       appSpaceId: string;
       appHash: string;
     },
-    config: DustAppConfigType,
+    config: RubyAppConfigType,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     inputs: any[],
     { useWorkspaceCredentials }: { useWorkspaceCredentials: boolean } = {
@@ -497,42 +497,42 @@ export class DustAPI {
     }
 
     /**
-     * This help functions process a streamed response in the format of the Dust API for running
+     * This help functions process a streamed response in the format of the Ruby API for running
      * streamed apps.
      *
      * @param res an HTTP response ready to be consumed as a stream
      */
     async function processStreamedRunResponse(
-      res: DustResponse,
+      res: RubyResponse,
       logger: LoggerInterface
     ) {
       if (!res.ok || !res.body) {
         const text = await textFromResponse(res);
         return new Err({
-          type: "dust_api_error",
+          type: "ruby_api_error",
           message: `Error running streamed app: status_code=${res.status} body=${text}`,
         });
       }
 
       let hasRunId = false;
-      let rejectDustRunIdPromise: (err: Error) => void;
-      let resolveDustRunIdPromise: (runId: string) => void;
-      const dustRunIdPromise = new Promise<string>((resolve, reject) => {
-        rejectDustRunIdPromise = reject;
-        resolveDustRunIdPromise = resolve;
+      let rejectRubyRunIdPromise: (err: Error) => void;
+      let resolveRubyRunIdPromise: (runId: string) => void;
+      const rubyRunIdPromise = new Promise<string>((resolve, reject) => {
+        rejectRubyRunIdPromise = reject;
+        resolveRubyRunIdPromise = resolve;
       });
 
       let pendingEvents: (
-        | DustAppRunErroredEvent
-        | DustAppRunRunStatusEvent
-        | DustAppRunBlockStatusEvent
-        | DustAppRunBlockExecutionEvent
-        | DustAppRunTokensEvent
-        | DustAppRunReasoningTokensEvent
-        | DustAppRunReasoningItemEvent
-        | DustAppRunFunctionCallEvent
-        | DustAppRunFunctionCallArgumentsTokensEvent
-        | DustAppRunFinalEvent
+        | RubyAppRunErroredEvent
+        | RubyAppRunRunStatusEvent
+        | RubyAppRunBlockStatusEvent
+        | RubyAppRunBlockExecutionEvent
+        | RubyAppRunTokensEvent
+        | RubyAppRunReasoningTokensEvent
+        | RubyAppRunReasoningItemEvent
+        | RubyAppRunFunctionCallEvent
+        | RubyAppRunFunctionCallArgumentsTokensEvent
+        | RubyAppRunFinalEvent
       )[] = [];
 
       const parser = createParser((event) => {
@@ -549,7 +549,7 @@ export class DustAPI {
                       code: data.content.code,
                       message: data.content.message,
                     },
-                  } as DustAppRunErroredEvent);
+                  } as RubyAppRunErroredEvent);
                   break;
                 }
                 case "run_status": {
@@ -577,7 +577,7 @@ export class DustAPI {
                   pendingEvents.push({
                     type: "tokens",
                     content: data.content,
-                  } as DustAppRunTokensEvent);
+                  } as RubyAppRunTokensEvent);
                   break;
                 }
 
@@ -585,7 +585,7 @@ export class DustAPI {
                   pendingEvents.push({
                     type: "reasoning_tokens",
                     content: data.content,
-                  } as DustAppRunReasoningTokensEvent);
+                  } as RubyAppRunReasoningTokensEvent);
                   break;
                 }
 
@@ -593,7 +593,7 @@ export class DustAPI {
                   pendingEvents.push({
                     type: "reasoning_item",
                     content: data.content,
-                  } as DustAppRunReasoningItemEvent);
+                  } as RubyAppRunReasoningItemEvent);
                   break;
                 }
 
@@ -601,31 +601,31 @@ export class DustAPI {
                   pendingEvents.push({
                     type: "function_call",
                     content: data.content,
-                  } as DustAppRunFunctionCallEvent);
+                  } as RubyAppRunFunctionCallEvent);
                   break;
                 }
                 case "function_call_arguments_tokens": {
                   pendingEvents.push({
                     type: "function_call_arguments_tokens",
                     content: data.content,
-                  } as DustAppRunFunctionCallArgumentsTokensEvent);
+                  } as RubyAppRunFunctionCallArgumentsTokensEvent);
                   break;
                 }
                 case "final": {
                   pendingEvents.push({
                     type: "final",
-                  } as DustAppRunFinalEvent);
+                  } as RubyAppRunFinalEvent);
                   break;
                 }
               }
               if (data.content?.run_id && !hasRunId) {
                 hasRunId = true;
-                resolveDustRunIdPromise(data.content.run_id);
+                resolveRubyRunIdPromise(data.content.run_id);
               }
             } catch (err) {
               logger.error(
                 { error: err },
-                "Failed parsing chunk from Dust API"
+                "Failed parsing chunk from Ruby API"
               );
             }
           }
@@ -666,7 +666,7 @@ export class DustAPI {
             // promise.
             setImmediate(() => {
               logger.error({}, "No run id received.");
-              rejectDustRunIdPromise(new Error("No run id received"));
+              rejectRubyRunIdPromise(new Error("No run id received"));
             });
           }
         } catch (e) {
@@ -676,7 +676,7 @@ export class DustAPI {
               errorStr: JSON.stringify(e),
               errorSource: "processStreamedRunResponse",
             },
-            "DustAPI error: streaming chunks"
+            "RubyAPI error: streaming chunks"
           );
           yield {
             type: "error",
@@ -684,13 +684,13 @@ export class DustAPI {
               code: "stream_error",
               message: "Error streaming chunks",
             },
-          } as DustAppRunErroredEvent;
+          } as RubyAppRunErroredEvent;
         }
       };
 
       return new Ok({
         eventStream: streamEvents(),
-        dustRunId: dustRunIdPromise,
+        rubyRunId: rubyRunIdPromise,
       });
     }
 
@@ -698,7 +698,7 @@ export class DustAPI {
   }
 
   /**
-   * This actions talks to the Dust production API to retrieve the list of data sources of the
+   * This actions talks to the Ruby production API to retrieve the list of data sources of the
    * current workspace.
    */
   async getDataSources() {
@@ -1191,7 +1191,7 @@ export class DustAPI {
     createRequest: (
       lastEventId?: string | null
     ) => Promise<
-      Result<{ response: DustResponse; duration: number }, APIError>
+      Result<{ response: RubyResponse; duration: number }, APIError>
     >;
     signal?: AbortSignal;
     options: {
@@ -1266,7 +1266,7 @@ export class DustAPI {
               pendingEvents.push(parsedEvent);
             }
           } catch (err) {
-            logger.error({ error: err }, "Failed parsing chunk from Dust API");
+            logger.error({ error: err }, "Failed parsing chunk from Ruby API");
           }
         }
       });
@@ -2298,7 +2298,7 @@ export class DustAPI {
       signal?: AbortSignal;
       stream?: boolean;
     } = {}
-  ): Promise<Result<{ response: DustResponse; duration: number }, APIError>> {
+  ): Promise<Result<{ response: RubyResponse; duration: number }, APIError>> {
     const now = Date.now();
     const init = { method, headers, body, signal };
     try {
@@ -2315,7 +2315,7 @@ export class DustAPI {
         }
         this._logger.warn(
           { url, method, error: e },
-          "DustAPI retrying fetch after connection closed before response"
+          "RubyAPI retrying fetch after connection closed before response"
         );
         await new Promise((resolve) =>
           setTimeout(resolve, CONNECTION_CLOSED_RETRY_DELAY_MS)
@@ -2325,7 +2325,7 @@ export class DustAPI {
 
       const responseBody = stream && res.body ? res.body : await res.text();
 
-      const response: DustResponse = {
+      const response: RubyResponse = {
         status: res.status,
         url: res.url,
         body: responseBody,
@@ -2337,17 +2337,17 @@ export class DustAPI {
       const duration = Date.now() - now;
       const err: APIError = {
         type: "unexpected_network_error",
-        message: `Unexpected network error from DustAPI: ${errorToString(e)}`,
+        message: `Unexpected network error from RubyAPI: ${errorToString(e)}`,
       };
       this._logger.error(
         {
-          dustError: err,
+          rubyError: err,
           url,
           duration,
           connectorsError: err,
           error: e,
         },
-        "DustAPI error"
+        "RubyAPI error"
       );
       return new Err(err);
     }
@@ -2357,7 +2357,7 @@ export class DustAPI {
     schema: T,
     res: Result<
       {
-        response: DustResponse;
+        response: RubyResponse;
         duration: number;
       },
       APIError
@@ -2375,12 +2375,12 @@ export class DustAPI {
       };
       this._logger.error(
         {
-          dustError: err,
+          rubyError: err,
           status: res.value.response.status,
           url: res.value.response.url,
           duration: res.value.duration,
         },
-        "DustAPI error"
+        "RubyAPI error"
       );
       return new Err(err);
     }
@@ -2402,12 +2402,12 @@ export class DustAPI {
           // Successfully parsed an error
           this._logger.error(
             {
-              dustError: rErr.data,
+              rubyError: rErr.data,
               status: res.value.response.status,
               url: res.value.response.url,
               duration: res.value.duration,
             },
-            "DustAPI error"
+            "RubyAPI error"
           );
           return new Err(rErr.data);
         } else {
@@ -2415,19 +2415,19 @@ export class DustAPI {
           const err: APIError = {
             type: "unexpected_response_format",
             message:
-              `Unexpected response format from DustAPI calling ` +
+              `Unexpected response format from RubyAPI calling ` +
               `${res.value.response.url} : ${r.error.message}`,
           };
           this._logger.error(
             {
-              dustError: err,
+              rubyError: err,
               parseError: r.error.message,
               rawText: text,
               status: res.value.response.status,
               url: res.value.response.url,
               duration: res.value.duration,
             },
-            "DustAPI error"
+            "RubyAPI error"
           );
           return new Err(err);
         }
@@ -2436,19 +2436,19 @@ export class DustAPI {
       const err: APIError = {
         type: "unexpected_response_format",
         message:
-          `Fail to parse response from DustAPI calling ` +
+          `Fail to parse response from RubyAPI calling ` +
           `${res.value.response.url} : ${e}`,
       };
       this._logger.error(
         {
-          dustError: err,
+          rubyError: err,
           error: e,
           rawText: text,
           status: res.value.response.status,
           url: res.value.response.url,
           duration: res.value.duration,
         },
-        "DustAPI error"
+        "RubyAPI error"
       );
       return new Err(err);
     }

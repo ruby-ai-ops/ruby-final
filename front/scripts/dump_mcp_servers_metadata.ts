@@ -66,7 +66,7 @@ async function getToolsForServer(
   });
 
   const mcpClient = new Client({
-    name: "dust-mcp-metadata-dump",
+    name: "ruby-mcp-metadata-dump",
     version: "1.0.0",
   });
 

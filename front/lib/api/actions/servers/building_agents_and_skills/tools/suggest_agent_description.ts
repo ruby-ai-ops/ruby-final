@@ -7,7 +7,7 @@ import { formatAgentSuggestionDirective } from "@app/lib/api/actions/servers/bui
 import type { SuggestAgentDescriptionArgs } from "@app/lib/api/actions/servers/building_agents_and_skills/metadata";
 import { getAgentConfiguration } from "@app/lib/api/assistant/configuration/agent";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import {
   executeWithLockResult,
   isLockAcquisitionTimeoutError,
@@ -29,12 +29,12 @@ async function validateAgentDescriptionChange(
     {
       description: string;
     },
-    DustError<"unauthorized" | "invalid_request_error">
+    RubyError<"unauthorized" | "invalid_request_error">
   >
 > {
   if (!agent.canEdit) {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         "Only editors of this agent can change its description."
       )
@@ -43,7 +43,7 @@ async function validateAgentDescriptionChange(
 
   if (agent.status !== "active") {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "Only active agents can have their description changed."
       )
@@ -53,7 +53,7 @@ async function validateAgentDescriptionChange(
   const trimmedDescription = description.trim();
   if (!trimmedDescription) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "Agent description cannot be empty."
       )
@@ -62,7 +62,7 @@ async function validateAgentDescriptionChange(
 
   if (trimmedDescription === agent.description) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         `The agent is already described as "${agent.description}".`
       )

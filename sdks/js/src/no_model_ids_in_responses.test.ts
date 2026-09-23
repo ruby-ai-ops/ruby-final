@@ -1,6 +1,6 @@
 /**
  *
- * Every Zod schema from `@dust-tt/client` that a `/v1` route handler imports
+ * Every Zod schema from `@ruby-ai/client` that a `/v1` route handler imports
  * (request or response) must be free of `ModelIdSchema` references as per cc string-ids-in-api-interfaces.
  * Existing violations are tracked in `KNOWN_VIOLATIONS`.
  */
@@ -46,7 +46,7 @@ function findTsFiles(dir: string): string[] {
 function extractClientSchemaNames(files: string[]): Set<string> {
   const names = new Set<string>();
   const importRe =
-    /(?:import|export)\s+(?:type\s+)?{([^}]+)}\s+from\s+["']@dust-tt\/client["']/g;
+    /(?:import|export)\s+(?:type\s+)?{([^}]+)}\s+from\s+["']@ruby-ai\/client["']/g;
   for (const file of files) {
     const src = fs.readFileSync(file, "utf8");
     for (const match of src.matchAll(importRe)) {

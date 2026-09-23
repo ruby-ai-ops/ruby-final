@@ -48,10 +48,10 @@ export async function getCommonUtilitiesServer(
     timeFrame: null,
     jsonSchema: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     additionalConfiguration: {},
     mcpServerViewId: commonUtilitiesViewJSON.sId,
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: commonUtilitiesView.mcpServerId,
   };
 }

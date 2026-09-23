@@ -67,7 +67,7 @@ describe("buildLlmConsumptionDocuments", () => {
       {
         completedAt,
         costCredits: 5,
-        runIds: [run.dustRunId],
+        runIds: [run.rubyRunId],
         status: "succeeded",
       },
       { where: { id: agentMessageModelId, workspaceId: workspace.id } }
@@ -114,7 +114,7 @@ describe("buildLlmConsumptionDocuments", () => {
     const allocationResult = buildLatestMessageConsumptionAllocation({
       actions: input.actions,
       billedCredits: input.billedCredits,
-      dustRunIds: input.dustRunIds,
+      rubyRunIds: input.rubyRunIds,
       items: input.items,
       runs: input.runs,
       usages: input.usages,

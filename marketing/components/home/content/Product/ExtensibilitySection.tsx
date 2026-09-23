@@ -2,7 +2,7 @@
 import { ImgBlock } from "@marketing/components/home/ContentBlocks";
 import { A, H2, P } from "@marketing/components/home/ContentComponents";
 import { classNames } from "@marketing/lib/utils";
-import { Div3D, Hover3D } from "@dust-tt/sparkle";
+import { Div3D, Hover3D } from "@ruby-ai/ui";
 import Link from "next/link";
 
 export function ExtensibilitySection({ page = "default" }) {
@@ -16,13 +16,13 @@ export function ExtensibilitySection({ page = "default" }) {
           team’s&nbsp;exact&nbsp;needs.
           <br />{" "}
           {page == "default" && (
-            <Link href="/home/solutions/dust-platform" shallow={true}>
-              <A variant="primary">More about Dust’s&nbsp;Developer Platform</A>
+            <Link href="/home/solutions/ruby-platform" shallow={true}>
+              <A variant="primary">More about Ruby’s&nbsp;Developer Platform</A>
             </Link>
           )}
           {page != "default" && (
             <Link
-              href="https://docs.dust.tt/reference/developer-platform-overview"
+              href="https://docs.ruby.ad/docs/reference/developer-platform-overview"
               shallow={true}
               target="_blank"
             >

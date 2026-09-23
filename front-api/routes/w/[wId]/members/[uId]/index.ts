@@ -107,10 +107,10 @@ app.post(
     const featureFlags = await getFeatureFlags(auth);
     const body = ctx.req.valid("json");
 
-    // Allow Dust Super User to force role for testing
+    // Allow Ruby Super User to force role for testing
     const allowForSuperUserTesting =
       showDebugTools(featureFlags) &&
-      auth.isDustSuperUser() &&
+      auth.isRubySuperUser() &&
       body.force === "true";
 
     if (!auth.isManager() && !allowForSuperUserTesting) {

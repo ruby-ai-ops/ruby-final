@@ -1,9 +1,9 @@
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { mcpJsonResponse } from "./response";
 
 export function registerIdentityTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "identity",
     {

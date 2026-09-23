@@ -8,7 +8,7 @@ import { safeParseJSON } from "@marketing/types/shared/utils/json_utils";
 import {
   FORCE_RELOAD_INTERVAL_MS,
   FORCE_RELOAD_SESSION_KEY,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 const addClientVersionHeaders = (headers: HeadersInit = {}): HeadersInit => ({
   ...headers,
@@ -100,7 +100,7 @@ export const fetcher: FetcherFn = async (url, init) => {
 };
 
 // Throws on `not_authenticated` instead of redirecting to login. Use when a
-// 401 should leave the page in place (e.g. a stale `dust-has-session` cookie
+// 401 should leave the page in place (e.g. a stale `ruby-has-session` cookie
 // on the public website should not bounce the visitor through login).
 export const nonRedirectingFetcher: FetcherFn = async (url, init) => {
   const res = await clientFetch(url, {

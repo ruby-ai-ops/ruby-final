@@ -1,6 +1,6 @@
 import type { WebhookCreateFormComponentProps } from "@app/components/triggers/webhook_preset_components";
 import { CREATABLE_RECORDING_TYPE_OPTIONS } from "@app/lib/triggers/built-in-webhooks/fathom/constants";
-import { CheckBoxWithTextAndDescription, Label, Page } from "@dust-tt/sparkle";
+import { CheckBoxWithTextAndDescription, Label, Page } from "@ruby-ai/ui";
 import type { TriggeredFor } from "fathom-typescript/sdk/models/shared";
 import { useEffect, useState } from "react";
 

@@ -8,7 +8,7 @@ const mockMakeAgentDetailsInConversationUrl = vi.hoisted(() =>
       conversationId: string,
       agentConfigurationId: string
     ) =>
-      `https://dust.test/w/${workspaceId}/conversation/${conversationId}?agentDetails=${agentConfigurationId}`
+      `https://ruby.test/w/${workspaceId}/conversation/${conversationId}?agentDetails=${agentConfigurationId}`
   )
 );
 
@@ -40,7 +40,7 @@ describe("formatAgentMarkdownForSlack", () => {
       },
     });
     expect(out).toBe(
-      "Ping <https://dust.test/w/ws_test/conversation/conv_abc?agentDetails=agent_conf_1|@My Agent> please"
+      "Ping <https://ruby.test/w/ws_test/conversation/conv_abc?agentDetails=agent_conf_1|@My Agent> please"
     );
     expect(mockMakeAgentDetailsInConversationUrl).toHaveBeenCalledWith(
       "ws_test",

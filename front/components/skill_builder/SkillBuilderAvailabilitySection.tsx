@@ -16,7 +16,7 @@ import {
   Icon,
   InfoCircle,
   LinkExternal01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useController } from "react-hook-form";
 
 const AVAILABILITY_OPTIONS: {
@@ -136,7 +136,7 @@ export function SkillBuilderAvailabilitySection({
           <ul className="list-disc space-y-1 pl-5">
             <li>All members can find it via the composer and agent builder</li>
             <li>
-              Any agent with Discover Skills, including Dust, can use it
+              Any agent with Discover Skills, including Ruby, can use it
               automatically. See other skills available to agents in{" "}
               <Hoverable
                 href={`/w/${owner.sId}/builder/skills?availability=users_and_agents`}

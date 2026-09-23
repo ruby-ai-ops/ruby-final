@@ -1,7 +1,7 @@
 use bb8::Pool;
 use bb8_postgres::PostgresConnectionManager;
 use clap::Parser;
-use dust::{
+use ruby::{
     search_stores::search_store::ElasticsearchSearchStore,
     stores::{postgres::PostgresStore, store::Store},
 };

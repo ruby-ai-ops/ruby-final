@@ -91,7 +91,7 @@
 //     await concurrentExecutor(
 //       googleDriveFiles,
 //       async (file) => {
-//         const internalId = file.dustFileId;
+//         const internalId = file.rubyFileId;
 //         const driveFileId = file.driveFileId;
 //         const parents = getParents(
 //           file.parentId,
@@ -119,11 +119,11 @@
 //               // upsert repository as folder
 //               await upsertDataSourceFolder({
 //                 dataSourceConfig,
-//                 folderId: file.dustFileId,
+//                 folderId: file.rubyFileId,
 //                 parents: newParents,
 //                 parentId: file.parentId ? getInternalId(file.parentId) : null,
 //                 title: file.name,
-//                 mimeType: "application/vnd.dust.googledrive.folder",
+//                 mimeType: "application/vnd.ruby.googledrive.folder",
 //               });
 //             }
 //           }

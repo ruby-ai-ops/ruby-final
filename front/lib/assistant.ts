@@ -12,7 +12,7 @@ import type { PlanType } from "@app/types/plan";
 import type { RegionType } from "@app/types/region";
 import type { WhitelistableFeature } from "@app/types/shared/feature_flags";
 
-// False if the model requires an on-demand/dust-only feature flag (not GA).
+// False if the model requires an on-demand/ruby-only feature flag (not GA).
 export function isModelReleased(m: ModelConfigurationType): boolean {
   return !m.availableIfOneOf?.featureFlag;
 }
@@ -109,7 +109,7 @@ export function isModelAvailable(
     return false;
   }
 
-  // EAP models are served from Dust's own Anthropic EAP organization, on Dust's key.
+  // EAP models are served from Ruby's own Anthropic EAP organization, on Ruby's key.
   if (plan?.isByok && m.useEapKey) {
     return false;
   }

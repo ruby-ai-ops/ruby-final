@@ -49,7 +49,7 @@ afterEach(() => {
 describe("getAgentConfigurations", () => {
   it.each([
     "system key",
-    "Poke",
+    "Admin",
   ] as const)("reports %s edit access", async (caller) => {
     const { authenticator, workspace, systemGroup } = await createResourceTest({
       role: "admin",
@@ -66,9 +66,9 @@ describe("getAgentConfigurations", () => {
             await KeyFactory.system(systemGroup),
             workspace.sId
           )
-        : await Authenticator.fromDustSuperUser({
+        : await Authenticator.fromRubySuperUser({
             wId: workspace.sId,
-            pokePrincipal: { email: "operator@dust.tt", name: "Operator" },
+            adminPrincipal: { email: "operator@ruby.ad", name: "Operator" },
           });
     const configuration = await getAgentConfiguration(auth, {
       agentId: agent.sId,
@@ -491,7 +491,7 @@ describe("saveAgentConfiguration with pending agent", () => {
       description: "A test agent",
       instructions: "Test instructions",
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope: "hidden",
       model: {
@@ -608,7 +608,7 @@ describe("saveAgentConfiguration with pending agent", () => {
       description: "A test agent",
       instructions: "Test instructions",
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope: "visible",
       model: {
@@ -648,7 +648,7 @@ describe("saveAgentConfiguration with pending agent", () => {
       description: "Test",
       instructions: null,
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope: "hidden",
       model: {
@@ -701,7 +701,7 @@ describe("saveAgentConfiguration with pending agent", () => {
       description: "Test",
       instructions: null,
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope: "hidden",
       model: {
@@ -739,7 +739,7 @@ describe("saveAgentConfiguration with pending agent", () => {
       description: "Test",
       instructions: null,
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       // Keep the agent's current scope: this test is about a definition change bumping the version,
       // not about (un)publishing (which would need the `publish` capability the caller lacks).
@@ -803,7 +803,7 @@ describe("saveAgentConfiguration with pending agent", () => {
       description: "Test agent",
       instructions: "Test instructions",
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope: "hidden",
       model: {
@@ -864,7 +864,7 @@ describe("create agent capability", () => {
       description: "Test",
       instructions: null,
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope: "hidden",
       model: {
@@ -894,7 +894,7 @@ describe("create agent capability", () => {
       description: "Test",
       instructions: null,
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope: "hidden",
       model: {
@@ -936,7 +936,7 @@ describe("create agent capability", () => {
       description: "Test",
       instructions: null,
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope: "hidden",
       model: {
@@ -986,7 +986,7 @@ describe("create agent capability", () => {
       description: "Test",
       instructions: null,
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope: "hidden",
       model: {
@@ -1623,7 +1623,7 @@ describe("publish agent capability", () => {
       description: "Test",
       instructions: null,
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope,
       model: {

@@ -107,7 +107,7 @@ export class ZendeskWebhookService implements RemoteWebhookService<"zendesk"> {
     // Create the webhook in Zendesk
     const webhookPayload = {
       webhook: {
-        name: `Dust Webhook - ${workspace.name} - ${new Date().toISOString()}`,
+        name: `Ruby Webhook - ${workspace.name} - ${new Date().toISOString()}`,
         endpoint: webhookUrl,
         http_method: "POST",
         request_format: "json",

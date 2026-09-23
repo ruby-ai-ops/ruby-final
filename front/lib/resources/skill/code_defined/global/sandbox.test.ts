@@ -13,14 +13,14 @@ describe("sandboxSkill", () => {
       spaceIds: [],
     });
 
-    expect(instructions).toContain("dsbx tools");
+    expect(instructions).toContain("rbx tools");
     const systemTools = instructions
       .split("\n")
       .find((line) => line.startsWith("- System:"));
     expect(systemTools).toContain("git");
     expect(systemTools).toContain("curl");
     expect(systemTools).toContain("xlsx_inspect");
-    expect(instructions).not.toContain("- Dust:");
+    expect(instructions).not.toContain("- Ruby:");
     const pythonTools = instructions
       .split("\n")
       .find((line) => line.startsWith("- Python:"));
@@ -32,21 +32,21 @@ describe("sandboxSkill", () => {
     expect(nodeTools).toContain("typescript");
     expect(nodeTools).toContain("tsx");
     expect(instructions).toContain("`describe_toolset`");
-    expect(instructions).toContain("Dust tool details:");
+    expect(instructions).toContain("Ruby tool details:");
     expect(instructions).toContain("- `apply_patch`:");
-    expect(instructions).toContain("- `dsbx`: Dust CLI");
+    expect(instructions).toContain("- `rbx`: Ruby CLI");
     expect(instructions.indexOf("- `apply_patch`:")).toBeLessThan(
-      instructions.indexOf("- `dsbx`:")
+      instructions.indexOf("- `rbx`:")
     );
     expect(instructions).toContain(
       "- `pptx_slides`: Duplicate, move, or delete .pptx slides without corrupting"
     );
     expect(instructions).toContain("`<command> --help`");
-    expect(instructions).not.toContain("name: dsbx");
+    expect(instructions).not.toContain("name: rbx");
     expect(instructions).not.toContain("```yaml");
     expect(instructions).toContain("enable the `Create Frames` skill");
     expect(instructions).toContain("`publish_interactive_content_file`");
-    expect(instructions).toContain("Never use `dsbx frame`");
+    expect(instructions).toContain("Never use `rbx frame`");
   });
 
   it("allows the Frames CLI only when Frames v2 is enabled", async () => {
@@ -57,17 +57,17 @@ describe("sandboxSkill", () => {
       spaceIds: [],
     });
 
-    expect(instructions).not.toContain("Never use `dsbx frame`");
+    expect(instructions).not.toContain("Never use `rbx frame`");
     expect(instructions).not.toContain("`publish_interactive_content_file`");
     expect(instructions).toContain(
-      "Inside Frame function source, call Dust tools with `tools.call` from `@dust/pod`"
+      "Inside Frame function source, call Ruby tools with `tools.call` from `@ruby-ai/pod`"
     );
     expect(instructions).toContain(
-      "Do not shell out to `dsbx tools` from a Frame function's `fetch()`"
+      "Do not shell out to `rbx tools` from a Frame function's `fetch()`"
     );
   });
 
-  it("hides dsbx tools instructions when computer is disabled", async () => {
+  it("hides rbx tools instructions when computer is disabled", async () => {
     const { authenticator: auth } = await createResourceTest({});
 
     await FeatureFlagFactory.basic(auth, "disable_computer_feature");
@@ -76,13 +76,13 @@ describe("sandboxSkill", () => {
       spaceIds: [],
     });
 
-    expect(instructions).not.toContain("dsbx tools");
+    expect(instructions).not.toContain("rbx tools");
     const systemTools = instructions
       .split("\n")
       .find((line) => line.startsWith("- System:"));
     expect(systemTools).toBeDefined();
-    expect(systemTools).not.toContain("dsbx");
-    expect(instructions).not.toContain("- `dsbx`: Dust CLI");
+    expect(systemTools).not.toContain("rbx");
+    expect(instructions).not.toContain("- `rbx`: Ruby CLI");
   });
 
   it("instructs the model to analyze mounted tabular files with code", async () => {
@@ -118,14 +118,14 @@ describe("sandboxSkill", () => {
     expect(instructions).toContain("Do not pass custom TLS trust settings");
   });
 
-  it("points at `dsbx env` for env-var discovery", async () => {
+  it("points at `rbx env` for env-var discovery", async () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const instructions = await sandboxSkill.fetchInstructions(auth, {
       spaceIds: [],
     });
 
-    expect(instructions).toContain("`dsbx env`");
+    expect(instructions).toContain("`rbx env`");
     expect(instructions).toContain("the HTTPS domain(s) it is approved for");
   });
 

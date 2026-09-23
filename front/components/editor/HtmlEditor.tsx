@@ -4,7 +4,7 @@ import { HeadingExtension } from "@app/components/editor/extensions/HeadingExten
 import { LinkExtension } from "@app/components/editor/extensions/LinkExtension";
 import { BlockquoteExtension } from "@app/components/editor/input_bar/BlockquoteExtension";
 import { useIsMobile } from "@app/lib/swr/useIsMobile";
-import { cn, markdownStyles, Toolbar } from "@dust-tt/sparkle";
+import { cn, markdownStyles, Toolbar } from "@ruby-ai/ui";
 import type { Extensions } from "@tiptap/core";
 import { generateHTML, generateJSON } from "@tiptap/html";
 import { EditorContent, useEditor } from "@tiptap/react";

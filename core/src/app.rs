@@ -8,7 +8,7 @@ use crate::run::{
 };
 use crate::stores::store::Store;
 use crate::utils;
-use crate::{DustParser, Rule};
+use crate::{RubyParser, Rule};
 use anyhow::{anyhow, Result};
 use futures::StreamExt;
 use futures::TryStreamExt;
@@ -64,7 +64,7 @@ impl App {
     }
 
     pub async fn new(spec_data: &str) -> Result<Self> {
-        let parsed = DustParser::parse(Rule::dust, &spec_data)?.next().unwrap();
+        let parsed = RubyParser::parse(Rule::ruby, &spec_data)?.next().unwrap();
 
         // Block names and parsed instantiations.
         let mut blocks: Vec<(String, Box<dyn Block + Send + Sync>)> = Vec::new();

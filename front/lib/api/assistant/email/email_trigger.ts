@@ -49,7 +49,7 @@ const EMAIL_REPLY_CONTEXT_TTL_SECONDS = 3 * 60 * 60; // 3 hours
 const EMAIL_THREAD_CONVERSATION_PREFIX = "email-thread-conversation";
 const EMAIL_THREAD_CONVERSATION_TTL_SECONDS = 30 * 24 * 60 * 60; // 30 days
 const EMAIL_THREAD_LOOKUP_MAX_MESSAGE_IDS = 10;
-// Same-email multi-workspace routing is rare and mostly specific to Dust, so a
+// Same-email multi-workspace routing is rare and mostly specific to Ruby, so a
 // single hardcoded priority workspace is enough for now.
 const EMAIL_PRIORITY_WORKSPACE_IDS = ["0ec9852c2f"] as const;
 
@@ -363,8 +363,8 @@ export function makeUserNotFoundEmailTriggerError(
   return {
     type: "user_not_found",
     message:
-      `Failed to match a valid Dust user for email: ${email}. ` +
-      `Please sign up for Dust at https://dust.tt to interact with assistants over email.`,
+      `Failed to match a valid Ruby user for email: ${email}. ` +
+      `Please sign up for Ruby at https://ruby.ad to interact with assistants over email.`,
   };
 }
 
@@ -374,8 +374,8 @@ export function makeWorkspaceNotFoundEmailTriggerError(
   return {
     type: "workspace_not_found",
     message:
-      `Failed to match a valid Dust workspace associated with email: ${email}. ` +
-      `Please sign up for Dust at https://dust.tt to interact with agents over email.`,
+      `Failed to match a valid Ruby workspace associated with email: ${email}. ` +
+      `Please sign up for Ruby at https://ruby.ad to interact with agents over email.`,
   };
 }
 
@@ -551,9 +551,9 @@ export function buildEmailUserMessage({
           )}</email_cc>`,
         ]
       : []),
-    `  <dust_agent_recipients>${escapeTagContent(
+    `  <ruby_agent_recipients>${escapeTagContent(
       formatEmailRecipients(assistantRecipients)
-    )}</dust_agent_recipients>`,
+    )}</ruby_agent_recipients>`,
     "  <email_body>",
     escapeTagContent(userMessage),
     "  </email_body>",
@@ -593,7 +593,7 @@ export function getEmailBlacklistedAgentIds({
       type: "invalid_email_blacklist_metadata",
       message:
         "Email interactions with agents are temporarily unavailable for this workspace. " +
-        "Please contact Dust support.",
+        "Please contact Ruby support.",
     });
   }
 
@@ -789,7 +789,7 @@ export async function triggerFromEmail(
     return new Err({
       type: "unexpected_error",
       message:
-        "An unexpected error occurred. Please try again or contact us at support@dust.tt.",
+        "An unexpected error occurred. Please try again or contact us at support@ruby.ad.",
     });
   }
 
@@ -1057,7 +1057,7 @@ export async function sendToolValidationEmail({
     agentName: agentConfiguration.name,
   });
 
-  const name = `${agentConfiguration.name} (Dust agent)`;
+  const name = `${agentConfiguration.name} (Ruby agent)`;
   const sender = `${agentConfiguration.name}@${ASSISTANT_EMAIL_SUBDOMAIN}`;
 
   const subject = email.subject
@@ -1119,7 +1119,7 @@ export async function sendToolValidationEmail({
       <p><strong>@${sanitizeHtml(agentConfiguration.name, { allowedTags: [], allowedAttributes: {} })}</strong> needs permission to use the following tool(s):</p>
       ${actionBlocks.join("")}
       <p style="color: #666; margin-top: 16px;">Links expire in 24 hours.</p>
-      <p><a href="${conversationUrl}" style="color: #2563eb;">View conversation in Dust</a></p>
+      <p><a href="${conversationUrl}" style="color: #2563eb;">View conversation in Ruby</a></p>
     </div>
   `;
 
@@ -1178,8 +1178,8 @@ export async function replyToEmail({
   recipient: string;
 }) {
   const name = agentConfiguration
-    ? `${agentConfiguration.name} (Dust agent)`
-    : "Dust agent";
+    ? `${agentConfiguration.name} (Ruby agent)`
+    : "Ruby agent";
   const sender = agentConfiguration
     ? `${agentConfiguration.name}@${ASSISTANT_EMAIL_SUBDOMAIN}`
     : `assistants@${ASSISTANT_EMAIL_SUBDOMAIN}`;

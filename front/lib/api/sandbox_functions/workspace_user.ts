@@ -109,7 +109,7 @@ export async function authorizeSandboxFunctionInvocation(
       return authorized
         ? { authorized: true, user, runtimeSpaceId, pod }
         : authorizationError(
-            "This Frame function requires a logged-in workspace member in a live Dust session."
+            "This Frame function requires a logged-in workspace member in a live Ruby session."
           );
     }
     case "frame_author_required": {

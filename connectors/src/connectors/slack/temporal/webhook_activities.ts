@@ -19,7 +19,7 @@ import {
 import type { SlackWebhookEventPayload } from "@connectors/connectors/slack/temporal/webhook_event";
 import { SlackWebhookEventPayloadSchema } from "@connectors/connectors/slack/temporal/webhook_event";
 import { dataSourceConfigFromConnector } from "@connectors/lib/api/data_source_config";
-import { getDustAPI } from "@connectors/lib/api/dust_api";
+import { getRubyAPI } from "@connectors/lib/api/ruby_api";
 import { concurrentExecutor } from "@connectors/lib/async_utils";
 import { upsertDataSourceFolder } from "@connectors/lib/data_sources";
 import { SlackChannelModel } from "@connectors/lib/models/slack";
@@ -30,7 +30,7 @@ import { ConnectorResource } from "@connectors/resources/connector_resource";
 import { SlackConfigurationResource } from "@connectors/resources/slack_configuration_resource";
 import type { ModelId } from "@connectors/types";
 import { INTERNAL_MIME_TYPES, normalizeError } from "@connectors/types";
-import { assertNever, removeNulls } from "@dust-tt/client";
+import { assertNever, removeNulls } from "@ruby-ai/client";
 import { Op } from "sequelize";
 import { fromError } from "zod-validation-error";
 
@@ -128,7 +128,7 @@ async function listSyncableConnectors(
       async (candidate) => {
         // /exists does no work beyond authentication and errors when the
         // workspace is gone, relocated or in maintenance.
-        const existsRes = await getDustAPI(
+        const existsRes = await getRubyAPI(
           dataSourceConfigFromConnector(candidate.connector)
         ).exists();
         if (existsRes.isErr()) {
@@ -384,7 +384,7 @@ async function announceBotJoinedPrivateChannel(
     await withSlackErrorHandling(() =>
       slackClient.chat.postMessage({
         channel: channelId,
-        text: "You can now talk to Dust in this channel. ⚠️ If private channel synchronization has been allowed on your Dust workspace, admins will now be able to synchronize data from this channel.",
+        text: "You can now talk to Ruby in this channel. ⚠️ If private channel synchronization has been allowed on your Ruby workspace, admins will now be able to synchronize data from this channel.",
       })
     );
   }

@@ -1,4 +1,4 @@
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { SubscriptionActionButtons } from "./SubscriptionActionButtons";
 import { useSubscriptionContext } from "./SubscriptionContext";
 import type { SubscriptionStatus } from "./SubscriptionStatusChip";

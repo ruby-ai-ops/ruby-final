@@ -29,7 +29,7 @@ import {
   Play,
   Spinner,
   Stop,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useRef, useState } from "react";
 import { useSWRConfig } from "swr";
 
@@ -102,7 +102,7 @@ export function AppViewPage() {
   const owner = useWorkspace();
   const { isAdmin } = useAuth();
   const { hasPermission } = useWorkspacePermissions();
-  const readOnly = !hasPermission("admin", "dust_app");
+  const readOnly = !hasPermission("admin", "ruby_app");
 
   const { app, isAppLoading, isAppError } = useApp({
     workspaceId: owner.sId,
@@ -422,7 +422,7 @@ export function AppViewPage() {
                 label="Documentation"
                 onClick={() => {
                   window.open(
-                    "https://docs.dust.tt/reference/introduction-to-dust-apps",
+                    "https://docs.ruby.ad/reference/introduction-to-ruby-apps",
                     "_blank"
                   );
                 }}
@@ -459,7 +459,7 @@ export function AppViewPage() {
 
         {spec.length == 0 ? (
           <div className="mx-auto mt-8 text-sm text-muted-foreground">
-            <p>Welcome to your new Dust app.</p>
+            <p>Welcome to your new Ruby app.</p>
             <p className="mt-4">To get started, add your first block or:</p>
             <p className="mt-4">
               <Button
@@ -468,7 +468,7 @@ export function AppViewPage() {
                 label="Follow the QuickStart Guide"
                 onClick={() => {
                   window.open(
-                    "https://docs.dust.tt/reference/developer-platform-overview",
+                    "https://docs.ruby.ad/reference/developer-platform-overview",
                     "_blank"
                   );
                 }}

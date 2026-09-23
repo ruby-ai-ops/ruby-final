@@ -6,7 +6,7 @@ import {
   type GetConversationResponseType,
   PatchConversationRequestSchema,
   type PatchConversationResponseSchema,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { apiErrorForConversation } from "@front-api/lib/api/assistant/conversation/helper";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { apiError, type HandlerResult } from "@front-api/middlewares/utils";

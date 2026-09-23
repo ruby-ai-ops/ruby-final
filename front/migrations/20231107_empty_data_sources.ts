@@ -5,7 +5,7 @@
 // import { Workspace } from "@app/lib/models/workspace";
 // import { DataSourceModel } from "@app/lib/resources/storage/models/data_source";
 // import logger from "@app/logger/logger";
-// import { launchScrubDataSourceWorkflow } from "@app/poke/temporal/client";
+// import { launchScrubDataSourceWorkflow } from "@app/admin-app/temporal/client";
 
 // const { CORE_DATABASE_URI, LIVE } = process.env;
 
@@ -22,19 +22,19 @@
 //   let countDeleted = 0;
 
 //   for (const ds of dataSources) {
-//     const dustAPIProjectId = ds.dustAPIProjectId;
+//     const rubyAPIProjectId = ds.rubyAPIProjectId;
 
 //     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 //     const [dsData, dsMetaData] = (await coreSequelize.query(`
-//       SELECT * FROM data_sources WHERE project = ${dustAPIProjectId};
+//       SELECT * FROM data_sources WHERE project = ${rubyAPIProjectId};
 //     `)) as [any[], { rowCount?: number }];
 
 //     if (dsData.length == 0) {
-//       console.log(`[!] CORE Data Source Not Found: ${dustAPIProjectId}`);
+//       console.log(`[!] CORE Data Source Not Found: ${rubyAPIProjectId}`);
 //       continue;
 //     }
 //     if (dsData.length > 1) {
-//       console.log(`[!] CORE Data Source Found >1: ${dustAPIProjectId}`);
+//       console.log(`[!] CORE Data Source Found >1: ${rubyAPIProjectId}`);
 //       continue;
 //     }
 
@@ -59,13 +59,13 @@
 //     ) {
 //       countDeleted += 1;
 //       console.log(
-//         `[DELETE] Data Source: ${dustAPIProjectId} ${ds.id} ${ds.name} ${dsData[0].internal_id}`
+//         `[DELETE] Data Source: ${rubyAPIProjectId} ${ds.id} ${ds.name} ${dsData[0].internal_id}`
 //       );
 //       if (LIVE) {
 //         const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 //         const coreDeleteRes = await coreAPI.deleteDataSource({
-//           projectId: dustAPIProjectId,
-//           dataSourceId: ds.dustAPIDataSourceId,
+//           projectId: rubyAPIProjectId,
+//           dataSourceId: ds.rubyAPIDataSourceId,
 //         });
 //         if (coreDeleteRes.isErr()) {
 //           console.log("[x] Error deleting CoreAPI data source", ds);
@@ -90,12 +90,12 @@
 //         console.log(
 //           "Launching scrub workflow",
 //           workspace.sId,
-//           dustAPIProjectId
+//           rubyAPIProjectId
 //         );
 
 //         await launchScrubDataSourceWorkflow({
 //           wId: workspace.sId,
-//           dustAPIProjectId,
+//           rubyAPIProjectId,
 //         });
 //       }
 //     }

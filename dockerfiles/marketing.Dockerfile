@@ -8,22 +8,29 @@ RUN npm install -g npm@11.11.0
 
 WORKDIR /app
 
-# Workspace dep graph: marketing depends only on @dust-tt/sparkle.
+# Workspace dep graph: marketing depends only on @ruby-ai/ui.
 COPY package.json package-lock.json ./
-COPY sparkle/package.json ./sparkle/
+COPY ui/package.json ./ui/
 COPY marketing/package.json ./marketing/
 
-RUN --mount=type=cache,id=npm-cache,target=/root/.npm npm ci -w sparkle -w marketing
+RUN --mount=type=cache,id=npm-cache,target=/root/.npm npm ci -w ui -w marketing
 
-# Build Sparkle (its package entries point at dist/, so it must be built before
-# marketing's next build can resolve @dust-tt/sparkle).
-WORKDIR /app/sparkle
-COPY /sparkle/ .
+# Build RubyUI (its package entries point at dist/, so it must be built before
+# marketing's next build can resolve @ruby-ai/ui).
+WORKDIR /app/ui
+COPY /ui/ .
 RUN npm run build
 
 # Copy marketing source
 WORKDIR /app/marketing
 COPY /marketing .
+COPY /.github/workflows/ruby-ci.yml /app/.github/workflows/ruby-ci.yml
+COPY /maintenance/upstream/build-component.mjs /app/maintenance/upstream/build-component.mjs
+COPY /dockerfiles/marketing.Dockerfile /app/dockerfiles/marketing.Dockerfile
+
+# Preserve the imported demo's independent runtime and provenance checks.
+RUN npm --prefix demo-workspace/embed ci
+RUN npm --prefix demo-workspace/embed run build
 
 # Remove test files (shared optimization)
 RUN find . -name "*.test.ts" -delete
@@ -36,8 +43,8 @@ FROM base-deps AS marketing-build
 
 ARG COMMIT_HASH
 ARG NEXT_PUBLIC_BUILD_DATE
-ARG NEXT_PUBLIC_DUST_API_URL
-ARG NEXT_PUBLIC_DUST_APP_URL
+ARG NEXT_PUBLIC_RUBY_API_URL
+ARG NEXT_PUBLIC_RUBY_APP_URL
 ARG NEXT_PUBLIC_ENABLE_BOT_CRAWLING
 ARG NEXT_PUBLIC_GTM_TRACKING_ID
 ARG NEXT_PUBLIC_POSTHOG_KEY
@@ -48,8 +55,8 @@ ARG CONTENTFUL_ACCESS_TOKEN
 
 ENV NEXT_PUBLIC_COMMIT_HASH=$COMMIT_HASH
 ENV NEXT_PUBLIC_BUILD_DATE=$NEXT_PUBLIC_BUILD_DATE
-ENV NEXT_PUBLIC_DUST_API_URL=$NEXT_PUBLIC_DUST_API_URL
-ENV NEXT_PUBLIC_DUST_APP_URL=$NEXT_PUBLIC_DUST_APP_URL
+ENV NEXT_PUBLIC_RUBY_API_URL=$NEXT_PUBLIC_RUBY_API_URL
+ENV NEXT_PUBLIC_RUBY_APP_URL=$NEXT_PUBLIC_RUBY_APP_URL
 ENV NEXT_PUBLIC_ENABLE_BOT_CRAWLING=$NEXT_PUBLIC_ENABLE_BOT_CRAWLING
 ENV NEXT_PUBLIC_GTM_TRACKING_ID=$NEXT_PUBLIC_GTM_TRACKING_ID
 ENV NEXT_PUBLIC_POSTHOG_KEY=$NEXT_PUBLIC_POSTHOG_KEY
@@ -59,9 +66,9 @@ ENV CONTENTFUL_SPACE_ID=$CONTENTFUL_SPACE_ID
 ENV CONTENTFUL_ACCESS_TOKEN=$CONTENTFUL_ACCESS_TOKEN
 
 RUN NODE_OPTIONS="--max-old-space-size=8192" \
-  npm run build -- --no-lint && \
-  if [ ! -d .next/standalone ]; then \
-  echo "ERROR: next build did not emit .next/standalone (output:standalone)."; \
+  npm run build:next -- --no-lint && \
+  if [ ! -d .next-build/standalone ]; then \
+  echo "ERROR: next build did not emit .next-build/standalone (output:standalone)."; \
   exit 1; \
   fi
 
@@ -75,18 +82,18 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy entire standalone output (self-contained with traced node_modules)
-COPY --from=marketing-build /app/marketing/.next/standalone ./
+COPY --from=marketing-build /app/marketing/.next-build/standalone ./
 
 WORKDIR /app/marketing
 
 # Copy static assets and public (not included in standalone)
-COPY --from=marketing-build /app/marketing/.next/static ./.next/static
+COPY --from=marketing-build /app/marketing/.next-build/static ./.next-build/static
 COPY --from=marketing-build /app/marketing/public ./public
 
 ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 ARG COMMIT_HASH_LONG
-ARG DD_GIT_REPOSITORY_URL=https://github.com/dust-tt/dust
+ARG DD_GIT_REPOSITORY_URL=https://github.com/ruby-ai-ops/ruby-final
 ARG DD_GIT_COMMIT_SHA=${COMMIT_HASH_LONG}
 ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL}
 ENV DD_GIT_COMMIT_SHA=${DD_GIT_COMMIT_SHA}

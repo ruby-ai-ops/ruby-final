@@ -15,7 +15,7 @@ runtime module names. `id` hashes the extracted files and remains stable across 
 `tsup` generates a single `index.d.ts` for Viz's public types using TypeScript's declaration emit
 and Rollup's declaration bundler. The build reads `createFrameRuntimeImports`, the helper used by
 `react-runner`, to generate the entry point and map Frame module names to their declarations.
-Bound Dust hook signatures and the legacy Pod aliases come from that same helper.
+Bound Ruby hook signatures and the legacy Pod aliases come from that same helper.
 
 The archive includes the bundle, small Frame module aliases, and the installed dependencies'
 original declarations and package metadata. It also contains `runtime.json` and `tsconfig.json`.
@@ -33,11 +33,11 @@ After extraction, a consumer can extend the supplied configuration:
 ```
 
 Use the consumer's installed TypeScript compiler or type-aware linter. The configuration supports
-TSX, JavaScript, browser globals and dynamic Dust file references. A linter must receive every
+TSX, JavaScript, browser globals and dynamic Ruby file references. A linter must receive every
 UI source file to report diagnostics inside imported files.
 
 Consumers must restrict runtime imports to the names in `runtime.json`, relative UI files and
-supported Dust file references. Dependency declarations also include packages used internally
+supported Ruby file references. Dependency declarations also include packages used internally
 by Viz that are not exposed to Frame code.
 
 This is the Viz artifact only. Sandbox installation, caching, lint configuration and publishing

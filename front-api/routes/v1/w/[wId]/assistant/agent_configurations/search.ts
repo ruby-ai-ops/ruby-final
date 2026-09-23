@@ -1,7 +1,7 @@
 import { searchAgentConfigurationsByName } from "@app/lib/api/assistant/configuration/agent";
 import { toAgentConfigurationsWithSkills } from "@app/lib/api/assistant/configuration/helpers";
 import { addBackwardCompatibleAgentConfigurationFields } from "@app/lib/api/v1/backward_compatibility";
-import type { GetAgentConfigurationsResponseType } from "@dust-tt/client";
+import type { GetAgentConfigurationsResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { validate } from "@front-api/middlewares/validator";

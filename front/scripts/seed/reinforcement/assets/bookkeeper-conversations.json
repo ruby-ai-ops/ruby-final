@@ -2,12 +2,12 @@
   {
     "sId": "RABookConv01",
     "title": "Recommend a Python book",
-    "agentName": "Dust",
+    "agentName": "Ruby",
     "exchanges": [
       {
         "user": {
           "sId": "RABKUMsg01",
-          "content": ":mention[Dust]{sId=dust} Can you recommend a good Python book? I've been learning the basics and want to go deeper."
+          "content": ":mention[Ruby]{sId=ruby} Can you recommend a good Python book? I've been learning the basics and want to go deeper."
         },
         "agent": {
           "sId": "RABKAMsg01",
@@ -19,13 +19,13 @@
   {
     "sId": "RABookConv02",
     "title": "Looking for a book on distributed systems",
-    "agentName": "Dust",
+    "agentName": "Ruby",
     "userId": "otherUser",
     "exchanges": [
       {
         "user": {
           "sId": "RABKUMsg02",
-          "content": ":mention[Dust]{sId=dust} Do we have any books on distributed systems? I already read Designing Data-Intensive Applications last year."
+          "content": ":mention[Ruby]{sId=ruby} Do we have any books on distributed systems? I already read Designing Data-Intensive Applications last year."
         },
         "agent": {
           "sId": "RABKAMsg02",

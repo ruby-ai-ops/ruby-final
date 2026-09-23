@@ -30,13 +30,13 @@ async function backfillCoreDataSourceName(
     async (dataSource) => {
       if (execute) {
         await coreAPI.updateDataSource({
-          projectId: dataSource.dustAPIProjectId,
-          dataSourceId: dataSource.dustAPIDataSourceId,
+          projectId: dataSource.rubyAPIProjectId,
+          dataSourceId: dataSource.rubyAPIDataSourceId,
           name: dataSource.name,
         });
       } else {
         logger.info(
-          { dataSourceId: dataSource.dustAPIDataSourceId },
+          { dataSourceId: dataSource.rubyAPIDataSourceId },
           "Would update data source name"
         );
       }

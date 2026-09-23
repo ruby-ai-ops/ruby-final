@@ -85,7 +85,7 @@ export function getSearchFilterFromDataSourceViews(
 
   const groupedPerDataSource = dataSourceViews.reduce(
     (acc, dsv) => {
-      const dataSourceId = dsv.dataSource.dustAPIDataSourceId;
+      const dataSourceId = dsv.dataSource.rubyAPIDataSourceId;
       if (!acc.has(dataSourceId)) {
         acc.set(dataSourceId, {
           dataSource: dsv.dataSource,

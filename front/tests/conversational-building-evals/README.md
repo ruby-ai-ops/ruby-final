@@ -1,13 +1,13 @@
 # Conversational Building Evaluation Tests
 
 LLM-as-judge eval suite for the `conversational-building` global skill (the
-`building_agents_and_skills` MCP server), run through the Dust global agent.
+`building_agents_and_skills` MCP server), run through the Ruby global agent.
 
 ## Architecture
 
 ```
 seed workspace (skills, admin member) from the scenario
-  → Dust prompt + enabled skill instructions + user message
+  → Ruby prompt + enabled skill instructions + user message
   → Agent LLM → tool calls → real tool handlers against the seeded workspace
   → ... → final response
   → (1) final tool call assertion   (2) Judge LLM score (0-3)
@@ -17,10 +17,10 @@ seed workspace (skills, admin member) from the scenario
    skills of its `workspaceSeed`, created through the test factories in a committed transaction
    (`beforeAll` runs before the per-test CLS transaction exists). The run then executes as that
    member, which the `suggest_*` tools require.
-2. **Agent config** comes from `_getDustGlobalAgent`: the real instructions and model of the
-   `dust` global agent, built on the scenario's workspace.
+2. **Agent config** comes from `_getRubyGlobalAgent`: the real instructions and model of the
+   `ruby` global agent, built on the scenario's workspace.
 3. **Skill state**: the skill is already enabled, so its instructions are injected as the same
-   `<dust_system>` message production uses, and the agent only sees the tools of the two servers
+   `<ruby_system>` message production uses, and the agent only sees the tools of the two servers
    the skill equips (`building_agents_and_skills`, `workspace_management`), under their prefixed
    names (`workspace_management__list_skills`, ...). `stake: "high"` tools are left out since
    production would ask the user before running them.

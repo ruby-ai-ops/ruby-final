@@ -1,4 +1,3 @@
-import type { TrustedByLogoSet } from "@marketing/lib/logo_bars";
 import type { ReactNode } from "react";
 
 // SEO config type
@@ -66,9 +65,7 @@ export interface AIAgentsSectionConfig {
 // Trusted By Section Config
 export interface TrustedBySectionConfig {
   title: string;
-  // Union rather than `string`: the value is half of the Contentful `barSlug`
-  // a bar resolves against, so a typo would silently render an empty bar.
-  logoSet: TrustedByLogoSet;
+  logoSet: string;
 }
 
 // Pain Points Section Config
@@ -98,7 +95,7 @@ export interface UseCaseConfig {
   features: UseCaseFeatureConfig[];
 }
 
-export interface DustInActionSectionConfig {
+export interface RubyInActionSectionConfig {
   title: string;
   useCases: UseCaseConfig[];
 }
@@ -156,8 +153,8 @@ export interface CustomerStoriesSectionConfig {
   stories: CustomerStoryConfig[];
 }
 
-// Just Use Dust Section Config
-export interface JustUseDustSectionConfig {
+// Just Use Ruby Section Config
+export interface JustUseRubySectionConfig {
   title: string;
   titleColor?: string;
   ctaButtons: CTAButtonsConfig;
@@ -171,13 +168,13 @@ export type SectionType =
   | "aiAgents"
   | "trustedBy"
   | "painPoints"
-  | "dustInAction"
+  | "rubyInAction"
   | "impactMetrics"
   | "demoVideo"
   | "trustedBySecond"
   | "testimonial"
   | "customerStories"
-  | "justUseDust";
+  | "justUseRuby";
 
 export interface SectionConfig {
   type: SectionType;
@@ -201,13 +198,13 @@ export interface IndustryPageConfig {
   aiAgents?: AIAgentsSectionConfig;
   trustedBy?: TrustedBySectionConfig;
   painPoints?: PainPointsSectionConfig;
-  dustInAction?: DustInActionSectionConfig;
+  rubyInAction?: RubyInActionSectionConfig;
   impactMetrics?: ImpactMetricsSectionConfig;
   demoVideo?: DemoVideoSectionConfig;
   trustedBySecond?: TrustedBySectionConfig;
   testimonial?: TestimonialSectionConfig;
   customerStories?: CustomerStoriesSectionConfig;
-  justUseDust?: JustUseDustSectionConfig;
+  justUseRuby?: JustUseRubySectionConfig;
 }
 
 // Utility functions for section management
@@ -216,13 +213,13 @@ export const defaultSectionOrder: SectionType[] = [
   "aiAgents",
   "trustedBy",
   "painPoints",
-  "dustInAction",
+  "rubyInAction",
   "impactMetrics",
   "demoVideo",
   "trustedBySecond",
   "testimonial",
   "customerStories",
-  "justUseDust",
+  "justUseRuby",
 ];
 
 export function createLayoutConfig(

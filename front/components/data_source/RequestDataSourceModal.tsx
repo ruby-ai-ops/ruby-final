@@ -1,4 +1,4 @@
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useSendNotification } from "@app/hooks/useNotification";
 import { getConnectorProviderLogoWithFallback } from "@app/lib/connector_providers_ui";
 import { getDisplayNameForDataSource, isManaged } from "@app/lib/data_sources";
@@ -20,7 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
   TextArea,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import capitalize from "lodash/capitalize";
 import { useEffect, useState } from "react";
 
@@ -164,7 +164,7 @@ export function RequestDataSourceModal({
                   {capitalize(selectedDataSource.editedByUser?.fullName ?? "")}{" "}
                   is the administrator for the{" "}
                   {getDisplayNameForDataSource(selectedDataSource)} connection
-                  within Dust. Send an email to{" "}
+                  within Ruby. Send an email to{" "}
                   {capitalize(selectedDataSource.editedByUser?.fullName ?? "")},
                   explaining your request.
                 </p>

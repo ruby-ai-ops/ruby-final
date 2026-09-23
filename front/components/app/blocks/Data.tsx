@@ -7,7 +7,7 @@ import type {
 } from "@app/types/app";
 import type { BlockType, RunType } from "@app/types/run";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, Edit04, Label } from "@dust-tt/sparkle";
+import { Button, Edit04, Label } from "@ruby-ai/ui";
 
 import Block from "./Block";
 

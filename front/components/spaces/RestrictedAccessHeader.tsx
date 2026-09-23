@@ -1,4 +1,4 @@
-import { Page, SliderToggle } from "@dust-tt/sparkle";
+import { Page, SliderToggle } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 
 interface RestrictedAccessHeaderProps {

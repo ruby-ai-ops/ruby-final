@@ -216,7 +216,7 @@ export const UKG_READY_SERVER = {
       supported_use_cases: ["personal_actions"],
     },
     icon: "UkgLogo",
-    documentationUrl: "https://docs.dust.tt/docs/ukg-ready",
+    documentationUrl: "https://docs.ruby.ad/docs/ukg-ready",
   },
   tools: UKG_READY_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

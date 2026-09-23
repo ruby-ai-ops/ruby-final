@@ -24,9 +24,9 @@ use crate::{
 
 use super::bigquery::get_bigquery_remote_database;
 
-/// Opaque Dust identity attached to remote warehouse query jobs for cost attribution.
+/// Opaque Ruby identity attached to remote warehouse query jobs for cost attribution.
 ///
-/// Values are Dust sIds (workspace / agent configuration / user). They are written into the
+/// Values are Ruby sIds (workspace / agent configuration / user). They are written into the
 /// customer's own warehouse logs (BigQuery job labels / Snowflake QUERY_TAG).
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct QueryIdentityContext {
@@ -45,7 +45,7 @@ impl QueryIdentityContext {
 
     /// BigQuery label values: `[a-z0-9_-]` only, ≤63 chars.
     ///
-    /// Dust sIds are case-sensitive, but BigQuery rejects uppercase, so we use a
+    /// Ruby sIds are case-sensitive, but BigQuery rejects uppercase, so we use a
     /// reversible encoding (see [`sanitize_bigquery_label_value`]).
     pub fn to_bigquery_labels(&self) -> HashMap<String, String> {
         let mut labels = HashMap::new();
@@ -54,21 +54,21 @@ impl QueryIdentityContext {
             .as_deref()
             .and_then(sanitize_bigquery_label_value)
         {
-            labels.insert("dust_workspace".to_string(), value);
+            labels.insert("ruby_workspace".to_string(), value);
         }
         if let Some(value) = self
             .agent_id
             .as_deref()
             .and_then(sanitize_bigquery_label_value)
         {
-            labels.insert("dust_agent".to_string(), value);
+            labels.insert("ruby_agent".to_string(), value);
         }
         if let Some(value) = self
             .user_id
             .as_deref()
             .and_then(sanitize_bigquery_label_value)
         {
-            labels.insert("dust_user".to_string(), value);
+            labels.insert("ruby_user".to_string(), value);
         }
         labels
     }
@@ -77,13 +77,13 @@ impl QueryIdentityContext {
     pub fn to_snowflake_query_tag(&self) -> Option<String> {
         let mut map = serde_json::Map::new();
         if let Some(workspace_id) = &self.workspace_id {
-            map.insert("dust_workspace".to_string(), json!(workspace_id));
+            map.insert("ruby_workspace".to_string(), json!(workspace_id));
         }
         if let Some(agent_id) = &self.agent_id {
-            map.insert("dust_agent".to_string(), json!(agent_id));
+            map.insert("ruby_agent".to_string(), json!(agent_id));
         }
         if let Some(user_id) = &self.user_id {
-            map.insert("dust_user".to_string(), json!(user_id));
+            map.insert("ruby_user".to_string(), json!(user_id));
         }
         if map.is_empty() {
             None
@@ -93,9 +93,9 @@ impl QueryIdentityContext {
     }
 }
 
-/// Encode a Dust sId into a BigQuery-safe label value without losing case.
+/// Encode a Ruby sId into a BigQuery-safe label value without losing case.
 ///
-/// BigQuery only allows `[a-z0-9_-]`, while Dust sIds are case-sensitive base62.
+/// BigQuery only allows `[a-z0-9_-]`, while Ruby sIds are case-sensitive base62.
 /// Encoding:
 /// - `a-z`, `0-9`, `-` → as-is
 /// - `_` → `__`
@@ -150,11 +150,11 @@ mod tests {
         let labels = identity.to_bigquery_labels();
         // W→_w, _→__, A→_a, B→_b, C→_c
         assert_eq!(
-            labels.get("dust_workspace"),
+            labels.get("ruby_workspace"),
             Some(&"_workspace___a_b_c".to_string())
         );
-        assert_eq!(labels.get("dust_agent"), Some(&"agentbadvalue".to_string()));
-        assert!(!labels.contains_key("dust_user"));
+        assert_eq!(labels.get("ruby_agent"), Some(&"agentbadvalue".to_string()));
+        assert!(!labels.contains_key("ruby_user"));
     }
 
     #[test]
@@ -178,9 +178,9 @@ mod tests {
             .to_snowflake_query_tag()
             .ok_or_else(|| anyhow!("expected query tag"))?;
         let parsed: serde_json::Value = serde_json::from_str(&tag)?;
-        assert_eq!(parsed["dust_workspace"], "ws1");
-        assert_eq!(parsed["dust_agent"], "agt1");
-        assert!(parsed.get("dust_user").is_none());
+        assert_eq!(parsed["ruby_workspace"], "ws1");
+        assert_eq!(parsed["ruby_agent"], "agt1");
+        assert!(parsed.get("ruby_user").is_none());
         Ok(())
     }
 }

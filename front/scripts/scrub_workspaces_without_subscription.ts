@@ -2,7 +2,7 @@ import { SubscriptionModel } from "@app/lib/models/plan";
 import { WorkspaceModel } from "@app/lib/resources/storage/models/workspace";
 import { concurrentExecutor } from "@app/lib/utils/async_utils";
 import type { Logger } from "@app/logger/logger";
-import { launchDeleteWorkspaceWorkflow } from "@app/poke/temporal/client";
+import { launchDeleteWorkspaceWorkflow } from "@app/admin-app/temporal/client";
 import { makeScript } from "@app/scripts/helpers";
 import { Op } from "sequelize";
 

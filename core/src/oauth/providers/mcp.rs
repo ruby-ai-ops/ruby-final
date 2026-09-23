@@ -24,7 +24,7 @@ use super::utils::ProviderHttpRequestError;
 /// When a server returns a refresh_token but no expires_in, the access token likely expires
 /// server-side. This default ensures proactive refresh instead of waiting for a 401.
 const DEFAULT_TOKEN_EXPIRY_SECONDS: u64 = 3600;
-const MCP_OAUTH_USER_AGENT: &str = "dust/oauth";
+const MCP_OAUTH_USER_AGENT: &str = "ruby/oauth";
 
 /// Compute the access_token_expiry timestamp in milliseconds.
 /// Uses `saturating_sub` to avoid underflow if `expires_in` < `PROVIDER_TIMEOUT_SECONDS`.
@@ -566,7 +566,7 @@ mod tests {
         if headers
             .get(USER_AGENT)
             .and_then(|value| value.to_str().ok())
-            != Some("dust/oauth")
+            != Some("ruby/oauth")
         {
             return (
                 StatusCode::FORBIDDEN,
@@ -669,7 +669,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn refresh_request_includes_dust_oauth_user_agent() {
+    async fn refresh_request_includes_ruby_oauth_user_agent() {
         let server = token_endpoint_server();
         let token_endpoint = server
             .server_url("/token")
@@ -692,7 +692,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn finalize_request_includes_dust_oauth_user_agent() {
+    async fn finalize_request_includes_ruby_oauth_user_agent() {
         let server = token_endpoint_server();
         let token_endpoint = server
             .server_url("/token")
@@ -734,7 +734,7 @@ mod tests {
                 &connection,
                 Some(credential),
                 "authorization-code",
-                "https://dust.example.com/oauth/mcp/finalize",
+                "https://ruby.example.com/oauth/mcp/finalize",
             )
             .await;
 

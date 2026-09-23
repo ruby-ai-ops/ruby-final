@@ -16,12 +16,12 @@ import { useAuthContext, useVerifyData } from "@app/lib/swr/workspaces";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import {
   Button,
-  DustLogoSquare,
+  RubyLogoSquare,
   Icon,
   Page,
   Spinner,
   Stars02,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { Turnstile } from "@marsidev/react-turnstile";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -479,7 +479,7 @@ function PhoneInputStep({
               </div>
             ) : (
               <>
-                <DustLogoSquare className="-ml-11 h-10 w-32" />
+                <RubyLogoSquare className="-ml-11 h-10 w-32" />
                 <Page.Header title="Phone number" />
                 <p className="-mt-4 text-muted-foreground">
                   To start your free trial, we need to verify your account with
@@ -633,7 +633,7 @@ function CaptchaStep({
       <div className="flex h-full flex-col justify-center">
         <Page.Horizontal>
           <Page.Vertical sizing="grow" gap="lg">
-            <DustLogoSquare className="-ml-11 h-10 w-32" />
+            <RubyLogoSquare className="-ml-11 h-10 w-32" />
             <Page.Header title="Verify you're human" />
             <p className="-mt-4 text-muted-foreground">
               A quick check before we send your verification code.
@@ -703,7 +703,7 @@ function WelcomeStep({ credits, onStartBuilding }: WelcomeStepProps) {
         <div className="flex max-w-xl flex-col items-center gap-6 text-center">
           <Icon visual={Stars02} size="lg" className="text-highlight-500" />
           <h1 className="text-4xl font-bold text-foreground">
-            You're in. Welcome to Dust.
+            You're in. Welcome to Ruby.
           </h1>
           <p className="text-lg text-muted-foreground">
             You've got{" "}

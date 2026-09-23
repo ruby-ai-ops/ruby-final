@@ -2,7 +2,7 @@ import { apiConfig } from "@connectors/lib/api/config";
 import { ExternalOAuthTokenError } from "@connectors/lib/error";
 import type { OAuthConnectionType, OAuthProvider } from "@connectors/types";
 import { getOAuthConnectionAccessToken } from "@connectors/types";
-import type { LoggerInterface } from "@dust-tt/client";
+import type { LoggerInterface } from "@ruby-ai/client";
 
 /**
  * @cc [label:error-handling] oauth-access-token-or-error

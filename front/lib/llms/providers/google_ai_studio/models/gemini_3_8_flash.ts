@@ -1,12 +1,12 @@
 import { dropTemperature } from "@app/lib/llms/stream/types/configuration";
 import { GEMINI_3_8_FLASH_MODEL_CONFIG } from "@app/types/assistant/models/google_ai_studio";
 
-export function WithDustGoogleGeminiThreeDotEightFlashConfig<
+export function WithRubyGoogleGeminiThreeDotEightFlashConfig<
   TBase extends abstract new (
     ...args: any[]
   ) => object,
 >(Base: TBase) {
-  abstract class DustGoogleGeminiThreeDotEightFlash extends Base {
+  abstract class RubyGoogleGeminiThreeDotEightFlash extends Base {
     static readonly displayName = "Gemini 3.8 Flash";
     static readonly description =
       "Google's latest intelligent model for coding and agentic workflows (1m context).";
@@ -20,5 +20,5 @@ export function WithDustGoogleGeminiThreeDotEightFlashConfig<
     static readonly configParsers = [dropTemperature];
   }
 
-  return DustGoogleGeminiThreeDotEightFlash;
+  return RubyGoogleGeminiThreeDotEightFlash;
 }

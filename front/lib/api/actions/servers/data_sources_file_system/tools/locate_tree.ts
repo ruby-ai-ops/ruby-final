@@ -21,7 +21,7 @@ import {
 import { CoreAPI } from "@app/types/core/core_api";
 import { Err, Ok } from "@app/types/shared/result";
 import { removeNulls } from "@app/types/shared/utils/general";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 export const locateTree = async (
   { nodeId, dataSources }: DataSourceFilesystemLocateTreeInputType,
@@ -54,7 +54,7 @@ export const locateTree = async (
     }
 
     const dataSourceConfig = agentDataSourceConfigurations.find(
-      ({ dataSource }) => dataSource.dustAPIDataSourceId === dataSourceId
+      ({ dataSource }) => dataSource.rubyAPIDataSourceId === dataSourceId
     );
 
     if (!dataSourceConfig) {
@@ -133,7 +133,7 @@ export const locateTree = async (
 
   const dataSourceConfig = agentDataSourceConfigurations.find(
     ({ dataSource }) =>
-      dataSource.dustAPIDataSourceId === targetNode.data_source_id
+      dataSource.rubyAPIDataSourceId === targetNode.data_source_id
   );
 
   if (!dataSourceConfig) {

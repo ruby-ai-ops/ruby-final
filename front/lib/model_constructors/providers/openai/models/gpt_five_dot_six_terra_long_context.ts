@@ -18,7 +18,7 @@ export function WithOpenAIGptFiveDotSixTerraLongContextConfig<
   ) => object,
 >(Base: TBase) {
   abstract class OpenAIGptFiveDotSixTerraLongContext extends Base {
-    // Keep a distinct Dust model ID while sending the provider's model ID.
+    // Keep a distinct Ruby model ID while sending the provider's model ID.
     static readonly model = GPT_5_6_TERRA_LONG_CONTEXT;
     modelToHostModel = (modelId: Model): string =>
       modelId === GPT_5_6_TERRA_LONG_CONTEXT ? GPT_5_6_TERRA : modelId;

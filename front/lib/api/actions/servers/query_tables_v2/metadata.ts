@@ -3,7 +3,7 @@ import {
   TABLE_CONFIGURATION_URI_PATTERN,
 } from "@app/lib/actions/mcp_internal_actions/input_schemas";
 import type { ServerMetadata } from "@app/lib/actions/mcp_internal_actions/tool_definition";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { z } from "zod";
 
 export const TABLE_QUERY_V2_SERVER_NAME = "query_tables_v2" as const; // Do not change the name until we fixed the extension
@@ -16,7 +16,7 @@ const tableUriSchema = z
   .regex(TABLE_CONFIGURATION_URI_PATTERN)
   .describe(
     "A table URI in the format returned by list_tables, e.g. " +
-      "'table_configuration://dust/w/{workspaceId}/data_source_views/{viewId}/tables/{tableId}'."
+      "'table_configuration://ruby/w/{workspaceId}/data_source_views/{viewId}/tables/{tableId}'."
   );
 
 const tableUrisSchema = z

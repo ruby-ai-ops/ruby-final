@@ -8,15 +8,15 @@ import {
   reportSlackUsage,
 } from "@connectors/connectors/slack/lib/slack_client";
 import { dataSourceConfigFromConnector } from "@connectors/lib/api/data_source_config";
-import { getDustAPI } from "@connectors/lib/api/dust_api";
-import { makeDustAppUrl } from "@connectors/lib/bot/conversation_utils";
+import { getRubyAPI } from "@connectors/lib/api/ruby_api";
+import { makeRubyAppUrl } from "@connectors/lib/bot/conversation_utils";
 import { isActiveMemberOfWorkspace } from "@connectors/lib/bot/user_validation";
 import logger from "@connectors/logger/logger";
 import type { ConnectorResource } from "@connectors/resources/connector_resource";
 import { SlackConfigurationResource } from "@connectors/resources/slack_configuration_resource";
 import { cacheWithRedis } from "@connectors/types";
-import type { Result, WorkspaceDomainType } from "@dust-tt/client";
-import { Err, normalizeError, Ok } from "@dust-tt/client";
+import type { Result, WorkspaceDomainType } from "@ruby-ai/client";
+import { Err, normalizeError, Ok } from "@ruby-ai/client";
 import type { WebClient } from "@slack/web-api";
 import type {} from "@slack/web-api/dist/types/response/UsersInfoResponse";
 
@@ -25,10 +25,10 @@ async function getVerifiedDomainsForWorkspace(
 ): Promise<WorkspaceDomainType[]> {
   const ds = dataSourceConfigFromConnector(connector);
 
-  const dustAPI = getDustAPI(ds);
+  const rubyAPI = getRubyAPI(ds);
 
   const workspaceVerifiedDomainsRes =
-    await dustAPI.getWorkspaceVerifiedDomains();
+    await rubyAPI.getWorkspaceVerifiedDomains();
   if (workspaceVerifiedDomainsRes.isErr()) {
     logger.error("Error getting verified domains for workspace.", {
       error: workspaceVerifiedDomainsRes.error,
@@ -92,7 +92,7 @@ function makeSlackMembershipAccessBlocksForConnector(
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "The Slack integration is accessible to members of your company's Dust workspace. Click 'Join My Workspace' to get started. For help, contact an administrator.",
+          text: "The Slack integration is accessible to members of your company's Ruby workspace. Click 'Join My Workspace' to get started. For help, contact an administrator.",
         },
       },
       {
@@ -108,7 +108,7 @@ function makeSlackMembershipAccessBlocksForConnector(
             style: "primary",
             value: "join_my_workspace_cta",
             action_id: "actionId-0",
-            url: makeDustAppUrl(
+            url: makeRubyAppUrl(
               `/w/${connector.workspaceId}/join?wId=${connector.workspaceId}`
             ),
           },
@@ -120,7 +120,7 @@ function makeSlackMembershipAccessBlocksForConnector(
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "It looks like you're not a member of your company's Dust workspace yet. Please reach out to an administrator to join and start using Dust on Slack.",
+          text: "It looks like you're not a member of your company's Ruby workspace yet. Please reach out to an administrator to join and start using Ruby on Slack.",
         },
       },
     ],
@@ -163,11 +163,11 @@ async function postMessageForUnauthorizedUser(
 }
 
 export function makeSlackWorkflowNotAllowedMessage(botName: string): string {
-  return `The Slack workflow "${botName}" is not allowed to call Dust agents yet. A Dust admin can allow it from the Automations page in Dust.`;
+  return `The Slack workflow "${botName}" is not allowed to call Ruby agents yet. A Ruby admin can allow it from the Automations page in Ruby.`;
 }
 
 export const SLACK_BOT_NOT_IDENTIFIED_MESSAGE =
-  "Dust could not identify the bot or workflow that posted this message, so it cannot call Dust agents. Contact support@dust.tt if this is a Slack workflow.";
+  "Ruby could not identify the bot or workflow that posted this message, so it cannot call Ruby agents. Contact support@ruby.ad if this is a Slack workflow.";
 
 export async function isBotAllowed(
   connector: ConnectorResource,
@@ -181,9 +181,9 @@ export async function isBotAllowed(
 
   // Whitelisting a bot will accept any message from this bot.
   // This means that even a non verified user of a given Slack workspace who can trigger a bot
-  // that talks to our bot (@dust) will be able to use the Dust bot.
+  // that talks to our bot (@ruby) will be able to use the Ruby bot.
   // Make sure to be explicit about this with users as you whitelist a new bot.
-  // Example: non-verified-user -> @AnyWhitelistedBot -> @dust -> Dust answers with potentially private information.
+  // Example: non-verified-user -> @AnyWhitelistedBot -> @ruby -> Ruby answers with potentially private information.
   const slackConfig = await SlackConfigurationResource.fetchByConnectorId(
     connector.id
   );
@@ -218,7 +218,7 @@ type SlackUserAuthorization = {
 // Verify the Slack user is not an external guest to the workspace.
 // An exception is made for users from domains on the whitelist,
 // allowing them to interact with the bot in public channels.
-// See incident: https://dust4ai.slack.com/archives/C05B529FHV1/p1704799263814619.
+// See incident: https://ruby4ai.slack.com/archives/C05B529FHV1/p1704799263814619.
 async function isExternalUserAllowed(
   connector: ConnectorResource,
   slackClient: WebClient,
@@ -227,7 +227,7 @@ async function isExternalUserAllowed(
   // Whitelisted domains are in the format "domain:group_id".
   whitelistedDomains?: readonly string[]
 ): Promise<{ authorized: boolean; groupIds: string[] }> {
-  // If the email is confirmed by Slack AND the user is an active Dust workspace
+  // If the email is confirmed by Slack AND the user is an active Ruby workspace
   // member, treat them like a regular member — no group restriction needed.
   if (
     slackUserInfo.is_email_confirmed &&
@@ -392,7 +392,7 @@ export async function notifyIfSlackUserIsNotAllowed(
             slackErrorCode: postMessageRes.error.data.error,
             slackTeamId: slackInfos.slackTeamId,
           },
-          "Slack prevented Dust from posting an unauthorized-user notification."
+          "Slack prevented Ruby from posting an unauthorized-user notification."
         );
       } else {
         return postMessageRes;
@@ -400,7 +400,7 @@ export async function notifyIfSlackUserIsNotAllowed(
     }
   }
 
-  // If the user is part of the Dust workspace, they are allowed without any explicit group id.
+  // If the user is part of the Ruby workspace, they are allowed without any explicit group id.
   if (isExternal && externalAuthorization) {
     return new Ok(externalAuthorization);
   }

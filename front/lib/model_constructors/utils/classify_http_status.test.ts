@@ -14,14 +14,14 @@ const metadata: EndpointMetadata = {
 
 describe("classifyHttpStatus", () => {
   it.each([
-    [400, "invalid_request_error", "dust"],
-    [422, "invalid_request_error", "dust"],
-    [401, "authentication_error", "dust"],
-    [403, "permission_error", "dust"],
-    [404, "not_found_error", "dust"],
-    [413, "invalid_request_error", "dust"],
-    [418, "invalid_request_error", "dust"],
-    [429, "rate_limit_error", "dust"],
+    [400, "invalid_request_error", "ruby"],
+    [422, "invalid_request_error", "ruby"],
+    [401, "authentication_error", "ruby"],
+    [403, "permission_error", "ruby"],
+    [404, "not_found_error", "ruby"],
+    [413, "invalid_request_error", "ruby"],
+    [418, "invalid_request_error", "ruby"],
+    [429, "rate_limit_error", "ruby"],
     [500, "server_error", "provider"],
     [503, "overloaded_error", "provider"],
     [529, "server_error", "provider"],
@@ -52,7 +52,7 @@ describe("buildHttpStatusErrorEvent", () => {
       }).content
     ).toMatchObject({
       type: "invalid_request_error",
-      errorSource: "dust",
+      errorSource: "ruby",
       message: "Invalid request to Anthropic: bad payload",
     });
 

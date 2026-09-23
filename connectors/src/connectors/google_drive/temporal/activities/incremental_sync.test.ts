@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
   changeList: vi.fn(),
   deleteFile: vi.fn(),
   deleteOneFile: vi.fn(),
-  driveObjectToDustType: vi.fn(),
+  driveObjectToRubyType: vi.fn(),
   getAuthObject: vi.fn(),
   getCachedLabels: vi.fn(),
   getDriveClient: vi.fn(),
@@ -82,7 +82,7 @@ vi.mock(
 
     return {
       ...mod,
-      driveObjectToDustType: mocks.driveObjectToDustType,
+      driveObjectToRubyType: mocks.driveObjectToRubyType,
       getAuthObject: mocks.getAuthObject,
       getCachedLabels: mocks.getCachedLabels,
       getDriveClient: mocks.getDriveClient,
@@ -207,7 +207,7 @@ describe("google drive incremental sync folder metadata", () => {
     vi.clearAllMocks();
 
     mocks.changeList.mockReset();
-    mocks.driveObjectToDustType.mockReset();
+    mocks.driveObjectToRubyType.mockReset();
     mocks.getAuthObject.mockResolvedValue({});
     mocks.getCachedLabels.mockResolvedValue([]);
     mocks.getDriveClient.mockResolvedValue({
@@ -237,7 +237,7 @@ describe("google drive incremental sync folder metadata", () => {
     await GoogleDriveFilesModel.create({
       connectorId: connector.id,
       driveFileId: folderId,
-      dustFileId: `gdrive-${folderId}`,
+      rubyFileId: `gdrive-${folderId}`,
       lastSeenTs: previousLastSeenTs,
       mimeType: "application/vnd.google-apps.folder",
       name: "Board Prez",
@@ -258,7 +258,7 @@ describe("google drive incremental sync folder metadata", () => {
       },
       status: 200,
     });
-    mocks.driveObjectToDustType.mockResolvedValue(driveFile);
+    mocks.driveObjectToRubyType.mockResolvedValue(driveFile);
     mocks.getFileParentsMemoized.mockResolvedValue([
       folderId,
       parentId,
@@ -314,7 +314,7 @@ describe("google drive incremental sync folder metadata", () => {
       {
         connectorId: connector.id,
         driveFileId: folderId,
-        dustFileId: `gdrive-${folderId}`,
+        rubyFileId: `gdrive-${folderId}`,
         mimeType: "application/vnd.google-apps.folder",
         name: "Team",
         parentId: oldParentId,
@@ -322,7 +322,7 @@ describe("google drive incremental sync folder metadata", () => {
       {
         connectorId: connector.id,
         driveFileId: childFolderId,
-        dustFileId: `gdrive-${childFolderId}`,
+        rubyFileId: `gdrive-${childFolderId}`,
         mimeType: "application/vnd.google-apps.folder",
         name: "Planning",
         parentId: folderId,
@@ -330,7 +330,7 @@ describe("google drive incremental sync folder metadata", () => {
       {
         connectorId: connector.id,
         driveFileId: childFileId,
-        dustFileId: `gdrive-${childFileId}`,
+        rubyFileId: `gdrive-${childFileId}`,
         mimeType: "application/pdf",
         name: "Brief",
         parentId: childFolderId,
@@ -351,7 +351,7 @@ describe("google drive incremental sync folder metadata", () => {
       },
       status: 200,
     });
-    mocks.driveObjectToDustType.mockResolvedValue(driveFile);
+    mocks.driveObjectToRubyType.mockResolvedValue(driveFile);
     mocks.getFileParentsMemoized.mockResolvedValue([
       folderId,
       newParentId,
@@ -420,7 +420,7 @@ describe("google drive incremental sync folder metadata", () => {
       {
         connectorId: connector.id,
         driveFileId: folderId,
-        dustFileId: `gdrive-${folderId}`,
+        rubyFileId: `gdrive-${folderId}`,
         mimeType: "application/vnd.google-apps.folder",
         name: "Team",
         parentId: oldParentId,
@@ -428,7 +428,7 @@ describe("google drive incremental sync folder metadata", () => {
       {
         connectorId: connector.id,
         driveFileId: childFileId,
-        dustFileId: `gdrive-${childFileId}`,
+        rubyFileId: `gdrive-${childFileId}`,
         mimeType: "application/pdf",
         name: "Brief",
         parentId: folderId,
@@ -449,7 +449,7 @@ describe("google drive incremental sync folder metadata", () => {
       },
       status: 200,
     });
-    mocks.driveObjectToDustType.mockResolvedValue(driveFile);
+    mocks.driveObjectToRubyType.mockResolvedValue(driveFile);
     mocks.getFileParentsMemoized.mockResolvedValue([
       folderId,
       newParentId,
@@ -485,7 +485,7 @@ describe("google drive incremental sync folder metadata", () => {
     await GoogleDriveFilesModel.create({
       connectorId: connector.id,
       driveFileId: folderId,
-      dustFileId: `gdrive-${folderId}`,
+      rubyFileId: `gdrive-${folderId}`,
       lastSeenTs: previousLastSeenTs,
       mimeType: "application/vnd.google-apps.folder",
       name: "Board Prez",
@@ -507,7 +507,7 @@ describe("google drive incremental sync folder metadata", () => {
       },
       status: 200,
     });
-    mocks.driveObjectToDustType.mockResolvedValue(driveFile);
+    mocks.driveObjectToRubyType.mockResolvedValue(driveFile);
     mocks.getFileParentsMemoized.mockResolvedValue([
       folderId,
       parentId,
@@ -556,7 +556,7 @@ describe("google drive incremental sync folder metadata", () => {
       },
       status: 200,
     });
-    mocks.driveObjectToDustType.mockResolvedValue(driveFile);
+    mocks.driveObjectToRubyType.mockResolvedValue(driveFile);
     mocks.getFileParentsMemoized.mockResolvedValue([
       folderId,
       parentId,

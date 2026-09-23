@@ -47,7 +47,7 @@ describe("POST /api/w/:wId/files/:fileId/save-in-project", () => {
     });
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -111,7 +111,7 @@ describe("POST /api/w/:wId/files/:fileId/save-in-project", () => {
     });
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -139,7 +139,7 @@ describe("POST /api/w/:wId/files/:fileId/save-in-project", () => {
     });
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -173,7 +173,7 @@ describe("POST /api/w/:wId/files/:fileId/save-in-project", () => {
 
     const regularSpace = await SpaceFactory.regular(workspace);
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -208,7 +208,7 @@ describe("POST /api/w/:wId/files/:fileId/save-in-project", () => {
     const project = await SpaceFactory.project(workspace);
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -243,7 +243,7 @@ describe("POST /api/w/:wId/files/:fileId/save-in-project", () => {
     const project = await SpaceFactory.project(workspace, user.id);
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -284,7 +284,7 @@ describe("POST /api/w/:wId/files/:fileId/save-in-project", () => {
     const project = await SpaceFactory.project(workspace, user.id);
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 

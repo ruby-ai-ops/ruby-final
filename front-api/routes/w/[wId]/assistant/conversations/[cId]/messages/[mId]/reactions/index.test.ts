@@ -68,7 +68,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages/:mId/reactions"
       method: "POST",
     });
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const userMsg = await getMessageByRank(auth, conversation.id, 0);
@@ -97,7 +97,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages/:mId/reactions"
       method: "POST",
     });
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const agentMsg = await getMessageByRank(auth, conversation.id, 1);
@@ -125,7 +125,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages/:mId/reactions"
       method: "POST",
     });
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -145,7 +145,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages/:mId/reactions"
       method: "POST",
     });
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const contentFragmentMsg =
@@ -178,7 +178,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages/:mId/reactions"
       method: "POST",
     });
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -226,7 +226,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages/:mId/reactions"
       method: "POST",
     });
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const userMsg = await getMessageByRank(auth, conversation.id, 0);
@@ -249,7 +249,7 @@ describe("DELETE /api/w/:wId/assistant/conversations/:cId/messages/:mId/reaction
       method: "DELETE",
     });
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const userMsg = await getMessageByRank(auth, conversation.id, 0);
@@ -284,7 +284,7 @@ describe("DELETE /api/w/:wId/assistant/conversations/:cId/messages/:mId/reaction
       method: "DELETE",
     });
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const userMsg = await getMessageByRank(auth, conversation.id, 0);

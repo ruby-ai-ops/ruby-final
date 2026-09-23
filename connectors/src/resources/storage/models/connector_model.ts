@@ -5,7 +5,7 @@ import type {
   ConnectorErrorType,
   ConnectorSyncStatus,
 } from "@connectors/types";
-import type { ConnectorProvider } from "@dust-tt/client";
+import type { ConnectorProvider } from "@ruby-ai/client";
 import type { CreationOptional } from "sequelize";
 
 export interface ConnectorMetadata {

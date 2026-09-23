@@ -19,7 +19,7 @@ export const ACTIVATION_RECOMMENDATIONS_TOOLS_METADATA = [
         .describe(
           "Action label shown in the 'Recommendations for you' list and on the " +
             "recommendation card (4-6 words). Name BOTH the " +
-            "concrete outcome from the user's real work AND the Dust feature " +
+            "concrete outcome from the user's real work AND the Ruby feature " +
             "that delivers it, in plain user language — a stranger reading only " +
             "this line should know exactly what they get and how. Do NOT use " +
             "meta, internal, or advanced framing that hides the value or the " +
@@ -89,7 +89,7 @@ export const ACTIVATION_RECOMMENDATIONS_TOOLS_METADATA = [
             "ConnectorProvider ids (use when a connected source is the signal): " +
             "'slack', 'github', 'notion', 'google_drive', 'confluence', " +
             "'microsoft', 'intercom', 'salesforce', 'gong', 'zendesk'. " +
-            "Sparkle icons (use for non-connector evidence): " +
+            "RubyUI icons (use for non-connector evidence): " +
             "'Users01' (teammate / peer usage), " +
             "'MessageCircle01' (a conversation or thread), " +
             "'Calendar' (upcoming or recurring meetings), " +
@@ -114,7 +114,7 @@ export const ACTIVATION_RECOMMENDATIONS_TOOLS_METADATA = [
             "this user right now. Shown without context that it is a 'source' field, " +
             "so it must make sense alone. Always pass with sourceIcon. Invent the line " +
             "from the actual evidence; prefer what the evidence means for them over " +
-            "attribution to a Dust artifact. When the source is an existing workspace " +
+            "attribution to a Ruby artifact. When the source is an existing workspace " +
             "Skill or agent, say that it already exists and name it. Style examples " +
             "(adapt to the real evidence, do not reuse verbatim): 'From your #design Slack channel', " +
             "'Matches your recent work', 'From the existing \"Release notes\" skill', " +

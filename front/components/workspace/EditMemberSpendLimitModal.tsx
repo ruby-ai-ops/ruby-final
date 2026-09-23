@@ -28,10 +28,10 @@ import {
   DialogHeader,
   DialogTitle,
   Page,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-// Fetched by the caller since the customer-facing app and poke reach the
+// Fetched by the caller since the customer-facing app and admin reach the
 // value through different routes. "unavailable" means the workspace has no
 // default pool limit at all, so the field is not shown.
 export type DefaultUserSpendLimitState =

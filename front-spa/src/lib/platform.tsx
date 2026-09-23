@@ -9,7 +9,7 @@ import type {
   RouterEventType,
   TransitionOptions,
   UrlObject,
-} from "@dust-tt/front/lib/platform/types";
+} from "@ruby-ai/front/lib/platform/types";
 import { ReactRouterLinkWrapper } from "@spa/lib/ReactRouterLinkWrapper";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {

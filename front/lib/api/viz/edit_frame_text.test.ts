@@ -1,6 +1,6 @@
 // esbuild (pulled in by the publishFrame rebuild) requires a real node environment.
 // @vitest-environment node
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import { editFrameTextAtSource } from "@app/lib/api/viz/edit_frame_text";
 import { FileResource } from "@app/lib/resources/file_resource";
 import { ConversationFactory } from "@app/tests/utils/ConversationFactory";
@@ -42,7 +42,7 @@ beforeEach(() => {
   fileStorageMock.reset();
 });
 
-// In-memory DustFileSystem standing in for the mount. Keys are full scoped paths.
+// In-memory RubyFileSystem standing in for the mount. Keys are full scoped paths.
 function mockMount(files: Map<string, string>) {
   const fakeFs = {
     readBuffer: async (p: string) =>
@@ -64,8 +64,8 @@ function mockMount(files: Map<string, string>) {
           .map((p) => ({ path: p, isDirectory: false }))
       ),
   };
-  vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
-    new Ok(fakeFs as unknown as DustFileSystem)
+  vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
+    new Ok(fakeFs as unknown as RubyFileSystem)
   );
   return files;
 }
@@ -74,7 +74,7 @@ async function createPublishedFrame(
   auth: Parameters<typeof editFrameTextAtSource>[0]
 ) {
   const conversation = await ConversationFactory.create(auth, {
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     messagesCreatedAt: [new Date()],
   });
 
@@ -136,7 +136,7 @@ describe("editFrameTextAtSource", () => {
     async () => {
       const { authenticator: auth } = await createResourceTest({});
       const conversation = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       });
       // No frameBundleRootPath -> never published, no data-source tags exist.

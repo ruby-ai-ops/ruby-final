@@ -21,7 +21,7 @@ const MAX_BUFFER_BYTES = 500 * 1024 * 1024;
 // disables the group kill, which is the entire point.
 //
 // Always present in the sandbox image (coreutils). The candidate list and the
-// fallback below only matter when the tests drive dust-tools on a host that
+// fallback below only matter when the tests drive ruby-tools on a host that
 // lacks it, such as macOS; there the group kill is not enforced.
 const TIMEOUT_BIN_CANDIDATES = [
   "/usr/bin/timeout",

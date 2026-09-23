@@ -5,7 +5,7 @@ import logger from "@app/logger/logger";
 import { getFramePublicationFunctionsMountPoint } from "@app/types/mount_path";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
 
-const DSBX_BIN_PATH = "/opt/bin/dsbx";
+const RBX_BIN_PATH = "/opt/bin/rbx";
 const SEED_TIMEOUT_MS = 60 * 1000;
 
 /**
@@ -45,14 +45,14 @@ export async function seedFramePublicationFunctionsArchive(
     frameId: frame.sId,
     publicationId,
   });
-  const command = `${DSBX_BIN_PATH} function materialize-archive`;
+  const command = `${RBX_BIN_PATH} function materialize-archive`;
 
   try {
     const execResult = await sandbox.exec(auth, command, {
       timeoutMs: SEED_TIMEOUT_MS,
       user: "agent-proxied",
       envVars: {
-        DUST_FUNCTIONS_DIR: functionsDirectory,
+        RUBY_FUNCTIONS_DIR: functionsDirectory,
       },
     });
     if (execResult.isErr()) {

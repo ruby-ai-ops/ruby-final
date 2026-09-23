@@ -12,7 +12,7 @@ import {
   Markdown,
   Separator,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useState } from "react";
 
@@ -111,10 +111,10 @@ function RecentWebhookRequestsContent({
                 <br />
                 Contact{" "}
                 <LinkWrapper
-                  href="mailto:support@dust.tt?subject=Increase%20Webhook%20Trigger%20Rate%20Limit"
+                  href="mailto:support@ruby.ad?subject=Increase%20Webhook%20Trigger%20Rate%20Limit"
                   className="underline"
                 >
-                  support@dust.tt
+                  support@ruby.ad
                 </LinkWrapper>{" "}
                 to increase the rate limit for this trigger.
               </>

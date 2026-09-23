@@ -1,10 +1,11 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
 import { menuConfig } from "@marketing/components/home/menu/config";
+import { getVisibleNavigationItems } from "@marketing/lib/marketing_visibility";
 import { classNames } from "@marketing/lib/utils";
 import {
   Button,
   ChevronRight,
-  DustLogo,
+  RubyLogo,
   IconButton,
   Menu01,
   ScrollArea,
@@ -14,13 +15,14 @@ import {
   SheetTitle,
   SheetTrigger,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { LinkProps } from "next/link";
 import Link from "next/link";
 import * as React from "react";
 
 export function MobileNavigation() {
   const [open, setOpen] = React.useState(false);
+  const navigationItems = getVisibleNavigationItems(menuConfig.mobileNav);
 
   return (
     <div className="flex xl:hidden">
@@ -37,7 +39,7 @@ export function MobileNavigation() {
             hideButton
           >
             <SheetTitle className="flex w-full items-center justify-between">
-              <DustLogo className="h-6 w-24" />
+              <RubyLogo className="h-6 w-24" />
               <Button
                 size="sm"
                 variant="outline"
@@ -50,7 +52,7 @@ export function MobileNavigation() {
           </SheetHeader>
           <ScrollArea className="h-[100vh]">
             <div className="flex flex-col space-y-0 px-10 pb-4">
-              {menuConfig.mobileNav.map((item, index) => (
+              {navigationItems.map((item, index) => (
                 <div key={index} className="flex flex-col space-y-0 pt-4">
                   {item.href ? (
                     <MobileLink

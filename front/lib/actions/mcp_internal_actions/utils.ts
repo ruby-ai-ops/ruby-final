@@ -14,7 +14,7 @@ import type { MCPServerViewType } from "@app/lib/api/mcp";
 import type { Authenticator } from "@app/lib/auth";
 import { hasNoRequiredProperties } from "@app/lib/utils/json_schemas";
 import type { OAuthProvider } from "@app/types/oauth/lib";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 export function makeInternalMCPServer(

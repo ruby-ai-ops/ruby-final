@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
   InfoCircle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useCallback, useMemo, useState } from "react";
 import { useController } from "react-hook-form";
@@ -41,9 +41,9 @@ export function ProjectSection() {
 
   const { field, fieldState } = useController<
     MCPFormData,
-    "configuration.dustProject"
+    "configuration.rubyProject"
   >({
-    name: "configuration.dustProject",
+    name: "configuration.rubyProject",
   });
 
   const { spaces, isSpacesLoading } = useSpaces({

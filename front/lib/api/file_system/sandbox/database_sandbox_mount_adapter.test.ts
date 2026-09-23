@@ -85,7 +85,7 @@ describe("DatabaseSandboxMountAdapter", () => {
     const { auth, sandbox, execRoot } = await setup();
     const adapter = new DatabaseSandboxMountAdapter(mounts, []);
     const image =
-      SandboxImage.fromDocker("test").withCapability("dust_filesystem");
+      SandboxImage.fromDocker("test").withCapability("ruby_filesystem");
 
     const result = await adapter.setup(auth, sandbox, image);
 
@@ -111,28 +111,28 @@ describe("DatabaseSandboxMountAdapter", () => {
     });
     const tokenCommand = commandAt(execRoot, 0);
     expect(tokenCommand).not.toContain("scoped-filesystem-token");
-    expect(tokenCommand).toContain("/run/dust-filesystem/token");
-    expect(tokenCommand).toContain("-m 700 /run/dust-filesystem");
+    expect(tokenCommand).toContain("/run/ruby-filesystem/token");
+    expect(tokenCommand).toContain("-m 700 /run/ruby-filesystem");
 
     const mountCommand = commandAt(execRoot, 1);
     expect(mountCommand).toContain(
-      "/usr/bin/systemd-run --unit=dust-filesystem.service --collect"
+      "/usr/bin/systemd-run --unit=ruby-filesystem.service --collect"
     );
     expect(mountCommand).toContain("--property=Restart=always");
     expect(mountCommand).toContain("--property=KillMode=control-group");
-    expect(mountCommand).toContain("/opt/bin/dsbx filesystem supervise");
+    expect(mountCommand).toContain("/opt/bin/rbx filesystem supervise");
     expect(mountCommand).toContain("--mountpoint /files");
     expect(mountCommand).toContain("--api-url 'https://api.example.test'");
     expect(mountCommand).toContain("/usr/bin/mountpoint -q /files");
     expect(mountCommand).toContain("/usr/bin/stat -f /files");
     expect(mountCommand).toContain(
-      "/usr/bin/systemctl is-active --quiet dust-filesystem.service"
+      "/usr/bin/systemctl is-active --quiet ruby-filesystem.service"
     );
     expect(mountCommand).toContain(
-      "/usr/bin/journalctl --unit=dust-filesystem.service"
+      "/usr/bin/journalctl --unit=ruby-filesystem.service"
     );
     expect(mountCommand).toContain(
-      "/usr/bin/chmod 700 /run/dust-filesystem/staging"
+      "/usr/bin/chmod 700 /run/ruby-filesystem/staging"
     );
   });
 
@@ -159,7 +159,7 @@ describe("DatabaseSandboxMountAdapter", () => {
       auth,
       sandbox,
       SandboxImage.fromDocker("incomplete-image").withCapability(
-        "dust_filesystem"
+        "ruby_filesystem"
       )
     );
 
@@ -179,7 +179,7 @@ describe("DatabaseSandboxMountAdapter", () => {
       });
     const adapter = new DatabaseSandboxMountAdapter(mounts, sandboxOnlyMounts);
     const image = SandboxImage.fromDocker("complete-image")
-      .withCapability("dust_filesystem")
+      .withCapability("ruby_filesystem")
       .withCapability("gcsfuse");
 
     const result = await adapter.setup(auth, sandbox, image);
@@ -197,7 +197,7 @@ describe("DatabaseSandboxMountAdapter", () => {
     const { auth, sandbox, execRoot } = await setup();
     const adapter = new DatabaseSandboxMountAdapter(mounts, []);
     const image =
-      SandboxImage.fromDocker("test").withCapability("dust_filesystem");
+      SandboxImage.fromDocker("test").withCapability("ruby_filesystem");
 
     const result = await adapter.refreshCredential(auth, sandbox, image);
 

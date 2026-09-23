@@ -63,14 +63,14 @@ const sendPasswordResetEmail = async (
       const emailResult = await sendEmailWithTemplate({
         to: email,
         from: {
-          name: "Dust team",
-          email: "support@dust.help",
+          name: "Ruby team",
+          email: "support@ruby.help",
         },
-        subject: "[Dust] Password Reset Required - Important Update",
+        subject: "[Ruby] Password Reset Required - Important Update",
         body: `<p>We're writing to inform you about an important update to our authentication system.</p>
-<p>We're upgrading a security infrastructure component on Dust to improve user login experience. As part of this migration, you need to reset your password on Dust.</p>
+<p>We're upgrading a security infrastructure component on Ruby to improve user login experience. As part of this migration, you need to reset your password on Ruby.</p>
 
-<p>This action is only required if you sign in to Dust using email and password. If you only log in on Dust using Google, GitHub, or SSO, no action is needed.</p>
+<p>This action is only required if you sign in to Ruby using email and password. If you only log in on Ruby using Google, GitHub, or SSO, no action is needed.</p>
 
 <p>Please click the button below to reset your password:</p>
 <div style="text-align: center; margin: 40px 0;">

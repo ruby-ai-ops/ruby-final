@@ -11,7 +11,7 @@ vi.mock("@app/lib/file_storage/config", () => ({
   default: { getGcsPrivateUploadsBucket: vi.fn(() => "test-bucket") },
 }));
 vi.mock("@app/lib/api/config", () => ({
-  default: { getApiBaseUrl: vi.fn(() => "https://dust.tt") },
+  default: { getApiBaseUrl: vi.fn(() => "https://ruby.ad") },
 }));
 
 describe("deleteHandler", () => {

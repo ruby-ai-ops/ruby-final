@@ -5,7 +5,7 @@ import {
 import { runOnRedis } from "@app/lib/api/redis";
 import { getMembers } from "@app/lib/api/workspace";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import type { ProgrammaticCapNotificationReason } from "@app/lib/notifications/workflows/programmatic-cap-reached";
 import { triggerProgrammaticCapReachedNotifications } from "@app/lib/notifications/workflows/programmatic-cap-reached";
 import { CreditUsageConfigurationResource } from "@app/lib/resources/credit_usage_configuration_resource";
@@ -85,7 +85,7 @@ async function markAlertSent(
 export async function notifyAdminsTriggerBlockedByProgrammaticCap(
   auth: Authenticator,
   { trigger }: { trigger: TriggerType }
-): Promise<Result<void, DustError<"internal_error">>> {
+): Promise<Result<void, RubyError<"internal_error">>> {
   if (
     trigger.status !== "enabled" ||
     trigger.executionMode !== "workspace_pool" ||

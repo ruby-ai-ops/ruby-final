@@ -19,8 +19,8 @@ import {
 } from "@connectors/connectors/microsoft/lib/utils";
 import { ExternalOAuthTokenError } from "@connectors/lib/error";
 import { normalizeError } from "@connectors/types";
-import type { LoggerInterface, Result } from "@dust-tt/client";
-import { assertNever, Err, Ok, removeNulls } from "@dust-tt/client";
+import type { LoggerInterface, Result } from "@ruby-ai/client";
+import { assertNever, Err, Ok, removeNulls } from "@ruby-ai/client";
 import type { Client } from "@microsoft/microsoft-graph-client";
 import { GraphError } from "@microsoft/microsoft-graph-client";
 import type {

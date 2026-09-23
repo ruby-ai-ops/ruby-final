@@ -1,4 +1,4 @@
-# Interactive shell defaults for the Dust shared dev container.
+# Interactive shell defaults for the Ruby shared dev container.
 # Secret env is loaded by /root/.bashrc (interactive bash does not use BASH_ENV).
 
 case $- in
@@ -7,9 +7,9 @@ case $- in
 esac
 
 # Belt-and-suspenders if this file is sourced without going through /root/.bashrc.
-if [ -f /tmp/dust-shell-env.sh ]; then
+if [ -f /tmp/ruby-shell-env.sh ]; then
   # shellcheck disable=SC1091
-  source /tmp/dust-shell-env.sh
+  source /tmp/ruby-shell-env.sh
 fi
 
 export SHELL=/bin/zsh
@@ -50,7 +50,7 @@ alias l='ls -CF'
 
 # Repo helper when /workspace is mounted.
 if [ -d /workspace/.git ]; then
-  alias cdust='cd /workspace'
+  alias cruby='cd /workspace'
 fi
 
 if [ -f /workspace/dev/interactive-aliases.sh ]; then

@@ -12,7 +12,7 @@ import {
 } from "@app/lib/api/actions/servers/http_client/metadata";
 import type { Authenticator } from "@app/lib/auth";
 import { untrustedFetch } from "@app/lib/egress/server";
-import { DustAppSecretModel } from "@app/lib/models/dust_app_secret";
+import { RubyAppSecretModel } from "@app/lib/models/ruby_app_secret";
 import { Err, Ok } from "@app/types/shared/result";
 import { decrypt } from "@app/types/shared/utils/encryption";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
@@ -44,7 +44,7 @@ async function getBearerToken(
     return null;
   }
 
-  const secret = await DustAppSecretModel.findOne({
+  const secret = await RubyAppSecretModel.findOne({
     where: {
       name: toolConfig.secretName,
       workspaceId: auth.getNonNullableWorkspace().id,

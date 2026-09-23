@@ -3,7 +3,7 @@ SET
 
 DELETE FROM "public"."workspace_allowed_advanced_models"
 WHERE
-	"providerId" = 'dust_internal'
+	"providerId" = 'ruby_internal'
 	AND "modelId" = 'advanced_models_allowlist_configured';
 
 ALTER TABLE "public"."workspace_allowed_advanced_models"

@@ -156,7 +156,7 @@ export async function handleEnterpriseSignUpFlow(
     });
 
   // Initialize membership if it's not present or has been previously revoked. In the case of
-  // enterprise connections, Dust access is overridden by the identity management service.
+  // enterprise connections, Ruby access is overridden by the identity management service.
   if (!membership || membership.isRevoked()) {
     await createAndTrackMembership({
       workspace: lightWorkspace,

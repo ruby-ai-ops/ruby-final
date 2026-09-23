@@ -185,7 +185,7 @@ logger.error({ err: error }, "Failed to fetch data");
 @cc [label:coding] money-and-time-unit-suffixes
 Variables representing monetary amounts or time durations must include a unit suffix in their name.
 This prevents conversion errors (e.g., cents vs. dollars, milliseconds vs. seconds) such as the one
-that caused [this incident](https://dust4ai.slack.com/archives/C05B529FHV1/p1764835038528229).
+that caused [this incident](https://ruby4ai.slack.com/archives/C05B529FHV1/p1764835038528229).
 
 Common suffixes:
 
@@ -431,7 +431,7 @@ execution if an unprivileged sandbox user can plant a matching file earlier in P
 
 If root invokes a helper by absolute path, the helper and every parent directory that makes it
 reachable must be root-owned and not group/other writable before the helper is trusted. Prefer
-root-owned locations such as `/opt/bin` for Dust-managed sandbox helpers, and add image/runtime
+root-owned locations such as `/opt/bin` for Ruby-managed sandbox helpers, and add image/runtime
 hardening plus tests for their ownership and mode.
 
 Reviewer: If you detect a runtime sandbox command using `sandbox.exec(..., { user: "root" })` or
@@ -461,11 +461,11 @@ await sandbox.execRoot(
 );
 
 // BAD: root invokes a helper from a path whose ownership/mode is not enforced.
-await sandbox.execRoot(auth, rootCommand.unsafeShell("dust-install-trust-bundle", "bad example"));
+await sandbox.execRoot(auth, rootCommand.unsafeShell("ruby-install-trust-bundle", "bad example"));
 
 // GOOD: root invokes an absolute helper path that image/runtime hardening keeps root-owned and
 // non-writable by sandbox workloads.
-await sandbox.execRoot(auth, rootCommand.exec("/opt/bin/dust-install-trust-bundle"));
+await sandbox.execRoot(auth, rootCommand.exec("/opt/bin/ruby-install-trust-bundle"));
 ```
 
 @cc [label:security] sandbox-privileged-directory-ownership

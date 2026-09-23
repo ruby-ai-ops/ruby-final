@@ -1,7 +1,7 @@
 import { useFileUploaderService as useFrontFileUploaderService } from "@app/hooks/useFileUploaderService";
 import { useAuth } from "@app/lib/auth/AuthContext";
-// biome-ignore lint/plugin/noDirectSparkleNotification: existing usage
-import { useSendNotification } from "@dust-tt/sparkle";
+// biome-ignore lint/plugin/noDirectRubyUINotification: existing usage
+import { useSendNotification } from "@ruby-ai/ui";
 import type {
   CaptureOptions,
   CaptureService,

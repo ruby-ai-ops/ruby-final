@@ -52,7 +52,7 @@ import {
   type GetConversationsResponseType,
   type PostConversationsResponseType,
   PublicPostConversationsRequestBodySchema,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { apiErrorForConversation } from "@front-api/lib/api/assistant/conversation/helper";
 import { validatePublicModelSelection } from "@front-api/lib/api/assistant/conversation/model_selection";
 import { publicApiApp } from "@front-api/middlewares/ctx";
@@ -194,7 +194,7 @@ app.post(
               api_error: {
                 type: "rate_limit_error",
                 message:
-                  "This API key has reached its credit spend limit. Please increase the limit in the Developers > API Keys section of the Dust dashboard.",
+                  "This API key has reached its credit spend limit. Please increase the limit in the Developers > API Keys section of the Ruby dashboard.",
               },
             });
           }

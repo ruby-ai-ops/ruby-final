@@ -11,7 +11,7 @@ import {
   IconButton,
   LoadingBlock,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, PaginationState } from "@tanstack/react-table";
 import capitalize from "lodash/capitalize";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`

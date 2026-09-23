@@ -1,5 +1,5 @@
 import { GovernancePageLayout } from "@app/components/pages/workspace/governance/GovernancePageLayout";
-import { cn, LoadingBlock } from "@dust-tt/sparkle";
+import { cn, LoadingBlock } from "@ruby-ai/ui";
 
 function SkeletonRow() {
   return (

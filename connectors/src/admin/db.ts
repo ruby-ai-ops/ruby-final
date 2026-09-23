@@ -7,10 +7,10 @@ import {
 } from "@connectors/lib/models/confluence";
 import { DiscordConfigurationModel } from "@connectors/lib/models/discord";
 import {
-  DustProjectConfigurationModel,
-  DustProjectConversationModel,
-  DustProjectMountFileModel,
-} from "@connectors/lib/models/dust_project";
+  RubyProjectConfigurationModel,
+  RubyProjectConversationModel,
+  RubyProjectMountFileModel,
+} from "@connectors/lib/models/ruby_project";
 import {
   GithubCodeDirectoryModel,
   GithubCodeFileModel,
@@ -159,9 +159,9 @@ async function main(): Promise<void> {
   await GongConfigurationModel.sync({ alter: true });
   await GongTranscriptModel.sync({ alter: true });
   await GongUserModel.sync({ alter: true });
-  await DustProjectConfigurationModel.sync({ alter: true });
-  await DustProjectConversationModel.sync({ alter: true });
-  await DustProjectMountFileModel.sync({ alter: true });
+  await RubyProjectConfigurationModel.sync({ alter: true });
+  await RubyProjectConversationModel.sync({ alter: true });
+  await RubyProjectMountFileModel.sync({ alter: true });
 
   // enable the `unaccent` extension
   // biome-ignore lint/plugin/noRawSql: DB setup requires raw SQL for extensions

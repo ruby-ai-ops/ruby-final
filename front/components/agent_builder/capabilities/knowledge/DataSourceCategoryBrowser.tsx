@@ -11,7 +11,7 @@ import { useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useSpaceInfo } from "@app/lib/swr/spaces";
 import { emptyArray } from "@app/lib/swr/swr";
 import type { SpaceType } from "@app/types/space";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useCallback, useContext, useMemo } from "react";
 
 interface DataSourceCategoryBrowserProps {

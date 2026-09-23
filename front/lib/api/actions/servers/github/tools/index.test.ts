@@ -49,8 +49,8 @@ const searchResponse = {
         ...pullRequest,
         __typename: "PullRequest",
         body: "",
-        url: "https://github.com/dust-tt/dust/pull/1",
-        repository: { owner: { login: "dust-tt" }, name: "dust" },
+        url: "https://github.com/ruby-ai-ops/ruby-final/pull/1",
+        repository: { owner: { login: "ruby-ai" }, name: "ruby" },
       },
     ],
   },
@@ -72,7 +72,7 @@ describe("GitHub pull request tools", () => {
 
   it.each([
     ["search_advanced", { query: "is:pr" }, searchResponse],
-    ["list_pull_requests", { owner: "dust-tt", repo: "dust" }, listResponse],
+    ["list_pull_requests", { owner: "ruby-ai", repo: "ruby" }, listResponse],
   ])("retries %s without review requests when GitHub denies team details", async (toolName, params, response) => {
     const reviewerAccessError = Object.assign(
       new Error("Resource not accessible by integration"),

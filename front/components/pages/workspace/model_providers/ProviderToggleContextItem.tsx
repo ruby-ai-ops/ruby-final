@@ -1,9 +1,9 @@
 import { getModelProviderLogo } from "@app/components/providers/types";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import type { ModelProviderIdType } from "@app/types/assistant/models/types";
 import type { ProvidersSelection } from "@app/types/provider_selection";
 import { PRETTIFIED_PROVIDER_NAMES } from "@app/types/provider_selection";
-import { ContextItem, Icon, SliderToggle } from "@dust-tt/sparkle";
+import { ContextItem, Icon, SliderToggle } from "@ruby-ai/ui";
 
 interface ProviderToggleContextItemProps {
   providerId: ModelProviderIdType;

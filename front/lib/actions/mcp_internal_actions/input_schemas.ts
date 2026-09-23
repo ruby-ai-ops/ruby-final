@@ -1,8 +1,8 @@
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
-import type { InternalToolInputMimeType } from "@dust-tt/client";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import type { InternalToolInputMimeType } from "@ruby-ai/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 import { ZodError, z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
@@ -13,20 +13,20 @@ import { zodToJsonSchema } from "zod-to-json-schema";
  * or a viewId and a filter, representing the configuration directly.
  */
 export const DATA_SOURCE_CONFIGURATION_URI_PATTERN =
-  /^data_source_configuration:\/\/dust\/w\/(\w+)\/(?:data_source_configurations\/(\w+)|data_source_views\/(\w+)\/filter\/(.+))$/;
+  /^data_source_configuration:\/\/ruby\/w\/(\w+)\/(?:data_source_configurations\/(\w+)|data_source_views\/(\w+)\/filter\/(.+))$/;
 
 export const TABLE_CONFIGURATION_URI_PATTERN =
-  /^table_configuration:\/\/dust\/w\/(\w+)\/(?:table_configurations\/(\w+)|data_source_views\/(\w+)\/tables\/(.+))$/;
+  /^table_configuration:\/\/ruby\/w\/(\w+)\/(?:table_configurations\/(\w+)|data_source_views\/(\w+)\/tables\/(.+))$/;
 
 // URI pattern for configuring the agent to use within an action.
 export const AGENT_CONFIGURATION_URI_PATTERN =
   // We accept dashes in the last part, which is the agent sId,
   // because global agents have dashes in their sId.
-  /^agent:\/\/dust\/w\/(\w+)\/agents\/([\w-]+)$/;
+  /^agent:\/\/ruby\/w\/(\w+)\/agents\/([\w-]+)$/;
 
 // URI pattern for configuring the pod to use within an action.
 export const POD_CONFIGURATION_URI_PATTERN =
-  /^pod:\/\/dust\/w\/(\w+)\/pods\/(\w+)$/;
+  /^pod:\/\/ruby\/w\/(\w+)\/pods\/(\w+)$/;
 
 // The full, recursive schema for a JSON schema is not yet supported by MCP call
 // tool, and anyway its full validation is not needed. Therefore, we describe 2
@@ -133,9 +133,9 @@ export const ConfigurableToolInputSchemas = {
     value: z.boolean(),
     mimeType: z.literal(INTERNAL_MIME_TYPES.TOOL_INPUT.BOOLEAN),
   }),
-  [INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_APP]: z.object({
+  [INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_APP]: z.object({
     appId: z.string(),
-    mimeType: z.literal(INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_APP),
+    mimeType: z.literal(INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_APP),
   }),
   [INTERNAL_MIME_TYPES.TOOL_INPUT.TIME_FRAME]: z
     .object({
@@ -154,16 +154,16 @@ export const ConfigurableToolInputSchemas = {
     secretName: z.string(),
     mimeType: z.literal(INTERNAL_MIME_TYPES.TOOL_INPUT.SECRET),
   }),
-  [INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD]: z.object({
+  [INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD]: z.object({
     uri: z
       .string()
       .regex(POD_CONFIGURATION_URI_PATTERN)
       .describe(
-        "URI in the form pod://dust/w/<workspaceId>/pods/<podId>. " +
+        "URI in the form pod://ruby/w/<workspaceId>/pods/<podId>. " +
           "Both path segments are opaque IDs, never names. " +
-          "Reuse a prior dustPod value; do not invent this URI."
+          "Reuse a prior rubyPod value; do not invent this URI."
       ),
-    mimeType: z.literal(INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD),
+    mimeType: z.literal(INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD),
   }),
   // All mime types do not necessarily have a fixed schema,
   // for instance the ENUM mime type is flexible and the exact content of the enum is dynamic.
@@ -205,12 +205,12 @@ export type TablesConfigurationToolType = z.infer<
   (typeof ConfigurableToolInputSchemas)[typeof INTERNAL_MIME_TYPES.TOOL_INPUT.TABLE]
 >;
 
-export type DustPodConfigurationType = z.infer<
-  (typeof ConfigurableToolInputSchemas)[typeof INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD]
+export type RubyPodConfigurationType = z.infer<
+  (typeof ConfigurableToolInputSchemas)[typeof INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD]
 >;
 
-export const DustPodConfigurationSchema =
-  ConfigurableToolInputSchemas[INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD];
+export const RubyPodConfigurationSchema =
+  ConfigurableToolInputSchemas[INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD];
 
 /**
  * Mapping between the mime types we used to identify a configurable resource

@@ -8,7 +8,7 @@ import {
   CitationTitle,
   Icon,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import type { ComponentType } from "react";
 import { isValidElement } from "react";

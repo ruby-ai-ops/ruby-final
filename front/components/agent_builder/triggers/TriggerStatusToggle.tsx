@@ -2,7 +2,7 @@ import type { TriggerViewsSheetFormValues } from "@app/components/agent_builder/
 import { TRIGGER_STATUS_LABELS } from "@app/components/triggers/TriggerStatusChip";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import { getTriggerStatusOwner } from "@app/types/assistant/triggers";
-import { Label, Lock01, SliderToggle, Tooltip } from "@dust-tt/sparkle";
+import { Label, Lock01, SliderToggle, Tooltip } from "@ruby-ai/ui";
 import { useController, useFormContext } from "react-hook-form";
 
 interface TriggerStatusToggleProps {
@@ -45,7 +45,7 @@ export function TriggerStatusToggle({
           <Tooltip
             label={
               statusOwner === "system"
-                ? "This trigger's status is managed by Dust."
+                ? "This trigger's status is managed by Ruby."
                 : "Only a manager or an admin can re-enable this trigger."
             }
             trigger={<div>{toggle}</div>}

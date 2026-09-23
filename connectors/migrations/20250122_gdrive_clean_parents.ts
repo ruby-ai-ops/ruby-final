@@ -126,12 +126,12 @@ async function processFilesBatch({
     async (file): Promise<number> => {
       const parents = await getLocalParents(
         connector.id,
-        file.dustFileId,
+        file.rubyFileId,
         `${connector.id}:${startTimeTs}:migrate_parents`
       );
       if (!parents[0]) {
         logger.error(
-          { fileId: file.dustFileId },
+          { fileId: file.rubyFileId },
           "Unexpected error: no parent found"
         );
         throw new Error("Unexpected error: no parent found");
@@ -148,7 +148,7 @@ async function processFilesBatch({
         ) {
           await upsertDataSourceFolder({
             dataSourceConfig,
-            folderId: file.dustFileId,
+            folderId: file.rubyFileId,
             parents,
             parentId: parents[1] || null,
             title: file.name,
@@ -161,7 +161,7 @@ async function processFilesBatch({
         } else {
           await updateDataSourceDocumentParents({
             dataSourceConfig,
-            documentId: file.dustFileId,
+            documentId: file.rubyFileId,
             parents,
             parentId: parents[1] || null,
           });

@@ -95,7 +95,7 @@ const listAgentsSchema = {
       "Which agents to list. 'all' (default): every non-private agent of the " +
         "workspace. 'list': the agents the caller can see (the non-private ones " +
         "plus the unpublished ones they edit); needs an interactive user. " +
-        "'published': published agents only. 'global': Dust's " +
+        "'published': published agents only. 'global': Ruby's " +
         "built-in agents only. 'archived': agents that were deleted, limited " +
         "to those the caller edits, or all of them for an admin. " +
         "'all_unrestricted': every active agent of the " +
@@ -137,7 +137,7 @@ const listSkillsSchema = {
     .default("custom")
     .describe(
       "'custom' (default): skills built in this workspace. 'global' and " +
-        "'system': Dust's built-in skills, the latter always on. 'all': every kind."
+        "'system': Ruby's built-in skills, the latter always on. 'all': every kind."
     ),
   includeUsage: z
     .boolean()
@@ -197,7 +197,7 @@ const listGroupsSchema = {
     .describe(
       "Only return groups of this kind. 'provisioned': membership synced from " +
         "the identity provider (SSO/SCIM). 'regular_manual': members picked " +
-        "one by one in Dust. Omit for both."
+        "one by one in Ruby. Omit for both."
     ),
   ...paginationSchemaShape,
 };
@@ -353,7 +353,7 @@ export const WORKSPACE_MANAGEMENT_TOOLS_METADATA = [
     name: GET_SKILL_DETAILS_TOOL_NAME,
     description:
       "Return a skill's full details: descriptions, availability, status, the " +
-      "tools it equips, and its instructions. Dust's built-in skills keep their " +
+      "tools it equips, and its instructions. Ruby's built-in skills keep their " +
       "instructions private, so those come back empty.",
     schema: getSkillSchema,
     stake: "never_ask",
@@ -432,7 +432,7 @@ export const WORKSPACE_MANAGEMENT_TOOLS_METADATA = [
     name: LIST_GROUPS_TOOL_NAME,
     description:
       "List the workspace's groups with their id, name, kind (provisioned " +
-      "from the identity provider, or manually managed in Dust), member " +
+      "from the identity provider, or manually managed in Ruby), member " +
       "count and the workspace role they grant, if any. Admin and manager only.",
     schema: listGroupsSchema,
     stake: "never_ask",

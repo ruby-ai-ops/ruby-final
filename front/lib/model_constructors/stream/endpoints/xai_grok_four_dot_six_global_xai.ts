@@ -7,7 +7,7 @@ export class XaiGrokFourDotSixGlobalXaiStream extends WithXaiGrokFourDotSixConfi
   XaiStream
 ) {
   // Short-context pricing verified 2026-08-12:
-  // https://docs.x.ai/developers/pricing. Dust's 256k context and 64k output
+  // https://docs.x.ai/developers/pricing. Ruby's 256k context and 64k output
   // caps leave at most 192k prompt tokens, below the 200k price breakpoint.
   static readonly tokenPricing = {
     cacheHit: 0.5,

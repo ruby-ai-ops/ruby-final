@@ -1,10 +1,10 @@
 import {
   DEEP_DIVE_DESC,
   DEEP_DIVE_NAME,
-} from "@app/lib/api/assistant/global_agents/configurations/dust/consts";
+} from "@app/lib/api/assistant/global_agents/configurations/ruby/consts";
 import type { Authenticator } from "@app/lib/auth";
 import { GLOBAL_AGENTS_SID } from "@app/types/assistant/assistant";
-import { DUST_AVATAR_URL } from "@app/types/assistant/avatar";
+import { RUBY_AVATAR_URL } from "@app/types/assistant/avatar";
 import {
   CLAUDE_3_5_SONNET_DEFAULT_MODEL_CONFIG,
   CLAUDE_3_7_SONNET_DEFAULT_MODEL_CONFIG,
@@ -84,86 +84,86 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
       return {
         sId: GLOBAL_AGENTS_SID.HELPER,
         name: "help",
-        description: "Help on how to use Dust",
+        description: "Help on how to use Ruby",
         pictureUrl:
-          "https://dust.tt/static/systemavatar/helper_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/helper_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.GPT35_TURBO:
       return {
         sId: GLOBAL_AGENTS_SID.GPT35_TURBO,
         name: "gpt3.5-turbo",
         description: GPT_3_5_TURBO_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/gpt3_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/gpt3_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.GPT4:
       return {
         sId: GLOBAL_AGENTS_SID.GPT4,
         name: "gpt4",
         description: GPT_4_1_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/gpt4_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/gpt4_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.GPT5:
       return {
         sId: GLOBAL_AGENTS_SID.GPT5,
         name: "gpt5.5",
         description: GPT_5_5_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/gpt5_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/gpt5_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.GPT5_THINKING:
       return {
         sId: GLOBAL_AGENTS_SID.GPT5_THINKING,
         name: "gpt5.5-thinking",
         description: GPT_5_5_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/gpt5_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/gpt5_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.GPT5_NANO:
       return {
         sId: GLOBAL_AGENTS_SID.GPT5_NANO,
         name: "gpt5-nano",
         description: GPT_5_4_NANO_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/gpt5_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/gpt5_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.GPT5_MINI:
       return {
         sId: GLOBAL_AGENTS_SID.GPT5_MINI,
         name: "gpt5-mini",
         description: GPT_5_4_MINI_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/gpt5_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/gpt5_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.O1:
       return {
         sId: GLOBAL_AGENTS_SID.O1,
         name: "o1",
         description: O1_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/o1_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/o1_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.O1_MINI:
       return {
         sId: GLOBAL_AGENTS_SID.O1_MINI,
         name: "o1-mini",
         description: O1_MINI_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/o1_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/o1_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.O1_HIGH_REASONING:
       return {
         sId: GLOBAL_AGENTS_SID.O1_HIGH_REASONING,
         name: "o1-high-reasoning",
         description: O1_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/o1_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/o1_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.O3_MINI:
       return {
         sId: GLOBAL_AGENTS_SID.O3_MINI,
         name: "o3-mini",
         description: O3_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/o1_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/o1_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.O3:
       return {
         sId: GLOBAL_AGENTS_SID.O3,
         name: "o3",
         description: O3_MODEL_CONFIG.description,
-        pictureUrl: "https://dust.tt/static/systemavatar/o1_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/o1_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.CLAUDE_3_HAIKU:
       return {
@@ -171,7 +171,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "claude-3-haiku",
         description: CLAUDE_3_HAIKU_DEFAULT_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/claude_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/claude_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.CLAUDE_3_OPUS:
       return {
@@ -179,7 +179,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "claude-3-opus",
         description: CLAUDE_3_OPUS_DEFAULT_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/claude_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/claude_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.CLAUDE_3_SONNET:
       return {
@@ -187,7 +187,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "claude-3.5",
         description: CLAUDE_3_5_SONNET_DEFAULT_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/claude_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/claude_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.CLAUDE_4_SONNET:
       return {
@@ -195,7 +195,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "claude-4-sonnet",
         description: CLAUDE_4_SONNET_DEFAULT_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/claude_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/claude_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.CLAUDE_5_SONNET:
       return {
@@ -203,7 +203,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "claude-sonnet",
         description: CLAUDE_SONNET_5_DEFAULT_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/claude_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/claude_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.CLAUDE_4_5_SONNET:
       return {
@@ -211,7 +211,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "claude-sonnet",
         description: CLAUDE_SONNET_4_6_DEFAULT_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/claude_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/claude_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.CLAUDE_4_5_HAIKU:
       return {
@@ -219,7 +219,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "claude-haiku",
         description: CLAUDE_4_5_HAIKU_DEFAULT_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/claude_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/claude_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.CLAUDE_3_7_SONNET:
       return {
@@ -227,7 +227,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "claude-3.7",
         description: CLAUDE_3_7_SONNET_DEFAULT_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/claude_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/claude_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.MISTRAL_LARGE:
       return {
@@ -235,7 +235,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "mistral",
         description: MISTRAL_LARGE_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/mistral_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/mistral_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.MISTRAL_MEDIUM:
       return {
@@ -243,7 +243,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "mistral-medium",
         description: MISTRAL_MEDIUM_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/mistral_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/mistral_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.MISTRAL_SMALL:
       return {
@@ -251,7 +251,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "mistral-small",
         description: MISTRAL_SMALL_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/mistral_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/mistral_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.GEMINI_PRO:
       return {
@@ -259,21 +259,21 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "gemini-pro",
         description: GEMINI_2_5_PRO_MODEL_CONFIG.description,
         pictureUrl:
-          "https://dust.tt/static/systemavatar/gemini_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/gemini_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.SLACK:
       return {
         sId: GLOBAL_AGENTS_SID.SLACK,
         name: "slack",
         description: "An agent with context on your Slack Channels.",
-        pictureUrl: "https://dust.tt/static/systemavatar/slack_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/slack_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.GOOGLE_DRIVE:
       return {
         sId: GLOBAL_AGENTS_SID.GOOGLE_DRIVE,
         name: "googledrive",
         description: "An agent with context on your Google Drives.",
-        pictureUrl: "https://dust.tt/static/systemavatar/drive_avatar_full.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/drive_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.NOTION:
       return {
@@ -281,7 +281,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "notion",
         description: "An agent with context on your Notion Spaces.",
         pictureUrl:
-          "https://dust.tt/static/systemavatar/notion_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/notion_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.GITHUB:
       return {
@@ -290,7 +290,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         description:
           "An agent with context on your Github Issues and Discussions.",
         pictureUrl:
-          "https://dust.tt/static/systemavatar/github_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/github_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.INTERCOM:
       return {
@@ -298,519 +298,519 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "intercom",
         description: "An agent with context on your Intercom Help Center data.",
         pictureUrl:
-          "https://dust.tt/static/systemavatar/intercom_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/intercom_avatar_full.png",
       };
-    case GLOBAL_AGENTS_SID.DUST_EDGE:
+    case GLOBAL_AGENTS_SID.RUBY_EDGE:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_EDGE,
-        name: "dust-edge",
+        sId: GLOBAL_AGENTS_SID.RUBY_EDGE,
+        name: "ruby-edge",
         description:
-          "Same as dust but running Claude Opus 5 to experiment internally.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running Claude Opus 5 to experiment internally.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_QUICK:
+    case GLOBAL_AGENTS_SID.RUBY_QUICK:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_QUICK,
-        name: "dust-quick",
+        sId: GLOBAL_AGENTS_SID.RUBY_QUICK,
+        name: "ruby-quick",
         description:
-          "Same as dust but running Gemini 3 with minimal reasoning for faster responses.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running Gemini 3 with minimal reasoning for faster responses.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_OAI:
+    case GLOBAL_AGENTS_SID.RUBY_OAI:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI,
-        name: "dust-oai",
-        description: "Same as dust but running GPT-5.6 Sol.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI,
+        name: "ruby-oai",
+        description: "Same as ruby but running GPT-5.6 Sol.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_OAI_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_OAI_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_MEDIUM,
-        name: "dust-oai-medium",
-        description: "Same as dust-oai but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_MEDIUM,
+        name: "ruby-oai-medium",
+        description: "Same as ruby-oai but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_OAI_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_OAI_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_HIGH,
-        name: "dust-oai-high",
-        description: "Same as dust-oai but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_HIGH,
+        name: "ruby-oai-high",
+        description: "Same as ruby-oai but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_OAI_LUNA:
+    case GLOBAL_AGENTS_SID.RUBY_OAI_LUNA:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_LUNA,
-        name: "dust-oai-luna",
-        description: "Same as dust but running GPT-5.6 Luna.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_LUNA,
+        name: "ruby-oai-luna",
+        description: "Same as ruby but running GPT-5.6 Luna.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_OAI_LUNA_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_LUNA_MEDIUM,
-        name: "dust-oai-luna-medium",
-        description: "Same as dust-oai-luna but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_MEDIUM,
+        name: "ruby-oai-luna-medium",
+        description: "Same as ruby-oai-luna but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_OAI_LUNA_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_LUNA_HIGH,
-        name: "dust-oai-luna-high",
-        description: "Same as dust-oai-luna but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_HIGH,
+        name: "ruby-oai-luna-high",
+        description: "Same as ruby-oai-luna but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_OAI_NANO_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_OAI_NANO_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_NANO_HIGH,
-        name: "dust-oai-nano-high",
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_NANO_HIGH,
+        name: "ruby-oai-nano-high",
         description:
-          "Same as dust but running GPT-5.4 Nano with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running GPT-5.4 Nano with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_NEXT:
+    case GLOBAL_AGENTS_SID.RUBY_NEXT:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_NEXT,
-        name: "dust-next",
+        sId: GLOBAL_AGENTS_SID.RUBY_NEXT,
+        name: "ruby-next",
         description:
-          "Same as dust but running a custom model for internal testing.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running a custom model for internal testing.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_NEXT_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_NEXT_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_NEXT_MEDIUM,
-        name: "dust-next-medium",
-        description: "Same as dust-next but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_NEXT_MEDIUM,
+        name: "ruby-next-medium",
+        description: "Same as ruby-next but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_NEXT_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_NEXT_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_NEXT_HIGH,
-        name: "dust-next-high",
-        description: "Same as dust-next but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_NEXT_HIGH,
+        name: "ruby-next-high",
+        description: "Same as ruby-next but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_CHAWI:
+    case GLOBAL_AGENTS_SID.RUBY_CHAWI:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_CHAWI,
-        name: "dust-chawi",
+        sId: GLOBAL_AGENTS_SID.RUBY_CHAWI,
+        name: "ruby-chawi",
         description:
-          "Same as dust but running a custom model for internal testing.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running a custom model for internal testing.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_CHAWI_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_CHAWI_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_CHAWI_MEDIUM,
-        name: "dust-chawi-medium",
-        description: "Same as dust-chawi but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_CHAWI_MEDIUM,
+        name: "ruby-chawi-medium",
+        description: "Same as ruby-chawi but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_CHAWI_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_CHAWI_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_CHAWI_HIGH,
-        name: "dust-chawi-high",
-        description: "Same as dust-chawi but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_CHAWI_HIGH,
+        name: "ruby-chawi-high",
+        description: "Same as ruby-chawi but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_SOUPINOU:
+    case GLOBAL_AGENTS_SID.RUBY_SOUPINOU:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_SOUPINOU,
-        name: "dust-soupinou",
+        sId: GLOBAL_AGENTS_SID.RUBY_SOUPINOU,
+        name: "ruby-soupinou",
         description:
-          "Same as dust but running a custom model for internal testing.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running a custom model for internal testing.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_SOUPINOU_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_SOUPINOU_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_SOUPINOU_MEDIUM,
-        name: "dust-soupinou-medium",
-        description: "Same as dust-soupinou but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_SOUPINOU_MEDIUM,
+        name: "ruby-soupinou-medium",
+        description: "Same as ruby-soupinou but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_SOUPINOU_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_SOUPINOU_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_SOUPINOU_HIGH,
-        name: "dust-soupinou-high",
-        description: "Same as dust-soupinou but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_SOUPINOU_HIGH,
+        name: "ruby-soupinou-high",
+        description: "Same as ruby-soupinou but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_SOUPINOU_NONE:
+    case GLOBAL_AGENTS_SID.RUBY_SOUPINOU_NONE:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_SOUPINOU_NONE,
-        name: "dust-soupinou-none",
-        description: "Same as dust-soupinou but with no reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_SOUPINOU_NONE,
+        name: "ruby-soupinou-none",
+        description: "Same as ruby-soupinou but with no reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_SUNDAE:
+    case GLOBAL_AGENTS_SID.RUBY_SUNDAE:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_SUNDAE,
-        name: "dust-sundae",
+        sId: GLOBAL_AGENTS_SID.RUBY_SUNDAE,
+        name: "ruby-sundae",
         description:
-          "Same as dust but running a custom model for internal testing.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running a custom model for internal testing.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_SUNDAE_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_SUNDAE_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_SUNDAE_MEDIUM,
-        name: "dust-sundae-medium",
-        description: "Same as dust-sundae but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_SUNDAE_MEDIUM,
+        name: "ruby-sundae-medium",
+        description: "Same as ruby-sundae but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_SUNDAE_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_SUNDAE_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_SUNDAE_HIGH,
-        name: "dust-sundae-high",
-        description: "Same as dust-sundae but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_SUNDAE_HIGH,
+        name: "ruby-sundae-high",
+        description: "Same as ruby-sundae but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_PISTACHE:
+    case GLOBAL_AGENTS_SID.RUBY_PISTACHE:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_PISTACHE,
-        name: "dust-pistache",
-        description: "Same as dust but running GLM-5.3.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_PISTACHE,
+        name: "ruby-pistache",
+        description: "Same as ruby but running GLM-5.3.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_PISTACHE_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_PISTACHE_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_PISTACHE_MEDIUM,
-        name: "dust-pistache-medium",
-        description: "Same as dust-pistache but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_PISTACHE_MEDIUM,
+        name: "ruby-pistache-medium",
+        description: "Same as ruby-pistache but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_PISTACHE_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_PISTACHE_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_PISTACHE_HIGH,
-        name: "dust-pistache-high",
-        description: "Same as dust-pistache but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_PISTACHE_HIGH,
+        name: "ruby-pistache-high",
+        description: "Same as ruby-pistache but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_CHALOM:
+    case GLOBAL_AGENTS_SID.RUBY_CHALOM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_CHALOM,
-        name: "dust-chalom",
+        sId: GLOBAL_AGENTS_SID.RUBY_CHALOM,
+        name: "ruby-chalom",
         description:
-          "Same as dust but running a custom model for internal testing.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running a custom model for internal testing.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_CHALOM_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_CHALOM_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_CHALOM_MEDIUM,
-        name: "dust-chalom-medium",
-        description: "Same as dust-chalom but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_CHALOM_MEDIUM,
+        name: "ruby-chalom-medium",
+        description: "Same as ruby-chalom but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_CHALOM_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_CHALOM_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_CHALOM_HIGH,
-        name: "dust-chalom-high",
-        description: "Same as dust-chalom but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_CHALOM_HIGH,
+        name: "ruby-chalom-high",
+        description: "Same as ruby-chalom but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_LIONEL:
+    case GLOBAL_AGENTS_SID.RUBY_LIONEL:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_LIONEL,
-        name: "dust-lionel",
-        description: "Same as dust but running Claude Fable 5.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_LIONEL,
+        name: "ruby-lionel",
+        description: "Same as ruby but running Claude Fable 5.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_LIONEL_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_LIONEL_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_LIONEL_MEDIUM,
-        name: "dust-lionel-medium",
-        description: "Same as dust-lionel but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_LIONEL_MEDIUM,
+        name: "ruby-lionel-medium",
+        description: "Same as ruby-lionel but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_LIONEL_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_LIONEL_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_LIONEL_HIGH,
-        name: "dust-lionel-high",
-        description: "Same as dust-lionel but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_LIONEL_HIGH,
+        name: "ruby-lionel-high",
+        description: "Same as ruby-lionel but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_GOOG:
+    case GLOBAL_AGENTS_SID.RUBY_GOOG:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_GOOG,
-        name: "dust-goog",
-        description: "Same as dust but running Gemini 3.8 Flash.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_GOOG,
+        name: "ruby-goog",
+        description: "Same as ruby but running Gemini 3.8 Flash.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_GOOG_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_GOOG_MEDIUM,
-        name: "dust-goog-medium",
-        description: "Same as dust-goog but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_GOOG_MEDIUM,
+        name: "ruby-goog-medium",
+        description: "Same as ruby-goog but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_GOOG_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_GOOG_HIGH,
-        name: "dust-goog-high",
-        description: "Same as dust-goog but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_GOOG_HIGH,
+        name: "ruby-goog-high",
+        description: "Same as ruby-goog but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_GOOG_LITE:
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_LITE:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_GOOG_LITE,
-        name: "dust-goog-lite",
-        description: "Same as dust but running Gemini 3.1 Flash Lite.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_GOOG_LITE,
+        name: "ruby-goog-lite",
+        description: "Same as ruby but running Gemini 3.1 Flash Lite.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_GOOG_PRO:
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_PRO:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_GOOG_PRO,
-        name: "dust-goog-pro",
-        description: "Same as dust but running Gemini 3.1 Pro.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_GOOG_PRO,
+        name: "ruby-goog-pro",
+        description: "Same as ruby but running Gemini 3.1 Pro.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_GOOG_PRO_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_PRO_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_GOOG_PRO_MEDIUM,
-        name: "dust-goog-pro-medium",
-        description: "Same as dust-goog-pro but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_GOOG_PRO_MEDIUM,
+        name: "ruby-goog-pro-medium",
+        description: "Same as ruby-goog-pro but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_GOOG_PRO_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_PRO_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_GOOG_PRO_HIGH,
-        name: "dust-goog-pro-high",
-        description: "Same as dust-goog-pro but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_GOOG_PRO_HIGH,
+        name: "ruby-goog-pro-high",
+        description: "Same as ruby-goog-pro but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_ANT:
+    case GLOBAL_AGENTS_SID.RUBY_ANT:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_ANT,
-        name: "dust-ant",
-        description: "Same as dust but running Claude Opus 5.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_ANT,
+        name: "ruby-ant",
+        description: "Same as ruby but running Claude Opus 5.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM,
-        name: "dust-ant-medium",
-        description: "Same as dust-ant but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM,
+        name: "ruby-ant-medium",
+        description: "Same as ruby-ant but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_ANT_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_ANT_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_ANT_HIGH,
-        name: "dust-ant-high",
-        description: "Same as dust-ant but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_ANT_HIGH,
+        name: "ruby-ant-high",
+        description: "Same as ruby-ant but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM_OMITTED:
+    case GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM_OMITTED:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM_OMITTED,
-        name: "dust-ant-medium-omitted",
+        sId: GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM_OMITTED,
+        name: "ruby-ant-medium-omitted",
         description:
-          "Same as dust-ant-medium but with omitted reasoning summaries.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby-ant-medium but with omitted reasoning summaries.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_ANT_HIGH_OMITTED:
+    case GLOBAL_AGENTS_SID.RUBY_ANT_HIGH_OMITTED:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_ANT_HIGH_OMITTED,
-        name: "dust-ant-high-omitted",
+        sId: GLOBAL_AGENTS_SID.RUBY_ANT_HIGH_OMITTED,
+        name: "ruby-ant-high-omitted",
         description:
-          "Same as dust-ant-high but with omitted reasoning summaries.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby-ant-high but with omitted reasoning summaries.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_ANT_SONNET_EDGE:
+    case GLOBAL_AGENTS_SID.RUBY_ANT_SONNET_EDGE:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_ANT_SONNET_EDGE,
-        name: "dust-ant-sonnet-edge",
+        sId: GLOBAL_AGENTS_SID.RUBY_ANT_SONNET_EDGE,
+        name: "ruby-ant-sonnet-edge",
         description:
-          "Same as dust but running Claude Sonnet 5 to experiment internally.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running Claude Sonnet 5 to experiment internally.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_ANT_SONNET_EDGE_LIGHT:
+    case GLOBAL_AGENTS_SID.RUBY_ANT_SONNET_EDGE_LIGHT:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_ANT_SONNET_EDGE_LIGHT,
-        name: "dust-ant-sonnet-edge-light",
+        sId: GLOBAL_AGENTS_SID.RUBY_ANT_SONNET_EDGE_LIGHT,
+        name: "ruby-ant-sonnet-edge-light",
         description:
-          "Same as dust-ant-sonnet-edge but with light reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby-ant-sonnet-edge but with light reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_HAIKU:
+    case GLOBAL_AGENTS_SID.RUBY_HAIKU:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_HAIKU,
-        name: "dust-haiku",
-        description: "Same as dust but running Claude 4.5 Haiku.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_HAIKU,
+        name: "ruby-haiku",
+        description: "Same as ruby but running Claude 4.5 Haiku.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_LIGHT:
+    case GLOBAL_AGENTS_SID.RUBY_LIGHT:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_LIGHT,
-        name: "dust-light",
-        description: "Same as dust but running Claude Sonnet 4.6.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_LIGHT,
+        name: "ruby-light",
+        description: "Same as ruby but running Claude Sonnet 4.6.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_KIMI:
+    case GLOBAL_AGENTS_SID.RUBY_KIMI:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_KIMI,
-        name: "dust-kimi",
-        description: "Same as dust but running Kimi K3.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_KIMI,
+        name: "ruby-kimi",
+        description: "Same as ruby but running Kimi K3.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_KIMI_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_KIMI_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_KIMI_MEDIUM,
-        name: "dust-kimi-medium",
-        description: "Same as dust-kimi but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_KIMI_MEDIUM,
+        name: "ruby-kimi-medium",
+        description: "Same as ruby-kimi but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_KIMI_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_KIMI_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_KIMI_HIGH,
-        name: "dust-kimi-high",
-        description: "Same as dust-kimi but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_KIMI_HIGH,
+        name: "ruby-kimi-high",
+        description: "Same as ruby-kimi but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_GLM:
+    case GLOBAL_AGENTS_SID.RUBY_GLM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_GLM,
-        name: "dust-glm",
-        description: "Same as dust but running GLM-5.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_GLM,
+        name: "ruby-glm",
+        description: "Same as ruby but running GLM-5.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_GLM_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_GLM_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_GLM_MEDIUM,
-        name: "dust-glm-medium",
-        description: "Same as dust-glm but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_GLM_MEDIUM,
+        name: "ruby-glm-medium",
+        description: "Same as ruby-glm but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_GLM_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_GLM_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_GLM_HIGH,
-        name: "dust-glm-high",
-        description: "Same as dust-glm but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_GLM_HIGH,
+        name: "ruby-glm-high",
+        description: "Same as ruby-glm but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_MINIMAX:
+    case GLOBAL_AGENTS_SID.RUBY_MINIMAX:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_MINIMAX,
-        name: "dust-minimax",
-        description: "Same as dust but running MiniMax M2.5.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_MINIMAX,
+        name: "ruby-minimax",
+        description: "Same as ruby but running MiniMax M2.5.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_MINIMAX_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_MINIMAX_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_MINIMAX_MEDIUM,
-        name: "dust-minimax-medium",
-        description: "Same as dust-minimax but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_MINIMAX_MEDIUM,
+        name: "ruby-minimax-medium",
+        description: "Same as ruby-minimax but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_MINIMAX_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_MINIMAX_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_MINIMAX_HIGH,
-        name: "dust-minimax-high",
-        description: "Same as dust-minimax but with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_MINIMAX_HIGH,
+        name: "ruby-minimax-high",
+        description: "Same as ruby-minimax but with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_DEEPSEEK:
+    case GLOBAL_AGENTS_SID.RUBY_DEEPSEEK:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_DEEPSEEK,
-        name: "dust-deepseek",
-        description: "Same as dust but running DeepSeek V4.1 Flash.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_DEEPSEEK,
+        name: "ruby-deepseek",
+        description: "Same as ruby but running DeepSeek V4.1 Flash.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_MISTRAL_MEDIUM_NONE:
+    case GLOBAL_AGENTS_SID.RUBY_MISTRAL_MEDIUM_NONE:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_MISTRAL_MEDIUM_NONE,
-        name: "dust-mistral-medium-none",
+        sId: GLOBAL_AGENTS_SID.RUBY_MISTRAL_MEDIUM_NONE,
+        name: "ruby-mistral-medium-none",
         description:
-          "Same as dust but running Mistral Medium 3.5 with no reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running Mistral Medium 3.5 with no reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_MISTRAL_MEDIUM_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_MISTRAL_MEDIUM_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_MISTRAL_MEDIUM_HIGH,
-        name: "dust-mistral-medium-high",
+        sId: GLOBAL_AGENTS_SID.RUBY_MISTRAL_MEDIUM_HIGH,
+        name: "ruby-mistral-medium-high",
         description:
-          "Same as dust but running Mistral Medium 3.5 with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Same as ruby but running Mistral Medium 3.5 with high reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_QUICK_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_QUICK_MEDIUM:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_QUICK_MEDIUM,
-        name: "dust-quick-medium",
-        description: "Same as dust-quick but with medium reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        sId: GLOBAL_AGENTS_SID.RUBY_QUICK_MEDIUM,
+        name: "ruby-quick-medium",
+        description: "Same as ruby-quick but with medium reasoning effort.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST:
+    case GLOBAL_AGENTS_SID.RUBY:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST,
-        name: "dust",
+        sId: GLOBAL_AGENTS_SID.RUBY,
+        name: "ruby",
         description: "An agent with context on your company data.",
-        pictureUrl: DUST_AVATAR_URL,
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_LEAN:
+    case GLOBAL_AGENTS_SID.RUBY_LEAN:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_LEAN,
-        name: "dust-lean",
+        sId: GLOBAL_AGENTS_SID.RUBY_LEAN,
+        name: "ruby-lean",
         description:
-          "Dust with no tools, skills, or company knowledge by default. Add capabilities to the conversation as needed.",
-        pictureUrl: DUST_AVATAR_URL,
+          "Ruby with no tools, skills, or company knowledge by default. Add capabilities to the conversation as needed.",
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_HIGH:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_HIGH,
-        name: "dust-high",
+        sId: GLOBAL_AGENTS_SID.RUBY_HIGH,
+        name: "ruby-high",
         description:
           "An agent with context on your company data, with high reasoning effort.",
-        pictureUrl: DUST_AVATAR_URL,
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_OMITTED:
+    case GLOBAL_AGENTS_SID.RUBY_OMITTED:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_OMITTED,
-        name: "dust-omitted",
+        sId: GLOBAL_AGENTS_SID.RUBY_OMITTED,
+        name: "ruby-omitted",
         description:
           "An agent with context on your company data, with omitted reasoning summaries.",
-        pictureUrl: DUST_AVATAR_URL,
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_HIGH_OMITTED:
+    case GLOBAL_AGENTS_SID.RUBY_HIGH_OMITTED:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_HIGH_OMITTED,
-        name: "dust-high-omitted",
+        sId: GLOBAL_AGENTS_SID.RUBY_HIGH_OMITTED,
+        name: "ruby-high-omitted",
         description:
           "An agent with context on your company data, with high reasoning effort and omitted reasoning summaries.",
-        pictureUrl: DUST_AVATAR_URL,
+        pictureUrl: RUBY_AVATAR_URL,
       };
     case GLOBAL_AGENTS_SID.DEEP_DIVE:
       return {
         sId: GLOBAL_AGENTS_SID.DEEP_DIVE,
         name: DEEP_DIVE_NAME,
         description: DEEP_DIVE_DESC,
-        pictureUrl: DUST_AVATAR_URL,
+        pictureUrl: RUBY_AVATAR_URL,
       };
-    case GLOBAL_AGENTS_SID.DUST_TASK:
+    case GLOBAL_AGENTS_SID.RUBY_TASK:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_TASK,
-        name: "dust-task",
+        sId: GLOBAL_AGENTS_SID.RUBY_TASK,
+        name: "ruby-task",
         description:
           "Task sub-agent for focused research using company data, web search, browsing, and data warehouses.",
         pictureUrl:
-          "https://dust.tt/static/systemavatar/dust-task_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/ruby-task_avatar_full.png",
       };
-    case GLOBAL_AGENTS_SID.DUST_BROWSER_SUMMARY:
+    case GLOBAL_AGENTS_SID.RUBY_BROWSER_SUMMARY:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_BROWSER_SUMMARY,
-        name: "dust-browser-summary",
+        sId: GLOBAL_AGENTS_SID.RUBY_BROWSER_SUMMARY,
+        name: "ruby-browser-summary",
         description: "A agent that summarizes web page content.",
         pictureUrl:
-          "https://dust.tt/static/systemavatar/dust-task_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/ruby-task_avatar_full.png",
       };
-    case GLOBAL_AGENTS_SID.DUST_PLANNING:
+    case GLOBAL_AGENTS_SID.RUBY_PLANNING:
       return {
-        sId: GLOBAL_AGENTS_SID.DUST_PLANNING,
-        name: "dust-planning",
+        sId: GLOBAL_AGENTS_SID.RUBY_PLANNING,
+        name: "ruby-planning",
         description: "A agent that plans research tasks.",
         pictureUrl:
-          "https://dust.tt/static/systemavatar/dust-task_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/ruby-task_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.SIDEKICK:
       return {
         sId: GLOBAL_AGENTS_SID.SIDEKICK,
         name: "Sidekick",
         description: "An agent that suggests improvements for another agent.",
-        pictureUrl: DUST_AVATAR_URL,
+        pictureUrl: RUBY_AVATAR_URL,
       };
     case GLOBAL_AGENTS_SID.REINFORCEMENT:
       return {
@@ -818,7 +818,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "Reinforcement",
         description:
           "Internal agent used as a placeholder for reinforcement conversations.",
-        pictureUrl: DUST_AVATAR_URL,
+        pictureUrl: RUBY_AVATAR_URL,
       };
     case GLOBAL_AGENTS_SID.NOOP:
       return {
@@ -826,7 +826,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         name: "noop",
         description: "A no-op agent that does nothing.",
         pictureUrl:
-          "https://dust.tt/static/systemavatar/dust-task_avatar_full.png",
+          "https://ruby.ad/static/systemavatar/ruby-task_avatar_full.png",
       };
     case GLOBAL_AGENTS_SID.ANALYST:
       return {
@@ -835,7 +835,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
         description:
           "Agent for admins and managers that answers questions about how " +
           "your workspace is being used.",
-        pictureUrl: DUST_AVATAR_URL,
+        pictureUrl: RUBY_AVATAR_URL,
         audience: "managers",
       };
     default:

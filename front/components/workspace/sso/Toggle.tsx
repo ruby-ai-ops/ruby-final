@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React from "react";
 
 export function ToggleEnforceEnterpriseConnectionModal({

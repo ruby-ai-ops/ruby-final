@@ -194,7 +194,7 @@ describe("getUsageFilterSummaries", () => {
         agent: [
           {
             id: "agent-1",
-            name: "@dust",
+            name: "@ruby",
             kind: "agent",
             image: null,
             disabled: false,
@@ -221,7 +221,7 @@ describe("getUsageFilterSummaries", () => {
       {
         category: "agent",
         categoryLabel: "Agent",
-        options: [{ id: "agent-1", name: "@dust" }],
+        options: [{ id: "agent-1", name: "@ruby" }],
       },
       {
         category: "member",
@@ -451,8 +451,8 @@ describe("describeUsageFilter", () => {
             tier: undefined,
           },
         ],
-        ...agentFilter(["Dust", "Support Bot"]),
+        ...agentFilter(["Ruby", "Support Bot"]),
       })
-    ).toBe("Agent: Dust, Support Bot; Model: Claude Sonnet 4.5");
+    ).toBe("Agent: Ruby, Support Bot; Model: Claude Sonnet 4.5");
   });
 });

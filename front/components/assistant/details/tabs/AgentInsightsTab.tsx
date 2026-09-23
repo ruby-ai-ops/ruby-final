@@ -43,7 +43,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { domMax, LazyMotion, m, useReducedMotion } from "framer-motion";
 import { useMemo, useState } from "react";
 

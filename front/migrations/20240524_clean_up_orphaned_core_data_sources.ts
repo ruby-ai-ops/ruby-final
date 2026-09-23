@@ -2,7 +2,7 @@
 
 // import config from "@app/lib/api/config";
 // import logger from "@app/logger/logger";
-// import { launchScrubDataSourceWorkflow } from "@app/poke/temporal/client";
+// import { launchScrubDataSourceWorkflow } from "@app/admin-app/temporal/client";
 // import { makeScript } from "@app/scripts/helpers";
 
 // const ORPHANED_DATA_SOURCES: { project: string; data_source_id: string }[] = [
@@ -23,7 +23,7 @@
 
 //       await launchScrubDataSourceWorkflow({
 //         wId: "scrub_orphaned",
-//         dustAPIProjectId: project,
+//         rubyAPIProjectId: project,
 //       });
 //     }
 //   }

@@ -2,7 +2,7 @@ import { OBSERVABILITY_TIME_RANGE } from "@app/components/agent_builder/observab
 import { useObservabilityContext } from "@app/components/agent_builder/observability/ObservabilityContext";
 import type { AgentVersionMarker } from "@app/lib/api/assistant/observability/version_markers";
 import { useAgentVersionMarkers } from "@app/lib/swr/assistants";
-import type { ButtonSizeType } from "@dust-tt/sparkle";
+import type { ButtonSizeType } from "@ruby-ai/ui";
 import {
   Button,
   ButtonsSwitch,
@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect } from "react";
 
 function getVersionValue(versionMarker: AgentVersionMarker) {

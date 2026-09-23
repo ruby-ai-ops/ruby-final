@@ -4,12 +4,12 @@ import {
   ConversationMessageContainer,
   ConversationMessageContent,
   cn,
-  DustLogoSquare,
+  RubyLogoSquare,
   getPlatformLogo,
   Icon,
   PuzzlePiece01,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { motion, useReducedMotion } from "framer-motion";
 
 import type { ChatStoryline, IntegrationBase } from "../types";
@@ -17,7 +17,7 @@ import type { ChatStoryline, IntegrationBase } from "../types";
 // Tunable animation timings for the agent's *conversation* (user prompt →
 // agent reply chain). The chrome around the conversation (top bar, sidebar,
 // input bar) is intentionally static — those are always visible to convey
-// "this is the Dust app", not "this is loading right now".
+// "this is the Ruby app", not "this is loading right now".
 //
 // Durations are in seconds because framer-motion's `transition.duration`
 // expects seconds (not ms).
@@ -57,7 +57,7 @@ export function IntegrationChatMockupSection({
   return (
     <div className="bg-muted/40 py-12 md:py-16">
       <div className="mx-auto max-w-5xl px-4">
-        {/* The whole mockup is wrapped in a card with Dust-app-style chrome:
+        {/* The whole mockup is wrapped in a card with Ruby-app-style chrome:
             a top bar, a left sidebar (hidden on mobile), the chat area on
             the right, and a persistent input bar at the bottom of the chat
             area. It reads as a screenshot of the real product. */}
@@ -120,9 +120,9 @@ export function IntegrationChatMockupSection({
 function TopBar() {
   return (
     <div className="flex items-center gap-3 border-b border-border bg-muted/20 px-4 py-2.5">
-      <DustLogoSquare className="h-5 w-5 shrink-0" />
+      <RubyLogoSquare className="h-5 w-5 shrink-0" />
       <span className="text-sm font-medium text-foreground">
-        Dust · My workspace
+        Ruby · My workspace
       </span>
     </div>
   );
@@ -133,7 +133,7 @@ interface SidebarMockProps {
 }
 
 function SidebarMock({ integrationName }: SidebarMockProps) {
-  // Hidden on mobile to keep the chat area wide. Matches the real Dust app
+  // Hidden on mobile to keep the chat area wide. Matches the real Ruby app
   // conversation list layout. No top tabs or "+ New conversation" CTA — those
   // would only read right with the exact app icons, which we don't replicate
   // pixel-perfectly here.
@@ -218,11 +218,11 @@ function AgentHeader({
       transition={{ duration: 0.35, delay: delaySeconds }}
       className="mb-2"
     >
-      {/* Top line: avatar + agent name, matches the real Dust conversation
+      {/* Top line: avatar + agent name, matches the real Ruby conversation
           header where the agent's name renders next to its small avatar. */}
       <div className="flex items-center gap-1.5 text-sm font-medium text-foreground">
-        <DustLogoSquare className="h-4 w-4 shrink-0" />
-        <span>dust</span>
+        <RubyLogoSquare className="h-4 w-4 shrink-0" />
+        <span>Ruby</span>
       </div>
       {/* Second line: subtle "Completed in N sec" status. No green pill — the
           real app renders this as a small muted clickable row underneath the
@@ -355,8 +355,8 @@ function AgentResponseBubble({
   );
 }
 
-// Persistent input bar at the bottom of the chat area. Matches the real Dust
-// InputBar: agent picker chip on the left (DustLogoSquare avatar + agent
+// Persistent input bar at the bottom of the chat area. Matches the real Ruby
+// InputBar: agent picker chip on the left (RubyLogoSquare avatar + agent
 // name), placeholder text, and a blue circular send button on the right.
 // Always visible, never animated.
 function PersistentInputBar() {
@@ -371,8 +371,8 @@ function PersistentInputBar() {
         </span>
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-md bg-foreground/[0.06] px-1.5 py-0.5 text-xs font-medium text-foreground">
-            <DustLogoSquare className="h-3.5 w-3.5 shrink-0" />
-            dust
+            <RubyLogoSquare className="h-3.5 w-3.5 shrink-0" />
+            ruby
           </span>
           <span className="ml-auto inline-flex h-7 w-8 shrink-0 items-center justify-center rounded-md bg-blue-500 text-white">
             <Icon visual={ArrowUp} size="xs" />

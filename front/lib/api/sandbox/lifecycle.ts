@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { setupSandboxStateOnColdStart } from "@app/lib/api/sandbox/db";
 import {
   ensureSandboxEgressOnExec,
@@ -46,7 +46,7 @@ type SandboxReadyConfig<TScope> = {
   // so this config cannot be built from a pod association that a concurrent
   // move already changed.
   deriveConfig: (scope: TScope) => {
-    getFileSystem: () => Promise<Result<DustFileSystem, Error>>;
+    getFileSystem: () => Promise<Result<RubyFileSystem, Error>>;
     runtimeOwner: SandboxRuntimeOwner;
     // Which owner policy file (`w/{wId}/sandboxes/{ownerId}.json`) this
     // sandbox's egress is scoped to — the owner's own sId.
@@ -132,9 +132,9 @@ async function ensureOwnerSandboxReady<TScope>(
 
       // Only mount on first creation. e2b preserves the FUSE mount and the
       // root-owned token server across betaPause + connect (verified empirically),
-      // so on wake we just need fresh per-mount credentials in /run/dust-gcs.
+      // so on wake we just need fresh per-mount credentials in /run/ruby-gcs.
       if (freshlyCreated) {
-        // The image seeds /etc/dust/ca-bundle.pem with system roots, and
+        // The image seeds /etc/ruby/ca-bundle.pem with system roots, and
         // gcsfuse runs as root to storage.googleapis.com, which the in-sandbox
         // nftables ruleset never touches: every rule is scoped to the
         // non-root Front exec UIDs (1002 and 1003) and the chains default to
@@ -324,7 +324,7 @@ async function ensureConversationSandboxReadyRun(
     // like conversations outside a Pod.
     deriveConfig: (scope) => ({
       getFileSystem: () =>
-        DustFileSystem.forConversation(auth, {
+        RubyFileSystem.forConversation(auth, {
           ...conversation,
           spaceId: scope.spaceId,
         }),
@@ -351,7 +351,7 @@ export async function ensureFrameSandboxReady(
       FrameSandboxAdapter.ensureSandboxActive(auth, frame, { requireRunning }),
     deriveConfig: (scope) => ({
       getFileSystem: () =>
-        DustFileSystem.forFrameSandboxProvisioning(auth, frame, {
+        RubyFileSystem.forFrameSandboxProvisioning(auth, frame, {
           sandboxOnlyMounts: frameSandboxOnlyMounts(frame),
         }),
       runtimeOwner: {

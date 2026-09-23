@@ -2,8 +2,8 @@
 extern crate pest_derive;
 
 #[derive(Parser)]
-#[grammar = "dust.pest"]
-pub struct DustParser;
+#[grammar = "ruby.pest"]
+pub struct RubyParser;
 
 pub mod stores {
     pub mod postgres;

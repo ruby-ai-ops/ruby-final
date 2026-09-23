@@ -10,7 +10,7 @@ import {
   DialogTitle,
   Input,
   Label,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 import { MAX_TAG_LENGTH } from "./TagCreationDialog";

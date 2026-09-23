@@ -31,7 +31,7 @@ const buildUser = (
   type: "user",
   label: label ?? `User ${id}`,
   pictureUrl: `/users/${id}.png`,
-  description: `${id}@dust.tt`,
+  description: `${id}@ruby.ad`,
   isParticipant,
   lastActivityAt,
 });

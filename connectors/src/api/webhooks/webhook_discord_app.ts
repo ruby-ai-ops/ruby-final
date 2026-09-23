@@ -157,7 +157,7 @@ async function handleListAgentsCommand(
       channelId: interactionBody.channel_id,
       guildId,
     },
-    "List-dust-agents command called"
+    "List-ruby-agents command called"
   );
 
   const connectorResult = await getConnectorFromGuildId(guildId, logger);
@@ -239,7 +239,7 @@ async function handleAskAgentCommand(
   if (!agent) {
     await sendDiscordFollowUp(
       interactionBody,
-      `Agent "${agentName}" not found. Use /list-dust-agents to see available agents.`
+      `Agent "${agentName}" not found. Use /list-ruby-agents to see available agents.`
     );
     return;
   }
@@ -372,7 +372,7 @@ const _webhookDiscordAppHandler = async (
       });
     }
 
-    if (commandName === "list-dust-agents") {
+    if (commandName === "list-ruby-agents") {
       // Send deferred response immediately to avoid timeout.
       const deferredResponse = res.status(200).json({
         type: DiscordInteractionResponse.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
@@ -386,7 +386,7 @@ const _webhookDiscordAppHandler = async (
       return deferredResponse;
     }
 
-    if (commandName === "ask-dust-agent") {
+    if (commandName === "ask-ruby-agent") {
       const channelId = interactionBody.channel_id;
       if (!channelId) {
         return res.status(200).json({

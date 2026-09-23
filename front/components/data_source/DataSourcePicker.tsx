@@ -12,7 +12,7 @@ import {
   PopoverTrigger,
   ScrollArea,
   SearchInput,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 

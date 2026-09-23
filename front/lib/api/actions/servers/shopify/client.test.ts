@@ -50,7 +50,7 @@ function customer(id: number): ShopifyCustomer {
     createdAt: "2026-01-01T00:00:00Z",
     updatedAt: "2026-01-02T00:00:00Z",
     defaultAddress: {
-      address1: "1 Dust Avenue",
+      address1: "1 Ruby Avenue",
       address2: null,
       city: "Paris",
       province: null,
@@ -68,7 +68,7 @@ function product(id: number): ShopifyProduct {
     title: `Product ${id}`,
     handle: `product-${id}`,
     status: "ACTIVE",
-    vendor: "Dust",
+    vendor: "Ruby",
     productType: "Software",
     totalInventory: id,
     createdAt: "2026-01-01T00:00:00Z",

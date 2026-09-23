@@ -23,7 +23,7 @@ import {
   DialogTitle,
   Download01,
   Icon,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 interface FilePreviewDialogProps {

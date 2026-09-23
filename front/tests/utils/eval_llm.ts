@@ -3,7 +3,7 @@ import type { LLM } from "@app/lib/api/llm/llm";
 import { getStreamEndpointFromLegacyModelId } from "@app/lib/api/llm/selectPreferredEndpointForWorkspace";
 import { getLlmCredentials } from "@app/lib/api/provider_credentials";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustStreamEndpointConstructor } from "@app/lib/llms/stream/dust_stream_endpoint";
+import type { RubyStreamEndpointConstructor } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import type {
   ModelIdType,
   ReasoningEffort,
@@ -22,7 +22,7 @@ export async function getEvalStreamLLM(
     temperature?: number;
     reasoningEffort?: ReasoningEffort;
   }
-): Promise<LLM<DustStreamEndpointConstructor>> {
+): Promise<LLM<RubyStreamEndpointConstructor>> {
   const credentials = await getLlmCredentials(auth, {
     skipEmbeddingApiKeyRequirement: true,
   });
@@ -47,6 +47,6 @@ export async function getEvalStreamLLM(
 // Shared judge LLM used by the eval suites: gpt-5-mini at a low temperature.
 export function getJudgeLLM(
   auth: Authenticator
-): Promise<LLM<DustStreamEndpointConstructor>> {
+): Promise<LLM<RubyStreamEndpointConstructor>> {
   return getEvalStreamLLM(auth, { modelId: "gpt-5-mini", temperature: 0.2 });
 }

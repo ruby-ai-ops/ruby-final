@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 
-export const DUST_ANONYMOUS_ID_COOKIE = "_dust_aid";
+export const RUBY_ANONYMOUS_ID_COOKIE = "_ruby_aid";
 
 const ANONYMOUS_ID_MAX_AGE_SECONDS = 31536000; // 1 year
 
 /**
  * Returns the cookie domain for cross-subdomain sharing.
- * On production (any *.dust.tt host) returns `.dust.tt`;
+ * On production (any *.ruby.ad host) returns `.ruby.ad`;
  * on localhost/dev returns null (no domain attribute needed).
  */
 export function getRootCookieDomain(): string | null {
@@ -18,12 +18,12 @@ export function getRootCookieDomain(): string | null {
     return null;
   }
 
-  return ".dust.tt";
+  return ".ruby.ad";
 }
 
 /**
  * Returns the root cookie domain for PostHog cross-subdomain tracking.
- * On production returns `.dust.tt`; on localhost/dev returns `undefined`.
+ * On production returns `.ruby.ad`; on localhost/dev returns `undefined`.
  */
 export function getPostHogCookieDomain(): string | undefined {
   const domain = getRootCookieDomain();
@@ -31,21 +31,21 @@ export function getPostHogCookieDomain(): string | undefined {
 }
 
 /**
- * Builds the cookie string for `_dust_aid` including the domain attribute
+ * Builds the cookie string for `_ruby_aid` including the domain attribute
  * when applicable (production multi-subdomain setup).
  */
-export function buildDustAidCookieString(value: string): string {
+export function buildRubyAidCookieString(value: string): string {
   const domain = getRootCookieDomain();
   const domainPart = domain ? `; domain=${domain}` : "";
-  return `${DUST_ANONYMOUS_ID_COOKIE}=${value}; path=/${domainPart}; SameSite=Lax; Secure; max-age=${ANONYMOUS_ID_MAX_AGE_SECONDS}`;
+  return `${RUBY_ANONYMOUS_ID_COOKIE}=${value}; path=/${domainPart}; SameSite=Lax; Secure; max-age=${ANONYMOUS_ID_MAX_AGE_SECONDS}`;
 }
 
 /**
- * Reads the `_dust_aid` cookie from `document.cookie`; if absent, generates a
+ * Reads the `_ruby_aid` cookie from `document.cookie`; if absent, generates a
  * UUIDv4, sets it as a first-party cookie, and returns it.
  *
- * The cookie is set with `domain=.dust.tt` (derived at runtime) so it is
- * shared between `dust.tt` (marketing site) and `app.dust.tt` (app).
+ * The cookie is set with `domain=.ruby.ad` (derived at runtime) so it is
+ * shared between `ruby.ad` (marketing site) and `app.ruby.ad` (app).
  *
  * Client-side only. Returns `null` when called outside a browser context.
  */
@@ -60,23 +60,23 @@ export function getOrCreateAnonymousId(): string | null {
   }
 
   const id = uuidv4();
-  document.cookie = buildDustAidCookieString(id);
+  document.cookie = buildRubyAidCookieString(id);
   return id;
 }
 
 /**
- * Reads the `_dust_aid` value from `document.cookie`.
+ * Reads the `_ruby_aid` value from `document.cookie`.
  * Returns `null` if the cookie is not present or we're not in a browser.
  */
 function readAnonymousIdFromDocumentCookie(): string | null {
   if (typeof document === "undefined") {
     return null;
   }
-  return parseDustAidFromCookieString(document.cookie);
+  return parseRubyAidFromCookieString(document.cookie);
 }
 
 /**
- * Server-side helper: parses the `_dust_aid` value from a raw `Cookie` header.
+ * Server-side helper: parses the `_ruby_aid` value from a raw `Cookie` header.
  * Returns `null` if not found.
  */
 export function readAnonymousIdFromCookies(
@@ -85,11 +85,11 @@ export function readAnonymousIdFromCookies(
   if (!cookieHeader) {
     return null;
   }
-  return parseDustAidFromCookieString(cookieHeader);
+  return parseRubyAidFromCookieString(cookieHeader);
 }
 
-function parseDustAidFromCookieString(cookies: string): string | null {
-  const prefix = `${DUST_ANONYMOUS_ID_COOKIE}=`;
+function parseRubyAidFromCookieString(cookies: string): string | null {
+  const prefix = `${RUBY_ANONYMOUS_ID_COOKIE}=`;
   const match = cookies.split("; ").find((c) => c.startsWith(prefix));
   return match ? match.slice(prefix.length) : null;
 }

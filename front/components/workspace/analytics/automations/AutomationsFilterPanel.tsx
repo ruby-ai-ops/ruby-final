@@ -28,7 +28,7 @@ import {
   PopoverRoot,
   PopoverTrigger,
   SearchInput,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
 // The panel only shows agents and members, so it skips the other dimensions

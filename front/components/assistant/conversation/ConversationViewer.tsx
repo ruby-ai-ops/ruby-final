@@ -55,7 +55,7 @@ import { getLightAgentMessageFromAgentMessage } from "@app/lib/api/assistant/cit
 import type { AgentMessageFeedbackType } from "@app/lib/api/assistant/feedback";
 import type { ConversationEvents } from "@app/lib/api/assistant/streaming/types";
 import { getUpdatedParticipantsFromEvent } from "@app/lib/client/conversation/event_handlers";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import {
   AgentMessageCompletedEvent,
   CompactionCompletedEvent,
@@ -88,7 +88,7 @@ import type { ContentFragmentsType } from "@app/types/content_fragment";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import type { UserType, WorkspaceType } from "@app/types/user";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import type {
   ListScrollLocation,
   VirtuosoMessageListMethods,
@@ -1078,7 +1078,7 @@ export const ConversationViewer = ({
       selectedMCPServerViewIds?: string[],
       selectedSpaceIds?: string[],
       modelSelection?: ModelSelectionType
-    ): Promise<Result<undefined, DustError>> => {
+    ): Promise<Result<undefined, RubyError>> => {
       if (!virtuosoMessageListRef?.current) {
         return new Err({
           code: "internal_error",

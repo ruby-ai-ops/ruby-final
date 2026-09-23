@@ -5,8 +5,12 @@ import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
 import TrustedBy from "@marketing/components/home/TrustedBy";
 import UTMButton from "@marketing/components/UTMButton";
+import {
+  isMarketingSurfaceVisible,
+  MARKETING_SURFACES,
+} from "@marketing/lib/marketing_visibility";
 import { classNames } from "@marketing/lib/utils";
-import { ChevronDown, ChevronUp, DustLogo, Rocket02 } from "@dust-tt/sparkle";
+import { ChevronDown, ChevronUp, RubyLogo, Rocket02 } from "@ruby-ai/ui";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import type { ReactElement, ReactNode } from "react";
@@ -54,7 +58,7 @@ function HeroSection() {
         </P>
         <div className="mt-4 flex flex-col gap-4 xs:flex-row sm:flex-row md:flex-row">
           <UTMButton
-            variant="highlight"
+            variant="primary"
             size="md"
             label="Get started"
             href="/pricing"
@@ -101,8 +105,8 @@ function ValuePropsSection() {
             read answers.
           </P>
           <P size="md" className="text-muted-foreground">
-            Teams trust Dust to do the work, to the highest degree of quality,
-            with multi-model access.
+            Teams trust Ruby to do the work, to the highest degree of quality,
+            with consistent company context.
           </P>
         </div>
       </div>
@@ -199,7 +203,7 @@ function TrustStatementSection() {
           </H2>
           <P size="md" className="text-center text-muted-foreground">
             <strong className="font-semibold text-foreground">
-              Dust is built to do things
+              Ruby is built to do things
             </strong>
             , not just find things.
           </P>
@@ -343,6 +347,13 @@ const ACCORDION_ITEMS: AccordionItemData[] = [
 
 function WhatThisMeansSection() {
   const [openIndex, setOpenIndex] = useState(0);
+  const visibleAccordionItems = isMarketingSurfaceVisible(
+    MARKETING_SURFACES.modelFlexibility
+  )
+    ? ACCORDION_ITEMS
+    : ACCORDION_ITEMS.filter(
+        (item) => item.title !== "Plays nicely with everyone"
+      );
 
   return (
     <section className="w-full">
@@ -353,7 +364,7 @@ function WhatThisMeansSection() {
         {/* Left: Accordion */}
         <div className="flex-1">
           <div className="w-full">
-            {ACCORDION_ITEMS.map((item, index) => (
+            {visibleAccordionItems.map((item, index) => (
               <div key={index} className="border-b border-gray-200">
                 <button
                   className="flex w-full items-center justify-between py-6 text-left focus:outline-hidden"
@@ -394,20 +405,20 @@ function WhatThisMeansSection() {
             className={classNames(
               "flex aspect-square w-full max-w-md items-center justify-center rounded-2xl p-8",
               openIndex >= 0
-                ? ACCORDION_ITEMS[openIndex].imageBg
+                ? visibleAccordionItems[openIndex].imageBg
                 : "bg-pink-100"
             )}
           >
             <Image
               src={
                 openIndex >= 0
-                  ? ACCORDION_ITEMS[openIndex].image
-                  : ACCORDION_ITEMS[0].image
+                  ? visibleAccordionItems[openIndex].image
+                  : visibleAccordionItems[0].image
               }
               alt={
                 openIndex >= 0
-                  ? ACCORDION_ITEMS[openIndex].imageAlt
-                  : ACCORDION_ITEMS[0].imageAlt
+                  ? visibleAccordionItems[openIndex].imageAlt
+                  : visibleAccordionItems[0].imageAlt
               }
               width={400}
               height={400}
@@ -454,6 +465,12 @@ const FEATURE_CARDS = [
 ];
 
 function FullyConnectedSection() {
+  const visibleFeatureCards = isMarketingSurfaceVisible(
+    MARKETING_SURFACES.modelFlexibility
+  )
+    ? FEATURE_CARDS
+    : FEATURE_CARDS.filter((card) => card.title !== "Always the best model");
+
   return (
     <section className="w-full">
       <H1 mono className="mb-12 text-center text-3xl md:text-4xl lg:text-5xl">
@@ -462,7 +479,7 @@ function FullyConnectedSection() {
         and always compounding
       </H1>
       <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2">
-        {FEATURE_CARDS.map((card, index) => (
+        {visibleFeatureCards.map((card, index) => (
           <div key={index} className="flex flex-col">
             <div className="flex aspect-video w-full items-center justify-center rounded-2xl bg-blue-50 p-4">
               <video
@@ -549,13 +566,13 @@ function BestPeopleSection() {
       <div className="mt-4 flex items-center gap-4 rounded-xl border border-blue-200 bg-blue-50 px-6 py-4">
         <Image
           src="/static/landing/enterprise/section1/accuracy.png"
-          alt="Dust"
+          alt="Ruby"
           width={48}
           height={48}
           className="h-12 w-12 flex-shrink-0"
         />
         <P size="md" className="font-medium text-foreground">
-          Dust takes the busywork. The tedious, repetitive, soul-numbing parts,
+          Ruby takes the busywork. The tedious, repetitive, soul-numbing parts,
           so your team can do the work they thrive on.
         </P>
       </div>
@@ -589,7 +606,7 @@ function HumansTalkingSection() {
 }
 
 // ---------------------------------------------------------------------------
-// "How every team uses Dust" — Tabbed Section
+// "How every team uses Ruby" — Tabbed Section
 // ---------------------------------------------------------------------------
 
 interface TeamTab {
@@ -781,7 +798,7 @@ function HowTeamsUseSection() {
         <H1 mono className="text-center text-3xl md:text-4xl lg:text-5xl">
           How every team uses
         </H1>
-        <DustLogo className="h-8 w-32" />
+        <RubyLogo className="h-8 w-32" />
       </div>
 
       {/* Tabs */}
@@ -942,7 +959,7 @@ function EnterpriseGradeSection() {
           <div className="flex flex-col gap-2">
             <P size="sm" className="text-muted-foreground">
               We build AGI at work with you: Share what you love, what you
-              build, and push Dust to become a better and more valuable product
+              build, and push Ruby to become a better and more valuable product
             </P>
             <P size="sm" className="text-muted-foreground">
               Hand-glove support to accelerate your AI transformation
@@ -1102,7 +1119,7 @@ function SocialProofMosaicSection() {
         <div className="flex flex-col gap-4">
           <MosaicMetricCard
             value="100%"
-            description="of customer experience team uses Dust daily"
+            description="of customer experience team uses Ruby daily"
             logo="/static/landing/logos/color/malt.png"
             logoAlt="Malt"
             bgColor="bg-amber-50"
@@ -1116,7 +1133,7 @@ function SocialProofMosaicSection() {
             </span>
           </div>
           <MosaicQuoteCard
-            quote="Dust has made it possible empowering our employees to work smarter"
+            quote="Ruby has made it possible empowering our employees to work smarter"
             logo="/static/landing/logos/color/doctolib.png"
             logoAlt="Doctolib"
             image="/static/landing/enterprise/section6/doctolib.jpg"
@@ -1138,7 +1155,7 @@ function SocialProofMosaicSection() {
           <MosaicMetricCard
             value="+50k"
             description="Hours saved annually"
-            quote="Dust AI assistants can remove tens of thousands of hours of work each year"
+            quote="Ruby AI assistants can remove tens of thousands of hours of work each year"
             logo="/static/landing/logos/color/qonto.png"
             logoAlt="Qonto"
             bgColor="bg-white"
@@ -1158,7 +1175,7 @@ function SocialProofMosaicSection() {
         {/* Column 3 */}
         <div className="flex flex-col gap-4">
           <MosaicQuoteCard
-            quote="Dust is the most impactful software we've adopted since building Clay"
+            quote="Ruby is the most impactful software we've adopted since building Clay"
             logo="/static/landing/logos/color/clay.png"
             logoAlt="Clay"
             image="/static/landing/enterprise/section6/clay.webp"
@@ -1217,7 +1234,7 @@ function ReadyToMoveSection() {
             </div>
             <div className="mt-8">
               <UTMButton
-                variant="highlight"
+                variant="primary"
                 size="md"
                 label="Contact us"
                 href="/home/contact"
@@ -1256,14 +1273,13 @@ function ReadyToMoveSection() {
 // Page
 // ---------------------------------------------------------------------------
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function Enterprise() {
+export default function EnterpriseNextJS() {
   const router = useRouter();
 
   return (
     <>
       <PageMetadata
-        title="Dust for Enterprise - AI Agents That Understand Your Company"
+        title="Ruby for Enterprise - AI Agents That Understand Your Company"
         description="Enterprise AI agents that plug into your tools, learn your company inside out, and take boring work off your team's plate. Accurate and wildly connected."
         pathname={router.asPath}
       />
@@ -1272,25 +1288,31 @@ export default function Enterprise() {
         <ValuePropsSection />
         <TrustStatementSection />
         <WhatThisMeansSection />
-        <TestimonialSection
-          quote="Before Dust, if we wanted to do that, we had to build the infrastructure ourselves. It saves them from creating the infrastructure behind it."
-          author={{
-            name: "Nicolas C.",
-            title: "Partner, NextStage",
-          }}
-          company={{
-            logo: "/static/landing/logos/color/nextstage.png",
-            alt: "NextStage",
-          }}
-          bgColor="bg-white"
-          textColor="text-foreground"
-        />
+        {/* Retained for a future verified-customer rollout. */}
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.customerProof) && (
+          <TestimonialSection
+            quote="Before Ruby, if we wanted to do that, we had to build the infrastructure ourselves. It saves them from creating the infrastructure behind it."
+            author={{
+              name: "Nicolas C.",
+              title: "Partner, NextStage",
+            }}
+            company={{
+              logo: "/static/landing/logos/color/nextstage.png",
+              alt: "NextStage",
+            }}
+            bgColor="bg-white"
+            textColor="text-foreground"
+          />
+        )}
         <FullyConnectedSection />
         <BestPeopleSection />
         <HumansTalkingSection />
         <HowTeamsUseSection />
         <EnterpriseGradeSection />
-        <SocialProofMosaicSection />
+        {/* Retained for a future verified-customer rollout. */}
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.customerProof) && (
+          <SocialProofMosaicSection />
+        )}
         <TrustedBy logoSet="landing" />
       </div>
       <ReadyToMoveSection />
@@ -1298,6 +1320,9 @@ export default function Enterprise() {
   );
 }
 
-Enterprise.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
+EnterpriseNextJS.getLayout = (
+  page: ReactElement,
+  pageProps: LandingLayoutProps
+) => {
   return <LandingLayout pageProps={pageProps}>{page}</LandingLayout>;
 };

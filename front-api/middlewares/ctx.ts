@@ -1,7 +1,7 @@
 import type { SandboxTokenPayload } from "@app/lib/api/sandbox/access_tokens";
 import type { Authenticator } from "@app/lib/auth";
 import type { SessionWithUser } from "@app/lib/iam/provider";
-import type { PokeRole } from "@app/lib/poke/roles";
+import type { AdminRole } from "@app/lib/admin/roles";
 import type { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import type { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
 import type { FileResource } from "@app/lib/resources/file_resource";
@@ -22,28 +22,28 @@ export type WorkspaceAwareCtx = SessionCtx & {
   };
 };
 
-// Poke authenticates via Cloudflare Access JWT (preferred) or a WorkOS
+// Admin authenticates via Cloudflare Access JWT (preferred) or a WorkOS
 // super-user session fallback. Only the resulting Authenticator is exposed.
-export type PokeCtx = {
+export type AdminCtx = {
   Variables: {
     auth: Authenticator;
-    pokeRoles: PokeRole[];
+    adminRoles: AdminRole[];
   };
 };
 
-export type PokeProjectCtx = PokeCtx & {
+export type AdminProjectCtx = AdminCtx & {
   Variables: {
     space: SpaceResource;
   };
 };
 
-export type PokeFrameFunctionCtx = PokeFrameCtx & {
+export type AdminFrameFunctionCtx = AdminFrameCtx & {
   Variables: {
     frameFunction: SandboxFunctionResource;
   };
 };
 
-export type PokeFrameCtx = PokeCtx & {
+export type AdminFrameCtx = AdminCtx & {
   Variables: {
     frame: FileResource;
   };
@@ -97,10 +97,10 @@ export type SkillCtx = WorkspaceAwareCtx & {
 export const unauthedApp = () => createHono();
 export const sessionApp = () => createHono<SessionCtx>();
 export const workspaceApp = () => createHono<WorkspaceAwareCtx>();
-export const pokeApp = () => createHono<PokeCtx>();
-export const pokeProjectApp = () => createHono<PokeProjectCtx>();
-export const pokeFrameFunctionApp = () => createHono<PokeFrameFunctionCtx>();
-export const pokeFrameApp = () => createHono<PokeFrameCtx>();
+export const adminApp = () => createHono<AdminCtx>();
+export const adminProjectApp = () => createHono<AdminProjectCtx>();
+export const adminFrameFunctionApp = () => createHono<AdminFrameFunctionCtx>();
+export const adminFrameApp = () => createHono<AdminFrameCtx>();
 export const publicApiApp = () => createHono<PublicApiCtx>();
 export const sandboxApp = () => createHono<SandboxCtx>();
 export const sandboxFrameApp = () => createHono<SandboxFrameCtx>();

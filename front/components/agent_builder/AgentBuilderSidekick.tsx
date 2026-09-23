@@ -15,7 +15,7 @@ import { isFreeTrialPhonePlan } from "@app/lib/plans/plan_codes";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
 import type { ConversationSidePanelType } from "@app/types/conversation_side_panel";
 import type { UserType, WorkspaceType } from "@app/types/user";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useEffect, useMemo } from "react";
 import type { Components } from "react-markdown";
 import type { PluggableList } from "react-markdown/lib/react-markdown";

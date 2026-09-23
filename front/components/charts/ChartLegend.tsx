@@ -1,5 +1,5 @@
 import { LegendDot } from "@app/components/charts/ChartTooltip";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 
 export type LegendEntry = {
   key: string;

@@ -35,11 +35,11 @@ export const mcpServerViewIdSchema = z.string();
 
 export const childAgentIdSchema = z.string().nullable();
 
-export const dustAppConfigurationSchema = z
+export const rubyAppConfigurationSchema = z
   .object({
     id: z.number(),
     sId: z.string(),
-    type: z.literal("dust_app_run_configuration"),
+    type: z.literal("ruby_app_run_configuration"),
     appWorkspaceId: z.string(),
     appId: z.string(),
     name: z.string(),
@@ -49,7 +49,7 @@ export const dustAppConfigurationSchema = z
 
 export const secretNameSchema = z.string().nullable();
 
-export const dustProjectSchema = z
+export const rubyProjectSchema = z
   .object({
     workspaceId: z.string(),
     projectId: z.string(),
@@ -103,8 +103,8 @@ export const mcpServerConfigurationSchema = z.object({
   childAgentId: childAgentIdSchema,
   timeFrame: mcpTimeFrameSchema,
   additionalConfiguration: additionalConfigurationSchema,
-  dustAppConfiguration: dustAppConfigurationSchema,
-  dustProject: dustProjectSchema,
+  rubyAppConfiguration: rubyAppConfigurationSchema,
+  rubyProject: rubyProjectSchema,
   secretName: secretNameSchema,
   jsonSchema: jsonSchemaFieldSchema,
   _jsonSchemaString: jsonSchemaStringSchema,

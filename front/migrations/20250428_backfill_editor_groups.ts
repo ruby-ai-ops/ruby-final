@@ -16,7 +16,7 @@ import { makeScript } from "@app/scripts/helpers";
 import { runOnAllWorkspaces } from "@app/scripts/workspace_helpers";
 import type { LightWorkspaceType } from "@app/types/user";
 import { AGENT_GROUP_PREFIX } from "@app/types/groups";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { Err } from "@app/types/shared/result";
 
 async function backfillAgentEditorsGroup(
@@ -70,7 +70,7 @@ async function backfillAgentEditorsGroup(
       assert(groupModel, "Group model not found");
       if (execute) {
         // If reusing this group-kind update, also update the denormalized
-        // group_vaults.groupKind. See https://github.com/dust-tt/dust/pull/29239.
+        // group_vaults.groupKind. See https://github.com/ruby-ai-ops/ruby-final/pull/29239.
         await groupModel.update({
           kind: "agent_editors",
         });
@@ -131,7 +131,7 @@ async function backfillAgentEditorsGroup(
   if (execute && editorGroup) {
     if (!editorGroup.canWrite(auth)) {
       throw new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Only `admins` are authorized to manage groups"
         )

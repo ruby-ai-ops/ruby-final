@@ -1,6 +1,6 @@
 // Okay to use public API types as it's about internal types between connector and front that public API users do not care about.
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 // Since titles will be synced in ES we don't support arbitrarily large titles.
 export const MAX_NODE_TITLE_LENGTH = 512;

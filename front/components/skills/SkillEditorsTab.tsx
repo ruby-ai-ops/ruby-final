@@ -8,7 +8,7 @@ import {
 import type { SkillWithRelationsType } from "@app/types/assistant/skill_configuration";
 import { editorUserSchema } from "@app/types/editors";
 import type { UserType, WorkspaceType } from "@app/types/user";
-import { Button, Plus } from "@dust-tt/sparkle";
+import { Button, Plus } from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useController, useForm } from "react-hook-form";

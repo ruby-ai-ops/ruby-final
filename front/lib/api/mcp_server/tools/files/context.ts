@@ -1,5 +1,5 @@
 import {
-  DustFileSystem,
+  RubyFileSystem,
   SCOPED_PREFIX_CONVERSATION,
   SCOPED_PREFIX_POD,
 } from "@app/lib/api/file_system";
@@ -28,10 +28,10 @@ export function validatePathMatchesScope(
   return null;
 }
 
-export async function getDustFileSystemForScope(
+export async function getRubyFileSystemForScope(
   auth: Authenticator,
   scope: FilesScope
-): Promise<Result<DustFileSystem, string>> {
+): Promise<Result<RubyFileSystem, string>> {
   if (scope.type === "conversation") {
     const conversation = await ConversationResource.fetchById(
       auth,
@@ -43,7 +43,7 @@ export async function getDustFileSystemForScope(
       );
     }
 
-    const fsResult = await DustFileSystem.forConversation(
+    const fsResult = await RubyFileSystem.forConversation(
       auth,
       conversation.toJSON()
     );
@@ -58,7 +58,7 @@ export async function getDustFileSystemForScope(
     return new Err(`Pod not found or you do not have access: ${scope.pod_id}`);
   }
 
-  const fsResult = await DustFileSystem.forPod(auth, pod);
+  const fsResult = await RubyFileSystem.forPod(auth, pod);
   if (fsResult.isErr()) {
     return new Err(fsResult.error.message);
   }

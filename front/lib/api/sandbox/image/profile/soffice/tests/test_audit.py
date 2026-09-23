@@ -184,7 +184,7 @@ def test_rendered_void_spares_a_cover_slide():
 
 
 def test_rendered_void_band_leaves_room_above_the_reference_decks():
-    """Both AFTER_ decks and the two Dust templates top out at 0.41, and the
+    """Both AFTER_ decks and the two Ruby templates top out at 0.41, and the
     model-built decks that read right at 0.44; the slides that ship a hole run
     0.51 to 0.64."""
     assert 0.44 < A.RENDERED_VOID_BAND < 0.51
@@ -220,7 +220,7 @@ def _slide_with_word_under_picture(pic_left_in, pic_top_in, order_first):
         pic = slide.shapes.add_picture(_PNG(), Inches(pic_left_in), Inches(pic_top_in),
                                        Inches(2), Inches(0.5))
     tb = slide.shapes.add_textbox(Inches(1), Inches(1), Inches(4), Inches(1))
-    tb.text_frame.text = "dust.com"
+    tb.text_frame.text = "ruby.com"
     if order_first != "picture":
         pic = slide.shapes.add_picture(_PNG(), Inches(pic_left_in), Inches(pic_top_in),
                                        Inches(2), Inches(0.5))
@@ -250,9 +250,9 @@ def test_occlusion_flags_a_word_buried_under_a_picture_drawn_over_it():
     prs, slide, tb, pic = _slide_with_word_under_picture(1.2, 1.3, "text")
     inch = 914400
     word = _Word(int(1.3 * inch), int(1.2 * inch), int(2.6 * inch),
-                 int(1.5 * inch), "dust.com")
+                 int(1.5 * inch), "ruby.com")
     hits = A.occluded_words(slide, [word])
-    assert hits and hits[0][0] == tb.shape_id and hits[0][2] == "dust.com"
+    assert hits and hits[0][0] == tb.shape_id and hits[0][2] == "ruby.com"
 
 
 def test_occlusion_ignores_a_picture_drawn_behind_the_text():
@@ -261,7 +261,7 @@ def test_occlusion_ignores_a_picture_drawn_behind_the_text():
     prs, slide, tb, pic = _slide_with_word_under_picture(1.2, 1.3, "picture")
     inch = 914400
     word = _Word(int(1.3 * inch), int(1.2 * inch), int(2.6 * inch),
-                 int(1.5 * inch), "dust.com")
+                 int(1.5 * inch), "ruby.com")
     assert A.occluded_words(slide, [word]) == []
 
 

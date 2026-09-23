@@ -1,6 +1,6 @@
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { SpaceResource } from "@app/lib/resources/space_resource";
-import type { GetSpaceConversationIdsResponseType } from "@dust-tt/client";
+import type { GetSpaceConversationIdsResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsSystemKey } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";

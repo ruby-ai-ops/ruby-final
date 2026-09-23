@@ -64,7 +64,7 @@ import { isComputerFeatureEnabled } from "@app/types/shared/feature_flags";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 import { z } from "zod";
 
@@ -328,7 +328,7 @@ export async function buildDescribeToolsetOutput(
 ): Promise<Result<Array<{ type: "text"; text: string }>, MCPError>> {
   const flags = await getFeatureFlags(auth);
   const toolsResult = getToolsForProvider(auth, providerId, {
-    includeDsbxTools: isComputerFeatureEnabled(flags),
+    includeRbxTools: isComputerFeatureEnabled(flags),
   });
   if (toolsResult.isErr()) {
     return new Err(new MCPError(toolsResult.error.message));
@@ -451,9 +451,9 @@ export async function runSandboxBashTool(
   const execResult = await sandbox.exec(auth, commandToRun, {
     workingDirectory: workingDirectory ?? DEFAULT_WORKING_DIRECTORY,
     envVars: {
-      DUST_SANDBOX_TOKEN: sandboxToken,
-      DUST_VIZ_URL: config.getVizPublicUrl(),
-      DUST_API_URL: `${sandboxAPIBase}/api/v1/w/${auth.getNonNullableWorkspace().sId}`,
+      RUBY_SANDBOX_TOKEN: sandboxToken,
+      RUBY_VIZ_URL: config.getVizPublicUrl(),
+      RUBY_API_URL: `${sandboxAPIBase}/api/v1/w/${auth.getNonNullableWorkspace().sId}`,
     },
     timeoutMs: execTimeoutMs,
     user: "agent-proxied",

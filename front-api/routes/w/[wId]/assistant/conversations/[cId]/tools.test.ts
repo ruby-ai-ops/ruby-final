@@ -15,7 +15,7 @@ async function setupTest(role: MembershipRoleType = "admin") {
     await createPrivateApiMockRequest({ role });
 
   const conversation = await ConversationFactory.create(auth, {
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     messagesCreatedAt: [new Date()],
   });
 

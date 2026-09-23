@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 export default function DatasetPicker({
   owner,

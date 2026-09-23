@@ -6,7 +6,7 @@ import { assertNever } from "@app/types/shared/utils/assert_never";
 /**
  * Governance capability seeders: the single source of truth for where each capability's default
  * grant should land. Driven by `seedWorkspaceCapabilities`, called once from workspace
- * provisioning (dust-tt/tasks#9454), to set a fresh workspace's default state. Existing
+ * provisioning (ruby-ai/tasks#9454), to set a fresh workspace's default state. Existing
  * workspaces were backfilled from their legacy state (feature flags, roles, etc) by the
  * since-deleted `migrations/20260721_backfill_governance_capabilities.ts`.
  *

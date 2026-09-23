@@ -1,5 +1,5 @@
 ## This is the init script used to initialize the development environment.
-## Supports parameterized PostgreSQL connection via environment variables (for dust-hive):
+## Supports parameterized PostgreSQL connection via environment variables (for ruby-hive):
 ##   POSTGRES_PORT (default: 5432)
 ##   POSTGRES_HOST (default: localhost)
 
@@ -11,25 +11,25 @@ POSTGRES_URI="postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/"
 ## Initializing PostgresSQL databases
 
 if [[ "$1" == "--reset-db" ]]; then
-    psql "$POSTGRES_URI" -c "DROP DATABASE dust_api;"
-    psql "$POSTGRES_URI" -c "DROP DATABASE dust_databases_store;"
-    psql "$POSTGRES_URI" -c "DROP DATABASE dust_front;"
-    psql "$POSTGRES_URI" -c "DROP DATABASE dust_front_test;"
-    psql "$POSTGRES_URI" -c "DROP DATABASE dust_connectors;"
-    psql "$POSTGRES_URI" -c "DROP DATABASE dust_connectors_test;"
-    psql "$POSTGRES_URI" -c "DROP DATABASE dust_oauth;"
+    psql "$POSTGRES_URI" -c "DROP DATABASE ruby_api;"
+    psql "$POSTGRES_URI" -c "DROP DATABASE ruby_databases_store;"
+    psql "$POSTGRES_URI" -c "DROP DATABASE ruby_front;"
+    psql "$POSTGRES_URI" -c "DROP DATABASE ruby_front_test;"
+    psql "$POSTGRES_URI" -c "DROP DATABASE ruby_connectors;"
+    psql "$POSTGRES_URI" -c "DROP DATABASE ruby_connectors_test;"
+    psql "$POSTGRES_URI" -c "DROP DATABASE ruby_oauth;"
 else
     echo "Skipping database reset. Use --reset-db to drop existing databases."
 fi
 
 
-psql "$POSTGRES_URI" -c "CREATE DATABASE dust_api;";
-psql "$POSTGRES_URI" -c "CREATE DATABASE dust_databases_store;";
-psql "$POSTGRES_URI" -c "CREATE DATABASE dust_front;";
-psql "$POSTGRES_URI" -c "CREATE DATABASE dust_front_test;";
-psql "$POSTGRES_URI" -c "CREATE DATABASE dust_connectors;";
-psql "$POSTGRES_URI" -c "CREATE DATABASE dust_connectors_test;";
-psql "$POSTGRES_URI" -c "CREATE DATABASE dust_oauth;";
+psql "$POSTGRES_URI" -c "CREATE DATABASE ruby_api;";
+psql "$POSTGRES_URI" -c "CREATE DATABASE ruby_databases_store;";
+psql "$POSTGRES_URI" -c "CREATE DATABASE ruby_front;";
+psql "$POSTGRES_URI" -c "CREATE DATABASE ruby_front_test;";
+psql "$POSTGRES_URI" -c "CREATE DATABASE ruby_connectors;";
+psql "$POSTGRES_URI" -c "CREATE DATABASE ruby_connectors_test;";
+psql "$POSTGRES_URI" -c "CREATE DATABASE ruby_oauth;";
 
 ## Initilizing Qdrant collections
 cd core/

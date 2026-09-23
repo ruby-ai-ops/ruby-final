@@ -4,31 +4,31 @@ import { withSuspense } from "@spa/app/routes/withSuspense";
 import type { RouteObject } from "react-router-dom";
 
 const DataSourceViewPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/DataSourceViewPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/DataSourceViewPage"),
   "DataSourceViewPage"
 );
 const SpaceActionsPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/SpaceActionsPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/SpaceActionsPage"),
   "SpaceActionsPage"
 );
 const SpaceAppsListPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/SpaceAppsListPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/SpaceAppsListPage"),
   "SpaceAppsListPage"
 );
 const SpaceCategoryPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/SpaceCategoryPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/SpaceCategoryPage"),
   "SpaceCategoryPage"
 );
 const SpacePage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/SpacePage"),
+  () => import("@ruby-ai/front/components/pages/spaces/SpacePage"),
   "SpacePage"
 );
 const SpacesRedirectPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/SpacesRedirectPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/SpacesRedirectPage"),
   "SpacesRedirectPage"
 );
 const SpaceTriggersPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/SpaceTriggersPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/SpaceTriggersPage"),
   "SpaceTriggersPage"
 );
 
@@ -43,7 +43,7 @@ export const spacesRoutes: RouteObject[] = [
         element: <SpaceActionsPage />,
       },
       {
-        element: <RequireFeatureFlagLayout flag="legacy_dust_apps" />,
+        element: <RequireFeatureFlagLayout flag="legacy_ruby_apps" />,
         children: [{ path: "categories/apps", element: <SpaceAppsListPage /> }],
       },
       {

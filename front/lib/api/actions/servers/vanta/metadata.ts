@@ -360,7 +360,7 @@ export const VANTA_SERVER = {
       supported_use_cases: ["platform_actions"] as const,
     },
     icon: "VantaLogo",
-    documentationUrl: "https://docs.dust.tt/docs/vanta",
+    documentationUrl: "https://docs.ruby.ad/docs/vanta",
   },
   tools: VANTA_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

@@ -7,7 +7,7 @@ import type { MembershipInvitationType } from "@app/types/membership_invitation"
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import type { WorkspaceType } from "@app/types/user";
 import { isAdmin } from "@app/types/user";
-import type { DataTableSkeletonCellProps } from "@dust-tt/sparkle";
+import type { DataTableSkeletonCellProps } from "@ruby-ai/ui";
 import {
   Button,
   Chip,
@@ -17,7 +17,7 @@ import {
   Mail01,
   Page,
   TextCellSkeleton,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import type React from "react";
 import { useMemo, useState } from "react";

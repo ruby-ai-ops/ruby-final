@@ -9,8 +9,8 @@
 !sdks/js/
 !sdks/js/**
 
-!sparkle/
-!sparkle/**
+!ui/
+!ui/**
 
 !front/
 !front/**

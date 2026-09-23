@@ -18,7 +18,7 @@ import {
   useAgentVersionMarkers,
 } from "@app/lib/swr/assistants";
 import { formatShortDate } from "@app/lib/utils/timestamps";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import {
   CartesianGrid,
   Line,

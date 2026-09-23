@@ -187,7 +187,7 @@ describe("runConsumptionExportBucketActivity", () => {
   it("uploads the bucket's rows as a headerless CSV part", async () => {
     mockDocs([LLM_DOC, TOOL_DOC]);
     mockLabels({
-      agent1: "@dust",
+      agent1: "@ruby",
       user1: "Alice",
       group1: "Engineering",
       "claude-sonnet-5": "Claude Sonnet 5",
@@ -225,10 +225,10 @@ describe("runConsumptionExportBucketActivity", () => {
     const csv = saveCalls[0].content.toString();
     expect(csv).not.toContain("completedAt,conversationId");
     expect(csv).toContain(
-      "2026-08-01T00:00:00.000Z,conv1,space1,msg1,llm,agent1,'@dust"
+      "2026-08-01T00:00:00.000Z,conv1,space1,msg1,llm,agent1,'@ruby"
     );
     expect(csv).toContain(
-      "2026-08-01T00:00:00.000Z,conv1,space1,msg1,tool,agent1,'@dust"
+      "2026-08-01T00:00:00.000Z,conv1,space1,msg1,tool,agent1,'@ruby"
     );
 
     expect(notifyConsumptionExportReady).not.toHaveBeenCalled();
@@ -261,7 +261,7 @@ describe("runConsumptionExportBucketActivity", () => {
 
   it("does not surface an in-progress or abandoned-after-failure bucket part as an export", async () => {
     mockDocs([LLM_DOC]);
-    mockLabels({ agent1: "@dust", api: "API" });
+    mockLabels({ agent1: "@ruby", api: "API" });
     const { authenticator } = await setup();
 
     // Simulates a bucket having been fetched while the workflow is still running, or one
@@ -282,7 +282,7 @@ describe("runConsumptionExportBucketActivity", () => {
 describe("finalizeConsumptionExportActivity", () => {
   it("composes the bucket parts into a single CSV, notifies, and cleans up the temp parts", async () => {
     mockLabels({
-      agent1: "@dust",
+      agent1: "@ruby",
       user1: "Alice",
       group1: "Engineering",
       "claude-sonnet-5": "Claude Sonnet 5",

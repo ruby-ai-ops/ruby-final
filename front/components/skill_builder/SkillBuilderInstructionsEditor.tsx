@@ -38,7 +38,7 @@ import { useSkills } from "@app/lib/swr/skill_configurations";
 import { TOOL_TAG_NAME } from "@app/lib/tools/format";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import { isString, removeNulls } from "@app/types/shared/utils/general";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import type { Node as ProseMirrorNode } from "@tiptap/pm/model";
 import type { Transaction } from "@tiptap/pm/state";
 import type { Editor } from "@tiptap/react";

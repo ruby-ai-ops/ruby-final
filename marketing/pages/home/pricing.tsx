@@ -5,6 +5,10 @@ import type { LandingLayoutProps } from "@marketing/components/home/LandingLayou
 import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
 import {
+  CP_MAX_SEAT_COST_MONTHLY,
+  CP_MAX_SEAT_COST_YEARLY,
+  CP_PRO_SEAT_COST_MONTHLY,
+  CP_PRO_SEAT_COST_YEARLY,
   formatPriceWithCurrency,
   useUserBillingCurrency,
 } from "@marketing/lib/client/subscription";
@@ -12,31 +16,39 @@ import {
   TRACKING_ACTIONS,
   TRACKING_AREAS,
   trackEvent,
-  withTracking,
 } from "@marketing/lib/tracking";
 import { classNames } from "@marketing/lib/utils";
 import { appendUTMParams } from "@marketing/lib/utils/utm";
 import { useSignUpModal } from "@marketing/hooks/useSignUpModal";
-import { assertNeverAndIgnore } from "@marketing/types/shared/utils/assert_never";
 import {
+  Brain,
   Button,
+  CalendarCheck01,
   Check,
   ChevronDown,
-  Chip,
+  CoinsStacked01,
   cn,
-  LayerSingle,
-  LayersThree01,
-  LayersTwo01,
+  CurrencyDollarCircle,
+  Globe01,
+  Headphones01,
+  Icon,
+  Link01,
   Minus,
+  Scales01,
   SearchInput,
-  Separator,
-} from "@dust-tt/sparkle";
+  SearchLg,
+  Server03,
+  Settings01,
+  ShieldTick,
+  Star01,
+  Settings02,
+  Users01,
+} from "@ruby-ai/ui";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import type React from "react";
 import type { ReactElement, ReactNode } from "react";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 export async function getStaticProps() {
   return {
@@ -48,26 +60,29 @@ export async function getStaticProps() {
 
 // ---------- Types ----------
 
-type CtaStyle = "primary" | "outline" | "dark";
+type PricingIcon = React.ComponentType<{ className?: string }>;
+
+interface TierBenefit {
+  label: string;
+  icon: PricingIcon;
+}
 
 interface SeatTier {
   id: "free" | "pro" | "max";
   name: string;
+  eyebrow: string;
+  tagline: string;
+  cta: string;
   priceYearDollars: number;
   priceMonthDollars: number;
   credits: string;
+  creditDetail: string;
+  benefits: TierBenefit[];
 }
 
 interface Plan {
   id: "business" | "enterprise";
   name: string;
-  tagline: string;
-  seatTiers?: SeatTier[];
-  cta: string;
-  ctaStyle: CtaStyle;
-  featured: boolean;
-  highlightsHeader?: string;
-  highlights: string[];
 }
 
 type CellValue = boolean | string;
@@ -97,80 +112,78 @@ type Billing = "yearly" | "monthly";
 const SEAT_TIERS: SeatTier[] = [
   {
     id: "free",
-    name: "Free seat",
+    name: "Free",
+    eyebrow: "Explore Ruby",
+    tagline: "Build a useful first teammate.",
+    cta: "Start free",
     priceYearDollars: 0,
     priceMonthDollars: 0,
-    credits: "500 credits · Lifetime",
+    credits: "100 credits · Lifetime",
+    creditDetail: "Start with real work, not a trial timer.",
+    benefits: [
+      { label: "20+ frontier models", icon: Star01 },
+      { label: "Custom AI teammates", icon: Brain },
+      { label: "Connected everyday tools", icon: Link01 },
+      { label: "Shared team workspaces", icon: Users01 },
+      { label: "US or EU data residency", icon: Globe01 },
+    ],
   },
   {
     id: "pro",
-    name: "Pro seat",
-    priceYearDollars: 24,
-    priceMonthDollars: 30,
-    credits: "8,000 credits /seat/mo",
+    name: "Pro",
+    eyebrow: "For every teammate",
+    tagline: "The daily AI teammate.",
+    cta: "Start with Pro",
+    priceYearDollars: CP_PRO_SEAT_COST_YEARLY,
+    priceMonthDollars: CP_PRO_SEAT_COST_MONTHLY,
+    credits: "500 credits /seat/mo",
+    creditDetail: "Useful daily work across your tools.",
+    benefits: [
+      { label: "Everything in Free +", icon: Star01 },
+      { label: "Custom agents + knowledge", icon: Brain },
+      { label: "Slack, Notion, GitHub + more", icon: Link01 },
+      { label: "Schedules and agent workflows", icon: CalendarCheck01 },
+      { label: "Collaboration workspaces", icon: Users01 },
+    ],
   },
   {
     id: "max",
-    name: "Max seat",
-    priceYearDollars: 120,
-    priceMonthDollars: 150,
-    credits: "40,000 credits /seat/mo",
+    name: "Max",
+    eyebrow: "For operators",
+    tagline: "Depth for repeated work.",
+    cta: "Choose Max",
+    priceYearDollars: CP_MAX_SEAT_COST_YEARLY,
+    priceMonthDollars: CP_MAX_SEAT_COST_MONTHLY,
+    credits: "2,500 credits /seat/mo",
+    creditDetail: "For research, automation, and heavy tool use.",
+    benefits: [
+      { label: "Everything in Pro +", icon: Star01 },
+      { label: "Deep research at speed", icon: SearchLg },
+      { label: "Complex automations", icon: Settings01 },
+      { label: "Tool-heavy workflows", icon: Settings02 },
+      { label: "Team collaboration spaces", icon: Users01 },
+    ],
   },
 ];
-
-const SEAT_TIER_BADGE: Record<
-  SeatTier["id"],
-  {
-    bg: string;
-    iconColor: string;
-    Icon: React.ComponentType<{ className?: string }>;
-  }
-> = {
-  free: { bg: "bg-gray-100", iconColor: "text-gray-700", Icon: LayerSingle },
-  pro: { bg: "bg-blue-100", iconColor: "text-blue-500", Icon: LayersTwo01 },
-  max: {
-    bg: "bg-golden-100",
-    iconColor: "text-golden-600",
-    Icon: LayersThree01,
-  },
-};
 
 const PLANS: Plan[] = [
   {
     id: "business",
     name: "Business",
-    tagline: "For teams up to 100 people",
-    seatTiers: SEAT_TIERS,
-    cta: "Start for free",
-    ctaStyle: "primary",
-    featured: true,
-    highlights: [
-      "20+ frontier models — GPT, Claude, Gemini, Mistral, DeepSeek",
-      "Custom agents with your skills, knowledge & tools",
-      "Multi-agent workflows on schedules & triggers",
-      "Connect Slack, Notion, GitHub, Drive + 20 more — or any tool via MCP",
-      "Team collaboration workspaces",
-      "SSO with Okta, Entra ID & Jumpcloud",
-      "US & EU data residency",
-    ],
   },
   {
     id: "enterprise",
     name: "Enterprise",
-    tagline: "For AI at scale",
-    cta: "Talk to sales",
-    ctaStyle: "dark",
-    featured: false,
-    highlightsHeader: "Everything in Business plus:",
-    highlights: [
-      "Unlimited connectors & MCP servers",
-      "Workspace-pooled credits & volume pricing",
-      "SCIM, audit logs & custom data retention",
-      "US & EU data residency & single-tenant deployment",
-      "Dedicated CSM, priority support & SLA",
-      "Custom legal terms (MSA, DPA)",
-    ],
   },
+];
+
+const ENTERPRISE_BENEFITS: TierBenefit[] = [
+  { label: "Unlimited connectors & MCP servers", icon: Link01 },
+  { label: "Pooled credits & volume pricing", icon: CoinsStacked01 },
+  { label: "SCIM, audit logs & data controls", icon: ShieldTick },
+  { label: "Single-tenant deployment", icon: Server03 },
+  { label: "Dedicated CSM, support & SLA", icon: Headphones01 },
+  { label: "Custom legal terms", icon: Scales01 },
 ];
 
 const COMPARISON: ComparisonSectionData[] = [
@@ -336,26 +349,32 @@ function SeatTiersFAQAnswer() {
       </p>
       <ul>
         <li>
-          <strong>Free:</strong> {formatSeatPrice(0)}, 500 credits lifetime.
-          Best for occasional users or people trying Dust.
+          <strong>Free:</strong> {formatSeatPrice(0)}, 100 credits lifetime.
+          Best for occasional users or people trying Ruby.
         </li>
         <li>
-          <strong>Pro:</strong> {formatSeatPrice(pro?.priceMonthDollars ?? 30)}
-          /month, or {formatSeatPrice(pro?.priceYearDollars ?? 24)}/month billed
-          yearly, with 8,000 credits/month. Best for most team members.
+          <strong>Pro:</strong>{" "}
+          {formatSeatPrice(pro?.priceMonthDollars ?? CP_PRO_SEAT_COST_MONTHLY)}
+          /month, or{" "}
+          {formatSeatPrice(pro?.priceYearDollars ?? CP_PRO_SEAT_COST_YEARLY)}
+          /month billed yearly, with 500 credits/month. Best for most team
+          members.
         </li>
         <li>
-          <strong>Max:</strong> {formatSeatPrice(max?.priceMonthDollars ?? 150)}
-          /month, or {formatSeatPrice(max?.priceYearDollars ?? 120)}/month
-          billed yearly, with 40,000 credits/month. Best for power users running
-          complex automations, Deep research, or tool-heavy workflows regularly.
+          <strong>Max:</strong>{" "}
+          {formatSeatPrice(max?.priceMonthDollars ?? CP_MAX_SEAT_COST_MONTHLY)}
+          /month, or{" "}
+          {formatSeatPrice(max?.priceYearDollars ?? CP_MAX_SEAT_COST_YEARLY)}
+          /month billed yearly, with 2,500 credits/month. Best for power users
+          running complex automations, Deep research, or tool-heavy workflows
+          regularly.
         </li>
       </ul>
       <p className="mt-3">
         You can mix and match seat types across your workspace and reassign them
         anytime as usage changes.{" "}
         <a
-          href="https://docs.dust.tt/docs/seat-management"
+          href="https://docs.ruby.ad/docs/seat-management"
           target="_blank"
           rel="noopener noreferrer"
           className="font-medium text-highlight hover:underline"
@@ -373,12 +392,12 @@ const FAQS: FAQItemData[] = [
     q: "What is a credit?",
     a: (
       <>
-        A credit is Dust's unit for measuring AI usage. Credit consumption
+        A credit is Ruby's unit for measuring AI usage. Credit consumption
         depends on the model used, the complexity of the task, and any tools the
         agent uses, such as search, data retrieval, code execution, or actions
         in connected apps.{" "}
         <a
-          href="https://docs.dust.tt/docs/credits"
+          href="https://docs.ruby.ad/docs/credits"
           target="_blank"
           rel="noopener noreferrer"
           className="font-medium text-highlight hover:underline"
@@ -397,10 +416,10 @@ const FAQS: FAQItemData[] = [
         performed. Basic chat with a token-efficient model like Claude Sonnet
         will consume few credits, while a deep research task that requires
         complex, multi-step orchestration and tool use will consume more. You'll
-        be able to track your credit usage in Dust so that you can understand
+        be able to track your credit usage in Ruby so that you can understand
         how different workflows consume credits.{" "}
         <a
-          href="https://docs.dust.tt/docs/credit-management"
+          href="https://docs.ruby.ad/docs/credit-management"
           target="_blank"
           rel="noopener noreferrer"
           className="font-medium text-highlight hover:underline"
@@ -445,220 +464,257 @@ interface BillingToggleProps {
 }
 
 function BillingToggle({ billing, setBilling }: BillingToggleProps) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [sliderStyle, setSliderStyle] = useState<{
-    left: number;
-    width: number;
-  }>({ left: 0, width: 0 });
-
-  // Measured before paint so the slider never flashes at width 0, and
-  // re-measured on container resize (window resize, late font load).
-  useLayoutEffect(() => {
-    const wrap = wrapRef.current;
-    if (!wrap) {
-      return;
-    }
-    const update = () => {
-      const el = wrap.querySelector<HTMLButtonElement>(
-        `[data-val="${billing}"]`
-      );
-      if (el) {
-        setSliderStyle({ left: el.offsetLeft, width: el.offsetWidth });
-      }
-    };
-    update();
-    const observer = new ResizeObserver(update);
-    observer.observe(wrap);
-    return () => observer.disconnect();
-  }, [billing]);
-
   const pillBase =
-    "relative z-[1] inline-flex h-8 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full px-3 heading-sm motion-safe:transition-colors motion-safe:duration-200 motion-safe:ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-muted";
+    "inline-flex h-10 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-xl px-4 heading-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-muted";
 
   return (
-    <div
-      ref={wrapRef}
-      role="group"
-      aria-label="Billing period"
-      className="relative flex w-full items-center gap-1 rounded-full bg-muted p-0.5"
-    >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute top-0.5 bottom-0.5 rounded-full border border-border bg-background motion-safe:transition-[left,width] motion-safe:duration-[220ms] motion-safe:ease-out"
-        style={{ left: sliderStyle.left, width: sliderStyle.width }}
-      />
-      <button
-        type="button"
-        data-val="yearly"
-        aria-pressed={billing === "yearly"}
-        onClick={() => setBilling("yearly")}
-        className={cn(
-          pillBase,
-          billing === "yearly" ? "text-foreground" : "text-muted-foreground"
-        )}
+    <div className="flex w-full flex-col items-center gap-2.5">
+      <p className="text-[11px] font-bold uppercase tracking-normal text-muted-foreground">
+        Billing cadence
+      </p>
+      <div
+        role="group"
+        aria-label="Billing period"
+        className="flex w-full items-center gap-1.5 rounded-2xl border border-gray-200 bg-gray-100/80 p-1.5 shadow-inner"
       >
-        Yearly
-        <Chip size="mini" color="highlight" label="Save 20%" />
-      </button>
-      <button
-        type="button"
-        data-val="monthly"
-        aria-pressed={billing === "monthly"}
-        onClick={() => setBilling("monthly")}
-        className={cn(
-          pillBase,
-          billing === "monthly" ? "text-foreground" : "text-muted-foreground"
-        )}
-      >
-        Monthly
-      </button>
+        <button
+          type="button"
+          data-val="yearly"
+          aria-pressed={billing === "yearly"}
+          onClick={() => setBilling("yearly")}
+          className={cn(
+            pillBase,
+            billing === "yearly"
+              ? "bg-background text-foreground shadow-sm ring-1 ring-black/5"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          Yearly
+          <span className="rounded-md bg-green-100 px-2 py-0.5 text-[10px] font-bold text-green-700">
+            Save 20%
+          </span>
+        </button>
+        <button
+          type="button"
+          data-val="monthly"
+          aria-pressed={billing === "monthly"}
+          onClick={() => setBilling("monthly")}
+          className={cn(
+            pillBase,
+            billing === "monthly"
+              ? "bg-background text-foreground shadow-sm ring-1 ring-black/5"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          Monthly
+        </button>
+      </div>
     </div>
   );
 }
 
-interface PlanCardProps {
-  plan: Plan;
-  billing: Billing;
-  setBilling: (b: Billing) => void;
-  onBusinessStart: () => void;
-  onEnterpriseContact: () => void;
-}
+const TIER_TONE: Record<
+  SeatTier["id"],
+  { credit: string; icon: string; iconColor: string }
+> = {
+  free: {
+    credit: "bg-gray-100/80",
+    icon: "bg-gray-100",
+    iconColor: "text-gray-600",
+  },
+  pro: {
+    credit: "bg-blue-100/80",
+    icon: "bg-blue-100",
+    iconColor: "text-blue-600",
+  },
+  max: {
+    credit: "bg-green-100/70",
+    icon: "bg-green-100",
+    iconColor: "text-green-700",
+  },
+};
 
-function PlanCard({
-  plan,
-  billing,
-  setBilling,
-  onBusinessStart,
-  onEnterpriseContact,
-}: PlanCardProps) {
-  const currency = useUserBillingCurrency();
-
-  const handleClick = () => {
-    if (plan.id === "business") {
-      onBusinessStart();
-    } else {
-      onEnterpriseContact();
-    }
-  };
-
-  let buttonVariant: "highlight" | "primary" | "outline";
-  switch (plan.ctaStyle) {
-    case "primary":
-      buttonVariant = "highlight";
-      break;
-    case "dark":
-      buttonVariant = "primary";
-      break;
-    case "outline":
-      buttonVariant = "outline";
-      break;
-    default:
-      assertNeverAndIgnore(plan.ctaStyle);
-      buttonVariant = "outline";
-  }
+function BenefitList({
+  benefits,
+  tone = "neutral",
+}: {
+  benefits: TierBenefit[];
+  tone?: "neutral" | SeatTier["id"];
+}) {
+  const iconClasses =
+    tone === "neutral"
+      ? { icon: "bg-blue-100", iconColor: "text-blue-700" }
+      : TIER_TONE[tone];
 
   return (
-    <div
+    <ul className="flex flex-col gap-3">
+      {benefits.map((benefit) => (
+        <li
+          key={benefit.label}
+          className="copy-sm flex items-start gap-3 text-foreground"
+        >
+          <span
+            aria-hidden="true"
+            className={cn(
+              "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg",
+              iconClasses.icon
+            )}
+          >
+            <Icon
+              visual={benefit.icon}
+              size="sm"
+              className={iconClasses.iconColor}
+            />
+          </span>
+          <span className="pt-1">{benefit.label}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+interface TierCardProps {
+  tier: SeatTier;
+  billing: Billing;
+  onStart: () => void;
+}
+
+function TierCard({ tier, billing, onStart }: TierCardProps) {
+  const currency = useUserBillingCurrency();
+  const price =
+    billing === "yearly" ? tier.priceYearDollars : tier.priceMonthDollars;
+  const tone = TIER_TONE[tier.id];
+  const isPro = tier.id === "pro";
+
+  return (
+    <article
+      data-pricing-tier={tier.id}
       className={cn(
-        "relative flex flex-col rounded-3xl border border-border bg-background p-8 text-left",
-        "motion-safe:transition-[box-shadow,border-color] motion-safe:duration-200 motion-safe:ease",
-        "hover:border-border-darker hover:shadow-md"
+        "relative flex h-full flex-col rounded-3xl bg-background p-6 text-left md:p-7",
+        isPro
+          ? "border border-blue-400 bg-gradient-to-b from-blue-50/70 to-background shadow-[0_24px_56px_-26px_rgba(37,137,232,0.42)]"
+          : "border border-gray-200 shadow-[0_22px_48px_-24px_rgba(23,42,61,0.26)]"
       )}
     >
-      <h3 className="heading-2xl mb-1.5 text-foreground">{plan.name}</h3>
-      <p className="copy-base mb-7 text-muted-foreground">{plan.tagline}</p>
+      {isPro && (
+        <span className="absolute right-4 top-0 rounded-b-md bg-blue-500 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em] text-white">
+          Most Popular
+        </span>
+      )}
+      <p
+        className={cn(
+          "mb-3 text-[11px] font-bold uppercase tracking-normal",
+          tier.id === "free"
+            ? "text-gray-900"
+            : tier.id === "max"
+              ? "text-green-700"
+              : "text-blue-700"
+        )}
+      >
+        {tier.eyebrow}
+      </p>
+      <h3 className="heading-3xl mb-1.5 !font-medium text-foreground">
+        {tier.name}
+      </h3>
+      <p className="copy-sm min-h-10 text-muted-foreground">{tier.tagline}</p>
+
+      <div className="mb-5 mt-6">
+        <div className="flex items-end gap-1.5">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={`${tier.id}-${price}-${currency}`}
+              data-pricing-price={tier.id}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.18, ease: [0.215, 0.61, 0.355, 1] }}
+              className="heading-4xl tabular-nums text-foreground"
+              aria-live="polite"
+            >
+              {formatPriceWithCurrency(price, currency)}
+            </motion.span>
+          </AnimatePresence>
+          <span className="copy-xs pb-1 text-muted-foreground">
+            {tier.id === "free" ? "forever" : "/ seat / month"}
+          </span>
+        </div>
+        <p className="copy-xs mt-1 text-muted-foreground">
+          {tier.id === "free"
+            ? "No card required"
+            : billing === "yearly"
+              ? "Billed yearly"
+              : "Billed monthly"}
+        </p>
+      </div>
 
       <Button
-        variant={buttonVariant}
+        variant="primary"
         size="md"
-        label={plan.cta}
-        onClick={handleClick}
-        className="mb-6 w-full"
+        label={tier.cta}
+        onClick={onStart}
+        className="w-full rounded-xl"
       />
 
-      {plan.seatTiers && (
-        <>
-          <Separator className="mb-4" />
-          <div className="mb-4">
-            <BillingToggle billing={billing} setBilling={setBilling} />
-          </div>
-          <div className="mb-5">
-            <div className="flex flex-col gap-4">
-              {plan.seatTiers.map((tier) => {
-                const tierPriceDollars =
-                  billing === "yearly"
-                    ? tier.priceYearDollars
-                    : tier.priceMonthDollars;
-                const shortName = tier.name.replace(" seat", "");
-                const shortCredits = tier.credits;
-                const badge = SEAT_TIER_BADGE[tier.id];
-                const Icon = badge.Icon;
-                return (
-                  <div key={tier.id} className="flex items-center gap-3">
-                    <span
-                      className={cn(
-                        "inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-border/70",
-                        badge.bg
-                      )}
-                      aria-hidden="true"
-                    >
-                      <Icon className={cn("h-5 w-5", badge.iconColor)} />
-                    </span>
-                    <div className="flex flex-1 flex-col gap-0.5">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="heading-sm text-foreground">
-                          {shortName}
-                        </span>
-                        <AnimatePresence mode="wait" initial={false}>
-                          <motion.span
-                            key={tierPriceDollars}
-                            initial={{ y: -4, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: 4, opacity: 0 }}
-                            transition={{
-                              duration: 0.15,
-                              ease: [0.215, 0.61, 0.355, 1],
-                            }}
-                            className="heading-sm tabular-nums text-foreground"
-                          >
-                            {formatPriceWithCurrency(
-                              tierPriceDollars,
-                              currency
-                            )}
-                          </motion.span>
-                        </AnimatePresence>
-                      </div>
-                      <span className="copy-xs text-muted-foreground">
-                        {shortCredits}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <p className="copy-xs mt-5 text-right text-primary-400">
-              Excluding VAT
-            </p>
-          </div>
-        </>
-      )}
+      <div
+        data-pricing-credit={tier.id}
+        className={cn(
+          "mb-6 mt-5 flex items-center gap-3 rounded-xl p-3.5",
+          tone.credit
+        )}
+      >
+        <span
+          aria-hidden="true"
+          className={cn(
+            "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
+            tone.icon
+          )}
+        >
+          <Icon
+            visual={CurrencyDollarCircle}
+            size="sm"
+            className={tone.iconColor}
+          />
+        </span>
+        <div>
+          <p className="copy-sm font-bold text-foreground">{tier.credits}</p>
+          <p className="copy-xs mt-0.5 text-muted-foreground">
+            {tier.creditDetail}
+          </p>
+        </div>
+      </div>
 
-      <Separator className="mb-5" />
+      <BenefitList benefits={tier.benefits} tone={tier.id} />
+    </article>
+  );
+}
 
-      {plan.highlightsHeader && (
-        <p className="copy-base mb-3 font-semibold text-foreground">
-          {plan.highlightsHeader}
+function EnterpriseCard({ onContact }: { onContact: () => void }) {
+  return (
+    <article
+      data-pricing-enterprise
+      className="grid gap-8 rounded-3xl border border-gray-200 bg-background p-7 text-left shadow-[0_22px_48px_-24px_rgba(23,42,61,0.24)] md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:p-9"
+    >
+      <div className="flex flex-col items-start">
+        <p className="mb-3 text-[11px] font-bold uppercase tracking-normal text-blue-700">
+          Built to scale
         </p>
-      )}
-      <ul className="copy-sm flex flex-col gap-3">
-        {plan.highlights.map((h) => (
-          <li key={h} className="flex items-start gap-2.5 text-foreground">
-            <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-muted-foreground" />
-            <span>{h}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+        <h3 className="heading-3xl mb-2 !font-medium text-foreground">
+          Enterprise
+        </h3>
+        <p className="copy-base max-w-lg text-muted-foreground">
+          Deploy Ruby company-wide with the governance, flexibility, and
+          partnership your organization needs.
+        </p>
+        <Button
+          variant="primary"
+          size="md"
+          label="Talk to sales"
+          onClick={onContact}
+          className="mt-6 w-full rounded-xl md:w-auto"
+        />
+      </div>
+      <BenefitList benefits={ENTERPRISE_BENEFITS} />
+    </article>
   );
 }
 
@@ -677,59 +733,38 @@ function Hero({
 }: HeroProps) {
   return (
     <section className="-mx-6 flex flex-col items-center px-4 pt-6 text-center md:mx-0 md:px-0 md:pt-10 lg:pt-14">
-      <Link
-        href="https://dust.tt/blog/economics-of-multiplayer-ai"
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={withTracking(TRACKING_AREAS.PRICING, "hero_blog_pill")}
-        className="group mb-5 inline-flex items-center gap-2 rounded-full border border-gray-100 bg-white py-1.5 pl-3 pr-3 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50"
-      >
-        <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500" />
-        <span className="whitespace-nowrap">
-          The economics of multiplayer AI
-        </span>
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="flex-shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-0.5 motion-reduce:transform-none motion-reduce:transition-none"
-          aria-hidden="true"
-        >
-          <line x1="3" y1="8" x2="13" y2="8" />
-          <polyline points="9 4 13 8 9 12" />
-        </svg>
-      </Link>
       <h1
         className={classNames(
           "heading-5xl md:heading-6xl lg:heading-7xl",
           "mb-5 max-w-3xl text-balance text-foreground"
         )}
       >
-        Pricing that scales
-        <br />
-        with the work you get done
+        Plans for every way your team works
       </h1>
       <p className="copy-lg mb-9 max-w-2xl text-balance text-muted-foreground">
-        Choose self-serve plan for your team, or talk to us about
-        enterprise-ready deployment, governance, and support
+        Start free, equip most teammates with Pro, give high-output operators
+        Max, or deploy Ruby company-wide with Enterprise.
       </p>
 
-      <div className="mt-12 grid w-full grid-cols-1 items-stretch gap-5 md:grid-cols-2 md:max-w-3xl">
-        {PLANS.map((p) => (
-          <PlanCard
-            key={p.id}
-            plan={p}
+      <div className="w-full max-w-sm">
+        <BillingToggle billing={billing} setBilling={setBilling} />
+      </div>
+
+      <div className="mt-10 grid w-full max-w-6xl grid-cols-1 items-stretch gap-5 md:grid-cols-3">
+        {SEAT_TIERS.map((tier) => (
+          <TierCard
+            key={tier.id}
+            tier={tier}
             billing={billing}
-            setBilling={setBilling}
-            onBusinessStart={onBusinessStart}
-            onEnterpriseContact={onEnterpriseContact}
+            onStart={onBusinessStart}
           />
         ))}
+      </div>
+      <p className="copy-xs mt-4 w-full max-w-6xl text-right text-muted-foreground">
+        Prices exclude VAT where applicable.
+      </p>
+      <div className="mt-5 w-full max-w-6xl">
+        <EnterpriseCard onContact={onEnterpriseContact} />
       </div>
     </section>
   );
@@ -773,7 +808,13 @@ function ComparisonTable({
   onEnterpriseContact,
 }: ComparisonTableProps) {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(
-    () => Object.fromEntries(COMPARISON.map((s) => [s.section, true]))
+    () =>
+      Object.fromEntries(
+        COMPARISON.map((section) => [
+          section.section,
+          section.section === "Features",
+        ])
+      )
   );
   const [query, setQuery] = useState("");
 
@@ -988,7 +1029,6 @@ function FAQSection() {
 
 // ---------- Page ----------
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
 export default function Pricing() {
   const router = useRouter();
   const [billing, setBilling] = useState<Billing>("yearly");
@@ -1018,8 +1058,8 @@ export default function Pricing() {
   return (
     <MotionConfig reducedMotion="user">
       <PageMetadata
-        title="Dust Pricing: Business and Enterprise Plans for AI Agents"
-        description="Dust scales from a single builder to thousands of seats. Business self-serve with Pro ($24/seat/mo yearly) and Max ($120/seat/mo yearly) seats, Enterprise for organizations at scale."
+        title="Ruby AI Pricing: Business and Enterprise Plans for AI Agents"
+        description={`Ruby AI scales from a single builder to thousands of seats. Business self-serve with Pro ($${CP_PRO_SEAT_COST_YEARLY}/seat/mo yearly) and Max ($${CP_MAX_SEAT_COST_YEARLY}/seat/mo yearly) seats, Enterprise for organizations at scale.`}
         pathname={router.asPath}
       />
       <Hero

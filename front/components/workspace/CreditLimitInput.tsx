@@ -1,4 +1,4 @@
-import { Button, Chip, Input, Page, Tooltip } from "@dust-tt/sparkle";
+import { Button, Chip, Input, Page, Tooltip } from "@ruby-ai/ui";
 
 interface CreditLimitNumberInputProps {
   value: string;

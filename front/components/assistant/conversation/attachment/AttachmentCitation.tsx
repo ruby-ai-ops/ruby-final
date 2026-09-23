@@ -8,7 +8,7 @@ import type { AttachmentCitation } from "@app/components/assistant/conversation/
 import { isAudioContentType } from "@app/components/assistant/conversation/attachment/utils";
 import { useFilePreviewContext } from "@app/components/assistant/conversation/FilePreviewContext";
 import { isFrameContentType } from "@app/types/files";
-import { Icon, useTranscribingProgress } from "@dust-tt/sparkle";
+import { Icon, useTranscribingProgress } from "@ruby-ai/ui";
 
 interface AttachmentCitationProps {
   attachmentCitation: AttachmentCitation;

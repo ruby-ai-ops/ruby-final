@@ -62,9 +62,9 @@ export const checkPausedConnectors: CheckFunction = async (
   if (connectorsToReport.length > 0) {
     const actionLinks: ActionLink[] = connectorsToReport.map((c) => ({
       label: `Connector: ${c.id} (workspace: ${c.workspaceId})`,
-      // Workspace-scoped so poke switches to the workspace's region before
+      // Workspace-scoped so admin switches to the workspace's region before
       // resolving the connector (numeric ids are per-region).
-      url: `/poke/${c.workspaceId}/connectors/${c.id}`,
+      url: `/admin/${c.workspaceId}/connectors/${c.id}`,
     }));
     reportFailure(
       { connectorsToReport, actionLinks },

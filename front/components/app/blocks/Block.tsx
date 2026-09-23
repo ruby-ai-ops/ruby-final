@@ -17,7 +17,7 @@ import {
   RefreshCw02,
   Spinner,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 import Output from "./Output";

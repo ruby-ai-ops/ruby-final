@@ -26,7 +26,7 @@ import { checkProgrammaticUsageLimits } from "@app/lib/api/programmatic_usage/tr
 import { getLlmCredentials } from "@app/lib/api/provider_credentials";
 import type { Authenticator } from "@app/lib/auth";
 import { hasFeatureFlag } from "@app/lib/auth";
-import type { DustStreamEndpointConstructor } from "@app/lib/llms/stream/dust_stream_endpoint";
+import type { RubyStreamEndpointConstructor } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import { intelligenceAwuFromRunUsages } from "@app/lib/metronome/events";
 import { getWorkspacePoolAwuBalance } from "@app/lib/metronome/pool_balance";
 import { getRemainingProgrammaticUsageFromMetronome } from "@app/lib/metronome/programmatic_awu_usage";
@@ -121,14 +121,14 @@ async function reportSelfImprovingSkillsStepUsage({
   conversationTitle,
   agentMessageId,
   userMessageId,
-  dustRunIds,
+  rubyRunIds,
 }: {
   auth: Authenticator;
   reinforcementConversationId: string;
   conversationTitle: string | null;
   agentMessageId: string;
   userMessageId: string;
-  dustRunIds?: string[];
+  rubyRunIds?: string[];
 }): Promise<void> {
   if (await hasFeatureFlag(auth, "self_improvement_beta_tester")) {
     return;
@@ -144,7 +144,7 @@ async function reportSelfImprovingSkillsStepUsage({
     userMessageId,
     userMessageVersion: 0,
     userMessageOrigin: "reinforcement",
-    dustRunIds,
+    rubyRunIds,
   };
 
   try {
@@ -254,7 +254,7 @@ async function runReinforcedSkillsStep({
     };
   }
 
-  const llmParameters: LLMParameters<DustStreamEndpointConstructor> = {
+  const llmParameters: LLMParameters<RubyStreamEndpointConstructor> = {
     credentials,
     modelInfo: { endpoint },
     context: {
@@ -347,13 +347,13 @@ async function runReinforcedSkillsStep({
     );
   }
 
-  const dustRunIds = [llm.getTraceId()];
+  const rubyRunIds = [llm.getTraceId()];
   const storedResult = await storeLlmResult(
     auth,
     reinforcementConv,
     events,
     REINFORCEMENT_SKILLS_AGENT_ID,
-    { runIds: dustRunIds }
+    { runIds: rubyRunIds }
   );
 
   // Report usage to billing channels (fire-and-forget, gated by flag).
@@ -363,7 +363,7 @@ async function runReinforcedSkillsStep({
     conversationTitle: reinforcementConv.title,
     agentMessageId: storedResult.agentMessageId,
     userMessageId: storedResult.userMessageId,
-    dustRunIds,
+    rubyRunIds,
   });
 
   const { exploratoryToolCalls, terminalToolCalls } =
@@ -557,29 +557,29 @@ export async function recordSelfImprovingSkillsUsageActivity({
     );
   }
 
-  const allDustRunIds = [
+  const allRubyRunIds = [
     ...new Set(
       [...runIdsByConversationModelId.values()].flatMap((runIds) => [...runIds])
     ),
   ];
 
-  const runUsagesByDustRunId = new Map<string, RunUsageType[]>();
-  if (allDustRunIds.length > 0) {
-    const runs = await RunResource.listByDustRunIds(auth, {
-      dustRunIds: allDustRunIds,
+  const runUsagesByRubyRunId = new Map<string, RunUsageType[]>();
+  if (allRubyRunIds.length > 0) {
+    const runs = await RunResource.listByRubyRunIds(auth, {
+      rubyRunIds: allRubyRunIds,
     });
     const runByModelId = new Map(runs.map((run) => [run.id, run]));
     const runUsages = await RunResource.listRunUsagesForRuns(auth, { runs });
 
     for (const usage of runUsages) {
-      const dustRunId = runByModelId.get(usage.runModelId)?.dustRunId;
-      if (!dustRunId) {
+      const rubyRunId = runByModelId.get(usage.runModelId)?.rubyRunId;
+      if (!rubyRunId) {
         continue;
       }
 
-      const usagesForRun = runUsagesByDustRunId.get(dustRunId) ?? [];
+      const usagesForRun = runUsagesByRubyRunId.get(rubyRunId) ?? [];
       usagesForRun.push(usage);
-      runUsagesByDustRunId.set(dustRunId, usagesForRun);
+      runUsagesByRubyRunId.set(rubyRunId, usagesForRun);
     }
   }
 
@@ -598,10 +598,10 @@ export async function recordSelfImprovingSkillsUsageActivity({
   let totalPriceAwuCredits = 0;
 
   for (const { conversation, skillIds } of conversationsWithSkills) {
-    const dustRunIds =
+    const rubyRunIds =
       runIdsByConversationModelId.get(conversation.id) ?? new Set<string>();
-    const conversationRunUsages = [...dustRunIds].flatMap(
-      (dustRunId) => runUsagesByDustRunId.get(dustRunId) ?? []
+    const conversationRunUsages = [...rubyRunIds].flatMap(
+      (rubyRunId) => runUsagesByRubyRunId.get(rubyRunId) ?? []
     );
     const conversationPriceMicroUsd = conversationRunUsages.reduce(
       (sum, usage) => sum + usage.costMicroUsd,

@@ -1,8 +1,8 @@
 import { LandingEmailSignup } from "@marketing/components/home/content/Landing/LandingEmailSignup";
-import { OpenDustButton } from "@marketing/components/home/OpenDustButton";
-import { DUST_HAS_SESSION, hasSessionIndicator } from "@marketing/lib/cookies";
+import { OpenRubyButton } from "@marketing/components/home/OpenRubyButton";
+import { RUBY_HAS_SESSION, hasSessionIndicator } from "@marketing/lib/cookies";
 import { TRACKING_AREAS } from "@marketing/lib/tracking";
-import { Check, Icon } from "@dust-tt/sparkle";
+import { Check, Icon } from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
@@ -21,11 +21,11 @@ export function EmailCTASection({
   trustBadges,
   trackingObject = "glean_cta_bottom",
 }: EmailCTASectionProps) {
-  const [cookies] = useCookies([DUST_HAS_SESSION], { doNotParse: true });
+  const [cookies] = useCookies([RUBY_HAS_SESSION], { doNotParse: true });
   const [hasSession, setHasSession] = useState(false);
 
   useEffect(() => {
-    setHasSession(hasSessionIndicator(cookies[DUST_HAS_SESSION]));
+    setHasSession(hasSessionIndicator(cookies[RUBY_HAS_SESSION]));
   }, [cookies]);
 
   return (
@@ -44,11 +44,11 @@ export function EmailCTASection({
 
           <div className="mx-auto max-w-lg">
             {hasSession ? (
-              <OpenDustButton
+              <OpenRubyButton
                 variant="highlight"
                 size="md"
                 trackingArea={TRACKING_AREAS.COMPETITIVE}
-                trackingObject={`${trackingObject}_open_dust`}
+                trackingObject={`${trackingObject}_open_ruby`}
                 showWelcome
               />
             ) : (

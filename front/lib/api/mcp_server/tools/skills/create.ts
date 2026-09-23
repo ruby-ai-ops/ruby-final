@@ -4,7 +4,7 @@ import {
 } from "@app/lib/api/actions/servers/skill_authoring/metadata";
 import { createSkill } from "@app/lib/api/actions/servers/skill_authoring/tools";
 import config from "@app/lib/api/config";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import {
   mcpError,
   mcpJsonResponse,
@@ -13,7 +13,7 @@ import { getSkillBuilderRoute } from "@app/lib/utils/router";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 export function registerSkillsCreateTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "create_skill",
     {

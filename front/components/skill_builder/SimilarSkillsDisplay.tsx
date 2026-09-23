@@ -2,7 +2,7 @@ import { LinkWrapper } from "@app/lib/platform";
 import { getSkillAvatarIcon } from "@app/lib/skill";
 import type { SkillWithoutInstructionsAndToolsType } from "@app/types/assistant/skill_configuration";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Icon, LinkExternal01, Spinner } from "@dust-tt/sparkle";
+import { Icon, LinkExternal01, Spinner } from "@ruby-ai/ui";
 
 interface SimilarSkillsDisplayProps {
   owner: LightWorkspaceType;

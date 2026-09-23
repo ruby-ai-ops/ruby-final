@@ -2,7 +2,7 @@ import { useAgentBuilderContext } from "@app/components/agent_builder/AgentBuild
 import type { AgentBuilderFormData } from "@app/components/agent_builder/AgentBuilderFormContext";
 import { ModelPicker } from "@app/components/model_picker/ModelPicker";
 import { SuspensedCodeEditor } from "@app/components/SuspensedCodeEditor";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import type { AgentModelConfigurationType } from "@app/types/assistant/agent";
 import { isSupportingResponseFormat } from "@app/types/assistant/assistant";
 import { validateResponseFormat } from "@app/types/assistant/models/utils";
@@ -17,7 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
   File04,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React from "react";
 import { useController } from "react-hook-form";
 
@@ -80,7 +80,7 @@ function StructuredResponseFormatDialog({
           <DialogDescription>
             Specify a JSON schema to get responses in a consistent structure.{" "}
             <a
-              href="https://docs.dust.tt/docs/structured-output-format"
+              href="https://docs.ruby.ad/docs/structured-output-format"
               target="_blank"
               rel="noreferrer"
               className="underline"

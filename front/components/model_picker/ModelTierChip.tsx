@@ -6,7 +6,7 @@ import type {
   ModelConfigurationType,
   ReasoningEffort,
 } from "@app/types/assistant/models/types";
-import { Chip } from "@dust-tt/sparkle";
+import { Chip } from "@ruby-ai/ui";
 
 interface ModelTierChipProps {
   model: ModelConfigurationType;

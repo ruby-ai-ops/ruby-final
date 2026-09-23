@@ -5,8 +5,8 @@ import type {
 import { createProxyAwareFetch } from "@connectors/lib/proxy";
 import type { WebCrawlerConfigurationResource } from "@connectors/resources/webcrawler_resource";
 import type { ContentNodeType } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import { blake3 } from "@napi-rs/blake-hash";
 import { NonRetryableError } from "crawlee";
 import dns from "dns";

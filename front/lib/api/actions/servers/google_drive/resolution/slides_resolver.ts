@@ -472,7 +472,7 @@ export function resolvePresentationOperations(
             new Error(`addTextBox: slide ${op.slideNumber} not found.`)
           );
         }
-        const elementId = `dust_textbox_${crypto.randomUUID()}`;
+        const elementId = `ruby_textbox_${crypto.randomUUID()}`;
         requests.push({
           createShape: {
             objectId: elementId,

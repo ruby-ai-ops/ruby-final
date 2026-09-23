@@ -1,5 +1,5 @@
 import type { InternalMCPServerNameType } from "@app/lib/actions/mcp_internal_actions/constants";
-import { DustPodConfigurationSchema } from "@app/lib/actions/mcp_internal_actions/input_schemas";
+import { RubyPodConfigurationSchema } from "@app/lib/actions/mcp_internal_actions/input_schemas";
 import { parsePodConfigurationURI } from "@app/lib/actions/mcp_internal_actions/tools/utils";
 import type { Authenticator } from "@app/lib/auth";
 import { FileResource } from "@app/lib/resources/file_resource";
@@ -27,8 +27,8 @@ export async function getApprovalArgsLabel({
       continue;
     }
 
-    // Check if the input is a Dust project configuration
-    const parsed = DustPodConfigurationSchema.safeParse(inputValue);
+    // Check if the input is a Ruby project configuration
+    const parsed = RubyPodConfigurationSchema.safeParse(inputValue);
     if (parsed.success) {
       const parsedProject = parsePodConfigurationURI(parsed.data.uri);
       if (parsedProject.isOk()) {

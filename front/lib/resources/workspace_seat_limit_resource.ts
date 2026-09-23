@@ -212,7 +212,7 @@ export class WorkspaceSeatLimitResource extends BaseResource<WorkspaceSeatLimitM
 
   /**
    * Set the seat limit for a (workspace, seat type) over the window
-   * `[startAt, endAt)`. This is the general scheduling primitive behind the poke
+   * `[startAt, endAt)`. This is the general scheduling primitive behind the admin
    * "manage seat limits" tool:
    *
    * - Any existing rows that start at or after `startAt` are removed, so
@@ -296,7 +296,7 @@ export class WorkspaceSeatLimitResource extends BaseResource<WorkspaceSeatLimitM
 
   /**
    * Replace the entire schedule of phases for a single (workspace, seat type)
-   * in one shot. This is the primitive behind the poke "edit seat-limit
+   * in one shot. This is the primitive behind the admin "edit seat-limit
    * schedule" dialog, which submits the phases (each defined only by its start
    * date) for the selected seat type. An empty `phases` array clears the seat
    * type.

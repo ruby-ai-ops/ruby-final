@@ -292,7 +292,7 @@ describe("callSandboxFunction", () => {
     expect(result.error).toEqual({
       code: "user_authentication_required",
       message:
-        "This Frame function requires a logged-in workspace member in a live Dust session.",
+        "This Frame function requires a logged-in workspace member in a live Ruby session.",
     });
     expect(launchSandboxFunctionInvocationWorkflow).not.toHaveBeenCalled();
     expect(getSandboxFunctionInvocationEvents).not.toHaveBeenCalled();
@@ -319,7 +319,7 @@ describe("callSandboxFunction", () => {
     if (result.isOk()) {
       return;
     }
-    expect(result.error.message).toContain("live Dust session");
+    expect(result.error.message).toContain("live Ruby session");
     expect(launchSandboxFunctionInvocationWorkflow).not.toHaveBeenCalled();
   });
 

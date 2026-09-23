@@ -3,7 +3,7 @@ import { SubscriptionEndBanner } from "@app/components/navigation/TrialBanner";
 import type { SubscriptionType } from "@app/types/plan";
 import type { WorkspaceType } from "@app/types/user";
 import { isAdmin } from "@app/types/user";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import { useCallback, useRef } from "react";
 
 interface TopBannersProps {

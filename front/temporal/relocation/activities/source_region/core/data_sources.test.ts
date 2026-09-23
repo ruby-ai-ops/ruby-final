@@ -35,16 +35,16 @@ function dataSource(id: number, conversationId: number | null = null) {
   return {
     id,
     conversationId,
-    dustAPIDataSourceId: `data-source-${id}`,
-    dustAPIProjectId: `project-${id}`,
+    rubyAPIDataSourceId: `data-source-${id}`,
+    rubyAPIProjectId: `project-${id}`,
   };
 }
 
 function coreIds(id: number) {
   return {
     id,
-    dustAPIDataSourceId: `data-source-${id}`,
-    dustAPIProjectId: `project-${id}`,
+    rubyAPIDataSourceId: `data-source-${id}`,
+    rubyAPIProjectId: `project-${id}`,
   };
 }
 

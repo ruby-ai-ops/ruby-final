@@ -1,4 +1,4 @@
-/* eslint-disable dust/enforce-client-types-in-public-api */
+/* eslint-disable ruby/enforce-client-types-in-public-api */
 
 import { extractAndVerifyVizAccessTokenFromHeader } from "@app/lib/api/viz/access_tokens";
 import { assertVizFileAuthorized } from "@app/lib/api/viz/authorized_file_access";

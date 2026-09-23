@@ -142,7 +142,7 @@ app.patch(
     }
 
     // Validate the default agent exists and is usable (handles both global agents like
-    // "claude-4.5-sonnet" and workspace agents). A null value clears the default (@dust).
+    // "claude-4.5-sonnet" and workspace agents). A null value clears the default (@ruby).
     if (body.defaultAgentId) {
       const agent = await getAgentConfiguration(auth, {
         agentId: body.defaultAgentId,

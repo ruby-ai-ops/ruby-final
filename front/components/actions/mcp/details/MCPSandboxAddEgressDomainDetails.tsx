@@ -2,7 +2,7 @@ import { ActionDetailsWrapper } from "@app/components/actions/ActionDetailsWrapp
 import type { ToolExecutionDetailsProps } from "@app/components/actions/mcp/details/types";
 import { isTextContent } from "@app/lib/actions/mcp_internal_actions/output_schemas";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import { Globe01 } from "@dust-tt/sparkle";
+import { Globe01 } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 type EgressStatus = "added" | "already_allowed" | "unknown";

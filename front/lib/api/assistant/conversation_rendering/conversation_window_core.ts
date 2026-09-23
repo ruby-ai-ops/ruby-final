@@ -365,7 +365,7 @@ async function buildConversationWindow(
         ? interactions.length
         : checkpoint.state.interactions.length +
           Math.max(0, interactions.length - 1),
-    pokeUrl: `https://poke.dust.tt/${source.conversation.owner.sId}/conversation/${source.conversation.sId}`,
+    adminUrl: `https://admin.ruby.ad/${source.conversation.owner.sId}/conversation/${source.conversation.sId}`,
   };
 
   const state = checkpoint

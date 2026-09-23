@@ -82,7 +82,7 @@ export type GetOutputRequestParams = {
 export type GetOutputResponse = Result<
   {
     output: Output;
-    dustRunId: string;
+    rubyRunId: string;
     nativeChainOfThought: string;
     timeToFirstEvent?: number;
     stopReason?: string;

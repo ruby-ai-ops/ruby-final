@@ -12,7 +12,7 @@ import {
   SheetHeader,
   SheetTitle,
   useCopyToClipboard,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 
@@ -53,7 +53,7 @@ export const APIKeyCreationSheet = ({
           <div className="mt-4">
             <p className="text-sm text-muted-foreground">
               Your API key will remain visible for 10 minutes only. You can use
-              it to authenticate with the Dust API.
+              it to authenticate with the Ruby API.
             </p>
             <br />
             <div className="mt-4">

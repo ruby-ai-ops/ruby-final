@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipRoot,
   TooltipTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface LockedSectionProps {
   locked: boolean;

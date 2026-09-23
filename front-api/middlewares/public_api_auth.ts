@@ -212,7 +212,7 @@ export const publicApiAuth = createMiddleware<PublicApiCtx>(
         )) ?? workspaceAuth;
     }
 
-    // x-dust-api-key-name: system-key-only usage attribution, see
+    // x-ruby-api-key-name: system-key-only usage attribution, see
     // `Authenticator.keyForUsageAttribution`. Must stay after the
     // x-api-user-email exchange above, which rebuilds the Authenticator without
     // carrying the attribution key over.

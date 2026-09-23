@@ -1,5 +1,5 @@
 import { WebCrawlerHeaderRedactedValue } from "@app/types/connectors/webcrawler";
-import { Button, Input, XClose } from "@dust-tt/sparkle";
+import { Button, Input, XClose } from "@ruby-ai/ui";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 type FormWithCustomHeaders = {

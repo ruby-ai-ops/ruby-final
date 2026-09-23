@@ -184,7 +184,7 @@ export const CONFLUENCE_SERVER = {
       supported_use_cases: ["platform_actions", "personal_actions"],
     },
     icon: "ConfluenceLogo",
-    documentationUrl: "https://docs.dust.tt/docs/confluence-tool",
+    documentationUrl: "https://docs.ruby.ad/docs/confluence-tool",
   },
   tools: CONFLUENCE_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

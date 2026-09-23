@@ -68,9 +68,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: "server1",
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: null,
       },
       {
@@ -92,9 +92,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: "server2",
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: null,
       },
     ];
@@ -111,7 +111,7 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
     expect(result.requestedSpaceIds).toHaveLength(2);
   });
 
-  it("adds the Pod space of a dustProject configuration", async () => {
+  it("adds the Pod space of a rubyProject configuration", async () => {
     const { authenticator, workspace } = await createResourceTest({
       role: "admin",
     });
@@ -132,9 +132,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
             jsonSchema: null,
             additionalConfiguration: {},
             mcpServerViewId: "server1",
-            dustAppConfiguration: null,
+            rubyAppConfiguration: null,
             secretName: null,
-            dustProject: { projectId: pod.sId, workspaceId: workspace.sId },
+            rubyProject: { projectId: pod.sId, workspaceId: workspace.sId },
           },
         ],
         skills: [],
@@ -164,9 +164,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
             jsonSchema: null,
             additionalConfiguration: {},
             mcpServerViewId: "server1",
-            dustAppConfiguration: null,
+            rubyAppConfiguration: null,
             secretName: null,
-            dustProject: {
+            rubyProject: {
               projectId: makeSId("data_source_view", {
                 id: globalSpace.id,
                 workspaceId: workspace.id,
@@ -219,9 +219,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: globalMCPServerView.sId,
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: null,
       },
       {
@@ -237,9 +237,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: restrictedMCPServerView.sId,
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: null,
       },
     ];
@@ -294,9 +294,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: "server1",
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: null,
       },
       {
@@ -318,9 +318,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: "server2",
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: null,
       },
     ];
@@ -393,9 +393,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: mcpServerView.sId,
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: null,
       },
     ];
@@ -460,9 +460,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: autoMCPServerView.sId,
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: internalAutoServer.id,
       },
     ];
@@ -491,9 +491,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: autoMCPServerView.sId,
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: internalAutoServer.id,
       },
       {
@@ -509,9 +509,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: regularMCPServerView.sId,
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: null,
       },
     ];
@@ -614,9 +614,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: "server1",
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: null,
       },
       {
@@ -638,9 +638,9 @@ describe("getAgentConfigurationRequirementsFromCapabilities", () => {
         jsonSchema: null,
         additionalConfiguration: {},
         mcpServerViewId: "server2",
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         internalMCPServerId: null,
       },
     ];

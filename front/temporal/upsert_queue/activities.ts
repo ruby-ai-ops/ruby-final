@@ -15,7 +15,7 @@ import { Storage } from "@google-cloud/storage";
 import { ApplicationFailure } from "@temporalio/common";
 import { fromError } from "zod-validation-error";
 
-const { DUST_UPSERT_QUEUE_BUCKET, SERVICE_ACCOUNT } = process.env;
+const { RUBY_UPSERT_QUEUE_BUCKET, SERVICE_ACCOUNT } = process.env;
 
 export function isNonRetryableUpsertError(message: string): boolean {
   return message.includes("[max_tokens_per_request]");
@@ -52,11 +52,11 @@ export async function upsertDocumentActivity(
     });
   }
 
-  if (!DUST_UPSERT_QUEUE_BUCKET) {
-    throw new Error("DUST_UPSERT_QUEUE_BUCKET is not set");
+  if (!RUBY_UPSERT_QUEUE_BUCKET) {
+    throw new Error("RUBY_UPSERT_QUEUE_BUCKET is not set");
   }
   const storage = new Storage({ keyFilename: SERVICE_ACCOUNT });
-  const bucket = storage.bucket(DUST_UPSERT_QUEUE_BUCKET);
+  const bucket = storage.bucket(RUBY_UPSERT_QUEUE_BUCKET);
   // GCS bucket.file().download() returns a `DownloadResponse = [Buffer]` — it's defined as a tuple with exactly one element.
   // It's a quirk of the GCS SDK's callback-style API converted to a promise
   // There's never more than one Buffer => destructuring is fine
@@ -112,10 +112,10 @@ export async function upsertDocumentActivity(
 
   const upsertTimestamp = Date.now();
 
-  // Create document with the Dust internal API.
+  // Create document with the Ruby internal API.
   const upsertRes = await coreAPI.upsertDataSourceDocument({
-    projectId: dataSource.dustAPIProjectId,
-    dataSourceId: dataSource.dustAPIDataSourceId,
+    projectId: dataSource.rubyAPIProjectId,
+    dataSourceId: dataSource.rubyAPIDataSourceId,
     documentId: upsertQueueItem.documentId,
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     tags: ((upsertQueueItem.tags as string[] | null) || []).map((tag) =>
@@ -151,7 +151,7 @@ export async function upsertDocumentActivity(
     );
 
     const error: WorkflowError = {
-      __is_dust_error: true,
+      __is_ruby_error: true,
       message: `Upsert error: ${upsertRes.error.message}`,
       type: "upsert_queue_upsert_document_error",
     };

@@ -27,12 +27,12 @@ async function checkStaticDataSourceParents(
   if (frontDataSource.id % 100 === 0) {
     logger.info("CHECK");
   }
-  const { dustAPIProjectId, dustAPIDataSourceId } = frontDataSource;
+  const { rubyAPIProjectId, rubyAPIDataSourceId } = frontDataSource;
   const coreDataSource: any = (
     await coreSequelize.query(
       `SELECT id FROM data_sources WHERE project=:p AND data_source_id=:d LIMIT 1`,
       {
-        replacements: { p: dustAPIProjectId, d: dustAPIDataSourceId },
+        replacements: { p: rubyAPIProjectId, d: rubyAPIDataSourceId },
         type: QueryTypes.SELECT,
       }
     )
@@ -91,8 +91,8 @@ async function checkStaticDataSourcesParents(
         await checkStaticDataSourceParents(
           dataSource,
           logger.child({
-            project: dataSource.dustAPIProjectId,
-            dataSourceId: dataSource.dustAPIDataSourceId,
+            project: dataSource.rubyAPIProjectId,
+            dataSourceId: dataSource.rubyAPIDataSourceId,
           })
         );
       },

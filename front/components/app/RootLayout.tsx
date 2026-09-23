@@ -1,10 +1,10 @@
 import { ConfirmPopupArea } from "@app/components/Confirm";
 import { NoOpDesktopNavigationProvider } from "@app/components/navigation/DesktopNavigationContext";
-import { ConversationFontProvider } from "@app/components/sparkle/ConversationFontContext";
-import { SidebarProvider } from "@app/components/sparkle/SidebarContext";
-import { ThemeProvider } from "@app/components/sparkle/ThemeContext";
+import { ConversationFontProvider } from "@app/components/ui/ConversationFontContext";
+import { SidebarProvider } from "@app/components/ui/SidebarContext";
+import { ThemeProvider } from "@app/components/ui/ThemeContext";
 import { useStripUtmParams } from "@app/hooks/useStripUtmParams";
-import { Notification } from "@dust-tt/sparkle";
+import { Notification } from "@ruby-ai/ui";
 import { ConversationSidePanelProvider } from "../assistant/conversation/ConversationSidePanelContext";
 
 /**

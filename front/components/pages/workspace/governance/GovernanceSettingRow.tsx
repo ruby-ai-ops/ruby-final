@@ -13,7 +13,7 @@ import {
   ButtonsSwitch,
   ButtonsSwitchList,
   ContentMessage,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useRef, useState } from "react";
 
 const PERMISSION_SCOPE_OPTIONS: {

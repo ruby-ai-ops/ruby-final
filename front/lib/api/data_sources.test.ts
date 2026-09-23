@@ -2,7 +2,7 @@ import { softDeleteDataSourceAndLaunchScrubWorkflow } from "@app/lib/api/data_so
 import type { Authenticator } from "@app/lib/auth";
 import type { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
-import { launchScrubDataSourceWorkflow } from "@app/poke/temporal/client";
+import { launchScrubDataSourceWorkflow } from "@app/admin-app/temporal/client";
 import { DataSourceViewFactory } from "@app/tests/utils/DataSourceViewFactory";
 import { createResourceTest } from "@app/tests/utils/generic_resource_tests";
 import { UserFactory } from "@app/tests/utils/UserFactory";
@@ -55,7 +55,7 @@ vi.spyOn(CoreAPI.prototype, "createDataSource").mockImplementation(
 );
 
 // Mock the dependencies
-vi.mock("@app/poke/temporal/client", () => ({
+vi.mock("@app/admin-app/temporal/client", () => ({
   launchScrubDataSourceWorkflow: vi.fn(),
 }));
 

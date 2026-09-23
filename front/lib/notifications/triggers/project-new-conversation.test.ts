@@ -50,12 +50,12 @@ describe("getActivationNewConversationEmailSubject", () => {
       getActivationNewConversationEmailSubject(
         "  Prepare the weekly\ncustomer review  "
       )
-    ).toBe("[Dust] Try this next: Prepare the weekly customer review");
+    ).toBe("[Ruby] Try this next: Prepare the weekly customer review");
   });
 
   test("falls back when no recommendation name is available", () => {
     expect(getActivationNewConversationEmailSubject(null)).toBe(
-      "[Dust] Try this next: A recommendation for you"
+      "[Ruby] Try this next: A recommendation for you"
     );
   });
 });
@@ -359,7 +359,7 @@ describe("notifyActivationConversationAgentReplied", () => {
     mockTriggerBulk.mockClear();
   });
 
-  // A conversation Dust opened with a nudge: its opening message carries the
+  // A conversation Ruby opened with a nudge: its opening message carries the
   // nudge origin and has no author.
   async function createNudgeConversation() {
     const conversation = await ConversationFactory.create(auth, {
@@ -371,7 +371,7 @@ describe("notifyActivationConversationAgentReplied", () => {
       auth,
       workspace,
       conversation,
-      content: "Run the Dust Learning workflow.",
+      content: "Run the Ruby Learning workflow.",
       origin: "system_activation",
       authorless: true,
     });

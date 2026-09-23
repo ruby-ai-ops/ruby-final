@@ -137,9 +137,9 @@ export async function getInternalMCPServer(
       return (
         await import("@app/lib/api/actions/servers/agent_delegation")
       ).default(auth, toolContext);
-    case "run_dust_app":
+    case "run_ruby_app":
       return (
-        await import("@app/lib/api/actions/servers/run_dust_app")
+        await import("@app/lib/api/actions/servers/run_ruby_app")
       ).default(auth, toolContext);
     case "agent_router":
       return (
@@ -370,8 +370,8 @@ export async function getInternalMCPServer(
         auth,
         toolContext
       );
-    case "poke":
-      return (await import("@app/lib/api/actions/servers/poke")).default(
+    case "admin":
+      return (await import("@app/lib/api/actions/servers/admin")).default(
         auth,
         toolContext
       );

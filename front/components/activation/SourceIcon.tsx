@@ -1,4 +1,4 @@
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { CONNECTOR_UI_CONFIGURATIONS } from "@app/lib/connector_providers_ui";
 import { isConnectorProvider } from "@app/types/data_source";
 import {
@@ -17,13 +17,13 @@ import {
   Target01,
   Users01,
   Zap,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
-// Sparkle icons the recommendation source can reference by name (when the
+// RubyUI icons the recommendation source can reference by name (when the
 // source is not a data-source connector). Falls back to Brain for legacy or
 // unrecognized source identifiers.
-const SPARKLE_ICON_BY_NAME: Record<string, ComponentType> = {
+const RUBY_UI_ICON_BY_NAME: Record<string, ComponentType> = {
   Brain,
   Zap,
   PuzzlePiece01,
@@ -56,8 +56,8 @@ export function SourceIcon({ sourceIcon }: SourceIconProps) {
       </span>
     );
   }
-  const SparkleIcon = SPARKLE_ICON_BY_NAME[sourceIcon] ?? Brain;
+  const RubyUIIcon = RUBY_UI_ICON_BY_NAME[sourceIcon] ?? Brain;
   return (
-    <Icon visual={SparkleIcon} size="sm" className="shrink-0 text-faint" />
+    <Icon visual={RubyUIIcon} size="sm" className="shrink-0 text-faint" />
   );
 }

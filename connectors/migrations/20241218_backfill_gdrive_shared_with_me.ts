@@ -20,7 +20,7 @@ makeScript({}, async ({ execute }, logger) => {
           parents: [folderId],
           parentId: null,
           title: "Shared with me",
-          mimeType: "application/vnd.dust.googledrive.folder",
+          mimeType: "application/vnd.ruby.googledrive.folder",
         });
         logger.info(
           `Upserted folder ${folderId} for connector ${connector.id}`

@@ -3,14 +3,14 @@ import { useAwuTopUpsHistory } from "@app/lib/swr/credits";
 import { formatTimestampToFriendlyDate } from "@app/lib/utils";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { DataTableSkeletonCellProps } from "@dust-tt/sparkle";
+import type { DataTableSkeletonCellProps } from "@ruby-ai/ui";
 import {
   AlertCircle,
   ContentMessage,
   DataTable,
   DataTableSkeleton,
   TextCellSkeleton,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 

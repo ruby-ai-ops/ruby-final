@@ -20,8 +20,8 @@ type SlackPickerPrivateChannel = {
   sourceUrl?: string | null;
 };
 
-// Public write channels Dust can post in, plus private channels this admin and
-// the Dust bot both belong to. Connector-listed private channels are excluded
+// Public write channels Ruby can post in, plus private channels this admin and
+// the Ruby bot both belong to. Connector-listed private channels are excluded
 // so we never show another admin's private channels.
 export function buildDefaultAgentSlackPickerChannels({
   connectorResources,

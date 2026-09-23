@@ -136,8 +136,8 @@ impl Chat {
             instructions.push_str(Self::replace_instructions_variables(i, env)?.as_str());
         }
 
-        // replace <DUST_TRIPLE_BACKTICKS> with ```
-        instructions = instructions.replace("<DUST_TRIPLE_BACKTICKS>", "```");
+        // replace <RUBY_TRIPLE_BACKTICKS> with ```
+        instructions = instructions.replace("<RUBY_TRIPLE_BACKTICKS>", "```");
         // println!("INSTRUCTIONS: {}", instructions);
 
         Ok(instructions)
@@ -345,7 +345,7 @@ impl Block for Chat {
 
         // Process messages.
         let e = env.clone();
-        let messages_code = self.messages_code.replace("<DUST_TRIPLE_BACKTICKS>", "```");
+        let messages_code = self.messages_code.replace("<RUBY_TRIPLE_BACKTICKS>", "```");
         let (messages_value, messages_logs): (Value, Vec<Value>) = JSExecutor::client()?
             .exec(
                 &messages_code,
@@ -370,7 +370,7 @@ impl Block for Chat {
             None => (vec![], vec![]),
             Some(c) => {
                 let e = env.clone();
-                let functions_code = c.clone().replace("<DUST_TRIPLE_BACKTICKS>", "```");
+                let functions_code = c.clone().replace("<RUBY_TRIPLE_BACKTICKS>", "```");
 
                 let (functions_value, functions_logs): (Value, Vec<Value>) = JSExecutor::client()?
                     .exec(

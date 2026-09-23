@@ -1,4 +1,4 @@
-import { PostMCPRequestsRequestQuerySchema } from "@dust-tt/client";
+import { PostMCPRequestsRequestQuerySchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { streamingTag } from "@front-api/middlewares/streaming";
 import { validate } from "@front-api/middlewares/validator";
@@ -15,7 +15,7 @@ app.use("*", streamingTag);
  *   get:
  *     summary: Stream MCP tool requests for a workspace
  *     description: |
- *       [Documentation](https://docs.dust.tt/docs/client-side-mcp-server)
+ *       [Documentation](https://docs.ruby.ad/docs/client-side-mcp-server)
  *       Server-Sent Events (SSE) endpoint that streams MCP tool requests for a workspace.
  *       This endpoint is used by client-side MCP servers to listen for tool requests in real-time.
  *       Events arrive as new tool requests are made. Reconnect with `lastEventId` after the stream closes to continue receiving events.

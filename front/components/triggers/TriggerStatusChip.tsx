@@ -1,5 +1,5 @@
 import type { TriggerStatus } from "@app/types/assistant/triggers";
-import { Chip } from "@dust-tt/sparkle";
+import { Chip } from "@ruby-ai/ui";
 import type React from "react";
 
 type ChipColor = React.ComponentProps<typeof Chip>["color"];

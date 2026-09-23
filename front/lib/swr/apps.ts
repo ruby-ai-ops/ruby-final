@@ -12,7 +12,7 @@ import type {
   GetAppsResponseBody,
   GetOrPostAppResponseBody,
 } from "@app/types/api/apps";
-import type { GetDustAppSecretsResponseBody } from "@app/types/api/dust_app_secrets";
+import type { GetRubyAppSecretsResponseBody } from "@app/types/api/ruby_app_secrets";
 import type { GetKeysResponseBody } from "@app/types/api/keys";
 import type { GetProvidersResponseBody } from "@app/types/api/providers";
 import type { AppType } from "@app/types/app";
@@ -129,11 +129,11 @@ export function useRunBlock(
   };
 }
 
-export function useDustAppSecrets(owner: LightWorkspaceType | null) {
+export function useRubyAppSecrets(owner: LightWorkspaceType | null) {
   const { fetcher } = useFetcher();
-  const keysFetcher: Fetcher<GetDustAppSecretsResponseBody> = fetcher;
+  const keysFetcher: Fetcher<GetRubyAppSecretsResponseBody> = fetcher;
   const { data, error } = useSWRWithDefaults(
-    owner ? `/api/w/${owner.sId}/dust_app_secrets` : null,
+    owner ? `/api/w/${owner.sId}/ruby_app_secrets` : null,
     keysFetcher
   );
 

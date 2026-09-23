@@ -2,7 +2,7 @@ import { MCPError } from "@app/lib/actions/mcp_errors";
 import { getDataSourceURI } from "@app/lib/actions/mcp_internal_actions/input_configuration";
 import type {
   DataSourcesToolConfigurationType,
-  DustPodConfigurationType,
+  RubyPodConfigurationType,
 } from "@app/lib/actions/mcp_internal_actions/input_schemas";
 import { parsePodConfigurationURI } from "@app/lib/actions/mcp_internal_actions/tools/utils";
 import type { ToolContext } from "@app/lib/actions/types";
@@ -27,7 +27,7 @@ import { isPodConversation } from "@app/types/assistant/conversation";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 interface PodContext {
   pod: SpaceResource;
@@ -88,20 +88,20 @@ export async function buildProjectRetrieveDataSources(
 }
 
 /**
- * Gets the spaces from the agent loop context or from the provided dustPod parameter.
- * If dustPod is provided, uses that to fetch all spaces. Otherwise, gets from conversation.
- * The conversation must be in a project (space) if dustPod is not provided.
+ * Gets the spaces from the agent loop context or from the provided rubyPod parameter.
+ * If rubyPod is provided, uses that to fetch all spaces. Otherwise, gets from conversation.
+ * The conversation must be in a project (space) if rubyPod is not provided.
  */
 export async function getPod(
   auth: Authenticator,
-  from: { toolContext?: ToolContext } | { dustPod?: DustPodConfigurationType }
+  from: { toolContext?: ToolContext } | { rubyPod?: RubyPodConfigurationType }
 ): Promise<Result<PodContext, MCPError>> {
-  if ("dustPod" in from && from.dustPod) {
-    const { dustPod } = from;
+  if ("rubyPod" in from && from.rubyPod) {
+    const { rubyPod } = from;
     const authWorkspaceId = auth.getNonNullableWorkspace().sId;
 
     // Parse the project URI to extract workspaceId and projectId.
-    const parseResult = parsePodConfigurationURI(dustPod.uri);
+    const parseResult = parsePodConfigurationURI(rubyPod.uri);
     if (parseResult.isErr()) {
       return new Err(
         new MCPError(`Invalid Pod URI: ${parseResult.error.message}`, {
@@ -202,7 +202,7 @@ function checkWritePermission(
  */
 export async function getWritablePodContext(
   auth: Authenticator,
-  from: { toolContext?: ToolContext } | { dustPod?: DustPodConfigurationType }
+  from: { toolContext?: ToolContext } | { rubyPod?: RubyPodConfigurationType }
 ): Promise<Result<PodContext, MCPError>> {
   const contextRes = await getPod(auth, from);
   if (contextRes.isErr()) {

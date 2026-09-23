@@ -18,9 +18,9 @@ import { normalizeError } from "@app/types/shared/utils/error_utils";
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 import { z } from "zod";
 
-const DSBX_BIN_PATH = "/opt/bin/dsbx";
+const RBX_BIN_PATH = "/opt/bin/rbx";
 // Non-mounted scratch root, so a build never writes into the owner's files mount.
-const BUILD_STAGING_ROOT = "/tmp/dust-sandbox-function-builds";
+const BUILD_STAGING_ROOT = "/tmp/ruby-sandbox-function-builds";
 const BUILD_EXEC_TIMEOUT_MS = 2 * 60 * 1000;
 
 export interface SandboxFunctionBuildResult {
@@ -30,8 +30,8 @@ export interface SandboxFunctionBuildResult {
   outputSchema: JSONSchema;
 }
 
-// dsbx writes the bundle and schema to files (sandbox stdout can be truncated) and prints only
-// this envelope. Mirrors BuildResult in cli/dust-sandbox/functions-runner/build.ts.
+// rbx writes the bundle and schema to files (sandbox stdout can be truncated) and prints only
+// this envelope. Mirrors BuildResult in cli/ruby-sandbox/functions-runner/build.ts.
 const buildEnvelopeSchema = z.discriminatedUnion("ok", [
   z.object({ ok: z.literal(true) }),
   z.object({
@@ -45,7 +45,7 @@ const jsonSchemaValue = z.custom<JSONSchema>(
   (v) => typeof v === "object" && v !== null
 );
 
-// Mirrors FunctionSchema in cli/dust-sandbox/functions-runner/schema.ts.
+// Mirrors FunctionSchema in cli/ruby-sandbox/functions-runner/schema.ts.
 const functionSchemaFileSchema = z.object({
   name: z.string(),
   description: z.string().nullable(),
@@ -68,7 +68,7 @@ function mapBuildErrorKind(kind: string): SandboxFunctionErrorCode {
 
 /**
  * Build a sandbox function: bundle the source at `srcSandboxPath` (absolute, under the owner's
- * mount) via `dsbx function build`, then read back the bundle and its extracted I/O contract from
+ * mount) via `rbx function build`, then read back the bundle and its extracted I/O contract from
  * a non-mounted scratch dir.
  *
  * Runs as `agent-proxied` (the egress-controlled invocation user) because extracting the schema
@@ -92,8 +92,8 @@ export async function buildSandboxFunctionOnReadySandbox(
     "set -euo pipefail",
     `rm -rf -- ${shellEscape(buildDir)}`,
     `mkdir -p -- ${shellEscape(buildDir)}`,
-    // `--` stops the model-supplied source path from being read as a dsbx flag.
-    `${DSBX_BIN_PATH} function build -- ${shellEscape(srcSandboxPath)} ${shellEscape(bundlePath)} ${shellEscape(schemaPath)}`,
+    // `--` stops the model-supplied source path from being read as a rbx flag.
+    `${RBX_BIN_PATH} function build -- ${shellEscape(srcSandboxPath)} ${shellEscape(bundlePath)} ${shellEscape(schemaPath)}`,
     // Pin the artifact hashes in the same exec; verified after the provider read-back
     // below (the read-back runs as root and follows symlinks, so a swapped staging
     // file would otherwise read an arbitrary root file).
@@ -110,8 +110,8 @@ export async function buildSandboxFunctionOnReadySandbox(
     );
   }
 
-  const { dsbxStdout, hashes } = splitStagingStdout(execResult.value.stdout);
-  const envelope = parseBuildEnvelope(dsbxStdout);
+  const { rbxStdout, hashes } = splitStagingStdout(execResult.value.stdout);
+  const envelope = parseBuildEnvelope(rbxStdout);
   if (envelope.isErr()) {
     return envelope;
   }
@@ -120,7 +120,7 @@ export async function buildSandboxFunctionOnReadySandbox(
     return new Err(new SandboxFunctionError(mapBuildErrorKind(kind), message));
   }
 
-  // Success means dsbx wrote both files.
+  // Success means rbx wrote both files.
   const bundleResult = await sandbox.readFile(auth, bundlePath);
   if (bundleResult.isErr()) {
     return new Err(
@@ -161,7 +161,7 @@ export async function buildSandboxFunctionOnReadySandbox(
 function parseBuildEnvelope(
   stdout: string
 ): Result<z.infer<typeof buildEnvelopeSchema>, SandboxFunctionError> {
-  // dsbx prints one JSON envelope. Take the last non-empty line to ignore any shell noise.
+  // rbx prints one JSON envelope. Take the last non-empty line to ignore any shell noise.
   const lastLine =
     stdout
       .split("\n")
@@ -172,7 +172,7 @@ function parseBuildEnvelope(
     return new Err(
       new SandboxFunctionError(
         "internal",
-        "dsbx function build produced no output."
+        "rbx function build produced no output."
       )
     );
   }
@@ -184,7 +184,7 @@ function parseBuildEnvelope(
     return new Err(
       new SandboxFunctionError(
         "internal",
-        `Unparseable dsbx output: ${normalizeError(err).message}`
+        `Unparseable rbx output: ${normalizeError(err).message}`
       )
     );
   }
@@ -192,7 +192,7 @@ function parseBuildEnvelope(
   const parsed = buildEnvelopeSchema.safeParse(json);
   if (!parsed.success) {
     return new Err(
-      new SandboxFunctionError("internal", "Unexpected dsbx output shape.")
+      new SandboxFunctionError("internal", "Unexpected rbx output shape.")
     );
   }
 

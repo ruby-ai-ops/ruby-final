@@ -1,0 +1,70 @@
+import { DataSourceViewsDataTable } from "@app/components/admin/data_source_views/table";
+import { GroupPermissionsDataTable } from "@app/components/admin/group_permissions/table";
+import { MembersDataTable } from "@app/components/admin/members/table";
+import { PluginList } from "@app/components/admin/plugins/PluginList";
+import { ProjectConnectorKnowledgeDataTable } from "@app/components/admin/projects/connector_knowledge/table";
+import { ProjectConversationDataTable } from "@app/components/admin/projects/conversations/table";
+import { ProjectTasksDataTable } from "@app/components/admin/projects/tasks/table";
+import { ViewSpaceViewTable } from "@app/components/admin/spaces/view";
+import type { AdminGetSpaceDetails } from "@app/lib/api/admin/spaces";
+import { useWorkspace } from "@app/lib/auth/AuthContext";
+import { LinkWrapper } from "@ruby-ai/ui";
+
+interface ProjectPageProps {
+  details: AdminGetSpaceDetails;
+}
+
+export function ProjectPage({ details }: ProjectPageProps) {
+  const owner = useWorkspace();
+
+  const { members, metadata, space } = details;
+
+  return (
+    <>
+      <h3 className="text-xl font-bold">
+        Pod {space.name} within workspace{" "}
+        <LinkWrapper href={`/admin/${owner.sId}`} className="text-highlight-500">
+          {owner.name}
+        </LinkWrapper>
+      </h3>
+      {metadata?.description && (
+        <p className="mt-2 text-sm text-muted-foreground">
+          {metadata.description}
+        </p>
+      )}
+      <div className="flex flex-row gap-x-6">
+        <ViewSpaceViewTable space={space} />
+        <div className="mt-4 flex grow flex-col">
+          {Object.entries(members).map(([groupName, groupMembers]) => (
+            <MembersDataTable
+              key={groupName}
+              groupName={groupName}
+              members={groupMembers}
+              owner={owner}
+              readonly
+            />
+          ))}
+          <PluginList
+            pluginResourceTarget={{
+              resourceId: space.sId,
+              resourceType: "spaces",
+              workspace: owner,
+            }}
+          />
+          <ProjectConversationDataTable owner={owner} projectId={space.sId} />
+          <ProjectConnectorKnowledgeDataTable
+            owner={owner}
+            projectId={space.sId}
+          />
+          <ProjectTasksDataTable owner={owner} projectId={space.sId} />
+          <DataSourceViewsDataTable owner={owner} spaceId={space.sId} />
+          <GroupPermissionsDataTable
+            owner={owner}
+            resourceType="space"
+            resourceId={space.id}
+          />
+        </div>
+      </div>
+    </>
+  );
+}

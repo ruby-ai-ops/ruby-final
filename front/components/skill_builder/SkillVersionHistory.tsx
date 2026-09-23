@@ -16,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { format } from "date-fns/format";
 import { useMemo } from "react";
 

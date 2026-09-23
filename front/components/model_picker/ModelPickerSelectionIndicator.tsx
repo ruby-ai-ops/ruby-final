@@ -1,4 +1,4 @@
-import { Check, Icon, XClose } from "@dust-tt/sparkle";
+import { Check, Icon, XClose } from "@ruby-ai/ui";
 
 interface ModelPickerSelectionIndicatorProps {
   // Passed only when the selection can be reverted (i.e. it differs from the

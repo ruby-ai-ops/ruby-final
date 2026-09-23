@@ -8,7 +8,7 @@ import { useRequiredPathParam } from "@app/lib/platform";
 import { cleanSpecificationFromCore } from "@app/lib/specification";
 import { useApp, useRunWithSpec } from "@app/lib/swr/apps";
 import { useWorkspacePermissions } from "@app/lib/swr/permissions";
-import { Button, CheckCircle, Clock, Spinner } from "@dust-tt/sparkle";
+import { Button, CheckCircle, Clock, Spinner } from "@ruby-ai/ui";
 import { useContext, useState } from "react";
 
 export function RunPage() {
@@ -18,7 +18,7 @@ export function RunPage() {
   const owner = useWorkspace();
   const { isAdmin } = useAuth();
   const { hasPermission } = useWorkspacePermissions();
-  const canAdministrateApps = hasPermission("admin", "dust_app");
+  const canAdministrateApps = hasPermission("admin", "ruby_app");
 
   const { app, isAppLoading, isAppError } = useApp({
     workspaceId: owner.sId,

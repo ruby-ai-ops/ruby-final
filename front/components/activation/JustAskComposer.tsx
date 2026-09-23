@@ -5,7 +5,7 @@ import { InputBar } from "@app/components/assistant/conversation/input_bar/Input
 import { InputBarProvider } from "@app/components/assistant/conversation/input_bar/InputBarContext";
 import { useCreateConversationWithMessage } from "@app/hooks/useCreateConversationWithMessage";
 import { useSendNotification } from "@app/hooks/useNotification";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { useAppRouter } from "@app/lib/platform";
 import { getConversationRoute } from "@app/lib/utils/router";
 import type { RichMention } from "@app/types/assistant/mentions";
@@ -45,7 +45,7 @@ export function JustAskComposer({
       selectedMCPServerViewIds?: string[],
       selectedSpaceIds?: string[],
       modelSelection?: ModelSelectionType
-    ): Promise<Result<undefined, DustError>> => {
+    ): Promise<Result<undefined, RubyError>> => {
       const res = await createConversationWithMessage({
         messageData: {
           input,

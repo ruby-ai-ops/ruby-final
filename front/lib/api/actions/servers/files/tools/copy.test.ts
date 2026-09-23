@@ -94,7 +94,7 @@ describe("copyHandler", () => {
         getMetadata: vi
           .fn()
           .mockResolvedValue([
-            { contentType: "application/vnd.dust.frame", size: "100" },
+            { contentType: "application/vnd.ruby.frame", size: "100" },
           ]),
       })),
     } as unknown as ReturnType<typeof getPrivateUploadBucket>);

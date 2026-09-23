@@ -1,10 +1,10 @@
 import type { IndustryPageConfig } from "@marketing/components/home/content/Industry/configs/utils";
 import { createLayoutConfig } from "@marketing/components/home/content/Industry/configs/utils";
-import { Building04 } from "@dust-tt/sparkle";
+import { Building04 } from "@ruby-ai/ui";
 
 export const b2bSaasConfig: IndustryPageConfig = {
   seo: {
-    title: "Dust for B2B SaaS",
+    title: "Ruby for B2B SaaS",
     description:
       "The AI solution trusted by leading SaaS innovators. Say goodbye to scattered info, manual busywork, and buried insights.",
   },
@@ -13,12 +13,12 @@ export const b2bSaasConfig: IndustryPageConfig = {
     "aiAgents",
     "trustedBy",
     "painPoints",
-    "dustInAction",
+    "rubyInAction",
     "impactMetrics",
     "demoVideo",
     "testimonial",
     "customerStories",
-    "justUseDust",
+    "justUseRuby",
   ]),
   hero: {
     chip: {
@@ -28,7 +28,7 @@ export const b2bSaasConfig: IndustryPageConfig = {
     },
     title: (
       <>
-        Dust for
+        Ruby for
         <br /> B2B SaaS
       </>
     ),
@@ -46,7 +46,7 @@ export const b2bSaasConfig: IndustryPageConfig = {
     },
     testimonialCard: {
       quote:
-        "Dust is the most impactful software we've adopted since building Clay.",
+        "Ruby is the most impactful software we've adopted since building Clay.",
       author: {
         name: "Everett Berry",
         title: "Head of GTM Engineering at Clay",
@@ -71,7 +71,7 @@ export const b2bSaasConfig: IndustryPageConfig = {
   },
   trustedBy: {
     title: "Trusted by SaaS leaders",
-    logoSet: "b2b-saas",
+    logoSet: "b2bSaas",
   },
   painPoints: {
     title: "Transform how you work",
@@ -99,8 +99,8 @@ export const b2bSaasConfig: IndustryPageConfig = {
       },
     ],
   },
-  dustInAction: {
-    title: "Dust in action",
+  rubyInAction: {
+    title: "Ruby in action",
     useCases: [
       {
         title: "GTM operations & sales enablement",
@@ -258,12 +258,12 @@ export const b2bSaasConfig: IndustryPageConfig = {
     ],
   },
   demoVideo: {
-    sectionTitle: "See Dust in motion",
-    videoUrl: "https://fast.wistia.net/embed/iframe/8q80neektv",
+    sectionTitle: "See Ruby in motion",
+    videoUrl: "/static/workspace-demo/index.html",
   },
   testimonial: {
     quote:
-      "Dust is the most impactful software we've adopted since building Clay.",
+      "Ruby is the most impactful software we've adopted since building Clay.",
     author: {
       name: "Everett Berry",
       title: "Head of GTM Engineering at Clay",
@@ -275,12 +275,12 @@ export const b2bSaasConfig: IndustryPageConfig = {
     bgColor: "bg-green-600",
     textColor: "text-white",
   },
-  justUseDust: {
-    title: "Just use Dust",
+  justUseRuby: {
+    title: "Just use Ruby",
     titleColor: "text-blue-600",
     ctaButtons: {
       primary: {
-        label: "Start Free Trial",
+        label: "Get started",
         href: "/api/workos/login",
       },
       secondary: {

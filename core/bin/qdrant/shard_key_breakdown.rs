@@ -14,11 +14,11 @@
 
 use anyhow::{anyhow, Error, Result};
 use clap::Parser;
-use dust::data_sources::{
+use ruby::data_sources::{
     data_source::DataSourceConfig,
     qdrant::{env_var_prefix_for_cluster, QdrantClients, QdrantCluster, QdrantTenant},
 };
-use dust::stores::{postgres::PostgresStore, store::Store};
+use ruby::stores::{postgres::PostgresStore, store::Store};
 use regex::Regex;
 use serde::Deserialize;
 use std::collections::{BTreeMap, HashMap};

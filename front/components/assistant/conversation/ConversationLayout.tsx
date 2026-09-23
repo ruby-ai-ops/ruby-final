@@ -15,7 +15,7 @@ import { ErrorBoundary } from "@app/components/error_boundary/ErrorBoundary";
 import {
   useSetHasTitle,
   useSetPageTitle,
-} from "@app/components/sparkle/AppLayoutContext";
+} from "@app/components/ui/AppLayoutContext";
 import { useConversation } from "@app/hooks/conversations";
 import { useActiveConversationId } from "@app/hooks/useActiveConversationId";
 import type { AuthContextValue } from "@app/lib/auth/AuthContext";
@@ -87,8 +87,8 @@ const ConversationLayoutContent = ({
   };
 
   const pageTitle = conversation
-    ? `Dust - ${getConversationDisplayTitle(conversation)}`
-    : "Dust - New Conversation";
+    ? `Ruby - ${getConversationDisplayTitle(conversation)}`
+    : "Ruby - New Conversation";
 
   useSetHasTitle(!!activeConversationId);
   useSetPageTitle(pageTitle);
@@ -136,7 +136,7 @@ function UncaughtConversationErrorFallback() {
       title="Something unexpected happened"
       message={[
         "Try refreshing the page to continue your conversation.",
-        "Still having trouble? Reach out at support@dust.tt",
+        "Still having trouble? Reach out at support@ruby.ad",
       ]}
     />
   );

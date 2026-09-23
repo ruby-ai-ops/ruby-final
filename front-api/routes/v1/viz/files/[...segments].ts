@@ -1,4 +1,4 @@
-/* eslint-disable dust/enforce-client-types-in-public-api */
+/* eslint-disable ruby/enforce-client-types-in-public-api */
 
 import { formatFramePackageRelativePath } from "@app/lib/api/frames/package_file_ref_paths";
 import { extractAndVerifyVizAccessTokenFromHeader } from "@app/lib/api/viz/access_tokens";

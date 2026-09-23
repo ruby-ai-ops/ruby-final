@@ -16,8 +16,8 @@ import {
 import type { DataSourceViewType } from "@app/types/data_source_view";
 import type { FileShareScope, FileTypeWithMetadata } from "@app/types/files";
 import {
-  DUST_FILE_CONTENT_TYPE_HEADER,
-  DUST_FILE_ID_HEADER,
+  RUBY_FILE_CONTENT_TYPE_HEADER,
+  RUBY_FILE_ID_HEADER,
 } from "@app/types/files";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
@@ -95,8 +95,8 @@ export async function fetchFileHeadMetadataFromPath({
   }
 
   return {
-    fileId: response.headers.get(DUST_FILE_ID_HEADER),
-    contentType: response.headers.get(DUST_FILE_CONTENT_TYPE_HEADER),
+    fileId: response.headers.get(RUBY_FILE_ID_HEADER),
+    contentType: response.headers.get(RUBY_FILE_CONTENT_TYPE_HEADER),
   };
 }
 
@@ -119,7 +119,7 @@ export type FilePathMetadata = {
 
 /**
  * Resolve metadata for a canonical scoped path via HEAD on `/files/path/...`.
- * Prefer the Dust content-type header (needed for frames); fall back to
+ * Prefer the Ruby content-type header (needed for frames); fall back to
  * Content-Type. Returns null when the path is not found.
  */
 export async function fetchFileMetadataFromPath({
@@ -142,9 +142,9 @@ export async function fetchFileMetadataFromPath({
 
   const contentLength = response.headers.get("Content-Length");
   return {
-    fileId: response.headers.get(DUST_FILE_ID_HEADER),
+    fileId: response.headers.get(RUBY_FILE_ID_HEADER),
     contentType:
-      response.headers.get(DUST_FILE_CONTENT_TYPE_HEADER) ??
+      response.headers.get(RUBY_FILE_CONTENT_TYPE_HEADER) ??
       response.headers.get("Content-Type") ??
       "application/octet-stream",
     sizeBytes: contentLength ? Number(contentLength) : 0,

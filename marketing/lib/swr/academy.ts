@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Fetcher } from "swr";
 import { useSWRConfig } from "swr";
 
-const BROWSER_ID_KEY = "dust_academy_browser_id";
+const BROWSER_ID_KEY = "ruby_academy_browser_id";
 
 // Academy progress/chat endpoints live on the API host (front-api) under
 // /api/marketing/academy, alongside the other marketing endpoints. Marketing

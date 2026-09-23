@@ -1,6 +1,6 @@
 /**
  * Delete the auto-created groups left behind by the Pod deletion bug fixed in
- * https://github.com/dust-tt/tasks/issues/10245.
+ * https://github.com/ruby-ai/tasks/issues/10245.
  *
  * Dry run:
  *   npx tsx scripts/cleanup_orphaned_pod_groups.ts \

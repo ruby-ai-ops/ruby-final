@@ -1,10 +1,10 @@
-import type { DustAPI } from "../index";
+import type { RubyAPI } from "../index";
 import type { RetryOptions } from "./retry";
 import { DEFAULT_RETRY_OPTIONS, withRetry } from "./retry";
 import { MessageStreamImpl } from "./stream";
 import type {
   AgentResponse,
-  DustAPIOptions,
+  RubyAPIOptions,
   MessageStream,
   SendMessageOptions,
   SendMessageParams,
@@ -12,11 +12,11 @@ import type {
 } from "./types";
 
 export class AgentsAPI {
-  private _client: DustAPI;
+  private _client: RubyAPI;
   private _retryOptions: RetryOptions;
   private _autoApproveTools: boolean;
 
-  constructor(client: DustAPI, options?: Partial<DustAPIOptions>) {
+  constructor(client: RubyAPI, options?: Partial<RubyAPIOptions>) {
     this._client = client;
     this._retryOptions = { ...DEFAULT_RETRY_OPTIONS, ...options?.retry };
     this._autoApproveTools = options?.autoApproveTools ?? false;

@@ -14,7 +14,7 @@ import {
   LoadingBlock,
   PuzzlePiece01,
   ScrollableDataTable,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { useEffect, useMemo } from "react";
 import { useController, useFormContext } from "react-hook-form";

@@ -442,7 +442,7 @@ export const GPT_5_5_MODEL_CONFIG: ModelConfigurationType = {
   },
 };
 // Verified 2026-09-05: https://developers.openai.com/api/docs/models/gpt-6-astra
-// Dust caps the native 1,050,000-token context at GPT-5.6's 272,000 tokens.
+// Ruby caps the native 1,050,000-token context at GPT-5.6's 272,000 tokens.
 export const GPT_6_ASTRA_MODEL_CONFIG: ModelConfigurationType = {
   providerId: "openai",
   modelId: GPT_6_ASTRA_MODEL_ID,
@@ -527,7 +527,7 @@ export const GPT_5_6_SOL_MODEL_CONFIG: ModelConfigurationType = {
 };
 // Verified 2026-09-22: https://developers.openai.com/api/docs/models/gpt-6-sol
 // gpt-6-sol is the GPT-6 family's reasoning model for complex coding and
-// agentic workflows, sitting below gpt-6-astra. Dust caps the native
+// agentic workflows, sitting below gpt-6-astra. Ruby caps the native
 // 1,050,000-token context at the family's 272,000 tokens.
 export const GPT_6_SOL_MODEL_CONFIG: ModelConfigurationType = {
   providerId: "openai",
@@ -686,7 +686,7 @@ export const GPT_5_6_LUNA_MODEL_CONFIG: ModelConfigurationType = {
 // Verified 2026-09-22: https://developers.openai.com/api/docs/models/gpt-6-luna
 // gpt-6-luna is the fastest, most cost-efficient member of the gpt-6 family;
 // same reasoning abstraction mapping as gpt-6-astra, plus the "none" effort
-// that Astra dropped. Dust caps the native 1,050,000-token context at the
+// that Astra dropped. Ruby caps the native 1,050,000-token context at the
 // family's 272,000 tokens.
 export const GPT_6_LUNA_MODEL_CONFIG: ModelConfigurationType = {
   providerId: "openai",

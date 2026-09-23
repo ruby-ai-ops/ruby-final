@@ -5,7 +5,7 @@ import { getMcpServerViewDisplayName } from "@app/lib/actions/mcp_helper";
 import { useMCPServerViews } from "@app/lib/swr/mcp_servers";
 import { useSpaces } from "@app/lib/swr/spaces";
 import { isString } from "@app/types/shared/utils/general";
-import { Zap } from "@dust-tt/sparkle";
+import { Zap } from "@ruby-ai/ui";
 
 export function MCPToolsetsEnableActionDetails({
   owner,

@@ -1,6 +1,6 @@
 import assert from "@app/lib/utils/assert";
 import type { GroupType } from "@app/types/groups";
-import { Button, DataTable, Spinner, Users01, XClose } from "@dust-tt/sparkle";
+import { Button, DataTable, Spinner, Users01, XClose } from "@ruby-ai/ui";
 import type { CellContext, PaginationState } from "@tanstack/react-table";
 import { useMemo } from "react";
 

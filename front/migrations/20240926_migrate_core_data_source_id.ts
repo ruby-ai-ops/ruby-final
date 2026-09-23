@@ -54,7 +54,7 @@
 //
 //  const frontDataSourcesById = frontDataSources.reduce(
 //    (acc, ds) => {
-//      acc[`${ds.dustAPIProjectId}-${ds.dustAPIDataSourceId}`] = ds;
+//      acc[`${ds.rubyAPIProjectId}-${ds.rubyAPIDataSourceId}`] = ds;
 //      return acc;
 //    },
 //    {} as Record<string, (typeof frontDataSources)[0]>
@@ -82,7 +82,7 @@
 //  for (const frontDataSource of frontDataSources) {
 //    if (
 //      !coreDataSourcesById[
-//        `${frontDataSource.dustAPIProjectId}-${frontDataSource.dustAPIDataSourceId}`
+//        `${frontDataSource.rubyAPIProjectId}-${frontDataSource.rubyAPIDataSourceId}`
 //      ]
 //    ) {
 //      logger.error(
@@ -94,7 +94,7 @@
 //      return;
 //    }
 //  }
-//  // Attempt to delete in poke if any found here.
+//  // Attempt to delete in admin if any found here.
 //
 //  let coreRevert = "";
 //  let frontRevert = "";
@@ -107,13 +107,13 @@
 //      ];
 //    assert(frontDataSource, "unreachable");
 //    assert(
-//      frontDataSource.dustAPIDataSourceId === coreDataSource.data_source_id,
+//      frontDataSource.rubyAPIDataSourceId === coreDataSource.data_source_id,
 //      "mismatch in core/front data_source_id"
 //    );
 //
 //    const coreRevertQuery = `UPDATE data_sources SET data_source_id='${coreDataSource.data_source_id}' WHERE id=${coreDataSource.id};`;
 //    coreRevert += coreRevertQuery + "\n";
-//    const frontRevertQuery = `UPDATE data_sources SET "dustAPIDataSourceId"='${frontDataSource.dustAPIDataSourceId}' WHERE id=${frontDataSource.id};`;
+//    const frontRevertQuery = `UPDATE data_sources SET "rubyAPIDataSourceId"='${frontDataSource.rubyAPIDataSourceId}' WHERE id=${frontDataSource.id};`;
 //    frontRevert += frontRevertQuery + "\n";
 //
 //    if (execute) {
@@ -128,7 +128,7 @@
 //      );
 //
 //      await frontDataSource.update({
-//        dustAPIDataSourceId: newId,
+//        rubyAPIDataSourceId: newId,
 //      });
 //
 //      logger.info(

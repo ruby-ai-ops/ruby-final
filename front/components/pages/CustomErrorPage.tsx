@@ -1,5 +1,5 @@
 import { LinkWrapper } from "@app/lib/platform";
-import { AlertCircle, Button, Icon } from "@dust-tt/sparkle";
+import { AlertCircle, Button, Icon } from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
 interface CustomErrorPageProps {

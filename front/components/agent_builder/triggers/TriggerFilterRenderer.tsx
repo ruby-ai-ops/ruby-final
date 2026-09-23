@@ -5,7 +5,7 @@ import {
   parseMatcherExpression,
 } from "@app/lib/matcher";
 import { OperationDisplayNames } from "@app/lib/matcher/types";
-import { Chip, ContentMessage, cn } from "@dust-tt/sparkle";
+import { Chip, ContentMessage, cn } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 

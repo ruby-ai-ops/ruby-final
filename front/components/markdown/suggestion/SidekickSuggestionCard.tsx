@@ -46,7 +46,7 @@ import {
   Eye,
   Folder,
   LoadingBlock,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { memo, useMemo } from "react";
 import { useController, useFormContext } from "react-hook-form";

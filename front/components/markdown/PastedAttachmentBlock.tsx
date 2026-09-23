@@ -1,4 +1,4 @@
-import { AttachmentChip } from "@dust-tt/sparkle";
+import { AttachmentChip } from "@ruby-ai/ui";
 import { PaperclipIcon } from "lucide-react";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";

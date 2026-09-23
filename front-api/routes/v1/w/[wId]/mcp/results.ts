@@ -3,8 +3,8 @@ import {
   MCP_RESULTS_MAX_SIZE_BYTES,
   publishMCPResults,
 } from "@app/lib/api/assistant/mcp_events";
-import type { PostMCPResultsResponseType } from "@dust-tt/client";
-import { PublicPostMCPResultsRequestBodySchema } from "@dust-tt/client";
+import type { PostMCPResultsResponseType } from "@ruby-ai/client";
+import { PublicPostMCPResultsRequestBodySchema } from "@ruby-ai/client";
 import { bodyLimit } from "@front-api/middlewares/body_limit";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
@@ -20,7 +20,7 @@ const app = publicApiApp();
  *   post:
  *     summary: Submit MCP tool execution results
  *     description: |
- *       [Documentation](https://docs.dust.tt/docs/client-side-mcp-server)
+ *       [Documentation](https://docs.ruby.ad/docs/client-side-mcp-server)
  *       Endpoint for client-side MCP servers to submit the results of tool executions.
  *       This endpoint accepts the output from tools that were executed locally.
  *     tags:

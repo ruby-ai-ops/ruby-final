@@ -1,5 +1,5 @@
 import { TriggerResource } from "@app/lib/resources/trigger_resource";
-import type { GetTriggerResponseType } from "@dust-tt/client";
+import type { GetTriggerResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsAdmin } from "@front-api/middlewares/ensure_role";
 import { publicApiAuth } from "@front-api/middlewares/public_api_auth";

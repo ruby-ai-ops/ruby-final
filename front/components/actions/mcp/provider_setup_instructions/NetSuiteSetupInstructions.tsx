@@ -2,14 +2,14 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 
 const REDIRECT_URIS = [
-  "https://app.dust.tt/oauth/mcp_static/finalize",
-  "https://eu.dust.tt/oauth/mcp_static/finalize",
-  "https://dust.tt/oauth/mcp_static/finalize",
+  "https://app.ruby.ad/oauth/mcp_static/finalize",
+  "https://app.ruby.ad/oauth/mcp_static/finalize",
+  "https://app.ruby.ad/oauth/mcp_static/finalize",
 ];
 
 export function NetSuiteSetupInstructions() {
@@ -65,7 +65,7 @@ export function NetSuiteSetupInstructions() {
                 </p>
                 <p className="text-muted-foreground">
                   Install the <strong>MCP Standard Tools SuiteApp</strong> from
-                  the SuiteApp marketplace. This provides the tools Dust will
+                  the SuiteApp marketplace. This provides the tools Ruby will
                   use to interact with your NetSuite account.
                 </p>
               </div>
@@ -82,7 +82,7 @@ export function NetSuiteSetupInstructions() {
                   <strong>MCP Server Connection</strong>,{" "}
                   <strong>OAuth 2.0 Access Tokens</strong>, and{" "}
                   <strong>Login using OAuth 2.0 Access Tokens</strong>. Assign
-                  this role to the user who will authenticate with Dust.
+                  this role to the user who will authenticate with Ruby.
                 </p>
               </div>
 
@@ -95,7 +95,7 @@ export function NetSuiteSetupInstructions() {
                   <strong>
                     Setup → Integration → Manage Integrations → New
                   </strong>
-                  . Name it "Dust NetSuite MCP", enable{" "}
+                  . Name it "Ruby NetSuite MCP", enable{" "}
                   <strong>OAuth 2.0</strong> as the authentication method, and
                   add these three redirect URIs:
                 </p>

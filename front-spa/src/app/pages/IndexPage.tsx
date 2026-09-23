@@ -1,10 +1,10 @@
-import config from "@dust-tt/front/lib/api/config";
-import { useAuthContext } from "@dust-tt/front/lib/swr/workspaces";
+import config from "@ruby-ai/front/lib/api/config";
+import { useAuthContext } from "@ruby-ai/front/lib/swr/workspaces";
 import {
   getUserMenuModalRoute,
   isUserMenuModal,
   USER_MENU_GOTO_QUERY_PARAM,
-} from "@dust-tt/front/lib/user_menu";
+} from "@ruby-ai/front/lib/user_menu";
 import { AuthErrorPage } from "@spa/app/components/AuthErrorPage";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";

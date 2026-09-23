@@ -100,7 +100,7 @@ describe("POST /api/w/:wId/assistant/agent_configurations/similar", () => {
   it("returns empty similar agents when the workspace has no custom agents", async () => {
     const { workspace } = await setup();
 
-    // The workspace still has global agents (e.g. "Dust"), so the LLM is
+    // The workspace still has global agents (e.g. "Ruby"), so the LLM is
     // called against those; it's mocked here to report no duplicates.
     vi.mocked(runMultiActionsAgent).mockResolvedValue(
       mockSimilarAgentsResponse([])

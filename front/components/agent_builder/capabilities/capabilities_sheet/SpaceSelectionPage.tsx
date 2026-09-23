@@ -18,7 +18,7 @@ import {
   SheetHeader,
   SheetTitle,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useCallback, useMemo, useState } from "react";
 

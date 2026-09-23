@@ -14,7 +14,7 @@ import {
   DropdownMenuTagItem,
   DropdownMenuTagList,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 import { DeleteAssistantsDialog } from "./DeleteAssistantsDialog";

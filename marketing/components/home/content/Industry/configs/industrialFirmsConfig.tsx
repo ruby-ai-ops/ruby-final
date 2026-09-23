@@ -1,18 +1,18 @@
 import type { IndustryPageConfig } from "@marketing/components/home/content/Industry/configs/utils";
 import { createLayoutConfig } from "@marketing/components/home/content/Industry/configs/utils";
-import { BarChart01 } from "@dust-tt/sparkle";
+import { BarChart01 } from "@ruby-ai/ui";
 
 export const industrialFirmsConfig: IndustryPageConfig = {
   seo: {
-    title: "Dust for Industrial Manufacturing",
+    title: "Ruby for Industrial Manufacturing",
     description:
       "Empower every team with AI-powered workflows. From sales proposals to technical troubleshooting, give your entire organization instant access to expertise and streamlined operations.",
   },
   layout: createLayoutConfig([
     "hero",
     "painPoints",
-    "dustInAction",
-    "justUseDust",
+    "rubyInAction",
+    "justUseRuby",
   ]),
   hero: {
     chip: {
@@ -22,7 +22,7 @@ export const industrialFirmsConfig: IndustryPageConfig = {
     },
     title: (
       <>
-        Dust for
+        Ruby for
         <br /> Industrial
         <br /> Manufacturing
       </>
@@ -40,7 +40,7 @@ export const industrialFirmsConfig: IndustryPageConfig = {
       },
     },
     heroImage: {
-      src: "/static/landing/industry/Dust_connectors_microsoft.webp",
+      src: "/static/landing/industry/Ruby_connectors_microsoft.webp",
       alt: "Industrial Manufacturing AI-powered workflows illustration",
     },
   },
@@ -70,7 +70,7 @@ export const industrialFirmsConfig: IndustryPageConfig = {
       },
     ],
   },
-  dustInAction: {
+  rubyInAction: {
     title: "Top Use Cases for Industrial Firms",
     useCases: [
       {
@@ -199,8 +199,8 @@ export const industrialFirmsConfig: IndustryPageConfig = {
       },
     ],
   },
-  justUseDust: {
-    title: "#JustUseDust",
+  justUseRuby: {
+    title: "#JustUseRuby",
     titleColor: "text-blue-600",
     ctaButtons: {
       primary: {

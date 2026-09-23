@@ -10,7 +10,7 @@ import {
   useWorkspaceEgressPolicy,
 } from "@app/lib/swr/sandbox";
 import { isComputerFeatureEnabled } from "@app/types/shared/feature_flags";
-import { ContentMessage, InfoCircle, Page, Spinner } from "@dust-tt/sparkle";
+import { ContentMessage, InfoCircle, Page, Spinner } from "@ruby-ai/ui";
 
 export function NetworkSection() {
   const owner = useWorkspace();

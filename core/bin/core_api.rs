@@ -6,15 +6,15 @@ use axum::{
     Router,
 };
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
-use dust::api::{
+use ruby::api::{
     data_sources, databases, datasets, folders, nodes, projects, runs, specifications,
     sqlite_workers, tables, tags, tokenize,
 };
-use dust::{
+use ruby::{
     api::api_state::APIState,
     utils::{CoreRequestMakeSpan, CoreRequestOnResponse},
 };
-use dust::{
+use ruby::{
     api_keys::validate_api_key,
     data_sources::qdrant::QdrantClients,
     databases::table_upserts_background_worker::TableUpsertsBackgroundWorker,
@@ -43,7 +43,7 @@ static GLOBAL: Jemalloc = Jemalloc;
 /// Index
 
 async fn index() -> &'static str {
-    "dust_api server ready"
+    "ruby_api server ready"
 }
 
 // Misc
@@ -359,7 +359,7 @@ fn main() {
             tx2.send(()).ok();
         });
 
-        info!(pid = std::process::id() as u64, port = %port, "dust_api server started");
+        info!(pid = std::process::id() as u64, port = %port, "ruby_api server started");
 
         let mut stream = signal(SignalKind::terminate()).unwrap();
         stream.recv().await;
@@ -387,7 +387,7 @@ fn main() {
     match r {
         Ok(_) => (),
         Err(e) => {
-            error!(error = %e, "dust_api server error");
+            error!(error = %e, "ruby_api server error");
             std::process::exit(1);
         }
     }

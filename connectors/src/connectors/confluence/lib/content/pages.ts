@@ -32,7 +32,7 @@ import logger from "@connectors/logger/logger";
 import type { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { DataSourceConfig, ModelId } from "@connectors/types";
 import { INTERNAL_MIME_TYPES } from "@connectors/types";
-import { removeNulls } from "@dust-tt/client";
+import { removeNulls } from "@ruby-ai/client";
 import { Op } from "sequelize";
 import TurndownService from "turndown";
 
@@ -342,7 +342,7 @@ async function deletePage(
   const documentId = makePageInternalId(pageId);
   localLogger.info(
     { documentId },
-    "Deleting Confluence page from Dust data source."
+    "Deleting Confluence page from Ruby data source."
   );
 
   await deleteDataSourceDocument(dataSourceConfig, documentId, {

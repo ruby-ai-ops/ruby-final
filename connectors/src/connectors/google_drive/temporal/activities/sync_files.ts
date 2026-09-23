@@ -4,7 +4,7 @@ import { deleteOneFile } from "@connectors/connectors/google_drive/temporal/acti
 import { syncOneFile } from "@connectors/connectors/google_drive/temporal/file";
 import { getMimeTypesToSync } from "@connectors/connectors/google_drive/temporal/mime_types";
 import {
-  driveObjectToDustType,
+  driveObjectToRubyType,
   getAuthObject,
   getCachedLabels,
   getDriveClient,
@@ -141,7 +141,7 @@ export async function syncFiles(
         if (!file.id || !file.createdTime || !file.name || !file.mimeType) {
           throw new Error("Invalid file. File is: " + JSON.stringify(file));
         }
-        return driveObjectToDustType(connectorId, file, authCredentials);
+        return driveObjectToRubyType(connectorId, file, authCredentials);
       })
   );
   const subfolders = filesToSync.filter(

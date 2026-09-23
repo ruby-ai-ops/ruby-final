@@ -284,7 +284,7 @@ export const ASHBY_SERVER = {
       "Access and manage Ashby ATS (applicant tracking system) data for recruiting: candidates, job postings, interview feedback, referrals, and hiring.",
     authorization: null,
     icon: "AshbyLogo",
-    documentationUrl: "https://docs.dust.tt/docs/ashby-mcp",
+    documentationUrl: "https://docs.ruby.ad/docs/ashby-mcp",
   },
   tools: ASHBY_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

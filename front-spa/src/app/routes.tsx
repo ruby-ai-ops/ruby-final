@@ -1,4 +1,4 @@
-import Custom404 from "@dust-tt/front/components/pages/Custom404";
+import Custom404 from "@ruby-ai/front/components/pages/Custom404";
 import { GlobalErrorFallback } from "@spa/app/components/GlobalErrorFallback";
 import { AgentSurfaceRouterLayout } from "@spa/app/layouts/AgentSurfaceRouterLayout";
 import { AppContentRouterLayout } from "@spa/app/layouts/AppContentRouterLayout";
@@ -35,17 +35,17 @@ import type { RouteObject } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 const MaintenancePage = withSuspense(
-  () => import("@dust-tt/front/components/pages/MaintenancePage"),
+  () => import("@ruby-ai/front/components/pages/MaintenancePage"),
   "MaintenancePage"
 );
 
-// Redirect /poke/* to the poke app (poke.dust.tt)
-function PokeRedirect() {
+// Redirect /admin/* to the admin app (admin.ruby.ad)
+function AdminRedirect() {
   const location = useLocation();
-  const pokePath = location.pathname.replace(/^\/poke/, "");
-  const pokeOrigin = window.location.origin.replace("://app.", "://poke.");
+  const adminPath = location.pathname.replace(/^\/admin/, "");
+  const adminOrigin = window.location.origin.replace("://app.", "://admin.");
   window.location.replace(
-    `${pokeOrigin}${pokePath}${location.search}${location.hash}`
+    `${adminOrigin}${adminPath}${location.search}${location.hash}`
   );
   return null;
 }
@@ -94,8 +94,8 @@ export const routes: RouteObject[] = [
       },
       // Login (authenticated routes + logout)
       ...loginAuthenticatedRoutes,
-      // Redirect /poke/* to the poke app (e.g., poke.dust.tt)
-      { path: "/poke/*", element: <PokeRedirect /> },
+      // Redirect /admin/* to the admin app (e.g., admin.ruby.ad)
+      { path: "/admin/*", element: <AdminRedirect /> },
       // Login (unauthenticated routes)
       ...loginUnauthenticatedRoutes,
       // Global catch-all routes

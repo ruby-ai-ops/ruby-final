@@ -146,7 +146,7 @@ export const NEW_METRICS: MetricDef[] = [
   // used in the alert's group_filter and in the pricing_group_key must be
   // present together in one compound group key, or the alert silently never
   // fires (see Slack thread
-  // https://dust4ai.slack.com/archives/C0AGNMLBRB5/p1782740593425549).
+  // https://ruby4ai.slack.com/archives/C0AGNMLBRB5/p1782740593425549).
   // Bare `[usage_type(, tool_category)]` covers workspace-wide programmatic
   // spend totals (programmatic_awu_usage.ts) — a low-cardinality, global
   // grouping unrelated to any single user/key, so it needs its own compound
@@ -618,10 +618,10 @@ export function getNewPackages(): PackageDef[] {
     // Usage draws from the standard AWU rates with no included credits here;
     // a workspace-specific shared pool is granted separately, as an optional
     // recurring credit at switch-contract time (see `recurringFreeCreditAwuPerMonth`
-    // in `lib/api/poke/switch_contract.ts`) rather than baked into the
+    // in `lib/api/admin/switch_contract.ts`) rather than baked into the
     // package. PAYG at list price beyond the pool via the same Standard
     // USD/EUR rate card every other non-legacy package uses.
-    // dust-tt/decisions#937.
+    // ruby-ai/decisions#937.
     {
       name: "Partner Demo Enterprise USD",
       aliases: [{ name: "partner-demo-enterprise-usd" }],

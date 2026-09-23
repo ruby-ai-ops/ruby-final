@@ -47,7 +47,7 @@ const SUPPORT_OPTIONS: SupportOption[] = [
     icon: "/static/landing/industry/d-blue.svg",
     title: "Already have an account?",
     description:
-      "Ask the @help agent for instant answers to basic questions about using Dust.",
+      "Ask the @help agent for instant answers to basic questions about using Ruby.",
     color: "blue",
   },
   {
@@ -56,17 +56,17 @@ const SUPPORT_OPTIONS: SupportOption[] = [
     description: "We respond to all requests. No signup required.",
     button: {
       label: "Contact support",
-      href: "mailto:support@dust.tt",
+      href: "mailto:support@ruby-ai.app",
     },
     color: "red",
   },
   {
     icon: "/static/landing/industry/d-green.svg",
     title: "Community",
-    description: "Connect with other Dust users and get help from our team.",
+    description: "Connect with other Ruby users and get help from our team.",
     button: {
       label: "Join community",
-      href: "https://dust-community.tightknit.community/join",
+      href: "https://ruby-community.tightknit.community/join",
     },
     color: "green",
   },
@@ -78,7 +78,7 @@ const DOCUMENTATION_RESOURCES: DocumentationResource[] = [
     description: "All you need to create and use your first AI agents.",
     button: {
       label: "Visit documentation",
-      href: "https://docs.dust.tt",
+      href: "https://docs.ruby.ad",
     },
   },
   {
@@ -95,7 +95,7 @@ const DOCUMENTATION_RESOURCES: DocumentationResource[] = [
     description: "API Reference and technical documentation.",
     button: {
       label: "Access platform",
-      href: "https://docs.dust.tt/developers",
+      href: "https://docs.ruby.ad/docs/developers",
     },
   },
 ];
@@ -119,28 +119,28 @@ function HeroSection() {
             className="mb-4 text-3xl font-medium leading-tight md:text-4xl lg:text-5xl xl:text-6xl"
           >
             Need help with <br />
-            Dust?
+            Ruby?
           </H1>
           <P
             size="lg"
             className="pb-6 text-muted-foreground md:max-w-lg md:pb-8"
           >
             We're here to help you get the most out of your AI agents and the
-            Dust platform.
+            Ruby platform.
           </P>
           <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
             <UTMButton
               variant="primary"
               size="md"
               label="Contact support"
-              href="mailto:support@dust.tt"
+              href="mailto:support@ruby-ai.app"
               className="w-full sm:w-auto"
             />
             <UTMButton
               variant="outline"
               size="md"
               label="Visit our documentation"
-              href="https://docs.dust.tt"
+              href="https://docs.ruby.ad"
               className="w-full sm:w-auto"
             />
           </div>
@@ -151,8 +151,8 @@ function HeroSection() {
             <div className="relative w-full max-w-xl xl:max-w-2xl">
               <div className="relative z-10 mx-auto flex w-full items-center justify-center">
                 <img
-                  src="/static/landing/support/Dust_Question.png"
-                  alt="Dust support illustration showing question interface"
+                  src="/static/landing/support/Ruby_Question.png"
+                  alt="Ruby support illustration showing question interface"
                   className="h-auto w-full max-w-lg rounded-2xl object-contain lg:max-w-xl xl:max-w-2xl"
                 />
               </div>
@@ -244,17 +244,16 @@ function CommitmentSection() {
   );
 }
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function Support() {
+export default function SupportNextJS() {
   const router = useRouter();
 
   return (
     <>
       <PageMetadata
-        title="Dust Support & Help"
-        description="Get help with Dust AI platform. Access documentation, contact support, and connect with our community."
+        title="Ruby Support & Help"
+        description="Get help with Ruby AI platform. Access documentation, contact support, and connect with our community."
         pathname={router.asPath}
-        ogImage="https://dust.tt/static/landing/hero_dust.png"
+        ogImage="https://ruby.ad/static/landing/hero_ruby.png"
       />
 
       <div className="container flex w-full flex-col gap-4 px-2 py-2">
@@ -271,6 +270,9 @@ export default function Support() {
   );
 }
 
-Support.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
+SupportNextJS.getLayout = (
+  page: ReactElement,
+  pageProps: LandingLayoutProps
+) => {
   return <LandingLayout pageProps={pageProps}>{page}</LandingLayout>;
 };

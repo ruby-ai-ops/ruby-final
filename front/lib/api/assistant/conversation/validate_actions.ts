@@ -20,7 +20,7 @@ import {
 import { getRedisHybridManager } from "@app/lib/api/redis-hybrid-manager";
 import { resolveSandboxChildBlock } from "@app/lib/api/sandbox/sandbox_child_block";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { AgentMCPActionResource } from "@app/lib/resources/agent_mcp_action_resource";
 import type { ConversationResource } from "@app/lib/resources/conversation_resource";
 import logger from "@app/logger/logger";
@@ -40,7 +40,7 @@ export async function validateAction(
     approvalState: ActionApprovalStateType;
     messageId: string;
   }
-): Promise<Result<void, DustError>> {
+): Promise<Result<void, RubyError>> {
   const owner = auth.getNonNullableWorkspace();
   const user = auth.user();
   const { sId: conversationId, title: conversationTitle } = conversation;
@@ -75,7 +75,7 @@ export async function validateAction(
     })
   ) {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         "User is not authorized to validate this action"
       )
@@ -85,13 +85,13 @@ export async function validateAction(
   const action = await AgentMCPActionResource.fetchById(auth, actionId);
   if (!action) {
     return new Err(
-      new DustError("action_not_found", `Action not found: ${actionId}`)
+      new RubyError("action_not_found", `Action not found: ${actionId}`)
     );
   }
 
   if (action.status !== "blocked_validation_required") {
     return new Err(
-      new DustError(
+      new RubyError(
         "action_not_blocked",
         `Action is not blocked: ${action.status}`
       )
@@ -101,7 +101,7 @@ export async function validateAction(
   // Stale approval links must not relaunch an already terminated agent message.
   if (!(await action.canAgentMessageResume(auth))) {
     return new Err(
-      new DustError(
+      new RubyError(
         "action_not_blocked",
         "Action belongs to an agent message that can no longer resume"
       )

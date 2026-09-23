@@ -154,7 +154,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Dust Viz",
+  title: "Ruby Viz",
 };
 
 export default function RootLayout({

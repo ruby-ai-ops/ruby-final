@@ -34,7 +34,7 @@ import {
   Separator,
   Spinner,
   useSheetViewport,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 

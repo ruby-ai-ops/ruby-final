@@ -2,7 +2,7 @@ import { oneYearAfter } from "@app/lib/metronome/constants";
 
 // Prepaid seat-commitment math, shared verbatim by the SwitchContractDialog SPA
 // form (which prefills the default commitment price and shows the commitment
-// period) and the server (`lib/api/poke/switch_contract.ts`, which sizes the
+// period) and the server (`lib/api/admin/switch_contract.ts`, which sizes the
 // contract credit grant) so the two never drift.
 //
 // A prepaid seat commitment covers a fixed "commitment period": the window the

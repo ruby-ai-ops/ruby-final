@@ -11,7 +11,7 @@ import { AgentMemoryTab } from "@app/components/assistant/details/tabs/AgentMemo
 import { AgentTriggersTab } from "@app/components/assistant/details/tabs/AgentTriggersTab";
 import { useTriggerSheetState } from "@app/components/assistant/details/useTriggerSheetState";
 import { RestoreAgentDialog } from "@app/components/assistant/RestoreAgentDialog";
-import { FormProvider } from "@app/components/sparkle/FormProvider";
+import { FormProvider } from "@app/components/ui/FormProvider";
 import { isServerSideMCPServerConfigurationWithName } from "@app/lib/actions/types/guards";
 import { AGENT_MEMORY_SERVER_NAME } from "@app/lib/api/actions/servers/agent_memory/metadata";
 import { ASSISTANT_EMAIL_SUBDOMAIN } from "@app/lib/api/assistant/email/constants";
@@ -51,7 +51,7 @@ import {
   TabsTrigger,
   Users01,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useEffect, useState } from "react";
 
 function triggerTypeToBuilderType(
@@ -105,7 +105,7 @@ export const SCOPE_INFO: Record<
     shortLabel: "Default",
     label: "Default Agent",
     color: "primary",
-    text: "Default agents provided by Dust.",
+    text: "Default agents provided by Ruby.",
   },
   hidden: {
     shortLabel: "Not published",
@@ -451,7 +451,7 @@ export function AgentDetailsBody({
                   className="py-1"
                 >
                   <Markdown
-                    content={`Email this agent at \`${agentConfiguration.name}@${ASSISTANT_EMAIL_SUBDOMAIN}\`. Forward an email with your instructions and [get its reply](https://docs.dust.tt/docs/user-documentation/agents/integrations/send-and-forward-email-to-agents) in your inbox.`}
+                    content={`Email this agent at \`${agentConfiguration.name}@${ASSISTANT_EMAIL_SUBDOMAIN}\`. Forward an email with your instructions and [get its reply](https://docs.ruby.ad/docs/user-documentation/agents/integrations/send-and-forward-email-to-agents) in your inbox.`}
                     forcedTextSize="text-xs"
                     optimizeForStreaming={false}
                   />

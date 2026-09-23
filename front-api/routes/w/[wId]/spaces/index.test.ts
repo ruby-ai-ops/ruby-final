@@ -1,4 +1,4 @@
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { ProjectMetadataResource } from "@app/lib/resources/project_metadata_resource";
 import { WorkspaceResource } from "@app/lib/resources/workspace_resource";
 import { createPrivateApiMockRequest } from "@app/tests/utils/generic_private_api_tests";
@@ -161,7 +161,7 @@ describe("POST /api/w/:wId/spaces", () => {
   it("returns the database filesystem opt-in error from project creation", async () => {
     mockCreateSpaceAndGroup.mockResolvedValue(
       new Err(
-        new DustError(
+        new RubyError(
           "invalid_request_error",
           "The database-backed filesystem is not enabled for this workspace."
         )
@@ -170,7 +170,7 @@ describe("POST /api/w/:wId/spaces", () => {
     const { workspace } = await createPrivateApiMockRequest({ role: "admin" });
 
     const response = await postSpace(workspace, {
-      name: "[Dust FS] Test project",
+      name: "[Ruby FS] Test project",
       isRestricted: true,
       spaceKind: "project",
       memberIds: [],

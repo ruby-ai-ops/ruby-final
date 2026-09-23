@@ -36,10 +36,10 @@ export function isBatchNotFoundError(err: unknown): boolean {
 export type BatchResult = Map<string, LLMEvent[]>;
 
 /**
- * Enriched batch result that includes the dustRunId for each entry,
+ * Enriched batch result that includes the rubyRunId for each entry,
  * enabling linkage between batch results and run_usages for cost tracking.
  */
 export type BatchResultWithRunIds = Map<
   string,
-  { events: LLMEvent[]; dustRunId: string }
+  { events: LLMEvent[]; rubyRunId: string }
 >;

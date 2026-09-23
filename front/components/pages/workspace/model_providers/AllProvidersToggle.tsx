@@ -1,5 +1,5 @@
 import type { ProvidersSelection } from "@app/types/provider_selection";
-import { SliderToggle } from "@dust-tt/sparkle";
+import { SliderToggle } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 interface AllProvidersToggleProps {

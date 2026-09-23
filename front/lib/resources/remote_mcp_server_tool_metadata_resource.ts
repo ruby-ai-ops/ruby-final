@@ -1,7 +1,7 @@
 import type { MCPToolStakeLevelType } from "@app/lib/actions/constants";
 import { getServerTypeAndIdFromSId } from "@app/lib/actions/mcp_helper";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { RemoteMCPServerToolMetadataModel } from "@app/lib/models/agent/actions/remote_mcp_server_tool_metadata";
 import { BaseResource } from "@app/lib/resources/base_resource";
 import { SpaceResource } from "@app/lib/resources/space_resource";
@@ -45,7 +45,7 @@ export class RemoteMCPServerToolMetadataResource extends BaseResource<RemoteMCPS
       await SpaceResource.canAdministrateSystemSpace(auth);
 
     if (!canAdministrate) {
-      throw new DustError(
+      throw new RubyError(
         "unauthorized",
         "The user is not authorized to create a tool metadata"
       );
@@ -119,7 +119,7 @@ export class RemoteMCPServerToolMetadataResource extends BaseResource<RemoteMCPS
       await SpaceResource.canAdministrateSystemSpace(auth);
 
     if (!canAdministrate) {
-      throw new DustError(
+      throw new RubyError(
         "unauthorized",
         "The user is not authorized to update a tool metadata"
       );
@@ -155,7 +155,7 @@ export class RemoteMCPServerToolMetadataResource extends BaseResource<RemoteMCPS
       await SpaceResource.canAdministrateSystemSpace(auth);
 
     if (!canAdministrate) {
-      throw new DustError(
+      throw new RubyError(
         "unauthorized",
         "The user is not authorized to delete a tool metadata"
       );
@@ -181,7 +181,7 @@ export class RemoteMCPServerToolMetadataResource extends BaseResource<RemoteMCPS
       await SpaceResource.canAdministrateSystemSpace(auth);
 
     if (!canAdministrate) {
-      throw new DustError(
+      throw new RubyError(
         "unauthorized",
         "The user is not authorized to delete a tool metadata"
       );

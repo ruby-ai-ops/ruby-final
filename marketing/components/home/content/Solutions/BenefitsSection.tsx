@@ -1,8 +1,8 @@
 import { ImgBlock } from "@marketing/components/home/ContentBlocks";
 import { H2 } from "@marketing/components/home/ContentComponents";
-import { Avatar, Icon } from "@dust-tt/sparkle";
+import { Avatar, Icon } from "@ruby-ai/ui";
 
-type SparkleIcon = React.ComponentType<{
+type RubyUIIcon = React.ComponentType<{
   className?: string;
   size?: "sm" | "md" | "lg" | "xl";
 }>;
@@ -10,7 +10,7 @@ type SparkleIcon = React.ComponentType<{
 export interface BenefitsProps {
   sectionTitle?: string;
   items: {
-    icon: SparkleIcon;
+    icon: RubyUIIcon;
     title: string;
     description: string;
   }[];
@@ -42,7 +42,13 @@ export function BenefitsSection({ benefits }: BenefitsSectionProps) {
         {benefits.items.map((benefit, index) => (
           <ImgBlock
             key={index}
-            title={<div className="md:text-left">{benefit.title}</div>}
+            title={
+              <div className="md:text-left">
+                <span className="font-['Bricolage_Grotesque'] tracking-[-0.05em]">
+                  {benefit.title}
+                </span>
+              </div>
+            }
             content={<>{benefit.description}</>}
             className="h-full flex-1 md:text-left"
           >
@@ -52,11 +58,10 @@ export function BenefitsSection({ benefits }: BenefitsSectionProps) {
                 visual={
                   <Icon
                     visual={benefit.icon}
-                    className="text-primary-200"
+                    className="text-sky-500"
                     size="xl"
                   />
                 }
-                backgroundColor="bg-primary-700"
               />
             </div>
           </ImgBlock>

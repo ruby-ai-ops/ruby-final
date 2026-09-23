@@ -108,7 +108,7 @@ export class ChromeFirefoxAuthService extends AuthService {
     } finally {
       datadogLogs.clearUser();
       datadogLogs.setGlobalContext({
-        extensionVersion: process.env.DUST_EXTENSION_VERSION,
+        extensionVersion: process.env.RUBY_EXTENSION_VERSION,
         commitHash: process.env.COMMIT_HASH,
       });
       await this.storage.clear();

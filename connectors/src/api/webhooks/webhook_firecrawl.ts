@@ -8,7 +8,7 @@ import mainLogger from "@connectors/logger/logger";
 import { withLogging } from "@connectors/logger/withlogging";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { WithConnectorsAPIErrorReponse } from "@connectors/types";
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 import type { Request, Response } from "express";
 
 const logger = mainLogger.child(

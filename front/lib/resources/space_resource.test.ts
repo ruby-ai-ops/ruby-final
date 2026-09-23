@@ -1,7 +1,7 @@
 import { loadAllModels } from "@app/admin/db";
 import { hardDeleteSpace } from "@app/lib/api/spaces";
 import { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { ConversationSelectedSpaceModel } from "@app/lib/models/agent/conversation_selected_space";
 import { GroupPermissionResource } from "@app/lib/resources/group_permission_resource";
 import { GroupResource } from "@app/lib/resources/group_resource";
@@ -299,7 +299,7 @@ describe("SpaceResource", () => {
 
         expect(result.isErr()).toBe(true);
         if (result.isErr()) {
-          expect(result.error).toBeInstanceOf(DustError);
+          expect(result.error).toBeInstanceOf(RubyError);
           expect(result.error.code).toBe("unauthorized");
           expect(result.error.message).toBe(
             "You do not have permission to update space permissions."
@@ -319,7 +319,7 @@ describe("SpaceResource", () => {
 
         expect(result.isErr()).toBe(true);
         if (result.isErr()) {
-          expect(result.error).toBeInstanceOf(DustError);
+          expect(result.error).toBeInstanceOf(RubyError);
           expect(result.error.code).toBe("unauthorized");
         }
       });
@@ -907,7 +907,7 @@ describe("SpaceResource", () => {
 
         expect(result.isErr()).toBe(true);
         if (result.isErr()) {
-          expect(result.error).toBeInstanceOf(DustError);
+          expect(result.error).toBeInstanceOf(RubyError);
         }
       });
 

@@ -13,7 +13,7 @@ import {
   ToolbarContent,
   ToolbarIcon,
   ToolbarLink,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { Editor } from "@tiptap/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -81,9 +81,9 @@ export function ToolBarContent({ editor }: ToolBarContentProps) {
       openLinkDialog(editorRef.current);
     }
 
-    window.addEventListener("dust:openLinkDialog", handleOpenDialog);
+    window.addEventListener("ruby:openLinkDialog", handleOpenDialog);
     return () => {
-      window.removeEventListener("dust:openLinkDialog", handleOpenDialog);
+      window.removeEventListener("ruby:openLinkDialog", handleOpenDialog);
     };
   }, []);
 

@@ -24,7 +24,7 @@ import { WorkspaceFactory } from "@app/tests/utils/WorkspaceFactory";
 import type { AgentMCPActionType } from "@app/types/actions";
 import { frameV2ContentType } from "@app/types/files";
 
-process.env.DUST_SANDBOX_JWT_SECRET ??= "test-sandbox-jwt-secret";
+process.env.RUBY_SANDBOX_JWT_SECRET ??= "test-sandbox-jwt-secret";
 
 export async function createSandboxTokenTestContext({
   disableComputerFeature = false,
@@ -191,7 +191,7 @@ export async function createPersistedSandboxFunctionInvocationTokenTestContext({
 
   // Make the user a member of the pod space and refresh the auth so its groups include the pod
   // editor group, matching production where the invocation-token auth is granted the pod space
-  // groups (pod-scoped writes like DustFileSystem.forPod require read access on the space).
+  // groups (pod-scoped writes like RubyFileSystem.forPod require read access on the space).
   const user = context.auth.getNonNullableUser();
   const podSpace = await SpaceFactory.project(workspace, user.id);
   const auth = await Authenticator.fromUserIdAndWorkspaceId(

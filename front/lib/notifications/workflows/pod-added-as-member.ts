@@ -1,6 +1,6 @@
 import config from "@app/lib/api/config";
 import { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import type { NotificationAllowedTags } from "@app/lib/notifications";
 import { getNovuClient } from "@app/lib/notifications";
 import { renderEmail } from "@app/lib/notifications/email-templates/default";
@@ -152,7 +152,7 @@ export const podAddedAsMemberWorkflow = workflow(
           },
         });
         return {
-          subject: `[Dust] You were added to Pod '${details.podName}'`,
+          subject: `[Ruby] You were added to Pod '${details.podName}'`,
           body,
         };
       },
@@ -182,7 +182,7 @@ const triggerPodAddedAsMemberNotifications = async (
     pod: SpaceType;
     addedUserIds: string[];
   }
-): Promise<Result<void, DustError<"internal_error">>> => {
+): Promise<Result<void, RubyError<"internal_error">>> => {
   // Only notify for project spaces.
   if (pod.kind !== "project") {
     return new Ok(undefined);
@@ -237,14 +237,14 @@ const triggerPodAddedAsMemberNotifications = async (
         .map(({ error }) => error?.join("; "))
         .join("; ");
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: `Failed to trigger pod added as member notification: ${eventErrors}`,
       });
     }
   } catch (err) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: "Failed to trigger pod added as member notification",
       cause: normalizeError(err),

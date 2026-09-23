@@ -1,4 +1,4 @@
-import type { DustStreamEndpointConstructor } from "@app/lib/llms/stream/dust_stream_endpoint";
+import type { RubyStreamEndpointConstructor } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import type {
   EndpointConfig,
   Where,
@@ -7,7 +7,7 @@ import type {
 import { matchesWhere } from "@app/lib/llms/utils/matches_where";
 
 export function isEndpointAvailable(
-  endpointConstructor: DustStreamEndpointConstructor,
+  endpointConstructor: RubyStreamEndpointConstructor,
   workspaceConfiguration: WorkspaceConfig,
   inputCondition: Where<EndpointConfig>
 ) {

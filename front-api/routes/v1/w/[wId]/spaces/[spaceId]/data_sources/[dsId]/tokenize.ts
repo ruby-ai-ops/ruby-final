@@ -3,7 +3,7 @@ import { resolveLegacyDataSourceSpaceId } from "@app/lib/api/data_sources";
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import logger from "@app/logger/logger";
 import { CoreAPI } from "@app/types/core/core_api";
-import type { TokenizeResponseType } from "@dust-tt/client";
+import type { TokenizeResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";
@@ -82,8 +82,8 @@ app.post(
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const coreTokenizeRes = await coreAPI.dataSourceTokenize(
       {
-        projectId: dataSource.dustAPIProjectId,
-        dataSourceId: dataSource.dustAPIDataSourceId,
+        projectId: dataSource.rubyAPIProjectId,
+        dataSourceId: dataSource.rubyAPIDataSourceId,
         text,
       },
       { timeoutMs: CORE_TOKENIZE_TIMEOUT_MS }

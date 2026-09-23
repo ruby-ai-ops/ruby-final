@@ -1,0 +1,39 @@
+import { useTheme } from "@app/components/ui/ThemeContext";
+import type { LLMTrace } from "@app/lib/api/llm/traces/types";
+import {
+  Button,
+  Clipboard,
+  ClipboardCheck,
+  useCopyToClipboard,
+} from "@ruby-ai/ui";
+import { JsonViewer } from "@textea/json-viewer";
+
+interface RawJsonTabProps {
+  trace: LLMTrace;
+}
+
+export function RawJsonTab({ trace }: RawJsonTabProps) {
+  const { isDark } = useTheme();
+  const [isCopied, copy] = useCopyToClipboard();
+
+  return (
+    <div>
+      <div className="mb-4 pt-4 flex justify-end">
+        <Button
+          label={isCopied ? "Copied!" : "Copy JSON"}
+          variant="outline"
+          size="sm"
+          icon={isCopied ? ClipboardCheck : Clipboard}
+          onClick={() => copy(JSON.stringify(trace, null, 2))}
+        />
+      </div>
+      <JsonViewer
+        theme={isDark ? "dark" : "light"}
+        value={trace}
+        rootName="trace"
+        defaultInspectDepth={3}
+        className="p-4"
+      />
+    </div>
+  );
+}

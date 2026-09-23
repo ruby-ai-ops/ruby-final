@@ -20,7 +20,7 @@ import {
   DialogTitle,
   Hoverable,
   Page,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useRef, useState } from "react";
 
 export type WorkspaceLimit =
@@ -142,8 +142,8 @@ function getLimitPromptForCode(
 
       if (isFreeTrialPhonePlan(subscription.plan.code)) {
         return {
-          title: "Dust trial message limit reached",
-          validateLabel: isAdmin ? "Subscribe to Dust" : "Ok",
+          title: "Ruby trial message limit reached",
+          validateLabel: isAdmin ? "Subscribe to Ruby" : "Ok",
           onValidate: isAdmin
             ? () => {
                 void router.push(`/w/${owner.sId}/subscription`);
@@ -153,7 +153,7 @@ function getLimitPromptForCode(
             <>
               <Page.P>
                 You have reached the message limit under the trial. You can
-                subscribe to a paid plan to continue using Dust.
+                subscribe to a paid plan to continue using Ruby.
               </Page.P>
             </>
           ),
@@ -226,7 +226,7 @@ function getLimitPromptForCode(
           <>
             <Page.P>
               {isAdmin
-                ? "Your workspace has run out of credits. Please purchase more credits to continue using Dust."
+                ? "Your workspace has run out of credits. Please purchase more credits to continue using Ruby."
                 : "Your workspace has run out of credits. Please contact your administrator to purchase more credits."}
             </Page.P>
           </>
@@ -256,7 +256,7 @@ function getLimitPromptForCode(
     }
 
     case "user_credits_exhausted": {
-      // Off credit plans the per-member cap is set by Dust, not on the Usage
+      // Off credit plans the per-member cap is set by Ruby, not on the Usage
       // page, so there is nothing for an admin to change there.
       const canManageCap = isAdmin && isCreditPricedPlan(subscription.plan);
       return {
@@ -273,7 +273,7 @@ function getLimitPromptForCode(
               {canManageCap
                 ? "You have reached your personal usage cap. On the usage page you can change your seat or adjust user caps."
                 : isAdmin
-                  ? "You have reached your personal usage cap. Please contact your Dust representative to adjust it."
+                  ? "You have reached your personal usage cap. Please contact your Ruby representative to adjust it."
                   : "You have reached your personal usage cap. Please contact your administrator to increase it."}
             </Page.P>
           </>

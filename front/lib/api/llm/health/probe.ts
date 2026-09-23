@@ -3,9 +3,9 @@ import {
   PROBES_PER_RECOVERY,
 } from "@app/lib/api/llm/health/config";
 import { healthLogger } from "@app/lib/api/llm/health/logger";
-import { dangerouslyGetDustManagedLlmCredentials } from "@app/lib/api/provider_credentials";
-import { DUST_STREAM_ENDPOINTS } from "@app/lib/llms/stream";
-import type { DustStreamEndpointConstructor } from "@app/lib/llms/stream/dust_stream_endpoint";
+import { dangerouslyGetRubyManagedLlmCredentials } from "@app/lib/api/provider_credentials";
+import { RUBY_STREAM_ENDPOINTS } from "@app/lib/llms/stream";
+import type { RubyStreamEndpointConstructor } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import type { DegradedModelEndpointType } from "@app/lib/model_constructors/types/degradations";
 import type { InputConfig } from "@app/lib/model_constructors/types/input/configuration";
 import type { Payload } from "@app/lib/model_constructors/types/input/messages";
@@ -18,8 +18,8 @@ export function findStreamEndpoint({
   modelId,
   providerId,
   host,
-}: DegradedModelEndpointType): DustStreamEndpointConstructor | null {
-  for (const endpoint of Object.values(DUST_STREAM_ENDPOINTS)) {
+}: DegradedModelEndpointType): RubyStreamEndpointConstructor | null {
+  for (const endpoint of Object.values(RUBY_STREAM_ENDPOINTS)) {
     if (
       endpoint.modelConfig.modelId === modelId &&
       endpoint.modelConfig.providerId === providerId &&
@@ -38,7 +38,7 @@ export function findStreamEndpoint({
  * and falling back to the schema defaults when `none` is refused.
  */
 function buildProbeConfig(
-  endpoint: DustStreamEndpointConstructor
+  endpoint: RubyStreamEndpointConstructor
 ): InputConfig {
   const parsers = endpoint.configParsers ?? [];
   const withReasoningOff = parsers.reduce<InputConfig>(
@@ -63,9 +63,9 @@ function buildProbeConfig(
  * generation, with `PROBE_TIMEOUT_MS` bounding an endpoint that streams nothing.
  */
 async function runSingleProbe(
-  endpoint: DustStreamEndpointConstructor
+  endpoint: RubyStreamEndpointConstructor
 ): Promise<boolean> {
-  const credentials = dangerouslyGetDustManagedLlmCredentials();
+  const credentials = dangerouslyGetRubyManagedLlmCredentials();
   const instance = new endpoint(credentials);
 
   const config = buildProbeConfig(endpoint);

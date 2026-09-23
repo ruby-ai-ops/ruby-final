@@ -1,10 +1,10 @@
 import { ConfigurableToolInputSchemas } from "@app/lib/actions/mcp_internal_actions/input_schemas";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { z } from "zod";
 
-const PodTasksDustPodInputSchema =
+const PodTasksRubyPodInputSchema =
   ConfigurableToolInputSchemas[
-    INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+    INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
   ].optional();
 
 const PodTasksCreateTaskSourceInputSchema = z.object({
@@ -58,7 +58,7 @@ export const PodTasksCreateTasksInputSchema = z.object({
     .min(1)
     .max(30)
     .describe("List of tasks to create (max 30)."),
-  dustPod: PodTasksDustPodInputSchema.describe(
+  rubyPod: PodTasksRubyPodInputSchema.describe(
     "Optional Pod to create the tasks in; falls back to the conversation's Pod."
   ),
 });
@@ -111,7 +111,7 @@ export const PodTasksUpdateTasksInputSchema = z.object({
     .min(1)
     .max(30)
     .describe("List of tasks to update (max 30)."),
-  dustPod: PodTasksDustPodInputSchema.describe(
+  rubyPod: PodTasksRubyPodInputSchema.describe(
     "Optional Pod to look up the tasks in; falls back to the conversation's Pod."
   ),
 });

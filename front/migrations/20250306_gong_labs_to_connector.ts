@@ -87,14 +87,14 @@ async function createDataSourceAndConnector({
   const embedderConfig = EMBEDDING_CONFIGS[dataSourceEmbedder];
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
-  const dustProject = await coreAPI.createProject();
-  if (dustProject.isErr()) {
-    throw dustProject.error;
+  const rubyProject = await coreAPI.createProject();
+  if (rubyProject.isErr()) {
+    throw rubyProject.error;
   }
 
   const credentials = await getLlmCredentials(auth);
-  const dustDataSource = await coreAPI.createDataSource({
-    projectId: dustProject.value.project.project_id.toString(),
+  const rubyDataSource = await coreAPI.createDataSource({
+    projectId: rubyProject.value.project.project_id.toString(),
     config: {
       embedder_config: {
         embedder: embedderConfig,
@@ -108,8 +108,8 @@ async function createDataSourceAndConnector({
     name: dataSourceName,
   });
 
-  if (dustDataSource.isErr()) {
-    throw dustDataSource.error;
+  if (rubyDataSource.isErr()) {
+    throw rubyDataSource.error;
   }
 
   // Check if there's already a data source with the same name
@@ -128,8 +128,8 @@ async function createDataSourceAndConnector({
           isConnectorProviderAssistantDefaultSelected(provider),
         connectorProvider: provider,
         description: dataSourceDescription,
-        dustAPIProjectId: dustProject.value.project.project_id.toString(),
-        dustAPIDataSourceId: dustDataSource.value.data_source.data_source_id,
+        rubyAPIProjectId: rubyProject.value.project.project_id.toString(),
+        rubyAPIDataSourceId: rubyDataSource.value.data_source.data_source_id,
         name: dataSourceName,
         workspaceId: owner.id,
       },
@@ -168,8 +168,8 @@ async function createDataSourceAndConnector({
     await systemAPIKeyRes.value.delete();
 
     const deleteRes = await coreAPI.deleteDataSource({
-      projectId: dustProject.value.project.project_id.toString(),
-      dataSourceId: dustDataSource.value.data_source.data_source_id,
+      projectId: rubyProject.value.project.project_id.toString(),
+      dataSourceId: rubyDataSource.value.data_source.data_source_id,
     });
     if (deleteRes.isErr()) {
       logger.error(

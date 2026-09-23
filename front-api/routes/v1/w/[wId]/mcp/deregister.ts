@@ -17,7 +17,7 @@ const app = publicApiApp();
  *   post:
  *     summary: Deregister a client-side MCP server
  *     description: |
- *       [Documentation](https://docs.dust.tt/docs/client-side-mcp-server)
+ *       [Documentation](https://docs.ruby.ad/docs/client-side-mcp-server)
  *       Remove a previously registered client-side MCP server registration.
  *     tags:
  *       - MCP

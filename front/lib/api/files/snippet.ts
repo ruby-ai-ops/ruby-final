@@ -15,7 +15,7 @@ import {
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { isSupportedPlainTextContentType } from "@dust-tt/client";
+import { isSupportedPlainTextContentType } from "@ruby-ai/client";
 
 export const TRUNCATED_SUFFIX = "... (truncated)";
 export const TRUNCATED_SNIPPET_SIZE = 256;
@@ -78,8 +78,8 @@ export async function generateSnippet(
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const { bucket, path } = file.getContentBucketAndPath(auth);
     const schemaRes = await coreAPI.tableValidateCSVContent({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       bucket,
       bucketCSVPath: path,
     });

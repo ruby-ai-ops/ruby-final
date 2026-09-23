@@ -409,7 +409,7 @@ describe("storeAgentAnalyticsActivity - reasoning tokens", () => {
 
     const run = await RunResource.makeNew({
       appId: null,
-      dustRunId: generateRandomModelSId(),
+      rubyRunId: generateRandomModelSId(),
       runType: "deploy",
       useWorkspaceCredentials: false,
       workspaceId: workspace.id,
@@ -426,7 +426,7 @@ describe("storeAgentAnalyticsActivity - reasoning tokens", () => {
       { usageType: USAGE_TYPE_USER, useWorkspaceCredentials: false }
     );
     await AgentMessageModel.update(
-      { runIds: [run.dustRunId] },
+      { runIds: [run.rubyRunId] },
       {
         where: {
           id: message.agentMessageId,

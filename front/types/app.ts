@@ -20,7 +20,7 @@ export type AppType = {
   savedSpecification: string | null;
   savedConfig: string | null;
   savedRun: string | null;
-  dustAPIProjectId: string;
+  rubyAPIProjectId: string;
   space: SpaceType;
 };
 
@@ -42,10 +42,10 @@ export type SpecificationBlockType = {
 
 export type SpecificationType = Array<SpecificationBlockType>;
 
-export const DustAppRunConfigurationSchema = z.object({
+export const RubyAppRunConfigurationSchema = z.object({
   id: DbModelIdSchema,
   sId: z.string(),
-  type: z.literal("dust_app_run_configuration"),
+  type: z.literal("ruby_app_run_configuration"),
   appWorkspaceId: z.string(),
   appId: z.string(),
   name: z.string(),
@@ -53,6 +53,6 @@ export const DustAppRunConfigurationSchema = z.object({
 });
 
 // TODO Daph refactor this we could simplify this.
-export type DustAppRunConfigurationType = z.infer<
-  typeof DustAppRunConfigurationSchema
+export type RubyAppRunConfigurationType = z.infer<
+  typeof RubyAppRunConfigurationSchema
 >;

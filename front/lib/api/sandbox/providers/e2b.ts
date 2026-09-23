@@ -72,7 +72,7 @@ const MAX_CACHED_CONNECTIONS = 1_000;
  * Environment variable carrying inline stdin. The wrapper below unexports it before handing over
  * to the command, so the payload reaches the workload on its stdin and not in its environment.
  */
-const INLINE_STDIN_ENV = "DUST_EXEC_STDIN";
+const INLINE_STDIN_ENV = "RUBY_EXEC_STDIN";
 
 /**
  * Cap on inline stdin, kept under a pipe's 64KiB buffer so `printf` writes the whole payload and
@@ -237,11 +237,11 @@ function getStdinDelivery(
  */
 function withInlineStdin(command: string): string {
   return [
-    `__dust_stdin="$${INLINE_STDIN_ENV}"`,
+    `__ruby_stdin="$${INLINE_STDIN_ENV}"`,
     `unset ${INLINE_STDIN_ENV}`,
     // printf's own stderr is dropped: the only thing it can report is a write error against a
     // command that exited without reading its stdin, which is not a failure of that command.
-    `exec /bin/bash --noprofile --norc -c ${shellEscape(command)} < <(printf '%s' "$__dust_stdin" 2>/dev/null)`,
+    `exec /bin/bash --noprofile --norc -c ${shellEscape(command)} < <(printf '%s' "$__ruby_stdin" 2>/dev/null)`,
   ].join("; ");
 }
 

@@ -1,4 +1,4 @@
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import type { ReactNode } from "react";
 

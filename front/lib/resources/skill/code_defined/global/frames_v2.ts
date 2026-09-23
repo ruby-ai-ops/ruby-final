@@ -5,7 +5,7 @@ export const FRAMES_V2_INSTRUCTIONS = `\
 # Frames v2
 
 Frames are interactive React applications. Use the Computer to create and edit their source, and
-the \`dsbx frame\` CLI for their lifecycle.
+the \`rbx frame\` CLI for their lifecycle.
 
 ## Frames v2 vs legacy Frames
 
@@ -16,7 +16,7 @@ the \`dsbx frame\` CLI for their lifecycle.
   atomically activates the publication. The first publish also assigns the Frame's stable identity.
 - A legacy (v1) Frame is anchored by a single \`.tsx\` entry file. Publishing resolves that entry
   file and its local imports, then updates the existing Frame through the legacy bundle pipeline.
-- \`dsbx frame publish\` supports both formats. Edit and publish an existing legacy Frame in place;
+- \`rbx frame publish\` supports both formats. Edit and publish an existing legacy Frame in place;
   do not recreate it just to make it v2.
 
 ## Before authoring
@@ -31,7 +31,7 @@ manifest. Do not store durable application state in memory; use a Frame database
 Every Computer command is a round trip of several seconds. When possible, write the real source
 and publish a new Frame in one Computer command. There is no scaffold step: create the folder,
 write \`manifest.json\` and \`index.tsx\` (plus any functions or databases), lint, then publish.
-The first \`dsbx frame publish\` mints the Frame's stable identity from the manifest path and
+The first \`rbx frame publish\` mints the Frame's stable identity from the manifest path and
 activates the publication.
 
 \`\`\`bash
@@ -49,28 +49,28 @@ export default function Frame() {
 }
 EOF
 bash "/files/conversation-<conversationId>/skills/Create Frames/lint.sh" "$FRAME" &&
-dsbx frame publish "$FRAME/manifest.json"
+rbx frame publish "$FRAME/manifest.json"
 \`\`\`
 
 In a Pod, write it under \`/files/pod-<podId>/...\` instead. The folder name is the Frame's name.
 Only use separate Computer commands when a step needs the previous one's output.
 
 Always pass canonical \`/files/conversation-<conversationId>/...\` or
-\`/files/pod-<podId>/...\` paths to \`dsbx frame\`. Do not pass the convenience aliases
+\`/files/pod-<podId>/...\` paths to \`rbx frame\`. Do not pass the convenience aliases
 \`/files/conversation\` or \`/files/pod\`.
 
 ## Retrieve a Frame's share link
 
-Frame sharing and use rights are configured by the user in the Dust UI. Agents must not change
+Frame sharing and use rights are configured by the user in the Ruby UI. Agents must not change
 the share scope or grant access to recipients. The CLI can only retrieve an existing share link:
 
 \`\`\`bash
-dsbx frame share-link /files/<scope>/<frame-folder>
+rbx frame share-link /files/<scope>/<frame-folder>
 \`\`\`
 
 This command is read-only. It never creates sharing state, changes the scope, or adds or removes
 recipients. It returns the stable Frame ID, current share scope, and existing share URL. If no share
-link exists, ask the user to configure sharing in the Dust UI.
+link exists, ask the user to configure sharing in the Ruby UI.
 
 ## Frames v2 source layout
 
@@ -133,8 +133,8 @@ The manifest declares the UI entry point, every server function, and every datab
 - Each database declaration names Frame-owned SQLite state and points to its Drizzle schema file.
   Database names start with a lower-case letter and contain only lower-case letters, digits, and
   underscores. A Frame can declare up to ${MAX_FRAME_DATABASE_COUNT} databases.
-- \`executionMode\` defaults to \`durable\`. Use \`fast\` when the function never calls a Dust tool;
-  use \`durable\` when it calls \`tools.call\` (or otherwise invokes a Dust tool).
+- \`executionMode\` defaults to \`durable\`. Use \`fast\` when the function never calls a Ruby tool;
+  use \`durable\` when it calls \`tools.call\` (or otherwise invokes a Ruby tool).
 - \`defaultStake\` defaults to \`low\`. \`never_ask\` runs unattended, \`low\` asks once and can be
   always approved, and \`high\` asks on every call when the function is exposed as a tool.
 - Input, output, and caller-identity schemas belong in the function's TypeScript \`schema\` export,
@@ -143,7 +143,7 @@ The manifest declares the UI entry point, every server function, and every datab
 ## When to add a server function
 
 Use a Frame function when the UI needs server-side behavior it cannot safely or technically run in
-the browser sandbox: calling a Dust tool, using a workspace secret, applying trusted authorization,
+the browser sandbox: calling a Ruby tool, using a workspace secret, applying trusted authorization,
 or running browser-incompatible logic. Keep presentation, filtering, sorting, and other local UI
 behavior in the React component.
 
@@ -200,7 +200,7 @@ schemas once in that folder and import them into each function that uses them. P
 each entry point and its relative imports from one source snapshot. Editing any source or helper
 changes nothing for viewers until the whole Frame is published again.
 
-\`zod\`, \`drizzle-orm\`, and \`@dust/pod\` are available to function source. Other npm packages are
+\`zod\`, \`drizzle-orm\`, and \`@ruby-ai/pod\` are available to function source. Other npm packages are
 not guaranteed at build time.
 
 ## Persisting state in a Frame database
@@ -230,7 +230,7 @@ export const comments = sqliteTable(
 );
 
 // functions/post-comment.ts
-import { db } from "@dust/pod";
+import { db } from "@ruby-ai/pod";
 import { comments } from "../databases/comments.db.ts";
 
 const inserted = db("comments")
@@ -262,35 +262,35 @@ on every read and write. Fetching a row by primary key does not prove ownership.
 
 ### Fast and durable functions
 
-- \`fast\` runs synchronously and returns sooner, but cannot call Dust tools. Frame databases, local
+- \`fast\` runs synchronously and returns sooner, but cannot call Ruby tools. Frame databases, local
   computation, local binaries, and allowed outbound HTTP still work, but count against its shorter
   execution ceiling.
-- \`durable\` is required for Dust tool calls (\`tools.call\`). Tool calls can wait for user approval
+- \`durable\` is required for Ruby tool calls (\`tools.call\`). Tool calls can wait for user approval
   or personal authentication, so the invocation runs in the background and resumes when the user
   responds.
 
 The decision is mechanical: if a function calls \`tools.call\`, declare it \`durable\`; otherwise
 prefer \`fast\`. A durable call is visibly slower, so its UI needs a loading state.
 
-When polled UI data comes from a Dust tool and can be slightly stale, split the path: a durable
+When polled UI data comes from a Ruby tool and can be slightly stale, split the path: a durable
 function refreshes the Frame database and a fast function serves the stored snapshot. Keep the
 whole path durable only when every call must be live or the interaction itself is the tool action.
 
-### Calling Dust tools from a function
+### Calling Ruby tools from a function
 
 **Computer vs Frame function — do not mix the two call styles:**
 
-- From the **Computer** (your bash session): explore and invoke tools with the \`dsbx tools\` CLI
-  (\`dsbx tools --help\`, \`dsbx tools --json …\`). That is the Computer skill's path.
-- Inside **Frame function source** (\`fetch()\`): use \`tools.call\` from \`@dust/pod\`. Do **not**
-  shell out to \`dsbx\`, \`execFile\`, or \`child_process\` to run \`dsbx tools\` from a function.
+- From the **Computer** (your bash session): explore and invoke tools with the \`rbx tools\` CLI
+  (\`rbx tools --help\`, \`rbx tools --json …\`). That is the Computer skill's path.
+- Inside **Frame function source** (\`fetch()\`): use \`tools.call\` from \`@ruby-ai/pod\`. Do **not**
+  shell out to \`rbx\`, \`execFile\`, or \`child_process\` to run \`rbx tools\` from a function.
 
 Discover the exact server name, tool name, and argument shapes from the Computer with
-\`dsbx tools --help\` (and trial calls with \`--json\` if needed). Then implement the durable
+\`rbx tools --help\` (and trial calls with \`--json\` if needed). Then implement the durable
 function with the typed client:
 
 \`\`\`ts
-import { tools } from "@dust/pod";
+import { tools } from "@ruby-ai/pod";
 
 export default {
   async fetch(request: Request): Promise<Response> {
@@ -310,7 +310,7 @@ export default {
 
 \`tools.call(server, tool, args?)\` takes a plain JSON \`args\` object (no stringification, no CLI
 flags). Transport failures throw; a tool that ran and reported an error resolves with
-\`isError: true\`. Publishing a function that calls Dust tools as \`fast\` is a bug: the runtime
+\`isError: true\`. Publishing a function that calls Ruby tools as \`fast\` is a bug: the runtime
 refuses the tool call. Function \`fetch()\` requests use the same workspace egress allowlist and
 \`DST_*\` / \`DSEC_*\` configuration rules as the Computer.
 
@@ -320,7 +320,7 @@ The \`schema.userIdentity\` policy decides whether the function may run:
 
 - \`optional\` is the default and allows calls without a user.
 - \`workspace_user_required\` requires a current member of the owning workspace.
-- \`interactive_workspace_user_required\` additionally requires the member's live Dust session;
+- \`interactive_workspace_user_required\` additionally requires the member's live Ruby session;
   delegated agents, schedules, and API clients are refused.
 - \`frame_author_required\` requires the caller to be able to modify the Frame v2 source files. In a
   standalone conversation this follows conversation access; in a Pod it follows write access to the
@@ -329,7 +329,7 @@ The \`schema.userIdentity\` policy decides whether the function may run:
 Frame UI calls are available only to authenticated members of the owning workspace; guest or link
 viewers must get a typed authorization error. A function policy can impose a stricter requirement.
 
-Use \`currentUser()\` from \`@dust/pod\` for the trusted caller. It returns
+Use \`currentUser()\` from \`@ruby-ai/pod\` for the trusted caller. It returns
 \`{ sId, firstName, lastName, fullName, image, isPodMember, isPodEditor }\`, or \`null\` under the
 optional policy when there is no user. Never accept a caller \`userId\` as function input: the caller
 can forge it. The frontend's \`useUserIdentity\` hook also returns \`isFrameAuthor\`; use that flag to
@@ -339,7 +339,7 @@ client-side conditions are not access control.
 ## Storing files in a Frame
 
 A Frame owns one persistent folder in its sandbox, kept for the lifetime of the Frame.
-\`persistentFilesDir()\` from \`@dust/pod\` returns its absolute path; use it with \`node:fs\` like
+\`persistentFilesDir()\` from \`@ruby-ai/pod\` returns its absolute path; use it with \`node:fs\` like
 any other directory, for whatever the Frame needs to keep: uploads, generated artifacts, cached
 tool results. It is not part of the Frame source, so its contents exist only at run time and you
 cannot read them while authoring.
@@ -366,7 +366,7 @@ from the name, and never \`image/svg+xml\` or \`text/html\`, which execute scrip
 ## Calling a function from the Frame UI
 
 Use the \`useFrameFunction\` and \`useFrameFunctionMutation\` hooks from
-\`@dust/react-hooks\`. Refer to the Frame's own functions by their bare manifest name.
+\`@ruby-ai/react-hooks\`. Refer to the Frame's own functions by their bare manifest name.
 
 Design contracts around UI interactions rather than database tables:
 
@@ -382,7 +382,7 @@ it to the shape you declared in \`schema.output\` before reading fields — neve
 \`result.data.someField\` directly or TypeScript will fail lint and publish.
 
 \`\`\`tsx
-import { useFrameFunction } from "@dust/react-hooks";
+import { useFrameFunction } from "@ruby-ai/react-hooks";
 
 type CommentList = { comments: { id: number; body: string }[] };
 
@@ -397,7 +397,7 @@ in flight, \`isMutating\` is true (\`isLoading\` is an alias of the same flag). 
 value is also \`unknown\`: cast it the same way when you pass it into \`mutate\`.
 
 \`\`\`tsx
-import { useFrameFunction, useFrameFunctionMutation } from "@dust/react-hooks";
+import { useFrameFunction, useFrameFunctionMutation } from "@ruby-ai/react-hooks";
 
 type CommentList = { comments: { id: number; body: string }[] };
 
@@ -459,7 +459,7 @@ functions, and all declared database schemas are built or reconciled, stored, an
 atomically:
 
 \`\`\`bash
-dsbx frame publish /files/<scope>/<frame-folder>/manifest.json
+rbx frame publish /files/<scope>/<frame-folder>/manifest.json
 \`\`\`
 
 Publishing runs the manifest, UI, function-build, database-contract and Tailwind checks.
@@ -469,7 +469,7 @@ are errors, not warnings: use predefined classes or the \`style\` prop. Run the 
 before publishing to check in-package file paths and function names. For a brand-new folder,
 publish also assigns the Frame identity; republishing the same path updates that Frame in place.
 
-Use \`dsbx frame publish\` instead of \`bun build\` or an ad hoc regex scan: those do not use the
+Use \`rbx frame publish\` instead of \`bun build\` or an ad hoc regex scan: those do not use the
 Frame build context and report unrelated or noisy failures.
 
 After a successful publish, call \`conversation_side_panel.open_frame\` exactly once with \`path\`
@@ -479,7 +479,7 @@ the Frame card to the answer. Do not parse the Frame ID from the CLI output for 
 Call a function from the active publication by its stable Frame ID and bare manifest name:
 
 \`\`\`bash
-dsbx frame call <frame-id> <function-name> --input '<json>'
+rbx frame call <frame-id> <function-name> --input '<json>'
 \`\`\`
 
 During authoring, the mounted Frame folder or manifest path is also accepted in place of the ID.
@@ -490,12 +490,12 @@ UI.
 For a legacy Frame, pass its entry source file instead:
 
 \`\`\`bash
-dsbx frame publish /files/<scope>/<frame>.tsx
+rbx frame publish /files/<scope>/<frame>.tsx
 \`\`\`
 
 The only interactive-content MCP tool available under Frames v2 is
 \`export_interactive_content_file\`: use it to export a Frame as a PNG screenshot or PDF document.
-Use the Computer and CLI for all other Frame operations. Use \`dsbx frame --help\` as the authority
+Use the Computer and CLI for all other Frame operations. Use \`rbx frame --help\` as the authority
 for available operations.
 
 Do not use \`mv\` or \`cp\` on a Frame folder: move and clone are not supported in this
@@ -505,7 +505,7 @@ initial scope.
 
 Use the Computer to edit Frame source. Never run concurrent file mutations against the same path:
 read the current file, apply one edit, then start the next edit to that file. Apply the edit, run
-the UI linter for v2 Frames, and run \`dsbx frame publish\` in the same Computer command.
+the UI linter for v2 Frames, and run \`rbx frame publish\` in the same Computer command.
 
 When fixing a validation or runtime problem, preserve working structure and make the smallest
 targeted edit. Do not replace an entire UI or function for a localized state, schema, or styling bug.

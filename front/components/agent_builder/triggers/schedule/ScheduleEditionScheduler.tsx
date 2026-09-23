@@ -18,7 +18,7 @@ import {
   Label,
   TextArea,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useMemo, useState } from "react";
 

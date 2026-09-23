@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
   Page,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 import {
   Bar,

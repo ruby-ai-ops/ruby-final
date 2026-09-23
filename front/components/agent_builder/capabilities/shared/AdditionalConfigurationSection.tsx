@@ -15,7 +15,7 @@ import {
   Label,
   SearchInput,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useMemo, useState } from "react";
 import { useController } from "react-hook-form";

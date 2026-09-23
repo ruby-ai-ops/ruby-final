@@ -1,10 +1,10 @@
 included:
-  - Dust
-  - SparkleTokens/Sources/SparkleTokens/Helpers
+  - Ruby
+  - RubyUITokens/Sources/RubyUITokens/Helpers
 
 excluded:
-  - Dust.xcodeproj
-  - SparkleTokens/Sources/SparkleTokens/Generated
+  - Ruby.xcodeproj
+  - RubyUITokens/Sources/RubyUITokens/Generated
 
 disabled_rules:
   - trailing_comma

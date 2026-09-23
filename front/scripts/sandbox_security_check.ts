@@ -267,8 +267,8 @@ async function checkBasicSandboxFunctionality(
     `
 set -euo pipefail
 echo "shell-ok"
-/opt/bin/dsbx version >/dev/null
-DUST_PROFILE=openai source /opt/dust/profile/common.sh
+/opt/bin/rbx version >/dev/null
+RUBY_PROFILE=openai source /opt/ruby/profile/common.sh
 declare -F shell >/dev/null
 /opt/venv/bin/python3 -c 'import requests'
 # /files/conversation and /files/pod no longer exist in the image. They are
@@ -276,7 +276,7 @@ declare -F shell >/dev/null
 # itself and verify that a subdirectory created there mimics the runtime
 # mkdir-p and is accessible, exercising the setgid and default-ACL inheritance.
 test -d /files
-tmpdir=$(mktemp -d /files/dust-security-smoke-XXXXXX)
+tmpdir=$(mktemp -d /files/ruby-security-smoke-XXXXXX)
 proof="$tmpdir/file-ok"
 printf 'file-ok' > "$proof"
 test "$(cat "$proof")" = "file-ok"
@@ -308,17 +308,17 @@ if touch /home/agent/.bash_profile 2>/dev/null; then
   echo "CRITICAL: workload can write /home/agent/.bash_profile"
   exit 1
 fi
-if printf '\\n# security probe\\n' >> /usr/local/bin/dust-gcs-token-server.py 2>/dev/null; then
+if printf '\\n# security probe\\n' >> /usr/local/bin/ruby-gcs-token-server.py 2>/dev/null; then
   echo "CRITICAL: workload can modify the GCS token server"
   exit 1
 fi
 site_packages=$(/opt/venv/bin/python3 -c 'import site; print(site.getsitepackages()[0])')
-if touch "$site_packages/dust-security-check.pth" 2>/dev/null; then
+if touch "$site_packages/ruby-security-check.pth" 2>/dev/null; then
   echo "CRITICAL: workload can plant a Python .pth file"
   exit 1
 fi
-if printf '\\n# security probe\\n' >> /opt/dust/profile/common.sh 2>/dev/null; then
-  echo "CRITICAL: workload can modify the Dust tool profile"
+if printf '\\n# security probe\\n' >> /opt/ruby/profile/common.sh 2>/dev/null; then
+  echo "CRITICAL: workload can modify the Ruby tool profile"
   exit 1
 fi
 `,
@@ -327,7 +327,7 @@ fi
     assertCommandSucceeded(`${user} service path denials`, pathDenials);
   }
 
-  const marker = `/tmp/dust-agent-dotfile-proof-${Date.now()}`;
+  const marker = `/tmp/ruby-agent-dotfile-proof-${Date.now()}`;
   try {
     const seed = await runRootBashScript(
       provider,
@@ -382,15 +382,15 @@ async function checkTelemetrySecretBoundary(
   provider: E2BSandboxProvider,
   providerId: string
 ): Promise<void> {
-  const envPath = "/run/dust/fluent-bit.env";
-  const processPidPath = "/run/dust/telemetry-secret-probe.pid";
+  const envPath = "/run/ruby/fluent-bit.env";
+  const processPidPath = "/run/ruby/telemetry-secret-probe.pid";
   try {
     const seed = await runRootBashScript(
       provider,
       providerId,
       `
 set -euo pipefail
-/usr/bin/install -d -o root -g root -m 755 /run/dust
+/usr/bin/install -d -o root -g root -m 755 /run/ruby
 printf '%s\n' 'DD_API_KEY=sandbox-security-sentinel' > ${envPath}
 /usr/bin/chown root:root ${envPath}
 /usr/bin/chmod 600 ${envPath}
@@ -401,7 +401,7 @@ printf '%s\n' "$!" > ${processPidPath}
 secret_pid=$(/bin/cat ${processPidPath})
 /usr/bin/test -r "/proc/$secret_pid/environ"
 `,
-      { envVars: { DUST_TELEMETRY_SECRET: "sandbox-security-sentinel" } }
+      { envVars: { RUBY_TELEMETRY_SECRET: "sandbox-security-sentinel" } }
     );
     assertCommandSucceeded("telemetry secret boundary seed", seed);
 
@@ -504,9 +504,9 @@ async function checkRootTokenRefreshAcrossSleepWake(
     providerId,
     `
 set -euo pipefail
-printf %s ${shellQuote(initialToken)} | /usr/local/bin/dust-gcs-write-token.sh /run/dust-gcs/mount-0.json
-/usr/local/bin/dust-gcs-token-firewall.sh
-/usr/bin/nohup /usr/local/bin/dust-gcs-token-server.py >/run/dust-gcs/security-check-server.log 2>&1 &
+printf %s ${shellQuote(initialToken)} | /usr/local/bin/ruby-gcs-write-token.sh /run/ruby-gcs/mount-0.json
+/usr/local/bin/ruby-gcs-token-firewall.sh
+/usr/bin/nohup /usr/local/bin/ruby-gcs-token-server.py >/run/ruby-gcs/security-check-server.log 2>&1 &
 for _attempt in $(/usr/bin/seq 1 100); do
   if [ "$(/usr/bin/curl -sf http://127.0.0.1:987/token/mount-0)" = ${shellQuote(initialToken)} ]; then
     exit 0
@@ -533,7 +533,7 @@ exit 1
     providerId,
     `
 set -euo pipefail
-printf %s ${shellQuote(refreshedToken)} | /usr/local/bin/dust-gcs-write-token.sh /run/dust-gcs/mount-0.json
+printf %s ${shellQuote(refreshedToken)} | /usr/local/bin/ruby-gcs-write-token.sh /run/ruby-gcs/mount-0.json
 test "$(/usr/bin/curl -sf http://127.0.0.1:987/token/mount-0)" = ${shellQuote(refreshedToken)}
 test ! -e /home/agent/.bash_profile
 `
@@ -827,12 +827,12 @@ const POD_STATE_DIR_EXPECTATIONS = [
   { path: "/sandbox-state", owner: "root:root", mode: "755" },
   {
     path: "/sandbox-state/databases",
-    owner: "dust-state:agent",
+    owner: "ruby-state:agent",
     mode: "2770",
   },
   {
     path: "/sandbox-state/replica",
-    owner: "dust-state:dust-state",
+    owner: "ruby-state:ruby-state",
     mode: "700",
   },
 ] as const;
@@ -987,7 +987,7 @@ async function checkRootExecPathHijack(
   providerId: string
 ): Promise<void> {
   const marker = `root-exec-path-proof-${Date.now()}`;
-  const secretPath = `/run/dust/${marker}.secret`;
+  const secretPath = `/run/ruby/${marker}.secret`;
   const leakDir = `/tmp/${marker}`;
   const plantedPath = "/opt/venv/bin/nohup";
 
@@ -997,7 +997,7 @@ async function checkRootExecPathHijack(
       providerId,
       `
 set -euo pipefail
-/usr/bin/mkdir -p /run/dust
+/usr/bin/mkdir -p /run/ruby
 printf %s ${shellQuote(marker)} > ${shellQuote(secretPath)}
 /usr/bin/chown root:root ${shellQuote(secretPath)}
 /usr/bin/chmod 600 ${shellQuote(secretPath)}
@@ -1011,14 +1011,14 @@ printf %s ${shellQuote(marker)} > ${shellQuote(secretPath)}
       providerId,
       `
 set -euo pipefail
-/usr/bin/cat > ${shellQuote(plantedPath)} <<'DUST_HIJACK_EOF'
+/usr/bin/cat > ${shellQuote(plantedPath)} <<'RUBY_HIJACK_EOF'
 #!/bin/sh
 /bin/mkdir -p ${leakDir}
 /usr/bin/id > ${leakDir}/id
 /bin/cat ${secretPath} > ${leakDir}/leaked 2>${leakDir}/cat.err || true
 /bin/chmod -R a+rX ${leakDir}
 exec /usr/bin/nohup "$@"
-DUST_HIJACK_EOF
+RUBY_HIJACK_EOF
 /usr/bin/chmod 755 ${shellQuote(plantedPath)}
 `,
       { user: AGENT_PROXIED_USER }
@@ -1035,7 +1035,7 @@ DUST_HIJACK_EOF
       `
 set -euo pipefail
 /usr/bin/rm -rf ${shellQuote(leakDir)}
-nohup /bin/true >/tmp/dust-root-path-hijack-nohup.log 2>&1 &
+nohup /bin/true >/tmp/ruby-root-path-hijack-nohup.log 2>&1 &
 /usr/bin/sleep 1
 if [ -f ${shellQuote(`${leakDir}/leaked`)} ]; then
   echo "CRITICAL: root command resolved agent-writable ${plantedPath}"
@@ -1103,14 +1103,14 @@ async function checkSystemdUnitSearchPathShadow(
       `
 set -euo pipefail
 /usr/bin/mkdir -p ${shellQuote(proofDir)}
-/usr/bin/cat > ${shellQuote(unitPath)} <<'DUST_SYSTEMD_UNIT_EOF'
+/usr/bin/cat > ${shellQuote(unitPath)} <<'RUBY_SYSTEMD_UNIT_EOF'
 [Unit]
-Description=Dust systemd lookup hardening proof
+Description=Ruby systemd lookup hardening proof
 
 [Service]
 Type=oneshot
 ExecStart=/bin/sh -c '/usr/bin/mkdir -p ${proofDir}; /usr/bin/id > ${proofDir}/id; /usr/bin/touch ${proofDir}/triggered; /usr/bin/chmod -R a+rX ${proofDir}'
-DUST_SYSTEMD_UNIT_EOF
+RUBY_SYSTEMD_UNIT_EOF
 `,
       { user: AGENT_PROXIED_USER }
     );
@@ -1170,7 +1170,7 @@ async function checkPodStateWorkloadAccess(
     `
 set -euo pipefail
 test -d /sandbox-state/databases
-proof=$(mktemp /sandbox-state/databases/dust-security-smoke-XXXXXX)
+proof=$(mktemp /sandbox-state/databases/ruby-security-smoke-XXXXXX)
 printf 'db-ok' > "$proof"
 test "$(cat "$proof")" = "db-ok"
 rm -f "$proof"
@@ -1196,7 +1196,7 @@ if ls /sandbox-state/replica >/dev/null 2>&1; then
   echo "CRITICAL: workload user can list /sandbox-state/replica"
   exit 1
 fi
-if touch /sandbox-state/replica/dust-security-proof 2>/dev/null; then
+if touch /sandbox-state/replica/ruby-security-proof 2>/dev/null; then
   echo "CRITICAL: workload user can write /sandbox-state/replica"
   exit 1
 fi
@@ -1271,7 +1271,7 @@ else
   echo "SSH_PORT_22_LISTENING=0"
 fi
 echo "--- sshd-hardening ---"
-/usr/bin/cat /etc/ssh/sshd_config.d/00-dust-sandbox-hardening.conf
+/usr/bin/cat /etc/ssh/sshd_config.d/00-ruby-sandbox-hardening.conf
 echo "--- dns-systemd ---"
 if /usr/bin/systemctl is-active --quiet systemd-resolved.service; then
   echo "SYSTEM_RESOLVER_ACTIVE=1"
@@ -1295,16 +1295,16 @@ if /usr/bin/python3 -c 'import socket; client = socket.socket(socket.AF_UNIX); c
 else
   echo "ROOT_RESOLVE1_VARLINK_OK=0"
 fi
-if /usr/bin/systemctl is-active --quiet dust-egress-resolver.service; then
+if /usr/bin/systemctl is-active --quiet ruby-egress-resolver.service; then
   echo "DNS_RESOLVER_ACTIVE=1"
 else
-  /usr/bin/systemctl status dust-egress-resolver.service --no-pager || true
+  /usr/bin/systemctl status ruby-egress-resolver.service --no-pager || true
   echo "DNS_RESOLVER_ACTIVE=0"
 fi
-if /usr/bin/systemctl is-active --quiet dust-egress-nftables.service; then
+if /usr/bin/systemctl is-active --quiet ruby-egress-nftables.service; then
   echo "DNS_NFTABLES_ACTIVE=1"
 else
-  /usr/bin/systemctl status dust-egress-nftables.service --no-pager || true
+  /usr/bin/systemctl status ruby-egress-nftables.service --no-pager || true
   echo "DNS_NFTABLES_ACTIVE=0"
 fi
 if /usr/bin/grep -Eq '^nameserver 127\\.0\\.0\\.53$' /etc/resolv.conf; then
@@ -1325,9 +1325,9 @@ else
   echo "ROOT_GCS_HTTPS_OK=0"
 fi
 echo "--- nft-ip ---"
-/usr/sbin/nft -n list table ip dust-egress
+/usr/sbin/nft -n list table ip ruby-egress
 echo "--- nft-ip6 ---"
-/usr/sbin/nft -n list table ip6 dust-egress
+/usr/sbin/nft -n list table ip6 ruby-egress
 `
   );
 

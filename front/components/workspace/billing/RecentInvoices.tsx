@@ -2,7 +2,7 @@ import { getPriceAsString } from "@app/lib/client/subscription";
 import { useRecentBillingInvoices } from "@app/lib/swr/workspaces";
 import { formatTimestampToFriendlyDate } from "@app/lib/utils";
 import type { BillingInvoice } from "@app/types/api/billing/invoices";
-import { Button, DataTable, Spinner } from "@dust-tt/sparkle";
+import { Button, DataTable, Spinner } from "@ruby-ai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useSubscriptionContext } from "./SubscriptionContext";
 

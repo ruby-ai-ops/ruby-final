@@ -24,7 +24,7 @@ const getRobotsPolicies = () => {
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.NEXT_PUBLIC_DUST_MARKETING_URL,
+  siteUrl: process.env.NEXT_PUBLIC_RUBY_MARKETING_URL,
   exclude: EXCLUDED_PATHS,
   generateIndexSitemap: false,
   changefreq: "weekly",

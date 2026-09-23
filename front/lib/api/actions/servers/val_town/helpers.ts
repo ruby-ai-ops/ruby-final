@@ -1,7 +1,7 @@
 import type { ToolContext } from "@app/lib/actions/types";
 import { isLightServerSideMCPToolConfiguration } from "@app/lib/actions/types/guards";
 import type { Authenticator } from "@app/lib/auth";
-import { DustAppSecretModel } from "@app/lib/models/dust_app_secret";
+import { RubyAppSecretModel } from "@app/lib/models/ruby_app_secret";
 import { decrypt } from "@app/types/shared/utils/encryption";
 import ValTown from "@valtown/sdk";
 
@@ -31,7 +31,7 @@ export async function getValTownClient(
     return null;
   }
 
-  const secret = await DustAppSecretModel.findOne({
+  const secret = await RubyAppSecretModel.findOne({
     where: {
       name: toolConfig.secretName,
       workspaceId: auth.getNonNullableWorkspace().id,

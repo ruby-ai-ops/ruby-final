@@ -5,7 +5,7 @@
  * The runtime stubs below throw if invoked unaliased — that path should
  * not exist now that front/ no longer runs as a Next.js app.
  */
-import type { SparkleLinkProps } from "@dust-tt/sparkle";
+import type { RubyUILinkProps } from "@ruby-ai/ui";
 import type { ComponentType, ReactNode } from "react";
 
 import type { AppRouter } from "./types";
@@ -18,7 +18,7 @@ function unreachable(): never {
 }
 
 export const LinkWrapper: ComponentType<
-  SparkleLinkProps & { children: ReactNode }
+  RubyUILinkProps & { children: ReactNode }
 > = () => unreachable();
 
 export function useAppRouter(): AppRouter {

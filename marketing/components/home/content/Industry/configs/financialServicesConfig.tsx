@@ -1,10 +1,10 @@
 import type { IndustryPageConfig } from "@marketing/components/home/content/Industry/configs/utils";
 import { createLayoutConfig } from "@marketing/components/home/content/Industry/configs/utils";
-import { Bank } from "@dust-tt/sparkle";
+import { Bank } from "@ruby-ai/ui";
 
 export const financialServicesConfig: IndustryPageConfig = {
   seo: {
-    title: "Dust for Financial Services",
+    title: "Ruby for Financial Services",
     description:
       "AI agents for compliance, support, and growth. Transform financial operations with intelligent automation while maintaining the highest security and regulatory standards.",
   },
@@ -13,12 +13,12 @@ export const financialServicesConfig: IndustryPageConfig = {
     "aiAgents",
     "trustedBy",
     "painPoints",
-    "dustInAction",
+    "rubyInAction",
     "impactMetrics",
     "demoVideo",
     "testimonial",
     "customerStories",
-    "justUseDust",
+    "justUseRuby",
   ]),
   hero: {
     chip: {
@@ -28,7 +28,7 @@ export const financialServicesConfig: IndustryPageConfig = {
     },
     title: (
       <>
-        Dust for
+        Ruby for
         <br /> Financial Services
       </>
     ),
@@ -46,7 +46,7 @@ export const financialServicesConfig: IndustryPageConfig = {
     },
     testimonialCard: {
       quote:
-        "Dust helped us transform Kyriba's operations and foster a culture of continuous innovation.",
+        "Ruby helped us transform Kyriba's operations and foster a culture of continuous innovation.",
       author: {
         name: "Boris Lipiainen",
         title: "Chief Technology Officer",
@@ -66,7 +66,7 @@ export const financialServicesConfig: IndustryPageConfig = {
   aiAgents: {
     title: "AI agents for compliance, support, and growth",
     description:
-      "Augment your compliance, support, and revenue teams with AI agents built for modern financial institutions. Dust connects your people, automates workflows, and delivers insights—so you can focus on growth, risk management, and exceptional client experience.",
+      "Augment your compliance, support, and revenue teams with AI agents built for modern financial institutions. Ruby connects your people, automates workflows, and delivers insights—so you can focus on growth, risk management, and exceptional client experience.",
     bgColor: "bg-gray-50",
   },
   trustedBy: {
@@ -99,8 +99,8 @@ export const financialServicesConfig: IndustryPageConfig = {
       },
     ],
   },
-  dustInAction: {
-    title: "Dust in action",
+  rubyInAction: {
+    title: "Ruby in action",
     useCases: [
       {
         title: "Compliance operations",
@@ -252,12 +252,12 @@ export const financialServicesConfig: IndustryPageConfig = {
     ],
   },
   demoVideo: {
-    sectionTitle: "See Dust in motion",
-    videoUrl: "https://fast.wistia.net/embed/iframe/zzbhe95pvz",
+    sectionTitle: "See Ruby in motion",
+    videoUrl: "/static/workspace-demo/index.html",
   },
   testimonial: {
     quote:
-      "Dust helped us transform Kyriba's operations and foster a culture of continuous innovation.",
+      "Ruby helped us transform Kyriba's operations and foster a culture of continuous innovation.",
     author: {
       name: "Boris Lipiainen",
       title: "Chief Technology Officer",
@@ -269,12 +269,12 @@ export const financialServicesConfig: IndustryPageConfig = {
     bgColor: "bg-violet-400",
     textColor: "text-white",
   },
-  justUseDust: {
-    title: "Just use Dust",
+  justUseRuby: {
+    title: "Just use Ruby",
     titleColor: "text-blue-600",
     ctaButtons: {
       primary: {
-        label: "Start Free Trial",
+        label: "Get started",
         href: "/api/workos/login",
       },
       secondary: {

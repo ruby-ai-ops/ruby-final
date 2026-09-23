@@ -20,7 +20,7 @@ import type {
 import { CoreAPI } from "@app/types/core/core_api";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
-import { isDustMimeType } from "@dust-tt/client";
+import { isRubyMimeType } from "@ruby-ai/client";
 
 const DEFAULT_LIST_LIMIT = 50;
 
@@ -45,7 +45,7 @@ export async function list(
   const effectiveNodeId = !!nodeId ? nodeId : null;
   const effectiveCursor = !!nextPageCursor ? nextPageCursor : undefined;
 
-  const invalidMimeTypes = mimeTypes?.filter((m) => !isDustMimeType(m));
+  const invalidMimeTypes = mimeTypes?.filter((m) => !isRubyMimeType(m));
   if (invalidMimeTypes && invalidMimeTypes.length > 0) {
     return new Err(
       new MCPError(`Invalid mime types: ${invalidMimeTypes.join(", ")}`, {
@@ -110,7 +110,7 @@ export async function list(
     }
 
     const dataSourceConfig = agentDataSourceConfigurations.find(
-      ({ dataSource }) => dataSource.dustAPIDataSourceId === dataSourceId
+      ({ dataSource }) => dataSource.rubyAPIDataSourceId === dataSourceId
     );
 
     if (!dataSourceConfig) {

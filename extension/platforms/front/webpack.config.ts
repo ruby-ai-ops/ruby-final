@@ -148,11 +148,11 @@ export const getConfig = ({ env }: { env: Environment }) => {
         COMMIT_HASH: process.env.COMMIT_HASH || getCommitHash(),
         DATADOG_CLIENT_TOKEN: process.env.DATADOG_CLIENT_TOKEN || "",
         DATADOG_ENV: isDevelopment ? "dev" : "prod",
-        DUST_EXTENSION_VERSION: `front-${version}`,
-        NEXT_PUBLIC_DUST_APP_URL: process.env.NEXT_PUBLIC_DUST_APP_URL || "",
-        NEXT_PUBLIC_DUST_API_URL: process.env.NEXT_PUBLIC_DUST_API_URL || "",
-        NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL:
-          process.env.NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL || "",
+        RUBY_EXTENSION_VERSION: `front-${version}`,
+        NEXT_PUBLIC_RUBY_APP_URL: process.env.NEXT_PUBLIC_RUBY_APP_URL || "",
+        NEXT_PUBLIC_RUBY_API_URL: process.env.NEXT_PUBLIC_RUBY_API_URL || "",
+        NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL:
+          process.env.NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL || "",
         NEXT_PUBLIC_VIRTUOSO_LICENSE_KEY:
           process.env.NEXT_PUBLIC_VIRTUOSO_LICENSE_KEY || "",
         VIZ_PUBLIC_URL: process.env.VIZ_PUBLIC_URL || "",
@@ -165,7 +165,7 @@ export const getConfig = ({ env }: { env: Environment }) => {
       packageDirPath
         ? new ZipPlugin({
             path: packageDirPath,
-            filename: `Dust_Extension_Front.${env}.v${version}.zip`,
+            filename: `Ruby_Extension_Front.${env}.v${version}.zip`,
           })
         : null,
     ].filter(Boolean),

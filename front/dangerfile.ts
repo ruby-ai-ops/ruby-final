@@ -5,7 +5,7 @@ const sdkAckLabel = "sdk-ack";
 const migrationAckLabel = "migration-ack";
 const documentationAckLabel = "documentation-ack";
 const rawSqlAckLabel = "raw-sql-ack";
-const sparkleVersionAckLabel = "sparkle-version-ack";
+const uiVersionAckLabel = "ui-version-ack";
 const sseAckLabel = "sse-ack";
 const sandboxImageAckLabel = "sandbox-image-ack";
 const auditLogAckLabel = "audit-log-ack";
@@ -182,19 +182,19 @@ function warnDocumentationAck(documentationAckLabel: string) {
     "Files in `front-api/routes/v1/` have been modified and the PR has the `" +
       documentationAckLabel +
       "` label. \n" +
-      "Don't forget to run `npm -w front-api run docs` and use the `Deploy OpenAPI Docs` Github action to update https://docs.dust.tt/reference."
+      "Don't forget to run `npm -w front-api run docs` and use the `Deploy OpenAPI Docs` Github action to update https://docs.ruby.ad/reference."
   );
 }
 
 function checkAppsRegistry() {
   warn(
     `File \`front/lib/registry.ts\` has been modified.
-    Please check [Runbook: Update Assistant dust-apps](https://app.notion.com/p/dust-tt/Runbook-Update-Assistant-dust-apps-18c28599d94180d78dabe92f445157a8)
+    Please check [Runbook: Update Assistant ruby-apps](https://app.notion.com/p/ruby-ai/Runbook-Update-Assistant-ruby-apps-18c28599d94180d78dabe92f445157a8)
     `
   );
 }
 
-async function checkSparkleVersionConsistency() {
+async function checkRubyUIVersionConsistency() {
   const frontPackageJsonDiff =
     await danger.git.diffForFile("front/package.json");
 
@@ -212,9 +212,9 @@ async function checkSparkleVersionConsistency() {
     fs.readFileSync("../extension/package.json", "utf8")
   );
 
-  const frontVersion = frontPackageJson.dependencies?.["@dust-tt/sparkle"];
+  const frontVersion = frontPackageJson.dependencies?.["@ruby-ai/ui"];
   const extensionVersion =
-    extensionPackageJson.dependencies?.["@dust-tt/sparkle"];
+    extensionPackageJson.dependencies?.["@ruby-ai/ui"];
 
   if (!frontVersion || !extensionVersion) {
     return;
@@ -223,14 +223,14 @@ async function checkSparkleVersionConsistency() {
   const normalizeVersion = (v: string) => v.replace(/^[~^]/, "");
 
   if (normalizeVersion(frontVersion) !== normalizeVersion(extensionVersion)) {
-    const message = `Sparkle versions must be kept in sync:\n- front: ${frontVersion}\n- extension: ${extensionVersion}`;
+    const message = `RubyUI versions must be kept in sync:\n- front: ${frontVersion}\n- extension: ${extensionVersion}`;
 
-    if (hasLabel(sparkleVersionAckLabel)) {
+    if (hasLabel(uiVersionAckLabel)) {
       warn(
-        `${message}\nPR has "${sparkleVersionAckLabel}" label. Ensure both are updated together.`
+        `${message}\nPR has "${uiVersionAckLabel}" label. Ensure both are updated together.`
       );
     } else {
-      fail(`${message}\nUpdate both or add "${sparkleVersionAckLabel}" label.`);
+      fail(`${message}\nUpdate both or add "${uiVersionAckLabel}" label.`);
     }
   }
 }
@@ -325,8 +325,8 @@ function failSandboxImageAck() {
       "Live sandboxes pin the registered (baseImage, version) tuple at " +
       "creation time, so any image change must be paired with:\n" +
       "  1. A bump to the corresponding image `tag` in the registry " +
-      "(e.g. `DUST_BASE_IMAGE_VERSION`).\n" +
-      "  2. After deploy, opening `/poke/kill` (Kill Switches) and " +
+      "(e.g. `RUBY_BASE_IMAGE_VERSION`).\n" +
+      "  2. After deploy, opening `/admin/kill` (Kill Switches) and " +
       "requesting a kill of older versions for the affected image so " +
       "existing conversations get fresh sandboxes.\n\n" +
       `Please add the \`${sandboxImageAckLabel}\` label to acknowledge ` +
@@ -338,7 +338,7 @@ function warnSandboxImageAck() {
   warn(
     "Files in `front/lib/api/sandbox/image/` have been modified and the " +
       `PR has the \`${sandboxImageAckLabel}\` label. After deploy, open ` +
-      "`/poke/kill` (Kill Switches) and trigger a kill request for the " +
+      "`/admin/kill` (Kill Switches) and trigger a kill request for the " +
       "affected image so existing conversations recreate against the new " +
       "version."
   );
@@ -539,7 +539,7 @@ async function checkDiffFiles() {
     checkSDKLabel();
   }
 
-  // dust-apps registry
+  // ruby-apps registry
   const modifiedAppsRegistry = diffFiles.filter((path) => {
     return path === "front/lib/registry.ts";
   });
@@ -555,13 +555,13 @@ async function checkDiffFiles() {
     await checkRawSqlRegistry(modifiedFrontFiles);
   }
 
-  // Sparkle version consistency check
+  // RubyUI version consistency check
   const modifiedPackageJsonFiles = diffFiles.filter((path) => {
     return path === "front/package.json" || path === "extension/package.json";
   });
 
   if (modifiedPackageJsonFiles.length > 0) {
-    await checkSparkleVersionConsistency();
+    await checkRubyUIVersionConsistency();
   }
 
   // Temporal workflow/activity files — changes risk non-deterministic errors

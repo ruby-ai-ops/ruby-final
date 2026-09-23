@@ -6,8 +6,8 @@ import { AssistantsTable } from "@app/components/assistant/manager/AssistantsTab
 import { NoArchivedAgentsCTA } from "@app/components/assistant/manager/NoArchivedAgentsCTA";
 import { TagsFilterMenu } from "@app/components/assistant/TagsFilterMenu";
 import { getModelLogoByModelId } from "@app/components/providers/types";
-import { useSetContentWidth } from "@app/components/sparkle/AppLayoutContext";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useSetContentWidth } from "@app/components/ui/AppLayoutContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useHashParam } from "@app/hooks/useHashParams";
 import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
 import { clientFetch } from "@app/lib/egress/client";
@@ -32,7 +32,7 @@ import {
   TabsList,
   TabsTrigger,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 export const AGENT_MANAGER_TABS = [
@@ -50,7 +50,7 @@ export const AGENT_MANAGER_TABS = [
   {
     id: "global",
     label: "Default",
-    description: "Default agents provided by Dust.",
+    description: "Default agents provided by Ruby.",
   },
   {
     id: "archived",

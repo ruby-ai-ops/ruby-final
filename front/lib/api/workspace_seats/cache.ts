@@ -9,7 +9,7 @@ import { z } from "zod";
 
 const WORKSPACE_ACTIVE_SEATS_CACHE_TTL_MS = 5 * 60 * 1000;
 // Keep the deployed physical key: the cached payload has not changed, so moving it would only
-// create a rolling-deploy invalidation problem. The Poke operation keeps its owner-facing id.
+// create a rolling-deploy invalidation problem. The Admin operation keeps its owner-facing id.
 const WORKSPACE_ACTIVE_SEATS_CACHE_ID = "_countActiveSeatsInWorkspaceUncached";
 const WORKSPACE_ACTIVE_SEATS_CACHE_OPERATIONS_ID = "workspace_active_seats";
 const workspaceActiveSeatsCacheKey = (workspaceId: string) =>

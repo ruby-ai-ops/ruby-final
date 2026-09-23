@@ -1,13 +1,13 @@
 import { isFramePublicationError } from "@app/lib/api/frames/publication_storage";
 import type { PublishFrameFromSourceError } from "@app/lib/api/frames/publish_from_source";
 import { isPublishFrameError } from "@app/lib/api/viz/publish_frame";
-import { isDustFileSystemError } from "@app/types/file_system";
+import { isRubyFileSystemError } from "@app/types/file_system";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 
 export function frameSourceErrorStatus(
   error: PublishFrameFromSourceError
 ): 400 | 403 | 500 {
-  if (isDustFileSystemError(error)) {
+  if (isRubyFileSystemError(error)) {
     if (error.code === "unauthorized") {
       return 403;
     }

@@ -74,7 +74,7 @@ export abstract class FireworksResponsesStream extends WithOpenAIResponsesInputC
     this.client = new OpenAI({
       apiKey: FIREWORKS_API_KEY,
       baseURL: FIREWORKS_BASE_URL,
-      // The agent loop owns retries so every attempt gets its own Dust trace.
+      // The agent loop owns retries so every attempt gets its own Ruby trace.
       maxRetries: 0,
     });
   }
@@ -96,7 +96,7 @@ export abstract class FireworksResponsesStream extends WithOpenAIResponsesInputC
     return {
       ...request,
       model: `${FIREWORKS_MODEL_PREFIX}${this.constructor.model}`,
-      // Dust replays the complete Responses transcript, including reasoning
+      // Ruby replays the complete Responses transcript, including reasoning
       // item ids and function calls, so provider-side response storage is not
       // needed.
       store: false,

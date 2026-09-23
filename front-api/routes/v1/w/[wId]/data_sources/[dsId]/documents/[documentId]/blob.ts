@@ -2,7 +2,7 @@ import apiConfig from "@app/lib/api/config";
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import logger from "@app/logger/logger";
 import { CoreAPI } from "@app/types/core/core_api";
-import type { GetDocumentBlobResponseType } from "@dust-tt/client";
+import type { GetDocumentBlobResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsSystemKey } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";
@@ -52,8 +52,8 @@ app.get(
 
     const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
     const blobRes = await coreAPI.getDataSourceDocumentBlob({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       documentId,
     });
 

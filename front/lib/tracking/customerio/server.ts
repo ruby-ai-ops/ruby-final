@@ -313,9 +313,9 @@ export class CustomerioServerSideTracking {
     };
 
     // Include the anonymous device ID so email templates can link back to the
-    // user's web session: {{ customer.dust_anonymous_id }}.
+    // user's web session: {{ customer.ruby_anonymous_id }}.
     if (anonymousId) {
-      attributes.dust_anonymous_id = anonymousId;
+      attributes.ruby_anonymous_id = anonymousId;
     }
 
     const body: Record<string, any> = {

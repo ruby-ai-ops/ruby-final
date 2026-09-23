@@ -1,6 +1,6 @@
 import config from "@app/lib/api/config";
 import { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import type { NotificationAllowedTags } from "@app/lib/notifications";
 import {
   ensureSlackNotificationsReady,
@@ -275,14 +275,14 @@ const getEmailSubject = (
       new Set(conversations.map((c) => c.projectName).filter(Boolean))
     );
     if (uniqueProjectNames.length === 1) {
-      return `[Dust] New conversation${pluralize(conversations.length)} in '${uniqueProjectNames[0]}'`;
+      return `[Ruby] New conversation${pluralize(conversations.length)} in '${uniqueProjectNames[0]}'`;
     }
-    return `[Dust] New conversations in your Pods`;
+    return `[Ruby] New conversations in your Pods`;
   }
   if (conversations.length === 1) {
-    return `[Dust] ${conversations[0]?.title ?? "New unread message(s) in conversation"}`;
+    return `[Ruby] ${conversations[0]?.title ?? "New unread message(s) in conversation"}`;
   }
-  return `[Dust] New unread messages in ${conversations.length} conversations`;
+  return `[Ruby] New unread messages in ${conversations.length} conversations`;
 };
 
 export const getMessagePreviewText = (
@@ -720,7 +720,7 @@ export const triggerConversationUnreadNotifications = async (
 ): Promise<
   Result<
     void,
-    Omit<DustError, "code"> & {
+    Omit<RubyError, "code"> & {
       code: "internal_server_error";
     }
   >
@@ -817,7 +817,7 @@ export const triggerConversationUnreadNotifications = async (
         .map(({ error }) => error?.join("; "))
         .join("; ");
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_server_error",
         message: `Failed to trigger conversation unread notification due to network errors: ${eventErrors}`,
       });
@@ -825,7 +825,7 @@ export const triggerConversationUnreadNotifications = async (
     return new Ok(undefined);
   } catch (error) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_server_error",
       message: `Failed to trigger conversation unread notification: ${normalizeError(error).message}`,
     });

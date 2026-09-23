@@ -5,17 +5,17 @@ import type { ConnectorResource } from "@connectors/resources/connector_resource
 import type {
   AgentEvent,
   ConversationPublicType,
-  DustAPI,
+  RubyAPI,
   UserMessageType,
-} from "@dust-tt/client";
-import { Ok } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { Ok } from "@ruby-ai/client";
 import type { WebClient } from "@slack/web-api";
 import { describe, expect, it, vi } from "vitest";
 
 const mockMakeConversationUrl = vi.hoisted(() =>
   vi.fn((workspaceId: string, conversationId: string | null | undefined) =>
     conversationId
-      ? `https://dust.test/w/${workspaceId}/conversation/${conversationId}`
+      ? `https://ruby.test/w/${workspaceId}/conversation/${conversationId}`
       : null
   )
 );
@@ -47,7 +47,7 @@ describe("streamConversationToSlack", () => {
       yield toolAskUserQuestionEvent;
     }
 
-    const dustAPI = {
+    const rubyAPI = {
       streamAgentAnswerEvents: vi.fn(async () => {
         return new Ok({ eventStream: eventStream() });
       }),
@@ -74,7 +74,7 @@ describe("streamConversationToSlack", () => {
       isStopped: false,
     } as unknown as SlackStreamHandler;
 
-    const res = await streamConversationToSlack(dustAPI as unknown as DustAPI, {
+    const res = await streamConversationToSlack(rubyAPI as unknown as RubyAPI, {
       assistantName: "Support",
       agentConfigurations: [],
       connector: {
@@ -109,7 +109,7 @@ describe("streamConversationToSlack", () => {
     if (res.isErr()) {
       throw res.error;
     }
-    expect(dustAPI.cancelMessageGeneration).not.toHaveBeenCalled();
+    expect(rubyAPI.cancelMessageGeneration).not.toHaveBeenCalled();
     expect(streamHandler.stop).toHaveBeenCalled();
     expect(slackClient.chat.postMessage).toHaveBeenCalledWith(
       expect.objectContaining({

@@ -120,7 +120,7 @@ General Principles:
 const INSTRUCTIONS_WITHOUT_EMAIL = `When a user asks about meeting preparation, follow this protocol:
 
 **Important: Email Access Not Connected**
-To provide the best meeting preparation, connecting a Gmail or Microsoft Outlook account to Dust will be necessary.
+To provide the best meeting preparation, connecting a Gmail or Microsoft Outlook account to Ruby will be necessary.
 This will allow searching through email history with participants and provide much richer context for meetings.
 
 Here is an incomplete set of guidelines to follow when the user asks about meeting preparation:

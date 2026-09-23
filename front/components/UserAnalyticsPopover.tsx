@@ -40,7 +40,7 @@ import {
   DialogTitle,
   Page,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { domMax, LazyMotion, m, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 

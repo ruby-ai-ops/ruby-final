@@ -38,15 +38,15 @@ import { assertNever } from "@app/types/shared/utils/assert_never";
 import assert from "assert";
 
 function selectRunUsagesNeedingEvidence({
-  actionsByDustRunId,
+  actionsByRubyRunId,
   currentItems,
-  dustRunIdByRunModelId,
+  rubyRunIdByRunModelId,
   runUsageModelIdsWithUnconsumedToolResults,
   usages,
 }: {
-  actionsByDustRunId: ReadonlyMap<string, AgentMCPActionResource[]>;
+  actionsByRubyRunId: ReadonlyMap<string, AgentMCPActionResource[]>;
   currentItems: AgentMessageConsumptionItemResource[];
-  dustRunIdByRunModelId: ReadonlyMap<ModelId, string>;
+  rubyRunIdByRunModelId: ReadonlyMap<ModelId, string>;
   runUsageModelIdsWithUnconsumedToolResults: ReadonlySet<ModelId>;
   usages: RunUsageWithRunKeyType[];
 }): RunUsageWithRunKeyType[] {
@@ -74,8 +74,8 @@ function selectRunUsagesNeedingEvidence({
   }
 
   return usages.filter((usage) => {
-    const dustRunId = dustRunIdByRunModelId.get(usage.runModelId);
-    const runActions = (dustRunId && actionsByDustRunId.get(dustRunId)) || [];
+    const rubyRunId = rubyRunIdByRunModelId.get(usage.runModelId);
+    const runActions = (rubyRunId && actionsByRubyRunId.get(rubyRunId)) || [];
     const runActionById = new Map(
       runActions.map((action) => [action.sId, action])
     );
@@ -106,7 +106,7 @@ function selectRunUsagesNeedingEvidence({
       return !(
         parentItem?.runUsageId === usage.runUsageModelId &&
         parentAction.stepContent.id === action.stepContent.id &&
-        parentAction.stepContent.dustRunId === dustRunId
+        parentAction.stepContent.rubyRunId === rubyRunId
       );
     });
     assert(
@@ -211,7 +211,7 @@ async function buildRunUsageConsumptionEvidence(
   const records: CompletedAgentMessageConsumptionItem[] = [];
   const pendingToolItems: PendingToolConsumptionItem[] = [];
 
-  // Sandbox-child actions are invoked by the in-sandbox dsbx CLI, not by the outer model. They
+  // Sandbox-child actions are invoked by the in-sandbox rbx CLI, not by the outer model. They
   // reuse their parent's function-call step content, so measuring them here would tokenize the
   // parent Computer call a second time and separately count a result already carried in the
   // Computer output.
@@ -402,7 +402,7 @@ async function persistMessageConsumptionAttribution(
     agentMessageModelId,
     billedCredits,
     conversation,
-    dustRunIds,
+    rubyRunIds,
     pendingToolItems,
     records,
     runs,
@@ -412,7 +412,7 @@ async function persistMessageConsumptionAttribution(
     agentMessageModelId: ModelId;
     billedCredits: number | null;
     conversation: ConversationResource;
-    dustRunIds: string[];
+    rubyRunIds: string[];
     pendingToolItems: PendingToolConsumptionItem[];
     records: CompletedAgentMessageConsumptionItem[];
     runs: RunResource[];
@@ -445,7 +445,7 @@ async function persistMessageConsumptionAttribution(
     const allocationResult = buildLatestMessageConsumptionAllocation({
       actions,
       billedCredits,
-      dustRunIds,
+      rubyRunIds,
       items,
       runs,
       usages,
@@ -531,8 +531,8 @@ async function computeAndStoreAgentMessageConsumptionAttributionComputation(
     return {};
   }
 
-  const dustRunIds = [...new Set(runIds ?? [])];
-  if (dustRunIds.length === 0) {
+  const rubyRunIds = [...new Set(runIds ?? [])];
+  if (rubyRunIds.length === 0) {
     return {};
   }
 
@@ -557,13 +557,13 @@ async function computeAndStoreAgentMessageConsumptionAttributionComputation(
   const capabilities = await getAttachmentCapabilityContext(auth, conversation);
 
   // Every usage is reached through this message's own runIds, so each one belongs to this message.
-  const runs = await RunResource.listByDustRunIds(auth, { dustRunIds });
+  const runs = await RunResource.listByRubyRunIds(auth, { rubyRunIds });
   const usages = await RunResource.listRunUsagesForRuns(auth, { runs });
   const unconsumedToolResultRunUsageModelIds =
     runUsageModelIdsWithUnconsumedToolResults({ runs, status, usages });
 
   // Group the message's tool calls by the run that emitted them. Each action carries its emitting
-  // step content, whose dustRunId identifies that run and is the same identifier the run usages are
+  // step content, whose rubyRunId identifies that run and is the same identifier the run usages are
   // keyed by.
   const [actions, existingItems] = await Promise.all([
     AgentMCPActionResource.listByAgentMessageIds(auth, [agentMessageModelId]),
@@ -597,40 +597,40 @@ async function computeAndStoreAgentMessageConsumptionAttributionComputation(
     ])
   );
 
-  const dustRunIdByRunModelId = new Map(
-    runs.map((run) => [run.id, run.dustRunId])
+  const rubyRunIdByRunModelId = new Map(
+    runs.map((run) => [run.id, run.rubyRunId])
   );
 
-  const actionsByDustRunId = new Map<string, AgentMCPActionResource[]>();
+  const actionsByRubyRunId = new Map<string, AgentMCPActionResource[]>();
   for (const action of actions) {
-    const dustRunId = action.stepContent.dustRunId;
-    if (!dustRunId) {
-      // Legacy step contents predate dustRunId stamping. Their actions cannot be tied to a run, so
+    const rubyRunId = action.stepContent.rubyRunId;
+    if (!rubyRunId) {
+      // Legacy step contents predate rubyRunId stamping. Their actions cannot be tied to a run, so
       // they are left out of the tool attribution rather than guessed.
       continue;
     }
-    const runActions = actionsByDustRunId.get(dustRunId) ?? [];
+    const runActions = actionsByRubyRunId.get(rubyRunId) ?? [];
     runActions.push(action);
-    actionsByDustRunId.set(dustRunId, runActions);
+    actionsByRubyRunId.set(rubyRunId, runActions);
   }
 
   const usagesToProcess = selectRunUsagesNeedingEvidence({
-    actionsByDustRunId,
+    actionsByRubyRunId,
     currentItems,
-    dustRunIdByRunModelId,
+    rubyRunIdByRunModelId,
     runUsageModelIdsWithUnconsumedToolResults:
       unconsumedToolResultRunUsageModelIds,
     usages,
   });
-  const dustRunIdsToProcess = new Set(
+  const rubyRunIdsToProcess = new Set(
     usagesToProcess
-      .map((usage) => dustRunIdByRunModelId.get(usage.runModelId))
-      .filter((dustRunId): dustRunId is string => dustRunId !== undefined)
+      .map((usage) => rubyRunIdByRunModelId.get(usage.runModelId))
+      .filter((rubyRunId): rubyRunId is string => rubyRunId !== undefined)
   );
   const actionsToEnrich = actions.filter(
     (action) =>
-      action.stepContent.dustRunId !== null &&
-      dustRunIdsToProcess.has(action.stepContent.dustRunId)
+      action.stepContent.rubyRunId !== null &&
+      rubyRunIdsToProcess.has(action.stepContent.rubyRunId)
   );
   const [enrichedActions, skills] =
     actionsToEnrich.length > 0
@@ -669,8 +669,8 @@ async function computeAndStoreAgentMessageConsumptionAttributionComputation(
   const pendingToolItems: PendingToolConsumptionItem[] = [];
 
   for (const usage of usagesToProcess) {
-    const dustRunId = dustRunIdByRunModelId.get(usage.runModelId);
-    const runActions = (dustRunId && actionsByDustRunId.get(dustRunId)) || [];
+    const rubyRunId = rubyRunIdByRunModelId.get(usage.runModelId);
+    const runActions = (rubyRunId && actionsByRubyRunId.get(rubyRunId)) || [];
     const usageEvidence = await buildRunUsageConsumptionEvidence(auth, {
       capabilities,
       attributedSkillIdsByActionModelId,
@@ -693,7 +693,7 @@ async function computeAndStoreAgentMessageConsumptionAttributionComputation(
       agentMessageModelId,
       billedCredits,
       conversation,
-      dustRunIds,
+      rubyRunIds,
       pendingToolItems,
       records,
       runs,

@@ -184,8 +184,8 @@ impl GoogleCloudStorageCSVContent {
         let mut acc = Vec::new();
 
         for curr in headers {
-            // Special case for __dust_id which is a reserved header
-            let slug = if curr == "__dust_id" {
+            // Special case for __ruby_id which is a reserved header
+            let slug = if curr == "__ruby_id" {
                 curr.to_string()
             } else {
                 let s = Self::slugify(&curr.to_lowercase());
@@ -289,9 +289,9 @@ impl GoogleCloudStorageCSVContent {
             Err(anyhow!("No columns in CSV file"))?;
         }
 
-        // If we have a __dust_id column, we need to remove it from the headers but save the column index for later.
-        let dust_id_pos = headers.iter().position(|h| h == "__dust_id");
-        let headers = match dust_id_pos {
+        // If we have a __ruby_id column, we need to remove it from the headers but save the column index for later.
+        let ruby_id_pos = headers.iter().position(|h| h == "__ruby_id");
+        let headers = match ruby_id_pos {
             Some(pos) => {
                 let mut headers = headers.iter().cloned().collect::<Vec<String>>();
                 headers.remove(pos);
@@ -308,9 +308,9 @@ impl GoogleCloudStorageCSVContent {
             let record = record?;
             let mut record = record.iter().collect::<Vec<_>>();
 
-            // If we have a __dust_id column, we need to remove it from the record and use it as the row id.
+            // If we have a __ruby_id column, we need to remove it from the record and use it as the row id.
             // It has been removed from the headers already.
-            let (row_id, record) = if let Some(pos) = dust_id_pos {
+            let (row_id, record) = if let Some(pos) = ruby_id_pos {
                 let row_id = record.remove(pos).trim().to_string();
                 (row_id, record)
             } else {
@@ -377,7 +377,7 @@ BAR,acme";
             "a",
             "c_____d__",
             "___",
-            "__dust_id",
+            "__ruby_id",
             "a",
             "",
             "a",
@@ -400,7 +400,7 @@ BAR,acme";
                 "a",
                 "c_d_",
                 "_2",
-                "__dust_id",
+                "__ruby_id",
                 "a_2",
                 "col_9",
                 "a_3",
@@ -449,7 +449,7 @@ BAR,acme";
         assert_eq!(date["epoch"], 1739545834000i64);
         assert_eq!(date["string_value"], "Fri, 14 Feb 2025 15:10:34 GMT");
 
-        let csv = "__dust_id,super-fast,c/foo,DATE\n\
+        let csv = "__ruby_id,super-fast,c/foo,DATE\n\
                    MYID1,2.23,3,2025-02-14T15:06:52.380Z\n\
                    MYID2,hello world,6,\"Fri, 14 Feb 2025 15:10:34 GMT\"";
         let (delimiter, rdr) =
@@ -472,8 +472,8 @@ BAR,acme";
     }
 
     #[tokio::test]
-    async fn test_csv_with_dust_id() -> anyhow::Result<()> {
-        let csv = "hellWorld,super-fast,__dust_id,c/foo,DATE\n\
+    async fn test_csv_with_ruby_id() -> anyhow::Result<()> {
+        let csv = "hellWorld,super-fast,__ruby_id,c/foo,DATE\n\
                    1,2.23,foo0,3,2025-02-14T15:06:52.380Z\n\
                    4,hello world,foo1,6,\"Fri, 14 Feb 2025 15:10:34 GMT\"";
         let (delimiter, rdr) =
@@ -482,11 +482,11 @@ BAR,acme";
 
         assert_eq!(rows.len(), 2);
 
-        // Test that __dust_id is used to define the row ids.
+        // Test that __ruby_id is used to define the row ids.
         assert_eq!(rows[0].row_id, "foo0");
         assert_eq!(rows[1].row_id, "foo1");
 
-        // Test that __dust_id is not inserted.
+        // Test that __ruby_id is not inserted.
         let row_0_concatenated_keys = rows[0]
             .value()
             .keys()

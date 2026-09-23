@@ -22,13 +22,13 @@ function isSpaPath(pathname: string): boolean {
   );
 }
 
-function isPokePath(pathname: string): boolean {
-  return pathname === "/poke" || pathname.startsWith("/poke/");
+function isAdminPath(pathname: string): boolean {
+  return pathname === "/admin" || pathname.startsWith("/admin/");
 }
 
 /**
- * Browser paths served by the separate SPA apps (front-spa, poke) sometimes
- * reach this origin (e.g. front-edge.dust.tt) — 302-redirect them to the
+ * Browser paths served by the separate SPA apps (front-spa, admin) sometimes
+ * reach this origin (e.g. front-edge.ruby.ad) — 302-redirect them to the
  * appropriate SPA origin so the user lands on the right app.
  */
 export const spaRedirect: MiddlewareHandler = async (ctx, next) => {
@@ -42,12 +42,12 @@ export const spaRedirect: MiddlewareHandler = async (ctx, next) => {
     return next();
   }
 
-  // Redirect /poke/* to the poke SPA app (the poke server handles its own auth).
-  if (isPokePath(pathname)) {
+  // Redirect /admin/* to the admin SPA app (the admin server handles its own auth).
+  if (isAdminPath(pathname)) {
     const { search } = new URL(ctx.req.url);
-    const pathAfterPoke = pathname.slice("/poke".length); // leading slash or empty
+    const pathAfterAdmin = pathname.slice("/admin".length); // leading slash or empty
     return ctx.redirect(
-      `${config.getPokeAppUrl()}${pathAfterPoke}${search}`,
+      `${config.getAdminAppUrl()}${pathAfterAdmin}${search}`,
       302
     );
   }

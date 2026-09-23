@@ -14,7 +14,7 @@
 
 use anyhow::Result;
 use clap::Parser;
-use dust::{
+use ruby::{
     data_sources::{
         data_source::EmbedderConfig,
         qdrant::{env_var_prefix_for_cluster, QdrantClients, QdrantCluster, QdrantTenant},

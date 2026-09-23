@@ -19,7 +19,7 @@ import {
   parseTimeFrame,
   timeFrameFromNow,
 } from "@app/types/shared/utils/time_frame";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { AuthInfo } from "@modelcontextprotocol/sdk/server/auth/types.js";
 import { Client, isFullDataSource, isFullPage } from "@notionhq/client";
 import type {

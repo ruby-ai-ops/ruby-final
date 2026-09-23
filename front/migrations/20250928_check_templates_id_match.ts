@@ -23,7 +23,7 @@ async function computeTemplateIdMatches({
     remoteTemplate: AssistantTemplateListType;
   }[]
 > {
-  if (!config.getDustRegionSyncEnabled()) {
+  if (!config.getRubyRegionSyncEnabled()) {
     logger.info("Region sync not enabled, skipping template ID check");
     return [];
   }
@@ -31,7 +31,7 @@ async function computeTemplateIdMatches({
   const localTemplates = await TemplateResource.listAll();
   logger.info(`Found ${localTemplates.length} local templates`);
 
-  const mainRegionUrl = config.getDustRegionSyncMasterUrl();
+  const mainRegionUrl = config.getRubyRegionSyncMasterUrl();
 
   const response = await fetch(`${mainRegionUrl}/api/templates`, {
     method: "GET",

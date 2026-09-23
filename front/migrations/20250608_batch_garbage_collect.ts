@@ -1,4 +1,4 @@
-import { garbageCollectGoogleDriveDocument } from "@app/lib/api/poke/plugins/data_sources/garbage_collect_google_drive_document";
+import { garbageCollectGoogleDriveDocument } from "@app/lib/api/admin/plugins/data_sources/garbage_collect_google_drive_document";
 import { Authenticator } from "@app/lib/auth";
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import { concurrentExecutor } from "@app/lib/utils/async_utils";

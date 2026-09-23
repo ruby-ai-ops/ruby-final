@@ -19,7 +19,7 @@ const MAX_OUTPUT_TOKENS = 64_000;
 //
 // The legacy router only ever ran this model at `high` (its one configurable
 // effort was `none`, which omitted `reasoning_effort` and let Fireworks fall
-// back to `high`). That coercion is a Dust product choice, so it lives in the
+// back to `high`). That coercion is a Ruby product choice, so it lives in the
 // llms layer as the `forceHighReasoningEffort` config parser rather than as a
 // schema transform.
 const configSchema = fireworksConfigSchema.extend({

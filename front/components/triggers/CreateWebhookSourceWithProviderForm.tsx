@@ -7,7 +7,7 @@ import type { WebhookProvider } from "@app/types/triggers/webhooks";
 import { WEBHOOK_PRESETS } from "@app/types/triggers/webhooks";
 import { CLIENT_SIDE_WEBHOOK_PRESETS } from "@app/types/triggers/webhooks_client_side";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, CloudArrowLeftRight, Label, Spinner } from "@dust-tt/sparkle";
+import { Button, CloudArrowLeftRight, Label, Spinner } from "@ruby-ai/ui";
 import { useState } from "react";
 
 type CreateWebhookSourceWithProviderFormProps = {

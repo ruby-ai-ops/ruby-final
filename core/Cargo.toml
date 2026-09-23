@@ -1,5 +1,5 @@
 [package]
-name = "dust"
+name = "ruby"
 version = "0.1.0"
 edition = "2021"
 
@@ -147,7 +147,7 @@ dns-lookup = "1.0"
 elasticsearch = "8.15.0-alpha.1"
 elasticsearch-dsl = "0.4"
 encoding_rs = "0.8"
-eventsource-client = { git = "https://github.com/dust-tt/rust-eventsource-client", rev = "148050f8fb9f8abb25ca171aa68ea817277ca4f6" }
+eventsource-client = { path = "../vendor/eventsource-client" }
 fancy-regex = "0.13"
 flate2 = "1.0"
 futures = "0.3"

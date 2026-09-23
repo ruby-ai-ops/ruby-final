@@ -25,7 +25,7 @@ function decodeToken(
 }
 
 beforeAll(() => {
-  vi.stubEnv("DUST_INVITE_TOKEN_SECRET", TEST_SECRET);
+  vi.stubEnv("RUBY_INVITE_TOKEN_SECRET", TEST_SECRET);
 });
 
 // Minimal MembershipInvitationType shape needed for token tests.

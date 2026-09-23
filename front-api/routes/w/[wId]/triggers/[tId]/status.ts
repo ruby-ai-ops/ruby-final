@@ -52,7 +52,7 @@ app.patch(
         api_error: {
           type: "invalid_request_error",
           message:
-            "This trigger's status is managed by Dust and cannot be changed.",
+            "This trigger's status is managed by Ruby and cannot be changed.",
         },
       });
     }

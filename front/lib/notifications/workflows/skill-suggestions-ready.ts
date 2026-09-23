@@ -1,5 +1,5 @@
 import type { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { getNovuClient } from "@app/lib/notifications";
 import { getSkillBuilderRoute } from "@app/lib/utils/router";
 import logger from "@app/logger/logger";
@@ -62,7 +62,7 @@ const triggerSkillSuggestionsReadyNotifications = async (
     editors: UserType[];
     suggestionCount: number;
   }
-): Promise<Result<void, DustError<"internal_error">>> => {
+): Promise<Result<void, RubyError<"internal_error">>> => {
   if (suggestionCount === 0) {
     return new Ok(undefined);
   }
@@ -104,14 +104,14 @@ const triggerSkillSuggestionsReadyNotifications = async (
         .map(({ error }) => error?.join("; "))
         .join("; ");
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: `Failed to trigger skill suggestions ready notification: ${eventErrors}`,
       });
     }
   } catch (err) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: "Failed to trigger skill suggestions ready notification",
       cause: normalizeError(err),

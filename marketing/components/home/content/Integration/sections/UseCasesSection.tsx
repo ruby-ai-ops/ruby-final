@@ -22,7 +22,7 @@ export function UseCasesSection({
   return (
     <div className="py-12 md:py-16">
       <H2 className="mb-8 text-center text-2xl font-semibold text-foreground md:text-3xl">
-        How teams use {integrationName} with Dust
+        How teams use {integrationName} with Ruby
       </H2>
 
       <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2 lg:grid-cols-3">

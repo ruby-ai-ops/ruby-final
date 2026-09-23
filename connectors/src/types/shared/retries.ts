@@ -4,7 +4,7 @@ import {
   WorkspaceQuotaExceededError,
 } from "@connectors/lib/error";
 import { normalizeError } from "@connectors/types/api";
-import type { LoggerInterface } from "@dust-tt/client";
+import type { LoggerInterface } from "@ruby-ai/client";
 import { AxiosError } from "axios";
 
 export class WithRetriesError extends Error {

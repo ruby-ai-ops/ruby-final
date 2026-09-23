@@ -13,8 +13,8 @@ import type {
   ConversationPublicType,
   LightAgentConfigurationType,
   Result,
-} from "@dust-tt/client";
-import { DustAPI, Err, Ok } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { RubyAPI, Err, Ok } from "@ruby-ai/client";
 
 const UPDATE_INTERVAL_MS = 2000;
 
@@ -41,8 +41,8 @@ export async function sendMessageToAgent(
     logger,
   } = params;
 
-  const dustAPI = new DustAPI(
-    { url: apiConfig.getDustFrontAPIUrl() },
+  const rubyAPI = new RubyAPI(
+    { url: apiConfig.getRubyFrontAPIUrl() },
     {
       workspaceId: connector.workspaceId,
       apiKey: connector.workspaceAPIKey,
@@ -71,7 +71,7 @@ export async function sendMessageToAgent(
     ? contentFragmentsRes.value
     : null;
 
-  const convRes = await dustAPI.createConversation({
+  const convRes = await rubyAPI.createConversation({
     title: null,
     visibility: "unlisted",
     message: messageReqBody,
@@ -108,7 +108,7 @@ export async function sendMessageToAgent(
   }
 
   const streamRes = await streamAgentResponseToDiscord(
-    dustAPI,
+    rubyAPI,
     conversation,
     userMessageId,
     interactionToken,
@@ -121,7 +121,7 @@ export async function sendMessageToAgent(
   }
 
   try {
-    await dustAPI.markAsRead({ conversationId: conversation.sId });
+    await rubyAPI.markAsRead({ conversationId: conversation.sId });
   } catch (error) {
     logger.error(
       { error: normalizeError(error), conversationId: conversation.sId },
@@ -133,14 +133,14 @@ export async function sendMessageToAgent(
 }
 
 async function streamAgentResponseToDiscord(
-  dustAPI: DustAPI,
+  rubyAPI: RubyAPI,
   conversation: ConversationPublicType,
   userMessageId: string,
   interactionToken: string,
   logger: Logger,
   connector: ConnectorResource
 ): Promise<Result<AgentMessageSuccessEvent | undefined, Error>> {
-  const streamRes = await dustAPI.streamAgentAnswerEvents({
+  const streamRes = await rubyAPI.streamAgentAnswerEvents({
     conversation,
     userMessageId,
   });
@@ -187,7 +187,7 @@ async function streamAgentResponseToDiscord(
         );
 
         if (personalAuthError) {
-          const conversationUrl = `${apiConfig.getDustFrontAPIUrl()}/w/${connector.workspaceId}/assistant/new`;
+          const conversationUrl = `${apiConfig.getRubyFrontAPIUrl()}/w/${connector.workspaceId}/assistant/new`;
           await updateDiscordMessage(
             interactionToken,
             `⚠️ **Personal credentials required**\n\n` +

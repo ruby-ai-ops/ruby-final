@@ -2,7 +2,7 @@ import Custom404 from "@app/components/pages/Custom404";
 import config from "@app/lib/api/config";
 import { useSearchParam } from "@app/lib/platform";
 import { useUser } from "@app/lib/swr/user";
-import { Button, Logo } from "@dust-tt/sparkle";
+import { Button, Logo } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 export function SsoEnforcedPage() {

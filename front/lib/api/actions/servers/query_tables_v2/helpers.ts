@@ -31,7 +31,7 @@ import type { ConnectorProvider } from "@app/types/data_source";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 const TABLES_QUERY_SECTION_FILE_MIN_COLUMN_LENGTH = 500;
 
@@ -79,7 +79,7 @@ function getSectionColumnsPrefix(
     case "bigquery":
     case "gong":
     case "discord_bot":
-    case "dust_project":
+    case "ruby_project":
     case null:
       return null;
     default:
@@ -107,7 +107,7 @@ export function verifyDataSourceViewReadAccess(
 }
 
 /**
- * When the workspace opts in, attach opaque Dust sIds so warehouse owners can attribute
+ * When the workspace opts in, attach opaque Ruby sIds so warehouse owners can attribute
  * query cost to workspace / agent / user in their own billing logs.
  */
 export async function buildQueryIdentity(
@@ -154,7 +154,7 @@ async function generateAgentLoopQueryResultFiles(
 ): Promise<TablesQueryContentItem[]> {
   const conversationId = runContext.conversation.sId;
 
-  // Keep using the FileResource flow instead of DustFileSystem here so the file can
+  // Keep using the FileResource flow instead of RubyFileSystem here so the file can
   // be uploaded to the conversation data source and queried by `tables_query` in
   // subsequent turns.
   const { csvFile, csvSnippet } = await generateCSVFileAndSnippet(auth, {

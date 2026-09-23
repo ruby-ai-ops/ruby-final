@@ -54,7 +54,7 @@ export class AgentConfigurationFactory {
       description,
       instructions: "Test Instructions",
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope,
       model: {
@@ -124,7 +124,7 @@ export class AgentConfigurationFactory {
       description: overrides.description ?? "Test Agent Description",
       instructions: overrides.instructions ?? "Updated Test Instructions",
       instructionsHtml: overrides.instructionsHtml ?? null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       model: {
         providerId: "openai",

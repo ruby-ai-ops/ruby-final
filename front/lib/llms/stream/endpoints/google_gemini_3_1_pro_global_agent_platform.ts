@@ -1,13 +1,13 @@
-import { WithDustGoogleGeminiThreeDotOneProConfig } from "@app/lib/llms/providers/google_ai_studio/models/gemini_3_1_pro";
-import { defineDustStreamEndpoint } from "@app/lib/llms/stream/dust_stream_endpoint";
+import { WithRubyGoogleGeminiThreeDotOneProConfig } from "@app/lib/llms/providers/google_ai_studio/models/gemini_3_1_pro";
+import { defineRubyStreamEndpoint } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import { GoogleGeminiThreeDotOneProGlobalAgentPlatformStream } from "@app/lib/model_constructors/stream/endpoints/google_gemini_3_1_pro_global_agent_platform";
 
-export class DustGoogleGeminiThreeDotOneProGlobalAgentPlatformStream extends WithDustGoogleGeminiThreeDotOneProConfig(
+export class RubyGoogleGeminiThreeDotOneProGlobalAgentPlatformStream extends WithRubyGoogleGeminiThreeDotOneProConfig(
   GoogleGeminiThreeDotOneProGlobalAgentPlatformStream
 ) {
   static readonly endpointFilter = {};
 }
 
-defineDustStreamEndpoint(
-  DustGoogleGeminiThreeDotOneProGlobalAgentPlatformStream
+defineRubyStreamEndpoint(
+  RubyGoogleGeminiThreeDotOneProGlobalAgentPlatformStream
 );

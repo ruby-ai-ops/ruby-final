@@ -35,7 +35,7 @@ import { isInteractiveContentType } from "@app/types/files";
 import type { Result } from "@app/types/shared/result";
 import { Err } from "@app/types/shared/result";
 import type { LightWorkspaceType } from "@app/types/user";
-import { cn, Edit04, FolderOpen, Trash01 } from "@dust-tt/sparkle";
+import { cn, Edit04, FolderOpen, Trash01 } from "@ruby-ai/ui";
 import type React from "react";
 import { useCallback, useMemo, useState } from "react";
 

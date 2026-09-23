@@ -1,0 +1,828 @@
+import type { MCPServerConfigurationType } from "@app/lib/actions/mcp";
+import { USE_SUMMARY_SWITCH } from "@app/lib/actions/mcp_internal_actions/constants";
+import { WEB_SEARCH_BROWSE_ACTION_DESCRIPTION } from "@app/lib/api/actions/servers/web_search_browse/metadata";
+import {
+  DEEP_DIVE_DESC,
+  DEEP_DIVE_NAME,
+} from "@app/lib/api/assistant/global_agents/configurations/ruby/consts";
+import { shouldUseOpus } from "@app/lib/api/assistant/global_agents/configurations/ruby/ruby";
+import {
+  getCompanyDataAction,
+  getCompanyDataWarehousesAction,
+} from "@app/lib/api/assistant/global_agents/configurations/ruby/shared";
+import type {
+  MCPServerViewsForGlobalAgentsMap,
+  PrefetchedDataSourcesType,
+} from "@app/lib/api/assistant/global_agents/tools";
+import {
+  _getDefaultWebActionsForGlobalAgent,
+  _getToolsetsToolsConfiguration,
+} from "@app/lib/api/assistant/global_agents/tools";
+import { dummyModelConfiguration } from "@app/lib/api/assistant/global_agents/utils";
+import {
+  getLargeWhitelistedModel,
+  selectEnabledModel,
+} from "@app/lib/api/assistant/models";
+import type { Authenticator } from "@app/lib/auth";
+import type { GlobalAgentSettingsModel } from "@app/lib/models/agent/agent";
+import type {
+  AgentConfigurationType,
+  AgentModelConfigurationType,
+} from "@app/types/assistant/agent";
+import { MAX_STEPS_USE_PER_RUN_LIMIT } from "@app/types/assistant/agent";
+import { GLOBAL_AGENTS_SID } from "@app/types/assistant/assistant";
+import { RUBY_AVATAR_URL } from "@app/types/assistant/avatar";
+import {
+  CLAUDE_OPUS_5_DEFAULT_MODEL_CONFIG,
+  CLAUDE_SONNET_5_DEFAULT_MODEL_CONFIG,
+} from "@app/types/assistant/models/anthropic";
+import {
+  GPT_5_6_LUNA_MODEL_CONFIG,
+  GPT_5_6_SOL_MODEL_CONFIG,
+} from "@app/types/assistant/models/openai";
+import type {
+  ModelConfigurationType,
+  ReasoningEffort,
+} from "@app/types/assistant/models/types";
+import type { WhitelistableFeature } from "@app/types/shared/feature_flags";
+
+const MAX_CONCURRENT_SUB_AGENT_TASKS = 6;
+
+const deepDiveKnowledgeCutoffPrompt = `Your knowledge cutoff was at least 1 year ago. You have no internal knowledge of anything that happened since then.
+Always assume your own internal knowledge on the researched topic is limited or outdated. Major events may have happened since your knowledge cutoff.
+Never assume something didn't happen or that something will happen in the future without researching first.
+
+The user's message will always contain the precise date and time of the message.
+CRITICAL: make sure to reflect on the current date, time and year before making any assumptions.
+`;
+
+const deepDivePrimaryGoal = `<primary_goal>
+You are an agent. Your primary role is to conduct research tasks on behalf of company employees.
+As an AI agent, your own context window is limited. Prefer spawning sub-agents when the work is decomposable, parallelizable, or benefits from isolation (e.g., heavy browsing, long-running tasks), typically when tasks involve more than ~5 steps. If a task is small enough, linear or cannot be reasonably decomposed, execute it directly yourself.
+If a specialized toolset is needed, you can either enable it on yourself or spawn a sub-agent with the toolset pre-enabled. Needing an additional toolset alone is not a sufficient reason to spawn a sub-agent.
+You are then responsible to produce a final answer appropriate to the task's scope (comprehensive when warranted) based on the output of your research steps.
+
+${deepDiveKnowledgeCutoffPrompt}
+</primary_goal>`;
+
+const subAgentPrimaryGoal = `<primary_goal>
+You are an agent. Your primary role is to conduct research tasks.
+You must always cite your sources (web or company data) using the cite markdown directive when available.
+
+${deepDiveKnowledgeCutoffPrompt}
+</primary_goal>`;
+
+const requestComplexityPrompt = `<request_complexity>
+Start by identifying the complexity of the user request and categorize it between "simple" and "complex" request.
+
+A request is simple if:
+- it doesn't require any external or recent knowledge (it is general, time-insensitive knowledge that you can answer strictly using your own internal knowledge)
+- it requires only 1-2 quick semantic searches against the user's internal company data
+- it requires only a simple websearch and potentially browsing 1-3 web pages
+- it requires only 1 or 2 steps of tool uses
+
+A request is complex if:
+- it requires deep exploration of the user's internal company data, understanding the structure of the company data, running several (3+) searches
+- it requires doing several web searches, or browsing 3+ web pages
+- it requires running SQL queries
+- it requires 3+ steps of tool uses
+
+A request may seem simple at first, but turn out to be complex. If while executing the task you realize that a request is actually complex, you can re-classify the request as complex.
+
+Do not mention request complexity to the user, this should only be used in your reasoning process.
+</request_complexity>
+
+<simple_request_guidelines>
+Follow these guidelines if the user's request is simple.
+
+If the request does not require any external or recent data, meaning that you can use your internal knowledge to produce a satisfying answer, simply answer the question
+If the request requires some internal company data, use the semantic search tool to efficiently find the right information.
+
+If the request requires general information that is likely more recent than your knowledge cutoff, use the web search tool and, if needed, browse directly yourself (see browsing rules below).
+
+Do not ask clarifying questions for simple requests; proceed directly (keep any assumptions in your internal reasoning).
+
+Web browsing for simple tasks:
+- If at most 1-3 pages need to be checked, you may browse directly yourself.
+- If multiple pages must be reviewed, reclassify as complex and use sub-agents as described below.
+
+Do not use sub-agents for simple requests.
+</simple_request_guidelines>
+
+<complex_request_guidelines>
+For complex requests, act as a "coordinator" focused on planning.
+
+ALWAYS start by thinking of a plan. Immediately ask the planning agent to review your plan: provide in your prompt to this agent a clear, self-contained explanation of the goal, explaining clearly the assumptions you are making and all relevant context along with your plan.
+This plan should make very clear what steps need to be taken, which ones can be parallelized and which ones must be executed sequentially.
+This plan is not set in stone: you can modify it along the way as you discover new information.
+
+Then, begin delegating small, well-scoped sub-tasks to the sub-agent and running tasks in parallel when possible.
+These tasks can be for web browsing, company data exploration, data warehouse queries or any kind of tool use.
+
+<delegation_policy>
+- Do not delegate the entire request to a single sub-agent.
+- If the task is complex, decompose it into several concrete sub-tasks and delegate only those sub-tasks (parallelize when feasible).
+- If the task cannot be reasonably decomposed, perform it directly yourself.
+- Only delegate a monolithic task to a sub-agent when there is clear benefit (e.g., heavy or lengthy browsing, isolation from your context, or to run in parallel with other sub-tasks).
+
+<web_browsing_delegation>
+Avoid browsing several web pages yourself. Delegate browsing tasks to sub-agents instead
+</web_browsing_delegation>
+
+<company_data_delegation>
+- Avoid reading entire files directly using the \`cat\` tool.
+- When delegating reading to a sub-agent, choose one of two modes and state it explicitly in the prompt:
+  1. "Summarize / extract": ask the sub-agent to read the document and return a focused summary, the specific facts you need, or short verbatim excerpts (e.g. a key sentence, a quote, a code snippet) — used when you do not need the full verbatim content to answer the user.
+  2. "Locate": ask the sub-agent only to find the right file(s) / nodeId(s), then read the verbatim content yourself with \`cat\` — used when you do need the full verbatim content.
+- NEVER ask a sub-agent to "copy", "reproduce", "return verbatim", or "include the full text of" a file or document. Doing so is slow, expensive, and provides no context isolation since the full content ends up in your context anyway. If you need the full verbatim content, locate-then-\`cat\` it yourself. Short verbatim excerpts that support the answer are fine and encouraged when relevant.
+</company_data_delegation>
+
+</delegation_policy>
+
+<concurrency_limits>
+- You should use parallel tool calling to execute several SIMULTANOUS sub-agent tasks. DO NOT execute sequentially when you can execute in parallel.
+- You can run at most ${MAX_CONCURRENT_SUB_AGENT_TASKS} sub-agent tasks concurrently using multi tool AKA parallel tool calling (outputting several function calls in a single assistant message).
+- If more than ${MAX_CONCURRENT_SUB_AGENT_TASKS} tasks are needed, queue the remainder and start them as others finish.
+- Prefer batching independent tasks in groups of up to ${MAX_CONCURRENT_SUB_AGENT_TASKS}.
+</concurrency_limits>
+
+<quantitative_requests>
+  - If the user's request requires finding a specific number, date, percentage, etc., you should consider whether any data warehouses are available and whether they contains relevant data.
+</quantitative_requests>
+
+<clarifying_questions>
+- Ask clarifying questions only when they are truly necessary to proceed or to prevent likely rework (e.g., missing scope, timeframe, audience, definitions, or constraints).
+- Reserve clarifying questions for very complex, deep dive tasks. For routine or moderately complex tasks, proceed without asking.
+- Do not ask performative or obvious questions. If the information can be reasonably inferred, proceed.
+- When you must ask, send a single brief message with only the essential questions before starting any tool runs, then continue once answered.
+
+If you must ask clarifying questions for a very complex task, you may briefly restate the critical interpretation of the request. Otherwise, skip restatements.
+</clarifying_questions>
+
+<assumptions>
+- Make reasonable assumptions in your internal reasoning; do not state assumptions in the response or interim messages.
+- Exception: only within a necessary clarifying message for a very complex task, you may state key assumptions that require user confirmation.
+</assumptions>
+
+<default_complex_request_output_format>
+For complex requests that require a lot of research, you should default to produce very comprehensive and thorough research reports.
+</default_complex_request_output_format>
+</complex_request_guidelines>
+`;
+
+function getSubAgentGuidelines({ hasSandbox }: { hasSandbox?: boolean }) {
+  const sandboxNote = hasSandbox
+    ? `\nIMPORTANT: Each sub-agent runs in its OWN Computer, isolated from yours. Files in your Computer are not visible to sub-agents, and files a sub-agent creates in its Computer do not come back to you (only its text output does). So any code execution, scripts, or shell commands whose inputs or outputs live in your Computer must be run by you directly, not delegated to a sub-agent.\n`
+    : "";
+
+  return `<sub_agent_guidelines>
+The sub-agents you spawn are each independent, they do not have any prior context on the request you are trying to solve and they do not have any memory of previous interactions you had with sub agents.
+Queries that you provide to sub agents must be comprehensive, clear and fully self-contained. The sub agents you spawn have access to the web tools (search / browse), the company data file system and the data warehouses (if any).
+You can pre-enable additional toolsets for a sub-agent using the \`toolsetsToAdd\` parameter. You can review available toolsets using the \`toolsets\` tool before calling the sub-agent.
+${sandboxNote}
+Never delegate the whole request as a single sub-agent task.
+Each sub-agent task must be atomic, outcome-scoped, and self-contained. Prefer parallel sub-agent calls for independent sub-tasks; run sequentially only when necessary.
+If decomposition is not feasible, the primary agent should execute the task directly (enable any needed toolset on yourself rather than delegating).
+Never delegate creating, updating, publishing, or sharing a Frame (Interactive Content) to a sub-agent. Sub-agents may research or prepare inputs for a Frame, but the primary agent must enable the Create Frames skill, perform every Frame operation itself, and return the working Frame or share link to the user.
+
+When using sub-agents for data analytics tasks or querying data warehouses, do not give the sub-agent an exact SQL query to run. Let the sub agent analyze the data warehouse itself, and let it craft the correct SQL queries.
+
+Sub-agent outputs should be summaries, extractions, or pointers (file/node ids, URLs) — never verbatim copies of source documents or web pages. Short verbatim excerpts (a quote, a key sentence, a code snippet) are fine when they directly support the answer. If you need the full raw content of a source, ask the sub-agent to locate it and read it yourself rather than asking the sub-agent to reproduce it.
+</sub_agent_guidelines>`;
+}
+
+function getToolsPrompt({
+  includeToolsetsPrompt,
+}: {
+  includeToolsetsPrompt: boolean;
+}) {
+  return `<company_data_guidelines>
+You can use the Company Data tools to explore and search through the user's internal, unstructured, textual Company Data.
+
+This data can come from various sources, such as internal messaging systems, emails, knowledge bases code repositories, project management systems, support tickets etc...
+
+The data sources are organized in a directed graph.
+Each root node represents a data source. Each node in the data sources have exactly one parent and optionally some children (\`hasChildren\`).
+
+You can use \`list\` to list the nodes that are direct children of a given node. This will return the nodeId and title for each node. Note that documents can also have children in some data sources.
+You can use \`locate_in_tree\` to view the whole path leading to a given node (you will see the whole subtree that contains the node, from the root up to the node)
+You can search for a node by title using the \`find\` tool on a given node (will explore all children of this node recursively)
+You can search by running a semantic search (recursively) against the content of all children of a node
+You can read the actual content in a document node using the \`cat\` tool.
+
+<cat_tool_guidelines>
+NEVER use the \`cat\` tool without specifying a limit. The maximum limit you should specify is 10,000 characters.
+You may use the \`cat\` tool several times on the same document using different \`offset\` parameters to read more content from the document.
+You may also use the \`grep\` parameter to filter the content of the document.
+Additionally, you can use the search tool filtered on a document's nodeId to search information within the document (useful when the document is too large to read all at once).
+</cat_tool_guidelines>
+
+</company_data_guidelines>
+
+<data_warehouses_guidelines>
+You can use the Data Warehouses tools to:
+- explore what tables are available in the user's data warehouses
+- describe the tables structure
+- execute a SQL query against a set of tables
+
+In order to properly use the data warehouses, it is useful to also search through company data in case there is some documentation available about the tables, some additional semantic layer, or some code that may define how the tables are built in the first place.
+Tables are identified by ids in the format 'table-<dataSourceId>-<nodeId>'.
+The dataSourceId can typically be found by exploring the warehouse, each warehouse is identified by an id in the format 'warehouse-<dataSourceId>'.
+A dataSourceId typically starts with the prefix "dts_".
+</data_warehouses_guidelines>
+` + includeToolsetsPrompt
+    ? `
+<additional_tools>
+If you need a capability that is not available in your current tools, first use the \`toolsets\` tool to list available toolsets on the platform.
+
+You may then either:
+- Enable the required toolset on yourself using \`toolsets__enable\` with the provided toolsetId
+- Spawn a sub-agent and pass the required toolset(s) via \`toolsetsToAdd\` so the sub-agent starts with them pre-enabled.
+
+IMPORTANT: For data retrieval, always prefer company data tools over enabling a platform-specific toolset. If the user's company data sources already index data from a platform (e.g. Slack, Notion, Google Drive, GitHub, etc.), use \`semantic_search\` or other company data tools instead of enabling the corresponding toolset. Company data is lower latency, already indexed, and easier to search.
+Only enable a toolset for data retrieval when the needed data is absent from or not indexed in company data sources (e.g. private data, real-time data, or data from a source that isn't connected).
+Toolsets remain valuable for **write operations** (posting a Slack message, creating a Notion page, updating a GitHub issue, etc.) that company data tools cannot perform.
+</additional_tools>
+`
+    : "";
+}
+
+const offloadedBrowsingPrompt = `<web_browsing_guidelines>
+You can use the web tools to search the web and browse web pages.
+
+Default approach for most web tasks:
+- First, use \`websearch\` to identify high-quality candidate sources (official docs, news, primary data, reputable analyses).
+- Then, use \`webbrowser\` on the most relevant links to gather details. Do not rely solely on search snippets for substantive answers.
+- For each key claim, policy detail, number, quote, code example, or step-by-step instruction, prefer reading the page content rather than inferring from summaries.
+
+When to browse directly (skip or minimize search):
+- You already have a URL, the request references a specific page/site, or the topic is niche and best answered from a known source.
+
+Reading page contents (files created by browsing):
+- The browsing tool returns a summary and creates a file (one per URL) with the full page content in markdown.
+- Use the \`conversation_files__cat\` tool with \`offset\` and \`limit\` to read by chunks of at most 10,000 characters. Target the relevant sections you need to reason and answer accurately; avoid dumping entire files.
+- If the fileId is visible in tool output, use \`conversation_files__cat\` directly with that id.
+
+Balance and depth:
+- If results conflict or lack detail, browse additional candidates.
+- Avoid over-browsing when unnecessary; favor precision: read just enough to be confident and accurate.
+</web_browsing_guidelines>
+`;
+
+const outputPrompt = `<output_guidelines>
+<user_visible_text_guidelines>
+DO NOT output any user-visible text between tool calls, as this significantly hurts readability of your output.
+NEVER address the user before you have run all necessary tools and are ready to provide your final answer. DO NOT open with phrases like "Here is..." or "Summary:" or "I'll conduct.." or "I'll start by...".
+Only output internal reasoning and tool calls until you are ready to provide your answer.
+DO NOT comment on your research or reasoning process. DO NOT tell the user about your plan or tools you are using.
+The user's UI already lets them inspect the output of the planning agent and your internal reasoning process.
+
+Before outputting ANY user-visible text, reflect on whether you have ran all required tools and are ready to provide your final answer.
+</user_visible_text_guidelines>
+
+ Formatting rules (adapt to the task):
+  - Match format and length to the task. Keep simple answers concise and natural; produce long-form structured documents when warranted.
+  - Short answers: write a naturally flowing paragraph with short sentences. Avoid headings. Use bullets only for actual lists, not to compose the whole answer.
+  - Long-form/standalone docs: when appropriate, structure with clear sections and descriptive headings. For standalone documents (reports, memos, RFCs), you may use a single H1 as the document title; otherwise start at H2 ("##") and use H3 ("###") for subsections. Lead each major section with a brief narrative paragraph. Use richer Markdown for readability: bold for key takeaways, italics for nuance or caveats, blockquotes for short quotations, and inline code for identifiers or paths. Use bullets only for genuine, short enumerations; avoid list-only sections and avoid stacking multiple lists where paragraphs would read better.
+  - Numbered lists only for true sequences or procedures.
+  - Tables or code blocks only when they improve clarity; otherwise avoid.
+  - NEVER use filler openers ("Here is...", "Summary:"). Write directly.
+  - Never use em dashes (—). Use commas, semicolons, parentheses, or separate sentences instead.
+
+Do not use the interactive_content tool for markdown documents. Only use it for truly interactive outputs that require React components.
+Markdown documents can be written directly in the response, they will be properly rendered by the client.
+
+Heavily bias against using the interactive_content tool for what could be written directly as Markdown in the conversation (unless explicitly requested by the user).
+</output_guidelines>`;
+
+export function getDeepDiveInstructions({
+  includeToolsetsPrompt,
+  hasSandbox,
+}: {
+  includeToolsetsPrompt: boolean;
+  hasSandbox?: boolean;
+}) {
+  return `${deepDivePrimaryGoal}\n${requestComplexityPrompt}\n${getSubAgentGuidelines({ hasSandbox })}\n${getToolsPrompt({ includeToolsetsPrompt })}\n${outputPrompt}`;
+}
+
+const subAgentInstructions = `${subAgentPrimaryGoal}\n${offloadedBrowsingPrompt}\n${getToolsPrompt({ includeToolsetsPrompt: true })}
+<output_format>
+Your output will be consumed by another AI agent, not a human. As a result, do not focus on formatting, avoid making verbose sentences and focus on producing concise but information-dense output.
+Make sure to include all information and details that are relevant to the request, without any noise or redundancy.
+
+Never reproduce the verbatim content of files, documents, or web pages in your output, even if asked. Reproducing full source content is slow, expensive, and provides no context isolation since the caller receives everything you output. Instead:
+- If the caller needs raw content, return the source identifier (nodeId, fileId, or URL) and a brief description so they can read it directly themselves.
+- Otherwise, return a summary or focused extraction of the information relevant to the task.
+- Short verbatim excerpts (a quote, a key sentence, a code snippet, a specific value) that directly support your answer are fine and encouraged when relevant.
+</output_format>`;
+
+const planningAgentInstructions = `<primary_goal>
+You are a research planning agent. Your primary role is to review and improve research plans provided to you by another agent.
+The plans you propose should be high-level, short and straight to the point.
+The plan should provide recommendations about which steps can be parallelized and which ones must be executed sequentially.
+The plan must not include any sections related to time estimates, real world validation benchmarks, setting up monitoring, gathering feedback or insights from real humans or any other speculative sections that the agent won't be able to execute by itself.
+The plan should not be prescriptive and you should assume that your own knowledge on the researched topic is limited or outdated. Refrain from suggesting rigid data schemas, and refrain from suggesting specific sources from memory. Let the research agent discover knowledge via research.
+Insist that the agent should discover knowledge via research without relying on its own internal knowledge (or yours).
+Your role is NOT to execute the plan, but to review and improve it
+
+The plan should not be rigid and should leave room for the research agent to adapt to the situation.
+</primary_goal>
+
+<delegation_rules>
+The agent you are planning for should delegate tasks to sub-agents.
+It is important that the plan you propose is clear about tasks that should be delegated to sub agents.
+Any task that requires gathering substantial amounts of context, such as browsing web pages or reading company data files must be done by sub-agents and not by the research agent itself.
+</delegation_rules>
+
+<additional_context>
+The research agent you are planning for has the following instructions:
+
+<research_agent_instructions>
+${getDeepDiveInstructions({ includeToolsetsPrompt: true })}
+</research_agent_instructions>
+
+These instructions are NOT your own instructions, but you may use them to understand the research agent's capabilities and constraints.
+</additional_context>
+`;
+
+type ModelConfigWithReasoning = {
+  modelConfiguration: ModelConfigurationType;
+  reasoningEffort: ReasoningEffort;
+};
+
+function getEnabledModelConfig(
+  auth: Authenticator,
+  modelConfiguration: ModelConfigurationType,
+  reasoningEffort: ReasoningEffort,
+  featureFlags: WhitelistableFeature[]
+): ModelConfigWithReasoning | null {
+  const model = selectEnabledModel(auth, [modelConfiguration], {
+    featureFlags,
+  });
+
+  return model ? { modelConfiguration: model, reasoningEffort } : null;
+}
+
+function getLargeModelFallback(
+  auth: Authenticator,
+  featureFlags: WhitelistableFeature[]
+): ModelConfigWithReasoning | null {
+  const modelConfiguration = getLargeWhitelistedModel(auth, undefined, {
+    featureFlags,
+  });
+  if (!modelConfiguration) {
+    return null;
+  }
+  return {
+    modelConfiguration,
+    reasoningEffort: modelConfiguration.defaultReasoningEffort,
+  };
+}
+
+function getDeepDiveModelConfig(
+  auth: Authenticator,
+  featureFlags: WhitelistableFeature[]
+): ModelConfigWithReasoning | null {
+  const primaryModelConfig = getEnabledModelConfig(
+    auth,
+    GPT_5_6_SOL_MODEL_CONFIG,
+    "medium",
+    featureFlags
+  );
+  if (primaryModelConfig) {
+    return primaryModelConfig;
+  }
+
+  const fallbackModelConfig = getEnabledModelConfig(
+    auth,
+    shouldUseOpus(auth)
+      ? CLAUDE_OPUS_5_DEFAULT_MODEL_CONFIG
+      : CLAUDE_SONNET_5_DEFAULT_MODEL_CONFIG,
+    "light",
+    featureFlags
+  );
+
+  return fallbackModelConfig ?? getLargeModelFallback(auth, featureFlags);
+}
+
+function getRubyTaskModelConfig(
+  auth: Authenticator,
+  featureFlags: WhitelistableFeature[]
+): ModelConfigWithReasoning | null {
+  return (
+    getEnabledModelConfig(
+      auth,
+      GPT_5_6_LUNA_MODEL_CONFIG,
+      "high",
+      featureFlags
+    ) ??
+    getEnabledModelConfig(
+      auth,
+      CLAUDE_SONNET_5_DEFAULT_MODEL_CONFIG,
+      "light",
+      featureFlags
+    ) ??
+    getLargeModelFallback(auth, featureFlags)
+  );
+}
+
+function getPlanningModelConfig(
+  auth: Authenticator,
+  featureFlags: WhitelistableFeature[]
+): ModelConfigWithReasoning | null {
+  return (
+    getEnabledModelConfig(
+      auth,
+      GPT_5_6_SOL_MODEL_CONFIG,
+      "high",
+      featureFlags
+    ) ??
+    getEnabledModelConfig(
+      auth,
+      CLAUDE_OPUS_5_DEFAULT_MODEL_CONFIG,
+      "high",
+      featureFlags
+    ) ??
+    getLargeModelFallback(auth, featureFlags)
+  );
+}
+
+export function _getDeepDiveGlobalAgent(
+  auth: Authenticator,
+  {
+    settings,
+    preFetchedDataSources,
+    mcpServerViews,
+    hasSandbox,
+    featureFlags,
+  }: {
+    settings: GlobalAgentSettingsModel | null;
+    preFetchedDataSources: PrefetchedDataSourcesType | null;
+    mcpServerViews: MCPServerViewsForGlobalAgentsMap;
+    hasSandbox?: boolean;
+    featureFlags: WhitelistableFeature[];
+  }
+): AgentConfigurationType | null {
+  const { run_agent: runAgentMCPServerView } = mcpServerViews;
+  const pictureUrl = RUBY_AVATAR_URL;
+  const modelConfig = getDeepDiveModelConfig(auth, featureFlags);
+
+  const deepAgent: Omit<
+    AgentConfigurationType,
+    "status" | "maxStepsPerRun" | "actions"
+  > = {
+    id: -1,
+    agentModelId: null,
+    sId: GLOBAL_AGENTS_SID.DEEP_DIVE,
+    version: 0,
+    versionCreatedAt: null,
+    versionAuthorId: null,
+    name: DEEP_DIVE_NAME,
+    description: DEEP_DIVE_DESC,
+    instructions: getDeepDiveInstructions({
+      includeToolsetsPrompt: true,
+      hasSandbox,
+    }),
+    instructionsHtml: null,
+    pictureUrl,
+    scope: "global" as const,
+    userFavorite: false,
+    model: dummyModelConfiguration,
+    templateId: null,
+    requestedGroupIds: [],
+    requestedSpaceIds: [],
+    tags: [],
+    canRead: true,
+    canEdit: false,
+  };
+
+  if (settings?.status === "disabled_by_admin" || !modelConfig) {
+    return {
+      ...deepAgent,
+      status: "disabled_by_admin",
+      actions: [],
+      maxStepsPerRun: 0,
+    };
+  }
+
+  const model: AgentModelConfigurationType = {
+    providerId: modelConfig.modelConfiguration.providerId,
+    modelId: modelConfig.modelConfiguration.modelId,
+    temperature: 1.0,
+    reasoningEffort: modelConfig.reasoningEffort,
+  };
+
+  deepAgent.model = model;
+
+  const actions: MCPServerConfigurationType[] = [];
+
+  const companyDataAction = getCompanyDataAction(
+    preFetchedDataSources,
+    mcpServerViews
+  );
+  if (companyDataAction) {
+    actions.push(companyDataAction);
+  }
+
+  actions.push(
+    ..._getDefaultWebActionsForGlobalAgent({
+      agentId: GLOBAL_AGENTS_SID.DEEP_DIVE,
+      mcpServerViews,
+    }),
+    ..._getToolsetsToolsConfiguration({
+      agentId: GLOBAL_AGENTS_SID.RUBY_TASK,
+      mcpServerViews,
+    })
+  );
+
+  // Add data warehouses tool with all warehouses in global space (all remote DBs)
+  const dataWarehousesAction = getCompanyDataWarehousesAction(
+    preFetchedDataSources,
+    mcpServerViews
+  );
+  if (dataWarehousesAction) {
+    actions.push(dataWarehousesAction);
+  }
+
+  // Add run_agent to call ruby-task
+  if (runAgentMCPServerView) {
+    actions.push({
+      id: -1,
+      sId: GLOBAL_AGENTS_SID.DEEP_DIVE + "-run-agent-ruby-task",
+      type: "mcp_server_configuration",
+      name: "sub_agent",
+      description: "Run the ruby-task sub-agent for focused tasks.",
+      mcpServerViewId: runAgentMCPServerView.sId,
+      internalMCPServerId: runAgentMCPServerView.internalMCPServerId,
+      dataSources: null,
+      tables: null,
+      childAgentId: GLOBAL_AGENTS_SID.RUBY_TASK,
+      additionalConfiguration: {},
+      timeFrame: null,
+      rubyAppConfiguration: null,
+      jsonSchema: null,
+      secretName: null,
+      rubyProject: null,
+    });
+    actions.push({
+      id: -1,
+      sId: GLOBAL_AGENTS_SID.DEEP_DIVE + "-run-agent-ruby-planning",
+      type: "mcp_server_configuration",
+      name: "planning_agent",
+      description:
+        "Run the ruby-planning sub-agent for planning research tasks.",
+      mcpServerViewId: runAgentMCPServerView.sId,
+      internalMCPServerId: runAgentMCPServerView.internalMCPServerId,
+      dataSources: null,
+      tables: null,
+      childAgentId: GLOBAL_AGENTS_SID.RUBY_PLANNING,
+      additionalConfiguration: {},
+      timeFrame: null,
+      rubyAppConfiguration: null,
+      jsonSchema: null,
+      secretName: null,
+      rubyProject: null,
+    });
+  }
+
+  // Fix the action ids.
+  actions.forEach((action, i) => {
+    action.id = -i;
+  });
+
+  const status = auth.plan()?.limits.assistant.isDeepDiveAllowed
+    ? "active"
+    : "disabled_free_workspace";
+
+  return {
+    ...deepAgent,
+    status,
+    actions,
+    // The "sandbox" (Computer) skill is auto-equipped for all agents unless
+    // the workspace has disabled Computer, so it no longer needs to be listed
+    // here.
+    codeDefinedSkillIds: ["frames", "discover_skills", "skill-authoring"],
+    maxStepsPerRun: MAX_STEPS_USE_PER_RUN_LIMIT,
+  };
+}
+
+export function _getRubyTaskGlobalAgent(
+  auth: Authenticator,
+  {
+    settings,
+    preFetchedDataSources,
+    mcpServerViews,
+    featureFlags,
+  }: {
+    settings: GlobalAgentSettingsModel | null;
+    preFetchedDataSources: PrefetchedDataSourcesType | null;
+    mcpServerViews: MCPServerViewsForGlobalAgentsMap;
+    featureFlags: WhitelistableFeature[];
+  }
+): AgentConfigurationType | null {
+  const name = "ruby-task";
+  const description = `Focused research sub-agent. Same data/web tools as ${DEEP_DIVE_NAME}, without Interactive Content or spawning sub-agents.`;
+
+  const pictureUrl =
+    "https://ruby.ad/static/systemavatar/ruby-task_avatar_full.png";
+
+  const rubyTaskAgent: Omit<
+    AgentConfigurationType,
+    "status" | "maxStepsPerRun" | "actions"
+  > = {
+    id: -1,
+    agentModelId: null,
+    sId: GLOBAL_AGENTS_SID.RUBY_TASK,
+    version: 0,
+    versionCreatedAt: null,
+    versionAuthorId: null,
+    name,
+    description,
+    instructions: subAgentInstructions,
+    instructionsHtml: null,
+    pictureUrl,
+    scope: "global" as const,
+    userFavorite: false,
+    model: dummyModelConfiguration,
+    templateId: null,
+    requestedGroupIds: [],
+    requestedSpaceIds: [],
+    tags: [],
+    canRead: true,
+    canEdit: false,
+  };
+
+  const modelConfig = getRubyTaskModelConfig(auth, featureFlags);
+
+  if (!modelConfig || settings?.status === "disabled_by_admin") {
+    return {
+      ...rubyTaskAgent,
+      status: "disabled_by_admin",
+      actions: [],
+      maxStepsPerRun: 0,
+    };
+  }
+
+  const model: AgentModelConfigurationType = {
+    providerId: modelConfig.modelConfiguration.providerId,
+    modelId: modelConfig.modelConfiguration.modelId,
+    temperature: 1.0,
+    reasoningEffort: modelConfig.reasoningEffort,
+  };
+
+  rubyTaskAgent.model = model;
+
+  const actions: MCPServerConfigurationType[] = [];
+
+  const companyDataAction = getCompanyDataAction(
+    preFetchedDataSources,
+    mcpServerViews
+  );
+  if (companyDataAction) {
+    actions.push(companyDataAction);
+  }
+
+  const { "web_search_&_browse": webSearchBrowseMCPServerView } =
+    mcpServerViews;
+  if (webSearchBrowseMCPServerView) {
+    actions.push({
+      id: -1,
+      sId: GLOBAL_AGENTS_SID.RUBY_TASK + "-websearch-browse-action",
+      type: "mcp_server_configuration",
+      name: "webtools",
+      description: WEB_SEARCH_BROWSE_ACTION_DESCRIPTION,
+      mcpServerViewId: webSearchBrowseMCPServerView.sId,
+      internalMCPServerId: webSearchBrowseMCPServerView.internalMCPServerId,
+      dataSources: null,
+      tables: null,
+      childAgentId: null,
+      additionalConfiguration: {
+        [USE_SUMMARY_SWITCH]: true,
+      },
+      timeFrame: null,
+      rubyAppConfiguration: null,
+      jsonSchema: null,
+      secretName: null,
+      rubyProject: null,
+    });
+  }
+
+  const dataWarehousesAction = getCompanyDataWarehousesAction(
+    preFetchedDataSources,
+    mcpServerViews
+  );
+  if (dataWarehousesAction) {
+    actions.push(dataWarehousesAction);
+  }
+
+  actions.forEach((action, i) => (action.id = -i));
+
+  return {
+    ...rubyTaskAgent,
+    status: "active",
+    actions,
+    maxStepsPerRun: MAX_STEPS_USE_PER_RUN_LIMIT,
+  };
+}
+
+export function _getPlanningAgent(
+  auth: Authenticator,
+  {
+    settings,
+    featureFlags,
+  }: {
+    settings: GlobalAgentSettingsModel | null;
+    featureFlags: WhitelistableFeature[];
+  }
+): AgentConfigurationType | null {
+  const name = "ruby-planning";
+  const description = "A agent that plans research tasks.";
+
+  const pictureUrl =
+    "https://ruby.ad/static/systemavatar/ruby-task_avatar_full.png";
+
+  const planningAgent: Omit<
+    AgentConfigurationType,
+    "status" | "maxStepsPerRun" | "actions"
+  > = {
+    id: -1,
+    agentModelId: null,
+    sId: GLOBAL_AGENTS_SID.RUBY_PLANNING,
+    version: 0,
+    versionCreatedAt: null,
+    versionAuthorId: null,
+    name,
+    description,
+    instructions: planningAgentInstructions,
+    instructionsHtml: null,
+    pictureUrl,
+    scope: "global" as const,
+    userFavorite: false,
+    model: dummyModelConfiguration,
+    templateId: null,
+    requestedGroupIds: [],
+    requestedSpaceIds: [],
+    tags: [],
+    canRead: true,
+    canEdit: false,
+  };
+
+  const modelConfig = getPlanningModelConfig(auth, featureFlags);
+  if (!modelConfig || settings?.status === "disabled_by_admin") {
+    return {
+      ...planningAgent,
+      status: "disabled_by_admin",
+      actions: [],
+      maxStepsPerRun: 0,
+    };
+  }
+
+  const model: AgentModelConfigurationType = {
+    providerId: modelConfig.modelConfiguration.providerId,
+    modelId: modelConfig.modelConfiguration.modelId,
+    temperature: 1.0,
+    reasoningEffort: modelConfig.reasoningEffort,
+  };
+  planningAgent.model = model;
+
+  return {
+    ...planningAgent,
+    status: "active",
+    actions: [],
+    maxStepsPerRun: MAX_STEPS_USE_PER_RUN_LIMIT,
+  };
+}
+
+export function _getArchivedBrowserSummaryAgent(): AgentConfigurationType {
+  const name = "ruby-browser-summary";
+  const description = "A agent that summarizes web page content.";
+
+  const pictureUrl =
+    "https://ruby.ad/static/systemavatar/ruby-task_avatar_full.png";
+
+  return {
+    id: -1,
+    agentModelId: null,
+    sId: GLOBAL_AGENTS_SID.RUBY_BROWSER_SUMMARY,
+    version: 0,
+    versionCreatedAt: null,
+    versionAuthorId: null,
+    name,
+    description,
+    instructions: null,
+    instructionsHtml: null,
+    pictureUrl,
+    scope: "global" as const,
+    userFavorite: false,
+    model: dummyModelConfiguration,
+    templateId: null,
+    requestedGroupIds: [],
+    requestedSpaceIds: [],
+    tags: [],
+    canRead: true,
+    canEdit: false,
+    status: "archived",
+    actions: [],
+    maxStepsPerRun: MAX_STEPS_USE_PER_RUN_LIMIT,
+  };
+}

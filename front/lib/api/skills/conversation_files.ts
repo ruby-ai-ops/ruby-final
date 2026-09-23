@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import type { Authenticator } from "@app/lib/auth";
 import type { SkillResource } from "@app/lib/resources/skill/skill_resource";
 import logger from "@app/logger/logger";
@@ -29,7 +29,7 @@ type WritableSkillFile = {
  * From the model's, the `files__*` tools', and the sandbox's point of view they
  * are indistinguishable once written.
  *
- * Writing through DustFileSystem (rather than the sandbox filesystem) makes the files visible
+ * Writing through RubyFileSystem (rather than the sandbox filesystem) makes the files visible
  * everywhere the conversation files are: the `files__*` tools, the sandbox gcsfuse mount
  * (`/files/conversation-{cId}/skills/...`), the conversation files panel, and conversation
  * branching copies. Idempotent: files already present at their deterministic path are left
@@ -67,7 +67,7 @@ export async function upsertSkillFilesToConversation(
     return new Ok({ loadedPaths: [] });
   }
 
-  const fsResult = await DustFileSystem.forConversation(auth, conversation);
+  const fsResult = await RubyFileSystem.forConversation(auth, conversation);
   if (fsResult.isErr()) {
     return fsResult;
   }

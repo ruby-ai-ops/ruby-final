@@ -30,7 +30,7 @@ export const FILE_SYSTEM_REQUEST_ID_MAX_LENGTH = 255;
 
 export const FILE_SYSTEM_CONTENT_TYPE_MAX_LENGTH = 255;
 
-// Matches the largest raw file upload currently accepted by Dust.
+// Matches the largest raw file upload currently accepted by Ruby.
 export const FILE_SYSTEM_CONTENT_MAX_BYTES = 350 * 1024 * 1024;
 
 /** The stable file or directory identity returned by the namespace. */

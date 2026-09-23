@@ -17,7 +17,7 @@ type DelegateConfig = Parameters<
 >[1];
 
 // A router-native model with its own identity that deliberately sends healthy
-// requests to GPT-5.4 Mini. Synthetic failure behavior is added in the Dust
+// requests to GPT-5.4 Mini. Synthetic failure behavior is added in the Ruby
 // endpoint wrapper, not in this provider-agnostic constructor.
 export class OpenAISimulatedFailureModelGlobalOpenAIResponsesStream extends OpenAIResponsesStream {
   static readonly model = SIMULATED_FAILURE_MODEL;

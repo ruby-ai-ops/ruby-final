@@ -13,7 +13,7 @@ interface AppStatusComponent {
 }
 
 export interface AppStatus {
-  dustStatus: AppStatusComponent | null;
+  rubyStatus: AppStatusComponent | null;
   providersStatus: AppStatusComponent | null;
 }
 
@@ -63,18 +63,18 @@ async function getProvidersStatus(): Promise<AppStatusComponent | null> {
   return null;
 }
 
-async function getDustStatus(): Promise<AppStatusComponent | null> {
+async function getRubyStatus(): Promise<AppStatusComponent | null> {
   if (isDevelopment()) {
     return null;
   }
 
   const currentRegion = regionConfig.getCurrentRegion();
-  const dustIncidents = await getUnresolvedIncidents({
+  const rubyIncidents = await getUnresolvedIncidents({
     apiToken: config.getStatusPageApiToken(),
-    pageId: config.getStatusPageDustPageId(),
+    pageId: config.getStatusPageRubyPageId(),
   });
 
-  const relevantIncidents = dustIncidents.filter((incident) =>
+  const relevantIncidents = rubyIncidents.filter((incident) =>
     isIncidentRelevantToRegion(incident, currentRegion)
   );
 
@@ -104,10 +104,10 @@ export const getProviderStatusMemoized = cacheWithRedis(
   }
 );
 
-export const getDustStatusMemoized = cacheWithRedis(
-  getDustStatus,
+export const getRubyStatusMemoized = cacheWithRedis(
+  getRubyStatus,
   () => {
-    return `dust-status-${regionConfig.getCurrentRegion()}`;
+    return `ruby-status-${regionConfig.getCurrentRegion()}`;
   },
   // Caches data for 2 minutes to limit frequent API calls.
   // Status page rate limit is pretty aggressive.

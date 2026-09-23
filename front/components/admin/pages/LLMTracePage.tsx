@@ -1,0 +1,206 @@
+import { InputTab } from "@app/components/admin/llm_traces/InputTab";
+import { OutputTab } from "@app/components/admin/llm_traces/OutputTab";
+import { RawJsonTab } from "@app/components/admin/llm_traces/RawJsonTab";
+import type { TokenUsage } from "@app/lib/api/llm/types/events";
+import { useWorkspace } from "@app/lib/auth/AuthContext";
+import { useRequiredPathParam } from "@app/lib/platform";
+import { useAdminLLMTrace } from "@app/admin-app/swr";
+import { useAdminPageMetadata } from "@app/admin-app/swr/currentPage";
+import { isString } from "@app/types/shared/utils/general";
+import { pluralize } from "@app/types/shared/utils/string_utils";
+import {
+  Chip,
+  LinkExternal01,
+  Page,
+  Spinner,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@ruby-ai/ui";
+
+function formatDuration(durationMs: number) {
+  return durationMs >= 1000
+    ? `${(durationMs / 1000).toFixed(1)}s`
+    : `${durationMs}ms`;
+}
+
+function formatTokenUsage({
+  inputTokens,
+  uncachedInputTokens,
+  totalOutputTokens,
+}: TokenUsage) {
+  const inputStr =
+    inputTokens.toLocaleString() +
+    (uncachedInputTokens
+      ? ` (uncached: ${uncachedInputTokens.toLocaleString()})`
+      : "");
+  const outputStr = totalOutputTokens.toLocaleString();
+  return `${inputStr} → ${outputStr}`;
+}
+
+function formatTimestamp(timestamp: string): string {
+  return new Date(timestamp).toLocaleString();
+}
+
+export function LLMTracePage() {
+  const owner = useWorkspace();
+
+  const runId = useRequiredPathParam("runId");
+  useAdminPageMetadata({ name: owner.name, subtitle: "LLM Trace", sId: runId });
+  const { trace, isLLMTraceLoading, isLLMTraceError } = useAdminLLMTrace({
+    workspace: owner,
+    runId,
+  });
+
+  if (isLLMTraceLoading) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  if (isLLMTraceError || !trace) {
+    return (
+      <div className="flex h-64 flex-col items-center justify-center">
+        <div className="text-lg font-medium text-warning">
+          Failed to load LLM trace
+        </div>
+        <div className="mt-2 text-sm text-muted-foreground">
+          The trace may not exist or there was an error fetching it from GCS.
+        </div>
+      </div>
+    );
+  }
+
+  const toolCallCount = trace?.output?.toolCalls?.length;
+
+  return (
+    <div className="max-w-6xl">
+      <Page.Vertical align="stretch">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">LLM Trace</h1>
+            <div className="text-sm text-muted-foreground">
+              Run ID: <code className="text-xs">{runId}</code>
+            </div>
+          </div>
+        </div>
+
+        {(isString(trace.context.agentConfigurationId) ||
+          isString(trace.context.conversationId)) && (
+          <div className="flex flex-wrap gap-2">
+            {trace.context.agentConfigurationId && (
+              <Chip
+                color="warning"
+                label={`Agent: ${trace.context.agentConfigurationId}`}
+                size="sm"
+                href={`/admin/${owner.sId}/assistants/${trace.context.agentConfigurationId}`}
+                icon={LinkExternal01}
+              />
+            )}
+            {trace.context.conversationId && (
+              <Chip
+                color="info"
+                label={`Conversation`}
+                size="sm"
+                href={`/admin/${owner.sId}/conversation/${trace.context.conversationId}`}
+                icon={LinkExternal01}
+              />
+            )}
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-2">
+          <Chip
+            color="highlight"
+            label={`Model: ${trace.input?.modelId ?? trace.metadata.modelId}`}
+            size="sm"
+          />
+          <Chip
+            color="info"
+            label={`Duration: ${formatDuration(trace.metadata.durationMs)}`}
+            size="sm"
+          />
+          {trace.output?.tokenUsage && (
+            <Chip
+              color="highlight"
+              label={`Tokens: ${formatTokenUsage(trace.output.tokenUsage)}`}
+              size="sm"
+            />
+          )}
+          {trace.output?.finishReason && (
+            <Chip
+              color={
+                trace.output.finishReason === "error" ? "warning" : "success"
+              }
+              label={`Finish reason: ${trace.output.finishReason}`}
+              size="sm"
+            />
+          )}
+          {trace.context.operationType && (
+            <Chip
+              color="highlight"
+              label={`Type: ${trace.context.operationType}`}
+              size="sm"
+            />
+          )}
+          {trace.metadata.bufferTruncated && (
+            <Chip color="warning" label="Truncated" size="sm" />
+          )}
+        </div>
+
+        {trace.error && (
+          <div className="rounded-lg border border-warning-300 bg-warning-50 p-4">
+            <div className="mb-2 flex items-center gap-2">
+              <span className="font-semibold text-warning-800">Error</span>
+              {trace.error.partialCompletion && (
+                <Chip color="warning" label="Partial completion" size="xs" />
+              )}
+            </div>
+            <p className="text-sm text-warning">{trace.error.message}</p>
+            <p className="mt-1 text-xs text-warning-600">
+              Timestamp: {formatTimestamp(trace.error.timestamp)}
+              {trace.error.providerRunId && (
+                <span className="ml-4">
+                  Provider Run ID: {trace.error.providerRunId}
+                </span>
+              )}
+            </p>
+          </div>
+        )}
+
+        <Tabs defaultValue={trace.input ? "input" : "output"}>
+          <TabsList>
+            {trace.input && (
+              <TabsTrigger
+                value="input"
+                label={`Input (${trace.input.conversation.messages.length} messages)`}
+              />
+            )}
+            <TabsTrigger
+              value="output"
+              label={`Output (${toolCallCount ? `${toolCallCount} tool call${pluralize(toolCallCount)}` : "Generation"})`}
+            />
+            <TabsTrigger value="raw" label="Raw JSON" />
+          </TabsList>
+
+          {trace.input && (
+            <TabsContent value="input">
+              <InputTab input={trace.input} />
+            </TabsContent>
+          )}
+
+          <TabsContent value="output">
+            <OutputTab output={trace.output} />
+          </TabsContent>
+
+          <TabsContent value="raw">
+            <RawJsonTab trace={trace} />
+          </TabsContent>
+        </Tabs>
+      </Page.Vertical>
+    </div>
+  );
+}

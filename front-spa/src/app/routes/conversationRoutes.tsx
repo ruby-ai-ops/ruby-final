@@ -24,7 +24,7 @@ function ConversationRedirect() {
 }
 
 const ConversationPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/conversation/ConversationPage"),
+  () => import("@ruby-ai/front/components/pages/conversation/ConversationPage"),
   "ConversationPage"
 );
 

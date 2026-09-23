@@ -22,7 +22,7 @@ const AWU_CREDITS_PER_DOLLAR = 100;
 
 type LegacyMigrationCredits = {
   // Remaining (unconsumed) balance of the workspace's convertible credits
-  // (committed + poke-granted free), in microUSD — the basis for the conversion.
+  // (committed + admin-granted free), in microUSD — the basis for the conversion.
   convertibleRemainingMicroUsd: number;
   // `convertibleRemainingMicroUsd` converted to AWU at $1 = 100 AWU.
   convertedAwuCredits: number;
@@ -31,8 +31,8 @@ type LegacyMigrationCredits = {
   bonusAwuCredits: number;
 };
 
-// Poke-granted free credits (manual one-off grants) carry an `invoiceOrLineItemId`
-// of `free-poke-*`; monthly renewal free credits use `free-renewal-*` and are NOT
+// Admin-granted free credits (manual one-off grants) carry an `invoiceOrLineItemId`
+// of `free-admin-*`; monthly renewal free credits use `free-renewal-*` and are NOT
 // converted.
 function isConvertibleCredit(credit: {
   type: string;
@@ -43,7 +43,7 @@ function isConvertibleCredit(credit: {
   }
   return (
     credit.type === "free" &&
-    (credit.invoiceOrLineItemId?.startsWith("free-poke-") ?? false)
+    (credit.invoiceOrLineItemId?.startsWith("free-admin-") ?? false)
   );
 }
 
@@ -53,8 +53,8 @@ function isConvertibleCredit(credit: {
  * over the rollout window, so this is computed at activation time, not when the
  * migration is scheduled).
  *
- * Converts `committed` (purchased) credits and poke-granted free credits
- * (`free-poke-*`). Monthly renewal free credits (`free-renewal-*`) are
+ * Converts `committed` (purchased) credits and admin-granted free credits
+ * (`free-admin-*`). Monthly renewal free credits (`free-renewal-*`) are
  * intentionally left behind. Read-only.
  */
 async function computeLegacyMigrationCredits({
@@ -94,7 +94,7 @@ async function computeLegacyMigrationCredits({
 /**
  * Apply the legacy → Business credit migration on the now-active contract:
  *  - convert the workspace's remaining convertible legacy credits (committed +
- *    poke-granted free) to AWU ($1 = 100 AWU) as a contract credit (no invoice);
+ *    admin-granted free) to AWU ($1 = 100 AWU) as a contract credit (no invoice);
  *  - grant the free per-user AWU bonus as a contract credit.
  *
  * Both credits are effective from the contract start (passed as `startingAt`,

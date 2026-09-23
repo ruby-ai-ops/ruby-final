@@ -7,7 +7,7 @@ import {
   podFileTabBasename,
 } from "@app/types/pod_file_tab";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, LayoutAlt02 } from "@dust-tt/sparkle";
+import { Button, LayoutAlt02 } from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
 interface PodFileTabButtonProps {

@@ -50,8 +50,8 @@ import {
   safeParseJSON,
 } from "@connectors/types";
 import { getConnectionCredentials } from "@connectors/types/oauth/client/credentials";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import { WebClient } from "@slack/web-api";
 
 export class SlackConnectorManager extends BaseConnectorManager<SlackConfigurationType> {
@@ -477,7 +477,7 @@ export class SlackConnectorManager extends BaseConnectorManager<SlackConfigurati
                 "Could not join the Slack channel"
               );
               throw new Error(
-                `Our Slack bot (@Dust) was not able to join the Slack channel #${channel.slackChannelName}. Please re-authorize Slack or invite @Dust from #${channel.slackChannelName} on Slack.`
+                `Our Slack bot (@Ruby) was not able to join the Slack channel #${channel.slackChannelName}. Please re-authorize Slack or invite @Ruby from #${channel.slackChannelName} on Slack.`
               );
             }
           }

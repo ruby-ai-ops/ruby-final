@@ -77,7 +77,7 @@ The caller is a profile: the output of `scripts/export_user_profile.ts`, holding
 { "bool": { "should": [
     { "terms": { "scope": ["visible", "global"] } },
     { "bool": { "filter": [ { "term": { "scope": "hidden" } },
-                            { "term": { "editors": "adrien@dust.tt" } } ] } }
+                            { "term": { "editors": "adrien@ruby.ad" } } ] } }
   ], "minimum_should_match": 1 } }
 ```
 

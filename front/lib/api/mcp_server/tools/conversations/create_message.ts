@@ -1,14 +1,14 @@
 import { resolveAgentConfigurationIdByName } from "@app/lib/api/assistant/configuration/agent";
 import { postUserMessage } from "@app/lib/api/assistant/conversation";
 import config from "@app/lib/api/config";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { getConversationRoute } from "@app/lib/utils/router";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { mcpError, mcpJsonResponse } from "../response";
 
-const DEFAULT_AGENT_NAME = "Dust";
+const DEFAULT_AGENT_NAME = "Ruby";
 
 const inputSchema = {
   conversationId: z
@@ -25,7 +25,7 @@ const inputSchema = {
 };
 
 export function registerConversationsCreateMessageTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "create_conversation_message",
     {

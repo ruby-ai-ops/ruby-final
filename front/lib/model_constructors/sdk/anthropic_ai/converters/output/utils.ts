@@ -394,14 +394,14 @@ export function stopReasonToErrorEvent(
   switch (stopReason) {
     case "max_tokens":
       return buildErrorEvent({
-        errorSource: "dust",
+        errorSource: "ruby",
         metadata,
         type: "stop_error",
         message: "The maximum response length was reached.",
       });
     case "refusal":
       return buildErrorEvent({
-        errorSource: "dust",
+        errorSource: "ruby",
         metadata,
         type: "refusal_error",
         message:
@@ -438,7 +438,7 @@ function apiErrorToErrorEvent(
   // Classify only this exact Anthropic diagnostic as a retryable server error.
   if (isAnthropicFileDownloadError(error)) {
     return buildErrorEvent({
-      errorSource: "dust",
+      errorSource: "ruby",
       metadata,
       type: "server_error",
       message: httpErrorMessage({
@@ -1091,15 +1091,15 @@ function classifyAnthropicApiErrorType(errorType: string): {
 } {
   switch (errorType) {
     case "invalid_request_error":
-      return { errorSource: "dust", type: "invalid_request_error" };
+      return { errorSource: "ruby", type: "invalid_request_error" };
     case "authentication_error":
-      return { errorSource: "dust", type: "authentication_error" };
+      return { errorSource: "ruby", type: "authentication_error" };
     case "permission_error":
-      return { errorSource: "dust", type: "permission_error" };
+      return { errorSource: "ruby", type: "permission_error" };
     case "not_found_error":
-      return { errorSource: "dust", type: "not_found_error" };
+      return { errorSource: "ruby", type: "not_found_error" };
     case "rate_limit_error":
-      return { errorSource: "dust", type: "rate_limit_error" };
+      return { errorSource: "ruby", type: "rate_limit_error" };
     case "overloaded_error":
       return { errorSource: "provider", type: "overloaded_error" };
     case "api_error":

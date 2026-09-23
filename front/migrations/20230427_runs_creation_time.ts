@@ -42,13 +42,13 @@ async function main() {
     const chunk = chunks[i];
     await Promise.all(
       chunk.map((r) => {
-        const dustRun = runById[r.dustRunId];
-        if (dustRun) {
+        const rubyRun = runById[r.rubyRunId];
+        if (rubyRun) {
           return frontSequelize.query(
             `UPDATE runs SET "createdAt" = :createdAt WHERE id = :id`,
             {
               replacements: {
-                createdAt: new Date(parseInt(dustRun.created)),
+                createdAt: new Date(parseInt(rubyRun.created)),
                 id: r.id,
               },
             }

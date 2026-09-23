@@ -1,4 +1,4 @@
-import type { KillSwitchType } from "@app/lib/poke/types";
+import type { KillSwitchType } from "@app/lib/admin/types";
 import { KillSwitchResource } from "@app/lib/resources/kill_switch_resource";
 import logger from "@app/logger/logger";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
@@ -11,7 +11,7 @@ import { normalizeError } from "@app/types/shared/utils/error_utils";
  * keeps the last known value in process and refreshes it in the background at
  * most once per `refreshIntervalMs`.
  *
- * Consequences: toggling the switch in Poke takes effect within that window on
+ * Consequences: toggling the switch in Admin takes effect within that window on
  * each pod, a pod reads `false` until its first refresh resolves (a few ms
  * after boot), and a Redis or database blip leaves the last known value in
  * place rather than flipping behaviour.

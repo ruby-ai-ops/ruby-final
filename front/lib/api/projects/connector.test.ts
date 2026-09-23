@@ -79,7 +79,7 @@ describe("createDataSourceAndConnectorForProject", () => {
   });
 
   describe("successful creation", () => {
-    it("should create dust_project connector with all required components", async () => {
+    it("should create ruby_project connector with all required components", async () => {
       const mockProjectId = Math.floor(Math.random() * 1000000);
       const mockDataSourceId = "test-data-source-id-" + Math.random();
       const mockConnectorId = "test-connector-id-" + Math.random();
@@ -155,7 +155,7 @@ describe("createDataSourceAndConnectorForProject", () => {
         .mockResolvedValue(
           new Ok({
             id: mockConnectorId,
-            type: "dust_project",
+            type: "ruby_project",
             workspaceId: workspace.sId,
             dataSourceId: "test-data-source-id",
             connectionId: projectSpace.sId,
@@ -180,12 +180,12 @@ describe("createDataSourceAndConnectorForProject", () => {
 
       expect(result.isOk()).toBe(true);
 
-      // Verify only one dust_project datasource exists
+      // Verify only one ruby_project datasource exists
       const finalDataSources = await DataSourceResource.listBySpace(
         adminAuth,
         projectSpace,
         undefined,
-        "dust_project"
+        "ruby_project"
       );
       expect(finalDataSources.length).toBe(1);
 
@@ -223,7 +223,7 @@ describe("createDataSourceAndConnectorForProject", () => {
       // Verify ConnectorsAPI.createConnector was called with correct parameters
       expect(createConnectorSpy).toHaveBeenCalledTimes(1);
       const createConnectorCall = createConnectorSpy.mock.calls[0][0];
-      expect(createConnectorCall.provider).toBe("dust_project");
+      expect(createConnectorCall.provider).toBe("ruby_project");
       expect(createConnectorCall.workspaceId).toBe(workspace.sId);
       expect(createConnectorCall.workspaceAPIKey).toBe(mockSystemKey.secret);
       expect(createConnectorCall.dataSourceId).toBeDefined();
@@ -240,7 +240,7 @@ describe("createDataSourceAndConnectorForProject", () => {
         getProjectConversationsDatasourceName(projectSpace)
       );
       expect(dataSource).toBeDefined();
-      expect(dataSource?.connectorProvider).toBe("dust_project");
+      expect(dataSource?.connectorProvider).toBe("ruby_project");
       expect(dataSource?.connectorId?.toString()).toBe(mockConnectorId);
       expect(dataSource?.name).toBe(
         getProjectConversationsDatasourceName(projectSpace)
@@ -328,7 +328,7 @@ describe("createDataSourceAndConnectorForProject", () => {
         .mockResolvedValue(
           new Ok({
             id: mockConnectorId,
-            type: "dust_project",
+            type: "ruby_project",
             workspaceId: workspace.sId,
             dataSourceId: "test-data-source-id",
             connectionId: projectSpace.sId,
@@ -359,7 +359,7 @@ describe("createDataSourceAndConnectorForProject", () => {
         getProjectConversationsDatasourceName(projectSpace)
       );
       expect(dataSource).toBeDefined();
-      expect(dataSource?.connectorProvider).toBe("dust_project");
+      expect(dataSource?.connectorProvider).toBe("ruby_project");
 
       // Restore first set of spies
       getSystemKeySpy.mockRestore();
@@ -423,7 +423,7 @@ describe("createDataSourceAndConnectorForProject", () => {
         .mockResolvedValue(
           new Ok({
             id: mockConnectorId,
-            type: "dust_project",
+            type: "ruby_project",
             workspaceId: workspace.sId,
             dataSourceId: dataSource?.sId ?? "",
             connectionId: projectSpace.sId,
@@ -881,7 +881,7 @@ describe("createDataSourceAndConnectorForProject", () => {
       vi.spyOn(ConnectorsAPI.prototype, "createConnector").mockResolvedValue(
         new Ok({
           id: mockConnectorId,
-          type: "dust_project",
+          type: "ruby_project",
           workspaceId: workspace.sId,
           dataSourceId: "test-data-source-id",
           connectionId: projectSpace.sId,
@@ -919,12 +919,12 @@ describe("createDataSourceAndConnectorForProject", () => {
       expect(dataSource).toBeDefined();
       expect(dataSource?.connectorId?.toString()).toBe(mockConnectorId);
 
-      // Verify only one dust_project datasource exists
+      // Verify only one ruby_project datasource exists
       const finalDataSources = await DataSourceResource.listBySpace(
         adminAuth,
         projectSpace,
         undefined,
-        "dust_project"
+        "ruby_project"
       );
       expect(finalDataSources.length).toBe(1);
 
@@ -943,11 +943,11 @@ describe("createDataSourceAndConnectorForProject", () => {
       await DataSourceViewResource.createDataSourceAndDefaultView(
         {
           assistantDefaultSelected:
-            isConnectorProviderAssistantDefaultSelected("dust_project"),
-          connectorProvider: "dust_project",
+            isConnectorProviderAssistantDefaultSelected("ruby_project"),
+          connectorProvider: "ruby_project",
           description: `Conversations from project ${projectSpace.sId}`,
-          dustAPIProjectId: mockOrphanedProjectId,
-          dustAPIDataSourceId: mockOrphanedDataSourceId,
+          rubyAPIProjectId: mockOrphanedProjectId,
+          rubyAPIDataSourceId: mockOrphanedDataSourceId,
           name: getProjectConversationsDatasourceName(projectSpace),
           workspaceId: workspace.id,
         },
@@ -1030,7 +1030,7 @@ describe("createDataSourceAndConnectorForProject", () => {
       vi.spyOn(ConnectorsAPI.prototype, "createConnector").mockResolvedValue(
         new Ok({
           id: mockConnectorId,
-          type: "dust_project",
+          type: "ruby_project",
           workspaceId: workspace.sId,
           dataSourceId: "test-data-source-id",
           connectionId: projectSpace.sId,
@@ -1064,11 +1064,11 @@ describe("createDataSourceAndConnectorForProject", () => {
         adminAuth,
         projectSpace,
         undefined,
-        "dust_project"
+        "ruby_project"
       );
       expect(dataSources.length).toBe(1);
-      expect(dataSources[0].dustAPIProjectId).toBe(mockProjectId.toString());
-      expect(dataSources[0].dustAPIDataSourceId).toBe(mockDataSourceId);
+      expect(dataSources[0].rubyAPIProjectId).toBe(mockProjectId.toString());
+      expect(dataSources[0].rubyAPIDataSourceId).toBe(mockDataSourceId);
 
       // Verify the orphaned data source no longer exists
       const orphanedCheck = await DataSourceResource.fetchByNameOrId(
@@ -1077,15 +1077,15 @@ describe("createDataSourceAndConnectorForProject", () => {
       );
       // Should find the new one, not the orphaned one
       expect(orphanedCheck).toBeDefined();
-      expect(orphanedCheck?.dustAPIProjectId).toBe(mockProjectId.toString());
-      expect(orphanedCheck?.dustAPIDataSourceId).toBe(mockDataSourceId);
+      expect(orphanedCheck?.rubyAPIProjectId).toBe(mockProjectId.toString());
+      expect(orphanedCheck?.rubyAPIDataSourceId).toBe(mockDataSourceId);
 
-      // Verify only one dust_project datasource exists
+      // Verify only one ruby_project datasource exists
       const finalDataSources = await DataSourceResource.listBySpace(
         adminAuth,
         projectSpace,
         undefined,
-        "dust_project"
+        "ruby_project"
       );
       expect(finalDataSources.length).toBe(1);
     });
@@ -1101,11 +1101,11 @@ describe("createDataSourceAndConnectorForProject", () => {
         await DataSourceViewResource.createDataSourceAndDefaultView(
           {
             assistantDefaultSelected:
-              isConnectorProviderAssistantDefaultSelected("dust_project"),
-            connectorProvider: "dust_project",
+              isConnectorProviderAssistantDefaultSelected("ruby_project"),
+            connectorProvider: "ruby_project",
             description: `Conversations from project ${projectSpace.sId}`,
-            dustAPIProjectId: mockProjectId.toString(),
-            dustAPIDataSourceId: mockDataSourceId,
+            rubyAPIProjectId: mockProjectId.toString(),
+            rubyAPIDataSourceId: mockDataSourceId,
             name: getProjectConversationsDatasourceName(projectSpace),
             workspaceId: workspace.id,
           },
@@ -1167,7 +1167,7 @@ describe("createDataSourceAndConnectorForProject", () => {
         .mockResolvedValue(
           new Ok({
             id: mockConnectorId,
-            type: "dust_project",
+            type: "ruby_project",
             workspaceId: workspace.sId,
             dataSourceId: dataSource.sId,
             connectionId: projectSpace.sId,
@@ -1193,7 +1193,7 @@ describe("createDataSourceAndConnectorForProject", () => {
       // Verify connector was created
       expect(createConnectorSpy).toHaveBeenCalledTimes(1);
       expect(createConnectorSpy).toHaveBeenCalledWith({
-        provider: "dust_project",
+        provider: "ruby_project",
         workspaceId: workspace.sId,
         workspaceAPIKey: mockSystemKey.secret,
         dataSourceId: dataSource.sId,
@@ -1209,12 +1209,12 @@ describe("createDataSourceAndConnectorForProject", () => {
       expect(updatedDataSource).toBeDefined();
       expect(updatedDataSource?.connectorId?.toString()).toBe(mockConnectorId);
 
-      // Verify only one dust_project datasource exists
+      // Verify only one ruby_project datasource exists
       const finalDataSources = await DataSourceResource.listBySpace(
         adminAuth,
         projectSpace,
         undefined,
-        "dust_project"
+        "ruby_project"
       );
       expect(finalDataSources.length).toBe(1);
 
@@ -1233,11 +1233,11 @@ describe("createDataSourceAndConnectorForProject", () => {
         await DataSourceViewResource.createDataSourceAndDefaultView(
           {
             assistantDefaultSelected:
-              isConnectorProviderAssistantDefaultSelected("dust_project"),
-            connectorProvider: "dust_project",
+              isConnectorProviderAssistantDefaultSelected("ruby_project"),
+            connectorProvider: "ruby_project",
             description: `Conversations from project ${projectSpace.sId}`,
-            dustAPIProjectId: mockProjectId.toString(),
-            dustAPIDataSourceId: mockDataSourceId,
+            rubyAPIProjectId: mockProjectId.toString(),
+            rubyAPIDataSourceId: mockDataSourceId,
             name: getProjectConversationsDatasourceName(projectSpace),
             workspaceId: workspace.id,
           },
@@ -1309,7 +1309,7 @@ describe("createDataSourceAndConnectorForProject", () => {
         .mockResolvedValue(
           new Ok({
             id: mockNewConnectorId,
-            type: "dust_project",
+            type: "ruby_project",
             workspaceId: workspace.sId,
             dataSourceId: dataSource.sId,
             connectionId: projectSpace.sId,
@@ -1348,12 +1348,12 @@ describe("createDataSourceAndConnectorForProject", () => {
         mockNewConnectorId
       );
 
-      // Verify only one dust_project datasource exists
+      // Verify only one ruby_project datasource exists
       const finalDataSources = await DataSourceResource.listBySpace(
         adminAuth,
         projectSpace,
         undefined,
-        "dust_project"
+        "ruby_project"
       );
       expect(finalDataSources.length).toBe(1);
 
@@ -1377,7 +1377,7 @@ describe("createDataSourceAndConnectorForProject", () => {
         adminAuth,
         projectSpace,
         undefined,
-        "dust_project"
+        "ruby_project"
       );
       expect(initialDataSources.length).toBe(0);
 
@@ -1442,7 +1442,7 @@ describe("createDataSourceAndConnectorForProject", () => {
         .mockResolvedValue(
           new Ok({
             id: mockConnectorId,
-            type: "dust_project",
+            type: "ruby_project",
             workspaceId: workspace.sId,
             dataSourceId: "will-be-set",
             connectionId: projectSpace.sId,
@@ -1474,19 +1474,19 @@ describe("createDataSourceAndConnectorForProject", () => {
         adminAuth,
         projectSpace,
         undefined,
-        "dust_project"
+        "ruby_project"
       );
       expect(dataSources.length).toBe(1);
-      expect(dataSources[0].dustAPIProjectId).toBe(mockProjectId.toString());
-      expect(dataSources[0].dustAPIDataSourceId).toBe(mockDataSourceId);
+      expect(dataSources[0].rubyAPIProjectId).toBe(mockProjectId.toString());
+      expect(dataSources[0].rubyAPIDataSourceId).toBe(mockDataSourceId);
       expect(dataSources[0].connectorId?.toString()).toBe(mockConnectorId);
 
-      // Verify only one dust_project datasource exists (redundant but explicit)
+      // Verify only one ruby_project datasource exists (redundant but explicit)
       const finalDataSources = await DataSourceResource.listBySpace(
         adminAuth,
         projectSpace,
         undefined,
-        "dust_project"
+        "ruby_project"
       );
       expect(finalDataSources.length).toBe(1);
 
@@ -1506,11 +1506,11 @@ describe("createDataSourceAndConnectorForProject", () => {
         await DataSourceViewResource.createDataSourceAndDefaultView(
           {
             assistantDefaultSelected:
-              isConnectorProviderAssistantDefaultSelected("dust_project"),
-            connectorProvider: "dust_project",
+              isConnectorProviderAssistantDefaultSelected("ruby_project"),
+            connectorProvider: "ruby_project",
             description: `Conversations from project ${projectSpace.sId}`,
-            dustAPIProjectId: mockProjectId.toString(),
-            dustAPIDataSourceId: mockDataSourceId,
+            rubyAPIProjectId: mockProjectId.toString(),
+            rubyAPIDataSourceId: mockDataSourceId,
             name: getProjectConversationsDatasourceName(projectSpace),
             workspaceId: workspace.id,
           },
@@ -1573,7 +1573,7 @@ describe("createDataSourceAndConnectorForProject", () => {
       vi.spyOn(ConnectorsAPI.prototype, "getConnector").mockResolvedValue(
         new Ok({
           id: mockConnectorId,
-          type: "dust_project",
+          type: "ruby_project",
           workspaceId: workspace.sId,
           dataSourceId: dataSource.sId,
           connectionId: projectSpace.sId,
@@ -1605,12 +1605,12 @@ describe("createDataSourceAndConnectorForProject", () => {
         })
       );
 
-      // Verify only one dust_project datasource exists
+      // Verify only one ruby_project datasource exists
       const finalDataSources = await DataSourceResource.listBySpace(
         adminAuth,
         projectSpace,
         undefined,
-        "dust_project"
+        "ruby_project"
       );
       expect(finalDataSources.length).toBe(1);
 

@@ -82,7 +82,7 @@ makeScript(
               parents,
               parentId: parents[1] || null,
               title: folder.url,
-              mimeType: "application/vnd.dust.webcrawler.folder",
+              mimeType: "application/vnd.ruby.webcrawler.folder",
             });
             logger.info({
               result,

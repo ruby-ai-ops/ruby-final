@@ -158,8 +158,8 @@ describe("toAgentExportCsvRow", () => {
     settings: "published",
     modelId: "gpt-4-turbo",
     providerId: "openai",
-    authorEmails: "b@dust.tt",
-    editorEmails: ["a@dust.tt", "b@dust.tt"],
+    authorEmails: "b@ruby.ad",
+    editorEmails: ["a@ruby.ad", "b@ruby.ad"],
     messages: 0,
     distinctUsersReached: 0,
     distinctConversations: 0,
@@ -169,7 +169,7 @@ describe("toAgentExportCsvRow", () => {
 
   it("joins editorEmails into a comma-separated string for CSV output", () => {
     expect(toAgentExportCsvRow(baseRow).editorEmails).toBe(
-      "a@dust.tt,b@dust.tt"
+      "a@ruby.ad,b@ruby.ad"
     );
   });
 
@@ -181,6 +181,6 @@ describe("toAgentExportCsvRow", () => {
 
   it("wraps the comma-separated editors in double quotes once serialized", () => {
     const csv = rowsToCsv(AGENT_EXPORT_HEADERS, [toAgentExportCsvRow(baseRow)]);
-    expect(csv).toContain('"a@dust.tt,b@dust.tt"');
+    expect(csv).toContain('"a@ruby.ad,b@ruby.ad"');
   });
 });

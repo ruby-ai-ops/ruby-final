@@ -7,8 +7,8 @@ import {
 import type { FrameRuntimeImportName } from "@viz/app/lib/frame-runtime-imports";
 import type { VisualizationDataAPI } from "@viz/app/lib/visualization-api";
 import type { WriteFileParams } from "@viz/app/types";
-import * as dustSlideshowV1 from "@viz/components/dust/slideshow/v1";
-import * as dustSlideshowV2 from "@viz/components/dust/slideshow/v2";
+import * as rubySlideshowV1 from "@viz/components/ruby/slideshow/v1";
+import * as rubySlideshowV2 from "@viz/components/ruby/slideshow/v2";
 import * as shadcn from "@viz/components/ui";
 import * as utils from "@viz/lib/utils";
 import * as lucide from "lucide-react";
@@ -45,9 +45,9 @@ export function createFrameRuntimeImports({
     "@viz/lib/utils": utils,
     "lucide-react": lucide,
     "motion/react": motion,
-    "@dust/slideshow/v1": dustSlideshowV1,
-    "@dust/slideshow/v2": dustSlideshowV2,
-    "@dust/react-hooks": {
+    "@ruby-ai/slideshow/v1": rubySlideshowV1,
+    "@ruby-ai/slideshow/v2": rubySlideshowV2,
+    "@ruby-ai/react-hooks": {
       SandboxFunctionCallError,
       callFunction: (functionId: string, input?: unknown) =>
         dataAPI.callFunction(functionId, input),

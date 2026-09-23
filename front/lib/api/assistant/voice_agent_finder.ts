@@ -83,40 +83,40 @@ Call the function \`find_agents_and_tools\`. It take only one parameter called \
 - An agent name can me multiple words in CamelCase, try to find them
 
 # Examples
-query: dust what time is it?
-agents_list: ["dust", "god", "soupinou"]
-function call: find_agents_and_tools with [{"type": "mention", "name": "dust"},{"type": "text", "text": "what time is it?"}]
+query: ruby what time is it?
+agents_list: ["ruby", "god", "soupinou"]
+function call: find_agents_and_tools with [{"type": "mention", "name": "ruby"},{"type": "text", "text": "what time is it?"}]
 
 query: hey dost what time is it?
-agents_list: ["dust", "god", "soupinou"]
-function call: find_agents_and_tools with [{"type": "mention", "name": "dust"},{"type": "text", "text": "what time is it?"}]
+agents_list: ["ruby", "god", "soupinou"]
+function call: find_agents_and_tools with [{"type": "mention", "name": "ruby"},{"type": "text", "text": "what time is it?"}]
 
 query: hey image what time is it?
-agents_list: ["dust", "god", "soupinou"]
+agents_list: ["ruby", "god", "soupinou"]
 function call: find_agents_and_tools with [{"type": "text", "text": "hey image what time is it?"}]
 
-query: another one bites the dust
-agents_list: ["dust", "god", "soupinou"]
-function call: find_agents_and_tools with [{"type": "text", "text": "another one bites the dust"}]
+query: another one bites the ruby
+agents_list: ["ruby", "god", "soupinou"]
+function call: find_agents_and_tools with [{"type": "text", "text": "another one bites the ruby"}]
 
 query: I want an image representing a bird
-agents_list: ["dust", "god", "soupinou"]
+agents_list: ["ruby", "god", "soupinou"]
 function call: find_agents_and_tools with [{"type": "text", "text": "I want an image representing a bird"}]
 
 query: draft an email explaining to mickael the image of god he sent me is inappropriate
-agents_list: ["dust", "god", "soupinou"]
+agents_list: ["ruby", "god", "soupinou"]
 function call: find_agents_and_tools with [{"type": "text", "text": "draft an email explaining to mickael the image of god he sent me is inappropriate"}]
 
-query: draft an email to mickael with dust and append an apology at the end
-agents_list: ["dust", "god", "soupinou"]
-function call: find_agents_and_tools with [{"type": "mention", "name": "dust"}, {"type": "text", "text": "draft an email to mickael"},{"type": "text", "text": "and append an apology at the end"}]
+query: draft an email to mickael with ruby and append an apology at the end
+agents_list: ["ruby", "god", "soupinou"]
+function call: find_agents_and_tools with [{"type": "mention", "name": "ruby"}, {"type": "text", "text": "draft an email to mickael"},{"type": "text", "text": "and append an apology at the end"}]
 
 query: I want to know more about the company culture god
-agents_list: ["dust", "god", "soupinou"]
+agents_list: ["ruby", "god", "soupinou"]
 function call: find_agents_and_tools with [{"type": "mention", "name": "god"},{"type": "text", "text": "I want to know more about the company culture"}]
 
 query: Give me the time!
-agents_list: ["dust", "god", "soupinou", "GiveMeTheTime"]
+agents_list: ["ruby", "god", "soupinou", "GiveMeTheTime"]
 function call: find_agents_and_tools with [{"type": "mention", "name": "GiveMeTheTime"}]`;
 
 export type AugmentedMessageFromLLM =

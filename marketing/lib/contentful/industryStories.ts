@@ -9,7 +9,7 @@ import logger from "@marketing/logger/logger";
 /**
  * Maps industry page identifiers to Contentful industry values
  */
-const INDUSTRY_MAPPING: Record<string, string[]> = {
+const INRUBYRY_MAPPING: Record<string, string[]> = {
   "b2b-saas": ["B2B SaaS"],
   consulting: ["Consulting"],
   "retail-ecommerce": ["Retail & E-commerce"],
@@ -40,7 +40,7 @@ function hasHeroImage(
 export async function getCustomerStoriesForIndustry(
   industryKey: string
 ): Promise<CustomerStoriesSectionConfig | null> {
-  const industries = INDUSTRY_MAPPING[industryKey];
+  const industries = INRUBYRY_MAPPING[industryKey];
 
   if (!industries || industries.length === 0) {
     logger.warn(

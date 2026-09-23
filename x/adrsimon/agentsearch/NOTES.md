@@ -6,7 +6,7 @@ Status of the agent-search harness, what has been measured, and what has not bee
 
 The harness indexes a workspace export into a local Elasticsearch 8.16.0 (same minor as prod, see `docker-compose.yml`), reproduces the agent-discovery `list` permission model at query time, and scores retrieval against a generated query set.
 
-Corpus: 2,566 agents from the Dust workspace, 30-day usage window. For `adrien@dust.tt` the manage view resolves to 389 agents, or 341 with `--exclude-global`. Both figures come from a profile exported before `readablePodSpaces` was populated, so they exclude the 27 agents that request a pod; a fresh export moves them and every number derived from them.
+Corpus: 2,566 agents from the Ruby workspace, 30-day usage window. For `adrien@ruby.ad` the manage view resolves to 389 agents, or 341 with `--exclude-global`. Both figures come from a profile exported before `readablePodSpaces` was populated, so they exclude the 27 agents that request a pod; a fresh export moves them and every number derived from them.
 
 ### Defaults
 
@@ -35,7 +35,7 @@ The permission harness checks named fixtures, every readable-space subset, query
 ```
 npm run test:permissions
 npx tsx scripts/generate_queries.ts --agents assets/agents_<id>.json --profile assets/profile_<id>.json
-npx tsx scripts/eval.ts --queries assets/eval_queries_dust.json --profile assets/profile_<id>.json \
+npx tsx scripts/eval.ts --queries assets/eval_queries_ruby.json --profile assets/profile_<id>.json \
   --exclude-global --compare assets/eval_baseline.json
 npx tsgo --noEmit -p .
 ```
@@ -80,7 +80,7 @@ Each query has exactly one labelled target, so precision has no ground truth. Th
 - Pods in the profile. `export_user_profile.ts` called `listWorkspaceSpaces` without `includeProjectSpaces`, so `readablePodSpaces` was always empty and the space filter dropped every pod-requesting agent — under-permissive, never a leak. Fixed, but `assets/profile_pQwo5uKyt6.json` predates it and needs regenerating from prod. The baseline is unaffected: the 27 pod agents it excludes are not eval targets.
 - `pod_space_count` was added to the mapping for the pod-side `terms_set`, so the index needs a re-ingest, not just a restart.
 - The manage-list gap. 341 hits against 350 observed in the UI. Attributed to export drift (the corpus is a 15:47 snapshot, the page was live), but never confirmed with a fresh export taken at the same time.
-- `description.subsequence`. Dead weight in the mapping since the clause was dropped. It matched almost anything (`*i*n*v*o*i*c*e*` hits "Incident investigation assistant for Dust using Datadog logs"). Remove it.
+- `description.subsequence`. Dead weight in the mapping since the clause was dropped. It matched almost anything (`*i*n*v*o*i*c*e*` hits "Incident investigation assistant for Ruby using Datadog logs"). Remove it.
 - Programmatic traffic. 25 agents have usage and no group attribution, since API-key runs carry no `user.group_ids`. `CodingRules` has 1,568 messages and 0 users, so adjacency scores it zero however popular it is.
 
 ### Evaluation

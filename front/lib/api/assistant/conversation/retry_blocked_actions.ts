@@ -2,7 +2,7 @@ import { isBlockedActionEvent } from "@app/lib/actions/mcp";
 import { getMessageChannelId } from "@app/lib/api/assistant/streaming/helpers";
 import { getRedisHybridManager } from "@app/lib/api/redis-hybrid-manager";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 // TODO(2026-07-31 QOS): move these message fetches behind a resource method instead of using
 // models directly in lib/api.
 import {
@@ -82,7 +82,7 @@ async function findUserMessageForRetry(
     // Not a failure: the message simply has nothing waiting on user input (already resumed, or
     // reached here through a handover whose caller was never blocked).
     return new Err(
-      new DustError("no_blocked_actions", "No blocked actions found")
+      new RubyError("no_blocked_actions", "No blocked actions found")
     );
   }
 
@@ -91,7 +91,7 @@ async function findUserMessageForRetry(
   // same agent message, so checking the first one is enough.
   if (!(await blockedActions[0].canAgentMessageResume(auth))) {
     return new Err(
-      new DustError(
+      new RubyError(
         "agent_message_not_resumable",
         "Agent message can no longer resume"
       )
@@ -128,7 +128,7 @@ export async function retryBlockedActions(
     messageId: string;
     waitForCompletion?: boolean;
   }
-): Promise<Result<void, Error | DustError<"agent_loop_already_running">>> {
+): Promise<Result<void, Error | RubyError<"agent_loop_already_running">>> {
   const { sId: conversationId, title: conversationTitle } = conversation;
 
   const getUserMessageIdRes = await findUserMessageForRetry(

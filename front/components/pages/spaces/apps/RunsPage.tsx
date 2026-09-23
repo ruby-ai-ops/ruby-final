@@ -9,7 +9,7 @@ import { useApp, useRuns } from "@app/lib/swr/apps";
 import { useWorkspacePermissions } from "@app/lib/swr/permissions";
 import { classNames, timeAgoFrom } from "@app/lib/utils";
 import type { RunRunType, RunStatus } from "@app/types/run";
-import { Button, Spinner } from "@dust-tt/sparkle";
+import { Button, Spinner } from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 const TABS = [
@@ -35,7 +35,7 @@ export function RunsPage() {
   const owner = useWorkspace();
   const { hasPermission } = useWorkspacePermissions();
 
-  const readOnly = !hasPermission("admin", "dust_app");
+  const readOnly = !hasPermission("admin", "ruby_app");
 
   const { app, isAppLoading, isAppError } = useApp({
     workspaceId: owner.sId,
@@ -210,7 +210,7 @@ export function RunsPage() {
               <p>No runs found</p>
               {runType == "local" ? (
                 <p className="mt-2">
-                  Runs triggered from Dust will appear here.
+                  Runs triggered from Ruby will appear here.
                 </p>
               ) : (
                 <p className="mt-2">Runs triggered by API will appear here.</p>

@@ -13,7 +13,7 @@ import type {
 } from "@marketing/components/home/content/Solutions/configs/utils";
 import type { DemoVideoProps } from "@marketing/components/home/content/Solutions/DemoVideoSection";
 import type { UseCaseProps } from "@marketing/components/home/content/Solutions/UseCasesSection";
-import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@dust-tt/sparkle";
+import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@ruby-ai/ui";
 import Link from "next/link";
 
 // Config exports
@@ -157,46 +157,46 @@ export const UseCases: UseCaseProps = {
 
 export const Quote: QuoteProps = {
   quote:
-    "Dust is the most impactful software we've adopted since building Clay. It continuously gets smarter, turning hours of documentation search into instant, cited answers—letting our team spend less time searching and more time closing deals.",
+    "Ruby is the most impactful software we've adopted since building Clay. It continuously gets smarter, turning hours of documentation search into instant, cited answers—letting our team spend less time searching and more time closing deals.",
   name: "Everett Berry ",
   title: "Head of GTM Engineering at Clay",
   logo: "/static/landing/logos/color/clay.png",
 };
 
 export const DemoVideo: DemoVideoProps = {
-  sectionTitle: "Watch Dust in motion",
-  videoUrl: "https://fast.wistia.net/embed/iframe/8q80neektv",
+  sectionTitle: "Watch Ruby in motion",
+  videoUrl: "/static/workspace-demo/index.html",
   showCaptions: true,
 };
 
 export const Stories: CustomerStory[] = [
   {
-    title: "Clay powers 4x sales team growth with Dust AI agents",
+    title: "Clay powers 4x sales team growth with Ruby AI agents",
     content:
-      "Clay uses Dust AI agents to scale their GTM team 4x while maintaining sales velocity.",
+      "Clay uses Ruby AI agents to scale their GTM team 4x while maintaining sales velocity.",
     href: "/customers/clay-scaling-gtme-team",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/06/clay_dust_agents.jpg",
+    src: "https://ruby.ad/content/images/size/w2000/2025/06/clay_ruby_agents.jpg",
   },
   {
     title: "Alan's teams save 3h weekly scraping sales transcripts",
     content:
       "Alan’s sales & marketing team transforms sales conversations into intelligence with AI agents",
     href: "/customers/alans-pmm-team-transforms-sales-conversations-into-intelligence-with-ai-agents",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Alan-__-Dust-1-1.png",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Alan-__-Ruby-1-1.png",
   },
   {
     title: "Kyriba's RFP Agent for improving pre-sales efficiency",
     content:
-      "43% of Kyriba employees save more than 3 hours weekly leveraging Dust for RFPs.",
-    href: "/customers/kyriba-accelerating-innovation-with-dust",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Kyriba-__-Dust.png",
+      "43% of Kyriba employees save more than 3 hours weekly leveraging Ruby for RFPs.",
+    href: "/customers/kyriba-accelerating-innovation-with-ruby",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Kyriba-__-Ruby.png",
   },
   {
     title: "20%+ productivity gains in Sales: Insights from Alan and Payfit",
     content:
-      "Dust agents significantly lowered their acquisition costs, allowing them to hire more salespeople.",
+      "Ruby agents significantly lowered their acquisition costs, allowing them to hire more salespeople.",
     href: "/customers/generative-ai-insights-alan-payfit-leaders",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/01/Founder.jpg",
+    src: "https://ruby.ad/content/images/size/w2000/2025/01/Founder.jpg",
   },
 ];
 
@@ -214,7 +214,7 @@ export const salesFAQItems = [
         the same one-size-fits-all logic to your unique market and customers,
         delivering generic results for everyone.
         <br />
-        <strong>Dust's AI sales agents work differently.</strong> They're
+        <strong>Ruby's AI sales agents work differently.</strong> They're
         custom-built to understand your specific business. They connect to your
         CRM, sales tools like <strong>Gong</strong> and{" "}
         <strong>Intercom</strong>, your knowledge base, and team expertise to
@@ -237,7 +237,7 @@ export const salesFAQItems = [
         <br />
         <h3>They connect all your tools</h3>
         While Salesforce AI only knows Salesforce data and HubSpot's AI stays
-        within HubSpot's walls, Dust AI sales agents break down these silos
+        within HubSpot's walls, Ruby AI sales agents break down these silos
         entirely. They connect across your entire sales ecosystem:
         <ul>
           <li>CRM records</li>
@@ -282,7 +282,7 @@ export const salesFAQItems = [
     answer: (
       <>
         <h3>Lead qualification</h3>
-        Using Dust's <strong>@ProspectIQ</strong> template alongside
+        Using Ruby's <strong>@ProspectIQ</strong> template alongside
         <strong> @SignupRadar</strong> and <strong>@CompanySearch</strong>, AI
         sales agents research company backgrounds, analyze funding status,
         assess technology stacks, and score prospects against your ideal
@@ -303,7 +303,7 @@ export const salesFAQItems = [
           See how these teams gained 20% productivity
         </a>
         .<h3>RFP handling</h3>
-        Dust's <strong>@securitySam</strong> template for RFPs and
+        Ruby's <strong>@securitySam</strong> template for RFPs and
         <strong> @salesCopilot</strong> for prospect requests access your
         product specifications, compliance documentation, and previous
         successful responses to generate accurate, consistent answers. Kyriba's
@@ -346,7 +346,7 @@ export const salesFAQItems = [
         You can change templates in generic tools, but you can't change how they
         think. They don't learn your market position, your success stories, or
         why customers choose you.
-        <h3>Dust's template advantage</h3>
+        <h3>Ruby's template advantage</h3>
         Start with proven frameworks like <strong>coldEmailer</strong> or
         <strong> salesMeetingRecap</strong>, then make them yours. These
         templates adapt to your terminology and sales approach, and can be
@@ -379,7 +379,7 @@ export const salesFAQItems = [
         <strong> Salesforce, HubSpot, Slack, Notion</strong>, and more. Your
         agent immediately accesses your CRM, support tickets, and documentation.
         <h3>Step 3: Make it yours</h3>
-        Describe your sales process in plain English using Dust's visual
+        Describe your sales process in plain English using Ruby's visual
         interface.
         <h3>Step 4: Use it anywhere</h3>
         Your agent works where you do: in your browser with the{" "}
@@ -402,7 +402,7 @@ export const salesFAQItems = [
         <br />
         <br />
         <strong>Want to try it out?</strong>
-        <br /> Take a look at how other teams use these agents, try Dust for
+        <br /> Take a look at how other teams use these agents, try Ruby for
         free today or{" "}
         <Link href="/home/pricing" className="underline underline-offset-4">
           talk to our sales team

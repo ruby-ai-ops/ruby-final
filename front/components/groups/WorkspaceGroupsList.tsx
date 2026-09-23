@@ -35,7 +35,7 @@ import {
   Spinner,
   Trash01,
   Users01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useCallback, useContext, useMemo, useState } from "react";
 

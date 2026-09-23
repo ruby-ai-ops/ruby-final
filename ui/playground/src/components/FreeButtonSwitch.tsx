@@ -1,0 +1,641 @@
+import {
+  AnimatedText,
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  File02,
+  Separator,
+  XClose,
+  type ButtonProps,
+} from "@ruby-ai/ui";
+import { cn } from "@ui/lib/utils";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ComponentType,
+  type DragEvent,
+  type Key,
+  type MouseEvent,
+} from "react";
+
+export const FREE_BUTTON_SWITCH_TAB_DRAG_MIME =
+  "application/x-ruby-free-button-switch-tab";
+
+export const DATA_SOURCE_FILE_DRAG_MIME = "application/x-ruby-data-source-kind";
+
+export const DATA_SOURCE_FILE_NAME_DRAG_MIME =
+  "application/x-ruby-data-source-name";
+
+export interface FreeButtonSwitchContextMenuItem {
+  label: string;
+  onClick?: () => void;
+  icon?: ComponentType;
+  variant?: "default" | "warning";
+}
+
+export interface FreeButtonSwitchDropdownSectionItem {
+  value: string;
+  label: string;
+  icon?: ComponentType;
+}
+
+// A section inside a dropdown option's menu.
+// - "tab": selecting an item sets the switch value (opens a tab).
+// - "radio": items drive a separate value via `onValueChange`, independent of
+//   the switch's active value.
+export interface FreeButtonSwitchDropdownSection {
+  label?: string;
+  kind: "tab" | "radio";
+  items: FreeButtonSwitchDropdownSectionItem[];
+  value?: string;
+  onValueChange?: (value: string) => void;
+}
+
+export interface FreeButtonSwitchOption<TValue extends string> {
+  id?: Key;
+  value: TValue;
+  label?: string;
+  icon?: ComponentType;
+  tooltip?: string;
+  ariaLabel?: string;
+  pinned?: "end";
+  draggable?: boolean;
+  removable?: boolean;
+  contextMenuItems?: FreeButtonSwitchContextMenuItem[];
+  // When set, the option renders as a dropdown button. Items in "tab" sections
+  // select the switch value; "radio" sections drive their own value.
+  dropdownSections?: FreeButtonSwitchDropdownSection[];
+  // Label shown on the dropdown button when no "tab" item is currently active.
+  defaultLabel?: string;
+  // Extra classes applied to the option's wrapper (e.g. entrance animations).
+  className?: string;
+  // Forces the button variant, overriding the active/inactive defaults.
+  variant?: ButtonProps["variant"];
+}
+
+type FreeButtonSwitchSize = "xmini" | "mini" | "xs" | "sm" | "md";
+
+interface FreeButtonSwitchProps<TValue extends string> {
+  value: TValue;
+  options: FreeButtonSwitchOption<TValue>[];
+  onValueChange: (value: TValue) => void;
+  onOptionsReorder?: (nextOptions: FreeButtonSwitchOption<TValue>[]) => void;
+  onDropCreateOption?: (fileId: string) => void;
+  onRemoveOption?: (value: TValue) => void;
+  isFileDragActive?: boolean;
+  draggingFileLabel?: string | null;
+  enableReorder?: boolean;
+  size?: FreeButtonSwitchSize;
+  activeVariant?: ButtonProps["variant"];
+  inactiveVariant?: ButtonProps["variant"];
+}
+
+const COMPACT_MODE_BUFFER_PX = 4;
+
+function isTabReorderDrag(event: DragEvent) {
+  return event.dataTransfer.types.includes(FREE_BUTTON_SWITCH_TAB_DRAG_MIME);
+}
+
+function isFileDrag(event: DragEvent) {
+  return (
+    event.dataTransfer.types.includes(DATA_SOURCE_FILE_DRAG_MIME) ||
+    (event.dataTransfer.types.includes("text/plain") &&
+      !event.dataTransfer.types.includes(FREE_BUTTON_SWITCH_TAB_DRAG_MIME))
+  );
+}
+
+function isDataSourceFileDragEvent(event: globalThis.DragEvent) {
+  return (
+    event.dataTransfer?.types.includes(DATA_SOURCE_FILE_DRAG_MIME) ?? false
+  );
+}
+
+function reorderOptions<TValue extends string>(
+  options: FreeButtonSwitchOption<TValue>[],
+  draggedValue: TValue,
+  targetValue: TValue
+) {
+  if (draggedValue === targetValue) {
+    return options;
+  }
+
+  const reorderable = options.filter((option) => option.pinned !== "end");
+  const pinned = options.filter((option) => option.pinned === "end");
+  const fromIndex = reorderable.findIndex(
+    (option) => option.value === draggedValue
+  );
+  const toIndex = reorderable.findIndex(
+    (option) => option.value === targetValue
+  );
+
+  if (fromIndex === -1 || toIndex === -1) {
+    return options;
+  }
+
+  const nextReorderable = [...reorderable];
+  const [moved] = nextReorderable.splice(fromIndex, 1);
+  nextReorderable.splice(toIndex, 0, moved);
+
+  return [...nextReorderable, ...pinned];
+}
+
+export function FreeButtonSwitch<TValue extends string>({
+  value,
+  options,
+  onValueChange,
+  onOptionsReorder,
+  onDropCreateOption,
+  onRemoveOption,
+  isFileDragActive = false,
+  draggingFileLabel = null,
+  enableReorder = Boolean(onOptionsReorder),
+  size = "sm",
+  activeVariant = "outline",
+  inactiveVariant = "ghost-secondary",
+}: FreeButtonSwitchProps<TValue>) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const fullLabelsRef = useRef<HTMLDivElement>(null);
+  const [shouldHideLabels, setShouldHideLabels] = useState(false);
+  const [draggingTabValue, setDraggingTabValue] = useState<TValue | null>(null);
+  const [dropTargetValue, setDropTargetValue] = useState<TValue | null>(null);
+  const [isFileDropHighlight, setIsFileDropHighlight] = useState(false);
+  const [isDocumentFileDragActive, setIsDocumentFileDragActive] =
+    useState(false);
+  const [documentDragFileLabel, setDocumentDragFileLabel] = useState<
+    string | null
+  >(null);
+  const [contextMenuState, setContextMenuState] = useState<{
+    value: TValue;
+    x: number;
+    y: number;
+  } | null>(null);
+
+  const reorderableOptions = options.filter(
+    (option) => option.pinned !== "end"
+  );
+  const pinnedEndOptions = options.filter((option) => option.pinned === "end");
+  const canReorder = enableReorder && Boolean(onOptionsReorder);
+  const showAddToLabel =
+    Boolean(onDropCreateOption) &&
+    (isFileDragActive || isDocumentFileDragActive);
+  const activeFileLabel = draggingFileLabel ?? documentDragFileLabel;
+  const showFileDropPlaceholder =
+    isFileDropHighlight && Boolean(activeFileLabel);
+
+  useEffect(() => {
+    if (!onDropCreateOption) {
+      return;
+    }
+
+    const handleDocumentDragStart = (event: globalThis.DragEvent) => {
+      if (isDataSourceFileDragEvent(event)) {
+        setIsDocumentFileDragActive(true);
+        const fileName = event.dataTransfer?.getData(
+          DATA_SOURCE_FILE_NAME_DRAG_MIME
+        );
+        setDocumentDragFileLabel(fileName || null);
+      }
+    };
+
+    const handleDocumentDragEnd = () => {
+      setIsDocumentFileDragActive(false);
+      setDocumentDragFileLabel(null);
+    };
+
+    document.addEventListener("dragstart", handleDocumentDragStart);
+    document.addEventListener("dragend", handleDocumentDragEnd);
+    document.addEventListener("drop", handleDocumentDragEnd);
+
+    return () => {
+      document.removeEventListener("dragstart", handleDocumentDragStart);
+      document.removeEventListener("dragend", handleDocumentDragEnd);
+      document.removeEventListener("drop", handleDocumentDragEnd);
+    };
+  }, [onDropCreateOption]);
+
+  const updateLabelVisibility = useCallback(() => {
+    const container = containerRef.current;
+    const fullLabels = fullLabelsRef.current;
+    if (!container || !fullLabels) {
+      return;
+    }
+
+    const availableWidth = container.getBoundingClientRect().width;
+    const fullLabelsWidth = fullLabels.scrollWidth;
+    setShouldHideLabels(
+      fullLabelsWidth > availableWidth - COMPACT_MODE_BUFFER_PX
+    );
+  }, []);
+
+  useLayoutEffect(() => {
+    updateLabelVisibility();
+
+    const container = containerRef.current;
+    const fullLabels = fullLabelsRef.current;
+    if (!container || !fullLabels || typeof ResizeObserver === "undefined") {
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver(updateLabelVisibility);
+    resizeObserver.observe(container);
+    resizeObserver.observe(fullLabels);
+
+    return () => resizeObserver.disconnect();
+  }, [updateLabelVisibility, options]);
+
+  const handleTabDragStart = (
+    option: FreeButtonSwitchOption<TValue>,
+    event: DragEvent<HTMLDivElement>
+  ) => {
+    if (!canReorder || option.pinned === "end" || option.draggable === false) {
+      event.preventDefault();
+      return;
+    }
+
+    event.dataTransfer.setData(FREE_BUTTON_SWITCH_TAB_DRAG_MIME, option.value);
+    event.dataTransfer.effectAllowed = "move";
+    setDraggingTabValue(option.value);
+  };
+
+  const handleTabDragEnd = () => {
+    setDraggingTabValue(null);
+    setDropTargetValue(null);
+    setIsFileDropHighlight(false);
+    setIsDocumentFileDragActive(false);
+    setDocumentDragFileLabel(null);
+  };
+
+  const handleTabDragOver = (
+    option: FreeButtonSwitchOption<TValue>,
+    event: DragEvent<HTMLDivElement>
+  ) => {
+    if (isTabReorderDrag(event)) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move";
+      setDropTargetValue(option.value);
+      setIsFileDropHighlight(false);
+      return;
+    }
+
+    if (isFileDrag(event) && onDropCreateOption) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "copy";
+      setIsFileDropHighlight(true);
+      setDropTargetValue(null);
+    }
+  };
+
+  const handleTabDrop = (
+    option: FreeButtonSwitchOption<TValue>,
+    event: DragEvent<HTMLDivElement>
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (isTabReorderDrag(event) && canReorder && onOptionsReorder) {
+      const draggedValue = event.dataTransfer.getData(
+        FREE_BUTTON_SWITCH_TAB_DRAG_MIME
+      ) as TValue;
+      if (draggedValue) {
+        onOptionsReorder(reorderOptions(options, draggedValue, option.value));
+      }
+      handleTabDragEnd();
+      return;
+    }
+
+    if (isFileDrag(event) && onDropCreateOption) {
+      const fileId = event.dataTransfer.getData("text/plain");
+      if (fileId) {
+        onDropCreateOption(fileId);
+      }
+      handleTabDragEnd();
+    }
+  };
+
+  const handleStripDragOver = (event: DragEvent<HTMLDivElement>) => {
+    if (isTabReorderDrag(event)) {
+      event.preventDefault();
+      return;
+    }
+
+    if (isFileDrag(event) && onDropCreateOption) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "copy";
+      setIsFileDropHighlight(true);
+    }
+  };
+
+  const handleStripDrop = (event: DragEvent<HTMLDivElement>) => {
+    if (isFileDrag(event) && onDropCreateOption) {
+      event.preventDefault();
+      const fileId = event.dataTransfer.getData("text/plain");
+      if (fileId) {
+        onDropCreateOption(fileId);
+      }
+      handleTabDragEnd();
+    }
+  };
+
+  const getOptionContextMenuItems = useCallback(
+    (
+      option: FreeButtonSwitchOption<TValue>
+    ): FreeButtonSwitchContextMenuItem[] => {
+      if (option.contextMenuItems?.length) {
+        return option.contextMenuItems;
+      }
+
+      if (onRemoveOption && option.removable) {
+        return [
+          {
+            label: "Remove from topbar",
+            icon: XClose,
+            variant: "warning",
+            onClick: () => onRemoveOption(option.value),
+          },
+        ];
+      }
+
+      return [];
+    },
+    [onRemoveOption]
+  );
+
+  const handleOptionContextMenu = (
+    option: FreeButtonSwitchOption<TValue>,
+    event: MouseEvent<HTMLDivElement>
+  ) => {
+    if (getOptionContextMenuItems(option).length === 0) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    setContextMenuState({
+      value: option.value,
+      x: event.clientX,
+      y: event.clientY,
+    });
+  };
+
+  const renderOptionButton = (
+    option: FreeButtonSwitchOption<TValue>,
+    hideLabels: boolean,
+    interactive: boolean
+  ) => {
+    const fallbackLabel = option.tooltip ?? option.label ?? option.ariaLabel;
+    const isDraggable =
+      interactive &&
+      canReorder &&
+      option.pinned !== "end" &&
+      option.draggable !== false;
+
+    // Dropdown option: a button (with chevron) that opens a grouped menu.
+    if (option.dropdownSections) {
+      const tabItems = option.dropdownSections
+        .filter((section) => section.kind === "tab")
+        .flatMap((section) => section.items);
+      const activeTabItem = tabItems.find((item) => item.value === value);
+      const isActive = Boolean(activeTabItem);
+      const dropdownLabel = activeTabItem?.label ?? option.defaultLabel;
+
+      const dropdownButton = (
+        <Button
+          variant={
+            option.variant ?? (isActive ? activeVariant : inactiveVariant)
+          }
+          size={size}
+          isSelect
+          label={hideLabels ? undefined : dropdownLabel}
+          icon={option.icon}
+          tooltip={hideLabels ? fallbackLabel : option.tooltip}
+          aria-label={option.ariaLabel ?? fallbackLabel}
+        />
+      );
+
+      // Measurement pass renders just the button (no menu) to avoid mounting
+      // duplicate portaled menus.
+      if (!interactive) {
+        return (
+          <div
+            key={option.id ?? option.value}
+            className={cn("shrink-0", option.className)}
+          >
+            {dropdownButton}
+          </div>
+        );
+      }
+
+      return (
+        <div
+          key={option.id ?? option.value}
+          className={cn("shrink-0", option.className)}
+        >
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>{dropdownButton}</DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {option.dropdownSections.map((section, sectionIndex) => (
+                <div key={section.label ?? sectionIndex}>
+                  {sectionIndex > 0 && <DropdownMenuSeparator />}
+                  {section.label && <DropdownMenuLabel label={section.label} />}
+                  <DropdownMenuRadioGroup
+                    value={
+                      section.kind === "tab"
+                        ? (value as string)
+                        : (section.value ?? "")
+                    }
+                    onValueChange={(next) => {
+                      if (section.kind === "tab") {
+                        onValueChange(next as TValue);
+                      } else {
+                        section.onValueChange?.(next);
+                      }
+                    }}
+                  >
+                    {section.items.map((item) => (
+                      <DropdownMenuRadioItem
+                        key={item.value}
+                        value={item.value}
+                        label={item.label}
+                        icon={item.icon}
+                      />
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </div>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    }
+
+    const button = (
+      <Button
+        variant={
+          option.variant ??
+          (option.value === value ? activeVariant : inactiveVariant)
+        }
+        size={size}
+        label={hideLabels ? undefined : option.label}
+        icon={option.icon}
+        tooltip={hideLabels ? fallbackLabel : option.tooltip}
+        aria-label={option.ariaLabel ?? fallbackLabel}
+        onClick={() => onValueChange(option.value)}
+      />
+    );
+
+    if (!interactive) {
+      return (
+        <div
+          key={option.id ?? option.value}
+          className={cn("shrink-0", option.className)}
+        >
+          {button}
+        </div>
+      );
+    }
+
+    return (
+      <div
+        key={option.id ?? option.value}
+        className={cn(
+          "shrink-0 rounded-lg transition-colors",
+          option.className,
+          isDraggable && "cursor-grab active:cursor-grabbing",
+          draggingTabValue === option.value && "opacity-50",
+          dropTargetValue === option.value && "bg-muted-background"
+        )}
+        draggable={isDraggable}
+        onDragStart={(event) => handleTabDragStart(option, event)}
+        onDragEnd={handleTabDragEnd}
+        onDragOver={(event) => handleTabDragOver(option, event)}
+        onDragLeave={() => {
+          if (dropTargetValue === option.value) {
+            setDropTargetValue(null);
+          }
+        }}
+        onDrop={(event) => handleTabDrop(option, event)}
+        onContextMenu={(event) => handleOptionContextMenu(option, event)}
+      >
+        {button}
+      </div>
+    );
+  };
+
+  const renderOptionGroups = (hideLabels: boolean, interactive: boolean) => (
+    <>
+      <div
+        className="flex min-w-0 flex-1 items-center gap-1"
+        onDragOver={interactive ? handleStripDragOver : undefined}
+        onDragLeave={
+          interactive ? () => setIsFileDropHighlight(false) : undefined
+        }
+        onDrop={interactive ? handleStripDrop : undefined}
+      >
+        {reorderableOptions.map((option) =>
+          renderOptionButton(option, hideLabels, interactive)
+        )}
+        {interactive && showFileDropPlaceholder && (
+          <div className="shrink-0">
+            <Button
+              variant="outline"
+              size={size}
+              label={hideLabels ? undefined : (activeFileLabel ?? undefined)}
+              icon={File02}
+              tooltip={hideLabels ? (activeFileLabel ?? undefined) : undefined}
+              aria-label={activeFileLabel ?? "Add file to topbar"}
+              className="pointer-events-none opacity-50"
+            />
+          </div>
+        )}
+      </div>
+      {pinnedEndOptions.length > 0 && (
+        <>
+          <Separator orientation="vertical" className="h-5" />
+          <div className="flex shrink-0 items-center gap-1">
+            {pinnedEndOptions.map((option) =>
+              renderOptionButton(option, hideLabels, interactive)
+            )}
+          </div>
+        </>
+      )}
+    </>
+  );
+
+  const contextMenuOption = contextMenuState
+    ? options.find((option) => option.value === contextMenuState.value)
+    : undefined;
+
+  return (
+    <>
+      <div ref={containerRef} className="relative w-full">
+        <div className="flex items-center gap-2">
+          {showAddToLabel && (
+            <AnimatedText variant="muted" className="shrink-0 text-sm italic">
+              Add to...
+            </AnimatedText>
+          )}
+          <div className="flex min-w-0 flex-1 items-center gap-1">
+            {renderOptionGroups(shouldHideLabels, true)}
+          </div>
+        </div>
+        <div
+          ref={fullLabelsRef}
+          className="invisible pointer-events-none absolute left-0 top-0 flex items-center gap-1 whitespace-nowrap"
+          aria-hidden
+        >
+          {renderOptionGroups(false, false)}
+        </div>
+      </div>
+
+      {contextMenuState && contextMenuOption && (
+        <DropdownMenu
+          open
+          onOpenChange={(open) => {
+            if (!open) {
+              setContextMenuState(null);
+            }
+          }}
+          modal
+        >
+          <DropdownMenuPortal>
+            <DropdownMenuContent
+              align="start"
+              className="whitespace-nowrap"
+              style={{
+                position: "fixed",
+                left: contextMenuState.x,
+                top: contextMenuState.y,
+              }}
+            >
+              <DropdownMenuGroup>
+                {getOptionContextMenuItems(contextMenuOption).map((item) => (
+                  <DropdownMenuItem
+                    key={item.label}
+                    label={item.label}
+                    icon={item.icon}
+                    variant={item.variant}
+                    onClick={() => {
+                      item.onClick?.();
+                      setContextMenuState(null);
+                    }}
+                  />
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenuPortal>
+        </DropdownMenu>
+      )}
+    </>
+  );
+}

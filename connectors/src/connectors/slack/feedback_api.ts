@@ -80,7 +80,7 @@ export async function submitFeedbackToAPI({
     }
 
     const response = await fetch(
-      `${apiConfig.getDustFrontAPIUrl()}/api/v1/w/${connectorWId}/assistant/conversations/${conversationId}/messages/${messageId}/feedbacks`,
+      `${apiConfig.getRubyFrontAPIUrl()}/api/v1/w/${connectorWId}/assistant/conversations/${conversationId}/messages/${messageId}/feedbacks`,
       {
         method: "POST",
         headers: {

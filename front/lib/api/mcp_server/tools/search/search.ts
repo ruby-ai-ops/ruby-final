@@ -2,7 +2,7 @@ import { getDataSourceURI } from "@app/lib/actions/mcp_internal_actions/input_co
 import { isSearchResultResourceType } from "@app/lib/actions/mcp_internal_actions/output_schemas";
 import { searchFunction } from "@app/lib/api/actions/servers/search/tools";
 import { getDataSourcesAndWorkspaceIdForGlobalAgents } from "@app/lib/api/assistant/global_agents/tools";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { isIncludedInDefaultCompanyData } from "@app/lib/data_sources";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
@@ -49,12 +49,12 @@ const inputSchema = {
 };
 
 export function registerSearchTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "search",
     {
       description:
-        "Semantic search across all globally accessible spaces in Dust. Returns matching document chunks ranked by relevance.",
+        "Semantic search across all globally accessible spaces in Ruby. Returns matching document chunks ranked by relevance.",
       inputSchema,
     },
     async (
@@ -78,7 +78,7 @@ export function registerSearchTool(server: McpServer) {
               tags: null,
             },
           }),
-          mimeType: "application/vnd.dust.tool-input.data-source" as const,
+          mimeType: "application/vnd.ruby.tool-input.data-source" as const,
         }));
 
       if (dataSources.length === 0) {

@@ -11,7 +11,7 @@ import { useApp } from "@app/lib/swr/apps";
 import { useDatasets } from "@app/lib/swr/datasets";
 import { useWorkspacePermissions } from "@app/lib/swr/permissions";
 import { classNames } from "@app/lib/utils";
-import { Button, Chip, Plus, Spinner, Trash01 } from "@dust-tt/sparkle";
+import { Button, Chip, Plus, Spinner, Trash01 } from "@ruby-ai/ui";
 import { useContext } from "react";
 
 export function DatasetsPage() {
@@ -33,7 +33,7 @@ export function DatasetsPage() {
   });
 
   const confirm = useContext(ConfirmContext);
-  const readOnly = !hasPermission("admin", "dust_app");
+  const readOnly = !hasPermission("admin", "ruby_app");
 
   const handleDelete = async (datasetName: string) => {
     if (!app) {

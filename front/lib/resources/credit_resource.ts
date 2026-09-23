@@ -5,7 +5,7 @@ import { UserModel } from "@app/lib/resources/storage/models/user";
 import type { ReadonlyAttributesType } from "@app/lib/resources/storage/types";
 import { makeSId } from "@app/lib/resources/string_ids";
 import type { ResourceFindOptions } from "@app/lib/resources/types";
-import type { PokeCreditType } from "@app/types/api/poke/credits";
+import type { AdminCreditType } from "@app/types/api/admin/credits";
 import type { CreditDisplayData } from "@app/types/credits";
 import {
   CREDIT_EXPIRATION_DAYS,
@@ -299,7 +299,7 @@ export class CreditResource extends BaseResource<CreditModel> {
 
   /**
    * Consume a given amount of credits, allowing for over-consumption.
-   * This is because users consume credits after Dust has spent the tokens,
+   * This is because users consume credits after Ruby has spent the tokens,
    * so it's not possible to preemptively block consumption.
    *
    * Over-consumption should however stay minimal
@@ -526,7 +526,7 @@ export class CreditResource extends BaseResource<CreditModel> {
     };
   }
 
-  toJSONForAdmin(): PokeCreditType {
+  toJSONForAdmin(): AdminCreditType {
     return {
       id: this.id,
       createdAt: this.createdAt.toISOString(),

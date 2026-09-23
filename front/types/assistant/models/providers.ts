@@ -57,7 +57,7 @@ export function getProviderDisplayName(
     case "auto":
     case "auto_fast":
     case "auto_complex":
-      return "Dust";
+      return "Ruby";
     default:
       return providerId;
   }

@@ -68,7 +68,7 @@ import { useAuth, useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { formatCredits, formatCreditValue } from "@app/lib/client/credits";
 import { eventSourceManager } from "@app/lib/client/event_source_manager";
 import { clientFetch } from "@app/lib/egress/client";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { FILE_ID_PATTERN } from "@app/lib/files";
 import { getSupportedModelConfig } from "@app/lib/llms/model_configurations";
 import { getFilePreviewDirectivePaths } from "@app/lib/markdown/file_preview";
@@ -112,7 +112,7 @@ import type {
   UserType,
   WorkspaceType,
 } from "@app/types/user";
-import type { DropdownMenuItemProps } from "@dust-tt/sparkle";
+import type { DropdownMenuItemProps } from "@ruby-ai/ui";
 import {
   Button,
   ButtonGroupDropdown,
@@ -143,7 +143,7 @@ import {
   Trash01,
   TruncatedContent,
   useCopyToClipboard,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useVirtuosoMethods } from "@virtuoso.dev/message-list";
 import { marked } from "marked";
 import type { ReactElement, ReactNode } from "react";
@@ -193,7 +193,7 @@ function PremiumDowngradeChip() {
     <MessageInfoChip label="Auto-switched to Standard">
       <p>
         You have reached your Premium model limit for the current 7-day window,
-        so Dust ran this message on a Standard model instead.
+        so Ruby ran this message on a Standard model instead.
       </p>
       <p>
         <LinkWrapper
@@ -216,7 +216,7 @@ function PrunedContextChip() {
       title="This conversation reached its size limit"
     >
       <p>
-        Dust had to trim part of the tool output used to generate this message
+        Ruby had to trim part of the tool output used to generate this message
         to fit the model&apos;s context window. This usually happens when a
         search or other tool returns more data than the model can process at
         once.
@@ -257,7 +257,7 @@ interface AgentMessageProps {
     input: string,
     mentions: RichMention[],
     contentFragments: ContentFragmentsType
-  ) => Promise<Result<undefined, DustError>>;
+  ) => Promise<Result<undefined, RubyError>>;
   additionalMarkdownComponents?: Components;
   additionalMarkdownPlugins?: PluggableList;
   isProjectArchived?: boolean;

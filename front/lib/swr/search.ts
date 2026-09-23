@@ -103,10 +103,10 @@ export function useUnifiedSearch({
       return rawKnowledgeResults;
     }
 
-    // If a project file also exists as a `dust_project` knowledge node (Core),
+    // If a project file also exists as a `ruby_project` knowledge node (Core),
     // we only keep the file representation.
     return rawKnowledgeResults.filter((n) => {
-      if (n.dataSource.connectorProvider !== "dust_project") {
+      if (n.dataSource.connectorProvider !== "ruby_project") {
         return true;
       }
       return !projectContextFileIds.has(n.internalId);

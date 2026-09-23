@@ -270,7 +270,7 @@ describe("AgentStepContentResource Redis cache", () => {
     expect(fetched.map((c) => c.id).includes(created.id)).toBe(true);
   });
 
-  it("falls back to Postgres when a backfill changes dustRunId behind the cache", async () => {
+  it("falls back to Postgres when a backfill changes rubyRunId behind the cache", async () => {
     const created = await AgentStepContentResource.createNewVersion({
       workspaceId,
       agentMessageId: agentMessage.id,
@@ -281,10 +281,10 @@ describe("AgentStepContentResource Redis cache", () => {
     });
 
     await AgentStepContentModel.update(
-      { dustRunId: "backfilled-run-id" },
+      { rubyRunId: "backfilled-run-id" },
       {
         where: { id: created.id, workspaceId },
-        fields: ["dustRunId"],
+        fields: ["rubyRunId"],
         silent: true,
       }
     );
@@ -295,7 +295,7 @@ describe("AgentStepContentResource Redis cache", () => {
     );
 
     expect(fetched).toHaveLength(1);
-    expect(fetched[0].dustRunId).toBe("backfilled-run-id");
+    expect(fetched[0].rubyRunId).toBe("backfilled-run-id");
   });
 
   it("overwrites the hash field when creating a new version of the same step/index", async () => {
@@ -505,7 +505,7 @@ describe("AgentStepContentResource.createNewVersions", () => {
     expect(created).toEqual([]);
   });
 
-  it("persists dustRunId (null when omitted) through the cache and Postgres", async () => {
+  it("persists rubyRunId (null when omitted) through the cache and Postgres", async () => {
     const created = await AgentStepContentResource.createNewVersions([
       {
         workspaceId,
@@ -514,7 +514,7 @@ describe("AgentStepContentResource.createNewVersions", () => {
         index: 0,
         type: "text_content",
         value: makeTextContent("emitted by a run"),
-        dustRunId: "dust_run_abc",
+        rubyRunId: "ruby_run_abc",
       },
       {
         workspaceId,
@@ -523,13 +523,13 @@ describe("AgentStepContentResource.createNewVersions", () => {
         index: 1,
         type: "text_content",
         value: makeTextContent("no run"),
-        // dustRunId omitted -> stored as null.
+        // rubyRunId omitted -> stored as null.
       },
     ]);
 
     expect(
-      created.toSorted((a, b) => a.index - b.index).map((c) => c.dustRunId)
-    ).toEqual(["dust_run_abc", null]);
+      created.toSorted((a, b) => a.index - b.index).map((c) => c.rubyRunId)
+    ).toEqual(["ruby_run_abc", null]);
 
     // Cache path: createNewVersions warms Redis, so this fetch is served from it.
     const fromCache = await AgentStepContentResource.fetchByAgentMessages(
@@ -537,8 +537,8 @@ describe("AgentStepContentResource.createNewVersions", () => {
       { agentMessageIds: [agentMessage.id] }
     );
     expect(
-      fromCache.toSorted((a, b) => a.index - b.index).map((c) => c.dustRunId)
-    ).toEqual(["dust_run_abc", null]);
+      fromCache.toSorted((a, b) => a.index - b.index).map((c) => c.rubyRunId)
+    ).toEqual(["ruby_run_abc", null]);
 
     // Postgres path: bust the cache so the next fetch reads the persisted rows.
     const redis = await getRedisCacheClient({
@@ -553,7 +553,7 @@ describe("AgentStepContentResource.createNewVersions", () => {
       { agentMessageIds: [agentMessage.id] }
     );
     expect(
-      fromPostgres.toSorted((a, b) => a.index - b.index).map((c) => c.dustRunId)
-    ).toEqual(["dust_run_abc", null]);
+      fromPostgres.toSorted((a, b) => a.index - b.index).map((c) => c.rubyRunId)
+    ).toEqual(["ruby_run_abc", null]);
   });
 });

@@ -1,7 +1,7 @@
-import Custom404 from "@dust-tt/front/components/pages/Custom404";
-import type { APIErrorResponse } from "@dust-tt/front/types/error";
-import { isAPIErrorResponse } from "@dust-tt/front/types/error";
-import { AlertCircle, Button, Icon } from "@dust-tt/sparkle";
+import Custom404 from "@ruby-ai/front/components/pages/Custom404";
+import type { APIErrorResponse } from "@ruby-ai/front/types/error";
+import { isAPIErrorResponse } from "@ruby-ai/front/types/error";
+import { AlertCircle, Button, Icon } from "@ruby-ai/ui";
 
 interface AuthErrorPageProps {
   error: APIErrorResponse | Error;

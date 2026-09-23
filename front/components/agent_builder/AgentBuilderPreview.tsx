@@ -17,7 +17,7 @@ import { InputBar } from "@app/components/assistant/conversation/input_bar/Input
 import type { VirtuosoMessageListContext } from "@app/components/assistant/conversation/types";
 import { useMCPServerViewsContext } from "@app/components/shared/tools_picker/MCPServerViewsContext";
 import { useAuth } from "@app/lib/auth/AuthContext";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { isFreeTrialPhonePlan } from "@app/lib/plans/plan_codes";
 import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
@@ -27,7 +27,7 @@ import type { ContentFragmentsType } from "@app/types/content_fragment";
 import type { ConversationSidePanelType } from "@app/types/conversation_side_panel";
 import type { Result } from "@app/types/shared/result";
 import type { UserType, WorkspaceType } from "@app/types/user";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useEffect, useMemo, useRef } from "react";
 import { useWatch } from "react-hook-form";
 
@@ -74,7 +74,7 @@ interface PreviewContentProps {
     input: string,
     mentions: RichMention[],
     contentFragments: ContentFragmentsType
-  ) => Promise<Result<undefined, DustError>>;
+  ) => Promise<Result<undefined, RubyError>>;
   draftAgent: LightAgentConfigurationType | null;
   isSavingDraftAgent: boolean;
   isTrialPlan: boolean;

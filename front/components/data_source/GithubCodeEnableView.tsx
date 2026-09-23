@@ -4,7 +4,7 @@ import { useConnectorConfig } from "@app/lib/swr/connectors";
 import type { DataSourceType } from "@app/types/data_source";
 import type { APIError } from "@app/types/error";
 import type { WorkspaceType } from "@app/types/user";
-import { ContextItem, GithubLogo, SliderToggle } from "@dust-tt/sparkle";
+import { ContextItem, GithubLogo, SliderToggle } from "@ruby-ai/ui";
 import { useState } from "react";
 
 export function GithubCodeEnableView({
@@ -74,7 +74,7 @@ export function GithubCodeEnableView({
       >
         <ContextItem.Description>
           <div className="text-muted-foreground">
-            Your GitHub repositories code is synced with Dust every 8h.
+            Your GitHub repositories code is synced with Ruby every 8h.
           </div>
         </ContextItem.Description>
       </ContextItem>

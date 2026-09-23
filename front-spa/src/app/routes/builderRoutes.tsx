@@ -22,34 +22,34 @@ function AssistantAgentRedirect() {
 
 const CreateAgentPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/builder/agents/CreateAgentPage"),
+    import("@ruby-ai/front/components/pages/builder/agents/CreateAgentPage"),
   "CreateAgentPage"
 );
 const EditAgentPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/builder/agents/EditAgentPage"),
+  () => import("@ruby-ai/front/components/pages/builder/agents/EditAgentPage"),
   "EditAgentPage"
 );
 const ManageAgentsPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/builder/agents/ManageAgentsPage"),
+    import("@ruby-ai/front/components/pages/builder/agents/ManageAgentsPage"),
   "ManageAgentsPage"
 );
 const NewAgentPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/builder/agents/NewAgentPage"),
+  () => import("@ruby-ai/front/components/pages/builder/agents/NewAgentPage"),
   "NewAgentPage"
 );
 const CreateSkillPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/builder/skills/CreateSkillPage"),
+    import("@ruby-ai/front/components/pages/builder/skills/CreateSkillPage"),
   "CreateSkillPage"
 );
 const EditSkillPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/builder/skills/EditSkillPage"),
+  () => import("@ruby-ai/front/components/pages/builder/skills/EditSkillPage"),
   "EditSkillPage"
 );
 const ManageSkillsPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/builder/skills/ManageSkillsPage"),
+    import("@ruby-ai/front/components/pages/builder/skills/ManageSkillsPage"),
   "ManageSkillsPage"
 );
 
@@ -88,7 +88,7 @@ export const builderRedirectRoutes: RouteObject[] = [
     element: <RedirectWithSearchParams to="../builder/agents/new" />,
   },
   {
-    path: "builder/assistants/dust",
+    path: "builder/assistants/ruby",
     element: (
       <RedirectWithSearchParams to="../builder/agents#?selectedTab=global" />
     ),

@@ -3,10 +3,10 @@ tags: [lint, imports]
 level: error
 ---
 
-# No deep imports from @dust-tt/client
+# No deep imports from @ruby-ai/client
 
-Forbids deep imports from `@dust-tt/client/*` subpaths in `front/` code.
-Only the package root `@dust-tt/client` should be imported.
+Forbids deep imports from `@ruby-ai/client/*` subpaths in `front/` code.
+Only the package root `@ruby-ai/client` should be imported.
 
 ```grit
 language js
@@ -18,7 +18,7 @@ client_deep_import() => `"CLIENT_DEEP_IMPORT_FORBIDDEN"`
 
 ```typescript
 // @filename: app/front/lib/utils.ts
-import { Foo } from "@dust-tt/client/src";
+import { Foo } from "@ruby-ai/client/src";
 ```
 
 ```typescript
@@ -30,7 +30,7 @@ import { Foo } from "CLIENT_DEEP_IMPORT_FORBIDDEN";
 
 ```typescript
 // @filename: app/front/lib/utils.ts
-import { Bar } from "@dust-tt/client/src/toto";
+import { Bar } from "@ruby-ai/client/src/toto";
 ```
 
 ```typescript
@@ -42,12 +42,12 @@ import { Bar } from "CLIENT_DEEP_IMPORT_FORBIDDEN";
 
 ```typescript
 // @filename: app/front/lib/utils.ts
-import { Foo } from "@dust-tt/client";
+import { Foo } from "@ruby-ai/client";
 ```
 
 ## Should not flag deep import outside front
 
 ```typescript
 // @filename: app/connectors/lib/utils.ts
-import { Foo } from "@dust-tt/client/src";
+import { Foo } from "@ruby-ai/client/src";
 ```

@@ -1,11 +1,11 @@
 import type { UserType } from "@app/types/user";
 
-export const DUST_COOKIES_ACCEPTED = "dust-cookies-accepted";
-export const DUST_HAS_SESSION = "dust-has-session";
+export const RUBY_COOKIES_ACCEPTED = "ruby-cookies-accepted";
+export const RUBY_HAS_SESSION = "ruby-has-session";
 
 /**
  * Checks if the session indicator cookie is present
- * @param cookieValue - The value of the dust_has_session cookie
+ * @param cookieValue - The value of the ruby_has_session cookie
  * @returns boolean indicating if a session indicator is present
  */
 export function hasSessionIndicator(
@@ -16,7 +16,7 @@ export function hasSessionIndicator(
 
 /**
  * Determines if cookies have been accepted based on cookie value or user authentication
- * @param cookieValue - The value of the dust-cookies-accepted cookie
+ * @param cookieValue - The value of the ruby-cookies-accepted cookie
  * @param user - Optional user object (logged in users are considered to have accepted cookies)
  * @returns boolean indicating if cookies are accepted
  */

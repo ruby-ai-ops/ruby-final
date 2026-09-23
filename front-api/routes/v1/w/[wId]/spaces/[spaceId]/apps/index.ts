@@ -1,6 +1,6 @@
 import { AppResource } from "@app/lib/resources/app_resource";
 import { SpaceResource } from "@app/lib/resources/space_resource";
-import type { GetAppsResponseType } from "@dust-tt/client";
+import type { GetAppsResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { withSpace } from "@front-api/middlewares/with_space";
@@ -67,9 +67,9 @@ import importRoute from "./import";
  *                       savedRun:
  *                         type: string
  *                         description: Saved run identifier of the app
- *                       dustAPIProjectId:
+ *                       rubyAPIProjectId:
  *                         type: string
- *                         description: ID of the associated Dust API project
+ *                         description: ID of the associated Ruby API project
  *       400:
  *         description: Bad Request. Missing or invalid parameters.
  *       401:

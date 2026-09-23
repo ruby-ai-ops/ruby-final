@@ -2,11 +2,11 @@ import { frontSequelize } from "@app/lib/resources/storage";
 import { DataTypes } from "@app/lib/resources/storage/data_types";
 import { WorkspaceModel } from "@app/lib/resources/storage/models/workspace";
 import { BaseModel } from "@app/lib/resources/storage/wrappers/base";
-import type { SupportedResourceType } from "@app/types/poke/plugins";
+import type { SupportedResourceType } from "@app/types/admin/plugins";
 import type { CreationOptional, ForeignKey } from "sequelize";
 
-export const POKE_PLUGIN_RUN_MAX_RESULT_AND_ERROR_LENGTH = 4096;
-export const POKE_PLUGIN_RUN_MAX_ARGS_LENGTH = 1024;
+export const ADMIN_PLUGIN_RUN_MAX_RESULT_AND_ERROR_LENGTH = 4096;
+export const ADMIN_PLUGIN_RUN_MAX_ARGS_LENGTH = 1024;
 
 export class PluginRunModel extends BaseModel<PluginRunModel> {
   declare createdAt: CreationOptional<Date>;
@@ -28,7 +28,7 @@ export class PluginRunModel extends BaseModel<PluginRunModel> {
 PluginRunModel.init(
   {
     args: {
-      type: DataTypes.STRING(POKE_PLUGIN_RUN_MAX_ARGS_LENGTH),
+      type: DataTypes.STRING(ADMIN_PLUGIN_RUN_MAX_ARGS_LENGTH),
       allowNull: true,
     },
     author: {
@@ -50,7 +50,7 @@ PluginRunModel.init(
       allowNull: false,
     },
     result: {
-      type: new DataTypes.STRING(POKE_PLUGIN_RUN_MAX_RESULT_AND_ERROR_LENGTH),
+      type: new DataTypes.STRING(ADMIN_PLUGIN_RUN_MAX_RESULT_AND_ERROR_LENGTH),
       allowNull: true,
     },
     status: {
@@ -58,7 +58,7 @@ PluginRunModel.init(
       allowNull: false,
     },
     error: {
-      type: new DataTypes.STRING(POKE_PLUGIN_RUN_MAX_RESULT_AND_ERROR_LENGTH),
+      type: new DataTypes.STRING(ADMIN_PLUGIN_RUN_MAX_RESULT_AND_ERROR_LENGTH),
       allowNull: true,
     },
     resourceType: {

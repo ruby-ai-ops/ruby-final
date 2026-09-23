@@ -7,11 +7,11 @@ import {
   ensurePathExists,
   followInternalRef,
   hasNoRequiredProperties,
-  jsonSchemaHasRequiredDustToolInput,
+  jsonSchemaHasRequiredRubyToolInput,
   setValueAtPath,
   validateJsonSchema,
 } from "@app/lib/utils/json_schemas";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 import { describe, expect, it } from "vitest";
 
@@ -79,7 +79,7 @@ describe("JSON Schema Utilities", () => {
       ensurePathExists(obj, ["filter", "items", "items", "field"]);
       setValueAtPath(obj, ["filter", "items", "items", "field"], {
         value: "indicator-id",
-        mimeType: "application/vnd.dust.tool-input.string",
+        mimeType: "application/vnd.ruby.tool-input.string",
       });
 
       expect(obj).toEqual({
@@ -88,7 +88,7 @@ describe("JSON Schema Utilities", () => {
             items: {
               field: {
                 value: "indicator-id",
-                mimeType: "application/vnd.dust.tool-input.string",
+                mimeType: "application/vnd.ruby.tool-input.string",
               },
             },
           },
@@ -198,7 +198,7 @@ describe("JSON Schema Utilities", () => {
                       },
                       mimeType: {
                         type: "string",
-                        const: "application/vnd.dust.tool-input.string",
+                        const: "application/vnd.ruby.tool-input.string",
                       },
                     },
                     required: ["value", "mimeType"],
@@ -213,7 +213,7 @@ describe("JSON Schema Utilities", () => {
                       },
                       mimeType: {
                         type: "string",
-                        const: "application/vnd.dust.tool-input.boolean",
+                        const: "application/vnd.ruby.tool-input.boolean",
                       },
                     },
                     required: ["value", "mimeType"],
@@ -233,7 +233,7 @@ describe("JSON Schema Utilities", () => {
                       },
                       mimeType: {
                         type: "string",
-                        const: "application/vnd.dust.tool-input.number",
+                        const: "application/vnd.ruby.tool-input.number",
                       },
                     },
                     required: ["value", "mimeType"],
@@ -248,7 +248,7 @@ describe("JSON Schema Utilities", () => {
                       },
                       mimeType: {
                         type: "string",
-                        const: "application/vnd.dust.tool-input.boolean",
+                        const: "application/vnd.ruby.tool-input.boolean",
                       },
                     },
                     required: ["value", "mimeType"],
@@ -288,11 +288,11 @@ describe("JSON Schema Utilities", () => {
                       uri: {
                         type: "string",
                         pattern:
-                          "^data_source_configuration:\\/\\/dust\\/w\\/(\\w+)\\/data_source_configurations\\/(\\w+)$",
+                          "^data_source_configuration:\\/\\/ruby\\/w\\/(\\w+)\\/data_source_configurations\\/(\\w+)$",
                       },
                       mimeType: {
                         type: "string",
-                        const: "application/vnd.dust.tool-input.data-source",
+                        const: "application/vnd.ruby.tool-input.data-source",
                       },
                     },
                     required: ["uri", "mimeType"],
@@ -311,11 +311,11 @@ describe("JSON Schema Utilities", () => {
                           uri: {
                             type: "string",
                             pattern:
-                              "^table_configuration:\\/\\/dust\\/w\\/(\\w+)\\/(?:table_configurations\\/(\\w+)|data_source_views\\/(\\w+)\\/tables\\/(.+))$",
+                              "^table_configuration:\\/\\/ruby\\/w\\/(\\w+)\\/(?:table_configurations\\/(\\w+)|data_source_views\\/(\\w+)\\/tables\\/(.+))$",
                           },
                           mimeType: {
                             type: "string",
-                            const: "application/vnd.dust.tool-input.table",
+                            const: "application/vnd.ruby.tool-input.table",
                           },
                         },
                         required: ["uri", "mimeType"],
@@ -363,11 +363,11 @@ describe("JSON Schema Utilities", () => {
                             uri: {
                               type: "string",
                               pattern:
-                                "^agent:\\/\\/dust\\/w\\/(\\w+)\\/agents\\/([\\w-]+)$",
+                                "^agent:\\/\\/ruby\\/w\\/(\\w+)\\/agents\\/([\\w-]+)$",
                             },
                             mimeType: {
                               type: "string",
-                              const: "application/vnd.dust.tool-input.agent",
+                              const: "application/vnd.ruby.tool-input.agent",
                             },
                           },
                           required: ["uri", "mimeType"],
@@ -406,7 +406,7 @@ describe("JSON Schema Utilities", () => {
               },
               mimeType: {
                 type: "string",
-                const: "application/vnd.dust.tool-input.string",
+                const: "application/vnd.ruby.tool-input.string",
               },
             },
             required: ["value", "mimeType"],
@@ -569,14 +569,14 @@ describe("validateJsonSchema", () => {
   });
 });
 
-const DUST_DS_MIME = "application/vnd.dust.tool-input.data-source";
+const RUBY_DS_MIME = "application/vnd.ruby.tool-input.data-source";
 
-function dustDataSourceItemSchema(): JSONSchema {
+function rubyDataSourceItemSchema(): JSONSchema {
   return {
     type: "object",
     properties: {
       uri: { type: "string" },
-      mimeType: { const: DUST_DS_MIME },
+      mimeType: { const: RUBY_DS_MIME },
     },
     required: ["uri", "mimeType"],
     additionalProperties: false,
@@ -597,134 +597,134 @@ function minimalView(
   } as MCPServerViewType;
 }
 
-describe("jsonSchemaHasRequiredDustToolInput", () => {
+describe("jsonSchemaHasRequiredRubyToolInput", () => {
   const fromRoot = true;
 
   it("returns false for null, undefined, and non-objects", () => {
-    expect(jsonSchemaHasRequiredDustToolInput(null, fromRoot)).toBe(false);
-    expect(jsonSchemaHasRequiredDustToolInput(undefined, fromRoot)).toBe(false);
-    expect(jsonSchemaHasRequiredDustToolInput(1, fromRoot)).toBe(false);
-    expect(jsonSchemaHasRequiredDustToolInput("x", fromRoot)).toBe(false);
+    expect(jsonSchemaHasRequiredRubyToolInput(null, fromRoot)).toBe(false);
+    expect(jsonSchemaHasRequiredRubyToolInput(undefined, fromRoot)).toBe(false);
+    expect(jsonSchemaHasRequiredRubyToolInput(1, fromRoot)).toBe(false);
+    expect(jsonSchemaHasRequiredRubyToolInput("x", fromRoot)).toBe(false);
   });
 
-  it("returns false when path is not all-required even if schema is a Dust object", () => {
-    const dustObject: JSONSchema = {
+  it("returns false when path is not all-required even if schema is a Ruby object", () => {
+    const rubyObject: JSONSchema = {
       type: "object",
       properties: {
         uri: { type: "string" },
-        mimeType: { const: DUST_DS_MIME },
+        mimeType: { const: RUBY_DS_MIME },
       },
       required: ["uri", "mimeType"],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(dustObject, false)).toBe(false);
+    expect(jsonSchemaHasRequiredRubyToolInput(rubyObject, false)).toBe(false);
   });
 
-  it("returns true when the root schema is a Dust object and path is all-required", () => {
-    const dustObject: JSONSchema = {
+  it("returns true when the root schema is a Ruby object and path is all-required", () => {
+    const rubyObject: JSONSchema = {
       type: "object",
       properties: {
         uri: { type: "string" },
-        mimeType: { const: DUST_DS_MIME },
+        mimeType: { const: RUBY_DS_MIME },
       },
       required: ["uri", "mimeType"],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(dustObject, true)).toBe(true);
+    expect(jsonSchemaHasRequiredRubyToolInput(rubyObject, true)).toBe(true);
   });
 
-  it("detects required array property whose items are Dust objects (dataSources pattern)", () => {
+  it("detects required array property whose items are Ruby objects (dataSources pattern)", () => {
     const schema: JSONSchema = {
       type: "object",
       properties: {
         dataSources: {
           type: "array",
-          items: dustDataSourceItemSchema(),
+          items: rubyDataSourceItemSchema(),
         },
         objective: { type: "string" },
       },
       required: ["dataSources", "objective"],
       additionalProperties: false,
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(true);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(true);
   });
 
-  it("returns false when Dust-like items sit under an optional array property", () => {
+  it("returns false when Ruby-like items sit under an optional array property", () => {
     const schema: JSONSchema = {
       type: "object",
       properties: {
         dataSources: {
           type: "array",
-          items: dustDataSourceItemSchema(),
+          items: rubyDataSourceItemSchema(),
         },
       },
       required: [],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(false);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(false);
   });
 
-  it("returns false when Dust project field is optional at root", () => {
+  it("returns false when Ruby project field is optional at root", () => {
     const schema: JSONSchema = {
       type: "object",
       properties: {
         message: { type: "string" },
-        dustPod: {
+        rubyPod: {
           type: "object",
           properties: {
             uri: { type: "string" },
-            mimeType: { const: "application/vnd.dust.tool-input.dust-project" },
+            mimeType: { const: "application/vnd.ruby.tool-input.ruby-project" },
           },
           required: ["uri", "mimeType"],
         },
       },
       required: ["message"],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(false);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(false);
   });
 
-  it("returns true when Dust project field is required at root", () => {
+  it("returns true when Ruby project field is required at root", () => {
     const schema: JSONSchema = {
       type: "object",
       properties: {
-        dustPod: {
+        rubyPod: {
           type: "object",
           properties: {
             uri: { type: "string" },
-            mimeType: { const: "application/vnd.dust.tool-input.dust-project" },
+            mimeType: { const: "application/vnd.ruby.tool-input.ruby-project" },
           },
           required: ["uri", "mimeType"],
         },
       },
-      required: ["dustPod"],
+      required: ["rubyPod"],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(true);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(true);
   });
 
-  it("returns false when optional wrapper contains required Dust child", () => {
+  it("returns false when optional wrapper contains required Ruby child", () => {
     const schema: JSONSchema = {
       type: "object",
       properties: {
         wrapper: {
           type: "object",
           properties: {
-            dustPod: {
+            rubyPod: {
               type: "object",
               properties: {
                 uri: { type: "string" },
                 mimeType: {
-                  const: "application/vnd.dust.tool-input.dust-project",
+                  const: "application/vnd.ruby.tool-input.ruby-project",
                 },
               },
               required: ["uri", "mimeType"],
             },
           },
-          required: ["dustPod"],
+          required: ["rubyPod"],
         },
       },
       required: [],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(false);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(false);
   });
 
-  it("detects mimeType via enum strings under the Dust prefix", () => {
+  it("detects mimeType via enum strings under the Ruby prefix", () => {
     const schema: JSONSchema = {
       type: "object",
       properties: {
@@ -735,8 +735,8 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
             mimeType: {
               type: "string",
               enum: [
-                "application/vnd.dust.tool-input.data-source",
-                "application/vnd.dust.tool-input.folder",
+                "application/vnd.ruby.tool-input.data-source",
+                "application/vnd.ruby.tool-input.folder",
               ],
             },
           },
@@ -744,10 +744,10 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
       },
       required: ["cfg"],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(true);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(true);
   });
 
-  it("returns false when mimeType const is not a Dust tool-input type", () => {
+  it("returns false when mimeType const is not a Ruby tool-input type", () => {
     const schema: JSONSchema = {
       type: "object",
       properties: {
@@ -760,27 +760,27 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
       },
       required: ["x"],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(false);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(false);
   });
 
-  it("treats top-level schema array like oneOf: bad only if every branch requires Dust", () => {
+  it("treats top-level schema array like oneOf: bad only if every branch requires Ruby", () => {
     const onlyStrings: JSONSchema = {
       type: "object",
       properties: { a: { type: "string" } },
       required: ["a"],
     };
     expect(
-      jsonSchemaHasRequiredDustToolInput([onlyStrings, onlyStrings], true)
+      jsonSchemaHasRequiredRubyToolInput([onlyStrings, onlyStrings], true)
     ).toBe(false);
 
-    const withDust: JSONSchema = {
+    const withRuby: JSONSchema = {
       type: "object",
       properties: {
         p: {
           type: "object",
           properties: {
             uri: { type: "string" },
-            mimeType: { const: DUST_DS_MIME },
+            mimeType: { const: RUBY_DS_MIME },
           },
           required: ["uri", "mimeType"],
         },
@@ -788,27 +788,27 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
       required: ["p"],
     };
     expect(
-      jsonSchemaHasRequiredDustToolInput([onlyStrings, withDust], true)
+      jsonSchemaHasRequiredRubyToolInput([onlyStrings, withRuby], true)
     ).toBe(false);
-    expect(jsonSchemaHasRequiredDustToolInput([withDust, withDust], true)).toBe(
+    expect(jsonSchemaHasRequiredRubyToolInput([withRuby, withRuby], true)).toBe(
       true
     );
   });
 
-  it("oneOf: false when at least one branch has no required Dust path", () => {
+  it("oneOf: false when at least one branch has no required Ruby path", () => {
     const clean: JSONSchema = {
       type: "object",
       properties: { x: { type: "string" } },
       required: ["x"],
     };
-    const dustRequired: JSONSchema = {
+    const rubyRequired: JSONSchema = {
       type: "object",
       properties: {
         p: {
           type: "object",
           properties: {
             uri: { type: "string" },
-            mimeType: { const: DUST_DS_MIME },
+            mimeType: { const: RUBY_DS_MIME },
           },
           required: ["uri", "mimeType"],
         },
@@ -816,24 +816,24 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
       required: ["p"],
     };
     expect(
-      jsonSchemaHasRequiredDustToolInput({ oneOf: [clean, dustRequired] }, true)
+      jsonSchemaHasRequiredRubyToolInput({ oneOf: [clean, rubyRequired] }, true)
     ).toBe(false);
   });
 
-  it("anyOf: behaves like oneOf for required Dust (any clean branch is enough)", () => {
+  it("anyOf: behaves like oneOf for required Ruby (any clean branch is enough)", () => {
     const clean: JSONSchema = {
       type: "object",
       properties: { x: { type: "string" } },
       required: ["x"],
     };
-    const dustRequired: JSONSchema = {
+    const rubyRequired: JSONSchema = {
       type: "object",
       properties: {
         p: {
           type: "object",
           properties: {
             uri: { type: "string" },
-            mimeType: { const: DUST_DS_MIME },
+            mimeType: { const: RUBY_DS_MIME },
           },
           required: ["uri", "mimeType"],
         },
@@ -841,17 +841,17 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
       required: ["p"],
     };
     expect(
-      jsonSchemaHasRequiredDustToolInput({ anyOf: [clean, dustRequired] }, true)
+      jsonSchemaHasRequiredRubyToolInput({ anyOf: [clean, rubyRequired] }, true)
     ).toBe(false);
     expect(
-      jsonSchemaHasRequiredDustToolInput(
-        { anyOf: [dustRequired, dustRequired] },
+      jsonSchemaHasRequiredRubyToolInput(
+        { anyOf: [rubyRequired, rubyRequired] },
         true
       )
     ).toBe(true);
   });
 
-  it("oneOf: true when every branch forces required Dust", () => {
+  it("oneOf: true when every branch forces required Ruby", () => {
     const a: JSONSchema = {
       type: "object",
       properties: {
@@ -859,19 +859,19 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
           type: "object",
           properties: {
             uri: { type: "string" },
-            mimeType: { const: DUST_DS_MIME },
+            mimeType: { const: RUBY_DS_MIME },
           },
           required: ["uri", "mimeType"],
         },
       },
       required: ["p"],
     };
-    expect(jsonSchemaHasRequiredDustToolInput({ oneOf: [a, a] }, true)).toBe(
+    expect(jsonSchemaHasRequiredRubyToolInput({ oneOf: [a, a] }, true)).toBe(
       true
     );
   });
 
-  it("allOf: true when any combined branch introduces required Dust", () => {
+  it("allOf: true when any combined branch introduces required Ruby", () => {
     const base: JSONSchema = {
       type: "object",
       properties: { x: { type: "string" } },
@@ -883,7 +883,7 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
           type: "object",
           properties: {
             uri: { type: "string" },
-            mimeType: { const: DUST_DS_MIME },
+            mimeType: { const: RUBY_DS_MIME },
           },
           required: ["uri", "mimeType"],
         },
@@ -891,31 +891,31 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
       required: ["p"],
     };
     expect(
-      jsonSchemaHasRequiredDustToolInput({ allOf: [base, extra] }, true)
+      jsonSchemaHasRequiredRubyToolInput({ allOf: [base, extra] }, true)
     ).toBe(true);
     expect(
-      jsonSchemaHasRequiredDustToolInput({ allOf: [base, base] }, true)
+      jsonSchemaHasRequiredRubyToolInput({ allOf: [base, base] }, true)
     ).toBe(false);
   });
 
-  it("accepts object-like schema without explicit type: object when properties carry Dust", () => {
+  it("accepts object-like schema without explicit type: object when properties carry Ruby", () => {
     const schema = {
       properties: {
-        dustPod: {
+        rubyPod: {
           type: "object",
           properties: {
             uri: { type: "string" },
-            mimeType: { const: "application/vnd.dust.tool-input.dust-project" },
+            mimeType: { const: "application/vnd.ruby.tool-input.ruby-project" },
           },
           required: ["uri", "mimeType"],
         },
       },
-      required: ["dustPod"],
+      required: ["rubyPod"],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(true);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(true);
   });
 
-  it("detects Dust object when type is a tuple including object", () => {
+  it("detects Ruby object when type is a tuple including object", () => {
     const schema: JSONSchema = {
       type: "object",
       properties: {
@@ -923,26 +923,26 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
           type: ["object", "null"] as unknown as JSONSchema["type"],
           properties: {
             uri: { type: "string" },
-            mimeType: { const: DUST_DS_MIME },
+            mimeType: { const: RUBY_DS_MIME },
           },
           required: ["uri", "mimeType"],
         },
       },
       required: ["v"],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(true);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(true);
   });
 
   it("root-level array schema passes path flag to items", () => {
     const schema: JSONSchema = {
       type: "array",
-      items: dustDataSourceItemSchema(),
+      items: rubyDataSourceItemSchema(),
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(true);
-    expect(jsonSchemaHasRequiredDustToolInput(schema, false)).toBe(false);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(true);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, false)).toBe(false);
   });
 
-  it("tuple items array on property: any item schema with required Dust triggers", () => {
+  it("tuple items array on property: any item schema with required Ruby triggers", () => {
     const schema: JSONSchema = {
       type: "object",
       properties: {
@@ -954,7 +954,7 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
               type: "object",
               properties: {
                 uri: { type: "string" },
-                mimeType: { const: DUST_DS_MIME },
+                mimeType: { const: RUBY_DS_MIME },
               },
               required: ["uri", "mimeType"],
             },
@@ -963,7 +963,7 @@ describe("jsonSchemaHasRequiredDustToolInput", () => {
       },
       required: ["pair"],
     };
-    expect(jsonSchemaHasRequiredDustToolInput(schema, true)).toBe(true);
+    expect(jsonSchemaHasRequiredRubyToolInput(schema, true)).toBe(true);
   });
 });
 
@@ -978,7 +978,7 @@ describe("hasNoRequiredProperties (MCP view)", () => {
     );
   });
 
-  it("returns true when no tool requires Dust on a mandatory path", () => {
+  it("returns true when no tool requires Ruby on a mandatory path", () => {
     const clean: JSONSchema = {
       type: "object",
       properties: { q: { type: "string" } },
@@ -987,7 +987,7 @@ describe("hasNoRequiredProperties (MCP view)", () => {
     expect(hasNoRequiredProperties(minimalView([clean]))).toBe(true);
   });
 
-  it("returns false when any tool has required Dust path", () => {
+  it("returns false when any tool has required Ruby path", () => {
     const clean: JSONSchema = {
       type: "object",
       properties: { q: { type: "string" } },
@@ -998,7 +998,7 @@ describe("hasNoRequiredProperties (MCP view)", () => {
       properties: {
         dataSources: {
           type: "array",
-          items: dustDataSourceItemSchema(),
+          items: rubyDataSourceItemSchema(),
         },
       },
       required: ["dataSources"],

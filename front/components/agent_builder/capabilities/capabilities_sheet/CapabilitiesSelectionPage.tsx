@@ -7,7 +7,7 @@ import type { MCPServerViewTypeWithLabel } from "@app/components/shared/tools_pi
 import type { CapabilityFilterType } from "@app/components/shared/tools_picker/types";
 import { useSkillWithRelations } from "@app/lib/swr/skill_configurations";
 import type { SkillWithoutInstructionsAndToolsType } from "@app/types/assistant/skill_configuration";
-import { SearchInput, Spinner } from "@dust-tt/sparkle";
+import { SearchInput, Spinner } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useMemo, useState } from "react";
 

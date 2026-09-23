@@ -69,7 +69,7 @@ export function isSystemKey<T extends { isSystem: boolean }>(
   return key.isSystem;
 }
 
-export const DEFAULT_SYSTEM_KEY_NAME = "DustSystemKey";
+export const DEFAULT_SYSTEM_KEY_NAME = "RubySystemKey";
 export const SECRET_KEY_PREFIX = "sk-";
 
 // Bypass no-TTL entries written before the deprecated role was migrated.

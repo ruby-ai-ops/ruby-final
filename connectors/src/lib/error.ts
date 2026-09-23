@@ -1,4 +1,4 @@
-import type { APIError, ConnectorProvider } from "@dust-tt/client";
+import type { APIError, ConnectorProvider } from "@ruby-ai/client";
 
 // Generate dynamic error types.
 type ProviderErrorType =
@@ -19,7 +19,7 @@ export type TablesErrorType =
 // Combine both general and provider-specific error types.
 type WorkflowErrorType = GeneralWorkflowErrorType | ProviderErrorType;
 
-export class DustConnectorWorkflowError extends Error {
+export class RubyConnectorWorkflowError extends Error {
   constructor(
     message: string,
     readonly type: WorkflowErrorType,
@@ -31,7 +31,7 @@ export class DustConnectorWorkflowError extends Error {
 }
 
 // Define a specific error class for provider-related errors.
-export class ProviderWorkflowError extends DustConnectorWorkflowError {
+export class ProviderWorkflowError extends RubyConnectorWorkflowError {
   constructor(
     public readonly provider: ConnectorProvider,
     message: string,

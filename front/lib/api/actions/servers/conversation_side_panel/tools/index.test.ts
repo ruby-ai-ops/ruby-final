@@ -7,7 +7,7 @@ import {
 import { FileFactory } from "@app/tests/utils/FileFactory";
 import { frameV2ContentType } from "@app/types/files";
 import { getPodFilesBasePath } from "@app/types/mount_path";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 import { describe, expect, it, vi } from "vitest";
 

@@ -12,7 +12,7 @@ import {
   SheetHeader,
   SheetTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 interface DataSourceViewDocumentModalProps {
@@ -132,12 +132,12 @@ export default function DataSourceViewDocumentModal({
                       <li>
                         if the document is a spreadsheet, this is expected.
                         Spreadsheets do not expose raw contents. They are made
-                        available in Dust via the `Table Query` action in
+                        available in Ruby via the `Table Query` action in
                         assistants.
                       </li>
                       <li>
                         Otherwise, this is unexpected. Please contact
-                        support@dust.tt for assistance on synchronizing the
+                        support@ruby.ad for assistance on synchronizing the
                         document.
                       </li>
                     </ul>

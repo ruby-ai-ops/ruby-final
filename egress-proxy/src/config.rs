@@ -22,7 +22,7 @@ pub struct Config {
 }
 
 #[derive(Debug, Parser)]
-#[command(name = "egress-proxy", about = "Dust sandbox egress proxy")]
+#[command(name = "egress-proxy", about = "Ruby sandbox egress proxy")]
 struct RawConfig {
     #[arg(long, env = "EGRESS_PROXY_LISTEN_ADDR", default_value = "0.0.0.0:4443")]
     listen_addr: SocketAddr,

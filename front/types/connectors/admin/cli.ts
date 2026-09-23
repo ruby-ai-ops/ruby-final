@@ -124,7 +124,7 @@ export const ConfluenceCheckPageExistsResponseSchema = t.union([
   t.type({
     exists: t.literal(true),
     ancestors: t.array(ConfluenceAncestorSchema),
-    existsInDust: t.boolean,
+    existsInRuby: t.boolean,
     hasChildren: t.boolean,
     hasReadRestrictions: t.boolean,
     status: t.string,

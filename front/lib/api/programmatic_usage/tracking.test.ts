@@ -592,7 +592,7 @@ describe("trackProgrammaticCost", () => {
     const auth = await makeAuth(workspace);
 
     const result = await trackProgrammaticCost(auth, {
-      dustRunIds: [],
+      rubyRunIds: [],
       userMessageOrigin: "api",
     });
 
@@ -604,7 +604,7 @@ describe("trackProgrammaticCost", () => {
     const auth = await makeAuth(workspace);
 
     const result = await trackProgrammaticCost(auth, {
-      dustRunIds: [],
+      rubyRunIds: [],
       userMessageOrigin: "api",
     });
 
@@ -627,7 +627,7 @@ describe("trackProgrammaticCost", () => {
     const { run } = await RunFactory.createWithUsage(auth);
 
     const first = await trackProgrammaticCost(auth, {
-      dustRunIds: [run.dustRunId],
+      rubyRunIds: [run.rubyRunId],
       userMessageOrigin: "api",
     });
     expect(first?.runsCostMicroUsd).toBeGreaterThan(0);
@@ -643,7 +643,7 @@ describe("trackProgrammaticCost", () => {
     vi.mocked(runOnRedis).mockResolvedValueOnce(null);
 
     const second = await trackProgrammaticCost(auth, {
-      dustRunIds: [run.dustRunId],
+      rubyRunIds: [run.rubyRunId],
       userMessageOrigin: "api",
     });
     expect(second).toBeUndefined();
@@ -665,7 +665,7 @@ describe("trackProgrammaticCost", () => {
 
     await expect(
       trackProgrammaticCost(auth, {
-        dustRunIds: ["run-1"],
+        rubyRunIds: ["run-1"],
         userMessageOrigin: "api",
       })
     ).rejects.toThrow("redis down");

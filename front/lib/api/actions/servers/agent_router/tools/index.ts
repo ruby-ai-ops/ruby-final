@@ -10,7 +10,7 @@ import logger from "@app/logger/logger";
 import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
 import { Err, Ok } from "@app/types/shared/result";
 import { getHeaderFromUserEmail } from "@app/types/user";
-import { DustAPI } from "@dust-tt/client";
+import { RubyAPI } from "@ruby-ai/client";
 
 const MAX_INSTRUCTIONS_LENGTH = 1000;
 
@@ -20,8 +20,8 @@ const handlers: ToolHandlers<typeof AGENT_ROUTER_TOOLS_METADATA> = {
     const user = auth.user();
 
     const prodCredentials = await prodAPICredentialsForOwner(owner);
-    const api = new DustAPI(
-      apiConfig.getDustAPIConfig(),
+    const api = new RubyAPI(
+      apiConfig.getRubyAPIConfig(),
       {
         ...prodCredentials,
         extraHeaders: {
@@ -66,8 +66,8 @@ const handlers: ToolHandlers<typeof AGENT_ROUTER_TOOLS_METADATA> = {
     const user = auth.user();
 
     const prodCredentials = await prodAPICredentialsForOwner(owner);
-    const api = new DustAPI(
-      apiConfig.getDustAPIConfig(),
+    const api = new RubyAPI(
+      apiConfig.getRubyAPIConfig(),
       {
         ...prodCredentials,
         extraHeaders: {
@@ -106,7 +106,7 @@ const handlers: ToolHandlers<typeof AGENT_ROUTER_TOOLS_METADATA> = {
     }
 
     const formattedSuggestedAgents = suggestedAgentsRes.value
-      .filter((agent) => agent.sId !== "dust")
+      .filter((agent) => agent.sId !== "ruby")
       .map((agent) => {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         const instructions = agent.instructions || "";

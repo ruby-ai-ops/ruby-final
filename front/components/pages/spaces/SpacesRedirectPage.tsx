@@ -2,7 +2,7 @@ import { usePersistedNavigationSelection } from "@app/hooks/usePersistedNavigati
 import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
 import { useAppRouter } from "@app/lib/platform";
 import { useSpaceInfo, useSpaces, useSystemSpace } from "@app/lib/swr/spaces";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useEffect } from "react";
 
 // This page redirects to the appropriate space based on user preferences and role.

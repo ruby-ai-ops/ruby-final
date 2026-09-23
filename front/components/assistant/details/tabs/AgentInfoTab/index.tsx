@@ -4,13 +4,13 @@ import { AssistantSkillsToolsSection } from "@app/components/assistant/details/t
 import { RedactedAgentMessage } from "@app/components/assistant/details/tabs/AgentInfoTab/RedactedAgentMessage";
 import { preprocessMarkdownForEditor } from "@app/components/editor/lib/preprocessMarkdownForEditor";
 import { getModelProviderLogo } from "@app/components/providers/types";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import type { AgentConfigurationType } from "@app/types/assistant/agent";
 import { GLOBAL_AGENTS_SID } from "@app/types/assistant/assistant";
 import { SUPPORTED_MODEL_CONFIGS } from "@app/types/assistant/models/models";
 import type { WorkspaceType } from "@app/types/user";
 import { isAdmin } from "@app/types/user";
-import { Avatar, Chip, cn, Markdown, Page } from "@dust-tt/sparkle";
+import { Avatar, Chip, cn, Markdown, Page } from "@ruby-ai/ui";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { useEffect, useMemo, useRef } from "react";
 
@@ -22,13 +22,13 @@ export function AgentInfoTab({
   owner: WorkspaceType;
 }) {
   const { isDark } = useTheme();
-  const isDustAgent =
-    agentConfiguration.sId === GLOBAL_AGENTS_SID.DUST ||
+  const isRubyAgent =
+    agentConfiguration.sId === GLOBAL_AGENTS_SID.RUBY ||
     agentConfiguration.sId === GLOBAL_AGENTS_SID.DEEP_DIVE ||
-    agentConfiguration.sId === GLOBAL_AGENTS_SID.DUST_EDGE;
+    agentConfiguration.sId === GLOBAL_AGENTS_SID.RUBY_EDGE;
 
   const isGlobalAgent = agentConfiguration.scope === "global";
-  const displayKnowledge = !isGlobalAgent || isDustAgent;
+  const displayKnowledge = !isGlobalAgent || isRubyAgent;
 
   const instructions = agentConfiguration.instructions ?? "";
   const instructionsHtml = agentConfiguration.instructionsHtml ?? null;
@@ -91,7 +91,7 @@ export function AgentInfoTab({
         <AssistantSkillsToolsSection
           agentConfiguration={agentConfiguration}
           owner={owner}
-          isDustAgent={isDustAgent}
+          isRubyAgent={isRubyAgent}
         />
       )}
 

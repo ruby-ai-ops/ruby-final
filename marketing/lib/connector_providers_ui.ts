@@ -18,19 +18,19 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     guideLink: null,
   },
   confluence: {
-    description: "Connect Confluence spaces to Dust.",
+    description: "Connect Confluence spaces to Ruby.",
     guideLink: null,
   },
   discord_bot: {
-    description: "Bring Dust into Discord channels.",
+    description: "Bring Ruby into Discord channels.",
     guideLink: null,
   },
-  dust_project: {
-    description: "Internal Dust project connector.",
+  ruby_project: {
+    description: "Internal Ruby project connector.",
     guideLink: null,
   },
   github: {
-    description: "Connect GitHub repositories to Dust.",
+    description: "Connect GitHub repositories to Ruby.",
     guideLink: null,
   },
   gong: {
@@ -46,11 +46,11 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     guideLink: null,
   },
   microsoft: {
-    description: "Connect Microsoft 365 (SharePoint, OneDrive) to Dust.",
+    description: "Connect Microsoft 365 (SharePoint, OneDrive) to Ruby.",
     guideLink: null,
   },
   microsoft_bot: {
-    description: "Bring Dust into Microsoft Teams channels.",
+    description: "Bring Ruby into Microsoft Teams channels.",
     guideLink: null,
   },
   notion: {
@@ -66,7 +66,7 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     guideLink: null,
   },
   slack_bot: {
-    description: "Bring Dust into Slack channels.",
+    description: "Bring Ruby into Slack channels.",
     guideLink: null,
   },
   snowflake: {
@@ -74,7 +74,7 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     guideLink: null,
   },
   webcrawler: {
-    description: "Crawl public web pages into Dust.",
+    description: "Crawl public web pages into Ruby.",
     guideLink: null,
   },
   zendesk: {

@@ -23,7 +23,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 type AutomationsTab = "triggers" | "slack-workflows";

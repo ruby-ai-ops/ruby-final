@@ -17,7 +17,7 @@ import {
   RadioGroup,
   RadioGroupCustomItem,
   Separator,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React, { useState } from "react";
 
 interface SpaceSelectorProps {

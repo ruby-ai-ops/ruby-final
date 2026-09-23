@@ -7,11 +7,11 @@ import { useMemo } from "react";
 
 export function usePodLabel({
   owner,
-  dustPodUri,
+  rubyPodUri,
   conversationId,
 }: {
   owner: LightWorkspaceType;
-  dustPodUri: string | undefined;
+  rubyPodUri: string | undefined;
   conversationId: string | null | undefined;
 }) {
   const { conversation, isConversationLoading } = useConversation({
@@ -21,18 +21,18 @@ export function usePodLabel({
   });
 
   const podSpaceId = useMemo(() => {
-    if (dustPodUri) {
-      const parsed = parsePodConfigurationURI(dustPodUri);
+    if (rubyPodUri) {
+      const parsed = parsePodConfigurationURI(rubyPodUri);
       if (parsed.isOk()) {
         return parsed.value.podId;
       }
       return null;
     }
     return conversation?.spaceId ?? null;
-  }, [conversation?.spaceId, dustPodUri]);
+  }, [conversation?.spaceId, rubyPodUri]);
 
   const isWaitingForConversationSpaceId =
-    !dustPodUri && !!conversationId && isConversationLoading;
+    !rubyPodUri && !!conversationId && isConversationLoading;
 
   const { spaceInfo, isSpaceInfoLoading } = useSpaceInfo({
     workspaceId: owner.sId,

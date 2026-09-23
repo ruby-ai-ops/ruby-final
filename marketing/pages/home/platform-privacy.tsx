@@ -22,15 +22,14 @@ export async function getStaticProps() {
   };
 }
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function PlatformPrivacy() {
+export default function PlatformPrivacyNextJS() {
   const router = useRouter();
 
   return (
     <>
       <PageMetadata
-        title="Dust Platform Privacy Policy"
-        description="Learn how Dust collects, uses, and protects your personal data. GDPR compliant with transparent data processing practices and your privacy rights."
+        title="Ruby Platform Privacy Policy"
+        description="Learn how Ruby collects, uses, and protects your personal data. GDPR compliant with transparent data processing practices and your privacy rights."
         pathname={router.asPath}
       />
       <div className="container flex w-full flex-col gap-16 px-6 pb-24 md:gap-24">
@@ -48,7 +47,7 @@ export default function PlatformPrivacy() {
               Platform Privacy Policy
             </H1>
             <P size="lg" className="text-muted-foreground">
-              At Dust, we are committed to maintaining the confidentiality and
+              At Ruby, we are committed to maintaining the confidentiality and
               security of any personal information about our users. Your privacy
               is always at the top of our priorities.
             </P>
@@ -82,8 +81,8 @@ export default function PlatformPrivacy() {
           >
             <H2>About Us</H2>
             <P size="md">
-              Permutation Labs, 86 avenue de Wagram, 75017 Paris, France ("
-              <Strong>Dust</Strong>", "<Strong>we</Strong>", "
+              Escalate Labs, ("
+              <Strong>Ruby</Strong>", "<Strong>we</Strong>", "
               <Strong>our</Strong>", or "<Strong>us</Strong>"), develops and
               provides a platform to build LLM apps and AI assistants with
               access to your company's knowledge that allows you to get more
@@ -102,9 +101,9 @@ export default function PlatformPrivacy() {
           >
             <H2>1. About this Privacy Policy</H2>
             <P size="md">
-              This Privacy Policy applies to you when you access or use the Dust
+              This Privacy Policy applies to you when you access or use the Ruby
               platform, that is to say, our online software-as-service platform,
-              including any related APIs provided by Dust, together with all
+              including any related APIs provided by Ruby, together with all
               related applications ("Platform"), participate in our user
               research activities or otherwise interact or communicate with us.
             </P>
@@ -126,20 +125,20 @@ export default function PlatformPrivacy() {
               2016/679 ("GDPR").
             </P>
             <P size="md">
-              It does not cover the Personal Data Dust collects, uses, and
+              It does not cover the Personal Data Ruby collects, uses, and
               discloses when acting as a Data Processor under the GDPR on behalf
               of its Customers ("Customer Personal Data") and under their
-              instructions in connection with Dust Platform. We invite you to
+              instructions in connection with Ruby Platform. We invite you to
               contact your company or organization if you have any questions
               about its privacy practices.
             </P>
             <P size="md">
-              As Data Controller, Dust will process Customer Personal Data to
+              As Data Controller, Ruby will process Customer Personal Data to
               provide the Platform and for other limited purposes as outlined in
               Section 6 below.
             </P>
             <P size="md">
-              Where Dust is the Data Controller, if you have any questions about
+              Where Ruby is the Data Controller, if you have any questions about
               this Platform Privacy Policy or about our data protection
               practices, you can contact us. See how to contact us in Section 13
               below.
@@ -156,7 +155,7 @@ export default function PlatformPrivacy() {
           >
             <H2>3. The Personal Data we collect</H2>
             <P size="md">
-              Dust collects and processes your Personal Data when you use the
+              Ruby collects and processes your Personal Data when you use the
               Platform. This includes:
             </P>
 
@@ -221,7 +220,7 @@ export default function PlatformPrivacy() {
                   IP address, Cookie IDs, device IDs, as described by our{" "}
                   <A
                     variant="primary"
-                    href="https://dust-tt.notion.site/Cookie-Notice-ec63a7fb72104a7babff1bf413e2c1ec?pvs=74"
+                    href="https://ruby-ai.notion.site/Cookie-Notice-ec63a7fb72104a7babff1bf413e2c1ec?pvs=74"
                     target="_blank"
                   >
                     Cookie Notice
@@ -308,10 +307,10 @@ export default function PlatformPrivacy() {
             <div className="mt-4 space-y-3">
               <P size="md">
                 <Strong>"Marketing Communications"</Strong> means when we
-                contact you about Dust's Platform, events, or business.
+                contact you about Ruby's Platform, events, or business.
               </P>
               <P size="md">
-                <Strong>"Internal Development"</Strong> means when Dust improves
+                <Strong>"Internal Development"</Strong> means when Ruby improves
                 and better develops the Platform including testing, research,
                 reporting, benchmarking, machine learning, performance analyses,
                 predictions and trend analysis. We process anonymised and
@@ -456,14 +455,14 @@ export default function PlatformPrivacy() {
           >
             <H2>6. When and with whom do we share your Personal Data?</H2>
             <P size="md">
-              Within Dust, only authorized personnel have access to your
+              Within Ruby, only authorized personnel have access to your
               Personal Data.
             </P>
             <P size="md">
               We may also disclose your Personal Data to third parties to carry
               out our usual business practices. Disclosures will only be so that
               we can process your Personal Data for the purposes set out above.
-              Dust may share your Personal Data to the following third parties:
+              Ruby may share your Personal Data to the following third parties:
             </P>
 
             <H3 className="mt-6">Our service providers</H3>
@@ -474,21 +473,19 @@ export default function PlatformPrivacy() {
               measures to protect your Personal Data.
             </P>
             <P size="md">
-              Dust seeks to conclude data processing agreements with its service
+              Ruby seeks to conclude data processing agreements with its service
               providers to ensure that your personal data is used, stored and
               transferred securely and in accordance with the applicable laws
-              and Dust's instructions.
+              and Ruby's instructions.
             </P>
             <P size="md">
-              Foundational Model Providers (OpenAI, Anthropic, Mistral, Google,
-              Fireworks) are prohibited from using any customer and personal
-              data for model training. They apply a "Zero Data Retention"
-              policy, meaning that Customer Content will not be logged for human
-              review and will not be saved to disk or retained by those
-              providers. Certificates can be found in the{" "}
+              Ruby's AI infrastructure providers are prohibited from using
+              customer or personal data for model training. Applicable retention
+              commitments, provider identities, and supporting documentation are
+              maintained in the{" "}
               <A
                 variant="primary"
-                href="https://dust-tt.notion.site/Sub-Processors-cb656ff3093c4aee9e080e3021e71f9c"
+                href="https://ruby-ai.notion.site/Sub-Processors-cb656ff3093c4aee9e080e3021e71f9c"
                 target="_blank"
               >
                 Sub-Processors list
@@ -513,22 +510,22 @@ export default function PlatformPrivacy() {
               business sale, such as a merger or an acquisition.
             </P>
 
-            <H3 className="mt-6">Third parties you connect to Dust</H3>
+            <H3 className="mt-6">Third parties you connect to Ruby</H3>
             <P size="md">
               <Strong>Google:</Strong> We access your Google User Data only to
               facilitate and enhance the functions of our application.
               Specifically, we synchronize your Google Docs, Google Slides,
               pdfs, and plain text files that are within the folders you select
-              when connecting your Google Drive account to Dust. You can change
+              when connecting your Google Drive account to Ruby. You can change
               this selection at any time or request us to delete all your data.
             </P>
             <P size="md">
               The sole purpose of this data is to allow you to use your Google
-              User Data on the Dust Platform. Dust will not use this data for
+              User Data on the Ruby Platform. Ruby will not use this data for
               any other purpose like advertising or marketing.
             </P>
             <P size="md">
-              Dust use and transfer of information received from Google API's to
+              Ruby use and transfer of information received from Google API's to
               any other app will adhere to{" "}
               <A
                 variant="primary"
@@ -664,8 +661,8 @@ export default function PlatformPrivacy() {
               direct marketing purposes during the immediately preceding
               calendar year. You may make one request each year by emailing us
               at{" "}
-              <A variant="primary" href="mailto:privacy@dust.tt">
-                privacy@dust.tt
+              <A variant="primary" href="mailto:privacy@ruby-ai.app">
+                privacy@ruby-ai.app
               </A>
               .
             </P>
@@ -726,15 +723,15 @@ export default function PlatformPrivacy() {
             <P size="md">
               You may contact us regarding this Platform Privacy Policy or our
               Processing of your Personal Data at{" "}
-              <A variant="primary" href="mailto:privacy@dust.tt">
-                privacy@dust.tt
+              <A variant="primary" href="mailto:privacy@ruby-ai.app">
+                privacy@ruby-ai.app
               </A>
               .
             </P>
             <P size="md">
               You can also contact our Data Protection Officer at{" "}
-              <A variant="primary" href="mailto:dpo@dust.tt">
-                dpo@dust.tt
+              <A variant="primary" href="mailto:dpo@ruby-ai.app">
+                dpo@ruby-ai.app
               </A>
               .
             </P>
@@ -757,7 +754,7 @@ export default function PlatformPrivacy() {
               Privacy Police.
             </P>
             <P size="md">
-              If we make changes that materially alter your privacy rights, Dust
+              If we make changes that materially alter your privacy rights, Ruby
               will provide additional notice, such as via email or through the
               platform directly.
             </P>
@@ -780,7 +777,7 @@ export default function PlatformPrivacy() {
                 please check this page:{" "}
                 <A
                   variant="primary"
-                  href="https://dust-tt.notion.site/Website-Privacy-Policy-a118bb3472f945a1be8e11fbfb733084"
+                  href="https://ruby-ai.notion.site/Website-Privacy-Policy-a118bb3472f945a1be8e11fbfb733084"
                   target="_blank"
                 >
                   Website Privacy Policy
@@ -794,7 +791,7 @@ export default function PlatformPrivacy() {
   );
 }
 
-PlatformPrivacy.getLayout = (
+PlatformPrivacyNextJS.getLayout = (
   page: ReactElement,
   pageProps: LandingLayoutProps
 ) => {

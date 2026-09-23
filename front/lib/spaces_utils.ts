@@ -14,7 +14,7 @@ export const getSpaceName = (space: SpaceType) => {
   return space.kind === "global" ? GLOBAL_SPACE_NAME : space.name;
 };
 
-export const dustAppsListUrl = (
+export const rubyAppsListUrl = (
   owner: WorkspaceType,
   space: SpaceType
 ): string => {

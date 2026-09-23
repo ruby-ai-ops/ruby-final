@@ -240,11 +240,11 @@ describe("evaluateAgentArchivalEligibility", () => {
       ).toEqual({ eligible: false, reason: "active_schedule" });
     });
 
-    it("exempts an agent whose schedule Dust paused, not the workspace", () => {
+    it("exempts an agent whose schedule Ruby paused, not the workspace", () => {
       // Relocation and plan downgrade flip every enabled trigger of a workspace in bulk.
-      const dustPausedStatuses: TriggerStatus[] = ["relocating", "downgraded"];
+      const rubyPausedStatuses: TriggerStatus[] = ["relocating", "downgraded"];
 
-      for (const status of dustPausedStatuses) {
+      for (const status of rubyPausedStatuses) {
         expect(
           evaluateAgentArchivalEligibility({
             agent: agent({

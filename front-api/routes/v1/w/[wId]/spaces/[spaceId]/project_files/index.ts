@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { enrichListWithFileResourceIds } from "@app/lib/api/files/file_system_ops";
 import { SpaceResource } from "@app/lib/resources/space_resource";
 import { concurrentExecutor } from "@app/lib/utils/async_utils";
@@ -25,7 +25,7 @@ const QuerySchema = z.object({
 
 export const PROJECT_FILES_MAX_CONCURRENT_REQUESTS_PER_PROCESS = 2;
 
-// This system-key-only route is owned by the dust_project connector. Keep the
+// This system-key-only route is owned by the ruby_project connector. Keep the
 // circuit breaker local to this route so unrelated front requests are unaffected.
 let activeProjectFilesRequests = 0;
 
@@ -93,7 +93,7 @@ app.get(
           ? updatedSinceMs
           : null;
 
-      const fsResult = await DustFileSystem.forPod(auth, space);
+      const fsResult = await RubyFileSystem.forPod(auth, space);
       if (fsResult.isErr()) {
         return apiError(ctx, {
           status_code: 500,
@@ -103,9 +103,9 @@ app.get(
           },
         });
       }
-      const dustFs = fsResult.value;
+      const rubyFs = fsResult.value;
 
-      const listResult = await dustFs.list(`${SCOPED_PREFIX_POD}${space.sId}`);
+      const listResult = await rubyFs.list(`${SCOPED_PREFIX_POD}${space.sId}`);
       if (listResult.isErr()) {
         return apiError(ctx, {
           status_code: 500,
@@ -118,7 +118,7 @@ app.get(
 
       let entries = await enrichListWithFileResourceIds(
         auth,
-        dustFs,
+        rubyFs,
         listResult.value
       );
 
@@ -132,7 +132,7 @@ app.get(
           if (entry.isDirectory) {
             return entry;
           }
-          const urlResult = await dustFs.getDownloadUrl(entry.path);
+          const urlResult = await rubyFs.getDownloadUrl(entry.path);
           return {
             ...entry,
             signedDownloadUrl: urlResult.isOk() ? urlResult.value : null,

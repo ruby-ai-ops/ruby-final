@@ -4,14 +4,14 @@ import { AgentBuilderInstructionsBlock } from "@app/components/agent_builder/ins
 import { AgentBuilderSettingsBlock } from "@app/components/agent_builder/settings/AgentBuilderSettingsBlock";
 import { AgentBuilderCapabilitiesBlock } from "@app/components/agent_builder/skills/AgentBuilderCapabilitiesBlock";
 import { AgentBuilderTriggersBlock } from "@app/components/agent_builder/triggers/AgentBuilderTriggersBlock";
-import type { ButtonProps } from "@dust-tt/sparkle";
+import type { ButtonProps } from "@ruby-ai/ui";
 import {
   BarFooter,
   BarHeader,
   Button,
   ScrollArea,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";

@@ -6,7 +6,7 @@ import type {
 } from "@app/types/app";
 import type { BlockType, RunType } from "@app/types/run";
 import type { WorkspaceType } from "@app/types/user";
-import { Input, Label } from "@dust-tt/sparkle";
+import { Input, Label } from "@ruby-ai/ui";
 
 import Block from "./Block";
 

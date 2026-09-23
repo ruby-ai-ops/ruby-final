@@ -19,7 +19,7 @@ function makeNode(
     childrenCount: 0,
     expandable: false,
     lastUpdatedAt: null,
-    mimeType: "application/vnd.dust.folder",
+    mimeType: "application/vnd.ruby.folder",
     parentInternalId: null,
     permission: "none",
     providerVisibility: null,

@@ -1,4 +1,4 @@
-import type { LightAgentConfigurationType } from "@dust-tt/client";
+import type { LightAgentConfigurationType } from "@ruby-ai/client";
 import { describe, expect, it } from "vitest";
 
 import { processMentions, processMessageForMention } from "./mentions";

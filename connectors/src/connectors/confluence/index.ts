@@ -38,8 +38,8 @@ import type {
   DataSourceConfig,
 } from "@connectors/types";
 import { ConfluenceClientError, normalizeError } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 
 const logger = mainLogger.child({
   connector: "confluence",
@@ -288,7 +288,7 @@ export class ConfluenceConnectorManager extends BaseConnectorManager<null> {
 
     try {
       // When the filter permission is set to 'read', the full hierarchy of spaces
-      // and pages that Dust can access is displayed to the user.
+      // and pages that Ruby can access is displayed to the user.
       if (filterPermission === "read") {
         const data = await retrieveHierarchyForParent(
           connector,
@@ -302,7 +302,7 @@ export class ConfluenceConnectorManager extends BaseConnectorManager<null> {
         return new Ok(data.value);
       } else {
         // If the permission is not set to 'read', users are limited to selecting only
-        // spaces for synchronization with Dust.
+        // spaces for synchronization with Ruby.
         const allSpacesRes = await retrieveAvailableSpaces(
           connector,
           confluenceConfig

@@ -46,7 +46,7 @@ const Vector = z.array(z.number().finite()).min(1);
 export const EmbeddingFile = z.object({
   version: z.literal(1),
   workspace: z.string(),
-  dustUrl: z.string(),
+  rubyUrl: z.string(),
   status: z.enum(["active", "archived", "suggested"]),
   includeUnpublished: z.boolean(),
   model: z.enum([
@@ -290,7 +290,7 @@ export function reuseEmbeddings(
 ): EmbeddingData {
   if (
     data.workspace !== cached.workspace ||
-    data.dustUrl !== cached.dustUrl ||
+    data.rubyUrl !== cached.rubyUrl ||
     data.model !== cached.model ||
     data.dimensions !== cached.dimensions
   ) {

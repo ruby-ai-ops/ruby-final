@@ -59,12 +59,12 @@ async function migrateFolderDataSourceParents(
 ) {
   logger.info("MIGRATE");
 
-  const { dustAPIProjectId, dustAPIDataSourceId } = frontDataSource;
+  const { rubyAPIProjectId, rubyAPIDataSourceId } = frontDataSource;
   const coreDataSource: any = (
     await coreSequelize.query(
       `SELECT id FROM data_sources WHERE project=:p AND data_source_id=:d LIMIT 1`,
       {
-        replacements: { p: dustAPIProjectId, d: dustAPIDataSourceId },
+        replacements: { p: rubyAPIProjectId, d: rubyAPIDataSourceId },
         type: QueryTypes.SELECT,
       }
     )
@@ -95,8 +95,8 @@ async function migrateFolderDataSourceParents(
         migrateNode(
           node,
           coreAPI,
-          dustAPIProjectId,
-          dustAPIDataSourceId,
+          rubyAPIProjectId,
+          rubyAPIDataSourceId,
           execute,
           logger.child({
             nodeId: node.node_id,
@@ -135,8 +135,8 @@ async function migrateFolderDataSourcesParents(
           coreAPI,
           execute,
           logger.child({
-            project: dataSource.dustAPIProjectId,
-            dataSourceId: dataSource.dustAPIDataSourceId,
+            project: dataSource.rubyAPIProjectId,
+            dataSourceId: dataSource.rubyAPIDataSourceId,
           })
         );
       },

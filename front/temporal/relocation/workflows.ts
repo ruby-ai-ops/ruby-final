@@ -578,7 +578,7 @@ export async function workspaceRelocateDataSourceCoreWorkflow({
   });
 
   await executeChild(workspaceRelocateCoreDataSourceResourcesWorkflow, {
-    workflowId: `workspaceRelocateCoreDataSourceResourcesWorkflow-${workspaceId}-${dataSourceCoreIds.dustAPIDataSourceId}`,
+    workflowId: `workspaceRelocateCoreDataSourceResourcesWorkflow-${workspaceId}-${dataSourceCoreIds.rubyAPIDataSourceId}`,
     searchAttributes: parentSearchAttributes,
     args: [
       {
@@ -631,7 +631,7 @@ export async function workspaceRelocateCoreDataSourceResourcesWorkflow({
     resourcesRelocationWorkflows,
     async (w) => {
       await executeChild(w.fn, {
-        workflowId: `${w.workflowId}-${workspaceId}-${dataSourceCoreIds.dustAPIDataSourceId}`,
+        workflowId: `${w.workflowId}-${workspaceId}-${dataSourceCoreIds.rubyAPIDataSourceId}`,
         searchAttributes: parentSearchAttributes,
         args: [
           {
@@ -879,7 +879,7 @@ export async function workspaceRelocateAppsWorkflow({
   let currentId: ModelId | undefined = lastProcessedId;
 
   do {
-    const { dustAPIProjectIds, hasMore, lastId } =
+    const { rubyAPIProjectIds, hasMore, lastId } =
       await sourceCellActivities.retrieveAppsCoreIdsBatch({
         lastId: currentId,
         workspaceId,
@@ -888,15 +888,15 @@ export async function workspaceRelocateAppsWorkflow({
     hasMoreRows = hasMore;
     currentId = lastId;
 
-    for (const dustAPIProjectId of dustAPIProjectIds) {
+    for (const rubyAPIProjectId of rubyAPIProjectIds) {
       const { dataPath } = await sourceCellActivities.getApp({
-        dustAPIProjectId,
+        rubyAPIProjectId,
         workspaceId,
         sourceCell,
       });
 
       await destinationCellActivities.processApp({
-        dustAPIProjectId,
+        rubyAPIProjectId,
         dataPath,
         destCell,
         sourceCell,
@@ -910,19 +910,19 @@ export async function workspaceRelocateAppWorkflow({
   workspaceId,
   sourceCell,
   destCell,
-  dustAPIProjectId,
-}: RelocationWorkflowBase & { dustAPIProjectId: string }) {
+  rubyAPIProjectId,
+}: RelocationWorkflowBase & { rubyAPIProjectId: string }) {
   const sourceCellActivities = getCoreSourceCellActivities(sourceCell);
   const destinationCellActivities = getCoreDestinationCellActivities(destCell);
 
   const { dataPath } = await sourceCellActivities.getApp({
-    dustAPIProjectId,
+    rubyAPIProjectId,
     workspaceId,
     sourceCell,
   });
 
   await destinationCellActivities.processApp({
-    dustAPIProjectId,
+    rubyAPIProjectId,
     dataPath,
     destCell,
     sourceCell,

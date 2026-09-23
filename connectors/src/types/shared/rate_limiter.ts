@@ -1,7 +1,7 @@
 // biome-ignore lint/suspicious/noImportCycles: ignored using `--suppress`
 import { normalizeError } from "@connectors/types";
-import type { LoggerInterface, Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { LoggerInterface, Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import { v4 as uuidv4 } from "uuid";
 
 import { redisClient } from "./redis_client";

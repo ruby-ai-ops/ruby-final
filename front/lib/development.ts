@@ -14,7 +14,7 @@ export async function forceUserRole(
   role: "user" | "admin" | "manager",
   featureFlags: WhitelistableFeature[]
 ) {
-  // Ideally we should check if the user is dust super user but we don't have this information in the front-end
+  // Ideally we should check if the user is ruby super user but we don't have this information in the front-end
   if (!showDebugTools(featureFlags)) {
     return new Err("Not allowed");
   }

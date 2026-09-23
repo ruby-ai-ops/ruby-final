@@ -29,8 +29,8 @@ export default function GleanLandingPage() {
   return (
     <>
       <PageMetadata
-        title="The Best Glean Alternatives for Enterprise Teams in 2026 | Dust"
-        description="Compare Glean pricing, competitors, and alternatives for enterprise AI. See why teams like G2, Vanta, and WhatNot picked Dust over Glean to scale AI agents at their company."
+        title="The Best Glean Alternatives for Enterprise Teams in 2026 | Ruby"
+        description="Compare Glean pricing, competitors, and alternatives for enterprise AI. See why teams like G2, Vanta, and WhatNot picked Ruby over Glean to scale AI agents at their company."
         pathname="/landing/glean"
       />
 
@@ -47,10 +47,10 @@ export default function GleanLandingPage() {
       {/* Logo Bar */}
       <GleanLogoBar title={gleanLandingConfig.logoBarTitle} />
 
-      {/* Dust Deep Dive */}
+      {/* Ruby Deep Dive */}
       <GleanDeepDive
-        pros={gleanLandingConfig.dustDeepDive.pros}
-        testimonials={gleanLandingConfig.dustDeepDive.testimonials}
+        pros={gleanLandingConfig.rubyDeepDive.pros}
+        testimonials={gleanLandingConfig.rubyDeepDive.testimonials}
       />
 
       {/* What is Glean? */}

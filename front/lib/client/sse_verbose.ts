@@ -1,4 +1,4 @@
-const SSE_VERBOSE_STORAGE_KEY = "dust_sse_verbose";
+const SSE_VERBOSE_STORAGE_KEY = "ruby_sse_verbose";
 
 function readStoredSseVerbose(): boolean {
   if (typeof window === "undefined") {

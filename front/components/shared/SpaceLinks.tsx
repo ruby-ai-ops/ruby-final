@@ -2,7 +2,7 @@ import { getPodRoute, getSpaceRoute } from "@app/lib/utils/router";
 import type { SpaceType } from "@app/types/space";
 import { isProjectType } from "@app/types/space";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Hoverable } from "@dust-tt/sparkle";
+import { Hoverable } from "@ruby-ai/ui";
 import { Fragment } from "react";
 
 interface SpaceLinksProps {

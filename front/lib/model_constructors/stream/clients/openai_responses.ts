@@ -69,7 +69,7 @@ export abstract class OpenAIResponsesStream extends WithOpenAIResponsesInputConv
     this._client ??= new OpenAI({
       apiKey: this.apiKey,
       baseURL: this.baseUrl,
-      // The agent loop owns retries so every attempt gets its own Dust trace.
+      // The agent loop owns retries so every attempt gets its own Ruby trace.
       maxRetries: 0,
     });
     return this._client;

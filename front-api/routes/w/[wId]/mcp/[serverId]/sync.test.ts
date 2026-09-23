@@ -22,15 +22,15 @@ vi.mock(import("@app/lib/actions/mcp_metadata"), async (importOriginal) => {
 
 import { honoApp } from "@front-api/app";
 
-// A tool input schema with a Dust configurable input on a required path.
-const requiredDustInputSchema: JSONSchema = {
+// A tool input schema with a Ruby configurable input on a required path.
+const requiredRubyInputSchema: JSONSchema = {
   type: "object",
   properties: {
     dataSources: {
       type: "object",
       properties: {
         uri: { type: "string" },
-        mimeType: { const: "application/vnd.dust.tool-input.data-source" },
+        mimeType: { const: "application/vnd.ruby.tool-input.data-source" },
       },
       required: ["uri", "mimeType"],
     },
@@ -111,14 +111,14 @@ describe("POST /api/w/:wId/mcp/:serverId/sync", () => {
     const created = await RemoteMCPServerResource.fetchById(auth, server.sId);
     expect(created?.cachedToolsRequireConfiguration).toBe(false);
 
-    // The remote server now exposes a tool with a required Dust configurable input.
+    // The remote server now exposes a tool with a required Ruby configurable input.
     vi.mocked(fetchRemoteServerMetaDataByServerId).mockResolvedValueOnce(
       new Ok(
         metadataWithTools([
           {
             name: "query_data_source",
             description: "Query a configured data source",
-            inputSchema: requiredDustInputSchema,
+            inputSchema: requiredRubyInputSchema,
           },
         ])
       )

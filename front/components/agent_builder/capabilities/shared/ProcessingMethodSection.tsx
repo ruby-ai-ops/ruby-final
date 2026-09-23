@@ -28,7 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Hoverable,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useEffect, useMemo } from "react";
 import { useController, useFormContext, useWatch } from "react-hook-form";
@@ -176,7 +176,7 @@ export function ProcessingMethodSection() {
           data sources. Need help? Check our{" "}
           <Hoverable
             variant="primary"
-            href="https://docs.dust.tt/docs/knowledge"
+            href="https://docs.ruby.ad/docs/knowledge"
             target="_blank"
           >
             guide.

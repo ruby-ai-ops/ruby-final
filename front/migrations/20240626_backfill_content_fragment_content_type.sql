@@ -10,5 +10,5 @@ SET "contentType" = CASE
 
 UPDATE content_fragments
 WHERE "contentType" = 'slack_thread_content'
-SET "contentType" = 'dust-application/slack';
+SET "contentType" = 'ruby-application/slack';
 COMMIT;

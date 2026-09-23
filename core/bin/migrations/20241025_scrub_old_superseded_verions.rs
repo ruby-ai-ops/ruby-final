@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Context, Error, Result};
-use dust::data_sources::data_source::{DataSource, DocumentVersion};
-use dust::stores::{postgres, store};
+use ruby::data_sources::data_source::{DataSource, DocumentVersion};
+use ruby::stores::{postgres, store};
 use tokio_postgres::Row;
 
 use bb8::Pool;

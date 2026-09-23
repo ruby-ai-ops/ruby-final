@@ -1,4 +1,4 @@
-import type { DustFileSystem } from "@app/lib/api/file_system";
+import type { RubyFileSystem } from "@app/lib/api/file_system";
 import { emitGCSMountFileMovedAuditLog } from "@app/lib/api/files/gcs_mount/files";
 import type { FrameSourceMoveError } from "@app/lib/api/frames/move_source_paths";
 import {
@@ -20,13 +20,13 @@ import { FileResource } from "@app/lib/resources/file_resource";
 import { ProjectMetadataResource } from "@app/lib/resources/project_metadata_resource";
 import logger from "@app/logger/logger";
 import { FRAME_MANIFEST_FILE } from "@app/types/api/frame_manifest";
-import type { DustFileSystemError } from "@app/types/file_system";
+import type { RubyFileSystemError } from "@app/types/file_system";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
 import { UniqueConstraintError } from "sequelize";
 
-export type MoveFrameV2SourceError = DustFileSystemError | FrameSourceMoveError;
+export type MoveFrameV2SourceError = RubyFileSystemError | FrameSourceMoveError;
 
 type FrameSourceMove = {
   destinationDirectoryPath: string;
@@ -84,11 +84,11 @@ async function repointPodFrameReferences(
 export async function moveFrameV2Source(
   auth: Authenticator,
   {
-    dustFs,
+    rubyFs,
     destinationDirectoryPath,
     sourceDirectoryPath,
   }: {
-    dustFs: DustFileSystem;
+    rubyFs: RubyFileSystem;
     destinationDirectoryPath: string;
     sourceDirectoryPath: string;
   }
@@ -102,7 +102,7 @@ export async function moveFrameV2Source(
   }
   const paths = pathsResult.value;
 
-  if (!dustFs.isGCSBacked()) {
+  if (!rubyFs.isGCSBacked()) {
     return moveError(
       "invalid_source",
       "Frames v2 source moves do not support database-backed mounts."
@@ -112,14 +112,14 @@ export async function moveFrameV2Source(
     paths.sourceDirectoryPath,
     paths.destinationDirectoryPath,
   ]) {
-    const access = dustFs.checkWriteAccess(scopedPath);
+    const access = rubyFs.checkWriteAccess(scopedPath);
     if (access.isErr()) {
       return access;
     }
   }
 
-  const sourceMountPath = dustFs.toMountFilePath(paths.sourceManifestPath);
-  const destinationMountPath = dustFs.toMountFilePath(
+  const sourceMountPath = rubyFs.toMountFilePath(paths.sourceManifestPath);
+  const destinationMountPath = rubyFs.toMountFilePath(
     paths.destinationManifestPath
   );
   if (!sourceMountPath || !destinationMountPath) {

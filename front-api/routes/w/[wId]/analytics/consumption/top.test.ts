@@ -131,9 +131,9 @@ const TOP_AGENTS: GetConsumptionTopAgentsResponse = {
   agents: [
     {
       agentId: "agent1",
-      name: "@dust",
+      name: "@ruby",
       pictureUrl: null,
-      description: "Answers questions about Dust",
+      description: "Answers questions about Ruby",
       modelId: "claude-4-sonnet",
       modelDisplayName: "Claude 4 Sonnet",
       credits: 2230,

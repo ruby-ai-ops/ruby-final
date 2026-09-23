@@ -8,14 +8,14 @@ describe("remote MCP OAuth client registration", () => {
   });
 
   it.each([
-    "https://dust.tt",
-    "https://eu.dust.tt",
+    "https://ruby.ad",
+    "https://app.ruby.ad",
   ])("registers the same legacy callback used for authorization in %s", (legacyBaseUrl) => {
     vi.spyOn(config, "getLegacyOAuthRedirectBaseUrl").mockReturnValue(
       legacyBaseUrl
     );
-    vi.spyOn(config, "getAppUrl").mockReturnValue("https://app.dust.tt");
-    vi.spyOn(config, "getStaticWebsiteUrl").mockReturnValue("https://dust.tt");
+    vi.spyOn(config, "getAppUrl").mockReturnValue("https://app.ruby.ad");
+    vi.spyOn(config, "getStaticWebsiteUrl").mockReturnValue("https://ruby.ad");
     vi.spyOn(config, "getDevOAuthRedirectBaseUrl").mockReturnValue(undefined);
 
     const provider = new MCPOAuthProvider();

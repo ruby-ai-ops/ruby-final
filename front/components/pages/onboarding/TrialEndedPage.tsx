@@ -9,7 +9,7 @@ import { useRedirectAwayFromCheckoutIfAlreadyPaid } from "@app/lib/client/subscr
 import { useSubmitFunction } from "@app/lib/client/utils";
 import { useAppRouter } from "@app/lib/platform";
 import type { BillingPeriod } from "@app/types/plan";
-import { Card, ContentMessage, DustLogo } from "@dust-tt/sparkle";
+import { Card, ContentMessage, RubyLogo } from "@ruby-ai/ui";
 import { useState } from "react";
 
 export function TrialEndedPage() {
@@ -41,7 +41,7 @@ export function TrialEndedPage() {
     <main className="flex min-h-screen flex-col items-center justify-center px-4 py-8">
       {/* Logo and headline */}
       <div className="mb-12 flex flex-col items-center">
-        <DustLogo className="h-8 w-32" />
+        <RubyLogo className="h-8 w-32" />
         <h1 className="mt-4 text-xl font-medium text-foreground">
           Your free trial has ended
         </h1>

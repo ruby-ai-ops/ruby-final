@@ -37,7 +37,7 @@ describe("seedFramePublicationFunctionsArchive", () => {
     expect(ensureFrameSandboxReady).toHaveBeenCalledWith(auth, frame);
   });
 
-  it("runs materialize-archive as agent-proxied with DUST_FUNCTIONS_DIR", async () => {
+  it("runs materialize-archive as agent-proxied with RUBY_FUNCTIONS_DIR", async () => {
     const exec = vi
       .fn()
       .mockResolvedValue(
@@ -54,11 +54,11 @@ describe("seedFramePublicationFunctionsArchive", () => {
 
     expect(exec).toHaveBeenCalledWith(
       auth,
-      "/opt/bin/dsbx function materialize-archive",
+      "/opt/bin/rbx function materialize-archive",
       expect.objectContaining({
         user: "agent-proxied",
         envVars: {
-          DUST_FUNCTIONS_DIR: `/frames/${frame.sId}/publications/${publicationId}/functions`,
+          RUBY_FUNCTIONS_DIR: `/frames/${frame.sId}/publications/${publicationId}/functions`,
         },
       })
     );

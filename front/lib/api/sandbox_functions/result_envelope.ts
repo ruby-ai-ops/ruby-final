@@ -4,7 +4,7 @@ import { SANDBOX_FUNCTION_RUNNER_ERROR_CODES } from "@app/types/api/sandbox_func
 import { truncate } from "@app/types/shared/utils/string_utils";
 import { z } from "zod";
 
-// Current wire version dsbx emits. Parsing accepts the supported set below so a future bump
+// Current wire version rbx emits. Parsing accepts the supported set below so a future bump
 // does not instantly fail long-lived baked pod images still on an older version.
 export const SANDBOX_FUNCTION_RESULT_PROTOCOL_VERSION = 3;
 
@@ -29,7 +29,7 @@ const SandboxFunctionRunnerOutputSchema = z.discriminatedUnion("ok", [
       ok: z.literal(false),
       error: z
         .object({
-          // Accept runner codes and front/dsbx-minted codes (e.g. invocation_failed).
+          // Accept runner codes and front/rbx-minted codes (e.g. invocation_failed).
           // Stored paths already treat code as an opaque string for the same reason.
           code: z.union([
             z.enum(SANDBOX_FUNCTION_RUNNER_ERROR_CODES),
@@ -43,9 +43,9 @@ const SandboxFunctionRunnerOutputSchema = z.discriminatedUnion("ok", [
     .strict(),
 ]);
 
-// Mirrors ResultEnvelope in cli/dust-sandbox/src/commands/function/envelope.rs.
+// Mirrors ResultEnvelope in cli/ruby-sandbox/src/commands/function/envelope.rs.
 // Deliberately not `.strict()`: the wrapper is a forward-compatibility seam, so a field added by
-// a newer dsbx must not fail the parse. Inner outcome schemas stay `.strict()`.
+// a newer rbx must not fail the parse. Inner outcome schemas stay `.strict()`.
 // `delivery` is optional and opaque until a consumer reads it.
 const ResultEnvelopeV3Schema = z.object({
   protocolVersion: z.literal(SANDBOX_FUNCTION_RESULT_PROTOCOL_VERSION),
@@ -59,14 +59,14 @@ const ProtocolVersionProbeSchema = z.object({
 });
 
 // The only directory a result-spill pointer may name. The runner writes spilled results there
-// (cli/dust-sandbox/functions-runner) and the pointer rides the exec's stdout, which untrusted
+// (cli/ruby-sandbox/functions-runner) and the pointer rides the exec's stdout, which untrusted
 // function code can also write to: restricting read-back to this scratch directory keeps a forged
 // pointer from making front read an arbitrary sandbox file.
-export const SANDBOX_FUNCTION_RESULT_SPILL_DIR = "/tmp/dust-fn-results/";
+export const SANDBOX_FUNCTION_RESULT_SPILL_DIR = "/tmp/ruby-fn-results/";
 
 // A result too large to inline on stdout: the runner writes the full envelope JSON to a
 // sandbox-local scratch file and emits this pointer instead. Deliberately not `.strict()`: a
-// field added by a newer dsbx must not turn a pointer into an invalid-envelope failure.
+// field added by a newer rbx must not turn a pointer into an invalid-envelope failure.
 const ResultSpillPointerSchema = z.object({
   ok: z.literal(true),
   resultFile: z.string().min(1),
@@ -79,7 +79,7 @@ export type SandboxFunctionResultSpillPointer = z.infer<
 
 /**
  * Extract a result-spill pointer from a parsed stdout value (a protocol v3 envelope or a bare
- * runner outcome). Returns null for inline outcomes and for anything an older dsbx emits.
+ * runner outcome). Returns null for inline outcomes and for anything an older rbx emits.
  */
 export function extractResultSpillPointer(
   parsedEnvelope: unknown
@@ -90,7 +90,7 @@ export function extractResultSpillPointer(
   return pointer.success ? pointer.data : null;
 }
 
-// Lenient by design: timings are diagnostics from whatever dsbx version runs in the sandbox, and
+// Lenient by design: timings are diagnostics from whatever rbx version runs in the sandbox, and
 // absence or new shapes must never affect result handling. Unknown fields are ignored.
 const ResultTimingsSchema = z
   .object({

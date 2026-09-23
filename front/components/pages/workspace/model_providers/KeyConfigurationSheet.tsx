@@ -14,7 +14,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 import { useState } from "react";
 

@@ -4,8 +4,8 @@ import type { Logger } from "@connectors/logger/logger";
 import type {
   PublicPostContentFragmentRequestBody,
   Result,
-} from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 
 const THREAD_CHANNEL_TYPES = [11, 12];
 
@@ -32,7 +32,7 @@ interface DiscordContentFragmentParams {
 }
 
 /**
- * Fetch all messages from a Discord thread and format them as content fragments for Dust.
+ * Fetch all messages from a Discord thread and format them as content fragments for Ruby.
  */
 export async function makeDiscordContentFragments({
   channelId,

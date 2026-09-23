@@ -12,7 +12,7 @@ import type { DataSourceViewContentNode } from "@app/types/data_source_view";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 import type { SpaceType } from "@app/types/space";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { DATA_SOURCE_MIME_TYPE } from "@dust-tt/client";
+import { DATA_SOURCE_MIME_TYPE } from "@ruby-ai/client";
 import {
   File02,
   File04,
@@ -20,7 +20,7 @@ import {
   LayersThree01,
   Lock01,
   MessageChatSquare,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 import {
   CHANNEL_INTERNAL_MIME_TYPES,
@@ -118,7 +118,7 @@ export function getLocationForDataSourceViewContentNode(
   const { dataSource } = node.dataSourceView;
   const { connectorProvider } = dataSource;
 
-  if (connectorProvider === "dust_project" && node.parentTitle) {
+  if (connectorProvider === "ruby_project" && node.parentTitle) {
     return node.parentTitle;
   }
 

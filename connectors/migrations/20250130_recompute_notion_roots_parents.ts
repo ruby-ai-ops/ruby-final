@@ -176,7 +176,7 @@ async function getDataSourceId(
   frontSequelize: Sequelize
 ) {
   const dataSourceRows = await frontSequelize.query(
-    `SELECT "dustAPIDataSourceId"
+    `SELECT "rubyAPIDataSourceId"
      FROM data_sources
      WHERE "connectorId" = :connectorId`,
     {
@@ -188,8 +188,8 @@ async function getDataSourceId(
   if (dataSourceRows.length === 0) {
     throw new Error(`No data source found for connector ${connector.id}`);
   }
-  const dataSource = dataSourceRows[0] as { dustAPIDataSourceId: string };
-  return dataSource.dustAPIDataSourceId;
+  const dataSource = dataSourceRows[0] as { rubyAPIDataSourceId: string };
+  return dataSource.rubyAPIDataSourceId;
 }
 
 async function updateParentsFieldForConnector({
@@ -218,8 +218,8 @@ async function updateParentsFieldForConnector({
     dataSourceId: dataSourceConfig.dataSourceId,
   });
 
-  const dustAPIDataSourceId = await getDataSourceId(connector, frontSequelize);
-  logger.info({ dustAPIDataSourceId }, "MIGRATE");
+  const rubyAPIDataSourceId = await getDataSourceId(connector, frontSequelize);
+  logger.info({ rubyAPIDataSourceId }, "MIGRATE");
 
   let nodeCount = 0;
   let nextPageCursor: string | null = null;
@@ -228,7 +228,7 @@ async function updateParentsFieldForConnector({
     const coreRes = await coreAPI.searchNodes({
       filter: {
         data_source_views: [
-          { data_source_id: dustAPIDataSourceId, view_filter: [] },
+          { data_source_id: rubyAPIDataSourceId, view_filter: [] },
         ],
         parent_id: "root",
       },

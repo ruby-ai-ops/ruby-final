@@ -44,7 +44,7 @@ import {
   InfoCircle,
   Plus,
   TextArea,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { mutate } from "swr";

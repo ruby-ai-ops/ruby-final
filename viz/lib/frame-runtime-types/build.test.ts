@@ -80,9 +80,9 @@ import { Check } from "lucide-react";
 import { motion } from "motion/react";
 import { cn } from "utils";
 import { cn as currentCn } from "@viz/lib/utils";
-import * as slideshowV1 from "@dust/slideshow/v1";
-import * as slideshowV2 from "@dust/slideshow/v2";
-import { captureScreenshot, triggerUserFileDownload, useFrameFunction, usePodFunction, SandboxFunctionCallError, useFile, readFile, writeFile } from "@dust/react-hooks";
+import * as slideshowV1 from "@ruby-ai/slideshow/v1";
+import * as slideshowV2 from "@ruby-ai/slideshow/v2";
+import { captureScreenshot, triggerUserFileDownload, useFrameFunction, usePodFunction, SandboxFunctionCallError, useFile, readFile, writeFile } from "@ruby-ai/react-hooks";
 async function editFile() {
   const file = await readFile("./notes.json");
   if (file?.canWrite && file.revision) {
@@ -112,11 +112,11 @@ export default function App() {
 
   it.each([
     [
-      'import { useFile } from "@dust/react-hooks"; export default () => useFile("./notes.json")?.revision',
+      'import { useFile } from "@ruby-ai/react-hooks"; export default () => useFile("./notes.json")?.revision',
       2339,
     ],
     [
-      'import { writeFile } from "@dust/react-hooks"; writeFile("./notes.json", "{}"); export default () => null',
+      'import { writeFile } from "@ruby-ai/react-hooks"; writeFile("./notes.json", "{}"); export default () => null',
       2554,
     ],
     [
@@ -132,11 +132,11 @@ export default function App() {
       2322,
     ],
     [
-      'import { fakeHook } from "@dust/react-hooks"; export default () => <div>{fakeHook()}</div>',
+      'import { fakeHook } from "@ruby-ai/react-hooks"; export default () => <div>{fakeHook()}</div>',
       2305,
     ],
     [
-      'import { captureScreenshot } from "@dust/react-hooks"; captureScreenshot(42); export default () => null',
+      'import { captureScreenshot } from "@ruby-ai/react-hooks"; captureScreenshot(42); export default () => null',
       2345,
     ],
   ])("rejects broken library usage: %s", (code, diagnosticCode) => {
@@ -226,7 +226,7 @@ export default () => <div>{data[0]}{legacy.title}{child?.name}</div>
       encoding: "utf8",
     })
       .trim()
-      .split("\n");
+      .split(/\r?\n/);
     expect(
       entries.every(
         (file) => file.endsWith("/") || /(?:\.d\.[cm]?ts|\.json)$/.test(file)

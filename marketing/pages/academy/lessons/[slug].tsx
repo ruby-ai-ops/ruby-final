@@ -28,7 +28,7 @@ import { isCourseSummary } from "@marketing/lib/contentful/types";
 import { useAcademyBrowserId } from "@marketing/lib/swr/academy";
 import logger from "@marketing/logger/logger";
 import { isString } from "@marketing/types/shared/utils/general";
-import { cn, Markdown } from "@dust-tt/sparkle";
+import { cn, Markdown } from "@ruby-ai/ui";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -118,7 +118,7 @@ export default function LessonPage({
 }: LessonPageProps) {
   const browserId = useAcademyBrowserId();
   const anonBrowserId = academyUser ? undefined : browserId;
-  const canonicalUrl = `https://dust.tt/academy/lessons/${lesson.slug}`;
+  const canonicalUrl = `https://ruby.ad/academy/lessons/${lesson.slug}`;
   const tocItems = extractTableOfContents(lesson.lessonContent);
 
   return (
@@ -129,7 +129,7 @@ export default function LessonPage({
         </div>
       )}
       <Head>
-        <title>{`${lesson.title} | Dust Academy`}</title>
+        <title>{`${lesson.title} | Ruby Academy`}</title>
         {preview && <meta name="robots" content="noindex, nofollow" />}
         {lesson.description && (
           <meta name="description" content={lesson.description} />
@@ -142,7 +142,7 @@ export default function LessonPage({
         )}
         <meta property="og:type" content="article" />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:site_name" content="Dust" />
+        <meta property="og:site_name" content="Ruby" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={lesson.title} />

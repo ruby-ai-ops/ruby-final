@@ -3,7 +3,7 @@ import { ModelProvidersPageContent } from "@app/components/pages/workspace/model
 import { useProvidersSelection } from "@app/hooks/useProvidersSelection";
 import { useWorkspace } from "@app/lib/auth/AuthContext";
 import { useWorkspace as useWorkspaceDetails } from "@app/lib/swr/workspaces";
-import { Page, Spinner } from "@dust-tt/sparkle";
+import { Page, Spinner } from "@ruby-ai/ui";
 
 export function ModelProvidersPage() {
   const owner = useWorkspace();

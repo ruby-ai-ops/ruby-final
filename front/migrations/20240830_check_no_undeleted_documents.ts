@@ -11,8 +11,8 @@ import { makeScript } from "@app/scripts/helpers";
 type DataSource = {
   id: number;
   connectorId: string;
-  dustAPIProjectId: number;
-  dustAPIDataSourceId: string;
+  rubyAPIProjectId: number;
+  rubyAPIDataSourceId: string;
   name: string;
 };
 
@@ -25,11 +25,11 @@ async function checkCoreDeleted(
 ) {
   const coreReplica = getCoreReplicaDbConnection();
   const coreDataSource: { id: number }[] = await coreReplica.query(
-    `SELECT id FROM data_sources WHERE "project" = :dustAPIProjectId AND data_source_id = :dataSourceId LIMIT 1`,
+    `SELECT id FROM data_sources WHERE "project" = :rubyAPIProjectId AND data_source_id = :dataSourceId LIMIT 1`,
     {
       replacements: {
-        dustAPIProjectId: dataSource.dustAPIProjectId,
-        dataSourceId: dataSource.dustAPIDataSourceId,
+        rubyAPIProjectId: dataSource.rubyAPIProjectId,
+        dataSourceId: dataSource.rubyAPIDataSourceId,
       },
       type: QueryTypes.SELECT,
     }
@@ -76,16 +76,16 @@ async function checkGoogleDriveDeleted(logger: Logger) {
   const frontReplica = getFrontReplicaDbConnection();
 
   const gDriveDataSources: DataSource[] = await frontReplica.query(
-    `SELECT id, "connectorId", "dustAPIProjectId", "dustAPIDataSourceId", "name" FROM data_sources WHERE "connectorProvider" = 'google_drive'`,
+    `SELECT id, "connectorId", "rubyAPIProjectId", "rubyAPIDataSourceId", "name" FROM data_sources WHERE "connectorProvider" = 'google_drive'`,
     { type: QueryTypes.SELECT }
   );
 
   for (const ds of gDriveDataSources) {
     // Retrieve a batch of 1024 documents from the
 
-    const connectorDocuments: { id: number; dustFileId: string }[] =
+    const connectorDocuments: { id: number; rubyFileId: string }[] =
       await connectorsReplica.query(
-        'SELECT id, "dustFileId" FROM google_drive_files WHERE "connectorId" = :connectorId AND "mimeType" <> \'application/vnd.google-apps.folder\'',
+        'SELECT id, "rubyFileId" FROM google_drive_files WHERE "connectorId" = :connectorId AND "mimeType" <> \'application/vnd.google-apps.folder\'',
         {
           replacements: {
             connectorId: ds.connectorId,
@@ -94,7 +94,7 @@ async function checkGoogleDriveDeleted(logger: Logger) {
         }
       );
     const knownDocumentIds = new Set(
-      connectorDocuments.map((d) => d.dustFileId)
+      connectorDocuments.map((d) => d.rubyFileId)
     );
 
     await checkCoreDeleted({ dataSource: ds, knownDocumentIds }, logger);
@@ -108,11 +108,11 @@ async function checkNotionDeleted(logger: Logger) {
   const notionDataSources: {
     id: number;
     connectorId: string;
-    dustAPIProjectId: number;
-    dustAPIDataSourceId: string;
+    rubyAPIProjectId: number;
+    rubyAPIDataSourceId: string;
     name: string;
   }[] = await frontReplica.query(
-    `SELECT id, "connectorId", "dustAPIProjectId", "dustAPIDataSourceId", "name" FROM data_sources WHERE "connectorProvider" = 'notion'`,
+    `SELECT id, "connectorId", "rubyAPIProjectId", "rubyAPIDataSourceId", "name" FROM data_sources WHERE "connectorProvider" = 'notion'`,
     { type: QueryTypes.SELECT }
   );
 

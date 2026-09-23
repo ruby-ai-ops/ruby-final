@@ -32,7 +32,7 @@ import {
   Separator,
   Spinner,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useMemo, useState } from "react";
 import { visit } from "unist-util-visit";
 

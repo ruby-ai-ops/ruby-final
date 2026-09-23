@@ -61,7 +61,7 @@ impl Provider for SalesforceConnectionProvider {
     }
 
     // Salesforce OAuth requests must use the static-IP proxy (default trait impl) — customers
-    // with IP-restricted Salesforce orgs allowlist Dust's documented static egress IPs.
+    // with IP-restricted Salesforce orgs allowlist Ruby's documented static egress IPs.
     // Instance URLs are validated to *.salesforce.com before reaching this provider.
 
     async fn finalize(

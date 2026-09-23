@@ -12,7 +12,7 @@ import {
 } from "@app/lib/api/user";
 import type { Authenticator } from "@app/lib/auth";
 import { hasFeatureFlag } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { hasAll } from "@app/lib/matcher/operators/array";
 import { AgentConfigurationModel } from "@app/lib/models/agent/agent";
 import { AgentSkillModel } from "@app/lib/models/agent/agent_skill";
@@ -2916,14 +2916,14 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
   async addEditors(
     auth: Authenticator,
     users: UserResource[]
-  ): Promise<Result<undefined, DustError<"unauthorized" | "user_not_found">>> {
+  ): Promise<Result<undefined, RubyError<"unauthorized" | "user_not_found">>> {
     if (users.length === 0) {
       return new Ok(undefined);
     }
 
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "User is not authorized to update skill editors."
         )
@@ -2943,14 +2943,14 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
   async removeEditors(
     auth: Authenticator,
     users: UserResource[]
-  ): Promise<Result<undefined, DustError<"unauthorized" | "user_not_found">>> {
+  ): Promise<Result<undefined, RubyError<"unauthorized" | "user_not_found">>> {
     if (users.length === 0) {
       return new Ok(undefined);
     }
 
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "User is not authorized to update skill editors."
         )
@@ -2969,7 +2969,7 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
     auth: Authenticator,
     users: UserResource[],
     operation: "grant" | "revoke"
-  ): Promise<Result<undefined, DustError<"unauthorized" | "user_not_found">>> {
+  ): Promise<Result<undefined, RubyError<"unauthorized" | "user_not_found">>> {
     for (const user of users) {
       const spec = {
         user: user.toJSON(),
@@ -2984,7 +2984,7 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
           : await GroupPermissionResource.revokeFromUser(auth, spec);
 
       if (result.isErr()) {
-        return new Err(new DustError("user_not_found", result.error.message));
+        return new Err(new RubyError("user_not_found", result.error.message));
       }
     }
 

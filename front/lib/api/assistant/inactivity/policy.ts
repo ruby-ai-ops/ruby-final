@@ -122,7 +122,7 @@ function isArchivableStatus(status: AgentConfigurationStatus): boolean {
 
 /**
  * Only schedules protect an agent: they drive it on their own, so one nobody mentions can still run
- * every night. `relocating` and `downgraded` are set in bulk by Dust on triggers meant to be enabled
+ * every night. `relocating` and `downgraded` are set in bulk by Ruby on triggers meant to be enabled
  * again, so reading them as "no schedule" would archive every scheduled agent mid-relocation.
  */
 export function doesTriggerPreventArchival({

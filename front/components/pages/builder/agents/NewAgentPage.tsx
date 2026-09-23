@@ -17,7 +17,7 @@ import type {
   AgentConfigurationScope,
   AgentConfigurationType,
 } from "@app/types/assistant/agent";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 function isBuilderFlow(value: string): value is BuilderFlow {
   return BUILDER_FLOWS.some((flow) => flow === value);

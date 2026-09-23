@@ -70,10 +70,10 @@ export async function getFolderSearchServers(
       timeFrame: null,
       jsonSchema: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
       additionalConfiguration: {},
       mcpServerViewId: retrievalView.sId,
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       internalMCPServerId: retrievalView.mcpServerId,
     });
   }

@@ -5,7 +5,7 @@ set -euo pipefail
 #   MIGRATION_DB_URI_VAR    — name of the env var holding the database URI
 #                             (e.g. FRONT_DATABASE_URI, CONNECTORS_DATABASE_URI)
 #   MIGRATION_SHADOW_PREFIX — prefix for the shadow database name
-#                             (e.g. dust_front_shadow_to, dust_connectors_shadow_to)
+#                             (e.g. ruby_front_shadow_to, ruby_connectors_shadow_to)
 #   MIGRATION_ADMIN_DB_PATH — path to admin/db.ts relative to the workspace root
 #                             (e.g. admin/db.ts, src/admin/db.ts, ../front/admin/db.ts)
 

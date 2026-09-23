@@ -1,5 +1,5 @@
 import type { PartnerFormData } from "@marketing/lib/api/hubspot/partnerFormSchema";
-import { CheckCircle } from "@dust-tt/sparkle";
+import { CheckCircle } from "@ruby-ai/ui";
 import { useFormContext } from "react-hook-form";
 
 export function PartnerFormThankYou() {
@@ -15,7 +15,7 @@ export function PartnerFormThankYou() {
           <CheckCircle className="h-6 w-6 text-green-600" />
         </div>
         <h2 className="text-2xl font-semibold text-foreground">
-          Thank you{firstName ? `, ${firstName}` : ""} for trusting Dust!
+          Thank you{firstName ? `, ${firstName}` : ""} for trusting Ruby!
         </h2>
       </div>
 
@@ -28,10 +28,10 @@ export function PartnerFormThankYou() {
       <p className="text-muted-foreground">
         For any urgent inquiries, please contact{" "}
         <a
-          href="mailto:partnerships@dust.tt"
+          href="mailto:partnerships@ruby-ai.app"
           className="underline hover:text-foreground"
         >
-          partnerships@dust.tt
+          partnerships@ruby-ai.app
         </a>
         .
       </p>

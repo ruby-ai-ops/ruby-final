@@ -16,7 +16,7 @@ describe("stagingHashCaptureLines", () => {
       "/tmp/x/schema.json",
     ]);
     expect(lines).toHaveLength(2);
-    expect(lines[0]).toBe("echo __DUST_STAGING_SHA256__");
+    expect(lines[0]).toBe("echo __RUBY_STAGING_SHA256__");
     expect(lines[1]).toBe(
       "/usr/bin/sha256sum '/tmp/x/bundle.js' '/tmp/x/schema.json'"
     );
@@ -30,24 +30,24 @@ describe("stagingHashCaptureLines", () => {
 
 describe("splitStagingStdout", () => {
   it("returns untouched stdout and no hashes without the marker", () => {
-    const { dsbxStdout, hashes } = splitStagingStdout('{"ok":true}');
-    expect(dsbxStdout).toBe('{"ok":true}');
+    const { rbxStdout, hashes } = splitStagingStdout('{"ok":true}');
+    expect(rbxStdout).toBe('{"ok":true}');
     expect(hashes).toEqual({});
   });
 
-  it("splits dsbx output from hash lines at the marker", () => {
-    const bundle = "/tmp/dust-sandbox-function-builds/uuid/bundle.js";
-    const schema = "/tmp/dust-sandbox-function-builds/uuid/schema.json";
+  it("splits rbx output from hash lines at the marker", () => {
+    const bundle = "/tmp/ruby-sandbox-function-builds/uuid/bundle.js";
+    const schema = "/tmp/ruby-sandbox-function-builds/uuid/schema.json";
     const stdout = [
       "some noise",
       '{"ok":true}',
-      "__DUST_STAGING_SHA256__",
+      "__RUBY_STAGING_SHA256__",
       `${sha256Hex("bundle")}  ${bundle}`,
       `${sha256Hex("schema")}  ${schema}`,
       "",
     ].join("\n");
-    const { dsbxStdout, hashes } = splitStagingStdout(stdout);
-    expect(dsbxStdout).toBe('some noise\n{"ok":true}');
+    const { rbxStdout, hashes } = splitStagingStdout(stdout);
+    expect(rbxStdout).toBe('some noise\n{"ok":true}');
     expect(hashes).toEqual({
       [bundle]: sha256Hex("bundle"),
       [schema]: sha256Hex("schema"),
@@ -55,30 +55,30 @@ describe("splitStagingStdout", () => {
   });
 
   it("anchors on the last full-line marker, so a forged marker cannot shadow the capture", () => {
-    const schema = "/tmp/dust-sandbox-function-builds/uuid/schema.json";
+    const schema = "/tmp/ruby-sandbox-function-builds/uuid/schema.json";
     const stdout = [
-      "model printed __DUST_STAGING_SHA256__ mid-stream",
-      "__DUST_STAGING_SHA256__", // forged full-line marker before the real one
+      "model printed __RUBY_STAGING_SHA256__ mid-stream",
+      "__RUBY_STAGING_SHA256__", // forged full-line marker before the real one
       `${"0".repeat(64)}  ${schema}`, // forged hash line, shadowed below
       '{"ok":true}',
-      "__DUST_STAGING_SHA256__", // real capture marker
+      "__RUBY_STAGING_SHA256__", // real capture marker
       `${sha256Hex("schema")}  ${schema}`,
       "",
     ].join("\n");
-    const { dsbxStdout, hashes } = splitStagingStdout(stdout);
+    const { rbxStdout, hashes } = splitStagingStdout(stdout);
     expect(hashes).toEqual({ [schema]: sha256Hex("schema") });
-    expect(dsbxStdout).toContain('{"ok":true}');
+    expect(rbxStdout).toContain('{"ok":true}');
   });
 
   it("does not split on a marker substring inside another line", () => {
-    const stdout = 'noise __DUST_STAGING_SHA256__ noise\n{"ok":true}\n';
-    const { dsbxStdout, hashes } = splitStagingStdout(stdout);
-    expect(dsbxStdout).toBe(stdout);
+    const stdout = 'noise __RUBY_STAGING_SHA256__ noise\n{"ok":true}\n';
+    const { rbxStdout, hashes } = splitStagingStdout(stdout);
+    expect(rbxStdout).toBe(stdout);
     expect(hashes).toEqual({});
   });
 
   it("ignores malformed hash lines", () => {
-    const stdout = '{"ok":true}\n__DUST_STAGING_SHA256__\nnot-a-hash-line\n';
+    const stdout = '{"ok":true}\n__RUBY_STAGING_SHA256__\nnot-a-hash-line\n';
     const { hashes } = splitStagingStdout(stdout);
     expect(hashes).toEqual({});
   });

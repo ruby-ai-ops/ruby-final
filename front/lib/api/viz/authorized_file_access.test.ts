@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import {
   assertVizFileAuthorized,
   diffAuthorizedFileRefs,
@@ -186,7 +186,7 @@ describe("computeAuthorizedFileAccess", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -236,7 +236,7 @@ describe("computeAuthorizedFileAccess", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -263,8 +263,8 @@ describe("computeAuthorizedFileAccess", () => {
       read: vi.fn(),
     };
 
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
-      new Ok(mockFs as unknown as DustFileSystem)
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
+      new Ok(mockFs as unknown as RubyFileSystem)
     );
 
     const result = await frameFile.computeAuthorizedFileAccess(auth, {
@@ -293,7 +293,7 @@ describe("computeAuthorizedFileAccess", () => {
     const { authenticator: auth, workspace } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -324,8 +324,8 @@ describe("computeAuthorizedFileAccess", () => {
       read: vi.fn(),
     };
 
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
-      new Ok(mockFs as unknown as DustFileSystem)
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
+      new Ok(mockFs as unknown as RubyFileSystem)
     );
 
     const result = await frameFile.computeAuthorizedFileAccess(auth, {
@@ -347,7 +347,7 @@ describe("computeAuthorizedFileAccess", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -448,8 +448,8 @@ describe("computeAuthorizedFileAccess", () => {
       read: vi.fn(),
     };
 
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
-      new Ok(mockFs as unknown as DustFileSystem)
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
+      new Ok(mockFs as unknown as RubyFileSystem)
     );
 
     const result = await frameFile.computeAuthorizedFileAccess(auth, {
@@ -490,7 +490,7 @@ describe("computeAuthorizedFileAccess", () => {
     expect(apiKeyAuth.user()).toBeNull();
 
     const conversation = await ConversationFactory.create(userAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -530,7 +530,7 @@ describe("computeAuthorizedFileAccess", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -563,7 +563,7 @@ describe("computeAuthorizedFileAccess", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -610,7 +610,7 @@ describe("computeAuthorizedFileAccess", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -644,12 +644,12 @@ describe("computeAuthorizedFileAccess", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const frameConversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
     const sourceConversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -787,7 +787,7 @@ describe("computeAuthorizedFileAccess", () => {
     const restrictedConversation = await ConversationFactory.create(
       memberAuth,
       {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: restrictedProject.id,
       }
@@ -810,7 +810,7 @@ describe("computeAuthorizedFileAccess", () => {
     );
 
     const otherConversation = await ConversationFactory.create(otherAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -837,7 +837,7 @@ describe("ensureAuthorizedFileAccessForShare", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -883,7 +883,7 @@ describe("ensureAuthorizedFileAccessForShare", () => {
     });
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -954,7 +954,7 @@ describe("ensureAuthorizedFileAccessForShare", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -1021,7 +1021,7 @@ describe("ensureAuthorizedFileAccessForShare", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -1123,8 +1123,8 @@ describe("readAllowlistedScopedVizFile", () => {
       read: vi.fn().mockResolvedValue(new Ok(Readable.from(["png-bytes"]))),
     };
 
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
-      new Ok(mockFs as unknown as DustFileSystem)
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
+      new Ok(mockFs as unknown as RubyFileSystem)
     );
 
     const result = await readAllowlistedScopedVizFile({
@@ -1205,7 +1205,7 @@ describe("assertVizFileAuthorized", () => {
     const { authenticator: auth, workspace } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -1241,7 +1241,7 @@ describe("reverifyAuthorAccess", () => {
     const { authenticator: auth, workspace } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -1274,11 +1274,11 @@ describe("reverifyAuthorAccess", () => {
     expect(denied).toBe(false);
   });
 
-  it("re-checks scoped path access via DustFileSystem", async () => {
+  it("re-checks scoped path access via RubyFileSystem", async () => {
     const { authenticator: auth, workspace } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -1306,8 +1306,8 @@ describe("reverifyAuthorAccess", () => {
       read: vi.fn(),
     };
 
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
-      new Ok(mockFs as unknown as DustFileSystem)
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
+      new Ok(mockFs as unknown as RubyFileSystem)
     );
 
     expect(
@@ -1376,7 +1376,7 @@ describe("public share referenced files change notice", () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 

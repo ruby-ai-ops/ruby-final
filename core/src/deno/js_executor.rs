@@ -80,7 +80,7 @@ pub struct JSExecutor {
 /// use std::collections::HashMap;
 ///
 /// use anyhow::Result;
-/// use dust::deno::js_executor::JSExecutor;
+/// use ruby::deno::js_executor::JSExecutor;
 /// use tokio::try_join;
 ///
 /// // create a worker on the main thread init

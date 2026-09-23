@@ -21,8 +21,8 @@ import {
   normalizeError,
   withRetries,
 } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import type { WebClient } from "@slack/web-api";
 import type { Channel } from "@slack/web-api/dist/types/response/ConversationsInfoResponse";
 import assert from "assert";
@@ -215,7 +215,7 @@ export async function joinChannel(
         );
         return new Err(
           new Error(
-            `@Dust could not join the channel ${channelId} because of a missing scope. Please re-authorize your Slack connection and try again.`
+            `@Ruby could not join the channel ${channelId} because of a missing scope. Please re-authorize your Slack connection and try again.`
           )
         );
       }
@@ -230,7 +230,7 @@ export async function joinChannel(
         );
         return new Err(
           new Error(
-            `@Dust could not join the channel ${channelId} because of a rate limit exceeded. Please try again in a few minutes.`
+            `@Ruby could not join the channel ${channelId} because of a rate limit exceeded. Please try again in a few minutes.`
           )
         );
       }
@@ -303,8 +303,8 @@ export async function joinChannelWithRetries(
  *  Call cache to avoid rate limits
  *  ON RATE LIMIT ERRORS PERTAINING TO THIS FUNCTION:
  * - the next step will be to paginate (overkill at time of writing)
- * - see issue https://github.com/dust-tt/tasks/issues/1655
- * - and related PR https://github.com/dust-tt/dust/pull/8709
+ * - see issue https://github.com/ruby-ai/tasks/issues/1655
+ * - and related PR https://github.com/ruby-ai-ops/ruby-final/pull/8709
  * @param connectorId
  * @param joinedOnly
  */
@@ -476,7 +476,7 @@ async function _getTypedChannelsUncached(
         slackClient.conversations.list({
           types,
           // despite the limit being 1000, slack may return fewer channels
-          // we observed ~50 channels per call at times see https://github.com/dust-tt/tasks/issues/1655
+          // we observed ~50 channels per call at times see https://github.com/ruby-ai/tasks/issues/1655
           limit: 999,
           cursor: nextCursor,
           exclude_archived: true,

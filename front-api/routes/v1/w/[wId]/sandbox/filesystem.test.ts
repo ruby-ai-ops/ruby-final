@@ -109,7 +109,7 @@ describe("POST /api/v1/w/[wId]/sandbox/filesystem", () => {
       }
     );
     expect(podWriteResponse.status).toBe(403);
-    expect(podWriteResponse.headers.get("x-dust-filesystem-error")).toBe(
+    expect(podWriteResponse.headers.get("x-ruby-filesystem-error")).toBe(
       "unauthorized"
     );
   });

@@ -1,6 +1,6 @@
 // @vitest-environment node
 
-import { DustZAiGlmFiveDotThreeGlobalFireworksStream } from "@app/lib/llms/stream/endpoints/z_ai_glm_five_dot_three_global_fireworks";
+import { RubyZAiGlmFiveDotThreeGlobalFireworksStream } from "@app/lib/llms/stream/endpoints/z_ai_glm_five_dot_three_global_fireworks";
 import { mapReasoningEffortToLowHighMax } from "@app/lib/llms/stream/types/configuration";
 import { ZAiGlmFiveDotThreeGlobalFireworksStream } from "@app/lib/model_constructors/stream/endpoints/z_ai_glm_five_dot_three_global_fireworks";
 import { itKeepsLimitsAndPricingConsistent } from "@app/lib/model_constructors/test/model_limits";
@@ -10,10 +10,10 @@ import { describe, expect, it } from "vitest";
 describe("GLM-5.3 model configuration", () => {
   itKeepsLimitsAndPricingConsistent({
     streamEndpoint: ZAiGlmFiveDotThreeGlobalFireworksStream,
-    dustStreamEndpoint: DustZAiGlmFiveDotThreeGlobalFireworksStream,
+    rubyStreamEndpoint: RubyZAiGlmFiveDotThreeGlobalFireworksStream,
     modelConfig: FIREWORKS_GLM_5P3_MODEL_CONFIG,
     native: { contextSize: 1_048_576, maxOutputTokens: 131_072 },
-    dust: { contextSize: 1_000_000, maxOutputTokens: 128_000 },
+    ruby: { contextSize: 1_000_000, maxOutputTokens: 128_000 },
   });
 
   it("defaults to the documented `max` reasoning effort", () => {
@@ -30,8 +30,8 @@ describe("GLM-5.3 model configuration", () => {
     expect(payload.reasoning).toEqual({ effort: "max", summary: "auto" });
   });
 
-  it("folds Dust's reasoning ladder onto the native efforts", () => {
-    expect(DustZAiGlmFiveDotThreeGlobalFireworksStream.configParsers).toEqual([
+  it("folds Ruby's reasoning ladder onto the native efforts", () => {
+    expect(RubyZAiGlmFiveDotThreeGlobalFireworksStream.configParsers).toEqual([
       mapReasoningEffortToLowHighMax,
     ]);
   });

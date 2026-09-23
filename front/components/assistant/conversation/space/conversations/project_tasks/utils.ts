@@ -1,6 +1,6 @@
 import { removeDiacritics } from "@app/lib/utils";
 import type { PodTaskType } from "@app/types/project_task";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import type React from "react";
 import { useLayoutEffect } from "react";
 

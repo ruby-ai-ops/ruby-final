@@ -1,6 +1,6 @@
 import { streamConsumptionExport } from "@app/lib/api/analytics/consumption/export_lines";
 import logger from "@app/logger/logger";
-import { PostConsumptionExportRequestSchema } from "@dust-tt/client";
+import { PostConsumptionExportRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsAdmin } from "@front-api/middlewares/ensure_role";
 import { apiError } from "@front-api/middlewares/utils";
@@ -225,7 +225,7 @@ app.post(
     ctx.header("Content-Type", contentType);
     ctx.header(
       "Content-Disposition",
-      `attachment; filename="dust_consumption_${startDate}_${endDate}.${ext}"`
+      `attachment; filename="ruby_consumption_${startDate}_${endDate}.${ext}"`
     );
     return ctx.body(monitored);
   }

@@ -53,7 +53,7 @@ function tokensEvent(text: string): MessageStreamEvent {
     data: {
       type: "generation_tokens",
       created: 0,
-      configurationId: "dust",
+      configurationId: "ruby",
       messageId: "msg",
       text,
       classification: "tokens",
@@ -70,7 +70,7 @@ function creditSpendCheckpointEvent(
     data: {
       type: "agent_credit_spend_checkpoint_updated",
       created: 0,
-      configurationId: "dust",
+      configurationId: "ruby",
       messageId: "msg",
       status,
       step: 0,
@@ -99,7 +99,7 @@ async function setupAgentMessage() {
     workspace.sId
   );
   const conversation = await ConversationFactory.create(userAuth, {
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     messagesCreatedAt: [new Date()],
   });
   const agentMessageId = await getMessageSIdByRank(

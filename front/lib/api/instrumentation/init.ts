@@ -18,10 +18,10 @@ export function initializeOpenTelemetryInstrumentation({
   serviceName,
 }: {
   serviceName:
-    | "dust-agent-loop"
-    | "dust-front"
-    | "dust-reinforcement"
-    | "dust-project-todo";
+    | "ruby-agent-loop"
+    | "ruby-front"
+    | "ruby-reinforcement"
+    | "ruby-project-todo";
 }): void {
   if (!config.isLangfuseEnabled() || provider) {
     return;

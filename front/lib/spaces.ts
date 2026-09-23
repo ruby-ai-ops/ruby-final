@@ -13,13 +13,13 @@ import {
   Server03,
   Terminal,
   Zap,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 
 export type { SpaceSectionGroupType } from "@app/lib/spaces_utils";
 // Re-export non-UI utilities for backward compatibility.
 export {
-  dustAppsListUrl,
+  rubyAppsListUrl,
   getSpaceName,
   groupSpacesForDisplay,
   isPrivateSpacesLimitReached,
@@ -67,7 +67,7 @@ export const CATEGORY_DETAILS: {
   apps: {
     label: "Apps",
     icon: Terminal,
-    flag: "legacy_dust_apps",
+    flag: "legacy_ruby_apps",
   },
   actions: {
     label: "Tools",

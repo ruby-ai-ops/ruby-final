@@ -43,7 +43,7 @@ import type { FileUseCase } from "@app/types/files";
 import type { PlanType } from "@app/types/plan";
 import type { SpaceType } from "@app/types/space";
 import type { LightWorkspaceType, WorkspaceType } from "@app/types/user";
-import type { MenuItem } from "@dust-tt/sparkle";
+import type { MenuItem } from "@ruby-ai/ui";
 import {
   Button,
   cn,
@@ -55,7 +55,7 @@ import {
   Settings01,
   Spinner,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type {
   CellContext,
   ColumnDef,

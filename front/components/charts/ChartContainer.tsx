@@ -14,7 +14,7 @@ import {
   SheetHeader,
   SheetTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactElement, ReactNode } from "react";
 import { useState } from "react";
 import { ResponsiveContainer } from "recharts";

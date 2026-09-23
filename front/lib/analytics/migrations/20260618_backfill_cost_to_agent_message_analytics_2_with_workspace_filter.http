@@ -17,7 +17,7 @@ POST /front.agent_message_analytics_2/_update_by_query?wait_for_completion=false
         "run_agent",
         "agent_sidekick_agent_state",
         "agent_sidekick_context",
-        "run_dust_app",
+        "run_ruby_app",
         "user_mentions",
         "missing_action_catcher",
         "primitive_types_debugger",
@@ -27,7 +27,7 @@ POST /front.agent_message_analytics_2/_update_by_query?wait_for_completion=false
         "schedules_management",
         "pod_manager",
         "pod_tasks",
-        "poke",
+        "admin",
         "ask_user_question",
         "wakeups",
         "plan_mode"

@@ -1,5 +1,5 @@
 export const CONTEXT_WINDOW_DOC_URL =
-  "https://docs.dust.tt/docs/understanding-llms-context-windows";
+  "https://docs.ruby.ad/docs/understanding-llms-context-windows";
 export const RUNNING_AGENT_SWITCH_BLOCK_MESSAGE =
   "Wait for current active agent to finish before calling another agent.";
 

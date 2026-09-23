@@ -22,8 +22,8 @@ import { isDataSourceViewCategoryWithoutApps } from "@app/types/api/public/space
 import type { DataSourceContentNode } from "@app/types/api/search";
 import type { DataSourceViewContentNode } from "@app/types/data_source_view";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { DATA_SOURCE_MIME_TYPE } from "@dust-tt/client";
-import { cn } from "@dust-tt/sparkle";
+import { DATA_SOURCE_MIME_TYPE } from "@ruby-ai/client";
+import { cn } from "@ruby-ai/ui";
 import { useCallback, useMemo } from "react";
 
 interface DataSourceSearchResultsProps {

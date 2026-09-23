@@ -15,10 +15,10 @@ import { pipeline } from "stream/promises";
 
 export const DIRECTORY_PLACEHOLDER_FILE = ".gitkeep";
 export const DIRECTORY_PLACEHOLDER_METADATA = "isDirectoryPlaceholder";
-const DUST_INTERNAL_MARKER = "dustInternalMarker";
-const DUST_INTERNAL_INDEX_FILE = "DUST_INTERNAL_INDEX_v1";
+const RUBY_INTERNAL_MARKER = "rubyInternalMarker";
+const RUBY_INTERNAL_INDEX_FILE = "RUBY_INTERNAL_INDEX_v1";
 
-const DUST_INTERNAL_INDEX_FILE_PREFIX = "._dust_internal_index";
+const RUBY_INTERNAL_INDEX_FILE_PREFIX = "._ruby_internal_index";
 
 const DEFAULT_MAX_RESULTS = 1000;
 const STREAM_THRESHOLD_BYTES = 2 * 1024 * 1024; // 2MB - files smaller than this will be buffered.
@@ -84,7 +84,7 @@ export class GCSRepositoryManager {
       },
     });
     this.bucket = this.storage.bucket(
-      connectorsConfig.getDustTmpSyncBucketName()
+      connectorsConfig.getRubyTmpSyncBucketName()
     );
   }
 
@@ -354,7 +354,7 @@ export class GCSRepositoryManager {
     const { batchSize = DEFAULT_MAX_RESULTS, childLogger = logger } =
       options || {};
 
-    const indexBasePath = `${gcsBasePath}/${DUST_INTERNAL_INDEX_FILE_PREFIX}`;
+    const indexBasePath = `${gcsBasePath}/${RUBY_INTERNAL_INDEX_FILE_PREFIX}`;
     const directories: Array<DirectoryListing> = [];
     const files: Array<FileListing> = [];
 
@@ -450,7 +450,7 @@ export class GCSRepositoryManager {
         await this.uploadFile(chunk.path, JSON.stringify(chunk.data), {
           contentType: "application/json",
           metadata: {
-            [DUST_INTERNAL_MARKER]: DUST_INTERNAL_INDEX_FILE,
+            [RUBY_INTERNAL_MARKER]: RUBY_INTERNAL_INDEX_FILE,
             repoId: repoId.toString(),
             gcsBasePath,
             indexNumber: chunk.index.toString(),
@@ -477,7 +477,7 @@ export class GCSRepositoryManager {
   }
 
   /**
-   * Validate that an index file was created by Dust and is safe to read.
+   * Validate that an index file was created by Ruby and is safe to read.
    */
   private async validateIndexFile(
     indexPath: string,
@@ -486,11 +486,11 @@ export class GCSRepositoryManager {
     const file = this.bucket.file(indexPath);
     const [metadata] = await file.getMetadata();
 
-    // Check if this is a Dust internal index file.
+    // Check if this is a Ruby internal index file.
     if (
-      metadata.metadata?.[DUST_INTERNAL_MARKER] !== DUST_INTERNAL_INDEX_FILE
+      metadata.metadata?.[RUBY_INTERNAL_MARKER] !== RUBY_INTERNAL_INDEX_FILE
     ) {
-      throw new Error("Invalid index file: not a Dust internal index file");
+      throw new Error("Invalid index file: not a Ruby internal index file");
     }
 
     // Validate that the index file matches the expected GCS base path.

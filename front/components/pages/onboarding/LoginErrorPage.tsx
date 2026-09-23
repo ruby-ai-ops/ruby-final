@@ -1,6 +1,6 @@
 import config from "@app/lib/api/config";
 import { LinkWrapper, useSearchParam } from "@app/lib/platform";
-import { Button, DustLogoSquare, Icon, LogIn01, Page } from "@dust-tt/sparkle";
+import { Button, RubyLogoSquare, Icon, LogIn01, Page } from "@ruby-ai/ui";
 
 const defaultErrorMessageClassName = "text-base text-primary-100";
 
@@ -20,7 +20,7 @@ function getErrorMessage(domain: string | null, reason: string | null) {
           is not authorized to join this workspace.
           <br />
           Please contact your workspace admin to get access or contact us at
-          support@dust.tt for assistance.
+          support@ruby.ad for assistance.
         </p>
       </>
     );
@@ -37,7 +37,7 @@ function getErrorMessage(domain: string | null, reason: string | null) {
             <br />
             To gain access, please ask your workspace administrator to add you
             or, your domain. <br />
-            Need more help? Email us at support@dust.tt.
+            Need more help? Email us at support@ruby.ad.
           </p>
         </>
       );
@@ -49,7 +49,7 @@ function getErrorMessage(domain: string | null, reason: string | null) {
         <>
           {headerNode}
           <p className={defaultErrorMessageClassName}>
-            Unfortunately, we cannot provide access to Dust at this time.
+            Unfortunately, we cannot provide access to Ruby at this time.
             <br />
             Have a nice day.
           </p>
@@ -101,7 +101,7 @@ function getErrorMessage(domain: string | null, reason: string | null) {
             To gain access, please ask your workspace administrator to add you
             or.
             <br />
-            Need more help? Email us at support@dust.tt.
+            Need more help? Email us at support@ruby.ad.
           </p>
         </>
       );
@@ -117,7 +117,7 @@ function getErrorMessage(domain: string | null, reason: string | null) {
             Please verify your email or contact your workspace administrator for
             assistance.
             <br />
-            Need more help? Email us at support@dust.tt.
+            Need more help? Email us at support@ruby.ad.
           </p>
         </>
       );
@@ -131,7 +131,7 @@ function getErrorMessage(domain: string | null, reason: string | null) {
             <br />
             Contact your workspace administrator to update your role.
             <br />
-            Need more help? Email us at support@dust.tt.
+            Need more help? Email us at support@ruby.ad.
           </p>
         </>
       );
@@ -141,7 +141,7 @@ function getErrorMessage(domain: string | null, reason: string | null) {
         <>
           {headerNode}
           <p className={defaultErrorMessageClassName}>
-            Please contact us at support@dust.tt for assistance.
+            Please contact us at support@ruby.ad for assistance.
           </p>
         </>
       );
@@ -159,7 +159,7 @@ export function LoginErrorPage() {
       <main className="z-10 mx-6">
         <div className="flex h-full flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Icon visual={DustLogoSquare} size="lg" />
+            <Icon visual={RubyLogoSquare} size="lg" />
             <div className="flex flex-col items-center gap-6">
               {errorMessage}
             </div>

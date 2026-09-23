@@ -1,7 +1,13 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
 import { HomeReveal } from "@marketing/components/home/content/Product/HomeReveal";
+import { useSignUpModal } from "@marketing/hooks/useSignUpModal";
+import {
+  MARKETING_SURFACES,
+  isMarketingSurfaceVisible,
+} from "@marketing/lib/marketing_visibility";
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
-import { Button } from "@dust-tt/sparkle";
+import { LegacyButton as Button } from "@ruby-ai/ui";
+import Link from "next/link";
 
 type CTAStatAccent = "blue" | "golden" | "green";
 
@@ -18,7 +24,7 @@ const STATS: CTAStat[] = [
     accent: "blue",
   },
   {
-    label: "Teams running on Dust",
+    label: "Teams running on Ruby",
     display: "3,000+",
     accent: "golden",
   },
@@ -36,19 +42,27 @@ const STAT_THEME: Record<CTAStatAccent, { number: string }> = {
 };
 
 export function HomeAIOperatorsCTASection() {
+  const { openSignUpModal } = useSignUpModal();
+
+  if (!isMarketingSurfaceVisible(MARKETING_SURFACES.aiOperatorsCta)) {
+    return null;
+  }
+
   return (
-    <section className="relative w-full overflow-hidden bg-slate-950 py-32 text-white">
+    <section className="relative w-full overflow-hidden bg-slate-950 py-20 sm:py-24 lg:py-32 text-white">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-linear-to-r from-transparent via-white/20 to-transparent"
       />
       <div className="mx-auto flex w-full max-w-[1180px] flex-col items-center gap-10 px-6 text-center">
-        <HomeReveal>
-          <span className="inline-flex h-7 w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 font-mono text-[11px] uppercase tracking-[0.12em] text-white/70 backdrop-blur-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-            The platform for AI Operators
-          </span>
-        </HomeReveal>
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.aiOperatorsEyebrow) && (
+          <HomeReveal>
+            <span className="inline-flex h-7 w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 font-mono text-[11px] uppercase tracking-[0.12em] text-white/70 backdrop-blur-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+              The platform for AI Operators
+            </span>
+          </HomeReveal>
+        )}
         <HomeReveal delay={80}>
           <h1 className="m-0 max-w-[920px] text-balance text-center text-4xl font-semibold leading-[1.02] tracking-[-0.04em] text-white md:text-5xl xl:text-6xl">
             The best teams aren&apos;t just using AI.
@@ -58,16 +72,9 @@ export function HomeAIOperatorsCTASection() {
               as="em"
               variant="running"
               delay={400}
-              className="font-serif italic font-normal"
+              className="title-display italic font-normal"
             >
-              <span
-                style={{
-                  fontFamily:
-                    'ui-serif, Georgia, Cambria, "Times New Roman", serif',
-                }}
-              >
-                running
-              </span>
+              <span>running</span>
             </HomeReveal>{" "}
             it.
           </h1>
@@ -90,16 +97,31 @@ export function HomeAIOperatorsCTASection() {
         </HomeReveal>
         <HomeReveal
           delay={300}
-          className="mt-2 flex flex-col items-center gap-5"
+          className="mt-2 flex w-full flex-col items-center gap-5 min-[360px]:w-fit"
         >
           <Button
-            variant="highlight"
+            variant="primary"
             size="md"
-            label="We're hiring →"
-            href="https://dust.tt/jobs"
-            className="active:scale-[0.97] transition-transform duration-100"
-            onClick={withTracking(TRACKING_AREAS.HOME, "ai_operator_hiring")}
+            label="Get Started with Ruby"
+            className="w-full min-[360px]:w-auto active:scale-[0.97] transition-transform duration-100"
+            onClick={withTracking(
+              TRACKING_AREAS.HOME,
+              "ai_operator_become",
+              openSignUpModal
+            )}
           />
+          {isMarketingSurfaceVisible(
+            MARKETING_SURFACES.aiOperatorsHiringLink
+          ) && (
+            <Link
+              href="https://ruby.ad/jobs"
+              className="group inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.1em] text-white/80 transition-colors hover:text-white"
+            >
+              <span className="block h-px w-6 bg-white/40 transition-all duration-200 group-hover:w-10 group-hover:bg-white" />
+              We&apos;re hiring
+              <span aria-hidden="true">→</span>
+            </Link>
+          )}
         </HomeReveal>
         <div className="mt-12 hidden w-full max-w-[760px] grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-white/10">
           {STATS.map((stat, index) => {

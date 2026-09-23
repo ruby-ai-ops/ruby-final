@@ -14,7 +14,7 @@ import {
 } from "./egress_secrets";
 
 describe("egress secrets file", () => {
-  it("builds the dsbx secrets JSON entries from HTTPS secrets only", async () => {
+  it("builds the rbx secrets JSON entries from HTTPS secrets only", async () => {
     const { authenticator } = await createResourceTest({ role: "admin" });
 
     const configResult = await SandboxEnvVarResource.makeNew(
@@ -120,7 +120,7 @@ describe("egress secrets file", () => {
     expect(command).toContain(
       "/usr/bin/install -o root -g root -m 600 /dev/stdin"
     );
-    expect(command).toContain("/run/dust/egress-secrets.json");
+    expect(command).toContain("/run/ruby/egress-secrets.json");
     expect(command).not.toContain("api-secret");
     expect(JSON.parse(opts.stdin)).toEqual([
       expect.objectContaining({

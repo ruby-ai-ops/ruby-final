@@ -1,6 +1,6 @@
 import { useEditors } from "@app/lib/swr/agent_editors";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Avatar, Page } from "@dust-tt/sparkle";
+import { Avatar, Page } from "@ruby-ai/ui";
 
 interface FeedbackSelectorPopoverContentProps {
   owner: LightWorkspaceType;

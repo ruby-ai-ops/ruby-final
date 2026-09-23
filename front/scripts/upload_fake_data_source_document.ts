@@ -1,4 +1,4 @@
-import { getDustDataSourcesBucket } from "@app/lib/file_storage";
+import { getRubyDataSourcesBucket } from "@app/lib/file_storage";
 import { makeScript } from "@app/scripts/helpers";
 
 const fakeDocument = {
@@ -21,7 +21,7 @@ makeScript(
     },
   },
   async ({ path, execute }, logger) => {
-    const fileStorage = getDustDataSourcesBucket();
+    const fileStorage = getRubyDataSourcesBucket();
 
     if (execute) {
       await fileStorage

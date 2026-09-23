@@ -1,4 +1,4 @@
-import { normalizeError } from "@dust-tt/client";
+import { normalizeError } from "@ruby-ai/client";
 import { Parser } from "htmlparser2";
 import type { Readable } from "stream";
 import { Transform } from "stream";

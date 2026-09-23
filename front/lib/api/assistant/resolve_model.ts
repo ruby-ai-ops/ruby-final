@@ -153,7 +153,7 @@ export async function resolveModel(
  * (temperature, response format, etc.) overridden by the model resolved for the message.
  *
  * Legacy messages have no stored resolution; when the agent is on a model stream, the stream is
- * resolved now. Global agents may pin the noop model at run time (static replies from the dust and
+ * resolved now. Global agents may pin the noop model at run time (static replies from the ruby and
  * sidekick agents, see `getStaticReplyForUserMessage`); the model stored on the message was
  * resolved without that context, so it must not override the noop pin.
  */

@@ -6,7 +6,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Input,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useFormContext, useWatch } from "react-hook-form";
 
 interface InternalMCPBearerTokenFormProps {

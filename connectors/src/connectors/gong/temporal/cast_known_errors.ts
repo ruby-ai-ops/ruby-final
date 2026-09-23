@@ -1,7 +1,7 @@
 import { GongAPIError } from "@connectors/connectors/gong/lib/errors";
 import { clampRetryAfterSeconds } from "@connectors/connectors/gong/lib/gong_api";
 import {
-  DustConnectorWorkflowError,
+  RubyConnectorWorkflowError,
   ProviderRateLimitError,
 } from "@connectors/lib/error";
 import { ApplicationFailure } from "@temporalio/common";
@@ -52,7 +52,7 @@ export class GongCastKnownErrorsInterceptor
 
             if (isExpiredCursorError) {
               // Classify for monitoring parity with other connectors (e.g., Zendesk).
-              throw new DustConnectorWorkflowError(
+              throw new RubyConnectorWorkflowError(
                 "Cursor expired",
                 "unhandled_internal_activity_error",
                 err

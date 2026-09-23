@@ -6,10 +6,10 @@ import type { LLMTraceContext } from "@app/lib/api/llm/traces/types";
 import type { BatchResult } from "@app/lib/api/llm/types/batch";
 import { EventError } from "@app/lib/api/llm/types/events";
 import type { LLMStreamParameters } from "@app/lib/api/llm/types/options";
-import { DustOpenAIGptFiveDotFiveEuropeOpenAIResponsesBatch } from "@app/lib/llms/batch/endpoints/openai_gpt_five_dot_five_eu_openai_responses";
-import { DustNoopNoopGlobalNoopStream } from "@app/lib/llms/stream/endpoints/noop_noop_global_noop";
-import { DustOpenAIGptFiveDotFiveEuropeOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_five_dot_five_eu_openai_responses";
-import { DustOpenAIGptFiveDotFiveGlobalOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_five_dot_five_global_openai_responses";
+import { RubyOpenAIGptFiveDotFiveEuropeOpenAIResponsesBatch } from "@app/lib/llms/batch/endpoints/openai_gpt_five_dot_five_eu_openai_responses";
+import { RubyNoopNoopGlobalNoopStream } from "@app/lib/llms/stream/endpoints/noop_noop_global_noop";
+import { RubyOpenAIGptFiveDotFiveEuropeOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_five_dot_five_eu_openai_responses";
+import { RubyOpenAIGptFiveDotFiveGlobalOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_five_dot_five_global_openai_responses";
 import {
   USAGE_TYPE_FREE,
   USAGE_TYPE_PROGRAMMATIC,
@@ -32,7 +32,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-class ThrowingNoopStream extends DustNoopNoopGlobalNoopStream {
+class ThrowingNoopStream extends RubyNoopNoopGlobalNoopStream {
   override async *streamRaw(): AsyncGenerator<string> {
     throw Object.assign(new Error("Provider failed before reporting usage"), {
       status: 503,
@@ -40,7 +40,7 @@ class ThrowingNoopStream extends DustNoopNoopGlobalNoopStream {
   }
 }
 
-class IncompleteNoopStream extends DustNoopNoopGlobalNoopStream {
+class IncompleteNoopStream extends RubyNoopNoopGlobalNoopStream {
   override async *rawStreamOutputToEvents(): AsyncGenerator<ModelResponseEvent> {
     yield {
       type: "text_delta",
@@ -50,7 +50,7 @@ class IncompleteNoopStream extends DustNoopNoopGlobalNoopStream {
   }
 }
 
-class ImmediateProviderErrorStream extends DustNoopNoopGlobalNoopStream {
+class ImmediateProviderErrorStream extends RubyNoopNoopGlobalNoopStream {
   override async *rawStreamOutputToEvents(): AsyncGenerator<ModelResponseEvent> {
     yield buildErrorEvent({
       errorSource: "provider",
@@ -61,7 +61,7 @@ class ImmediateProviderErrorStream extends DustNoopNoopGlobalNoopStream {
   }
 }
 
-class PartialThenProviderErrorStream extends DustNoopNoopGlobalNoopStream {
+class PartialThenProviderErrorStream extends RubyNoopNoopGlobalNoopStream {
   override async *rawStreamOutputToEvents(): AsyncGenerator<ModelResponseEvent> {
     const metadata = this.metadata();
     yield { type: "text_delta", content: { value: "partial" }, metadata };
@@ -74,7 +74,7 @@ class PartialThenProviderErrorStream extends DustNoopNoopGlobalNoopStream {
   }
 }
 
-class ToolOnlySuccessStream extends DustNoopNoopGlobalNoopStream {
+class ToolOnlySuccessStream extends RubyNoopNoopGlobalNoopStream {
   override async *rawStreamOutputToEvents(): AsyncGenerator<ModelResponseEvent> {
     const metadata = this.metadata();
     const toolCall = {
@@ -82,7 +82,7 @@ class ToolOnlySuccessStream extends DustNoopNoopGlobalNoopStream {
       content: {
         id: "call_1",
         name: "search",
-        arguments: { query: "dust" },
+        arguments: { query: "ruby" },
       },
       metadata,
     };
@@ -154,7 +154,7 @@ async function consumeStream(
   }
 }
 
-class TokenUsageNoopStream extends DustNoopNoopGlobalNoopStream {
+class TokenUsageNoopStream extends RubyNoopNoopGlobalNoopStream {
   override async *rawStreamOutputToEvents(
     raw: AsyncGenerator<string>
   ): AsyncGenerator<ModelResponseEvent> {
@@ -196,7 +196,7 @@ function makeStreamParameters(content = "hello"): LLMStreamParameters {
 
 function makeNoopLLM(
   auth: Awaited<ReturnType<typeof createResourceTest>>["authenticator"],
-  endpoint: typeof DustNoopNoopGlobalNoopStream = DustNoopNoopGlobalNoopStream,
+  endpoint: typeof RubyNoopNoopGlobalNoopStream = RubyNoopNoopGlobalNoopStream,
   context?: LLMTraceContext
 ) {
   const llm = getStreamLLM(auth, {
@@ -223,7 +223,7 @@ function makeLifecycleParameters(): Parameters<
   typeof LLMRunLifecycle.start
 >[1] {
   return {
-    dustRunId: createLLMTraceId(generateRandomModelSId()),
+    rubyRunId: createLLMTraceId(generateRandomModelSId()),
     inferenceProvider: "openai-responses",
     inferenceRegion: "global" as const,
     modelId: GPT_5_MINI_MODEL_CONFIG.modelId,
@@ -240,8 +240,8 @@ describe("LLMRunLifecycle", () => {
 
     const lifecycle = await LLMRunLifecycle.start(auth, parameters);
 
-    const run = await RunResource.fetchByDustRunId(auth, {
-      dustRunId: parameters.dustRunId,
+    const run = await RunResource.fetchByRubyRunId(auth, {
+      rubyRunId: parameters.rubyRunId,
     });
     if (!run) {
       throw new Error("Expected the LLM run to exist");
@@ -277,8 +277,8 @@ describe("LLMRunLifecycle", () => {
 
     await LLMRunLifecycle.start(auth, parameters);
 
-    const run = await RunResource.fetchByDustRunId(auth, {
-      dustRunId: parameters.dustRunId,
+    const run = await RunResource.fetchByRubyRunId(auth, {
+      rubyRunId: parameters.rubyRunId,
     });
     assert(run, "Expected the LLM run to exist");
     expect(await run.listRunUsageAttempts(auth)).toMatchObject([
@@ -298,8 +298,8 @@ describe("LLMRunLifecycle", () => {
     });
     await lifecycle.close();
 
-    const run = await RunResource.fetchByDustRunId(auth, {
-      dustRunId: parameters.dustRunId,
+    const run = await RunResource.fetchByRubyRunId(auth, {
+      rubyRunId: parameters.rubyRunId,
     });
     if (!run) {
       throw new Error("Expected the LLM run to exist");
@@ -333,8 +333,8 @@ describe("LLMRunLifecycle", () => {
       cacheCreationTokens: 0,
     });
 
-    const run = await RunResource.fetchByDustRunId(auth, {
-      dustRunId: parameters.dustRunId,
+    const run = await RunResource.fetchByRubyRunId(auth, {
+      rubyRunId: parameters.rubyRunId,
     });
     expect(await run?.listRunUsages(auth)).toMatchObject([
       { costMicroUsd: 310 },
@@ -350,7 +350,7 @@ describe("endpoint billing metadata", () => {
     const streamLlm = getStreamLLM(auth, {
       credentials,
       modelInfo: {
-        endpoint: DustOpenAIGptFiveDotFiveEuropeOpenAIResponsesStream,
+        endpoint: RubyOpenAIGptFiveDotFiveEuropeOpenAIResponsesStream,
         temperature: 0,
       },
     });
@@ -361,7 +361,7 @@ describe("endpoint billing metadata", () => {
     const batchLlm = await getBatchLLM(auth, {
       credentials,
       modelInfo: {
-        endpoint: DustOpenAIGptFiveDotFiveEuropeOpenAIResponsesBatch,
+        endpoint: RubyOpenAIGptFiveDotFiveEuropeOpenAIResponsesBatch,
         temperature: 0,
       },
     });
@@ -386,7 +386,7 @@ describe("endpoint billing metadata", () => {
     const llm = getStreamLLM(auth, {
       credentials: { OPENAI_API_KEY: "test" },
       modelInfo: {
-        endpoint: DustOpenAIGptFiveDotFiveGlobalOpenAIResponsesStream,
+        endpoint: RubyOpenAIGptFiveDotFiveGlobalOpenAIResponsesStream,
         temperature: 0,
       },
     });
@@ -408,7 +408,7 @@ describe("non-batch LLM run persistence", () => {
     const increment = vi
       .spyOn(statsDMetrics, "increment")
       .mockImplementation(() => {});
-    const llm = makeNoopLLM(auth, DustNoopNoopGlobalNoopStream, {
+    const llm = makeNoopLLM(auth, RubyNoopNoopGlobalNoopStream, {
       operationType: "agent_conversation",
       conversationId: generateRandomModelSId(),
       userMessageOrigin: "web",
@@ -441,7 +441,7 @@ describe("non-batch LLM run persistence", () => {
     usageType,
   }) => {
     const { authenticator: auth } = await createResourceTest({});
-    const llm = makeNoopLLM(auth, DustNoopNoopGlobalNoopStream, {
+    const llm = makeNoopLLM(auth, RubyNoopNoopGlobalNoopStream, {
       operationType: "agent_conversation",
       userMessageOrigin: origin,
     });
@@ -452,8 +452,8 @@ describe("non-batch LLM run persistence", () => {
       // Consume the stream fully so the noop request completes.
     }
 
-    const run = await RunResource.fetchByDustRunId(auth, {
-      dustRunId: llm.getTraceId(),
+    const run = await RunResource.fetchByRubyRunId(auth, {
+      rubyRunId: llm.getTraceId(),
     });
     expect(await run?.listRunUsageAttempts(auth)).toMatchObject([
       { usageState: "reported", usageType },
@@ -468,8 +468,8 @@ describe("non-batch LLM run persistence", () => {
       // Consume the stream fully so the provider reports usage.
     }
 
-    const run = await RunResource.fetchByDustRunId(auth, {
-      dustRunId: llm.getTraceId(),
+    const run = await RunResource.fetchByRubyRunId(auth, {
+      rubyRunId: llm.getTraceId(),
     });
     if (!run) {
       throw new Error("Expected a run for the successful provider call");
@@ -496,8 +496,8 @@ describe("non-batch LLM run persistence", () => {
       // Consume the stream fully so the noop request completes.
     }
 
-    const run = await RunResource.fetchByDustRunId(auth, {
-      dustRunId: llm.getTraceId(),
+    const run = await RunResource.fetchByRubyRunId(auth, {
+      rubyRunId: llm.getTraceId(),
     });
     if (!run) {
       throw new Error("Expected a run for the successful provider call");
@@ -522,8 +522,8 @@ describe("non-batch LLM run persistence", () => {
     }
     expect(events.at(-1)?.type).toBe("error");
 
-    const run = await RunResource.fetchByDustRunId(auth, {
-      dustRunId: llm.getTraceId(),
+    const run = await RunResource.fetchByRubyRunId(auth, {
+      rubyRunId: llm.getTraceId(),
     });
     if (!run) {
       throw new Error("Expected a run for the failed provider call");
@@ -542,8 +542,8 @@ describe("non-batch LLM run persistence", () => {
     expect((await stream.next()).done).toBe(false);
     await stream.return(undefined);
 
-    const run = await RunResource.fetchByDustRunId(auth, {
-      dustRunId: llm.getTraceId(),
+    const run = await RunResource.fetchByRubyRunId(auth, {
+      rubyRunId: llm.getTraceId(),
     });
     if (!run) {
       throw new Error("Expected a run for the cancelled provider call");
@@ -783,7 +783,7 @@ describe("LLM stream telemetry", () => {
     const { increment, distribution, warn } = spyTelemetry();
     const llm = makeNoopLLM(
       auth,
-      DustNoopNoopGlobalNoopStream,
+      RubyNoopNoopGlobalNoopStream,
       makeTraceContext(auth)
     );
 
@@ -844,7 +844,7 @@ describe("LLM stream telemetry", () => {
     const { increment, distribution } = spyTelemetry();
     const llm = makeNoopLLM(
       auth,
-      DustNoopNoopGlobalNoopStream,
+      RubyNoopNoopGlobalNoopStream,
       makeTraceContext(auth)
     );
     const stream = llm.stream(makeStreamParameters());
@@ -873,7 +873,7 @@ describe("LLM stream telemetry", () => {
 });
 
 describe("LLM served service tier telemetry", () => {
-  class FlexServedNoopStream extends DustNoopNoopGlobalNoopStream {
+  class FlexServedNoopStream extends RubyNoopNoopGlobalNoopStream {
     override async *rawStreamOutputToEvents(
       raw: AsyncGenerator<string>
     ): AsyncGenerator<ModelResponseEvent> {
@@ -967,7 +967,7 @@ describe("LLM batch telemetry", () => {
     const { increment, distribution } = spyTelemetry();
     const llm = makeNoopLLM(
       auth,
-      DustNoopNoopGlobalNoopStream,
+      RubyNoopNoopGlobalNoopStream,
       makeTraceContext(auth)
     );
     stubBatchResults(
@@ -1005,7 +1005,7 @@ describe("LLM batch telemetry", () => {
     const { increment, distribution, error } = spyTelemetry();
     const llm = makeNoopLLM(
       auth,
-      DustNoopNoopGlobalNoopStream,
+      RubyNoopNoopGlobalNoopStream,
       makeTraceContext(auth)
     );
     stubBatchResults(

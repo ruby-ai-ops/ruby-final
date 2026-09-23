@@ -1,4 +1,4 @@
-import { cn, Spinner } from "@dust-tt/sparkle";
+import { cn, Spinner } from "@ruby-ai/ui";
 
 interface SummaryCardProps {
   className?: string;

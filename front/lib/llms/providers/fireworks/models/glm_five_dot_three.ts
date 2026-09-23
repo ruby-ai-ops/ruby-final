@@ -1,12 +1,12 @@
 import { mapReasoningEffortToLowHighMax } from "@app/lib/llms/stream/types/configuration";
 import { FIREWORKS_GLM_5P3_MODEL_CONFIG } from "@app/types/assistant/models/fireworks";
 
-export function WithDustZAiGlm53Config<
+export function WithRubyZAiGlm53Config<
   TBase extends abstract new (
     ...args: any[]
   ) => object,
 >(Base: TBase) {
-  abstract class DustZAiGlm53 extends Base {
+  abstract class RubyZAiGlm53 extends Base {
     static readonly displayName = "GLM-5.3";
     static readonly description =
       "Z.ai's flagship GLM-5.3 Mixture-of-Experts model with advanced coding and long-horizon agentic capabilities (1M context, served via Fireworks).";
@@ -16,15 +16,15 @@ export function WithDustZAiGlm53Config<
     static readonly byok = false;
 
     // Nest the legacy model config under a single `modelConfig` static (see
-    // `DustStreamEndpointConfiguration`) so consumers can retrieve the full
+    // `RubyStreamEndpointConfiguration`) so consumers can retrieve the full
     // `ModelConfigurationType` off the endpoint without spreading its fields
     // onto the class statics.
     static readonly modelConfig = FIREWORKS_GLM_5P3_MODEL_CONFIG;
 
-    // GLM-5.3 has no `medium`: fold Dust's light/medium/high ladder onto its
+    // GLM-5.3 has no `medium`: fold Ruby's light/medium/high ladder onto its
     // native low/high/max efforts.
     static readonly configParsers = [mapReasoningEffortToLowHighMax];
   }
 
-  return DustZAiGlm53;
+  return RubyZAiGlm53;
 }

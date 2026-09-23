@@ -1,6 +1,6 @@
 import type { parsePageProperties } from "@connectors/connectors/notion/lib/notion_api";
 import { filterCustomTags } from "@connectors/connectors/shared/tags";
-import type { LoggerInterface } from "@dust-tt/client";
+import type { LoggerInterface } from "@ruby-ai/client";
 
 export function getTagsForPage({
   title,

@@ -1,5 +1,5 @@
-import type { ButtonProps } from "@dust-tt/sparkle";
-import { Button, Download01 } from "@dust-tt/sparkle";
+import type { ButtonProps } from "@ruby-ai/ui";
+import { Button, Download01 } from "@ruby-ai/ui";
 
 interface CsvDownloadButtonProps {
   isDownloading: boolean;

@@ -5,7 +5,7 @@ import {
   getFilePreviewMarkdownDirective,
 } from "@app/lib/markdown/file_preview";
 import { LightWorkspaceFactory } from "@app/tests/utils/LightWorkspaceFactory";
-import { DUST_FILE_ID_HEADER, frameContentType } from "@app/types/files";
+import { RUBY_FILE_ID_HEADER, frameContentType } from "@app/types/files";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -232,7 +232,7 @@ describe("getFilePreviewPlugin", () => {
     mockClientFetch.mockResolvedValue(
       new Response(null, {
         status: 200,
-        headers: { [DUST_FILE_ID_HEADER]: "fil_frame" },
+        headers: { [RUBY_FILE_ID_HEADER]: "fil_frame" },
       })
     );
 

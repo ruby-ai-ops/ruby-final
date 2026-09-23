@@ -76,7 +76,7 @@ export async function createWorkspaceInternal({
     };
   }
 
-  // Keep the DB transaction to core Dust rows only. WorkOS is an external call
+  // Keep the DB transaction to core Ruby rows only. WorkOS is an external call
   // (bounded by the WorkOS client timeout) and must not hold a DB transaction.
   const workspace = await withTransaction(async (transaction) => {
     const created = await WorkspaceResource.makeNew(

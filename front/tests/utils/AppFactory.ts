@@ -9,7 +9,7 @@ export class AppFactory {
     return AppResource.makeNew(
       {
         description: "Test app",
-        dustAPIProjectId: "dust-api-project-id",
+        rubyAPIProjectId: "ruby-api-project-id",
         name: "Test App " + faker.string.alphanumeric(8),
         savedConfig: "{}",
         savedSpecification: "[]",

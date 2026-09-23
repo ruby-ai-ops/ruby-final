@@ -53,8 +53,8 @@ vi.mock("@app/components/resources/resources_icons", () => ({
   },
 }));
 
-vi.mock("@dust-tt/sparkle", async (importOriginal) => {
-  const { cn } = await importOriginal<typeof import("@dust-tt/sparkle")>();
+vi.mock("@ruby-ai/ui", async (importOriginal) => {
+  const { cn } = await importOriginal<typeof import("@ruby-ai/ui")>();
   return {
     cn,
     ShapesPlus: () => null,
@@ -206,7 +206,7 @@ describe("CreditCostPopover", () => {
           attributionVersion: 3,
           agentWorkCredits: 5,
           tools: [
-            makeTool("run_dust", "Run dust", 295, {
+            makeTool("run_ruby", "Run ruby", 295, {
               internalMCPServerName: "run_agent",
               callCount: 4,
             }),
@@ -221,7 +221,7 @@ describe("CreditCostPopover", () => {
     render(<CreditCostPopover {...defaultProps} subAgentCredits={0} />);
 
     expect(screen.getByText("302 credits")).toBeInTheDocument();
-    expect(screen.getByText("Run dust")).toBeInTheDocument();
+    expect(screen.getByText("Run ruby")).toBeInTheDocument();
     expect(screen.getByText("295 credits")).toBeInTheDocument();
     expect(screen.getByText("4 uses")).toBeInTheDocument();
     expect(screen.queryByText("Sub-agents")).not.toBeInTheDocument();

@@ -77,7 +77,7 @@ describe("GET /api/w/[wId]/assistant/conversations/[cId]/messages/[mId]/events/p
   it("returns serialized events after the requested event ID", async () => {
     const { workspace, auth } = await createPrivateApiMockRequest();
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const messageId = await getMessageIdByRank(auth, conversation.sId, 1);
@@ -87,7 +87,7 @@ describe("GET /api/w/[wId]/assistant/conversations/[cId]/messages/[mId]/events/p
         data: {
           type: "generation_tokens",
           created: 0,
-          configurationId: "dust",
+          configurationId: "ruby",
           messageId,
           text: "hello",
           classification: "tokens",
@@ -118,7 +118,7 @@ describe("GET /api/w/[wId]/assistant/conversations/[cId]/messages/[mId]/events/p
   it("returns end-of-stream when a completed message has no events after the cursor", async () => {
     const { workspace, auth } = await createPrivateApiMockRequest();
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const messageId = await getMessageIdByRank(auth, conversation.sId, 1);

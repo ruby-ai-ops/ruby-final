@@ -6,7 +6,7 @@ import { useAuth, useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useAppRouter } from "@app/lib/platform";
 import type { WorkspaceType } from "@app/types/user";
 import { getInactiveAgentArchivalThresholdDays } from "@app/types/user";
-import { Archive, Button, EmptyCTA, Settings02 } from "@dust-tt/sparkle";
+import { Archive, Button, EmptyCTA, Settings02 } from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface NoArchivedAgentsCTAProps {

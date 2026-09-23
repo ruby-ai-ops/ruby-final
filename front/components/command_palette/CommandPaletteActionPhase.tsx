@@ -9,7 +9,7 @@ import {
   Eye,
   Icon,
   MessageCircle01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 export type CommandPaletteAction = "view_details" | "edit" | "chat_with";

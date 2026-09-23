@@ -1,5 +1,5 @@
 import { LinkWrapper } from "@marketing/lib/platform";
-import { DustLogo } from "@dust-tt/sparkle";
+import { RubyLogo } from "@ruby-ai/ui";
 
 interface PublicWebsiteLogoProps {
   size?: "default" | "small";
@@ -21,7 +21,7 @@ export const PublicWebsiteLogo = ({
 
   return (
     <LinkWrapper href={href}>
-      <DustLogo className={LOGO_CLASS_NAMES[size]} />
+      <RubyLogo className={LOGO_CLASS_NAMES[size]} />
     </LinkWrapper>
   );
 };

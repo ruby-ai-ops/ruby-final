@@ -113,7 +113,7 @@ export async function upsertTableActivity(
     );
 
     const error: WorkflowError = {
-      __is_dust_error: true,
+      __is_ruby_error: true,
       message: `Upsert error: ${JSON.stringify(tableRes.error)}`,
       type: "upsert_queue_upsert_table_error",
     };

@@ -70,13 +70,13 @@ const SUPPORTED_CONTENT_TYPES: Set<AllSupportedFileContentType> = new Set([
   "text/x-perl-script",
   "message/rfc822",
 
-  // Dust-specific content types.
-  "text/vnd.dust.attachment.slack.thread",
-  "text/vnd.dust.attachment.pasted",
+  // Ruby-specific content types.
+  "text/vnd.ruby.attachment.slack.thread",
+  "text/vnd.ruby.attachment.pasted",
 
   // Interactive content (frames).
-  "application/vnd.dust.frame",
-  "application/vnd.dust.frame.slideshow",
+  "application/vnd.ruby.frame",
+  "application/vnd.ruby.frame.slideshow",
 ]);
 
 export function isSupportedForConversation(

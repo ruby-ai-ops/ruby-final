@@ -11,7 +11,7 @@ import { useSubmitFunction } from "@app/lib/client/utils";
 import { useAppRouter } from "@app/lib/platform";
 import { useUser } from "@app/lib/swr/user";
 import type { BillingPeriod } from "@app/types/plan";
-import { BarHeader } from "@dust-tt/sparkle";
+import { BarHeader } from "@ruby-ai/ui";
 import React from "react";
 
 export function SelectSubscriptionPage() {

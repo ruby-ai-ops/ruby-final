@@ -47,8 +47,8 @@ const NO_DATA_SOURCE_AVAILABLE_ERROR =
 // Type to represent data source configuration with resolved data source model
 export type ResolvedDataSourceConfiguration = DataSourceConfiguration & {
   dataSource: {
-    dustAPIProjectId: string;
-    dustAPIDataSourceId: string;
+    rubyAPIProjectId: string;
+    rubyAPIDataSourceId: string;
     connectorProvider: ConnectorProvider | null;
     name: string;
   };
@@ -66,7 +66,7 @@ export function makeCoreSearchNodesFilters({
 }): CoreAPIDatasourceViewFilter[] {
   return agentDataSourceConfigurations.map(
     ({ dataSource, dataSourceView, filter }) => ({
-      data_source_id: dataSource.dustAPIDataSourceId,
+      data_source_id: dataSource.rubyAPIDataSourceId,
       view_filter: dataSourceView.parentsIn ?? [],
       filter: filter.parents?.in ?? undefined,
       ...(includeTagFilters
@@ -447,8 +447,8 @@ export async function getAgentDataSourceConfigurations(
                 : null,
           },
           dataSource: {
-            dustAPIProjectId: dataSourceView.dataSource.dustAPIProjectId,
-            dustAPIDataSourceId: dataSourceView.dataSource.dustAPIDataSourceId,
+            rubyAPIProjectId: dataSourceView.dataSource.rubyAPIProjectId,
+            rubyAPIDataSourceId: dataSourceView.dataSource.rubyAPIDataSourceId,
             connectorProvider: dataSourceView.dataSource.connectorProvider,
             name: dataSourceView.dataSource.name,
           },
@@ -490,8 +490,8 @@ export async function getAgentDataSourceConfigurations(
         const resolved: ResolvedDataSourceConfiguration = {
           ...configInfo.configuration,
           dataSource: {
-            dustAPIProjectId: dataSource.dustAPIProjectId,
-            dustAPIDataSourceId: dataSource.dustAPIDataSourceId,
+            rubyAPIProjectId: dataSource.rubyAPIProjectId,
+            rubyAPIDataSourceId: dataSource.rubyAPIDataSourceId,
             connectorProvider: dataSource.connectorProvider,
             name: dataSource.name,
           },
@@ -568,8 +568,8 @@ export function toCoreSearchArgs(
   configs: ResolvedDataSourceConfiguration[]
 ): CoreSearchArgs[] {
   return configs.map((config) => ({
-    projectId: config.dataSource.dustAPIProjectId,
-    dataSourceId: config.dataSource.dustAPIDataSourceId,
+    projectId: config.dataSource.rubyAPIProjectId,
+    dataSourceId: config.dataSource.rubyAPIDataSourceId,
     filter: {
       tags: {
         in: config.filter.tags?.in ?? null,

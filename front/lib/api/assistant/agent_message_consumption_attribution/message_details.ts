@@ -242,7 +242,7 @@ function buildMessageConsumptionDetails({
 export function buildLatestAvailableMessageConsumptionDetails({
   actions,
   billedCredits,
-  dustRunIds,
+  rubyRunIds,
   items,
   runs,
   toolDetailsOverridesByActionModelId,
@@ -251,7 +251,7 @@ export function buildLatestAvailableMessageConsumptionDetails({
 }: {
   actions: AgentMCPActionResource[];
   billedCredits: number | null;
-  dustRunIds: string[];
+  rubyRunIds: string[];
   items: AgentMessageConsumptionItemResource[];
   runs: RunResource[];
   toolDetailsOverridesByActionModelId?: ReadonlyMap<
@@ -264,7 +264,7 @@ export function buildLatestAvailableMessageConsumptionDetails({
   const allocationResult = buildLatestMessageConsumptionAllocation({
     actions,
     billedCredits,
-    dustRunIds,
+    rubyRunIds,
     items,
     runs,
     usages,

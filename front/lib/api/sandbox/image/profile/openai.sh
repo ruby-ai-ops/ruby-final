@@ -1,12 +1,12 @@
 #!/bin/bash
-# Sourced by common.sh when DUST_PROFILE=openai.
-# Dev override: DUST_TOOLS_CMD="bun run $SCRIPT_DIR/src/index.ts"
+# Sourced by common.sh when RUBY_PROFILE=openai.
+# Dev override: RUBY_TOOLS_CMD="bun run $SCRIPT_DIR/src/index.ts"
 
-read_file()    { run_dust_tool --profile openai read_file "$@"; }
-write_file()   { run_dust_tool --profile openai write_file "$@"; }
-grep_files()   { run_dust_tool --profile openai grep_files "$@"; }
-glob()         { run_dust_tool --profile openai glob "$@"; }
-list_dir()     { run_dust_tool --profile openai list_dir "$@"; }
+read_file()    { run_ruby_tool --profile openai read_file "$@"; }
+write_file()   { run_ruby_tool --profile openai write_file "$@"; }
+grep_files()   { run_ruby_tool --profile openai grep_files "$@"; }
+glob()         { run_ruby_tool --profile openai glob "$@"; }
+list_dir()     { run_ruby_tool --profile openai list_dir "$@"; }
 xlsx_inspect() { /opt/venv/bin/python3 "$SCRIPT_DIR/soffice/xlsx_inspect.py" "$@"; }
 pptx_inspect() { /opt/venv/bin/python3 "$SCRIPT_DIR/soffice/pptx_inspect.py" "$@"; }
 docx_inspect() { /opt/venv/bin/python3 "$SCRIPT_DIR/soffice/docx_inspect.py" "$@"; }

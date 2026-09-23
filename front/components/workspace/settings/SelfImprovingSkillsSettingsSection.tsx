@@ -18,7 +18,7 @@ import {
   InputWithSave,
   Page,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 export function capUnitLabel(unit: ReinforcementBillingUnit): string {
@@ -82,7 +82,7 @@ export function SelfImprovingSkillsSettingsSection({
             />
           }
         >
-          <ContextItem.Description description="Allow Dust to analyze conversations to improve your workspace's skills. Dust does not use conversations to train models." />
+          <ContextItem.Description description="Allow Ruby to analyze conversations to improve your workspace's skills. Ruby does not use conversations to train models." />
         </ContextItem>
         <SelfImprovingBatchModeToggle owner={owner} />
         <SelfImprovingCapItem owner={owner} onCapSaved={onCapSaved} />

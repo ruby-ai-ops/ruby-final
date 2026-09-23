@@ -1,5 +1,5 @@
 import { BaseFormFieldSection } from "@app/components/shared/BaseFormFieldSection";
-import { TextArea } from "@dust-tt/sparkle";
+import { TextArea } from "@ruby-ai/ui";
 
 interface DescriptionSectionProps {
   title: string;

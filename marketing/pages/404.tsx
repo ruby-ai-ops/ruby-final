@@ -1,5 +1,5 @@
 import CustomErrorPage from "@marketing/components/pages/CustomErrorPage";
-import { LogIn01 } from "@dust-tt/sparkle";
+import { LogIn01 } from "@ruby-ai/ui";
 
 // biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
 export default function Custom404() {

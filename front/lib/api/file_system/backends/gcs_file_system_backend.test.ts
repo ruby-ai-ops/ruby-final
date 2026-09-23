@@ -10,7 +10,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@app/lib/api/config", () => ({
   default: {
-    getApiBaseUrl: vi.fn(() => "https://dust.tt"),
+    getApiBaseUrl: vi.fn(() => "https://ruby.ad"),
   },
 }));
 
@@ -237,7 +237,7 @@ describe("GCSFileSystemBackend.list", () => {
     expect(entries[0].fileName).toBe("data.csv");
   });
 
-  it("always leaves thumbnailUrl null (URL construction is a DustFileSystem concern)", async () => {
+  it("always leaves thumbnailUrl null (URL construction is a RubyFileSystem concern)", async () => {
     const prefix = `w/${WORKSPACE_ID}/conversations/${CONV_ID}/files/`;
     getAllFilesByPrefixMock.mockResolvedValue({
       files: [

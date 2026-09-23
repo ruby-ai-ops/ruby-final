@@ -18,8 +18,8 @@ import type {
 } from "@connectors/types";
 import { normalizeError } from "@connectors/types";
 import { withTransaction } from "@connectors/types/shared/utils/sql_utils";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import type {
   Attributes,
   CreationAttributes,

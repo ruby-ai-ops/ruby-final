@@ -3,7 +3,7 @@ import { isCreditPricedPlan } from "@app/types/plan";
 
 /**
  * @cc [owner:Nils-Fedrigo,label:product] regional-hosting-mirrors-endpoint-filter
- * The client-side answer to "does this workspace run models on Dust-managed
+ * The client-side answer to "does this workspace run models on Ruby-managed
  * regional hosting?". It mirrors `EU_AGENT_PLATFORM_ENDPOINT_FILTER`, which
  * every `*_eu_agent_platform` endpoint declares — change both together, and see
  * that constant for why provider-hosted EU endpoints are out of scope. A BYOK

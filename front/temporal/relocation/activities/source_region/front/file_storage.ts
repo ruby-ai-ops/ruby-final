@@ -175,9 +175,9 @@ export async function isFileStorageTransferComplete({
 function makeCoreTableDestPath(
   dataSourceCoreIds: CreateDataSourceProjectResult | DataSourceCoreIds
 ): string {
-  const { dustAPIProjectId, dustAPIDataSourceId } = dataSourceCoreIds;
+  const { rubyAPIProjectId, rubyAPIDataSourceId } = dataSourceCoreIds;
 
-  return `project-${dustAPIProjectId}/${dustAPIDataSourceId}/`;
+  return `project-${rubyAPIProjectId}/${rubyAPIDataSourceId}/`;
 }
 
 /**
@@ -200,7 +200,7 @@ export async function startTransferCoreTableFiles({
   sourceCell: CellType;
   workspaceId: string;
 }): Promise<string | null> {
-  const sourceBucket = fileStorageConfig.getDustTablesBucket();
+  const sourceBucket = fileStorageConfig.getRubyTablesBucket();
   const sourcePath = makeCoreTableDestPath(dataSourceCoreIds);
 
   const localLogger = logger.child({

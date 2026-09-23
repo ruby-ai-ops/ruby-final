@@ -13,8 +13,8 @@ type Limits = {
 //
 //   - the `model_constructors` endpoint, which carries the REAL provider values
 //     and whose `contextSize`/`maxOutputTokens` are deliberately typed as
-//     `number` so the Dust layer can override them;
-//   - the `llms` dust endpoint, which applies the product caps;
+//     `number` so the Ruby layer can override them;
+//   - the `llms` ruby endpoint, which applies the product caps;
 //   - the legacy `ModelConfigurationType`, which the UI and prompt builder read;
 //   - `MODEL_PRICING`, which bills.
 //
@@ -23,30 +23,30 @@ type Limits = {
 // the authoritative figure is the provider doc URL quoted at each definition.
 export function itKeepsLimitsAndPricingConsistent({
   streamEndpoint,
-  dustStreamEndpoint,
+  rubyStreamEndpoint,
   modelConfig,
   native,
-  dust,
+  ruby,
 }: {
   streamEndpoint: Limits & { tokenPricing: TokenPricing };
-  dustStreamEndpoint: Limits;
+  rubyStreamEndpoint: Limits;
   modelConfig: ModelConfigurationType;
   native: Limits;
-  dust: Limits;
+  ruby: Limits;
 }) {
-  it("keeps the native limits on the endpoint and the Dust caps everywhere else", () => {
+  it("keeps the native limits on the endpoint and the Ruby caps everywhere else", () => {
     expect(streamEndpoint.contextSize).toBe(native.contextSize);
     expect(streamEndpoint.maxOutputTokens).toBe(native.maxOutputTokens);
 
-    expect(dustStreamEndpoint.contextSize).toBe(dust.contextSize);
-    expect(dustStreamEndpoint.maxOutputTokens).toBe(dust.maxOutputTokens);
+    expect(rubyStreamEndpoint.contextSize).toBe(ruby.contextSize);
+    expect(rubyStreamEndpoint.maxOutputTokens).toBe(ruby.maxOutputTokens);
 
-    expect(modelConfig.contextSize).toBe(dust.contextSize);
-    expect(modelConfig.generationTokensCount).toBe(dust.maxOutputTokens);
+    expect(modelConfig.contextSize).toBe(ruby.contextSize);
+    expect(modelConfig.generationTokensCount).toBe(ruby.maxOutputTokens);
 
     // A cap may only ever narrow what the provider offers.
-    expect(dust.contextSize).toBeLessThanOrEqual(native.contextSize);
-    expect(dust.maxOutputTokens).toBeLessThanOrEqual(native.maxOutputTokens);
+    expect(ruby.contextSize).toBeLessThanOrEqual(native.contextSize);
+    expect(ruby.maxOutputTokens).toBeLessThanOrEqual(native.maxOutputTokens);
   });
 
   it("keeps token pricing synchronized between the endpoint and billing", () => {

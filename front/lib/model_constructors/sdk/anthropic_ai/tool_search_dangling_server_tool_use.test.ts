@@ -351,7 +351,7 @@ describe("tool search alongside client tool_use without search results", () => {
           ...lastMessage.content,
           {
             type: "text",
-            text: "<dust_system>skill instructions</dust_system>",
+            text: "<ruby_system>skill instructions</ruby_system>",
           },
         ],
       },

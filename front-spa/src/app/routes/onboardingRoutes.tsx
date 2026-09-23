@@ -2,37 +2,37 @@ import { withSuspense } from "@spa/app/routes/withSuspense";
 import type { RouteObject } from "react-router-dom";
 
 const WelcomePage = withSuspense(
-  () => import("@dust-tt/front/components/pages/onboarding/WelcomePage"),
+  () => import("@ruby-ai/front/components/pages/onboarding/WelcomePage"),
   "WelcomePage"
 );
 const SubscribePage = withSuspense(
-  () => import("@dust-tt/front/components/pages/onboarding/SubscribePage"),
+  () => import("@ruby-ai/front/components/pages/onboarding/SubscribePage"),
   "SubscribePage"
 );
 const TrialPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/onboarding/TrialPage"),
+  () => import("@ruby-ai/front/components/pages/onboarding/TrialPage"),
   "TrialPage"
 );
 const SelectSubscriptionPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/onboarding/SelectSubscriptionPage"),
+    import("@ruby-ai/front/components/pages/onboarding/SelectSubscriptionPage"),
   "SelectSubscriptionPage"
 );
 const TrialEndedPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/onboarding/TrialEndedPage"),
+  () => import("@ruby-ai/front/components/pages/onboarding/TrialEndedPage"),
   "TrialEndedPage"
 );
 const VerifyPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/onboarding/VerifyPage"),
+  () => import("@ruby-ai/front/components/pages/onboarding/VerifyPage"),
   "VerifyPage"
 );
 const CheckoutPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/onboarding/CheckoutPage"),
+  () => import("@ruby-ai/front/components/pages/onboarding/CheckoutPage"),
   "CheckoutPage"
 );
 const PaymentProcessingPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/onboarding/PaymentProcessingPage"),
+    import("@ruby-ai/front/components/pages/onboarding/PaymentProcessingPage"),
   "PaymentProcessingPage"
 );
 

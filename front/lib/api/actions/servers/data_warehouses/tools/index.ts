@@ -20,7 +20,7 @@ import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import logger from "@app/logger/logger";
 import { CoreAPI } from "@app/types/core/core_api";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 100;
@@ -175,15 +175,15 @@ const handlers: ToolHandlers<typeof DATA_WAREHOUSES_TOOLS_METADATA> = {
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const schemaResult = await coreAPI.getDatabaseSchema({
       tables: validatedNodes.map((node) => ({
-        project_id: parseInt(dataSource.dustAPIProjectId, 10),
-        data_source_id: dataSource.dustAPIDataSourceId,
+        project_id: parseInt(dataSource.rubyAPIProjectId, 10),
+        data_source_id: dataSource.rubyAPIDataSourceId,
         table_id: node.node_id,
       })),
     });
 
     if (schemaResult.isErr()) {
       // Not tracked: schema retrieval failures typically reflect customer-side
-      // warehouse configuration (IP allowlists, credentials, network) that Dust
+      // warehouse configuration (IP allowlists, credentials, network) that Ruby
       // cannot action. The underlying error message is surfaced to the model so
       // it can relay actionable guidance (e.g. IP to allowlist) to the user.
       return new Err(
@@ -246,8 +246,8 @@ const handlers: ToolHandlers<typeof DATA_WAREHOUSES_TOOLS_METADATA> = {
 
     return executeQuery(auth, {
       tables: validatedNodes.map((node) => ({
-        project_id: parseInt(dataSource.dustAPIProjectId, 10),
-        data_source_id: dataSource.dustAPIDataSourceId,
+        project_id: parseInt(dataSource.rubyAPIProjectId, 10),
+        data_source_id: dataSource.rubyAPIDataSourceId,
         table_id: node.node_id,
       })),
       query,

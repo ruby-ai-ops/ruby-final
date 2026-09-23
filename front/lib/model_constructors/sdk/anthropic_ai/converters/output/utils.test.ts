@@ -536,7 +536,7 @@ describe("streamErrorToErrorEvent", () => {
     expect(result.content.errorSource).toBe("unknown");
   });
 
-  it("maps file download failures to a retryable Dust server_error", () => {
+  it("maps file download failures to a retryable Ruby server_error", () => {
     const err = new APIError(
       400,
       {
@@ -554,19 +554,19 @@ describe("streamErrorToErrorEvent", () => {
       "server_error"
     );
     expect(streamErrorToErrorEvent(metadata, err).content.errorSource).toBe(
-      "dust"
+      "ruby"
     );
   });
 
   it.each([
-    [400, "invalid_request_error", "dust"],
-    [422, "invalid_request_error", "dust"],
-    [401, "authentication_error", "dust"],
-    [403, "permission_error", "dust"],
-    [404, "not_found_error", "dust"],
-    [413, "invalid_request_error", "dust"],
-    [418, "invalid_request_error", "dust"],
-    [429, "rate_limit_error", "dust"],
+    [400, "invalid_request_error", "ruby"],
+    [422, "invalid_request_error", "ruby"],
+    [401, "authentication_error", "ruby"],
+    [403, "permission_error", "ruby"],
+    [404, "not_found_error", "ruby"],
+    [413, "invalid_request_error", "ruby"],
+    [418, "invalid_request_error", "ruby"],
+    [429, "rate_limit_error", "ruby"],
     [503, "overloaded_error", "provider"],
   ] as const)("maps HTTP %i to %s from %s", (status, expectedType, errorSource) => {
     const err = new APIError(status, {}, "http failure", undefined, null);

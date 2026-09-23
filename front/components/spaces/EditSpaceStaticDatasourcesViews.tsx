@@ -4,7 +4,7 @@ import { useKillSwitches } from "@app/lib/swr/kill";
 import type { DataSourceViewType } from "@app/types/data_source_view";
 import type { SpaceType } from "@app/types/space";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, Plus, Tooltip } from "@dust-tt/sparkle";
+import { Button, Plus, Tooltip } from "@ruby-ai/ui";
 
 interface EditSpaceStaticDatasourcesViewsProps {
   canWriteInSpace: boolean;

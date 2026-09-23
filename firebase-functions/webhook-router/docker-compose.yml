@@ -20,7 +20,7 @@ services:
       - US_CONNECTOR_URL=${US_CONNECTOR_URL:-http://host.docker.internal:3002}
       - EU_CONNECTOR_URL=${EU_CONNECTOR_URL:-http://host.docker.internal:3002}
       # Pass through secrets from shell environment (loaded via rc file).
-      - DUST_CONNECTORS_WEBHOOKS_SECRET
+      - RUBY_CONNECTORS_WEBHOOKS_SECRET
       - SLACK_SIGNING_SECRET
       - MICROSOFT_BOT_ID_SECRET
       - NOTION_SIGNING_SECRET

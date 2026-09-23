@@ -18,7 +18,7 @@ type UnderscoreToDash<T extends string> = T extends `${infer A}_${infer B}`
 
 /**
  * This function generates mime types for a given provider and resource types.
- * The mime types are in the format `application/vnd.dust.PROVIDER.RESOURCE_TYPE`.
+ * The mime types are in the format `application/vnd.ruby.PROVIDER.RESOURCE_TYPE`.
  * Notes:
  * - The underscores in the provider name are stripped in the generated mime type.
  * - The underscores in the resource type are replaced with dashes in the generated mime type.
@@ -33,19 +33,19 @@ function generateConnectorRelativeMimeTypes<
   provider: P;
   resourceTypes: T;
 }): {
-  [K in T[number]]: `application/vnd.dust.${WithoutUnderscores<P>}.${Lowercase<
+  [K in T[number]]: `application/vnd.ruby.${WithoutUnderscores<P>}.${Lowercase<
     UnderscoreToDash<K>
   >}`;
 } {
   return resourceTypes.reduce(
     (acc, s) => ({
       ...acc,
-      [s]: `application/vnd.dust.${provider.replace("_", "")}.${s
+      [s]: `application/vnd.ruby.${provider.replace("_", "")}.${s
         .replace("_", "-")
         .toLowerCase()}`,
     }),
     {} as {
-      [K in T[number]]: `application/vnd.dust.${WithoutUnderscores<P>}.${Lowercase<
+      [K in T[number]]: `application/vnd.ruby.${WithoutUnderscores<P>}.${Lowercase<
         UnderscoreToDash<K>
       >}`;
     }
@@ -53,19 +53,19 @@ function generateConnectorRelativeMimeTypes<
 }
 
 // Mime type that represents a datasource.
-export const DATA_SOURCE_MIME_TYPE = "application/vnd.dust.datasource" as const;
+export const DATA_SOURCE_MIME_TYPE = "application/vnd.ruby.datasource" as const;
 
 // Mime type that represents a data warehouse, like Snowflake or BigQuery.
 export const DATA_WAREHOUSE_MIME_TYPE =
-  "application/vnd.dust.data-warehouse" as const;
+  "application/vnd.ruby.data-warehouse" as const;
 
 export const DATA_SOURCE_FOLDER_SPREADSHEET_MIME_TYPE =
-  "application/vnd.dust.folder.spreadsheet" as const;
+  "application/vnd.ruby.folder.spreadsheet" as const;
 export type DataSourceFolderSpreadsheetMimeType =
   typeof DATA_SOURCE_FOLDER_SPREADSHEET_MIME_TYPE;
 
-export const DUST_TABLE_MIME_TYPE = "application/vnd.dust.table" as const;
-type DustTableMimeType = typeof DUST_TABLE_MIME_TYPE;
+export const RUBY_TABLE_MIME_TYPE = "application/vnd.ruby.table" as const;
+type RubyTableMimeType = typeof RUBY_TABLE_MIME_TYPE;
 
 type DataSourceMimeType = typeof DATA_SOURCE_MIME_TYPE;
 type DataWarehouseMimeType = typeof DATA_WAREHOUSE_MIME_TYPE;
@@ -74,7 +74,7 @@ export const CONTENT_NODE_MIME_TYPES = {
   GENERIC: {
     DATA_SOURCE: DATA_SOURCE_MIME_TYPE,
     DATA_WAREHOUSE: DATA_WAREHOUSE_MIME_TYPE,
-    TABLE: DUST_TABLE_MIME_TYPE,
+    TABLE: RUBY_TABLE_MIME_TYPE,
   },
   FOLDER: {
     SPREADSHEET: DATA_SOURCE_FOLDER_SPREADSHEET_MIME_TYPE,
@@ -166,8 +166,8 @@ export const CONTENT_NODE_MIME_TYPES = {
     provider: "gong",
     resourceTypes: ["TRANSCRIPT", "TRANSCRIPT_FOLDER"],
   }),
-  DUST_PROJECT: generateConnectorRelativeMimeTypes({
-    provider: "dust_project",
+  RUBY_PROJECT: generateConnectorRelativeMimeTypes({
+    provider: "ruby_project",
     resourceTypes: [
       "CONVERSATION_FOLDER",
       "CONVERSATION_MESSAGES",
@@ -204,9 +204,9 @@ export const INCLUDABLE_INTERNAL_CONTENT_NODE_MIME_TYPES = {
   BIGQUERY: [],
   SALESFORCE: [],
   GONG: [],
-  DUST_PROJECT: [
-    CONTENT_NODE_MIME_TYPES.DUST_PROJECT.CONVERSATION_MESSAGES,
-    CONTENT_NODE_MIME_TYPES.DUST_PROJECT.CONTEXT_FOLDER,
+  RUBY_PROJECT: [
+    CONTENT_NODE_MIME_TYPES.RUBY_PROJECT.CONVERSATION_MESSAGES,
+    CONTENT_NODE_MIME_TYPES.RUBY_PROJECT.CONTEXT_FOLDER,
   ],
 };
 
@@ -220,19 +220,19 @@ function generateToolMimeTypes<
   category: P;
   resourceTypes: T;
 }): {
-  [K in T[number]]: `application/vnd.dust.${Lowercase<
+  [K in T[number]]: `application/vnd.ruby.${Lowercase<
     UnderscoreToDash<P>
   >}.${Lowercase<UnderscoreToDash<K>>}`;
 } {
   return resourceTypes.reduce(
     (acc, s) => ({
       ...acc,
-      [s]: `application/vnd.dust.${category
+      [s]: `application/vnd.ruby.${category
         .replace(/_/g, "-")
         .toLowerCase()}.${s.replace(/_/g, "-").toLowerCase()}`,
     }),
     {} as {
-      [K in T[number]]: `application/vnd.dust.${Lowercase<
+      [K in T[number]]: `application/vnd.ruby.${Lowercase<
         UnderscoreToDash<P>
       >}.${Lowercase<UnderscoreToDash<K>>}`;
     }
@@ -252,11 +252,11 @@ const TOOL_MIME_TYPES = {
       "BOOLEAN",
       "ENUM",
       "LIST",
-      "DUST_APP",
+      "RUBY_APP",
       "TIME_FRAME",
       "JSON_SCHEMA",
       "SECRET",
-      "DUST_POD",
+      "RUBY_POD",
     ],
   }),
   TOOL_OUTPUT: generateToolMimeTypes({
@@ -358,8 +358,8 @@ export type SalesforceMimeType =
 export type GongMimeType =
   (typeof INTERNAL_MIME_TYPES.GONG)[keyof typeof INTERNAL_MIME_TYPES.GONG];
 
-export type DustProjectMimeType =
-  (typeof INTERNAL_MIME_TYPES.DUST_PROJECT)[keyof typeof INTERNAL_MIME_TYPES.DUST_PROJECT];
+export type RubyProjectMimeType =
+  (typeof INTERNAL_MIME_TYPES.RUBY_PROJECT)[keyof typeof INTERNAL_MIME_TYPES.RUBY_PROJECT];
 
 export type InternalToolInputMimeType =
   (typeof INTERNAL_MIME_TYPES.TOOL_INPUT)[keyof typeof INTERNAL_MIME_TYPES.TOOL_INPUT];
@@ -367,7 +367,7 @@ export type InternalToolInputMimeType =
 export type IncludableInternalMimeType =
   (typeof INCLUDABLE_INTERNAL_MIME_TYPES_VALUES)[number];
 
-export type DustMimeType =
+export type RubyMimeType =
   | BigQueryMimeType
   | ConfluenceMimeType
   | GithubMimeType
@@ -381,13 +381,13 @@ export type DustMimeType =
   | ZendeskMimeType
   | SalesforceMimeType
   | GongMimeType
-  | DustProjectMimeType
+  | RubyProjectMimeType
   | DataSourceMimeType
   | DataWarehouseMimeType
   | DataSourceFolderSpreadsheetMimeType
-  | DustTableMimeType;
+  | RubyTableMimeType;
 
-export function isDustMimeType(mimeType: string): mimeType is DustMimeType {
+export function isRubyMimeType(mimeType: string): mimeType is RubyMimeType {
   return (INTERNAL_MIME_TYPES_VALUES as string[]).includes(mimeType);
 }
 

@@ -7,7 +7,7 @@ import { renderConversationAsText } from "@app/lib/api/assistant/conversation/re
 import { PREVIOUS_INTERACTIONS_TO_PRESERVE } from "@app/lib/api/assistant/conversation_rendering";
 import { isProviderWhitelistedForAuth } from "@app/lib/api/assistant/models";
 import { publishConversationEvent } from "@app/lib/api/assistant/streaming/events";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import type { Authenticator } from "@app/lib/auth";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import logger from "@app/logger/logger";
@@ -20,7 +20,7 @@ import type {
 import { isCompactionMessageType } from "@app/types/assistant/conversation";
 import type { ModelConversationTypeMultiActions } from "@app/types/assistant/generation";
 import type { SupportedModel } from "@app/types/assistant/models/types";
-import type { DustFileSystemError } from "@app/types/file_system";
+import type { RubyFileSystemError } from "@app/types/file_system";
 import { conversationScopedPath } from "@app/types/file_system";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
@@ -134,7 +134,7 @@ async function createCompactionHistoryFile(
     compactionMessage: CompactionMessageType;
     renderedMessages: string;
   }
-): Promise<Result<FileSystemFileEntry, DustFileSystemError>> {
+): Promise<Result<FileSystemFileEntry, RubyFileSystemError>> {
   const generatedAt = new Date();
   const relativeFilePath = `history/${formatCompactionHistoryTimestamp(generatedAt)}-compaction-${compactionMessage.sId}.history`;
   const metadataLines = [
@@ -147,7 +147,7 @@ async function createCompactionHistoryFile(
     "",
   ];
 
-  const fsResult = await DustFileSystem.forConversation(
+  const fsResult = await RubyFileSystem.forConversation(
     auth,
     targetConversation
   );

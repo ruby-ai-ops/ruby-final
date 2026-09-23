@@ -4,8 +4,8 @@ import { ConnectorResource } from "@connectors/resources/connector_resource";
 import { DiscordConfigurationResource } from "@connectors/resources/discord_configuration_resource";
 import { normalizeError } from "@connectors/types";
 import { getHeaderFromUserEmail } from "@connectors/types/shared/headers";
-import type { LightAgentConfigurationType, Result } from "@dust-tt/client";
-import { DustAPI, Err, Ok } from "@dust-tt/client";
+import type { LightAgentConfigurationType, Result } from "@ruby-ai/client";
+import { RubyAPI, Err, Ok } from "@ruby-ai/client";
 
 export const DISCORD_API_BASE_URL = "https://discord.com/api/v10";
 
@@ -22,8 +22,8 @@ export async function getAvailableAgents(
   userEmail?: string
 ): Promise<Result<LightAgentConfigurationType[], Error>> {
   try {
-    const dustAPI = new DustAPI(
-      { url: apiConfig.getDustFrontAPIUrl() },
+    const rubyAPI = new RubyAPI(
+      { url: apiConfig.getRubyFrontAPIUrl() },
       {
         workspaceId: connector.workspaceId,
         apiKey: connector.workspaceAPIKey,
@@ -36,7 +36,7 @@ export async function getAvailableAgents(
 
     // Note: We cannot identify which Discord user triggered this call through the API,
     // so we cannot filter agents based on user-specific permissions.
-    const agentConfigurationsRes = await dustAPI.getAgentConfigurations({});
+    const agentConfigurationsRes = await rubyAPI.getAgentConfigurations({});
     if (agentConfigurationsRes.isErr()) {
       logger.error(
         { error: agentConfigurationsRes.error },
@@ -105,7 +105,7 @@ export async function getConnectorFromGuildId(
 
   if (discordConfigs.length === 0) {
     return new Err(
-      new Error("No Dust workspace is connected to this Discord server.")
+      new Error("No Ruby workspace is connected to this Discord server.")
     );
   }
 
@@ -113,7 +113,7 @@ export async function getConnectorFromGuildId(
 
   if (!enabledConfig) {
     return new Err(
-      new Error("The Dust bot is not enabled for this Discord server.")
+      new Error("The Ruby bot is not enabled for this Discord server.")
     );
   }
 

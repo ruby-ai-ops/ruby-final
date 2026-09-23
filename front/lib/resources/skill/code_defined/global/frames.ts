@@ -21,7 +21,7 @@ export const framesSkill = {
   agentFacingDescription:
     "Create interactive visualizations, charts, dashboards, and presentations as executable React " +
     "components, and update existing ones (fix a chart, change data, colors, text, or layout). " +
-    "These visualizations are typically called 'Frames' or 'Dust Frames' and can be " +
+    "These visualizations are typically called 'Frames' or 'Ruby Frames' and can be " +
     "used in various contexts: daily digests, data analytics, sales reports, and more. Consider " +
     "using when tsx or React code is shared or available in the conversation. " +
     "Frames used to be a tool, now deprecated. Use this skill when the Frames/interactive " +

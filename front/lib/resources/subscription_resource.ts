@@ -2,7 +2,7 @@ import { getOrCreateWorkOSOrganization } from "@app/lib/api/workos/organization"
 import { getWorkspaceInfos } from "@app/lib/api/workspace";
 import { countActiveSeatsForWorkspace } from "@app/lib/api/workspace_seats";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import {
   scheduleMetronomeContractEnd,
   setMetronomeContractCustomFields,
@@ -20,7 +20,7 @@ import { PlanModel, SubscriptionModel } from "@app/lib/models/plan";
 import { resolvePackageAliasForCurrency } from "@app/lib/plans/billing_currency";
 import type { PlanAttributes } from "@app/lib/plans/free_plans";
 import { FREE_NO_PLAN_DATA } from "@app/lib/plans/free_plans";
-import type { PokeNonFreePlanTypeFilter } from "@app/lib/plans/plan_codes";
+import type { AdminNonFreePlanTypeFilter } from "@app/lib/plans/plan_codes";
 import {
   FREE_TEST_PLAN_CODE,
   isEnterprisePlanPrefix,
@@ -29,8 +29,8 @@ import {
   isProPlanPrefix,
   isUpgraded,
   isWhitelistedBusinessPlan,
-  POKE_PLAN_CODE_MATCHERS,
-  POKE_PLAN_TYPE_FILTERS,
+  ADMIN_PLAN_CODE_MATCHERS,
+  ADMIN_PLAN_TYPE_FILTERS,
   PRO_PLAN_SEAT_39_CODE,
 } from "@app/lib/plans/plan_codes";
 import type { PlanLimitOverride } from "@app/lib/plans/plan_limit_overrides";
@@ -96,12 +96,12 @@ export type GetSubscriptionStatusResponseBody = {
 const DEFAULT_PLAN_WHEN_NO_SUBSCRIPTION: PlanAttributes = FREE_NO_PLAN_DATA;
 const FREE_NO_PLAN_SUBSCRIPTION_ID = -1;
 
-// Builds the Sequelize where-clause matching a poke plan-type bucket's plan
-// codes (see POKE_PLAN_CODE_MATCHERS).
-export function buildPokePlanCodeWhere(
-  bucket: PokeNonFreePlanTypeFilter
+// Builds the Sequelize where-clause matching a admin plan-type bucket's plan
+// codes (see ADMIN_PLAN_CODE_MATCHERS).
+export function buildAdminPlanCodeWhere(
+  bucket: AdminNonFreePlanTypeFilter
 ): WhereOptions<PlanModel> {
-  const matcher = POKE_PLAN_CODE_MATCHERS[bucket];
+  const matcher = ADMIN_PLAN_CODE_MATCHERS[bucket];
   if (matcher.type === "exact") {
     return { code: { [Op.in]: matcher.values } };
   }
@@ -227,7 +227,7 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
     plan: PlanModel;
     metronomeContractId: string;
     now: Date;
-  }): Promise<Result<void, DustError>> {
+  }): Promise<Result<void, RubyError>> {
     return withTransaction(async (t) => {
       const activeSubscription =
         await SubscriptionResource.fetchActiveByWorkspaceModelId(
@@ -320,7 +320,7 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
 
   /**
    * Invalidate subscription caches for all workspaces on a given plan.
-   * Should be called when plan attributes are updated (e.g., via Poke).
+   * Should be called when plan attributes are updated (e.g., via Admin).
    */
   static async invalidateSubscriptionCacheForPlan(
     planId: number
@@ -771,28 +771,28 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
   }
 
   /**
-   * Get workspace ids with an active subscription matching ANY non-free poke
+   * Get workspace ids with an active subscription matching ANY non-free admin
    * plan-type bucket (enterprise, legacy_enterprise, legacy_pro, business,
-   * friends_and_family, dust).
+   * friends_and_family, ruby).
    *
-   * Used to implement the "free" plan-type filter on the poke workspaces
+   * Used to implement the "free" plan-type filter on the admin workspaces
    * list as an exclude-list: a workspace counts as "free" if it has no
    * active subscription at all, or one that isn't in one of the other
    * buckets — there's no plan-code pattern to match "free" directly. This
-   * set is expected to stay in the low thousands (paying + legacy + F&F/dust
+   * set is expected to stay in the low thousands (paying + legacy + F&F/ruby
    * tenants) even as the free-tier population grows into the hundreds of
    * thousands, since it excludes free plans entirely.
    */
   static async listActiveWorkspaceIdsWithNonFreePlanType(): Promise<ModelId[]> {
-    const nonFreeBuckets = POKE_PLAN_TYPE_FILTERS.filter(
-      (filter): filter is PokeNonFreePlanTypeFilter => filter !== "free"
+    const nonFreeBuckets = ADMIN_PLAN_TYPE_FILTERS.filter(
+      (filter): filter is AdminNonFreePlanTypeFilter => filter !== "free"
     );
 
     const subscriptions = await this.model.findAll({
       where: { status: "active" },
       attributes: ["workspaceId"],
       // WORKSPACE_ISOLATION_BYPASS: Internal use to compute the (small,
-      // non-free) workspace id set to exclude for poke's "free" plan-type
+      // non-free) workspace id set to exclude for admin's "free" plan-type
       // filter, across all workspaces.
       // biome-ignore lint/plugin/noUnverifiedWorkspaceBypass: WORKSPACE_ISOLATION_BYPASS verified
       dangerouslyBypassWorkspaceIsolationSecurity: true,
@@ -803,7 +803,7 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
           attributes: [],
           where: {
             [Op.or]: nonFreeBuckets.map((bucket) =>
-              buildPokePlanCodeWhere(bucket)
+              buildAdminPlanCodeWhere(bucket)
             ),
           },
           required: true,
@@ -999,7 +999,7 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
     return newSubscription;
   }
 
-  static async pokeUpgradeWorkspaceToEnterprise(
+  static async adminUpgradeWorkspaceToEnterprise(
     auth: Authenticator,
     enterpriseDetails: EnterpriseUpgradeFormType,
     metronome?: {
@@ -1010,7 +1010,7 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
   ) {
     const owner = auth.getNonNullableWorkspace();
 
-    if (!auth.isDustSuperUser()) {
+    if (!auth.isRubySuperUser()) {
       throw new Error("Cannot upgrade workspace to plan: not allowed.");
     }
 
@@ -1068,7 +1068,7 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
   /**
    * Internal function to create a PlanInvitation for the workspace.
    */
-  static async pokeUpgradeWorkspaceToPlan({
+  static async adminUpgradeWorkspaceToPlan({
     auth,
     planCode,
     endDate,
@@ -1079,7 +1079,7 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
   }): Promise<Result<undefined, Error>> {
     const owner = auth.getNonNullableWorkspace();
 
-    if (!auth.isDustSuperUser()) {
+    if (!auth.isRubySuperUser()) {
       throw new Error("Cannot upgrade workspace to plan: not allowed.");
     }
 
@@ -1170,14 +1170,14 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
   }
 
   /**
-   * Low-level plan change for Poke: repoints the active subscription row to a
+   * Low-level plan change for Admin: repoints the active subscription row to a
    * different plan, mirrors the new plan code onto the Metronome contract (when
    * the workspace is Metronome-billed) and flushes the subscription + contract
-   * caches. Unlike `pokeUpgradeWorkspaceToPlan` this does not create or end any
+   * caches. Unlike `adminUpgradeWorkspaceToPlan` this does not create or end any
    * subscription, touch Stripe, or run any plan-family guardrails — it is a raw
    * override for fixing up a workspace's plan.
    */
-  static async pokeChangePlan({
+  static async adminChangePlan({
     auth,
     planCode,
   }: {
@@ -1191,7 +1191,7 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
   > {
     const owner = auth.getNonNullableWorkspace();
 
-    if (!auth.isDustSuperUser()) {
+    if (!auth.isRubySuperUser()) {
       throw new Error("Cannot change workspace plan: not allowed.");
     }
 
@@ -1244,9 +1244,9 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
         previousPlanCode,
         newPlanCode: newPlan.code,
         metronomeContractUpdated,
-        method: "SubscriptionResource.pokeChangePlan",
+        method: "SubscriptionResource.adminChangePlan",
       },
-      "Changed workspace subscription plan via Poke"
+      "Changed workspace subscription plan via Admin"
     );
 
     return new Ok({ previousPlanCode, metronomeContractUpdated });
@@ -1448,7 +1448,7 @@ export class SubscriptionResource extends BaseResource<SubscriptionModel> {
    * ending whatever active subscription currently holds the workspace's seat.
    * Mirrors `swapMetronomeContract` but for the pre-provisioned pending-row
    * model — used by the `contract.start` webhook when the new contract was
-   * created up-front (e.g. by the poke switch_contract flow).
+   * created up-front (e.g. by the admin switch_contract flow).
    *
    * `this` must be in `created_backend_only` state.
    */

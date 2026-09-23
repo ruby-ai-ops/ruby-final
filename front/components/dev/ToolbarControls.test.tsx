@@ -4,7 +4,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock(import("@app/components/sparkle/ThemeContext"), () => ({
+vi.mock(import("@app/components/ui/ThemeContext"), () => ({
   useTheme: () => ({ theme: "light", isDark: false, setTheme: vi.fn() }),
 }));
 

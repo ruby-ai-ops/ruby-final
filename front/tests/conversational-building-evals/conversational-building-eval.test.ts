@@ -71,7 +71,7 @@ vi.mock("@app/lib/api/workos/client", () => ({
 
 // Every LLM stream persists a `runs` row plus its usage. The evals stream many times per test
 // from concurrent tests, which conflicts with the per-test CLS transaction and with the unique
-// constraint on `dustRunId`. Usage accounting is not what these evals measure.
+// constraint on `rubyRunId`. Usage accounting is not what these evals measure.
 vi.mock("@app/lib/api/llm/run_lifecycle", () => ({
   LLMRunLifecycle: {
     start: async () => ({

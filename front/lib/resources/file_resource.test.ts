@@ -45,7 +45,7 @@ async function createFrameWithFunction(
   const owner = auth.getNonNullableWorkspace();
   const conversation = withSource
     ? await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       })
     : null;
@@ -153,7 +153,7 @@ describe("FileResource", () => {
 
       // Create conversation.
       const conversation = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       });
 
@@ -193,7 +193,7 @@ describe("FileResource", () => {
         role: "admin",
       });
       const conversation = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       });
       const publicationId = "active-publication";
@@ -233,7 +233,7 @@ describe("FileResource", () => {
 
       // Create conversation.
       const conversation = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       });
 
@@ -301,7 +301,7 @@ describe("FileResource", () => {
       const conversation = await ConversationFactory.create(
         refreshedAdminAuth,
         {
-          agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+          agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
           requestedSpaceIds: [globalSpace.id, restrictedSpace.id], // Restricted space.
           messagesCreatedAt: [new Date()],
         }
@@ -1427,7 +1427,7 @@ describe("FileResource", () => {
       const { authenticator: auth } = await createResourceTest({});
 
       const conversation = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       });
 
@@ -1489,7 +1489,7 @@ describe("FileResource", () => {
       });
 
       const conversation = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       });
 
@@ -1533,7 +1533,7 @@ describe("FileResource", () => {
       });
 
       const conversation = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       });
 
@@ -1579,7 +1579,7 @@ describe("FileResource", () => {
       const { authenticator: auth } = await createResourceTest({});
 
       const conversation = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       });
 
@@ -1622,7 +1622,7 @@ describe("FileResource", () => {
       });
 
       const conversation = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       });
 
@@ -1657,7 +1657,7 @@ describe("FileResource", () => {
       });
 
       const conversation = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
       });
 

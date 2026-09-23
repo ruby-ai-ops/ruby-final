@@ -5,7 +5,7 @@ import { SpaceSearchInput } from "@app/components/spaces/SpaceSearchLayout";
 import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
 import { useAppRouter, useRequiredPathParam } from "@app/lib/platform";
 import { useSpaceInfo } from "@app/lib/swr/spaces";
-import { Page, Spinner } from "@dust-tt/sparkle";
+import { Page, Spinner } from "@ruby-ai/ui";
 import React, { useEffect } from "react";
 
 export function SpacePage() {

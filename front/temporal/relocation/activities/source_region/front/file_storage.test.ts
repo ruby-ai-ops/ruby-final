@@ -13,13 +13,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const params = {
   dataSourceCoreIds: {
     id: 1,
-    dustAPIProjectId: "source-project",
-    dustAPIDataSourceId: "source-data-source",
+    rubyAPIProjectId: "source-project",
+    rubyAPIDataSourceId: "source-data-source",
   },
   destBucket: "destination-tables",
   destIds: {
-    dustAPIProjectId: "destination-project",
-    dustAPIDataSourceId: "destination-data-source",
+    rubyAPIProjectId: "destination-project",
+    rubyAPIDataSourceId: "destination-data-source",
   },
   destCell: "cell-00001",
   sourceCell: "cell-00000",
@@ -30,7 +30,7 @@ const sourcePath = "project-source-project/source-data-source/";
 
 describe("core table file transfers", () => {
   beforeEach(() => {
-    vi.spyOn(fileStorageConfig, "getDustTablesBucket").mockReturnValue(
+    vi.spyOn(fileStorageConfig, "getRubyTablesBucket").mockReturnValue(
       "source-tables"
     );
     vi.spyOn(config, "getGcsTransferProjectId").mockReturnValue(

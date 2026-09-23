@@ -43,11 +43,11 @@ import { removeNulls } from "@app/types/shared/utils/general";
 import type {
   ConversationForDataSourceSyncType,
   // biome-ignore lint/plugin/enforceClientTypesInPublicApi: useful to convert for sync
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import {
   ConversationForDataSourceSyncSchema,
   // biome-ignore lint/plugin/enforceClientTypesInPublicApi: useful to convert for sync
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import type { WhereOptions } from "sequelize";
 
 // Helper type to map viewType to the correct message type

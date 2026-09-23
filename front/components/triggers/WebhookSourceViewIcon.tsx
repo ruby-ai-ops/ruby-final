@@ -5,7 +5,7 @@ import {
 } from "@app/components/resources/resources_icons";
 import type { WebhookSourceViewType } from "@app/types/triggers/webhooks";
 import { CLIENT_SIDE_WEBHOOK_PRESETS } from "@app/types/triggers/webhooks_client_side";
-import type { Avatar } from "@dust-tt/sparkle";
+import type { Avatar } from "@ruby-ai/ui";
 import type { ComponentProps } from "react";
 
 export const WebhookSourceViewIcon = ({

@@ -180,7 +180,7 @@ async fn handle_connection_inner(
 
     if request.domain.is_empty() {
         // TODO(sandbox-egress): Track empty_domain separately from malformed_handshake because
-        // this is the expected deny path for non-HTTP/non-TLS connections where dsbx cannot
+        // this is the expected deny path for non-HTTP/non-TLS connections where rbx cannot
         // extract a Host header or TLS SNI.
         deny(
             stream,

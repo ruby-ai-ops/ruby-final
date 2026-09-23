@@ -89,7 +89,7 @@ export function computeAgentMessageCredits({
  * total), so re-runs (interrupt/resume) overwrite the stored value with the complete cost. Only
  * persists for statuses we track for billing, matching the Metronome gate.
  *
- * Before recomputing, this execution's runs are tagged with their runKey (from `dustRunIds`) so the
+ * Before recomputing, this execution's runs are tagged with their runKey (from `rubyRunIds`) so the
  * intelligence cost is ceiled per agent-loop execution — exactly matching the per-execution
  * Metronome events. Tagging is idempotent (same runIds → same runKey), so it stays overwrite-safe
  * across Temporal retries.
@@ -98,8 +98,8 @@ export async function computeAndStoreAgentMessageCredits(
   auth: Authenticator,
   {
     agentMessageId,
-    dustRunIds,
-  }: { agentMessageId: string; dustRunIds?: string[] }
+    rubyRunIds,
+  }: { agentMessageId: string; rubyRunIds?: string[] }
 ): Promise<number | null> {
   const creditContext =
     await ConversationResource.fetchAgentMessageCreditContext(auth, {
@@ -132,16 +132,16 @@ export async function computeAndStoreAgentMessageCredits(
   // recompute (which reads the message's full accumulated runIds) ceils each
   // execution's intelligence cost independently. Prior executions tagged their
   // own runs in their own finalize.
-  if (dustRunIds && dustRunIds.length > 0) {
-    await RunResource.setRunKeyForDustRunIds(auth, {
-      dustRunIds,
-      runKey: computeRunKey(dustRunIds),
+  if (rubyRunIds && rubyRunIds.length > 0) {
+    await RunResource.setRunKeyForRubyRunIds(auth, {
+      rubyRunIds,
+      runKey: computeRunKey(rubyRunIds),
     });
   }
 
   // Fetch the message's runs once — reused to compute cost and to tag usage type.
-  const runs = await RunResource.listByDustRunIds(auth, {
-    dustRunIds: [...new Set(runIds ?? [])],
+  const runs = await RunResource.listByRubyRunIds(auth, {
+    rubyRunIds: [...new Set(runIds ?? [])],
   });
 
   // Repair legacy run usages that predate creation-time classification. New

@@ -9,7 +9,7 @@ const EXACT_NODE_READ_TARGETS = [
   { nodeId: "gdrive-sharedWithMe", target: "Google Drive shared with me" },
   { nodeId: "notion-syncing", target: "Notion syncing resources" },
   { nodeId: "notion-unknown", target: "Notion orphaned resources" },
-  { nodeId: "project-context-folder", target: "Dust project context" },
+  { nodeId: "project-context-folder", target: "Ruby project context" },
 ];
 
 const NUMBERED_NODE_READ_TARGETS = [
@@ -32,14 +32,14 @@ const PATTERN_NODE_READ_TARGETS = [
     target: "Salesforce record",
   },
   {
-    pattern: /^dust-project-\d+-project-.+-conversation-.+$/,
-    target: "Dust project conversation",
+    pattern: /^ruby-project-\d+-project-.+-conversation-.+$/,
+    target: "Ruby project conversation",
   },
   {
-    pattern: /^dust-project-\d+-project-.+-metadata$/,
-    target: "Dust project metadata",
+    pattern: /^ruby-project-\d+-project-.+-metadata$/,
+    target: "Ruby project metadata",
   },
-  { pattern: /^dust-project-\d+-project-.+$/, target: "Dust project" },
+  { pattern: /^ruby-project-\d+-project-.+$/, target: "Ruby project" },
 ];
 
 const PREFIX_NODE_READ_TARGETS = [
@@ -69,8 +69,8 @@ const PREFIX_NODE_READ_TARGETS = [
   { prefix: "gong-transcript-folder-", target: "Gong transcripts" },
   { prefix: "gong-transcript-", target: "Gong transcript" },
   { prefix: "salesforce-synced-query-", target: "Salesforce synced query" },
-  { prefix: "dpd_", target: "Dust project folder" },
-  { prefix: "dpf_", target: "Dust project file" },
+  { prefix: "dpd_", target: "Ruby project folder" },
+  { prefix: "dpf_", target: "Ruby project file" },
 ];
 
 function getDataSourceFileSystemNodeReadTarget(nodeId: string): string | null {

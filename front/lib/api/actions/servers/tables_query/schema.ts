@@ -4,11 +4,11 @@ import type {
   QueryWritingInstructionsResourceType,
 } from "@app/lib/actions/mcp_internal_actions/output_schemas";
 import {
-  DUST_SQLITE_INSTRUCTIONS,
+  RUBY_SQLITE_INSTRUCTIONS,
   getGenericDialectInstructions,
   SALESFORCE_INSTRUCTIONS,
 } from "@app/lib/api/actions/servers/tables_query/dialect_instructions";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 export function getSchemaContent(schemas: { dbml: string }[]): {
   type: "resource";
@@ -30,8 +30,8 @@ export function getQueryWritingInstructionsContent(
   dialect: string
 ): { type: "resource"; resource: QueryWritingInstructionsResourceType }[] {
   const instructions = (() => {
-    if (dialect === "dust_sqlite") {
-      return DUST_SQLITE_INSTRUCTIONS;
+    if (dialect === "ruby_sqlite") {
+      return RUBY_SQLITE_INSTRUCTIONS;
     } else if (dialect === "salesforce_soql") {
       return SALESFORCE_INSTRUCTIONS;
     } else {

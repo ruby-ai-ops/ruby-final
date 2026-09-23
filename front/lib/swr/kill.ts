@@ -1,6 +1,6 @@
 // LABS - CAN BE REMOVED ANYTIME
 
-import type { KillSwitchType } from "@app/lib/poke/types";
+import type { KillSwitchType } from "@app/lib/admin/types";
 import { useFetcher, useSWRWithDefaults } from "@app/lib/swr/swr";
 import type { Fetcher } from "swr";
 

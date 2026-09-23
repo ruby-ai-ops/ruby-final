@@ -6,7 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface WorkspaceAnalyticsTimeRangeSelectorProps {
   period: ObservabilityTimeRangeType;

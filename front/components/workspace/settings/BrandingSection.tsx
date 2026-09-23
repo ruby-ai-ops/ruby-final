@@ -13,7 +13,7 @@ import {
   Spinner,
   Upload01,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useRef, useState } from "react";
 
 interface BrandingAssetUploaderProps {
@@ -175,7 +175,7 @@ export function BrandingSection({ owner }: BrandingSectionProps) {
       <BrandingAssetUploader
         asset="logo"
         currentVersion={branding?.assets.logo?.version ?? null}
-        description="Shown in the header of every shared Frame in place of the Dust logo. Horizontal format works best."
+        description="Shown in the header of every shared Frame in place of the Ruby logo. Horizontal format works best."
         onSaved={handleSaved}
         owner={owner}
         title="Logo"

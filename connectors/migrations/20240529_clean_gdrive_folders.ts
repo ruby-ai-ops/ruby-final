@@ -111,7 +111,7 @@ async function main() {
         driveFileId: folderId,
         name: file.name,
         mimeType: file.mimeType,
-        dustFileId: getInternalId(folderId),
+        rubyFileId: getInternalId(folderId),
       });
     }
   }

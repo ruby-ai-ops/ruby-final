@@ -15,12 +15,12 @@ const CELLS: Record<CellType, CellInfo> = Object.fromEntries(
           {
             name: cell,
             region: "us-central1",
-            // Local poke/dev talks to the single local front-api, even when
+            // Local admin/dev talks to the single local front-api, even when
             // production cell public URLs are configured in the environment.
             url: isDevelopment()
               ? "http://localhost:3000"
-              : (EnvironmentConfig.getOptionalEnvVariable("DUST_US_URL") ??
-                "https://dust.tt"),
+              : (EnvironmentConfig.getOptionalEnvVariable("RUBY_US_URL") ??
+                "https://app.ruby.ad"),
           },
         ];
       // EU Global
@@ -32,8 +32,8 @@ const CELLS: Record<CellType, CellInfo> = Object.fromEntries(
             region: "europe-west1",
             url: isDevelopment()
               ? "http://localhost:3000"
-              : (EnvironmentConfig.getOptionalEnvVariable("DUST_EU_URL") ??
-                "https://eu.dust.tt"),
+              : (EnvironmentConfig.getOptionalEnvVariable("RUBY_EU_URL") ??
+                "https://app.ruby.ad"),
           },
         ];
       // EU 2
@@ -46,8 +46,8 @@ const CELLS: Record<CellType, CellInfo> = Object.fromEntries(
             url: isDevelopment()
               ? "http://localhost:3000"
               : (EnvironmentConfig.getOptionalEnvVariable(
-                  "DUST_CELL_00002_URL"
-                ) ?? "https://eu2.dust.tt"),
+                  "RUBY_CELL_00002_URL"
+                ) ?? "https://eu2.ruby.ad"),
           },
         ];
       default:
@@ -86,12 +86,12 @@ export const config = {
     const currentCell = this.getCurrentCell();
     return this.getAllCells().filter((cell) => cell.name !== currentCell.name);
   },
-  getDustCellSyncEnabled: (): boolean => {
+  getRubyCellSyncEnabled: (): boolean => {
     return (
       EnvironmentConfig.getEnvVariable("CELL") !== MAIN_CELL || isDevelopment()
     );
   },
-  getDustCellSyncMasterUrl: (): string => {
+  getRubyCellSyncMasterUrl: (): string => {
     return CELLS[MAIN_CELL].url;
   },
 };

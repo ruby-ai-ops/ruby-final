@@ -1,6 +1,6 @@
 import type { LightWorkspaceType } from "@app/types/user";
 import { isAdmin } from "@app/types/user";
-import { Chip, Input, SliderToggle } from "@dust-tt/sparkle";
+import { Chip, Input, SliderToggle } from "@ruby-ai/ui";
 import { useState } from "react";
 import type { SensitivityLabelsController } from "./types";
 

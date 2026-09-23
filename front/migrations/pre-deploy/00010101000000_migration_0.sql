@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "users"
     "firstName"       VARCHAR(255)             NOT NULL,
     "lastName"        VARCHAR(255),
     "imageUrl"        VARCHAR(2048),
-    "isDustSuperUser" BOOLEAN                  NOT NULL DEFAULT false,
+    "isRubySuperUser" BOOLEAN                  NOT NULL DEFAULT false,
     "id"              BIGSERIAL,
     PRIMARY KEY ("id")
 );
@@ -241,7 +241,7 @@ CREATE TABLE IF NOT EXISTS "apps"
     "savedSpecification" TEXT,
     "savedConfig"        TEXT,
     "savedRun"           TEXT,
-    "dustAPIProjectId"   VARCHAR(255)             NOT NULL,
+    "rubyAPIProjectId"   VARCHAR(255)             NOT NULL,
     "workspaceId"        BIGINT                   NOT NULL REFERENCES "workspaces" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     "id"                 BIGSERIAL,
     "vaultId"            BIGINT                   NOT NULL REFERENCES "vaults" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -419,7 +419,7 @@ CREATE TABLE IF NOT EXISTS "external_viewer_sessions"
 CREATE UNIQUE INDEX IF NOT EXISTS "external_viewer_sessions_session_token" ON "external_viewer_sessions" ("sessionToken");
 CREATE INDEX IF NOT EXISTS "external_viewer_sessions_workspace_id_email" ON "external_viewer_sessions" ("workspaceId", "email");
 
-CREATE TABLE IF NOT EXISTS "dust_app_secrets"
+CREATE TABLE IF NOT EXISTS "ruby_app_secrets"
 (
     "createdAt"   TIMESTAMP WITH TIME ZONE NOT NULL,
     "name"        VARCHAR(255)             NOT NULL,
@@ -431,7 +431,7 @@ CREATE TABLE IF NOT EXISTS "dust_app_secrets"
     PRIMARY KEY ("id")
 );
 
-CREATE INDEX IF NOT EXISTS "dust_app_secrets_workspace_id" ON "dust_app_secrets" ("workspaceId");
+CREATE INDEX IF NOT EXISTS "ruby_app_secrets_workspace_id" ON "ruby_app_secrets" ("workspaceId");
 
 CREATE TABLE IF NOT EXISTS "group_vaults"
 (
@@ -636,8 +636,8 @@ CREATE TABLE IF NOT EXISTS "data_sources"
     "name"                     VARCHAR(255)             NOT NULL,
     "description"              TEXT,
     "assistantDefaultSelected" BOOLEAN                  NOT NULL DEFAULT true,
-    "dustAPIProjectId"         VARCHAR(255)             NOT NULL,
-    "dustAPIDataSourceId"      VARCHAR(255)             NOT NULL,
+    "rubyAPIProjectId"         VARCHAR(255)             NOT NULL,
+    "rubyAPIDataSourceId"      VARCHAR(255)             NOT NULL,
     "connectorId"              VARCHAR(255),
     "connectorProvider"        VARCHAR(255),
     "workspaceId"              BIGINT                   NOT NULL REFERENCES "workspaces" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -652,7 +652,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS "data_sources_workspace_id_name_deleted_at" ON
 CREATE INDEX IF NOT EXISTS "data_sources_workspace_id_connector_provider" ON "data_sources" ("workspaceId", "connectorProvider");
 CREATE INDEX IF NOT EXISTS "data_sources_workspace_id_vault_id" ON "data_sources" ("workspaceId", "vaultId");
 CREATE UNIQUE INDEX IF NOT EXISTS "data_sources_workspace_id_conversation_id" ON "data_sources" ("workspaceId", "conversationId");
-CREATE INDEX IF NOT EXISTS "data_sources_dust_a_p_i_project_id" ON "data_sources" ("dustAPIProjectId");
+CREATE INDEX IF NOT EXISTS "data_sources_ruby_a_p_i_project_id" ON "data_sources" ("rubyAPIProjectId");
 CREATE INDEX CONCURRENTLY IF NOT EXISTS "data_sources_conversation_id" ON "data_sources" ("conversationId");
 
 CREATE TABLE IF NOT EXISTS "data_source_views"
@@ -679,7 +679,7 @@ CREATE TABLE IF NOT EXISTS "runs"
 (
     "createdAt"               TIMESTAMP WITH TIME ZONE NOT NULL,
     "updatedAt"               TIMESTAMP WITH TIME ZONE NOT NULL,
-    "dustRunId"               VARCHAR(255)             NOT NULL,
+    "rubyRunId"               VARCHAR(255)             NOT NULL,
     "runType"                 VARCHAR(255)             NOT NULL,
     "useWorkspaceCredentials" BOOLEAN,
     "workspaceId"             BIGINT                   NOT NULL REFERENCES "workspaces" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -690,7 +690,7 @@ CREATE TABLE IF NOT EXISTS "runs"
 
 CREATE INDEX IF NOT EXISTS "runs_workspace_id_app_id_run_type_created_at" ON "runs" ("workspaceId", "appId", "runType", "createdAt");
 CREATE INDEX IF NOT EXISTS "runs_workspace_id_created_at" ON "runs" ("workspaceId", "createdAt");
-CREATE UNIQUE INDEX IF NOT EXISTS "runs_dust_run_id" ON "runs" ("dustRunId");
+CREATE UNIQUE INDEX IF NOT EXISTS "runs_ruby_run_id" ON "runs" ("rubyRunId");
 
 CREATE TABLE IF NOT EXISTS "run_usages"
 (

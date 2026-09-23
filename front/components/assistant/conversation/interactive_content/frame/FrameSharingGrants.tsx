@@ -11,7 +11,7 @@ import {
   sharingDomainSchema,
   sharingEmailSchema,
 } from "@app/types/sharing_grants";
-import { Button, Globe01, Input, ListGroup, Spinner } from "@dust-tt/sparkle";
+import { Button, Globe01, Input, ListGroup, Spinner } from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { intlFormatDistance } from "date-fns";
 import { useId, useState } from "react";

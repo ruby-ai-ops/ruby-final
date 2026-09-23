@@ -69,27 +69,27 @@ import type {
   Result,
   SupportedFileContentType,
   UserMessageType,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import {
-  DustAPI,
+  RubyAPI,
   Err,
   isSupportedAudioContentType,
   isSupportedFileContentType,
   isSupportedImageContentType,
   Ok,
   removeNulls,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import type { WebClient } from "@slack/web-api";
 import type { MessageElement } from "@slack/web-api/dist/types/response/ConversationsRepliesResponse";
 import removeMarkdown from "remove-markdown";
 
 const SLACK_RATE_LIMIT_ERROR_MARKDOWN =
-  "You have reached a rate limit enforced by Slack. Please try again later (or contact Slack to increase your rate limit on the <https://dust4ai.slack.com/marketplace/A09214D6XQT-dust|Dust App for Slack>).";
+  "You have reached a rate limit enforced by Slack. Please try again later (or contact Slack to increase your rate limit on the <https://ruby4ai.slack.com/marketplace/A09214D6XQT-ruby|Ruby App for Slack>).";
 const SLACK_ERROR_TEXT =
   "An unexpected error occurred while answering your message, please retry.";
 const SLACK_POSTING_PERMISSION_ERROR_MARKDOWN =
-  "Dust doesn't have permission to post in this channel. The agent answered, but " +
-  "Slack rejected the reply. Ask a workspace admin to allow the Dust app to post " +
+  "Ruby doesn't have permission to post in this channel. The agent answered, but " +
+  "Slack rejected the reply. Ask a workspace admin to allow the Ruby app to post " +
   "here, then retry.";
 
 // Keep aligned with front/types/files.ts MAX_FILE_SIZES for conversation uploads.
@@ -97,7 +97,7 @@ const MAX_OTHER_FILE_SIZE_TO_UPLOAD = 50 * 1024 * 1024; // 50 MB
 const MAX_IMAGE_FILE_SIZE_TO_UPLOAD = 20 * 1024 * 1024; // 20 MB
 const MAX_AUDIO_FILE_SIZE_TO_UPLOAD = 100 * 1024 * 1024; // 100 MB
 
-const DEFAULT_AGENTS = ["dust", "claude-4-sonnet", "gpt-5"];
+const DEFAULT_AGENTS = ["ruby", "claude-4-sonnet", "gpt-5"];
 
 function getMaxFileSizeToUpload(contentType: SupportedFileContentType): number {
   if (isSupportedImageContentType(contentType)) {
@@ -118,7 +118,7 @@ function makeSlackAssistantThreadStatus(
   status: "thinking" | "queued"
 ) {
   const statusText = `is ${status}...`;
-  return agentName === "dust" ? statusText : `(${agentName}) ${statusText}`;
+  return agentName === "ruby" ? statusText : `(${agentName}) ${statusText}`;
 }
 
 type BotAnswerParams = {
@@ -432,8 +432,8 @@ export async function botValidateToolExecution(
     // If the user is allowed, we retrieve the groups he has access to.
     requestedGroups = hasChatbotAccess.groupIds;
 
-    const dustAPI = new DustAPI(
-      { url: apiConfig.getDustFrontAPIUrl() },
+    const rubyAPI = new RubyAPI(
+      { url: apiConfig.getRubyFrontAPIUrl() },
       {
         apiKey: connector.workspaceAPIKey,
         // Validation must include user's groups and email for personal tools and group-gated actions.
@@ -446,7 +446,7 @@ export async function botValidateToolExecution(
       logger
     );
 
-    const res = await dustAPI.validateAction({
+    const res = await rubyAPI.validateAction({
       conversationId,
       messageId,
       actionId,
@@ -458,7 +458,7 @@ export async function botValidateToolExecution(
       slackChatBotMessage.conversationId &&
       slackChatBotMessage.conversationId !== conversationId
     ) {
-      const retryRes = await dustAPI.retryMessage({
+      const retryRes = await rubyAPI.retryMessage({
         conversationId,
         messageId,
         blockedOnly: true,
@@ -490,7 +490,7 @@ export async function botValidateToolExecution(
 
     if (responseUrl) {
       // Use response_url to delete the message
-      // Deleting is preferred over updating the message (see https://github.com/dust-tt/dust/pull/13268)
+      // Deleting is preferred over updating the message (see https://github.com/ruby-ai-ops/ruby-final/pull/13268)
       const proxyFetch = createProxyAwareFetch();
       const response = await proxyFetch(responseUrl, {
         method: "POST",
@@ -512,13 +512,13 @@ export async function botValidateToolExecution(
     }
 
     // The Slack click only performs the validation when the action is still blocked. If it was
-    // already resolved elsewhere (e.g. approved from the Dust web app), `validateAction` returns
+    // already resolved elsewhere (e.g. approved from the Ruby web app), `validateAction` returns
     // `action_not_blocked` and the click is a no-op: surface that to the user.
     let confirmationText: string;
     if (res.isOk()) {
       confirmationText = text;
     } else if (String(res.error.type) === "action_not_blocked") {
-      confirmationText = "Tool validation was already handled in Dust.";
+      confirmationText = "Tool validation was already handled in Ruby.";
     } else {
       confirmationText = "An error occurred while validating the tool.";
     }
@@ -627,8 +627,8 @@ export async function botAnswerUserQuestion({
       ? slackChatBotMessage.slackEmail
       : undefined;
 
-  const dustAPI = new DustAPI(
-    { url: apiConfig.getDustFrontAPIUrl() },
+  const rubyAPI = new RubyAPI(
+    { url: apiConfig.getRubyFrontAPIUrl() },
     {
       apiKey: connector.workspaceAPIKey,
       extraHeaders: getHeaderFromUserEmail(userEmailHeader),
@@ -638,7 +638,7 @@ export async function botAnswerUserQuestion({
   );
 
   try {
-    const res = await dustAPI.answerUserQuestion({
+    const res = await rubyAPI.answerUserQuestion({
       conversationId,
       messageId,
       actionId,
@@ -874,8 +874,8 @@ async function answerMessage(
   if (slackUserInfo.is_bot) {
     const isBotAllowedRes = await isBotAllowed(connector, slackUserInfo);
     if (isBotAllowedRes.isErr()) {
-      if (slackUserInfo.real_name === "Dust Data Sync") {
-        // The Dust Data Sync bot mentions Dust to let ther user know which bot to use so we should
+      if (slackUserInfo.real_name === "Ruby Data Sync") {
+        // The Ruby Data Sync bot mentions Ruby to let ther user know which bot to use so we should
         // not react to it.
         return new Ok(undefined);
       }
@@ -948,7 +948,7 @@ async function answerMessage(
     if (groupIdsRes.isErr()) {
       return groupIdsRes;
     }
-    // No group means an empty X-Dust-Group-Ids header, which a system key reads as the whole
+    // No group means an empty X-Ruby-Group-Ids header, which a system key reads as the whole
     // workspace. Fail instead.
     if (groupIdsRes.value.length === 0) {
       return new Err(new Error(`Workflow "${botName}" reaches no group.`));
@@ -962,8 +962,8 @@ async function answerMessage(
       ? slackChatBotMessage.slackEmail
       : undefined;
 
-  const dustAPI = new DustAPI(
-    { url: apiConfig.getDustFrontAPIUrl() },
+  const rubyAPI = new RubyAPI(
+    { url: apiConfig.getRubyFrontAPIUrl() },
     {
       workspaceId: connector.workspaceId,
       apiKey: connector.workspaceAPIKey,
@@ -978,7 +978,7 @@ async function answerMessage(
   // Do not await this promise, we want to continue the execution of the function in parallel.
   const buildContentFragmentPromise = makeContentFragments(
     slackClient,
-    dustAPI,
+    rubyAPI,
     slackChannel,
     slackThreadTs || slackMessageTs,
     lastSlackChatBotMessage?.messageTs || slackThreadTs || slackMessageTs,
@@ -999,7 +999,7 @@ async function answerMessage(
     );
   });
 
-  const agentConfigurationsRes = await dustAPI.getAgentConfigurations({});
+  const agentConfigurationsRes = await rubyAPI.getAgentConfigurations({});
   if (agentConfigurationsRes.isErr()) {
     return new Err(new Error(agentConfigurationsRes.error.message));
   }
@@ -1164,7 +1164,7 @@ async function answerMessage(
   // Check if agent is from a restricted space
   if (!slackConfig.restrictedSpaceAgentsEnabled) {
     const isRestrictedRes = await isAgentAccessingRestrictedSpace(
-      dustAPI,
+      rubyAPI,
       activeAgentConfigurations,
       mention.agentId
     );
@@ -1286,7 +1286,7 @@ async function answerMessage(
 
   if (lastSlackChatBotMessage && lastSlackChatBotMessage.conversationId) {
     // Check conversation existence (it might have been deleted between two messages).
-    const existsRes = await dustAPI.getConversation({
+    const existsRes = await rubyAPI.getConversation({
       conversationId: lastSlackChatBotMessage.conversationId,
     });
 
@@ -1294,7 +1294,7 @@ async function answerMessage(
     if (existsRes.isOk()) {
       if (buildContentFragmentRes.value) {
         for (const cf of buildContentFragmentRes.value) {
-          const contentFragmentRes = await dustAPI.postContentFragment({
+          const contentFragmentRes = await rubyAPI.postContentFragment({
             conversationId: lastSlackChatBotMessage.conversationId,
             contentFragment: cf,
           });
@@ -1307,7 +1307,7 @@ async function answerMessage(
         }
       }
 
-      const messageRes = await dustAPI.postUserMessage({
+      const messageRes = await rubyAPI.postUserMessage({
         conversationId: lastSlackChatBotMessage.conversationId,
         message: messageReqBody,
       });
@@ -1316,7 +1316,7 @@ async function answerMessage(
       }
       userMessage = messageRes.value;
 
-      const conversationRes = await dustAPI.getConversation({
+      const conversationRes = await rubyAPI.getConversation({
         conversationId: lastSlackChatBotMessage.conversationId,
       });
       if (conversationRes.isErr()) {
@@ -1327,7 +1327,7 @@ async function answerMessage(
   }
 
   if (!conversation || !userMessage) {
-    const convRes = await dustAPI.createConversation({
+    const convRes = await rubyAPI.createConversation({
       title: null,
       visibility: "unlisted",
       message: messageReqBody,
@@ -1363,7 +1363,7 @@ async function answerMessage(
   const pendingUserMessageRes = await resolveSlackPendingUserMessage({
     connector,
     conversation,
-    dustAPI,
+    rubyAPI,
     slack: {
       slackChannelId: slackChannel,
       slackClient,
@@ -1389,7 +1389,7 @@ async function answerMessage(
     );
   }
 
-  const streamRes = await streamConversationToSlack(dustAPI, {
+  const streamRes = await streamConversationToSlack(rubyAPI, {
     assistantName: mention.agentName,
     connector,
     conversation,
@@ -1409,7 +1409,7 @@ async function answerMessage(
   });
 
   // Immediately mark the conversation as read.
-  await dustAPI.markAsRead({ conversationId: conversation.sId });
+  await rubyAPI.markAsRead({ conversationId: conversation.sId });
 
   if (streamRes.isErr()) {
     return buildSlackMessageError(streamRes, "streamConversationToSlack");
@@ -1436,7 +1436,7 @@ export async function getBotEnabled(
 
 async function makeContentFragments(
   slackClient: WebClient,
-  dustAPI: DustAPI,
+  rubyAPI: RubyAPI,
   channelId: string,
   threadTs: string,
   startingAtTs: string | null,
@@ -1557,7 +1557,7 @@ async function makeContentFragments(
 
       const fileName = f.name || f.title || "notitle";
 
-      const fileRes = await dustAPI.uploadFile({
+      const fileRes = await rubyAPI.uploadFile({
         contentType: f.mimetype as SupportedFileContentType,
         fileName: fileName,
         fileSize: f.size!,
@@ -1697,13 +1697,13 @@ async function makeContentFragments(
     ? `$url: ${url}\n${sectionHeader}${sectionFullText(document)}`
     : `$url: ${url}\n${sectionHeader}`;
 
-  const contentType = "text/vnd.dust.attachment.slack.thread";
+  const contentType = "text/vnd.ruby.attachment.slack.thread";
   const fileName = `slack_thread-${channelName}-${threadTs}.txt`;
 
   const blob = new Blob([section]);
   const fileSize = blob.size;
 
-  const fileRes = await dustAPI.uploadFile({
+  const fileRes = await rubyAPI.uploadFile({
     contentType,
     fileName,
     fileSize: fileSize,
@@ -1736,7 +1736,7 @@ class RestrictedSpaceAgentError extends Error {
 }
 
 async function isAgentAccessingRestrictedSpace(
-  dustAPI: DustAPI,
+  rubyAPI: RubyAPI,
   activeAgentConfigurations: LightAgentConfigurationType[],
   agentId: string
 ): Promise<Result<boolean, Error>> {
@@ -1760,7 +1760,7 @@ async function isAgentAccessingRestrictedSpace(
     // Only regular spaces can be restricted in this listing: the endpoint
     // never returns project spaces, and global and system spaces are never
     // flagged as restricted.
-    const spacesRes = await dustAPI.getSpaces({ kinds: ["regular"] });
+    const spacesRes = await rubyAPI.getSpaces({ kinds: ["regular"] });
     if (spacesRes.isErr()) {
       logger.error(
         { error: spacesRes.error, agentId },

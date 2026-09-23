@@ -11,7 +11,7 @@ import { rewriteContentForModel } from "@app/lib/actions/mcp_utils";
 import { getEnableSkillIdFromOutputBlock } from "@app/lib/api/actions/servers/skill_management/rendering";
 import type { EnabledSkill } from "@app/lib/api/assistant/skills_rendering";
 import { renderEnabledSkillUserMessageFromInstructions } from "@app/lib/api/assistant/skills_rendering";
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import { getConversationFileMountSignedUrl } from "@app/lib/api/files/gcs_mount/files";
 import type { Authenticator } from "@app/lib/auth";
 import { MODEL_INPUT_SIGNED_URL_EXPIRATION_DELAY_MS } from "@app/lib/file_storage/signed_url_cache";
@@ -120,11 +120,11 @@ export function renderToolResultForModelAsText(
   return JSON.stringify(outputItems.map(compactResourceItem));
 }
 
-async function getDustFileSystemDownloadUrl(
+async function getRubyFileSystemDownloadUrl(
   auth: Authenticator,
   filePath: string
 ) {
-  const fsResult = await DustFileSystem.fromScopedPath(auth, filePath);
+  const fsResult = await RubyFileSystem.fromScopedPath(auth, filePath);
   if (fsResult.isErr()) {
     return fsResult;
   }
@@ -260,7 +260,7 @@ async function renderActionForMultiActionsModel(
               { useCase: "conversation", conversationId },
               path
             )
-          : await getDustFileSystemDownloadUrl(auth, path);
+          : await getRubyFileSystemDownloadUrl(auth, path);
 
         if (urlRes.isOk()) {
           contentArray.push({
@@ -549,7 +549,7 @@ export function renderUserMessage(
   }
   const systemContextInstructions =
     systemContext.length > 0
-      ? `<dust_system>\n${systemContext.join("\n\n")}\n</dust_system>\n\n`
+      ? `<ruby_system>\n${systemContext.join("\n\n")}\n</ruby_system>\n\n`
       : "";
 
   return {
@@ -580,10 +580,10 @@ export function renderOtherAgentMessageAsUserMessage(
 
   const agentName = message.configuration.name;
 
-  const systemContext = `<dust_system>
+  const systemContext = `<ruby_system>
 This is the output of another invoked agent: "@${agentName}".
 You are seeing the final response only, not the full reasoning or tool execution steps.
-</dust_system>
+</ruby_system>
 
 `;
 
@@ -639,7 +639,7 @@ export function renderCompactionMessage(
   }
   return {
     role: "compaction",
-    content: `<dust_system>Context was compacted</dust_system>
+    content: `<ruby_system>Context was compacted</ruby_system>
 <compaction_summary>
 ${message.content}
 </compaction_summary>`,

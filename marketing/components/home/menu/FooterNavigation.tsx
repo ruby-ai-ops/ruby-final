@@ -1,20 +1,37 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
 import { A, Grid } from "@marketing/components/home/ContentComponents";
 import { menuConfig } from "@marketing/components/home/menu/config";
-import { DustLogoGray } from "@dust-tt/sparkle";
+import {
+  getVisibleFooterLinks,
+  getVisibleFooterSections,
+} from "@marketing/lib/marketing_visibility";
+import { RubyLogoGray } from "@ruby-ai/ui";
+import Image from "next/image";
 import type { LinkProps } from "next/link";
 import Link from "next/link";
 import * as React from "react";
 
 export function FooterNavigation() {
   return (
-    <div className="z-11 flex w-full flex-col items-center gap-6 border-b border-t border-border bg-muted-background pb-16 pt-12">
-      <div className="w-full px-6 sm:px-12">
+    <div className="footer-navigation relative z-11 flex w-full shrink-0 flex-col items-center gap-6 overflow-hidden border-t border-border bg-muted-background pb-16 pt-12">
+      <div
+        className="footer-navigation__art hidden md:block"
+        aria-hidden="true"
+      >
+        <Image
+          src="/static/Wallpaper9.png"
+          alt=""
+          fill
+          sizes="(max-width: 768px) 100vw, 68vw"
+          className="footer-navigation__art-image"
+        />
+      </div>
+      <div className="relative z-10 w-full px-6 sm:px-12">
         <Grid gap="gap-6">
           <div className="col-span-12">
-            <DustLogoGray className="h-6 w-24" />
+            <RubyLogoGray className="h-6 w-24" />
           </div>
-          {menuConfig.footerNav.map((item, index) => (
+          {getVisibleFooterSections(menuConfig.footerNav).map((item, index) => (
             <div
               key={index}
               className="col-span-6 flex flex-col space-y-2 sm:col-span-4 md:col-span-2"
@@ -33,7 +50,7 @@ export function FooterNavigation() {
                 </div>
               )}
               {item?.items?.length &&
-                item.items
+                getVisibleFooterLinks(item.title, item.items)
                   .filter((item) => item.title.trim() !== "")
                   .map((item, itemIndex) => (
                     <React.Fragment key={item.href ?? `item-${itemIndex}`}>

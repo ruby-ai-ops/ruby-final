@@ -1,11 +1,11 @@
 /**
- * Read-only audit of a workspace's seat state: compares what Dust believes
+ * Read-only audit of a workspace's seat state: compares what Ruby believes
  * (DB membership seat types) against what Metronome actually holds (assigned
  * seat IDs + unassigned pool per seat subscription) and the per-user seat
  * credit balances.
  *
  * Written to diagnose the seat-sync loop on workspaces where `syncSeatCount`
- * keeps re-issuing the same seat edit because some users desired in Dust never
+ * keeps re-issuing the same seat edit because some users desired in Ruby never
  * land in Metronome's assigned set (so the reconcile never converges). It
  * surfaces exactly which users are missing / stale per seat type, and each
  * assigned seat's live balance, so we can figure out why they won't assign
@@ -313,7 +313,7 @@ async function auditWorkspace(
     ...getSeatSubscriptionsFromContract(contract, productSeatTypes),
   ].flatMap(([seatType, sub]) => (sub.id ? [{ seatType, subId: sub.id }] : []));
 
-  // Dust side: DB membership seat types. Match the billed set exactly (see
+  // Ruby side: DB membership seat types. Match the billed set exactly (see
   // syncSeatCount) — active window open AND firstUsedAt set. Provisioned-but-
   // never-used members are excluded from billing, so report them separately.
   const { memberships } = await MembershipResource.getActiveMemberships({
@@ -344,10 +344,10 @@ async function auditWorkspace(
       contractId,
       planCode,
       seatSubscriptions: seatSubscriptions.map((s) => s.seatType),
-      dustDesiredCounts: Object.fromEntries(
+      rubyDesiredCounts: Object.fromEntries(
         [...desiredBySeatType].map(([t, s]) => [t, s.size])
       ),
-      dustProvisionedUnusedCounts: Object.fromEntries(
+      rubyProvisionedUnusedCounts: Object.fromEntries(
         [...provisionedUnusedBySeatType].map(([t, s]) => [t, s.length])
       ),
     },
@@ -368,7 +368,7 @@ async function auditWorkspace(
     );
   }
 
-  // Per seat subscription: compare Metronome assignment vs Dust desired.
+  // Per seat subscription: compare Metronome assignment vs Ruby desired.
   for (const { seatType, subId } of seatSubscriptions) {
     const stateRes = await paceMetronome(() =>
       getMetronomeSubscriptionSeatState({
@@ -405,7 +405,7 @@ async function auditWorkspace(
         metronomeAssigned: assignedSeatIds.length,
         metronomeUnassigned: unassignedSeats,
         metronomeTotal: assignedSeatIds.length + unassignedSeats,
-        dustDesired: desired.size,
+        rubyDesired: desired.size,
         missingInMetronomeCount: missingInMetronome.length,
         staleInMetronomeCount: staleInMetronome.length,
         // The actual users that keep the reconcile from converging.

@@ -439,7 +439,7 @@ function addAgentAttribution(
 ): string {
   if (isAgentLoopRunContext(runContext)) {
     const agentConfig = runContext.agentConfiguration;
-    return `${content}\n\nSent via ${agentConfig.name} Agent on Dust`;
+    return `${content}\n\nSent via ${agentConfig.name} Agent on Ruby`;
   }
   return content;
 }

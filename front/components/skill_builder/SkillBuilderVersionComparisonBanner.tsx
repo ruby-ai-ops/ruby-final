@@ -5,7 +5,7 @@ import type {
   SkillType,
   SkillWithVersionType,
 } from "@app/types/assistant/skill_configuration";
-import { Button, XClose } from "@dust-tt/sparkle";
+import { Button, XClose } from "@ruby-ai/ui";
 
 interface SkillVersionHistoryPickerProps {
   skill: SkillType;

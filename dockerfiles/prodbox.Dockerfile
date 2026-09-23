@@ -7,8 +7,8 @@ RUN apt-get update && apt-get install -y vim redis-tools postgresql-client htop 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-# Set the working directory to /dust
-WORKDIR /dust
+# Set the working directory to /ruby
+WORKDIR /ruby
 
 RUN npm install -g npm@11.11.0
 
@@ -20,12 +20,12 @@ RUN --mount=type=cache,id=npm-cache,target=/root/.npm npm ci --include=dev
 
 RUN cd sdks/js && npm run build
 
-RUN cd sparkle && npm run build
+RUN cd ui && npm run build
 
 RUN cd connectors && npm run build
 
-# Set the default start directory to /dust when SSH into the container
-WORKDIR /dust
+# Set the default start directory to /ruby when SSH into the container
+WORKDIR /ruby
 
 # Wraning and prompt
 RUN echo "echo -e \"\033[0;31mWARNING: This is a PRODUCTION system!\033[0m\"" >> /root/.bashrc
@@ -33,4 +33,4 @@ RUN echo "echo -e \"\033[0;31mWARNING: This is a PRODUCTION system!\033[0m\"" >>
 ENV GIT_SSH_COMMAND="ssh -i ~/.ssh/github-deploykey-deploybox"
 
 # Set a default command
-CMD ["/dust/prodbox/init.sh"]
+CMD ["/ruby/prodbox/init.sh"]

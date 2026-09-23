@@ -108,7 +108,7 @@ export async function filterUsersWithSharedMembership(
   }
 
   // Superusers can see all users that have a workspace membership.
-  if (auth.isDustSuperUser()) {
+  if (auth.isRubySuperUser()) {
     return usersWithWorkspaceMembership;
   }
 
@@ -168,7 +168,7 @@ export async function hasSharedMembership(
   }
 
   // Special case for superusers: they can see all users.
-  if (auth.isDustSuperUser()) {
+  if (auth.isRubySuperUser()) {
     return true;
   }
 

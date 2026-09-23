@@ -2,7 +2,7 @@ import { ToolsList } from "@app/components/actions/mcp/ToolsList";
 import { useBuilderContext } from "@app/components/shared/useBuilderContext";
 import type { MCPServerViewType } from "@app/lib/api/mcp";
 import { pluralize } from "@app/types/shared/utils/string_utils";
-import { Chip, ContentMessage } from "@dust-tt/sparkle";
+import { Chip, ContentMessage } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 

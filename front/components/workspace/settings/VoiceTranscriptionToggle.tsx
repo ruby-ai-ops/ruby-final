@@ -2,7 +2,7 @@ import { GovernanceSettingRowLayout } from "@app/components/pages/workspace/gove
 import { useVoiceTranscriptionToggle } from "@app/hooks/useVoiceTranscriptionToggle";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import type { WorkspaceType } from "@app/types/user";
-import { SliderToggle } from "@dust-tt/sparkle";
+import { SliderToggle } from "@ruby-ai/ui";
 
 export const VOICE_TRANSCRIPTION_LABEL = "Voice transcription";
 export const VOICE_TRANSCRIPTION_DESCRIPTION =

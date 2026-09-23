@@ -3,8 +3,8 @@ use serde::Deserialize;
 use std::time::{SystemTime, UNIX_EPOCH};
 use thiserror::Error;
 
-const EXPECTED_ISSUER: &str = "dust-front";
-const EXPECTED_AUDIENCE: &str = "dust-egress-proxy";
+const EXPECTED_ISSUER: &str = "ruby-front";
+const EXPECTED_AUDIENCE: &str = "ruby-egress-proxy";
 
 #[derive(Clone)]
 pub struct JwtValidator {

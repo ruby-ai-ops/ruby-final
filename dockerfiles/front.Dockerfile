@@ -11,22 +11,22 @@ WORKDIR /app
 # Copy all package.json files and lockfile
 COPY package.json package-lock.json ./
 COPY sdks/js/package.json ./sdks/js/
-COPY sparkle/package.json ./sparkle/
+COPY ui/package.json ./ui/
 COPY front/package.json ./front/
 COPY front-spa/package.json ./front-spa/
 COPY front-api/package.json ./front-api/
 
 RUN --mount=type=cache,id=npm-cache,target=/root/.npm,sharing=locked \
-  npm ci --prefer-offline --no-audit --no-fund -w sdks/js -w sparkle -w front -w front-spa -w front-api
+  npm ci --prefer-offline --no-audit --no-fund -w sdks/js -w ui -w front -w front-spa -w front-api
 
 # Build SDK
 WORKDIR /app/sdks/js
 COPY /sdks/js/ .
 RUN npm run build
 
-# Build Sparkle
-WORKDIR /app/sparkle
-COPY /sparkle/ .
+# Build RubyUI
+WORKDIR /app/ui
+COPY /ui/ .
 RUN npm run build
 
 # Copy front source
@@ -66,7 +66,7 @@ ARG NEXT_PUBLIC_DATADOG_SERVICE
 
 # Provide git metadata as env constants so `datadog-ci sourcemaps upload` does not
 # try to spawn git (not installed in the slim base) for repo URL / commit lookups.
-ARG DD_GIT_REPOSITORY_URL=https://github.com/dust-tt/dust
+ARG DD_GIT_REPOSITORY_URL=https://github.com/ruby-ai-ops/ruby-final
 ARG DD_GIT_COMMIT_SHA=${COMMIT_HASH_LONG}
 ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL}
 ENV DD_GIT_COMMIT_SHA=${DD_GIT_COMMIT_SHA}
@@ -119,12 +119,12 @@ COPY --from=base-deps /app/scripts/db /app/scripts/db
 # Copy built SDK
 COPY --from=base-deps /app/sdks/js/dist /app/sdks/js/dist
 COPY --from=base-deps /app/sdks/js/package.json /app/sdks/js/package.json
-# Copy built Sparkle
-COPY --from=base-deps /app/sparkle/dist /app/sparkle/dist
-COPY --from=base-deps /app/sparkle/package.json /app/sparkle/package.json
+# Copy built RubyUI
+COPY --from=base-deps /app/ui/dist /app/ui/dist
+COPY --from=base-deps /app/ui/package.json /app/ui/package.json
 
 # Re-declare build arg needed at runtime
-ARG NEXT_PUBLIC_DUST_APP_URL
+ARG NEXT_PUBLIC_RUBY_APP_URL
 ARG NEXT_PUBLIC_GTM_TRACKING_ID
 ARG NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 ARG NEXT_PUBLIC_DATADOG_SERVICE
@@ -133,7 +133,7 @@ ARG NEXT_PUBLIC_VIRTUOSO_LICENSE_KEY
 
 # Set as environment variable for runtime
 ENV NEXT_PUBLIC_COMMIT_HASH=$COMMIT_HASH
-ENV NEXT_PUBLIC_DUST_APP_URL=$NEXT_PUBLIC_DUST_APP_URL
+ENV NEXT_PUBLIC_RUBY_APP_URL=$NEXT_PUBLIC_RUBY_APP_URL
 ENV NEXT_PUBLIC_GTM_TRACKING_ID=$NEXT_PUBLIC_GTM_TRACKING_ID
 ENV NEXT_PUBLIC_DATADOG_CLIENT_TOKEN=$NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 ENV NEXT_PUBLIC_DATADOG_SERVICE=$NEXT_PUBLIC_DATADOG_SERVICE
@@ -145,7 +145,7 @@ ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 ARG COMMIT_HASH
 ARG COMMIT_HASH_LONG
-ARG DD_GIT_REPOSITORY_URL=https://github.com/dust-tt/dust
+ARG DD_GIT_REPOSITORY_URL=https://github.com/ruby-ai-ops/ruby-final
 ARG DD_GIT_COMMIT_SHA=${COMMIT_HASH_LONG}
 ENV DD_VERSION=${COMMIT_HASH}
 ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL}
@@ -161,7 +161,7 @@ FROM base-deps AS front-api-build
 ARG COMMIT_HASH
 ARG COMMIT_HASH_LONG
 ARG DATADOG_API_KEY
-ARG NEXT_PUBLIC_DUST_APP_URL
+ARG NEXT_PUBLIC_RUBY_APP_URL
 ARG NEXT_PUBLIC_GTM_TRACKING_ID
 ARG NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 ARG NEXT_PUBLIC_DATADOG_SERVICE
@@ -172,7 +172,7 @@ ARG NEXT_PUBLIC_BUILD_DATE
 
 ENV NEXT_PUBLIC_COMMIT_HASH=$COMMIT_HASH
 ENV NEXT_PUBLIC_BUILD_DATE=$NEXT_PUBLIC_BUILD_DATE
-ENV NEXT_PUBLIC_DUST_APP_URL=$NEXT_PUBLIC_DUST_APP_URL
+ENV NEXT_PUBLIC_RUBY_APP_URL=$NEXT_PUBLIC_RUBY_APP_URL
 ENV NEXT_PUBLIC_GTM_TRACKING_ID=$NEXT_PUBLIC_GTM_TRACKING_ID
 ENV NEXT_PUBLIC_DATADOG_CLIENT_TOKEN=$NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 ENV NEXT_PUBLIC_DATADOG_SERVICE=$NEXT_PUBLIC_DATADOG_SERVICE
@@ -182,7 +182,7 @@ ENV NEXT_PUBLIC_VIRTUOSO_LICENSE_KEY=$NEXT_PUBLIC_VIRTUOSO_LICENSE_KEY
 
 # Provide git metadata as env constants so `datadog-ci sourcemaps upload` does not
 # try to spawn git (not installed in the slim base) for repo URL / commit lookups.
-ARG DD_GIT_REPOSITORY_URL=https://github.com/dust-tt/dust
+ARG DD_GIT_REPOSITORY_URL=https://github.com/ruby-ai-ops/ruby-final
 ARG DD_GIT_COMMIT_SHA=${COMMIT_HASH_LONG}
 ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL}
 ENV DD_GIT_COMMIT_SHA=${DD_GIT_COMMIT_SHA}
@@ -232,12 +232,12 @@ COPY --from=base-deps /app/front/admin/prestop.sh ./front-api/admin/prestop.sh
 
 # Sibling workspaces resolved via @app aliases or transitive imports.
 COPY --from=base-deps /app/sdks/js ./sdks/js
-COPY --from=base-deps /app/sparkle ./sparkle
+COPY --from=base-deps /app/ui ./ui
 
 WORKDIR /app/front-api
 
-ARG NEXT_PUBLIC_DUST_APP_URL
-ENV NEXT_PUBLIC_DUST_APP_URL=$NEXT_PUBLIC_DUST_APP_URL
+ARG NEXT_PUBLIC_RUBY_APP_URL
+ENV NEXT_PUBLIC_RUBY_APP_URL=$NEXT_PUBLIC_RUBY_APP_URL
 
 # Region URLs and Novu endpoints are runtime env, supplied by the deployment.
 
@@ -251,7 +251,7 @@ ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 ARG COMMIT_HASH
 ARG COMMIT_HASH_LONG
-ARG DD_GIT_REPOSITORY_URL=https://github.com/dust-tt/dust
+ARG DD_GIT_REPOSITORY_URL=https://github.com/ruby-ai-ops/ruby-final
 ARG DD_GIT_COMMIT_SHA=${COMMIT_HASH_LONG}
 ENV DD_VERSION=${COMMIT_HASH}
 ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL}

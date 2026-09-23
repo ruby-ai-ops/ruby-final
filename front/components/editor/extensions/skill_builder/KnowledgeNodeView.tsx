@@ -9,7 +9,7 @@ import { useAuth } from "@app/lib/auth/AuthContext";
 import { useDataSourceViewContentNodes } from "@app/lib/swr/data_source_views";
 import { useSpaceDataSourceView } from "@app/lib/swr/spaces";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Chip, Spinner } from "@dust-tt/sparkle";
+import { Chip, Spinner } from "@ruby-ai/ui";
 import type { NodeViewProps } from "@tiptap/react";
 import { NodeViewWrapper } from "@tiptap/react";
 import type React from "react";

@@ -8,7 +8,7 @@ import {
 import {
   useSetContentWidth,
   useSetPageTitle,
-} from "@app/components/sparkle/AppLayoutContext";
+} from "@app/components/ui/AppLayoutContext";
 import { useCursorPaginationForDataTable } from "@app/hooks/useCursorPaginationForDataTable";
 import { useHashParam } from "@app/hooks/useHashParams";
 import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
@@ -29,7 +29,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 const SKILL_SEARCH_PAGE_SIZE = 50;
@@ -174,7 +174,7 @@ export function SearchSkillsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
   useSetContentWidth("wide");
-  useSetPageTitle("Dust - Manage Skills");
+  useSetPageTitle("Ruby - Manage Skills");
 
   return (
     <>

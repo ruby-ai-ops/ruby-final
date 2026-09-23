@@ -1,0 +1,419 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import React from "react";
+
+import {
+  Avatar,
+  Button,
+  CloudArrowLeftRight,
+  ContextItem,
+  Folder,
+  Globe01,
+  Icon,
+  Page,
+} from "../index_with_tw_base";
+import { MessageChatSquare } from "@ui/icons/v2-stroke";
+
+const meta = {
+  title: "Layout/Page",
+  tags: ["a11y-issues"],
+  component: Page,
+  parameters: {
+    docs: {
+      description: {
+        component: `A page-scaffolding namespace that stacks standardized content blocks with consistent spacing. Compose **Page.Header** (title, description, icon), **Page.SectionHeader** (with an optional **action** button), typography helpers **Page.P** / **Page.H**, and arrangement helpers **Page.Layout** (\`direction\`) and **Page.Div** for grouping. The root **Page** takes a **variant**.
+
+**When to use**
+- To build the vertical structure of a settings, detail, or overview page with uniform rhythm.
+
+**Guidelines**
+- Use **Page.Header** once at the top and **Page.SectionHeader** to delimit sections, attaching the primary section CTA via its **action** prop.
+- Reach for **Page.Layout** to lay child blocks horizontally or vertically rather than ad-hoc flex wrappers.`,
+      },
+    },
+  },
+} satisfies Meta<typeof Page>;
+
+export default meta;
+type Story = StoryObj;
+
+/**
+ * The minimal page skeleton: a **Page.Header**, a paragraph, and one
+ * **Page.SectionHeader** carrying its section CTA via the \`action\` prop.
+ * @summary Header, paragraph, and section header basics.
+ */
+export const SimpleTextPage: Story = {
+  render: () => (
+    <Page>
+      <Page.Header title="Title" description="Description" />
+      <Page.P>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod
+        a massa quis lacinia. Donec euismod nisl eget nunc Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit. Nullam euismod a massa quis lacinia.
+        Donec euismod nisl eget nunc
+      </Page.P>
+      <Page.SectionHeader
+        title="Section Title"
+        description="Section Description"
+        action={{ label: "Action", size: "sm" }}
+      />
+      <Page.Layout direction="horizontal">
+        <div className="h-12 w-16 bg-brand" />
+      </Page.Layout>
+    </Page>
+  ),
+};
+
+/**
+ * A complete page composing Page blocks with other RubyUI components: a
+ * header and section header above a **ContextItem.List** of rich list rows.
+ * @summary Page scaffolding around a ContextItem list.
+ */
+export const FullPageLayout: Story = {
+  render: () => (
+    <Page>
+      <Page.Header title="Title" description="Description" />
+      <Page.P>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod
+        a massa quis lacinia. Donec euismod nisl eget nunc Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit. Nullam euismod a massa quis lacinia.
+        Donec euismod nisl eget nunc
+      </Page.P>
+      <Page.SectionHeader
+        title="Section Title"
+        description="Section Description"
+        action={{ label: "Action", size: "sm" }}
+      />
+      <ContextItem.List>
+        <ContextItem
+          title="@Gpt4"
+          visual={
+            <Avatar
+              visual="https://ruby.ad/static/systemavatar/gpt4_avatar_full.png"
+              size="sm"
+            />
+          }
+        >
+          <ContextItem.Description description="Stats, pricing, history of contacts, contact message" />
+        </ContextItem>
+        <ContextItem
+          title="@SalesFr"
+          action={<Button variant="outline" label="Manage" size="sm" />}
+          visual={
+            <Avatar
+              visual="https://ruby.ad/static/droidavatar/Droid_Indigo_4.jpg"
+              size="sm"
+            />
+          }
+        >
+          <ContextItem.Description description="Stats, pricing, history of contacts, contact message" />
+        </ContextItem>
+        <ContextItem
+          title="@SupportFr"
+          action={<Button variant="outline" label="Manage" size="sm" />}
+          visual={
+            <Avatar
+              visual="https://ruby.ad/static/droidavatar/Droid_Pink_4.jpg"
+              size="sm"
+            />
+          }
+        >
+          <ContextItem.Description description="Stats, pricing, history of contacts, contact message" />
+        </ContextItem>
+      </ContextItem.List>
+    </Page>
+  ),
+};
+
+/**
+ * Recreation of Ruby's onboarding "Quick Guide for new members" screen,
+ * exercising multi-column **Page.Horizontal** / **Page.Vertical** layouts
+ * with rich headings. Kept for design review of dense marketing-style
+ * pages.
+ * @summary App-screen recreation of the quick start guide.
+ */
+export const QuickStartGuide: Story = {
+  tags: ["!manifest"],
+  render: () => (
+    <Page>
+      <Page.Header
+        title={
+          <>
+            Get Started: <br />
+            Quick Guide for new members
+          </>
+        }
+      />
+
+      <Page.Horizontal>
+        <Page.Vertical sizing="grow">
+          <Page.H>
+            👋 <br />
+            Hello <br /> <span className="text-success-500">@mentions</span>
+          </Page.H>
+          <Page.P>
+            In Ruby, you won't find just one AI agent, but multiple ones.
+          </Page.P>
+          <Page.P>
+            You can call any agent at any time by typing “@” and the name of the
+            agent.
+          </Page.P>
+        </Page.Vertical>
+        <Page.Vertical sizing="grow">
+          <img
+            src="/static/quick_start_guide_input_bar.png"
+            alt="The Ruby input bar with an @mention"
+          />
+        </Page.Vertical>
+      </Page.Horizontal>
+      <Page.Horizontal>
+        <Page.Vertical>
+          <Page.H>
+            👩‍🎨🦸‍♀️🥷🧑‍🚀
+            <br /> Why multiple
+            <br /> Agents?
+          </Page.H>
+
+          <Page.P>
+            The basic agent is{" "}
+            <span className="font-bold text-success-500">@gpt4</span>. It is a
+            raw model. “Raw” means it does not have particular instructions or
+            access to knowledge.
+          </Page.P>
+          <Page.P>
+            You also have access to agents that use a raw model (gpt4 for
+            instance), AND give them specific instructions and access to
+            knowledge.{" "}
+            <span className="font-bold">
+              They can answer specific questions, really well.
+            </span>
+          </Page.P>
+          <Page.P>
+            Agents can be provided by Ruby, by your company (Company agents), by
+            your coworkers (Shared agents).
+          </Page.P>
+        </Page.Vertical>
+
+        <Page.Vertical>
+          <Page.H>
+            🛠️
+            <br />
+            How to make
+            <br />
+            an Agent?
+          </Page.H>
+          <Page.P>You can build Agents!</Page.P>
+          <Page.P>
+            Agents start with an “instruction”. A simple text, explaining what
+            you want them to do.
+          </Page.P>
+          <Page.P>
+            For instance, <span className="italic">“Act as a doctor”</span>,{" "}
+            <span className="italic">“Summarise this document”</span>,{" "}
+            <span className="italic">“What do you know about X”</span>.
+          </Page.P>
+          <Page.P>
+            You can give them access to knowledge.
+            <br />
+            We call them <span className="font-bold">Data sources.</span>
+          </Page.P>
+          <Page.P>
+            With the right Data source, agents can answer demands like
+            <span className="italic">
+              “Have we been working with company X”
+            </span>
+            , <span className="italic">“How do we manage expenses”</span>,{" "}
+            <span className="italic">
+              “Write an intro email using the company tone of voice”...
+            </span>
+          </Page.P>
+        </Page.Vertical>
+      </Page.Horizontal>
+
+      <Page.Vertical>
+        <Page.H>
+          📚
+          <br />
+          What are
+          <br />
+          Data sources?
+        </Page.H>
+
+        <Page.P>
+          To augment your agents with knowledge, you give them data.
+          <br /> Data can come in different ways in Ruby.{" "}
+          <span className="font-bold">Here are the three main ways:</span>
+        </Page.P>
+        <Page.Horizontal>
+          <Page.Vertical sizing="grow">
+            <div className="flex items-center gap-2">
+              <Icon visual={CloudArrowLeftRight} />{" "}
+              <Page.H variant="h6">Connections</Page.H>
+            </div>
+            <Page.P>
+              Notion, Slack, Google Drive... Ruby can connect to multiple
+              platforms and synchronize your data.
+            </Page.P>
+          </Page.Vertical>
+          <Page.Vertical sizing="grow">
+            <Page.Horizontal>
+              <div className="flex items-center gap-2">
+                <Icon visual={Folder} /> <Page.H variant="h6">Folders</Page.H>
+              </div>
+            </Page.Horizontal>
+            <Page.P>Upload files (text, pdf, csv) directly in Ruby.</Page.P>
+          </Page.Vertical>
+          <Page.Vertical sizing="grow">
+            <Page.Horizontal>
+              <div className="flex items-center gap-2">
+                <Icon visual={Globe01} /> <Page.H variant="h6">Websites</Page.H>
+              </div>
+            </Page.Horizontal>
+            <Page.P>
+              Any public website can be synced in Ruby. Think FAQ, wikipedia
+              pages, documentation...
+            </Page.P>
+          </Page.Vertical>
+        </Page.Horizontal>
+      </Page.Vertical>
+    </Page>
+  ),
+};
+
+/**
+ * Recreation of the agent builder screen, exercising nested
+ * **Page.Layout** directions, gap sizes, and **Page.Separator** between
+ * form sections. Kept for design review.
+ * @summary App-screen recreation of the agent builder.
+ */
+export const AssistantBuilder: Story = {
+  tags: ["!manifest"],
+  render: () => (
+    <Page>
+      <Page.Layout direction="horizontal">
+        <Page.Layout direction="vertical" sizing="grow" gap="lg">
+          <Page.H variant="h2">Identity</Page.H>
+          <Page.Layout direction="vertical" gap="xs">
+            <Page.H variant="h4">Name / Handle</Page.H>
+            <Page.P variant="secondary">
+              The handle of your agent will be used to call it with an “@”
+              mention (for instance @myAssistant).
+            </Page.P>
+          </Page.Layout>
+          <Page.Layout direction="vertical" gap="xs">
+            <Page.H variant="h4">Description</Page.H>
+            <Page.P variant="secondary">
+              The description helps your collaborators and Ruby to understand
+              the purpose of the agent. It must be descriptive and short.
+            </Page.P>
+          </Page.Layout>
+        </Page.Layout>
+        <Page.Layout direction="vertical" align="center">
+          <Avatar
+            size="xl"
+            visual="https://ruby.ad/static/droidavatar/Droid_Black_2.jpg/"
+          />
+          <Button size="sm" variant="outline" label="Change" />
+        </Page.Layout>
+      </Page.Layout>
+      <Page.Separator />
+      <Page.Layout direction="vertical" sizing="grow" gap="xs">
+        <Page.H variant="h2">Instructions</Page.H>
+        <Page.P variant="secondary">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+          euismod a massa quis lacinia. Donec euismod nisl eget nunc Lorem ipsum
+          dolor sit amet, consectetur adipiscing elit. Nullam euismod a massa
+          quis lacinia. Donec euismod nisl eget nunc
+        </Page.P>
+      </Page.Layout>
+      <Page.Separator />
+      <Page.Layout direction="vertical" sizing="grow" gap="lg">
+        <Page.Layout direction="vertical" sizing="grow" gap="xs">
+          <Page.H variant="h2">Actions</Page.H>
+          <Page.P variant="secondary">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+            euismod a massa quis lacinia. Donec euismod nisl eget nunc Lorem
+            ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod a
+            massa quis lacinia. Donec euismod nisl eget nunc
+          </Page.P>
+        </Page.Layout>
+        <Page.Layout direction="horizontal">
+          <Page.Layout direction="vertical" gap="xs" sizing="grow">
+            <Page.H variant="h5">
+              Setting data sources is not an obligation.
+            </Page.H>
+            <Page.P variant="secondary">
+              By default, your agent will follow your instructions and answer
+              based on common knowledge.
+            </Page.P>
+          </Page.Layout>
+          <Page.Layout direction="vertical" gap="xs" sizing="grow">
+            <Page.H variant="h5">Choose your data sources with care.</Page.H>
+            <Page.P variant="secondary">
+              Giving a lot of data does not always give better results.
+              Selecting only the right data is better.
+            </Page.P>
+          </Page.Layout>
+        </Page.Layout>
+      </Page.Layout>
+    </Page>
+  ),
+};
+
+/**
+ * Recreation of the in-app help screen, mixing section headers, secondary
+ * paragraphs, and suggestion buttons in a fluid layout. Kept for design
+ * review.
+ * @summary App-screen recreation of the help panel.
+ */
+export const HelpScreen: Story = {
+  tags: ["!manifest"],
+  render: () => (
+    <Page>
+      <Page.Header title="Welcome to Agent" />
+      <Page.Layout direction="vertical" gap="xs" align="left">
+        <Page.SectionHeader title="Getting started?" />
+        <Page.P variant="secondary">
+          Using agent is easy as asking a question to a friend or a coworker.
+          <br />
+          Try it out:
+        </Page.P>
+        <Button
+          variant="primary"
+          label="Hey @helper, how do I use the agent?"
+          icon={MessageChatSquare}
+        />
+      </Page.Layout>
+      <Page.Separator />
+      <Page.Layout direction="vertical" gap="xs">
+        <Page.SectionHeader title="Meet your smart friends" />
+        <Page.P variant="secondary">
+          Ruby is not just a single agent, it’s a full team at your service.{" "}
+          <br />
+          Each member has a specific set of skills.
+        </Page.P>
+        <Page.P variant="secondary">Meet some of your agent team:</Page.P>
+      </Page.Layout>
+      <Page.Separator />
+      <Page.Layout direction="vertical" gap="xs">
+        <Page.SectionHeader title="Frequently asked questions" />
+        <Page.Layout direction="fluid" gap="sm">
+          <Button
+            variant="outline"
+            label="Hey @helper, how do I use the agent?"
+            icon={MessageChatSquare}
+          />
+          <Button
+            variant="outline"
+            label="Hey @helper, What is agent not good at?"
+            icon={MessageChatSquare}
+          />
+          <Button
+            variant="outline"
+            label="Hey @helper, Anything I should know?"
+            icon={MessageChatSquare}
+          />
+        </Page.Layout>
+      </Page.Layout>
+    </Page>
+  ),
+};

@@ -4,7 +4,7 @@ import { useConnectorConfig } from "@app/lib/swr/connectors";
 import type { DataSourceType } from "@app/types/data_source";
 import type { APIError } from "@app/types/error";
 import type { WorkspaceType } from "@app/types/user";
-import { ContextItem, IntercomLogo, SliderToggle } from "@dust-tt/sparkle";
+import { ContextItem, IntercomLogo, SliderToggle } from "@ruby-ai/ui";
 import { useState } from "react";
 
 export function IntercomConfigView({
@@ -76,7 +76,7 @@ export function IntercomConfigView({
       >
         <ContextItem.Description>
           <div className="text-muted-foreground">
-            If activated, Dust will also sync the notes from the conversations
+            If activated, Ruby will also sync the notes from the conversations
             you've selected.
           </div>
         </ContextItem.Description>

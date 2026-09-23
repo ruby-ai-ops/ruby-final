@@ -6,7 +6,7 @@ import { ErrorBoundary } from "@app/components/error_boundary/ErrorBoundary";
 import {
   useSetHasTitle,
   useSetPageTitle,
-} from "@app/components/sparkle/AppLayoutContext";
+} from "@app/components/ui/AppLayoutContext";
 import { useActivePodId } from "@app/hooks/useActivePodId";
 import { useSpaceInfo } from "@app/lib/swr/spaces";
 import type { LightWorkspaceType } from "@app/types/user";
@@ -25,7 +25,7 @@ export function PodLayout({ children, owner }: PodLayoutProps) {
     spaceId: activePodId,
   });
 
-  const pageTitle = spaceInfo ? `Dust - ${spaceInfo.name}` : "Dust";
+  const pageTitle = spaceInfo ? `Ruby - ${spaceInfo.name}` : "Ruby";
 
   useSetHasTitle(!!activePodId);
   useSetPageTitle(pageTitle);
@@ -49,7 +49,7 @@ function UncaughtPodErrorFallback() {
       title="Something unexpected happened"
       message={[
         "Try refreshing the page to continue.",
-        "Still having trouble? Reach out at support@dust.tt",
+        "Still having trouble? Reach out at support@ruby.ad",
       ]}
     />
   );

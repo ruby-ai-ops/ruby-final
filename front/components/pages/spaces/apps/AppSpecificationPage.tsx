@@ -4,7 +4,7 @@ import { useRequiredPathParam } from "@app/lib/platform";
 import { dumpSpecification } from "@app/lib/specification";
 import { useApp } from "@app/lib/swr/apps";
 import type { SpecificationType } from "@app/types/app";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 export function AppSpecificationPage() {

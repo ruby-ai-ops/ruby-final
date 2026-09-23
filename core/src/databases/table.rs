@@ -970,8 +970,8 @@ impl Row {
             let header = &headers[i];
             let trimmed = field.trim();
 
-            if header == "__dust_id" {
-                Err(anyhow!("__dust_id is not a valid header. It should have been filtered out before calling this method."))?;
+            if header == "__ruby_id" {
+                Err(anyhow!("__ruby_id is not a valid header. It should have been filtered out before calling this method."))?;
             }
 
             let parsed_value = if trimmed.is_empty() {
@@ -1058,8 +1058,8 @@ impl Row {
         let mut record = Vec::new();
         let row_val = self.value();
         for header in headers {
-            // We need to set the row_id in a __dust_id field
-            if header == "__dust_id" {
+            // We need to set the row_id in a __ruby_id field
+            if header == "__ruby_id" {
                 record.push(self.row_id().to_string());
                 continue;
             }
@@ -1448,16 +1448,16 @@ mod tests {
         );
         // Note: string_value may change format during parsing, so we don't assert equality on it
 
-        // Test case 4: Test that the __dust_id field is present in the CSV record at the position of the field in the headers
-        let dust_id_row = Row::new_from_value(
-            "dust_id_test_id".to_string(),
+        // Test case 4: Test that the __ruby_id field is present in the CSV record at the position of the field in the headers
+        let ruby_id_row = Row::new_from_value(
+            "ruby_id_test_id".to_string(),
             serde_json::Map::from_iter([("property".to_string(), "value".into())]),
         );
-        let headers = Arc::new(vec!["property".to_string(), "__dust_id".to_string()]);
-        let dust_id_csv_record = dust_id_row.to_csv_record(&headers)?;
+        let headers = Arc::new(vec!["property".to_string(), "__ruby_id".to_string()]);
+        let ruby_id_csv_record = ruby_id_row.to_csv_record(&headers)?;
         assert_eq!(
-            dust_id_csv_record[dust_id_csv_record.len() - 1],
-            dust_id_row.row_id()
+            ruby_id_csv_record[ruby_id_csv_record.len() - 1],
+            ruby_id_row.row_id()
         );
 
         Ok(())

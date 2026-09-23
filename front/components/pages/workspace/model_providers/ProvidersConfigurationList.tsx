@@ -2,7 +2,7 @@ import { ProviderConfigurationContextItem } from "@app/components/pages/workspac
 import { useProviderCredentials } from "@app/lib/swr/provider_credentials";
 import type { ByokModelProviderIdType } from "@app/types/assistant/models/types";
 import type { LightWorkspaceType } from "@app/types/user";
-import { ContextItem } from "@dust-tt/sparkle";
+import { ContextItem } from "@ruby-ai/ui";
 import keyBy from "lodash/keyBy";
 
 interface ProvidersConfigurationListProps {

@@ -8,19 +8,19 @@ import type {
 } from "./devModeConfig";
 import { ALL_TOKENS, ALL_TYPO_TOKENS, TYPO_PROP_CSS } from "./devModeConfig";
 
-const COLOR_OVERRIDES_KEY = "dust_color_overrides";
-const COLOR_STYLE_ID = "dust-dev-color-overrides";
+const COLOR_OVERRIDES_KEY = "ruby_color_overrides";
+const COLOR_STYLE_ID = "ruby-dev-color-overrides";
 
-const TYPO_OVERRIDES_KEY = "dust_typo_overrides";
-const TYPO_STYLE_ID = "dust-dev-typo-overrides";
+const TYPO_OVERRIDES_KEY = "ruby_typo_overrides";
+const TYPO_STYLE_ID = "ruby-dev-typo-overrides";
 
-const FONT_FAMILY_OVERRIDES_KEY = "dust_font_family_overrides";
-const FONT_FAMILY_STYLE_ID = "dust-dev-font-family-overrides";
-const FONT_FAMILY_LINK_ID = "dust-dev-google-font";
+const FONT_FAMILY_OVERRIDES_KEY = "ruby_font_family_overrides";
+const FONT_FAMILY_STYLE_ID = "ruby-dev-font-family-overrides";
+const FONT_FAMILY_LINK_ID = "ruby-dev-google-font";
 
-export const PANEL_POS_KEY = "dust_dev_panel_pos";
-export const DOCK_MODE_KEY = "dust_dev_dock_mode";
-export const DOCKED_PANEL_POS_KEY = "dust_dev_docked_panel_pos";
+export const PANEL_POS_KEY = "ruby_dev_panel_pos";
+export const DOCK_MODE_KEY = "ruby_dev_dock_mode";
+export const DOCKED_PANEL_POS_KEY = "ruby_dev_docked_panel_pos";
 
 export type ColorOverrides = Record<string, string>;
 

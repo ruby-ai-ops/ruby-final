@@ -28,7 +28,7 @@ vi.mock("@app/lib/api/assistant/email/email_trigger", () => ({
 
 vi.mock("@app/lib/api/config", () => ({
   default: {
-    getAppUrl: vi.fn(() => "https://app.dust.tt"),
+    getAppUrl: vi.fn(() => "https://app.ruby.ad"),
   },
 }));
 
@@ -45,7 +45,7 @@ vi.mock("@app/lib/resources/conversation_resource", () => ({
 }));
 
 vi.mock("@app/lib/utils/router", () => ({
-  getConversationRoute: vi.fn(() => "https://app.dust.tt/conv"),
+  getConversationRoute: vi.fn(() => "https://app.ruby.ad/conv"),
 }));
 
 vi.mock("@app/types/assistant/agent_run", () => ({
@@ -79,16 +79,16 @@ describe("sendEmailReplyOnCompletion", () => {
     vi.mocked(getEmailReplyContext).mockResolvedValue({
       subject: "Test",
       originalText: "Hello",
-      fromEmail: "sender@dust.tt",
-      fromFull: "Sender <sender@dust.tt>",
-      threadingMessageId: "<incoming-message-id@dust.tt>",
+      fromEmail: "sender@ruby.ad",
+      fromFull: "Sender <sender@ruby.ad>",
+      threadingMessageId: "<incoming-message-id@ruby.ad>",
       threadingInReplyTo: null,
       threadingReferences: null,
       agentConfigurationId: "agent-config-1",
       workspaceId: "workspace-1",
       conversationId: "conversation-1",
-      replyTo: ["sender@dust.tt", "observer@dust.tt"],
-      replyCc: ["security@dust.tt"],
+      replyTo: ["sender@ruby.ad", "observer@ruby.ad"],
+      replyCc: ["security@ruby.ad"],
     } as never);
 
     vi.mocked(getAgentLoopRuntimeDataWithAuth).mockResolvedValue({
@@ -117,7 +117,7 @@ describe("sendEmailReplyOnCompletion", () => {
     );
     expect(replyToEmail).toHaveBeenCalledWith(
       expect.objectContaining({
-        recipient: "sender@dust.tt",
+        recipient: "sender@ruby.ad",
       })
     );
     expect(replyToEmail).toHaveBeenCalledTimes(1);
@@ -129,9 +129,9 @@ describe("sendEmailReplyOnCompletion", () => {
     vi.mocked(getEmailReplyContext).mockResolvedValue({
       subject: "Test",
       originalText: "Hello",
-      fromEmail: "sender@dust.tt",
-      fromFull: "Sender <sender@dust.tt>",
-      threadingMessageId: "<incoming-message-id@dust.tt>",
+      fromEmail: "sender@ruby.ad",
+      fromFull: "Sender <sender@ruby.ad>",
+      threadingMessageId: "<incoming-message-id@ruby.ad>",
       threadingInReplyTo: null,
       threadingReferences: null,
       agentConfigurationId: "agent-config-1",

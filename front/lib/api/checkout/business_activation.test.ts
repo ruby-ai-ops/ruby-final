@@ -156,7 +156,7 @@ vi.mock("@app/lib/plans/plan_codes", () => ({
 }));
 
 vi.mock("@app/lib/metronome/constants", () => ({
-  PAYMENT_GATE_TYPE_CUSTOM_FIELD_KEY: "DUST_PAYMENT_GATE_TYPE",
+  PAYMENT_GATE_TYPE_CUSTOM_FIELD_KEY: "RUBY_PAYMENT_GATE_TYPE",
   PAYMENT_GATE_TYPE_SUBSCRIPTION_ACTIVATION: "subscription_activation",
   CURRENCY_TO_CREDIT_TYPE_ID: { usd: "usd-credit", eur: "eur-credit" },
   CARRY_ON_RENEWAL_CUSTOM_FIELD_KEY: "CARRY_ON_RENEWAL",

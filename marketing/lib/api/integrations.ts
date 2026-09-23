@@ -16,8 +16,8 @@ const integrationBaseSchema = z.object({
   type: z.enum(["mcp_server", "connector", "both"]),
   description: z.string(),
   // Icon is a plain string at the wire boundary — front may ship platform
-  // logos that this app's bundled Sparkle doesn't know about yet. The
-  // renderer resolves it via Sparkle's `getPlatformLogo` with a fallback.
+  // logos that this app's bundled RubyUI doesn't know about yet. The
+  // renderer resolves it via RubyUI's `getPlatformLogo` with a fallback.
   icon: z.string(),
   documentationUrl: z.string().nullable(),
   authorizationRequired: z.boolean(),

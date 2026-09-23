@@ -27,8 +27,8 @@ export default function ChatGptEnterpriseLandingPage() {
   return (
     <>
       <PageMetadata
-        title="The 6 Best ChatGPT Enterprise Alternatives for Teams in 2026 | Dust"
-        description="Compare the top ChatGPT Enterprise alternatives. See why brands like Clay, WhatNot, Persona, and Vanta picked Dust to scale AI at their company."
+        title="The 6 Best ChatGPT Enterprise Alternatives for Teams in 2026 | Ruby"
+        description="Compare the top ChatGPT Enterprise alternatives. See why brands like Clay, WhatNot, Persona, and Vanta picked Ruby to scale AI at their company."
         pathname="/landing/chatgpt-enterprise"
       />
 
@@ -45,10 +45,10 @@ export default function ChatGptEnterpriseLandingPage() {
       {/* Logo Bar */}
       <ChatGptEnterpriseLogoBar title={chatGptEnterpriseConfig.logoBarTitle} />
 
-      {/* Dust Deep Dive */}
+      {/* Ruby Deep Dive */}
       <ChatGptEnterpriseDeepDive
-        pros={chatGptEnterpriseConfig.dustDeepDive.pros}
-        testimonials={chatGptEnterpriseConfig.dustDeepDive.testimonials}
+        pros={chatGptEnterpriseConfig.rubyDeepDive.pros}
+        testimonials={chatGptEnterpriseConfig.rubyDeepDive.testimonials}
       />
 
       {/* What is ChatGPT Enterprise? */}

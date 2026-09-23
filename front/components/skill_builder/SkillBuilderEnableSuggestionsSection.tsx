@@ -1,6 +1,6 @@
 import { useSkillBuilderContext } from "@app/components/skill_builder/SkillBuilderContext";
 import type { SkillBuilderFormData } from "@app/components/skill_builder/SkillBuilderFormContext";
-import { InfoCircle, SliderToggle, Tooltip } from "@dust-tt/sparkle";
+import { InfoCircle, SliderToggle, Tooltip } from "@ruby-ai/ui";
 import { useFormContext, useFormState } from "react-hook-form";
 
 interface SkillBuilderEnableSuggestionsSectionProps {
@@ -48,7 +48,7 @@ export function SkillBuilderEnableSuggestionsSection({
         />
         <span className="text-sm text-foreground">Self-improve</span>
         <Tooltip
-          label="Dust will analyze how this skill is used and suggest improvements to its instructions over time."
+          label="Ruby will analyze how this skill is used and suggest improvements to its instructions over time."
           trigger={<InfoCircle className="text-muted-foreground h-4 w-4" />}
         />
       </div>

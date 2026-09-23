@@ -50,13 +50,13 @@ export async function checkCostAndSubagentsThresholds({
     };
   }
 
-  const { dustRunIds, descendantAgenticUserMessageCount } =
+  const { rubyRunIds, descendantAgenticUserMessageCount } =
     await collectDescendantData(auth, {
       rootAgentMessageId: eventData.agentMessageId,
     });
 
   const totalCostMicroUsd = await getCumulativeCostMicroUsd(auth, {
-    dustRunIds,
+    rubyRunIds,
   });
 
   if (totalCostMicroUsd > 0) {
@@ -109,13 +109,13 @@ export async function checkCostAndSubagentsThresholds({
 
 async function getCumulativeCostMicroUsd(
   auth: Authenticator,
-  { dustRunIds }: { dustRunIds: string[] }
+  { rubyRunIds }: { rubyRunIds: string[] }
 ): Promise<number> {
-  if (dustRunIds.length === 0) {
+  if (rubyRunIds.length === 0) {
     return 0;
   }
 
-  const runResources = await RunResource.listByDustRunIds(auth, { dustRunIds });
+  const runResources = await RunResource.listByRubyRunIds(auth, { rubyRunIds });
   const runUsages = await RunResource.listRunUsagesForRuns(auth, {
     runs: runResources,
   });
@@ -135,7 +135,7 @@ async function collectDescendantData(
   auth: Authenticator,
   { rootAgentMessageId }: { rootAgentMessageId: string }
 ): Promise<{
-  dustRunIds: string[];
+  rubyRunIds: string[];
   descendantAgenticUserMessageCount: number;
 }> {
   const workspace = auth.getNonNullableWorkspace();
@@ -238,7 +238,7 @@ async function collectDescendantData(
   }
 
   return {
-    dustRunIds: [...runIds],
+    rubyRunIds: [...runIds],
     descendantAgenticUserMessageCount: descendantAgenticUserMessageRowIds.size,
   };
 }

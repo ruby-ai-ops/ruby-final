@@ -42,7 +42,7 @@ export const HEADQUARTERS_REGION_OPTIONS = [
   { value: "Oceania", label: "Oceania" },
 ] as const;
 
-export const COMPANY_INDUSTRY_OPTIONS = [
+export const COMPANY_INRUBYRY_OPTIONS = [
   { value: "Option 1", label: "Tech - B2B SaaS" },
   { value: "Option 2", label: "Tech - Marketplace" },
   { value: "Retail & E-Commerce", label: "Retail &amp; E-Commerce" },
@@ -88,7 +88,7 @@ export const PARTNER_AI_PROFICIENCY_OPTIONS = [
   },
 ] as const;
 
-export const PARTNER_DUST_USAGE_DURATION_OPTIONS = [
+export const PARTNER_RUBY_USAGE_DURATION_OPTIONS = [
   { value: "Haven't yet", label: "Haven't yet" },
   { value: "1-3 months", label: "1-3 months" },
   { value: "3-12 months", label: "3-12 months" },
@@ -146,7 +146,7 @@ export const PARTNER_FIELD_DEFINITIONS = [
     label: "What industry do you specialize in?",
     type: "dropdown",
     required: false,
-    options: COMPANY_INDUSTRY_OPTIONS,
+    options: COMPANY_INRUBYRY_OPTIONS,
   },
   {
     name: "partner_customer_sizes",
@@ -175,21 +175,21 @@ export const PARTNER_FIELD_DEFINITIONS = [
     options: PARTNER_AI_PROFICIENCY_OPTIONS,
   },
   {
-    name: "partner_dust_usage_duration",
-    label: "How long have you been using Dust?",
+    name: "partner_ruby_usage_duration",
+    label: "How long have you been using Ruby?",
     type: "dropdown",
     required: true,
-    options: PARTNER_DUST_USAGE_DURATION_OPTIONS,
+    options: PARTNER_RUBY_USAGE_DURATION_OPTIONS,
   },
   {
     name: "partner_agent_example",
-    label: "Share your favorite Dust Agent you’ve built",
+    label: "Share your favorite Ruby Agent you’ve built",
     type: "text",
     required: true,
   },
   {
-    name: "partner_dust_clients",
-    label: "How many Dust clients do you currently have?",
+    name: "partner_ruby_clients",
+    label: "How many Ruby clients do you currently have?",
     type: "number",
     required: true,
   },
@@ -201,7 +201,7 @@ export const PARTNER_FIELD_DEFINITIONS = [
   },
   {
     name: "partner_additionnal_details",
-    label: "How would you envision a partnership with Dust?",
+    label: "How would you envision a partnership with Ruby?",
     type: "textarea",
     required: true,
   },
@@ -233,21 +233,21 @@ export const PartnerFormSchema = z.object({
   partner_project_duration: z.string().optional(),
   technical_staff: z.string().optional(),
   partner_ai_proficiency: z.string().optional(),
-  partner_dust_usage_duration: z
+  partner_ruby_usage_duration: z
     .string()
-    .min(1, "How long have you been using Dust? is required"),
+    .min(1, "How long have you been using Ruby? is required"),
   partner_agent_example: z
     .string()
-    .min(1, "Share your favorite Dust Agent you’ve built is required"),
-  partner_dust_clients: z
+    .min(1, "Share your favorite Ruby Agent you’ve built is required"),
+  partner_ruby_clients: z
     .string()
-    .min(1, "How many Dust clients do you currently have? is required"),
+    .min(1, "How many Ruby clients do you currently have? is required"),
   any_existing_lead_to_share_: z
     .string()
     .min(1, "Do you have a first opportunity in mind? is required"),
   partner_additionnal_details: z
     .string()
-    .min(1, "How would you envision a partnership with Dust? is required"),
+    .min(1, "How would you envision a partnership with Ruby? is required"),
   partner_other_partnerhips: z.string().optional(),
 });
 

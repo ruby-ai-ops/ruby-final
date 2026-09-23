@@ -3,7 +3,7 @@ import { resolveLegacyDataSourceSpaceId } from "@app/lib/api/data_sources";
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import logger from "@app/logger/logger";
 import { CoreAPI } from "@app/types/core/core_api";
-import type { GetFoldersResponseType } from "@dust-tt/client";
+import type { GetFoldersResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsSystemKey } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";
@@ -67,8 +67,8 @@ app.get(
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const folders = await coreAPI.getDataSourceFolders(
       {
-        projectId: dataSource.dustAPIProjectId,
-        dataSourceId: dataSource.dustAPIDataSourceId,
+        projectId: dataSource.rubyAPIProjectId,
+        dataSourceId: dataSource.rubyAPIDataSourceId,
       },
       {
         limit,

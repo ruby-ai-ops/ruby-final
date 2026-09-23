@@ -1,5 +1,5 @@
 import { SpaceResource } from "@app/lib/resources/space_resource";
-import type { PokeProjectCtx } from "@front-api/middlewares/ctx";
+import type { AdminProjectCtx } from "@front-api/middlewares/ctx";
 import { apiError } from "@front-api/middlewares/utils";
 import { createMiddleware } from "hono/factory";
 
@@ -9,10 +9,10 @@ import { createMiddleware } from "hono/factory";
  * Apply at the `[projectId]` level so sub-routes read `ctx.get("space")` instead
  * of each re-fetching and re-validating the project.
  *
- * Apply after the poke auth middleware so `ctx.get("auth")` is available.
+ * Apply after the admin auth middleware so `ctx.get("auth")` is available.
  */
 export function withProject() {
-  return createMiddleware<PokeProjectCtx>(async (ctx, next) => {
+  return createMiddleware<AdminProjectCtx>(async (ctx, next) => {
     const auth = ctx.get("auth");
     const projectId = ctx.req.param("projectId");
 

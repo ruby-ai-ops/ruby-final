@@ -68,7 +68,7 @@ describe("checkWorkspaceFitsPlanLimits - connections limit", () => {
     await DataSourceViewFactory.fromConnector(
       workspace,
       globalSpace,
-      "dust_project",
+      "ruby_project",
       user
     );
     await DataSourceViewFactory.fromConnector(

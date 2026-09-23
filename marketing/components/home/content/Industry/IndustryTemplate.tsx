@@ -4,21 +4,28 @@ import {
   H1,
   H2,
   H3,
+  MarketingFeatureIcon,
   P,
 } from "@marketing/components/home/ContentComponents";
 import { HomeAIOperatorsCTASection } from "@marketing/components/home/content/Product/HomeAIOperatorsCTASection";
 import { CustomerStoriesSection } from "@marketing/components/home/content/Solutions/CustomerStoriesSection";
 import { DemoVideoSection } from "@marketing/components/home/content/Solutions/DemoVideoSection";
+import { MarketingGradientSurface } from "@marketing/components/home/MarketingGradientSurface";
 import type { LandingLayoutProps } from "@marketing/components/home/LandingLayout";
 import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
 import TrustedBy from "@marketing/components/home/TrustedBy";
+import { resolveMarketingButtonVariant } from "@marketing/lib/marketing_button";
+import {
+  isMarketingSurfaceVisible,
+  MARKETING_SURFACES,
+} from "@marketing/lib/marketing_visibility";
 import { useAppRouter } from "@marketing/lib/platform";
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
 import { classNames } from "@marketing/lib/utils";
-import { LegacyButton as Button, Chip } from "@dust-tt/sparkle";
+import { LegacyButton as Button, Chip } from "@ruby-ai/ui";
 import Link from "next/link";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import type { IndustryPageConfig, SectionType } from "./configs/utils";
 import { getEnabledSections } from "./configs/utils";
@@ -35,6 +42,35 @@ interface IndustryTemplateProps {
   config: IndustryPageConfig;
   trackingPrefix?: string;
 }
+
+const DARK_CARD_BACKGROUND_PATTERN =
+  /(?:^|\s)bg-(?:primary-800|(?:blue|cyan|gray|green|indigo|neutral|purple|slate|stone|teal|violet|zinc)-(?:700|800|900|950))(?:\s|$)/;
+
+interface MarketingCardSurfaceProps {
+  backgroundClass: string;
+  children: ReactNode;
+  className?: string;
+}
+
+const MarketingCardSurface = ({
+  backgroundClass,
+  children,
+  className,
+}: MarketingCardSurfaceProps) => {
+  if (DARK_CARD_BACKGROUND_PATTERN.test(backgroundClass)) {
+    return (
+      <MarketingGradientSurface className={className}>
+        {children}
+      </MarketingGradientSurface>
+    );
+  }
+
+  return (
+    <div className={classNames(className ?? "", backgroundClass)}>
+      {children}
+    </div>
+  );
+};
 
 // Hero Section Component
 const HeroSection = ({
@@ -67,12 +103,12 @@ const HeroSection = ({
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
           <Link href={config.ctaButtons.primary.href} shallow={true}>
             <Button
-              variant="highlight"
+              variant={resolveMarketingButtonVariant("highlight")}
               size="md"
               label={config.ctaButtons.primary.label}
               className="w-full sm:w-auto"
               onClick={withTracking(
-                TRACKING_AREAS.INDUSTRY,
+                TRACKING_AREAS.INRUBYRY,
                 `${trackingPrefix ?? "default"}_hero_cta_primary`
               )}
             />
@@ -84,7 +120,7 @@ const HeroSection = ({
             href={config.ctaButtons.secondary.href}
             className="w-full sm:w-auto"
             onClick={withTracking(
-              TRACKING_AREAS.INDUSTRY,
+              TRACKING_AREAS.INRUBYRY,
               `${trackingPrefix ?? "default"}_hero_cta_secondary`
             )}
           />
@@ -92,7 +128,9 @@ const HeroSection = ({
       </div>
 
       {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
-      {(config.testimonialCard || config.heroImage) && (
+      {(config.heroImage ||
+        (isMarketingSurfaceVisible(MARKETING_SURFACES.customerProof) &&
+          config.testimonialCard)) && (
         <div className="relative col-span-12 mt-8 py-2 lg:col-span-6 lg:col-start-7 lg:mt-0">
           {config.decorativeShapes?.topRight && (
             <div className="absolute -right-6 -top-10 -z-10 hidden h-24 w-24 lg:block">
@@ -123,12 +161,11 @@ const HeroSection = ({
                     className="h-auto w-full max-w-lg rounded-2xl object-contain lg:max-w-xl xl:max-w-2xl"
                   />
                 </div>
-              ) : config.testimonialCard ? (
-                <div
-                  className={classNames(
-                    "relative z-10 mx-auto flex w-full flex-col justify-between rounded-2xl p-8 sm:p-10 lg:p-12",
-                    config.testimonialCard.bgColor
-                  )}
+              ) : isMarketingSurfaceVisible(MARKETING_SURFACES.customerProof) &&
+                config.testimonialCard ? (
+                <MarketingCardSurface
+                  backgroundClass={config.testimonialCard.bgColor}
+                  className="relative z-10 mx-auto flex w-full flex-col justify-between rounded-2xl p-8 sm:p-10 lg:p-12"
                 >
                   <div className="flex flex-1 flex-col justify-center">
                     <H2
@@ -171,7 +208,7 @@ const HeroSection = ({
                       />
                     </div>
                   </div>
-                </div>
+                </MarketingCardSurface>
               ) : null}
             </div>
           </div>
@@ -225,11 +262,7 @@ const PainPointsSection = ({
         {config.painPoints.map((point, index) => (
           <div key={index} className="rounded-2xl bg-gray-50 p-8">
             <div className="mb-6 flex h-12 w-12 items-center justify-center">
-              <img
-                src={point.icon}
-                alt={`${point.color} geometric shape`}
-                className="h-full w-full object-contain"
-              />
+              <MarketingFeatureIcon />
             </div>
             <H3 className="mb-4">{point.title}</H3>
             <P size="sm" className="text-muted-foreground">
@@ -247,7 +280,7 @@ const UseCaseBlock = ({
   useCase,
   imageFirst = true,
 }: {
-  useCase: NonNullable<IndustryPageConfig["dustInAction"]>["useCases"][0];
+  useCase: NonNullable<IndustryPageConfig["rubyInAction"]>["useCases"][0];
   imageFirst?: boolean;
 }) => (
   <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
@@ -259,18 +292,16 @@ const UseCaseBlock = ({
       )}
     >
       <div className="w-full">
-        <div
-          className={classNames(
-            "relative w-full overflow-hidden rounded-lg",
-            useCase.bgColor
-          )}
+        <MarketingCardSurface
+          backgroundClass={useCase.bgColor}
+          className="relative w-full overflow-hidden rounded-lg"
         >
           <img
             src={useCase.image}
             alt={`${useCase.title} Features`}
             className="h-auto w-full object-contain"
           />
-        </div>
+        </MarketingCardSurface>
       </div>
     </div>
 
@@ -286,12 +317,7 @@ const UseCaseBlock = ({
         {useCase.features.map((feature, index) => (
           <div key={index}>
             <div className="flex items-start gap-3">
-              <div
-                className={classNames(
-                  "mt-1 h-6 w-6 flex-shrink-0",
-                  feature.icon
-                )}
-              ></div>
+              <MarketingFeatureIcon className="mt-1 h-6 w-6 flex-shrink-0" />
               <div>
                 <P size="sm" className="font-medium">
                   {feature.title}
@@ -311,11 +337,11 @@ const UseCaseBlock = ({
   </div>
 );
 
-// Dust in Action Section Component
-const DustInActionSection = ({
+// Ruby in Action Section Component
+const RubyInActionSection = ({
   config,
 }: {
-  config: NonNullable<IndustryPageConfig["dustInAction"]>;
+  config: NonNullable<IndustryPageConfig["rubyInAction"]>;
 }) => (
   <div className="py-12 md:py-16">
     <div className="container mx-auto px-6">
@@ -466,8 +492,12 @@ export default function IndustryTemplate({
         ) : null;
 
       case "trustedBy":
-        return config.trustedBy ? (
-          <TrustedBy key="trustedBy" logoSet={config.trustedBy.logoSet} />
+        return config.trustedBy &&
+          isMarketingSurfaceVisible(MARKETING_SURFACES.customerProof) ? (
+          <TrustedBy
+            key="trustedBy"
+            logoSet={config.trustedBy.logoSet as any}
+          />
         ) : null;
 
       case "painPoints":
@@ -475,16 +505,17 @@ export default function IndustryTemplate({
           <PainPointsSection key="painPoints" config={config.painPoints} />
         ) : null;
 
-      case "dustInAction":
-        return config.dustInAction ? (
-          <DustInActionSection
-            key="dustInAction"
-            config={config.dustInAction}
+      case "rubyInAction":
+        return config.rubyInAction ? (
+          <RubyInActionSection
+            key="rubyInAction"
+            config={config.rubyInAction}
           />
         ) : null;
 
       case "impactMetrics":
-        return config.impactMetrics ? (
+        return config.impactMetrics &&
+          isMarketingSurfaceVisible(MARKETING_SURFACES.resultsClaims) ? (
           <ImpactMetricsSection
             key="impactMetrics"
             config={config.impactMetrics}
@@ -492,7 +523,8 @@ export default function IndustryTemplate({
         ) : null;
 
       case "demoVideo":
-        return config.demoVideo ? (
+        return config.demoVideo &&
+          isMarketingSurfaceVisible(MARKETING_SURFACES.demoVideo) ? (
           <Grid key="demoVideo">
             <div className={GRID_SECTION_CLASSES}>
               <DemoVideoSection
@@ -506,20 +538,23 @@ export default function IndustryTemplate({
         ) : null;
 
       case "trustedBySecond":
-        return config.trustedBySecond ? (
+        return config.trustedBySecond &&
+          isMarketingSurfaceVisible(MARKETING_SURFACES.customerProof) ? (
           <TrustedBy
             key="trustedBySecond"
-            logoSet={config.trustedBySecond.logoSet}
+            logoSet={config.trustedBySecond.logoSet as any}
           />
         ) : null;
 
       case "testimonial":
-        return config.testimonial ? (
+        return config.testimonial &&
+          isMarketingSurfaceVisible(MARKETING_SURFACES.customerProof) ? (
           <TestimonialSection key="testimonial" config={config.testimonial} />
         ) : null;
 
       case "customerStories":
-        return config.customerStories ? (
+        return config.customerStories &&
+          isMarketingSurfaceVisible(MARKETING_SURFACES.customerProof) ? (
           <Grid key="customerStories">
             <div className={GRID_SECTION_CLASSES}>
               <CustomerStoriesSection
@@ -530,10 +565,11 @@ export default function IndustryTemplate({
           </Grid>
         ) : null;
 
-      case "justUseDust":
-        return config.justUseDust ? (
+      case "justUseRuby":
+        return config.justUseRuby &&
+          isMarketingSurfaceVisible(MARKETING_SURFACES.aiOperatorsCta) ? (
           <div
-            key="justUseDust"
+            key="justUseRuby"
             className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen"
           >
             <HomeAIOperatorsCTASection />

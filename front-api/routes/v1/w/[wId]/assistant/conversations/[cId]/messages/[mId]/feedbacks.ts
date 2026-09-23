@@ -7,7 +7,7 @@ import { triggerAgentMessageFeedbackNotification } from "@app/lib/notifications/
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { launchAgentMessageFeedbackWorkflow } from "@app/temporal/analytics_queue/client";
 import { getUserEmailFromHeaders } from "@app/types/user";
-import type { PostMessageFeedbackResponseType } from "@dust-tt/client";
+import type { PostMessageFeedbackResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";

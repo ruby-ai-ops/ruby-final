@@ -20,7 +20,7 @@ import {
 const noopSubscribe = () => () => {};
 const noopGetVersion = () => 0;
 
-// Context for pages that have workspace (app pages, workspace-scoped poke pages).
+// Context for pages that have workspace (app pages, workspace-scoped admin pages).
 // User is non-nullable because authentication is guaranteed by the session wrapper.
 export interface AuthContextValue {
   user: UserType;
@@ -84,7 +84,7 @@ export function useWorkspace(): LightWorkspaceType {
   return ctx.workspace;
 }
 
-// Context for global pages without workspace (e.g., /poke/plans, /poke/templates).
+// Context for global pages without workspace (e.g., /admin/plans, /admin/templates).
 export interface AuthContextNoWorkspaceValue {
   user: UserType | null;
   isSuperUser: boolean;

@@ -510,7 +510,7 @@ export async function addStripeMetronomeBillingConfig({
 // ---------------------------------------------------------------------------
 
 /**
- * Compact summary of a Metronome package, used by Poke to let an operator
+ * Compact summary of a Metronome package, used by Admin to let an operator
  * pick which package to put a customer on. Only classifiable packages are
  * included — `listMetronomePackages` filters out anything whose name
  * doesn't match a known tier keyword (with a warning log).
@@ -615,7 +615,7 @@ function seatConfigsFromPackageOverrides(
 
 /**
  * Build a `productId → { seatType, name }` map from all Metronome products
- * tagged with the `DUST_SEAT_TYPE` custom field. Returns an empty map (and
+ * tagged with the `RUBY_SEAT_TYPE` custom field. Returns an empty map (and
  * logs) on error so package listing degrades gracefully rather than failing
  * entirely.
  *
@@ -702,7 +702,7 @@ export async function listMetronomePackages(): Promise<
       if (tier === null) {
         logger.warn(
           { packageId: pkg.id, packageName: name, aliases },
-          "[Metronome] Package name has no recognized tier keyword (pro/business/enterprise); package will be hidden in Poke."
+          "[Metronome] Package name has no recognized tier keyword (pro/business/enterprise); package will be hidden in Admin."
         );
         continue;
       }
@@ -850,7 +850,7 @@ export async function createMetronomeContract({
   planCode: string;
   // Additional custom fields merged with PLAN_CODE_CUSTOM_FIELD_KEY when
   // stamping the contract. Used to signal payment-gated activation flows
-  // (DUST_PAYMENT_GATE_TYPE) so the contract.start webhook can skip the
+  // (RUBY_PAYMENT_GATE_TYPE) so the contract.start webhook can skip the
   // automatic subscription swap.
   additionalCustomFields?: Record<string, string>;
   // When set, the contract is created as a RENEWAL transition from this prior
@@ -2407,7 +2407,7 @@ export async function listMetronomeBalances(
       ...(includeLedgers ? { include_ledgers: true } : {}),
     })) {
       // Mirror the pool balance alert filter for credits: include only
-      // credits explicitly tagged DUST_CONTRACT_CREDIT_TYPE=pool. Excess
+      // credits explicitly tagged RUBY_CONTRACT_CREDIT_TYPE=pool. Excess
       // credits (tagged "excess") and per-seat / unstamped credits are
       // excluded — they're not part of the workspace pool balance the
       // alert tracks. Commits always pass through here (the alert counts
@@ -2439,7 +2439,7 @@ export async function listMetronomeBalances(
  * returns a single number, so it can't surface per-schedule details.
  *
  * By default it restricts to pool credits/commits via the
- * `DUST_CONTRACT_CREDIT_TYPE=pool` custom field — mirroring the
+ * `RUBY_CONTRACT_CREDIT_TYPE=pool` custom field — mirroring the
  * `onlyPoolCredits` filter of `listMetronomeBalances`.
  */
 export async function getNetBalance(
@@ -2807,7 +2807,7 @@ export async function addPerUserCreditToCustomer({
 
 /**
  * Shared core for listing a customer's per-user credits of a given
- * `contractCreditType`, keyed by user sId (from the `DUST_PER_USER_CREDIT_USER`
+ * `contractCreditType`, keyed by user sId (from the `RUBY_PER_USER_CREDIT_USER`
  * custom field — old plain-sId and new free-prefixed formats collapse to the
  * same key). Includes archived/expired credits so a past grant is never
  * mistaken for missing, and a fully-consumed credit still appears (balance 0)
@@ -2942,7 +2942,7 @@ export async function listCustomerPerUserCreditUserIds({
 
 /**
  * Return the live AWU balance of each free-seat per-user customer credit, keyed
- * by user sId (from the `DUST_PER_USER_CREDIT_USER` custom field). Only active
+ * by user sId (from the `RUBY_PER_USER_CREDIT_USER` custom field). Only active
  * (not yet expired or archived) credits are included.
  */
 export async function listCustomerPerUserCreditBalances({
@@ -3781,7 +3781,7 @@ export async function deductMetronomeCreditBalance({
 }: {
   metronomeCustomerId: string;
   // Pass `contractId` for contract-level credits / commits. Customer-level
-  // entries (e.g., one-off poke credits) leave it undefined.
+  // entries (e.g., one-off admin credits) leave it undefined.
   contractId?: string;
   creditId: string;
   segmentId: string;
@@ -4290,7 +4290,7 @@ export async function* listMetronomeAlerts(
 }
 
 // Lazily iterates every Metronome customer, auto-paginating via the SDK. Unlike
-// the DB-driven workspace scan, this reaches customers whose Dust workspace has
+// the DB-driven workspace scan, this reaches customers whose Ruby workspace has
 // been deleted (so it never appears in `runOnAllWorkspaces`) but whose Metronome
 // customer — and its alerts — still exist. Used by the unused-alert cleanup
 // script to reach orphaned alerts. Errors surface through the iterator.

@@ -22,10 +22,10 @@ import {
   Plus,
   Spinner,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
-// Only manually-managed groups can be assigned from Dust: provisioned group membership is owned
+// Only manually-managed groups can be assigned from Ruby: provisioned group membership is owned
 // by the identity provider.
 const ADDABLE_GROUP_KINDS = ["regular_manual"] as const;
 

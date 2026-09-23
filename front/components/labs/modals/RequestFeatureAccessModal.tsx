@@ -12,7 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
   TextArea,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface RequestFeatureAccessModal {
@@ -47,7 +47,7 @@ export function RequestFeatureAccessModal({
         type: "success",
         title: "Email sent!",
         description:
-          "Your request was sent to the Dust support team. We'll get back to you as soon as possible.",
+          "Your request was sent to the Ruby support team. We'll get back to you as soon as possible.",
       });
       setMessage("");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -88,7 +88,7 @@ export function RequestFeatureAccessModal({
                 </>
               ) : (
                 <p className="text-element-700 mb-2 text-sm">
-                  {`You don't have permission to request access to this feature. Please ask a Dust administrator to make the request.`}
+                  {`You don't have permission to request access to this feature. Please ask a Ruby administrator to make the request.`}
                 </p>
               )}
             </div>

@@ -20,7 +20,7 @@ export interface KnowledgeNodeAttributes {
 
 const KNOWLEDGE_CHIP_CLASS =
   "inline-flex items-center gap-0.5 border border-current/40 rounded px-0.5 text-xs leading-tight";
-// We use this instead of Sparkle's DocumentIcon because renderHTML returns a plain DOMOutputSpec which cannot
+// We use this instead of RubyUI's DocumentIcon because renderHTML returns a plain DOMOutputSpec which cannot
 // contain React components, and ProseMirror's renderSpec doesn't support SVG
 // namespace elements. Using the emoji in both paths keeps additions and deletions
 // visually consistent in the suggestion diff view.

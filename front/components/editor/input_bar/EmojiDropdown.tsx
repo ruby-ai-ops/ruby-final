@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { EmojiMartData } from "@emoji-mart/data";
 import { init, SearchIndex } from "emoji-mart";
 import shuffle from "lodash/shuffle";

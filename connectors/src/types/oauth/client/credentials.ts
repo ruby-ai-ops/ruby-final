@@ -1,4 +1,4 @@
-import type { LoggerInterface, Result } from "@dust-tt/client";
+import type { LoggerInterface, Result } from "@ruby-ai/client";
 
 import type { OauthAPIGetCredentialsResponse } from "../lib";
 import type { OAuthAPIError } from "../oauth_api";

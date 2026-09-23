@@ -103,7 +103,7 @@ interface ExtensionAuthProviderProps {
  *   ExtensionAuthContext — consumed with useExtensionAuth().
  * - Bridges to the front's AuthContext so that shared front components (e.g.
  *   ConversationViewer sub-components) can call useAuth() without error.
- * - Uses CellContext for URL resolution (dustDomain).
+ * - Uses CellContext for URL resolution (rubyDomain).
  *
  * Mirrors the ExtensionFetcherProvider / FetcherProvider pattern.
  */

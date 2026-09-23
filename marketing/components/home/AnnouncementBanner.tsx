@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 const SCROLL_HIDE_THRESHOLD_PX = 12;
 const ANNOUNCEMENT_HREF = "/blog/series-b-multiplayer-ai";
 const ANNOUNCEMENT_TEXT =
-  "Dust announces Series B to fuel next chapter of growth";
+  "Ruby announces Series B to fuel next chapter of growth";
 
 // Banner auto-enables at this UTC timestamp: Monday 18 May 2026, 15:00 CET (UTC+1).
 export const BANNER_VISIBLE_AFTER_MS = new Date(

@@ -1,4 +1,4 @@
-import { AnimatedText } from "@dust-tt/sparkle";
+import { AnimatedText } from "@ruby-ai/ui";
 import type { NodeViewProps } from "@tiptap/core";
 import { Node } from "@tiptap/core";
 import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";

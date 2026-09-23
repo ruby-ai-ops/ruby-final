@@ -23,7 +23,7 @@ describe("stripMarkdown", () => {
   });
 
   it("replaces agent mentions with @name", () => {
-    expect(stripMarkdown(":mention[Dust]{sId=abc123}")).toBe("@Dust");
+    expect(stripMarkdown(":mention[Ruby]{sId=abc123}")).toBe("@Ruby");
   });
 
   it("replaces user mentions with @name", () => {

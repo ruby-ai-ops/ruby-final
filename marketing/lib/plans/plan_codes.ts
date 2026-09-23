@@ -16,9 +16,10 @@ export const PRO_PLAN_SEAT_39_CODE = "PRO_PLAN_SEAT_39";
 export const CREDIT_PRICED_BUSINESS_PLAN_CODE = "CP_BUSINESS_PLAN";
 export const CREDIT_PRICED_FREE_PLAN_CODE = "CP_FREE_PLAN";
 export const CREDIT_PRICED_ENTERPRISE_DEFAULT_PLAN_CODE = "CP_ENT_DEFAULT_PLAN";
-export const CREDIT_PRICED_DUST_COMPANY_PLAN_CODE = "CP_DUST_COMPANY";
+export const CREDIT_PRICED_RUBY_COMPANY_PLAN_CODE = "CP_RUBY_COMPANY";
 
 // BYOK plan:
+export const FREE_BYOK_TRANSITIONING_PLAN_CODE = "FREE_BYOK_TRANSITIONING";
 export const FREE_BYOK_PLAN_CODE = "FREE_BYOK";
 
 /**
@@ -26,8 +27,8 @@ export const FREE_BYOK_PLAN_CODE = "FREE_BYOK";
  */
 export const ENT_PLAN_FAKE_CODE = "ENT_PLAN_FAKE_CODE";
 
-// Dust's own workspace plan.
-export const DUST_COMPANY_PLAN_CODE = "DUST_COMPANY";
+// Ruby's own workspace plan.
+export const RUBY_COMPANY_PLAN_CODE = "RUBY_COMPANY";
 
 /** Plan codes excluded from reinforcement-related batch operations. */
 export const REINFORCEMENT_EXCLUDED_PLAN_CODES = new Set([
@@ -42,9 +43,9 @@ export const isCreditPricedPlanPrefix = (planCode: string) =>
 export const isEnterprisePlanPrefix = (planCode: string) =>
   planCode.startsWith("ENT_") || planCode.startsWith("CP_ENT_");
 
-export const isDustCompanyPlan = (planCode: string) =>
-  planCode === DUST_COMPANY_PLAN_CODE ||
-  planCode === CREDIT_PRICED_DUST_COMPANY_PLAN_CODE;
+export const isRubyCompanyPlan = (planCode: string) =>
+  planCode === RUBY_COMPANY_PLAN_CODE ||
+  planCode === CREDIT_PRICED_RUBY_COMPANY_PLAN_CODE;
 
 // If the plan code starts with PRO_, it's a pro plan
 export const isProPlanPrefix = (planCode: string) =>
@@ -66,12 +67,12 @@ export const isFreePlan = (planCode: string) =>
 export const isFreeTrialPhonePlan = (planCode: string) =>
   planCode === FREE_TRIAL_PHONE_PLAN_CODE;
 
-// Early plan when anyone could create a dust account
+// Early plan when anyone could create a ruby account
 export const isOldFreePlan = (planCode: string) =>
   planCode === FREE_TEST_PLAN_CODE;
 
 // Sort priority for plan-code buckets. Lower number sorts first.
-// Used by the poke workspaces list to surface enterprise / pro tenants
+// Used by the admin workspaces list to surface enterprise / pro tenants
 // ahead of free / old-free ones when the result set is over the requested
 // limit.
 export const getPlanCodeSortPriority = (planCode: string): number => {
@@ -100,6 +101,9 @@ export function isProPlan(plan?: PlanType) {
   );
 }
 
+export const isByokTransitioningPlan = (plan?: PlanType) =>
+  plan?.code === FREE_BYOK_TRANSITIONING_PLAN_CODE;
+
 export function isBusinessPlan(plan?: PlanType) {
   return plan?.code === PRO_PLAN_SEAT_39_CODE;
 }
@@ -125,7 +129,7 @@ export function getPlanDefaultPoolLimitAwuCredits(
 }
 
 /**
- * `isUpgraded` returns true if the plan has access to all features of Dust, including large
+ * `isUpgraded` returns true if the plan has access to all features of Ruby, including large
  * language models (meaning it's either a paid plan or free plan with (eg friends and family, or
  * free trial plan)).
  *

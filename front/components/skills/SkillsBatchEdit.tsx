@@ -16,7 +16,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 export type BatchAvailabilityAction = {
   label: string;
@@ -55,7 +55,7 @@ const BATCH_AVAILABILITY_ACTIONS: BatchAvailabilityAction[] = [
     getDialogTitle: () => `This affects your entire workspace`,
     dialogDescription: (count) => {
       const pronoun = count === 1 ? "it" : "them";
-      return `All members can find ${pronoun} via the composer and agent builder. Agents with Discover Skills, including Dust, can use ${pronoun} automatically.`;
+      return `All members can find ${pronoun} via the composer and agent builder. Agents with Discover Skills, including Ruby, can use ${pronoun} automatically.`;
     },
   },
 ];

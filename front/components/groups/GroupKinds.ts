@@ -1,6 +1,6 @@
 import type { GroupKind } from "@app/types/groups";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import type { Chip } from "@dust-tt/sparkle";
+import type { Chip } from "@ruby-ai/ui";
 import type React from "react";
 
 export type GroupChipColor = NonNullable<

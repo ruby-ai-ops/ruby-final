@@ -13,7 +13,7 @@ import {
   isItemCheckboxDisabled,
   updateSelection,
 } from "@app/components/data_source_view/update_selection";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useDebounce } from "@app/hooks/useDebounce";
 import { getConnectorProviderLogoWithFallback } from "@app/lib/connector_providers_ui";
 import type { NodeCandidate, UrlCandidate } from "@app/lib/connectors";
@@ -54,7 +54,7 @@ import {
   SearchInput,
   SheetViewportProvider,
   Tree,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import omit from "lodash/omit";
 import type { Dispatch, SetStateAction } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -286,7 +286,7 @@ export function DataSourceViewsSelector({
     const excludesConnectorIDs: string[] = [];
 
     // When selecting tables, for tables query all tables from a single warehouse
-    // (either the same remoteDb or all from Dust SQLite).
+    // (either the same remoteDb or all from Ruby SQLite).
     // The data_warehouse view type (for the warehouses tool server) allows multiple warehouses.
     if (viewType === "table" && useCase === "assistantBuilder") {
       const selection = Object.values(selectionConfigurations);

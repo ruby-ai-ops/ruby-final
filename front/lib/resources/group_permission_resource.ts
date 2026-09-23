@@ -1,4 +1,4 @@
-import type { PokeGroupPermissionType } from "@app/lib/api/poke/group_permissions";
+import type { AdminGroupPermissionType } from "@app/lib/api/admin/group_permissions";
 import { getRedisCacheClient } from "@app/lib/api/redis";
 import type { Authenticator } from "@app/lib/auth";
 import { BaseResource } from "@app/lib/resources/base_resource";
@@ -823,7 +823,7 @@ export class GroupPermissionResource extends BaseResource<GroupPermissionModel> 
       ]);
     } catch (err) {
       // A lost delete keeps revoked grants readable until the hash expires, the next mutation on
-      // those groups or a Poke flush.
+      // those groups or a Admin flush.
       logger.error(
         { panic: true, err: normalizeError(err), workspaceId: workspace.id },
         "group_permissions cache invalidation failed"
@@ -1380,9 +1380,9 @@ export class GroupPermissionResource extends BaseResource<GroupPermissionModel> 
     }, transaction);
   }
 
-  // Poke-only serialization. Takes the already-resolved group so the row can carry the group's
+  // Admin-only serialization. Takes the already-resolved group so the row can carry the group's
   // display name / link target without this resource fetching it.
-  toPokeJSON(group: GroupResource): PokeGroupPermissionType {
+  toAdminJSON(group: GroupResource): AdminGroupPermissionType {
     const { sId, name, kind } = group.toJSON();
     return {
       grantType: this.grantType,

@@ -36,7 +36,7 @@ export const syncWebhookRouterConfig = onObjectFinalized(
 
     if (
       webhookRouterConfigFilePath !==
-      CONFIG.DUST_WEBHOOK_ROUTER_CONFIG_FILE_PATH
+      CONFIG.RUBY_WEBHOOK_ROUTER_CONFIG_FILE_PATH
     ) {
       // Ignore other files updates
       return;

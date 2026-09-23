@@ -279,7 +279,7 @@ async function seedAgent({
       description: "Test agent",
       instructions: "Test instructions",
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       providerId,
       modelId: version.modelId,
       temperature: 0.7,

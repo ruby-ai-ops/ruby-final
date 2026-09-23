@@ -8,7 +8,7 @@ import type { SandboxFunctionMcpActionServerTimingsMs } from "@app/lib/api/sandb
 import logger from "@app/logger/logger";
 import type { AgentMCPActionWithOutputType } from "@app/types/actions";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import { CallMCPToolRequestBodySchema } from "@dust-tt/client";
+import { CallMCPToolRequestBodySchema } from "@ruby-ai/client";
 import { sandboxApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";
@@ -170,8 +170,8 @@ app.post(
     const { actionId, pauseSandbox } = result.value;
 
     // Pause the sandbox only AFTER the response is handed to the runtime.
-    // `betaPause` freezes the in-sandbox `dsbx` client that issued this
-    // request, and `dsbx` must receive `actionId` to start polling for the
+    // `betaPause` freezes the in-sandbox `rbx` client that issued this
+    // request, and `rbx` must receive `actionId` to start polling for the
     // result. node-server has no `executionCtx.waitUntil`, so we fire the
     // pause without awaiting; it sits behind a lock + several DB round-trips
     // before `provider.sleep`, so in practice the response is on the wire

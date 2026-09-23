@@ -2,7 +2,7 @@ export const CONNECTOR_PROVIDERS = [
   "bigquery",
   "confluence",
   "discord_bot",
-  "dust_project",
+  "ruby_project",
   "github",
   "gong",
   "google_drive",
@@ -31,8 +31,8 @@ export type DataSourceType = {
   name: string;
   description: string | null;
   assistantDefaultSelected: boolean;
-  dustAPIProjectId: string;
-  dustAPIDataSourceId: string;
+  rubyAPIProjectId: string;
+  rubyAPIDataSourceId: string;
   connectorId: string | null;
   connectorProvider: ConnectorProvider | null;
 };

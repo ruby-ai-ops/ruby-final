@@ -6,7 +6,7 @@ import { notifyAdminsTriggerBlockedByProgrammaticCap } from "@app/lib/api/credit
 import { checkProgrammaticUsageLimits } from "@app/lib/api/programmatic_usage/tracking";
 import { FathomClient } from "@app/lib/api/triggers/built-in-webhooks/fathom/fathom_client";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { getWebhookRequestsBucket } from "@app/lib/file_storage";
 import { isGCSPreconditionFailedError } from "@app/lib/file_storage/types";
 import { matchPayload, parseMatcherExpression } from "@app/lib/matcher";
@@ -87,7 +87,7 @@ function checkSignature({
   provider: WebhookProvider | null;
 }): Result<
   void,
-  Omit<DustError, "code"> & { code: "invalid_signature_error" }
+  Omit<RubyError, "code"> & { code: "invalid_signature_error" }
 > {
   if (provider === "fathom") {
     const verifyRes = FathomClient.verifyWebhook({
@@ -98,7 +98,7 @@ function checkSignature({
 
     if (verifyRes.isErr()) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "invalid_signature_error",
         message: `Invalid Fathom webhook signature: ${verifyRes.error.message}`,
       });
@@ -109,7 +109,7 @@ function checkSignature({
 
   if (!headerName || !algorithm) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_signature_error",
       message:
         "Missing headerName or algorithm for custom webhook verification",
@@ -120,7 +120,7 @@ function checkSignature({
 
   if (!signature) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_signature_error",
       message: `Missing signature header: ${headerName}`,
     });
@@ -135,7 +135,7 @@ function checkSignature({
 
   if (!isValid) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_signature_error",
       message: "Invalid webhook signature.",
     });

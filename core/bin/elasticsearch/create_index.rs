@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use clap::Parser;
-use dust::search_stores::search_store::{ElasticsearchSearchStore, INDEX_VERSIONS};
+use ruby::search_stores::search_store::{ElasticsearchSearchStore, INDEX_VERSIONS};
 use elasticsearch::indices::{IndicesCreateParts, IndicesExistsParts};
 use http::StatusCode;
 

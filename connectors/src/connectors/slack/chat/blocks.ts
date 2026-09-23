@@ -20,7 +20,7 @@ import { truncate } from "@connectors/types";
 import type {
   LightAgentConfigurationType,
   UserQuestionItemType,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import type { KnownBlock } from "@slack/web-api";
 import slackifyMarkdown from "slackify-markdown";
 

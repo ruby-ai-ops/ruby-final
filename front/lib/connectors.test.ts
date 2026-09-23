@@ -10,7 +10,7 @@ import {
 // Mock the config module before importing
 vi.mock("@app/lib/api/config", () => ({
   default: {
-    getAppUrl: vi.fn(() => "dust.tt"),
+    getAppUrl: vi.fn(() => "ruby.ad"),
   },
 }));
 
@@ -20,7 +20,7 @@ import config from "@app/lib/api/config";
 describe("nodeCandidateFromUrl", () => {
   beforeEach(() => {
     // Reset the mock before each test
-    vi.mocked(config.getAppUrl).mockReturnValue("https://app.dust.tt");
+    vi.mocked(config.getAppUrl).mockReturnValue("https://app.ruby.ad");
   });
   describe("Confluence", () => {
     it("should extract node ID from Confluence page URL", () => {
@@ -145,14 +145,14 @@ describe("nodeCandidateFromUrl", () => {
 
     it("should remove fragments from GitHub URLs", () => {
       const result = nodeCandidateFromUrl(
-        "https://github.com/dust-tt/decisions/issues/797#issuecomment-4325601982"
+        "https://github.com/ruby-ai/decisions/issues/797#issuecomment-4325601982"
       );
 
       expect(result).not.toBeNull();
       expect(isUrlCandidate(result)).toBe(true);
       if (isUrlCandidate(result)) {
         expect(result.url).toBe(
-          "https://github.com/dust-tt/decisions/issues/797"
+          "https://github.com/ruby-ai/decisions/issues/797"
         );
         expect(result.provider).toBe("github");
       }
@@ -160,13 +160,13 @@ describe("nodeCandidateFromUrl", () => {
 
     it("should remove query parameters from GitHub URLs", () => {
       const result = nodeCandidateFromUrl(
-        "https://github.com/dust-tt/dust/pull/123?notification_referrer_id=abc"
+        "https://github.com/ruby-ai-ops/ruby-final/pull/123?notification_referrer_id=abc"
       );
 
       expect(result).not.toBeNull();
       expect(isUrlCandidate(result)).toBe(true);
       if (isUrlCandidate(result)) {
-        expect(result.url).toBe("https://github.com/dust-tt/dust/pull/123");
+        expect(result.url).toBe("https://github.com/ruby-ai-ops/ruby-final/pull/123");
         expect(result.provider).toBe("github");
       }
     });
@@ -189,7 +189,7 @@ describe("nodeCandidateFromUrl", () => {
     it("should handle Notion URLs with multiple dashes", () => {
       // The last part after splitting by "-" must be exactly 32 characters
       const url =
-        "https://dust-tt.notion.site/My-Page-Title-With-Many-Words-abcdef12345678901234567890123456";
+        "https://ruby-ai.notion.site/My-Page-Title-With-Many-Words-abcdef12345678901234567890123456";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).not.toBeNull();
@@ -236,7 +236,7 @@ describe("nodeCandidateFromUrl", () => {
   describe("Slack", () => {
     it("should extract thread node ID from archives URL with thread_ts parameter", () => {
       const url =
-        "https://dust4ai.slack.com/archives/C05V0P20A72/p1748353621866279?thread_ts=1748353030.562719&cid=C05V0P20A72";
+        "https://ruby4ai.slack.com/archives/C05V0P20A72/p1748353621866279?thread_ts=1748353030.562719&cid=C05V0P20A72";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).not.toBeNull();
@@ -249,7 +249,7 @@ describe("nodeCandidateFromUrl", () => {
 
     it("should extract thread node ID from archives URL without thread_ts (using p timestamp)", () => {
       const url =
-        "https://dust4ai.slack.com/archives/C05V0P20A72/p1748353030562719";
+        "https://ruby4ai.slack.com/archives/C05V0P20A72/p1748353030562719";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).not.toBeNull();
@@ -261,7 +261,7 @@ describe("nodeCandidateFromUrl", () => {
     });
 
     it("should extract channel node ID from client URL", () => {
-      const url = "https://dust4ai.slack.com/client/T1234567890/C05V0P20A72";
+      const url = "https://ruby4ai.slack.com/client/T1234567890/C05V0P20A72";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).not.toBeNull();
@@ -273,7 +273,7 @@ describe("nodeCandidateFromUrl", () => {
     });
 
     it("should return null node when Slack URL doesn't match patterns", () => {
-      const url = "https://dust4ai.slack.com/archives/C05V0P20A72";
+      const url = "https://ruby4ai.slack.com/archives/C05V0P20A72";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).not.toBeNull();
@@ -412,47 +412,47 @@ describe("nodeCandidateFromUrl", () => {
     });
   });
 
-  describe("Dust Project", () => {
-    it("should normalize Dust project URL", () => {
+  describe("Ruby Project", () => {
+    it("should normalize Ruby project URL", () => {
       const url =
-        "https://app.dust.tt/w/workspace123/spaces/space456/apps/app789";
+        "https://app.ruby.ad/w/workspace123/spaces/space456/apps/app789";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).not.toBeNull();
       expect(isUrlCandidate(result)).toBe(true);
       if (isUrlCandidate(result)) {
         expect(result.url).toBe(
-          "https://app.dust.tt/w/workspace123/spaces/space456/apps/app789"
+          "https://app.ruby.ad/w/workspace123/spaces/space456/apps/app789"
         );
-        expect(result.provider).toBe("dust_project");
+        expect(result.provider).toBe("ruby_project");
       }
     });
 
-    it("should remove trailing slash from Dust project URL", () => {
-      const url = "https://app.dust.tt/w/workspace123/conversation/conv456/";
+    it("should remove trailing slash from Ruby project URL", () => {
+      const url = "https://app.ruby.ad/w/workspace123/conversation/conv456/";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).not.toBeNull();
       expect(isUrlCandidate(result)).toBe(true);
       if (isUrlCandidate(result)) {
         expect(result.url).toBe(
-          "https://app.dust.tt/w/workspace123/conversation/conv456"
+          "https://app.ruby.ad/w/workspace123/conversation/conv456"
         );
-        expect(result.provider).toBe("dust_project");
+        expect(result.provider).toBe("ruby_project");
       }
     });
 
-    it("should handle Dust project URLs with subdomains when implementation supports it", () => {
-      const url = "https://eu.dust.tt/w/workspace123/spaces/space456";
+    it("should handle Ruby project URLs with subdomains when implementation supports it", () => {
+      const url = "https://app.ruby.ad/w/workspace123/spaces/space456";
       const result = nodeCandidateFromUrl(url);
 
       // For now, with startsWith, subdomains don't match
       expect(result).toBeNull();
     });
 
-    it("should normalize Dust project URLs (query parameters are not preserved)", () => {
+    it("should normalize Ruby project URLs (query parameters are not preserved)", () => {
       const url =
-        "https://app.dust.tt/w/workspace123/conversation/conv456?param=value";
+        "https://app.ruby.ad/w/workspace123/conversation/conv456?param=value";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).not.toBeNull();
@@ -460,42 +460,42 @@ describe("nodeCandidateFromUrl", () => {
       if (isUrlCandidate(result)) {
         // Query parameters are not preserved in the normalized URL
         expect(result.url).toBe(
-          "https://app.dust.tt/w/workspace123/conversation/conv456"
+          "https://app.ruby.ad/w/workspace123/conversation/conv456"
         );
-        expect(result.provider).toBe("dust_project");
+        expect(result.provider).toBe("ruby_project");
       }
     });
 
-    it("should handle root Dust project URL", () => {
-      const url = "https://app.dust.tt/";
+    it("should handle root Ruby project URL", () => {
+      const url = "https://app.ruby.ad/";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).not.toBeNull();
       expect(isUrlCandidate(result)).toBe(true);
       if (isUrlCandidate(result)) {
-        expect(result.url).toBe("https://app.dust.tt");
-        expect(result.provider).toBe("dust_project");
+        expect(result.url).toBe("https://app.ruby.ad");
+        expect(result.provider).toBe("ruby_project");
       }
     });
 
-    it("should not match URLs that don't end with dust.tt", () => {
-      const url = "https://app.dust-tt.com/page";
+    it("should not match URLs that don't end with ruby.ad", () => {
+      const url = "https://app.ruby-ai.com/page";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).toBeNull();
     });
 
     it("should handle localhost URLs when configured", () => {
-      const url = "https://app.dust.tt/w/workspace123/conversation/conv456";
+      const url = "https://app.ruby.ad/w/workspace123/conversation/conv456";
       const result = nodeCandidateFromUrl(url);
 
       expect(result).not.toBeNull();
       expect(isUrlCandidate(result)).toBe(true);
       if (isUrlCandidate(result)) {
         expect(result.url).toBe(
-          "https://app.dust.tt/w/workspace123/conversation/conv456"
+          "https://app.ruby.ad/w/workspace123/conversation/conv456"
         );
-        expect(result.provider).toBe("dust_project");
+        expect(result.provider).toBe("ruby_project");
       }
     });
   });
@@ -581,9 +581,9 @@ describe("normalizeUrlForSourceUrlSearch", () => {
   it("should normalize GitHub URL candidates", () => {
     expect(
       normalizeUrlForSourceUrlSearch(
-        "https://github.com/dust-tt/decisions/issues/797#issuecomment-4325601982"
+        "https://github.com/ruby-ai/decisions/issues/797#issuecomment-4325601982"
       )
-    ).toBe("https://github.com/dust-tt/decisions/issues/797");
+    ).toBe("https://github.com/ruby-ai/decisions/issues/797");
   });
 
   it("should preserve non-URL search queries", () => {
@@ -624,12 +624,12 @@ describe("normalizeUrlForSourceUrlSearch", () => {
     ).toBe("https://us-5302.app.gong.io/call?id=12345");
   });
 
-  it("should normalize Dust project URLs", () => {
+  it("should normalize Ruby project URLs", () => {
     expect(
       normalizeUrlForSourceUrlSearch(
-        "https://app.dust.tt/w/workspace123/conversation/conv456?utm=value#message"
+        "https://app.ruby.ad/w/workspace123/conversation/conv456?utm=value#message"
       )
-    ).toBe("https://app.dust.tt/w/workspace123/conversation/conv456");
+    ).toBe("https://app.ruby.ad/w/workspace123/conversation/conv456");
   });
 
   it("should preserve non-opted URL candidate search queries", () => {
@@ -640,7 +640,7 @@ describe("normalizeUrlForSourceUrlSearch", () => {
 
   it("should preserve URLs handled through node candidates", () => {
     const slackUrl =
-      "https://dust4ai.slack.com/archives/C05V0P20A72/p1748353621866279?thread_ts=1748353030.562719&cid=C05V0P20A72";
+      "https://ruby4ai.slack.com/archives/C05V0P20A72/p1748353621866279?thread_ts=1748353030.562719&cid=C05V0P20A72";
 
     expect(normalizeUrlForSourceUrlSearch(slackUrl)).toBe(slackUrl);
   });

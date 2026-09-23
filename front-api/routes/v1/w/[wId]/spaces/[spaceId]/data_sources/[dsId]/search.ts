@@ -4,8 +4,8 @@ import {
 } from "@app/lib/api/data_sources";
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import type { DataSourceSearchResponseType } from "@dust-tt/client";
-import { DataSourceSearchQuerySchema } from "@dust-tt/client";
+import type { DataSourceSearchResponseType } from "@ruby-ai/client";
+import { DataSourceSearchQuerySchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";

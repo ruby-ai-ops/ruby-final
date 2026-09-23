@@ -16,7 +16,7 @@ import { isRoleType } from "./user";
  * to provisioned groups whose membership is synced from an external identity
  * provider). They come in two flavors depending on how the group was created:
  *
- * regular_auto group: Created implicitly by Dust (e.g. agent editors, space
+ * regular_auto group: Created implicitly by Ruby (e.g. agent editors, space
  * members).
  *
  * regular_manual group: Created manually by the user via the UI. They can be used
@@ -157,12 +157,12 @@ export const GroupKindCodec = z.enum([
   "provisioned",
 ]);
 
-const DustGroupIdsHeader = "X-Dust-Group-Ids";
+const RubyGroupIdsHeader = "X-Ruby-Group-Ids";
 
 export function getGroupIdsFromHeaders(
   headers: Record<string, string | string[] | undefined>
 ): string[] | undefined {
-  const groupIds = headers[DustGroupIdsHeader.toLowerCase()];
+  const groupIds = headers[RubyGroupIdsHeader.toLowerCase()];
   if (typeof groupIds === "string" && groupIds.trim().length > 0) {
     return groupIds.split(",").map((id) => id.trim());
   } else {
@@ -176,16 +176,16 @@ export function getHeaderFromGroupIds(groupIds: string[] | undefined) {
   }
 
   return {
-    [DustGroupIdsHeader]: groupIds.join(","),
+    [RubyGroupIdsHeader]: groupIds.join(","),
   };
 }
 
-const DustRoleHeader = "X-Dust-Role";
+const RubyRoleHeader = "X-Ruby-Role";
 
 export function getRoleFromHeaders(
   headers: Record<string, string | string[] | undefined>
 ): RoleType | undefined {
-  let role = headers[DustRoleHeader.toLowerCase()];
+  let role = headers[RubyRoleHeader.toLowerCase()];
   if (typeof role === "string") {
     role = role.trim();
     if (role.length > 0 && isRoleType(role)) {
@@ -203,7 +203,7 @@ export function getHeaderFromRole(role: RoleType | undefined) {
     return undefined;
   }
   return {
-    [DustRoleHeader]: role,
+    [RubyRoleHeader]: role,
   };
 }
 

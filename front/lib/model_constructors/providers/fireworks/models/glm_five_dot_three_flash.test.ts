@@ -1,6 +1,6 @@
 // @vitest-environment node
 
-import { DustZAiGlmFiveDotThreeFlashGlobalFireworksStream } from "@app/lib/llms/stream/endpoints/z_ai_glm_five_dot_three_flash_global_fireworks";
+import { RubyZAiGlmFiveDotThreeFlashGlobalFireworksStream } from "@app/lib/llms/stream/endpoints/z_ai_glm_five_dot_three_flash_global_fireworks";
 import { mapReasoningEffortToLowHighMax } from "@app/lib/llms/stream/types/configuration";
 import { ZAiGlmFiveDotThreeFlashGlobalFireworksStream } from "@app/lib/model_constructors/stream/endpoints/z_ai_glm_five_dot_three_flash_global_fireworks";
 import { itKeepsLimitsAndPricingConsistent } from "@app/lib/model_constructors/test/model_limits";
@@ -13,10 +13,10 @@ import { describe, expect, it } from "vitest";
 describe("GLM-5.3 Flash model configuration", () => {
   itKeepsLimitsAndPricingConsistent({
     streamEndpoint: ZAiGlmFiveDotThreeFlashGlobalFireworksStream,
-    dustStreamEndpoint: DustZAiGlmFiveDotThreeFlashGlobalFireworksStream,
+    rubyStreamEndpoint: RubyZAiGlmFiveDotThreeFlashGlobalFireworksStream,
     modelConfig: FIREWORKS_GLM_5P3_FLASH_MODEL_CONFIG,
     native: { contextSize: 1_048_576, maxOutputTokens: 131_072 },
-    dust: { contextSize: 256_000, maxOutputTokens: 64_000 },
+    ruby: { contextSize: 256_000, maxOutputTokens: 64_000 },
   });
   it("uses the Fireworks model path and the documented reasoning default", () => {
     const endpoint = new ZAiGlmFiveDotThreeFlashGlobalFireworksStream({
@@ -32,9 +32,9 @@ describe("GLM-5.3 Flash model configuration", () => {
     expect(payload.tool_choice).toBe("auto");
   });
 
-  it("folds Dust's reasoning ladder onto the native efforts", () => {
+  it("folds Ruby's reasoning ladder onto the native efforts", () => {
     expect(
-      DustZAiGlmFiveDotThreeFlashGlobalFireworksStream.configParsers
+      RubyZAiGlmFiveDotThreeFlashGlobalFireworksStream.configParsers
     ).toEqual([mapReasoningEffortToLowHighMax]);
   });
 

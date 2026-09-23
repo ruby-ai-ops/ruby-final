@@ -10,7 +10,7 @@ import {
   DataTable,
   SearchInput,
   Users01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type {
   CellContext,
   ColumnDef,

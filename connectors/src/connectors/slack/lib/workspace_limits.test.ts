@@ -1,6 +1,6 @@
 import type { SlackUserInfo } from "@connectors/connectors/slack/lib/slack_client";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
-import { DustAPI, Ok } from "@dust-tt/client";
+import { RubyAPI, Ok } from "@ruby-ai/client";
 import { ErrorCode, WebClient } from "@slack/web-api";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -10,13 +10,13 @@ vi.mock(import("@connectors/lib/api/config"), async (importOriginal) => {
     ...original,
     apiConfig: {
       ...original.apiConfig,
-      getDustFrontAPIUrl: () => "https://dust.test",
+      getRubyFrontAPIUrl: () => "https://ruby.test",
     },
   };
 });
 
 vi.mock(import("@connectors/lib/bot/conversation_utils"), () => ({
-  makeDustAppUrl: () => "https://dust.test",
+  makeRubyAppUrl: () => "https://ruby.test",
 }));
 
 vi.mock(import("@connectors/types"), async (importOriginal) => {
@@ -81,7 +81,7 @@ function makeSlackPlatformError(error: string) {
 describe("notifyIfSlackUserIsNotAllowed", () => {
   beforeEach(() => {
     vi.spyOn(
-      DustAPI.prototype,
+      RubyAPI.prototype,
       "getWorkspaceVerifiedDomains"
     ).mockResolvedValue(new Ok([]));
   });

@@ -1,5 +1,5 @@
 import { AdminPageContainer } from "@app/components/layouts/AdminPageContainer";
-import { Page } from "@dust-tt/sparkle";
+import { Page } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 
 interface GovernancePageLayoutProps {

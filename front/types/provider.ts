@@ -5,7 +5,7 @@ export type ProviderType = {
   config: string;
 };
 
-export type DustManagedCredentialsType = {
+export type RubyManagedCredentialsType = {
   SERP_API_KEY?: string;
   BROWSERLESS_API_KEY?: string;
   FIRECRAWL_API_KEY?: string;
@@ -15,4 +15,4 @@ export type DustManagedCredentialsType = {
   EXA_API_KEY?: string;
 };
 
-export type CredentialsType = DustManagedCredentialsType & LLMCredentialsType;
+export type CredentialsType = RubyManagedCredentialsType & LLMCredentialsType;

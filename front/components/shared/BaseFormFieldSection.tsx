@@ -1,4 +1,4 @@
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import type { ChangeEvent, ReactNode } from "react";
 import type { ControllerFieldState } from "react-hook-form";
 import { useController, useFormContext } from "react-hook-form";

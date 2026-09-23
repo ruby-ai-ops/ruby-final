@@ -106,7 +106,7 @@ function replaceInstructionBlocks(text: string): string {
   );
 }
 
-function replaceDustDirectives(text: string): string {
+function replaceRubyDirectives(text: string): string {
   let out = text;
   out = replaceVisualizationBlocks(out);
   out = replaceInstructionBlocks(out);
@@ -146,9 +146,9 @@ export function decodeHtmlEntities(text: string): string {
 
 /**
  * Turns message content (user or agent) into plain text for previews and
- * notifications. Resolves Dust-specific directives, then strips standard
+ * notifications. Resolves Ruby-specific directives, then strips standard
  * markdown. Citations (`:cite[…]`) are left intact.
  */
 export function stripMarkdown(text: string): string {
-  return decodeHtmlEntities(removeMarkdown(replaceDustDirectives(text)));
+  return decodeHtmlEntities(removeMarkdown(replaceRubyDirectives(text)));
 }

@@ -1,13 +1,13 @@
 import { hasActiveMemberByEmail } from "@app/lib/api/workspace";
-import type { ValidateMemberResponseType } from "@dust-tt/client";
-import { ValidateMemberRequestSchema } from "@dust-tt/client";
+import type { ValidateMemberResponseType } from "@ruby-ai/client";
+import { ValidateMemberRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { validate } from "@front-api/middlewares/validator";
 
 /**
  * @ignoreswagger
- * Validates an email corresponds to an active member in a specific workspace. For Dust managed apps only - undocumented.
+ * Validates an email corresponds to an active member in a specific workspace. For Ruby managed apps only - undocumented.
  */
 
 // Mounted at /api/v1/w/:wId/members/validate.

@@ -12,7 +12,7 @@ import type {
 } from "@marketing/components/home/content/Solutions/configs/utils";
 import type { DemoVideoProps } from "@marketing/components/home/content/Solutions/DemoVideoSection";
 import type { UseCaseProps } from "@marketing/components/home/content/Solutions/UseCasesSection";
-import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@dust-tt/sparkle";
+import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@ruby-ai/ui";
 
 // Config exports
 export const pageSettings: pageSettingsProps = {
@@ -146,15 +146,15 @@ export const UseCases: UseCaseProps = {
 
 export const Quote: QuoteProps = {
   quote:
-    "We asked ourselves for years: what if your team had 20% more time? Dust has made it possible, empowering our employees to work smarter, innovate, and push boundaries.",
+    "We asked ourselves for years: what if your team had 20% more time? Ruby has made it possible, empowering our employees to work smarter, innovate, and push boundaries.",
   name: "Matthieu Birach",
   title: "Chief People Officer at Doctolib",
   logo: "/static/landing/logos/color/doctolib.png",
 };
 
 export const DemoVideo: DemoVideoProps = {
-  sectionTitle: "Watch Dust in motion",
-  videoUrl: "https://fast.wistia.net/embed/iframe/eu73efeak9",
+  sectionTitle: "Watch Ruby in motion",
+  videoUrl: "/static/workspace-demo/index.html",
   showCaptions: true,
 };
 
@@ -164,20 +164,20 @@ export const Stories: CustomerStory[] = [
     content:
       "Doctolib's People team laid the foundations for AI transformation, driving 70% weekly usage across 3,000 employees through cultural change.",
     href: "/customers/why-doctolib-made-company-wide-enterprise-ai-a-national-cause",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Doctolib-__-Dust---Part-1.jpg",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Doctolib-__-Ruby---Part-1.jpg",
   },
   {
-    title: "30% time savings in HR: How Alan's People team scaled with Dust",
+    title: "30% time savings in HR: How Alan's People team scaled with Ruby",
     content:
-      "Alan's HR team quadrupled AI adoption and saved 30% of time spent on employee queries by deploying custom Dust agents for people operations.",
-    href: "/customers/how-lucas-people-analyst-at-alan-introduced-dust-to-his-hr-team",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Alan-__-Dust-1--1-.png",
+      "Alan's HR team quadrupled AI adoption and saved 30% of time spent on employee queries by deploying custom Ruby agents for people operations.",
+    href: "/customers/how-lucas-people-analyst-at-alan-introduced-ruby-to-his-hr-team",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Alan-__-Ruby-1--1-.png",
   },
   {
-    title: "Clay accelerates team onboarding with Dust AI agents",
+    title: "Clay accelerates team onboarding with Ruby AI agents",
     content:
-      "Clay uses Dust AI agents to onboard new GTM engineers faster and reduce bottlenecks, achieving 100% adoption and saving 58 hours monthly across their growing team",
+      "Clay uses Ruby AI agents to onboard new GTM engineers faster and reduce bottlenecks, achieving 100% adoption and saving 58 hours monthly across their growing team",
     href: "/customers/clay-scaling-gtme-team",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/06/clay_dust_agents.jpg",
+    src: "https://ruby.ad/content/images/size/w2000/2025/06/clay_ruby_agents.jpg",
   },
 ];

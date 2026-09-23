@@ -7,13 +7,13 @@ import { useGroups, useUpdateGroupSpendLimit } from "@app/lib/swr/groups";
 import type { GroupGrantableSeatType } from "@app/types/groups";
 import { CAP_ELIGIBLE_GROUP_KINDS } from "@app/types/groups";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { DataTableSkeletonCellProps } from "@dust-tt/sparkle";
+import type { DataTableSkeletonCellProps } from "@ruby-ai/ui";
 import {
   DataTable,
   DataTableSkeleton,
   LoadingBlock,
   Users01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 

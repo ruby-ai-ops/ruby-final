@@ -69,9 +69,9 @@ const SUPPORTED_CONTENT_TYPES: Set<AllSupportedFileContentType> = new Set([
   "text/x-perl-script",
   "message/rfc822",
 
-  // Dust-specific content types.
-  "text/vnd.dust.attachment.slack.thread",
-  "text/vnd.dust.attachment.pasted",
+  // Ruby-specific content types.
+  "text/vnd.ruby.attachment.slack.thread",
+  "text/vnd.ruby.attachment.pasted",
 ]);
 
 export function isSupportedForProjectContext(

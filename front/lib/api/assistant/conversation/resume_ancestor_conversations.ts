@@ -2,15 +2,15 @@ import { listAgenticAncestors } from "@app/lib/api/assistant/conversation/agenti
 import { MAX_CONVERSATION_DEPTH } from "@app/lib/api/assistant/conversation/constants";
 import { retryBlockedActions } from "@app/lib/api/assistant/conversation/retry_blocked_actions";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustErrorCode } from "@app/lib/error";
-import { DustError } from "@app/lib/error";
+import type { RubyErrorCode } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import type { ConversationResource } from "@app/lib/resources/conversation_resource";
 import logger from "@app/logger/logger";
 
 // Outcomes that mean "this ancestor has nothing to resume", not "resuming failed": a handover
 // caller was never blocked, a sibling validation already relaunched it, or it reached a terminal
 // state. Higher ancestors may still be parked, so the walk continues.
-const NON_BLOCKING_RETRY_ERROR_CODES: DustErrorCode[] = [
+const NON_BLOCKING_RETRY_ERROR_CODES: RubyErrorCode[] = [
   "agent_loop_already_running",
   "agent_message_not_resumable",
   "no_blocked_actions",
@@ -61,7 +61,7 @@ export async function resumeAncestorConversations(
       };
 
       if (
-        retryRes.error instanceof DustError &&
+        retryRes.error instanceof RubyError &&
         NON_BLOCKING_RETRY_ERROR_CODES.includes(retryRes.error.code)
       ) {
         logger.info(logBlob, "Parent conversation had nothing to resume");

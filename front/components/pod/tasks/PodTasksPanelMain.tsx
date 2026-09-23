@@ -2,7 +2,7 @@ import { normalizePodTaskSearchNeedle } from "@app/components/assistant/conversa
 import { usePodTasksPanel } from "@app/components/pod/tasks/PodTasksPanelContext";
 import { PodTaskUserSection } from "@app/components/pod/tasks/PodTaskUserSection";
 import { POD_TASK_UNASSIGNED_GROUP_KEY } from "@app/types/project_task";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 export function PodTasksPanelMain() {
   const {

@@ -29,7 +29,7 @@ import {
   ThumbsDown,
   ThumbsUp,
   Timeline,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { memo, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 

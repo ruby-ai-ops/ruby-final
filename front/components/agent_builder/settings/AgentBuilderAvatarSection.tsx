@@ -15,7 +15,7 @@ import type { BuilderEmojiSuggestionsType } from "@app/types/api/assistant";
 import type { APIError } from "@app/types/error";
 import type { Result } from "@app/types/shared/result";
 import type { WorkspaceType } from "@app/types/user";
-import { Avatar, Button, Edit04 } from "@dust-tt/sparkle";
+import { Avatar, Button, Edit04 } from "@ruby-ai/ui";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useController, useWatch } from "react-hook-form";
 

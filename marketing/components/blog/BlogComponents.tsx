@@ -6,7 +6,7 @@ import {
   classNames,
   formatTimestampToFriendlyDate,
 } from "@marketing/lib/utils";
-import { LegacyButton as Button, Chip, LinkWrapper } from "@dust-tt/sparkle";
+import { LegacyButton as Button, Chip, LinkWrapper } from "@ruby-ai/ui";
 import Image from "next/image";
 
 export const BLOG_PAGE_SIZE = 12;
@@ -16,8 +16,8 @@ export function BlogHeader() {
   return (
     <div className="col-span-12 flex flex-col items-center gap-0 pt-1 text-center">
       <Image
-        src="/static/landing/about/Dust_Fade.png"
-        alt="Dust"
+        src="/static/landing/about/Ruby_Fade.png"
+        alt="Ruby"
         width={112}
         height={112}
         className="h-28 w-28"
@@ -25,7 +25,7 @@ export function BlogHeader() {
       />
       <H1 className="text-5xl">Blog</H1>
       <P className="max-w-2xl text-center text-muted-foreground">
-        Learn more about Dust, get product updates, AI agents best practices and
+        Learn more about Ruby, get product updates, AI agents best practices and
         more.
       </P>
     </div>

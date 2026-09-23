@@ -2,7 +2,7 @@ import { UsageUpgradeButton } from "@app/components/credits/UsageUpgradeButton";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import { useWorkspaceUsageStatus } from "@app/lib/swr/user";
 import type { LightWorkspaceType } from "@app/types/user";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 
 interface InputBarUsageBannerProps {
   owner: LightWorkspaceType;

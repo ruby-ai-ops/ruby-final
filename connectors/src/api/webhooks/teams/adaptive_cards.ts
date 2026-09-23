@@ -1,12 +1,12 @@
 import type { MessageFootnotes } from "@connectors/lib/bot/citations";
 import { convertUrlsToMarkdown } from "@connectors/lib/bot/citations";
-import { makeDustAppUrl } from "@connectors/lib/bot/conversation_utils";
+import { makeRubyAppUrl } from "@connectors/lib/bot/conversation_utils";
 import type { MentionMatch } from "@connectors/lib/bot/mentions";
-import type { LightAgentConfigurationType } from "@dust-tt/client";
+import type { LightAgentConfigurationType } from "@ruby-ai/client";
 import type { AdaptiveCard } from "@microsoft/teams-ai";
 import type { Activity } from "botbuilder";
 
-const DUST_URL = "https://dust.tt/home";
+const RUBY_URL = "https://ruby.ad/home";
 
 /**
  * Creates an Adaptive Card for Teams with the AI response, conversation link, and agent selector
@@ -501,7 +501,7 @@ export function createWelcomeAdaptiveCard(): Partial<Activity> {
         items: [
           {
             type: "TextBlock",
-            text: "🎉 Welcome to Dust!",
+            text: "🎉 Welcome to Ruby!",
             weight: "Bolder",
             size: "Large",
             spacing: "Medium",
@@ -509,7 +509,7 @@ export function createWelcomeAdaptiveCard(): Partial<Activity> {
           },
           {
             type: "TextBlock",
-            text: "Thank you for installing Dust in Microsoft Teams!",
+            text: "Thank you for installing Ruby in Microsoft Teams!",
             wrap: true,
             spacing: "Medium",
             horizontalAlignment: "Center",
@@ -529,7 +529,7 @@ export function createWelcomeAdaptiveCard(): Partial<Activity> {
           },
           {
             type: "TextBlock",
-            text: "To start using Dust in Teams, make sure to:",
+            text: "To start using Ruby in Teams, make sure to:",
             wrap: true,
             spacing: "Small",
           },
@@ -560,14 +560,14 @@ export function createWelcomeAdaptiveCard(): Partial<Activity> {
         items: [
           {
             type: "TextBlock",
-            text: "📚 [Read the full documentation](https://docs.dust.tt/docs/dust-in-teams) to learn more about using Dust in Teams.",
+            text: "📚 [Read the full documentation](https://docs.ruby.ad/docs/ruby-in-teams) to learn more about using Ruby in Teams.",
             wrap: true,
             size: "Small",
             spacing: "Small",
           },
           {
             type: "TextBlock",
-            text: "Need help? Visit [dust.tt](https://dust.tt) for support.",
+            text: "Need help? Visit [ruby.ad](https://ruby.ad) for support.",
             wrap: true,
             size: "Small",
             spacing: "Small",
@@ -600,7 +600,7 @@ function createFooterText({
   workspaceId: string;
   isError?: boolean;
 }): string {
-  const agentsUrl = makeDustAppUrl(`/w/${workspaceId}/agent/new`);
+  const agentsUrl = makeRubyAppUrl(`/w/${workspaceId}/agent/new`);
 
   let attribution = "";
   if (agentName) {
@@ -611,7 +611,7 @@ function createFooterText({
     }
   }
 
-  const baseLinks = `[Browse agents](${agentsUrl}) | [Learn more](${DUST_URL})`;
+  const baseLinks = `[Browse agents](${agentsUrl}) | [Learn more](${RUBY_URL})`;
 
   return conversationUrl
     ? `${attribution}[Go to full conversation](${conversationUrl}) | ${baseLinks}`

@@ -47,16 +47,16 @@ describe("DataSourceResource.hardDelete", () => {
     space = await SpaceFactory.regular(workspace);
   });
 
-  it("should call connectorsAPI.deleteConnector with correct args for dust_project connector", async () => {
-    // Create a data source with dust_project connector
+  it("should call connectorsAPI.deleteConnector with correct args for ruby_project connector", async () => {
+    // Create a data source with ruby_project connector
     const dataSourceView =
       await DataSourceViewResource.createDataSourceAndDefaultView(
         {
-          name: "test-dust-project-datasource",
+          name: "test-ruby-project-datasource",
           assistantDefaultSelected: false,
-          connectorProvider: "dust_project",
-          dustAPIProjectId: "test-project-id",
-          dustAPIDataSourceId: "test-datasource-id",
+          connectorProvider: "ruby_project",
+          rubyAPIProjectId: "test-project-id",
+          rubyAPIDataSourceId: "test-datasource-id",
           workspaceId: workspace.id,
         },
         space,
@@ -87,16 +87,16 @@ describe("DataSourceResource.hardDelete", () => {
     deleteConnectorSpy.mockRestore();
   });
 
-  it("should not call connectorsAPI.deleteConnector for non-dust_project connector", async () => {
-    // Create a data source without dust_project connector
+  it("should not call connectorsAPI.deleteConnector for non-ruby_project connector", async () => {
+    // Create a data source without ruby_project connector
     const dataSourceView =
       await DataSourceViewResource.createDataSourceAndDefaultView(
         {
           name: "test-regular-datasource",
           assistantDefaultSelected: false,
           connectorProvider: null,
-          dustAPIProjectId: "test-project-id",
-          dustAPIDataSourceId: "test-datasource-id",
+          rubyAPIProjectId: "test-project-id",
+          rubyAPIDataSourceId: "test-datasource-id",
           workspaceId: workspace.id,
         },
         space,
@@ -122,15 +122,15 @@ describe("DataSourceResource.hardDelete", () => {
   });
 
   it("should not call connectorsAPI.deleteConnector when connectorId is null", async () => {
-    // Create a data source with dust_project connector but no connectorId
+    // Create a data source with ruby_project connector but no connectorId
     const dataSourceView =
       await DataSourceViewResource.createDataSourceAndDefaultView(
         {
-          name: "test-dust-project-datasource-no-connector-id",
+          name: "test-ruby-project-datasource-no-connector-id",
           assistantDefaultSelected: false,
-          connectorProvider: "dust_project",
-          dustAPIProjectId: "test-project-id",
-          dustAPIDataSourceId: "test-datasource-id",
+          connectorProvider: "ruby_project",
+          rubyAPIProjectId: "test-project-id",
+          rubyAPIDataSourceId: "test-datasource-id",
           workspaceId: workspace.id,
         },
         space,
@@ -158,15 +158,15 @@ describe("DataSourceResource.hardDelete", () => {
   });
 
   it("should handle connector deletion failure gracefully when connector not found", async () => {
-    // Create a data source with dust_project connector
+    // Create a data source with ruby_project connector
     const dataSourceView =
       await DataSourceViewResource.createDataSourceAndDefaultView(
         {
-          name: "test-dust-project-datasource-not-found",
+          name: "test-ruby-project-datasource-not-found",
           assistantDefaultSelected: false,
-          connectorProvider: "dust_project",
-          dustAPIProjectId: "test-project-id",
-          dustAPIDataSourceId: "test-datasource-id",
+          connectorProvider: "ruby_project",
+          rubyAPIProjectId: "test-project-id",
+          rubyAPIDataSourceId: "test-datasource-id",
           workspaceId: workspace.id,
         },
         space,
@@ -203,15 +203,15 @@ describe("DataSourceResource.hardDelete", () => {
   });
 
   it("should fail when connector deletion fails with non-not-found error", async () => {
-    // Create a data source with dust_project connector
+    // Create a data source with ruby_project connector
     const dataSourceView =
       await DataSourceViewResource.createDataSourceAndDefaultView(
         {
-          name: "test-dust-project-datasource-error",
+          name: "test-ruby-project-datasource-error",
           assistantDefaultSelected: false,
-          connectorProvider: "dust_project",
-          dustAPIProjectId: "test-project-id",
-          dustAPIDataSourceId: "test-datasource-id",
+          connectorProvider: "ruby_project",
+          rubyAPIProjectId: "test-project-id",
+          rubyAPIDataSourceId: "test-datasource-id",
           workspaceId: workspace.id,
         },
         space,
@@ -252,13 +252,13 @@ describe("DataSourceResource.hardDelete", () => {
 });
 
 describe("DataSourceResource cross-workspace fetch", () => {
-  it("unsafeFetchByDustAPIProjectId resolves the space and its groups across workspaces for super users", async () => {
+  it("unsafeFetchByRubyAPIProjectId resolves the space and its groups across workspaces for super users", async () => {
     // Workspace A owns the space and the data source.
     const workspaceA = await WorkspaceFactory.basic();
     const spaceA = await SpaceFactory.regular(workspaceA);
-    const dustAPIProjectId = "cross-ws-project-super-user";
+    const rubyAPIProjectId = "cross-ws-project-super-user";
     await DataSourceViewFactory.folder(workspaceA, spaceA, null, {
-      dustAPIProjectId,
+      rubyAPIProjectId,
     });
 
     // The lookup is authenticated against workspace B as a super user (the
@@ -270,14 +270,14 @@ describe("DataSourceResource cross-workspace fetch", () => {
     await MembershipFactory.associate(workspaceB, superUser, {
       role: "admin",
     });
-    const authB = await Authenticator.fromDustSuperUser({
+    const authB = await Authenticator.fromRubySuperUser({
       user: superUser,
       wId: workspaceB.sId,
     });
 
-    const dataSource = await DataSourceResource.unsafeFetchByDustAPIProjectId(
+    const dataSource = await DataSourceResource.unsafeFetchByRubyAPIProjectId(
       authB,
-      dustAPIProjectId
+      rubyAPIProjectId
     );
 
     expect(dataSource).not.toBeNull();
@@ -287,41 +287,41 @@ describe("DataSourceResource cross-workspace fetch", () => {
     ).toBeGreaterThan(0);
   });
 
-  it("unsafeFetchByDustAPIProjectId filters out other-workspace resources for non super users", async () => {
+  it("unsafeFetchByRubyAPIProjectId filters out other-workspace resources for non super users", async () => {
     const workspaceA = await WorkspaceFactory.basic();
     const spaceA = await SpaceFactory.regular(workspaceA);
-    const dustAPIProjectId = "cross-ws-project-regular-user";
+    const rubyAPIProjectId = "cross-ws-project-regular-user";
     await DataSourceViewFactory.folder(workspaceA, spaceA, null, {
-      dustAPIProjectId,
+      rubyAPIProjectId,
     });
 
     const workspaceB = await WorkspaceFactory.basic();
     const authB = await Authenticator.internalAdminForWorkspace(workspaceB.sId);
 
-    const dataSource = await DataSourceResource.unsafeFetchByDustAPIProjectId(
+    const dataSource = await DataSourceResource.unsafeFetchByRubyAPIProjectId(
       authB,
-      dustAPIProjectId
+      rubyAPIProjectId
     );
 
     expect(dataSource).toBeNull();
   });
 
   it("resolves every space when one bypassed query spans multiple workspaces", async () => {
-    // Two data sources sharing the same dustAPIProjectId in two different
+    // Two data sources sharing the same rubyAPIProjectId in two different
     // workspaces: the bypassed blob query returns both in a single call, so
     // the space fetch must resolve spaces (and their groups) across both
     // workspaces — a miss throws "Unreachable: space not found.".
-    const dustAPIProjectId = "multi-ws-project-id";
+    const rubyAPIProjectId = "multi-ws-project-id";
     const workspaceA = await WorkspaceFactory.basic();
     const spaceA = await SpaceFactory.regular(workspaceA);
     await DataSourceViewFactory.folder(workspaceA, spaceA, null, {
-      dustAPIProjectId,
+      rubyAPIProjectId,
     });
 
     const workspaceB = await WorkspaceFactory.basic();
     const spaceB = await SpaceFactory.regular(workspaceB);
     await DataSourceViewFactory.folder(workspaceB, spaceB, null, {
-      dustAPIProjectId,
+      rubyAPIProjectId,
     });
 
     const superUser = await UserFactory.superUser();
@@ -333,9 +333,9 @@ describe("DataSourceResource cross-workspace fetch", () => {
       workspaceB.sId
     );
 
-    const dataSource = await DataSourceResource.unsafeFetchByDustAPIProjectId(
+    const dataSource = await DataSourceResource.unsafeFetchByRubyAPIProjectId(
       authB,
-      dustAPIProjectId
+      rubyAPIProjectId
     );
 
     expect(dataSource).not.toBeNull();

@@ -68,7 +68,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
 
     // Create session and extract token from the Set-Cookie header.
     const cookie = await createFrameSession(workspace, { email });
-    const match = cookie.match(/dust_frame_session=([^;]+)/);
+    const match = cookie.match(/ruby_frame_session=([^;]+)/);
     expect(match).not.toBeNull();
     return match![1];
   };
@@ -126,7 +126,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
     const { file, token } = await createFrameWithScope("emails_only");
     const session = await createGrantAndSession(file, "alice@example.com");
     expect(
-      (await requestFrame(token, { cookies: { dust_frame_session: session } }))
+      (await requestFrame(token, { cookies: { ruby_frame_session: session } }))
         .status
     ).toBe(200);
     const [viewer] = await file.getViewerSummaries();
@@ -184,7 +184,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
         "external@example.com"
       );
       const response = await requestFrame(token, {
-        cookies: { dust_frame_session: sessionToken },
+        cookies: { ruby_frame_session: sessionToken },
       });
 
       expect(response.status).toBe(200);
@@ -265,7 +265,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
         "external@example.com"
       );
       const response = await requestFrame(token, {
-        cookies: { dust_frame_session: sessionToken },
+        cookies: { ruby_frame_session: sessionToken },
       });
 
       expect(response.status).toBe(200);
@@ -299,7 +299,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
       );
 
       const response = await requestFrame(token, {
-        cookies: { dust_frame_session: sessionToken },
+        cookies: { ruby_frame_session: sessionToken },
       });
 
       expect(response.status).toBe(200);
@@ -314,11 +314,11 @@ describe("GET /api/v1/public/frames/[token]", () => {
       expect(response.status).toBe(404);
     });
 
-    it("blocks Dust user from another workspace even with a grant (must use OTP)", async () => {
+    it("blocks Ruby user from another workspace even with a grant (must use OTP)", async () => {
       const { file, token } = await createFrameWithScope(
         "workspace_and_emails"
       );
-      // User is logged into Dust but NOT a member of this workspace.
+      // User is logged into Ruby but NOT a member of this workspace.
       // resolveOptionalAuth returns null.
       vi.mocked(resolveOptionalAuth).mockResolvedValue(null);
 
@@ -335,7 +335,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
     });
   });
 
-  // -- emails_only: only users with a grant (Dust session or external session) can access --
+  // -- emails_only: only users with a grant (Ruby session or external session) can access --
 
   describe("emails_only scope", () => {
     it("allows logged-in workspace member whose email has an active grant", async () => {
@@ -390,7 +390,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
       );
 
       const response = await requestFrame(token, {
-        cookies: { dust_frame_session: sessionToken },
+        cookies: { ruby_frame_session: sessionToken },
       });
 
       expect(response.status).toBe(200);
@@ -417,7 +417,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
       );
 
       const response = await requestFrame(token, {
-        cookies: { dust_frame_session: sessionToken },
+        cookies: { ruby_frame_session: sessionToken },
       });
 
       expect(response.status).toBe(404);
@@ -437,12 +437,12 @@ describe("GET /api/v1/public/frames/[token]", () => {
       const cookie = await createFrameSession(workspace, {
         email: "bob@example.com",
       });
-      const match = cookie.match(/dust_frame_session=([^;]+)/);
+      const match = cookie.match(/ruby_frame_session=([^;]+)/);
       expect(match).not.toBeNull();
       const bobSessionToken = match![1];
 
       const response = await requestFrame(token, {
-        cookies: { dust_frame_session: bobSessionToken },
+        cookies: { ruby_frame_session: bobSessionToken },
       });
 
       expect(response.status).toBe(404);
@@ -467,7 +467,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
       });
 
       const response = await requestFrame(token, {
-        cookies: { dust_frame_session: sessionToken },
+        cookies: { ruby_frame_session: sessionToken },
       });
 
       expect(response.status).toBe(404);
@@ -495,11 +495,11 @@ describe("GET /api/v1/public/frames/[token]", () => {
       const cookie = await createFrameSession(workspace, {
         email: "viewer@example.com",
       });
-      const match = cookie.match(/dust_frame_session=([^;]+)/);
+      const match = cookie.match(/ruby_frame_session=([^;]+)/);
       expect(match).not.toBeNull();
 
       const response = await requestFrame(token, {
-        cookies: { dust_frame_session: match![1] },
+        cookies: { ruby_frame_session: match![1] },
       });
 
       expect(response.status).toBe(200);
@@ -530,19 +530,19 @@ describe("GET /api/v1/public/frames/[token]", () => {
 
       // Create one session for this email.
       const cookie = await createFrameSession(workspace, { email });
-      const match = cookie.match(/dust_frame_session=([^;]+)/);
+      const match = cookie.match(/ruby_frame_session=([^;]+)/);
       expect(match).not.toBeNull();
       const sessionToken = match![1];
 
       // Access frame 1.
       const res1 = await requestFrame(frame1Token, {
-        cookies: { dust_frame_session: sessionToken },
+        cookies: { ruby_frame_session: sessionToken },
       });
       expect(res1.status).toBe(200);
 
       // Same session accesses frame 2.
       const res2 = await requestFrame(frame2Token, {
-        cookies: { dust_frame_session: sessionToken },
+        cookies: { ruby_frame_session: sessionToken },
       });
       expect(res2.status).toBe(200);
     });
@@ -588,7 +588,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
       );
 
       const response = await requestFrame(token, {
-        cookies: { dust_frame_session: sessionToken },
+        cookies: { ruby_frame_session: sessionToken },
       });
 
       expect(response.status).toBe(404);
@@ -670,7 +670,7 @@ describe("GET /api/v1/public/frames/[token]", () => {
         "external@example.com"
       );
       const response = await requestFrame(token, {
-        cookies: { dust_frame_session: sessionToken },
+        cookies: { ruby_frame_session: sessionToken },
       });
 
       expect(response.status).toBe(404);

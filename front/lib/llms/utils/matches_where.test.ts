@@ -380,7 +380,7 @@ describe("matchesWhere", () => {
     });
 
     it("an empty endpoint filter is available to all workspaces", () => {
-      // Matches the default `endpointFilter = {}` on the Dust Sonnet 4.6 config.
+      // Matches the default `endpointFilter = {}` on the Ruby Sonnet 4.6 config.
       expect(matchesWhere(enterpriseWorkspace, {})).toBe(true);
       expect(matchesWhere(freeWorkspace, {})).toBe(true);
     });

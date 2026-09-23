@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import { moveFrameV2Source } from "@app/lib/api/frames/move_source";
 import type { Authenticator } from "@app/lib/auth";
 import { ConversationFactory } from "@app/tests/utils/ConversationFactory";
@@ -98,14 +98,14 @@ export async function moveFrameSourceForTest(
     sourceDirectoryPath,
   }: { destinationDirectoryPath: string; sourceDirectoryPath: string }
 ) {
-  const fsResult = await DustFileSystem.forAgentLoop(auth, {
+  const fsResult = await RubyFileSystem.forAgentLoop(auth, {
     conversation,
     scopedPaths: [sourceDirectoryPath],
   });
   assert(fsResult.isOk(), "Test file system should be available");
 
   return moveFrameV2Source(auth, {
-    dustFs: fsResult.value,
+    rubyFs: fsResult.value,
     destinationDirectoryPath,
     sourceDirectoryPath,
   });

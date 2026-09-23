@@ -1,0 +1,460 @@
+import Foundation
+
+enum MessageType: String, Codable {
+    case userMessage = "user_message"
+    case agentMessage = "agent_message"
+}
+
+enum AgentMessageStatus: String, Codable {
+    case created
+    case succeeded
+    case failed
+    case cancelled
+    case interrupted
+    case gracefullyStopped = "gracefully_stopped"
+}
+
+struct UserMessage: Codable, Identifiable {
+    let id: Int
+    let sId: String
+    let type: MessageType
+    let created: Double
+    var visibility: String
+    let version: Int
+    let rank: Int
+    let content: String
+    let user: MessageUser?
+    let context: UserMessageContext?
+    let contentFragments: [ContentFragment]?
+
+    var isPending: Bool {
+        visibility == "pending"
+    }
+
+    var createdDate: Date {
+        created.dateFromEpochMs
+    }
+
+    /// `context` picture is often absent for other people's messages, so prefer `user`.
+    var authorAvatarUrl: String? {
+        user?.image ?? context?.profilePictureUrl
+    }
+
+    var authorName: String? {
+        user?.fullName ?? context?.fullName ?? context?.username
+    }
+}
+
+struct MessageUser: Codable {
+    let fullName: String?
+    let image: String?
+}
+
+struct UserMessageContext: Codable {
+    let username: String?
+    let fullName: String?
+    let email: String?
+    let profilePictureUrl: String?
+}
+
+// MARK: - Content Fragment (nested in UserMessage)
+
+struct ContentFragment: Codable, Identifiable, Hashable {
+    let id: Int
+    let sId: String
+    let created: Double
+    let title: String
+    let contentType: String
+    let fileId: String?
+    let snippet: String?
+    let sourceUrl: String?
+
+    var isImage: Bool {
+        contentType.hasPrefix("image/")
+    }
+}
+
+// MARK: - Generated File (attached to AgentMessage)
+
+struct GeneratedFile: Codable, Identifiable, Hashable {
+    // Files backed by a Ruby FileResource carry a `fileId`; path-only files
+    // (oversized tool output offloaded to disk) carry `filePath` and a null `fileId`.
+    let fileId: String?
+    let filePath: String?
+    let title: String
+    let contentType: String
+    let createdAt: Double?
+    let updatedAt: Double?
+    let hidden: Bool?
+
+    var id: String {
+        fileId ?? filePath ?? title
+    }
+
+    var isVisible: Bool {
+        hidden != true
+    }
+}
+
+// MARK: - Citation (attached to AgentMessage)
+
+struct CitationReference: Codable, Hashable {
+    let title: String
+    let provider: String
+    let contentType: String
+    let description: String?
+    let href: String?
+}
+
+struct AgentConfiguration: Codable {
+    let sId: String
+    let name: String
+    let pictureUrl: String
+}
+
+struct AgentMessage: Codable, Identifiable {
+    let sId: String
+    let type: MessageType
+    let created: Double
+    let visibility: String
+    let version: Int
+    let rank: Int
+    var status: AgentMessageStatus
+    var content: String?
+    var chainOfThought: String?
+    let configuration: AgentConfiguration
+    var generatedFiles: [GeneratedFile]?
+    var citations: [String: CitationReference]?
+    var error: StreamingError?
+
+    var id: String {
+        sId
+    }
+
+    var createdDate: Date {
+        created.dateFromEpochMs
+    }
+
+    var isStreaming: Bool {
+        status == .created
+    }
+}
+
+// MARK: - Activity timeline steps
+
+enum ActivityStep: Identifiable, Equatable {
+    case thinking(id: String, content: String)
+    case action(id: String, label: String, serverName: String?)
+
+    var id: String {
+        switch self {
+        case let .thinking(id, _): id
+        case let .action(id, _, _): id
+        }
+    }
+}
+
+// MARK: - Agent streaming state
+
+struct ActiveAction: Equatable, Identifiable {
+    let id: Int
+    let label: String
+    let serverName: String?
+}
+
+enum ActionApproval: String {
+    case approved
+    case rejected
+    case alwaysApproved = "always_approved"
+}
+
+enum ToolStake: String, Decodable {
+    case low, medium, high
+    case neverAsk = "never_ask"
+}
+
+enum ErrorCategory: String, Decodable {
+    case retryableModelError = "retryable_model_error"
+    case contextWindowExceeded = "context_window_exceeded"
+    case emptyContent = "empty_content"
+    case providerInternalError = "provider_internal_error"
+    case streamError = "stream_error"
+    case unknownError = "unknown_error"
+    case invalidResponseFormatConfiguration = "invalid_response_format_configuration"
+}
+
+struct ToolApprovalInfo: Equatable {
+    let actionId: String
+    let messageId: String
+    let conversationId: String
+    /// sId of the user whose turn triggered the action; only they may approve it.
+    let triggeringUserId: String?
+    let toolName: String?
+    let mcpServerName: String?
+    let agentName: String?
+    let stake: ToolStake?
+    let inputs: [String: ToolInputValue]?
+    let argumentsRequiringApproval: [String]?
+
+    var canAlwaysAllow: Bool {
+        stake == .low || stake == .medium
+    }
+
+    /// Pre-computed displayable inputs.
+    let displayableInputs: [(key: String, value: String)]
+
+    init(
+        actionId: String,
+        messageId: String,
+        conversationId: String,
+        triggeringUserId: String?,
+        toolName: String?,
+        mcpServerName: String?,
+        agentName: String?,
+        stake: ToolStake?,
+        inputs: [String: ToolInputValue]?,
+        argumentsRequiringApproval: [String]?
+    ) {
+        self.actionId = actionId
+        self.messageId = messageId
+        self.conversationId = conversationId
+        self.triggeringUserId = triggeringUserId
+        self.toolName = toolName
+        self.mcpServerName = mcpServerName
+        self.agentName = agentName
+        self.stake = stake
+        self.inputs = inputs
+        self.argumentsRequiringApproval = argumentsRequiringApproval
+
+        self.displayableInputs = (inputs ?? [:]).compactMap { key, val in
+            guard let display = val.displayValue else { return nil }
+            let truncated = display.count > 300
+                ? String(display.prefix(300)) + "…"
+                : display
+            return (key: key.humanized, value: truncated)
+        }
+        .sorted { $0.key < $1.key }
+    }
+
+    static func == (lhs: ToolApprovalInfo, rhs: ToolApprovalInfo) -> Bool {
+        lhs.actionId == rhs.actionId
+    }
+
+    init(from event: ToolApproveExecutionEvent, fallbackMessageId: String, fallbackConversationId: String) {
+        self.init(
+            actionId: event.actionId ?? "",
+            messageId: event.messageId ?? fallbackMessageId,
+            conversationId: event.conversationId ?? fallbackConversationId,
+            triggeringUserId: event.userId,
+            toolName: event.metadata?.toolName,
+            mcpServerName: event.metadata?.mcpServerName,
+            agentName: event.metadata?.agentName,
+            stake: event.stake.flatMap(ToolStake.init(rawValue:)),
+            inputs: event.inputs,
+            argumentsRequiringApproval: event.argumentsRequiringApproval
+        )
+    }
+
+    init(from action: BlockedAction, fallbackConversationId: String) {
+        self.init(
+            actionId: action.actionId ?? "",
+            messageId: action.messageId ?? "",
+            conversationId: action.conversationId ?? fallbackConversationId,
+            triggeringUserId: action.userId,
+            toolName: action.metadata?.toolName,
+            mcpServerName: action.metadata?.mcpServerName,
+            agentName: action.metadata?.agentName,
+            stake: action.stake.flatMap(ToolStake.init(rawValue:)),
+            inputs: action.inputs,
+            argumentsRequiringApproval: action.argumentsRequiringApproval
+        )
+    }
+}
+
+private extension String {
+    var humanized: String {
+        let spaced = unicodeScalars.reduce("") { result, scalar in
+            if CharacterSet.uppercaseLetters.contains(scalar), !result.isEmpty {
+                return result + " " + String(scalar)
+            }
+            return result + String(scalar)
+        }
+        return spaced
+            .replacing("_", with: " ")
+            .split(separator: " ")
+            .map { $0.prefix(1).uppercased() + $0.dropFirst().lowercased() }
+            .joined(separator: " ")
+    }
+}
+
+struct ErrorInfo: Equatable {
+    let code: String?
+    let message: String
+    let category: ErrorCategory?
+    let errorTitle: String?
+    let messageId: String
+
+    var isRetryable: Bool {
+        category == .retryableModelError || category == .streamError || category == .emptyContent
+    }
+
+    init(from error: StreamingError, messageId: String) {
+        self.code = error.code
+        self.message = error.message
+        self.category = error.metadata?.category.flatMap(ErrorCategory.init(rawValue:))
+        self.errorTitle = error.metadata?.errorTitle
+        self.messageId = messageId
+    }
+}
+
+/// What the agent is waiting on the user for. Outlives the stream until resolved.
+enum BlockedState: Equatable {
+    case approval(ToolApprovalInfo)
+    case personalAuth(provider: String, toolName: String)
+    case fileAuth(fileName: String, toolName: String)
+    case userQuestion(UserQuestionInfo)
+}
+
+struct UserQuestionInfo: Equatable {
+    let actionId: String
+    let messageId: String
+    let conversationId: String
+    /// sId of the user whose turn triggered the question; only they may answer it.
+    let triggeringUserId: String?
+    let question: UserQuestion
+
+    init(from event: ToolAskUserQuestionEvent, fallbackMessageId: String, fallbackConversationId: String) {
+        self.actionId = event.actionId ?? ""
+        self.messageId = event.messageId ?? fallbackMessageId
+        self.conversationId = event.conversationId ?? fallbackConversationId
+        self.triggeringUserId = event.userId
+        self.question = event.question
+    }
+
+    init(from action: BlockedAction, question: UserQuestion, fallbackConversationId: String) {
+        self.actionId = action.actionId ?? ""
+        self.messageId = action.messageId ?? ""
+        self.conversationId = action.conversationId ?? fallbackConversationId
+        self.triggeringUserId = action.userId
+        self.question = question
+    }
+}
+
+/// Mirrors front's `canCurrentUserRespondToParentUserMessage`: a viewer may respond to a
+/// blocked action only when it has no associated user (API-key run) or the action was
+/// triggered by that same viewer. Prevents one teammate from approving another's tool calls.
+func canRespondToBlockedAction(triggeringUserId: String?, currentUserSId: String?) -> Bool {
+    triggeringUserId == nil || triggeringUserId == currentUserSId
+}
+
+/// Derived view projection of `Activity` overlaid with any `BlockedState`. Not stored.
+enum AgentStreamingPhase: Equatable {
+    case idle
+    case thinking
+    case generating
+    case personalAuthRequired(provider: String, toolName: String)
+    case fileAuthRequired(fileName: String, toolName: String)
+    case approvalRequired(approval: ToolApprovalInfo)
+    case userQuestionRequired(question: UserQuestionInfo)
+}
+
+extension BlockedState {
+    var asPhase: AgentStreamingPhase {
+        switch self {
+        case let .approval(info): .approvalRequired(approval: info)
+        case let .personalAuth(provider, toolName): .personalAuthRequired(provider: provider, toolName: toolName)
+        case let .fileAuth(fileName, toolName): .fileAuthRequired(fileName: fileName, toolName: toolName)
+        case let .userQuestion(info): .userQuestionRequired(question: info)
+        }
+    }
+}
+
+enum ConversationMessage: Identifiable {
+    case user(UserMessage)
+    case agent(AgentMessage)
+
+    var id: String {
+        switch self {
+        case let .user(msg): msg.sId
+        case let .agent(msg): msg.sId
+        }
+    }
+
+    var rank: Int {
+        switch self {
+        case let .user(msg): msg.rank
+        case let .agent(msg): msg.rank
+        }
+    }
+
+    var created: Double {
+        switch self {
+        case let .user(msg): msg.created
+        case let .agent(msg): msg.created
+        }
+    }
+
+    static func byRank(_ lhs: ConversationMessage, _ rhs: ConversationMessage) -> Bool {
+        if lhs.rank != rhs.rank { return lhs.rank < rhs.rank }
+        return lhs.created < rhs.created
+    }
+}
+
+// MARK: - Decoding from heterogeneous array
+
+extension ConversationMessage: Decodable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try container.decode(MessageType.self, forKey: .type)
+
+        switch type {
+        case .userMessage:
+            let msg = try UserMessage(from: decoder)
+            self = .user(msg)
+        case .agentMessage:
+            let msg = try AgentMessage(from: decoder)
+            self = .agent(msg)
+        }
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case type
+    }
+}
+
+struct ConversationMessagesResponse: Decodable {
+    let messages: [ConversationMessage]
+    let hasMore: Bool
+    let lastValue: Int?
+
+    private enum CodingKeys: String, CodingKey {
+        case messages, hasMore, lastValue
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.hasMore = try container.decode(Bool.self, forKey: .hasMore)
+        self.lastValue = try container.decodeIfPresent(Int.self, forKey: .lastValue)
+        self.messages = try container.decode([RenderableMessage].self, forKey: .messages).compactMap(\.message)
+    }
+}
+
+/// Skips unrenderable types (e.g. `compaction_message`) but lets a renderable message that
+/// fails to decode throw, so schema drift surfaces instead of dropping messages silently.
+private struct RenderableMessage: Decodable {
+    let message: ConversationMessage?
+
+    private enum CodingKeys: String, CodingKey {
+        case type
+    }
+
+    init(from decoder: Decoder) throws {
+        let type = try decoder.container(keyedBy: CodingKeys.self).decode(String.self, forKey: .type)
+        switch type {
+        case MessageType.userMessage.rawValue, MessageType.agentMessage.rawValue:
+            self.message = try ConversationMessage(from: decoder)
+        default:
+            self.message = nil
+        }
+    }
+}

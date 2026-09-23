@@ -1,7 +1,7 @@
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import { checkRunningUpsertWorkflows } from "@app/lib/temporal";
 import logger from "@app/logger/logger";
-import type { CheckUpsertQueueResponseType } from "@dust-tt/client";
+import type { CheckUpsertQueueResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsSystemKey } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";

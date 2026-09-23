@@ -22,7 +22,7 @@ import type { KeyType } from "@app/types/key";
 import { isCreditPricedPlan } from "@app/types/plan";
 import { pluralize } from "@app/types/shared/utils/string_utils";
 import type { WorkspaceType } from "@app/types/user";
-import { BookOpen01, Button, LoadingBlock, Page } from "@dust-tt/sparkle";
+import { BookOpen01, Button, LoadingBlock, Page } from "@ruby-ai/ui";
 import get from "lodash/get";
 import { useMemo, useState } from "react";
 import { useSWRConfig } from "swr";
@@ -163,7 +163,7 @@ export function APIKeysPageContent({ owner, period }: APIKeysPageContentProps) {
           sendNotification({
             title: "API Key Created",
             description:
-              "Your API key will remain visible for 10 minutes only. You can use it to authenticate with the Dust API.",
+              "Your API key will remain visible for 10 minutes only. You can use it to authenticate with the Ruby API.",
             type: "success",
           });
           return;
@@ -274,7 +274,7 @@ export function APIKeysPageContent({ owner, period }: APIKeysPageContentProps) {
             size="sm"
             variant="outline"
             icon={BookOpen01}
-            href="https://docs.dust.tt/reference"
+            href="https://docs.ruby.ad/reference"
             target="_blank"
             rel="noreferrer"
           />
@@ -345,9 +345,9 @@ export function APIKeysPage() {
           title={
             <div className="flex w-full flex-col justify-between gap-4 sm:flex-row sm:items-start">
               <div className="flex max-w-2xl flex-col gap-1">
-                <Page.H variant="h3">Dust API Keys</Page.H>
+                <Page.H variant="h3">Ruby API Keys</Page.H>
                 <Page.P variant="secondary">
-                  Create and manage keys to access the Dust API, track their
+                  Create and manage keys to access the Ruby API, track their
                   usage, and control their monthly spend.
                 </Page.P>
               </div>

@@ -99,7 +99,7 @@ async function runAgentLoopWorkerForQueue({
   const { connection, namespace } = await getTemporalAgentWorkerConnection();
 
   // Initialize LLMs instrumentation for the worker.
-  initializeOpenTelemetryInstrumentation({ serviceName: "dust-agent-loop" });
+  initializeOpenTelemetryInstrumentation({ serviceName: "ruby-agent-loop" });
 
   const spanExporter = new NoopSpanExporter();
 

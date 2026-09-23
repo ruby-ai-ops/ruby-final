@@ -47,7 +47,7 @@ import {
   toBaseSeatType,
 } from "@app/types/memberships";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import type { DataTableSkeletonCellProps, MenuItem } from "@dust-tt/sparkle";
+import type { DataTableSkeletonCellProps, MenuItem } from "@ruby-ai/ui";
 import {
   AlertCircle,
   Button,
@@ -66,7 +66,7 @@ import {
   ProgressBar,
   Spinner,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type {
   CellContext,
   ColumnDef,
@@ -562,7 +562,7 @@ const groupsColumn: ColumnDef<RowData, string> = {
     );
   },
   meta: {
-    // Least essential: only appears on very wide containers (e.g. the Poke
+    // Least essential: only appears on very wide containers (e.g. the Admin
     // pool-usage page), never crowding out Name on the sidebar-constrained
     // customer admin page.
     className: "hidden @6xl:table-cell @6xl:w-48",
@@ -1003,7 +1003,7 @@ const offPaceColumn: ColumnDef<RowData, string> = {
           tooltipTriggerAsChild
           label={
             isCritical
-              ? "At this rate, this user will reach their limit before the cycle ends and lose access to Dust until it resets."
+              ? "At this rate, this user will reach their limit before the cycle ends and lose access to Ruby until it resets."
               : "Consuming credits ahead of the billing cycle's pace"
           }
           trigger={

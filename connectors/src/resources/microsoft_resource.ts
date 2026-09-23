@@ -14,8 +14,8 @@ import { BaseResource } from "@connectors/resources/base_resource";
 import type { WithCreationAttributes } from "@connectors/resources/connector/strategy";
 import type { ReadonlyAttributesType } from "@connectors/resources/storage/types";
 import type { ModelId } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Ok } from "@ruby-ai/client";
 import type { Attributes, ModelStatic, Transaction } from "sequelize";
 import { Op } from "sequelize";
 

@@ -1,6 +1,6 @@
 import { editorVariants } from "@app/components/editor/editorStyles";
 import { AgentInstructionDiffExtension } from "@app/components/editor/extensions/agent_builder/AgentInstructionDiffExtension";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import { Placeholder } from "@tiptap/extensions";
 import type { Transaction } from "@tiptap/pm/state";
 import type { Editor, Extensions } from "@tiptap/react";

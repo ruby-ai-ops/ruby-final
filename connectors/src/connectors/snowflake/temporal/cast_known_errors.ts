@@ -2,7 +2,7 @@ import {
   ExternalOAuthTokenError,
   ThirdPartyConfigurationError,
 } from "@connectors/lib/error";
-import { normalizeError } from "@dust-tt/client";
+import { normalizeError } from "@ruby-ai/client";
 import type {
   ActivityExecuteInput,
   ActivityInboundCallsInterceptor,

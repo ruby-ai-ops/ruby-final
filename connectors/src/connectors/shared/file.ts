@@ -14,8 +14,8 @@ import {
   slugify,
   TextExtraction,
 } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import * as iconv from "iconv-lite";
 
 // Heuristics to detect .txt files that are actually tabular/numeric dumps with no

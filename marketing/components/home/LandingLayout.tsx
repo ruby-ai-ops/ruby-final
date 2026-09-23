@@ -1,31 +1,37 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
+import {
+  AnnouncementBanner,
+  BANNER_VISIBLE_AFTER_MS,
+} from "@marketing/components/home/AnnouncementBanner";
 import { A } from "@marketing/components/home/ContentComponents";
-import { LogoListsProvider } from "@marketing/components/home/LogoListsContext";
 import { FooterNavigation } from "@marketing/components/home/menu/FooterNavigation";
 import { MainNavigation } from "@marketing/components/home/menu/MainNavigation";
 import { MobileNavigation } from "@marketing/components/home/menu/MobileNavigation";
-import { OpenDustButton } from "@marketing/components/home/OpenDustButton";
+import { OpenRubyButton } from "@marketing/components/home/OpenRubyButton";
 import { PromoBanner } from "@marketing/components/home/PromoBanner";
 import { PublicWebsiteLogo } from "@marketing/components/home/PublicWebsiteLogo";
+import { RUBY_FAVICON_PATH } from "@marketing/lib/public_branding";
+import {
+  MARKETING_SURFACES,
+  isMarketingSurfaceVisible,
+  resolveAnnouncementVisibility,
+} from "@marketing/lib/marketing_visibility";
 import ScrollingHeader from "@marketing/components/home/ScrollingHeader";
-import { SkipLandingPrompt } from "@marketing/components/home/SkipLandingPrompt";
-import UTMButton from "@marketing/components/UTMButton";
 import { useStripUtmParams } from "@marketing/hooks/useStripUtmParams";
 import {
-  DUST_COOKIES_ACCEPTED,
-  DUST_HAS_SESSION,
+  RUBY_COOKIES_ACCEPTED,
+  RUBY_HAS_SESSION,
   hasCookiesAccepted,
   hasSessionIndicator,
   shouldCheckGeolocation,
 } from "@marketing/lib/cookies";
-import type { LogoListMap } from "@marketing/lib/logo_bars";
 import { useGeolocation } from "@marketing/lib/swr/geo";
 import { useLandingAuthContext } from "@marketing/lib/swr/website";
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
 import { classNames, getFaviconPath } from "@marketing/lib/utils";
 import { getOrCreateAnonymousId } from "@marketing/lib/utils/anonymous_id";
 import { appendUTMParams } from "@marketing/lib/utils/utm";
-import { Button, cn } from "@dust-tt/sparkle";
+import { LegacyButton as Button, cn } from "@ruby-ai/ui";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Script from "next/script";
@@ -33,16 +39,15 @@ import { useSignUpModal } from "@marketing/hooks/useSignUpModal";
 import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
+export type LandingLayoutVariant = "default" | "homepage";
+
 export interface LandingLayoutProps {
   shape: number;
   postLoginReturnToUrl?: string;
   gtmTrackingId?: string;
   hideNavigation?: boolean;
   fullWidth?: boolean;
-  // Editor-managed customer logo lists from Contentful, one per region,
-  // fetched in the page's `getStaticProps`. Absent on pages that render no
-  // logo bar; the bars fall back to their hardcoded lineup when it's missing.
-  logoLists?: LogoListMap;
+  layoutVariant?: LandingLayoutVariant;
 }
 
 export default function LandingLayout({
@@ -57,23 +62,47 @@ export default function LandingLayout({
     gtmTrackingId,
     hideNavigation,
     fullWidth,
-    logoLists,
+    layoutVariant = "default",
   } = pageProps;
+  const isHomepageLayout = layoutVariant === "homepage";
 
   const { openSignUpModal } = useSignUpModal();
 
   const router = useRouter();
+  const announcementVisible = isMarketingSurfaceVisible(
+    MARKETING_SURFACES.announcementBanner
+  );
+  // Initialize from the timestamp so there's no layout shift on first render.
+  // ?preview_banner in the URL forces it on for pre-launch testing.
+  const [showBanner, setShowBanner] = useState(() =>
+    resolveAnnouncementVisibility({
+      enabled: announcementVisible,
+      nowMs: Date.now(),
+      visibleAfterMs: BANNER_VISIBLE_AFTER_MS,
+      previewRequested: false,
+    })
+  );
+  useEffect(() => {
+    setShowBanner(
+      resolveAnnouncementVisibility({
+        enabled: announcementVisible,
+        nowMs: Date.now(),
+        visibleAfterMs: BANNER_VISIBLE_AFTER_MS,
+        previewRequested: "preview_banner" in router.query,
+      })
+    );
+  }, [announcementVisible, router.query]);
 
   useStripUtmParams();
 
   const [cookies, setCookie] = useCookies(
-    [DUST_COOKIES_ACCEPTED, DUST_HAS_SESSION],
+    [RUBY_COOKIES_ACCEPTED, RUBY_HAS_SESSION],
     {
       doNotParse: true,
     }
   );
   const [showCookieBanner, setShowCookieBanner] = useState<boolean>(false);
-  const cookieValue = cookies[DUST_COOKIES_ACCEPTED];
+  const cookieValue = cookies[RUBY_COOKIES_ACCEPTED];
   const [hasAcceptedCookies, setHasAcceptedCookies] = useState<boolean>(
     hasCookiesAccepted(cookieValue, null)
   );
@@ -81,11 +110,11 @@ export default function LandingLayout({
   // Check session cookie only on client to avoid hydration mismatch.
   const [hasSession, setHasSession] = useState(false);
   useEffect(() => {
-    setHasSession(hasSessionIndicator(cookies[DUST_HAS_SESSION]));
+    setHasSession(hasSessionIndicator(cookies[RUBY_HAS_SESSION]));
   }, [cookies]);
 
   // Verify actual auth state when session cookie is present. SWR deduplicates
-  // this call with the one in OpenDustButton, so there's no extra request.
+  // this call with the one in OpenRubyButton, so there's no extra request.
   const { isAuthenticated, isLoading: isAuthLoading } = useLandingAuthContext({
     hasSessionCookie: hasSession,
   });
@@ -104,7 +133,7 @@ export default function LandingLayout({
         setHasAcceptedCookies(true);
       }
       setShowCookieBanner(false);
-      setCookie(DUST_COOKIES_ACCEPTED, type, {
+      setCookie(RUBY_COOKIES_ACCEPTED, type, {
         path: "/",
         maxAge: 183 * 24 * 60 * 60, // 6 months
         sameSite: "lax",
@@ -141,7 +170,7 @@ export default function LandingLayout({
   }, [geoData, isGeoDataLoading, cookieValue]);
 
   return (
-    <LogoListsProvider logoLists={logoLists}>
+    <>
       <Header />
       {hideNavigation ? (
         <div className="flex w-full justify-center pt-12 pb-2">
@@ -151,35 +180,81 @@ export default function LandingLayout({
         </div>
       ) : (
         <>
-          <ScrollingHeader hasBanner={false}>
-            <div className="flex h-full w-full items-center gap-4 px-2 xs:px-6 xl:gap-10">
-              <div className="hidden h-[24px] w-[96px] xl:block">
+          <AnnouncementBanner show={showBanner} />
+          <ScrollingHeader
+            hasBanner={showBanner}
+            hideAfterSelector={
+              isHomepageLayout ? ".home-integrations-showcase" : undefined
+            }
+          >
+            <div
+              className={classNames(
+                "flex h-full w-full items-center xl:grid xl:grid-cols-[1fr_auto_1fr] xl:gap-4 xl:px-5",
+                isHomepageLayout
+                  ? "gap-1 px-1 xs:gap-4 xs:px-6"
+                  : "gap-4 px-2 xs:px-6"
+              )}
+            >
+              <div
+                className={classNames(
+                  "hidden h-[24px] w-[96px]",
+                  "xl:block xl:justify-self-start"
+                )}
+              >
                 <PublicWebsiteLogo />
               </div>
-              <MobileNavigation />
-              <div className="block xl:hidden">
-                <PublicWebsiteLogo />
+              <div
+                className={classNames(
+                  "xl:hidden",
+                  isHomepageLayout &&
+                    "homepage-mobile-menu-target [&_button]:min-h-11 [&_button]:min-w-11 xl:[&_button]:min-h-0 xl:[&_button]:min-w-0"
+                )}
+              >
+                <MobileNavigation />
+              </div>
+              <div
+                className={classNames(
+                  "block xl:hidden",
+                  isHomepageLayout &&
+                    "homepage-mobile-logo-target [&_a]:inline-flex [&_a]:min-h-11 [&_a]:min-w-11 [&_a]:items-center xl:[&_a]:min-h-0 xl:[&_a]:min-w-0"
+                )}
+              >
+                <PublicWebsiteLogo
+                  size={isHomepageLayout ? "small" : "default"}
+                />
               </div>
               <MainNavigation />
-              <div className="relative flex flex-grow items-center justify-end gap-1 xs:gap-4">
+              <div
+                className={classNames(
+                  "flex flex-grow items-center justify-end xs:gap-4 xl:flex-grow-0 xl:justify-self-end",
+                  isHomepageLayout ? "gap-0 xs:gap-4" : "gap-1"
+                )}
+              >
                 {hasSession && (isAuthLoading || isAuthenticated) ? (
-                  <>
-                    <OpenDustButton
+                  <div
+                    className={classNames(
+                      isHomepageLayout &&
+                        "homepage-mobile-open-ruby-target [&_a]:min-h-11 [&_button]:min-h-11 xl:[&_a]:min-h-0 xl:[&_button]:min-h-0"
+                    )}
+                  >
+                    <OpenRubyButton
                       variant="highlight"
                       size="sm"
                       trackingArea={TRACKING_AREAS.NAVIGATION}
                       trackingObject="go_to_app"
                     />
-                    {/* The opt-in only affects the root, which is the only page
-                        that redirects to the app. */}
-                    {router.pathname === "/" && <SkipLandingPrompt />}
-                  </>
+                  </div>
                 ) : (
                   <>
                     <Button
                       variant="ghost"
                       size="sm"
                       label="Sign in"
+                      className={
+                        isHomepageLayout
+                          ? "homepage-mobile-sign-in-target min-h-11 xl:min-h-0"
+                          : undefined
+                      }
                       href={appendUTMParams(
                         `/api/workos/login?returnTo=${encodeURIComponent(postLoginReturnToUrl)}`
                       )}
@@ -189,27 +264,20 @@ export default function LandingLayout({
                       )}
                     />
                     <Button
-                      variant="outline"
+                      variant="primary"
                       size="sm"
-                      label="Try for free"
+                      label="Get started"
+                      className={
+                        isHomepageLayout
+                          ? "homepage-mobile-get-started-target min-h-11 xl:min-h-0"
+                          : undefined
+                      }
                       onClick={withTracking(
                         TRACKING_AREAS.NAVIGATION,
                         "sign_up",
                         openSignUpModal
                       )}
                     />
-                    <div className="hidden xs:inline-flex">
-                      <UTMButton
-                        href="/home/contact"
-                        variant="highlight"
-                        size="sm"
-                        label="Contact sales"
-                        onClick={withTracking(
-                          TRACKING_AREAS.NAVIGATION,
-                          "contact_sales"
-                        )}
-                      />
-                    </div>
                   </>
                 )}
               </div>
@@ -221,9 +289,11 @@ export default function LandingLayout({
         <div
           className={classNames(
             "flex w-full flex-col",
-            fullWidth ? "" : "container",
-            "gap-6 px-6 md:gap-24",
-            hideNavigation ? "pt-6" : "pt-[96px]",
+            fullWidth || isHomepageLayout ? "" : "container",
+            isHomepageLayout
+              ? "gap-6 px-0 md:gap-24 lg:px-6"
+              : "gap-6 px-6 md:gap-24",
+            hideNavigation ? "pt-6" : showBanner ? "pt-[136px]" : "pt-[96px]",
             "xl:gap-16",
             "2xl:gap-24"
           )}
@@ -232,7 +302,6 @@ export default function LandingLayout({
         </div>
         <PromoBanner />
         <CookieBanner
-          className="fixed bottom-0 left-0 z-50 w-full"
           show={showCookieBanner}
           onClickAccept={() => {
             setCookieApproval("true");
@@ -262,7 +331,7 @@ export default function LandingLayout({
         )}
         {!hideNavigation && <FooterNavigation />}
       </main>
-    </LogoListsProvider>
+    </>
   );
 }
 
@@ -288,51 +357,57 @@ const CookieBanner = ({
   }
 
   return (
-    <div
+    <section
+      aria-labelledby="cookie-consent-title"
       className={cn(
-        "fixed bottom-0 left-0 z-30 flex w-full flex-col items-center justify-between gap-6 border-t border-slate-700 bg-slate-900/90 p-8 shadow-2xl backdrop-blur-sm md:flex-row md:gap-8",
+        "fixed bottom-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-3xl -translate-x-1/2 rounded-2xl border border-border bg-background/95 p-4 shadow-2xl backdrop-blur-md sm:p-5",
         "transition-opacity duration-300 ease-in-out",
         isVisible ? "opacity-100" : "opacity-0",
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        className || ""
+        className
       )}
     >
-      <div className="flex max-w-2xl flex-col gap-2">
-        <div className="text-base font-medium text-white md:text-lg">
-          We use cookies
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+        <div className="flex max-w-xl flex-col gap-2">
+          <h2
+            id="cookie-consent-title"
+            className="m-0 text-lg font-normal text-foreground"
+          >
+            We use cookies
+          </h2>
+          <p className="m-0 text-sm leading-relaxed text-muted-foreground">
+            We use essential cookies to keep Ruby working. With your permission,
+            we also use optional cookies to understand site usage and improve
+            your experience. View our{" "}
+            <A variant="primary" href="/home/platform-privacy">
+              Privacy Policy
+            </A>
+            .
+          </p>
         </div>
-        <div className="text-sm font-normal text-slate-300 md:text-base">
-          By clicking "Accept All Cookies", you agree to the storing of cookies
-          on your device to enhance site navigation, analyze site usage, and
-          assist in our marketing efforts. You can also{" "}
-          <button
-            className="text-slate-400 underline transition-colors hover:text-slate-200"
+        <div className="flex shrink-0 flex-col-reverse gap-2 sm:flex-row">
+          <Button
+            variant="outline"
+            size="md"
+            label="Only necessary"
+            className="w-full sm:w-auto"
             onClick={() => {
               setIsVisible(false);
               onClickRefuse();
             }}
-          >
-            reject non-essential cookies
-          </button>
-          . View our{" "}
-          <A variant="primary" href="/home/platform-privacy">
-            Privacy Policy
-          </A>{" "}
-          for more information.
+          />
+          <Button
+            variant="primary"
+            size="md"
+            label="Accept all"
+            className="w-full sm:w-auto"
+            onClick={() => {
+              setIsVisible(false);
+              onClickAccept();
+            }}
+          />
         </div>
       </div>
-      <div className="flex shrink-0 gap-3">
-        <Button
-          variant="highlight"
-          size="md"
-          label="Accept All Cookies"
-          onClick={() => {
-            setIsVisible(false);
-            onClickAccept();
-          }}
-        />
-      </div>
-    </div>
+    </section>
   );
 };
 
@@ -344,53 +419,28 @@ const Header = () => {
       <link rel="icon" type="image/png" href={faviconPath} />
       <link
         rel="preload"
-        href="/static/fonts/GeistVariable.woff2"
+        href="/static/fonts/Sohne-Regular.ttf"
         as="font"
-        type="font/woff2"
+        type="font/ttf"
         crossOrigin="anonymous"
       />
-      <meta name="apple-mobile-web-app-title" content="Dust" />
-      <link rel="apple-touch-icon" href="/static/AppIcon.png" />
       <link
-        rel="apple-touch-icon"
-        sizes="60x60"
-        href="/static/AppIcon_60.png"
+        rel="preload"
+        href="/static/fonts/RubySerif.ttf"
+        as="font"
+        type="font/ttf"
+        crossOrigin="anonymous"
       />
-      <link
-        rel="apple-touch-icon"
-        sizes="76x76"
-        href="/static/AppIcon_76.png"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="120x120"
-        href="/static/AppIcon_120.png"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="152x152"
-        href="/static/AppIcon_152.png"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="167x167"
-        href="/static/AppIcon_167.png"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="180x180"
-        href="/static/AppIcon_180.png"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="192x192"
-        href="/static/AppIcon_192.png"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="228x228"
-        href="/static/AppIcon_228.png"
-      />
+      <meta name="apple-mobile-web-app-title" content="Ruby" />
+      <link rel="apple-touch-icon" href={RUBY_FAVICON_PATH} />
+      <link rel="apple-touch-icon" sizes="60x60" href={RUBY_FAVICON_PATH} />
+      <link rel="apple-touch-icon" sizes="76x76" href={RUBY_FAVICON_PATH} />
+      <link rel="apple-touch-icon" sizes="120x120" href={RUBY_FAVICON_PATH} />
+      <link rel="apple-touch-icon" sizes="152x152" href={RUBY_FAVICON_PATH} />
+      <link rel="apple-touch-icon" sizes="167x167" href={RUBY_FAVICON_PATH} />
+      <link rel="apple-touch-icon" sizes="180x180" href={RUBY_FAVICON_PATH} />
+      <link rel="apple-touch-icon" sizes="192x192" href={RUBY_FAVICON_PATH} />
+      <link rel="apple-touch-icon" sizes="228x228" href={RUBY_FAVICON_PATH} />
     </Head>
   );
 };

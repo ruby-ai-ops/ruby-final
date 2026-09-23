@@ -1,4 +1,4 @@
-import type { DustFileSystem } from "@app/lib/api/file_system";
+import type { RubyFileSystem } from "@app/lib/api/file_system";
 import { enrichListWithFileResourceIds } from "@app/lib/api/files/file_system_ops";
 import type { Authenticator } from "@app/lib/auth";
 import type {
@@ -28,10 +28,10 @@ function getDirAndFileName(path: string): { dir: string; fileName: string } {
 
 export async function formatFileListOutput(
   auth: Authenticator,
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   scopedPrefix: string
 ): Promise<Result<string, Error>> {
-  const listResult = await dustFs.list(scopedPrefix, {
+  const listResult = await rubyFs.list(scopedPrefix, {
     includeProcessed: true,
   });
   if (listResult.isErr()) {
@@ -40,7 +40,7 @@ export async function formatFileListOutput(
 
   const entries = await enrichListWithFileResourceIds(
     auth,
-    dustFs,
+    rubyFs,
     listResult.value
   );
 

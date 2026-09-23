@@ -1,5 +1,5 @@
 import { BulkSelectionBar } from "@app/components/shared/BulkSelectionBar";
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 
 interface MembersSelectionBannerProps {
   selectedCount: number;

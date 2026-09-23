@@ -26,7 +26,7 @@ export class SandboxFactory {
     const sandbox = await SandboxResource.makeNew(auth, {
       providerId: `test-provider-${Date.now()}`,
       status: opts?.status ?? "running",
-      baseImage: opts?.baseImage ?? "dust-base",
+      baseImage: opts?.baseImage ?? "ruby-base",
       version: opts?.version ?? "0.0.0-test",
     });
 
@@ -79,7 +79,7 @@ export class SandboxFactory {
     const sandbox = await SandboxResource.makeNew(auth, {
       providerId: `test-provider-${Date.now()}`,
       status: opts?.status ?? "running",
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       version: "0.0.0-test",
     });
     if (opts?.killRequestedAt) {

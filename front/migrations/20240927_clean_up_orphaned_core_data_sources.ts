@@ -4,7 +4,7 @@
 // import config from "@app/lib/api/config";
 // import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 // import logger from "@app/logger/logger";
-// import { launchScrubDataSourceWorkflow } from "@app/poke/temporal/client";
+// import { launchScrubDataSourceWorkflow } from "@app/admin-app/temporal/client";
 // import { makeScript } from "@app/scripts/helpers";
 
 // const { CORE_DATABASE_URI } = process.env;
@@ -37,7 +37,7 @@
 
 //   const frontDataSourcesById = frontDataSources.reduce(
 //     (acc, ds) => {
-//       acc[`${ds.dustAPIProjectId}-${ds.dustAPIDataSourceId}`] = ds;
+//       acc[`${ds.rubyAPIProjectId}-${ds.rubyAPIDataSourceId}`] = ds;
 //       return acc;
 //     },
 //     {} as Record<string, (typeof frontDataSources)[0]>
@@ -79,7 +79,7 @@
 
 //         await launchScrubDataSourceWorkflow({
 //           wId: "scrub_orphaned",
-//           dustAPIProjectId: `${coreDataSource.project}`,
+//           rubyAPIProjectId: `${coreDataSource.project}`,
 //         });
 //       }
 //     }

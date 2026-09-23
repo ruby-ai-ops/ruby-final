@@ -1,4 +1,4 @@
-# Global mprocs defaults for the Dust dev container (~/.config/mprocs/mprocs.yaml).
+# Global mprocs defaults for the Ruby dev container (~/.config/mprocs/mprocs.yaml).
 # Process definitions stay in tools/mprocs.yaml.
 
 scrollback: 20000
@@ -8,5 +8,5 @@ proc_list_width: 28
 # Dual-write process output to the TUI and to files so agents can grep logs
 # without relying on the mprocs scrollback buffer.
 proc_log:
-  dir: /tmp/dust-infra/mprocs-logs
+  dir: /tmp/ruby-infra/mprocs-logs
   mode: append

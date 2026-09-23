@@ -33,15 +33,15 @@ import uniq from "lodash/uniq";
  * @cc [owner:rfrenoy,label:security;product] requested-spaces-readable-by-caller
  * Unless `dangerouslySkipPermissionFiltering` is set, the call MUST return an `Err` and persist
  * nothing when any space of the new version's `requestedSpaceIds` (collected from the actions'
- * MCP server views, data source views, Dust apps and Pods, from the skills, and from
+ * MCP server views, data source views, Ruby apps and Pods, from the skills, and from
  * `additionalRequestedSpaceIds`) is not readable by `auth` (`auth.can("read", space)`), through
  * `resolveAgentRequestedSpaces`. Agent visibility is gated on the same predicate, so a
  * version saved through a space the caller cannot read would lock the caller out of the agent.
  */
 /**
- * @cc [owner:rfrenoy,label:security;product] dust-apps-readable-by-caller
+ * @cc [owner:rfrenoy,label:security;product] ruby-apps-readable-by-caller
  * Unless `dangerouslySkipPermissionFiltering` is set, the call MUST return an `Err` and persist
- * nothing when an action's `dustAppConfiguration.appId` does not resolve to a Dust app readable by
+ * nothing when an action's `rubyAppConfiguration.appId` does not resolve to a Ruby app readable by
  * `auth`. `AppResource` fetchers drop unreadable apps, so without this check such an app would add
  * no space requirement and its id would still be persisted on the action.
  */
@@ -131,18 +131,18 @@ export async function createOrUpgradeAgentConfiguration({
   }
 
   if (!dangerouslySkipPermissionFiltering) {
-    const dustAppIds = uniq(
-      removeNulls(actions.map((action) => action.dustAppConfiguration?.appId))
+    const rubyAppIds = uniq(
+      removeNulls(actions.map((action) => action.rubyAppConfiguration?.appId))
     );
-    const dustApps = await AppResource.fetchByIds(auth, dustAppIds);
-    const foundDustAppIds = new Set(dustApps.map((app) => app.sId));
-    const inaccessibleDustAppIds = dustAppIds.filter(
-      (appId) => !foundDustAppIds.has(appId)
+    const rubyApps = await AppResource.fetchByIds(auth, rubyAppIds);
+    const foundRubyAppIds = new Set(rubyApps.map((app) => app.sId));
+    const inaccessibleRubyAppIds = rubyAppIds.filter(
+      (appId) => !foundRubyAppIds.has(appId)
     );
-    if (inaccessibleDustAppIds.length > 0) {
+    if (inaccessibleRubyAppIds.length > 0) {
       return new Err(
         new Error(
-          `User does not have access to the following Dust apps: ${inaccessibleDustAppIds.join(", ")}`
+          `User does not have access to the following Ruby apps: ${inaccessibleRubyAppIds.join(", ")}`
         )
       );
     }
@@ -159,7 +159,7 @@ export async function createOrUpgradeAgentConfiguration({
   // Pods are referenced by sId: resolving them here reports a malformed or unknown id instead of
   // dropping it when the requirements are computed.
   const podIds = removeNulls(
-    actions.map((action) => action.dustProject?.projectId ?? null)
+    actions.map((action) => action.rubyProject?.projectId ?? null)
   );
   const capabilitySpaces = await SpaceResource.fetchByModelIds(
     auth,
@@ -219,11 +219,11 @@ export async function createOrUpgradeAgentConfiguration({
         tables: action.tables,
         childAgentId: action.childAgentId,
         additionalConfiguration: action.additionalConfiguration,
-        dustAppConfiguration: action.dustAppConfiguration,
+        rubyAppConfiguration: action.rubyAppConfiguration,
         secretName: action.secretName,
         timeFrame: action.timeFrame,
         jsonSchema: action.jsonSchema,
-        dustProject: action.dustProject,
+        rubyProject: action.rubyProject,
       }) as ServerSideMCPServerConfigurationType
   );
 

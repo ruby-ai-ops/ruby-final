@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { IconForAttachmentCitation } from "./utils";
 
 // Mocks
-vi.mock("@app/components/sparkle/ThemeContext", () => ({
+vi.mock("@app/components/ui/ThemeContext", () => ({
   useTheme: () => ({ isDark: false }),
 }));
 
@@ -49,8 +49,8 @@ vi.mock("@app/components/resources/resources_icons", () => ({
 vi.mock("@app/lib/file_icon_utils", () => ({
   getFileTypeIcon: (contentType: string, _fileName?: string) => {
     if (
-      contentType === "application/vnd.dust.frame" ||
-      contentType === "application/vnd.dust.frame.slideshow"
+      contentType === "application/vnd.ruby.frame" ||
+      contentType === "application/vnd.ruby.frame.slideshow"
     ) {
       return "ActionFrameIcon";
     }
@@ -58,8 +58,8 @@ vi.mock("@app/lib/file_icon_utils", () => ({
   },
 }));
 
-// Mock sparkle icon components and wrappers with light-weight test doubles.
-vi.mock("@dust-tt/sparkle", () => ({
+// Mock ui icon components and wrappers with light-weight test doubles.
+vi.mock("@ruby-ai/ui", () => ({
   // Visual icon identifiers
   ActionAtomIcon: "ActionAtomIcon",
   ActionBrainIcon: "ActionBrainIcon",
@@ -200,10 +200,10 @@ describe("IconForAttachmentCitation", () => {
     expect(el).toHaveAttribute("data-visual", "DoubleQuotes");
   });
 
-  it("renders frame icon for Dust frame content type", () => {
+  it("renders frame icon for Ruby frame content type", () => {
     render(
       <TestIcon
-        contentType="application/vnd.dust.frame"
+        contentType="application/vnd.ruby.frame"
         fileName="HelloWorld4.tsx"
       />
     );

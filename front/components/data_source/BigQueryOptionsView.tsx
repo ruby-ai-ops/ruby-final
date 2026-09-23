@@ -10,7 +10,7 @@ import {
   ContextItem,
   Input,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 const BYTES_PER_GB = 1024 ** 3;
@@ -179,7 +179,7 @@ export function BigQueryOptionsView({
         <ContextItem.Description>
           <div className="mb-4 flex items-start justify-between gap-4 text-muted-foreground">
             <div className="text-sm text-muted-foreground">
-              Cap how many bytes a Dust-run BigQuery query may bill. Leave empty
+              Cap how many bytes a Ruby-run BigQuery query may bill. Leave empty
               or 0 for no limit.
             </div>
             <div className="flex items-center gap-2">

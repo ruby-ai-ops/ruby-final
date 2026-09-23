@@ -1,8 +1,8 @@
-/* eslint-disable dust/enforce-client-types-in-public-api */
+/* eslint-disable ruby/enforce-client-types-in-public-api */
 
 import type { ConnectorProvider } from "@app/types/data_source";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import type { DustMimeType } from "@dust-tt/client";
+import type { RubyMimeType } from "@ruby-ai/client";
 
 import type {
   LegacyLightMessageType,
@@ -29,8 +29,8 @@ export type ContentFragmentVersion = "superseded" | "latest";
 
 export type SupportedContentFragmentType =
   | AllSupportedFileContentType
-  | DustMimeType
-  | "dust-application/slack"; // Legacy
+  | RubyMimeType
+  | "ruby-application/slack"; // Legacy
 
 export type ContentFragmentNodeData = {
   nodeId: string;

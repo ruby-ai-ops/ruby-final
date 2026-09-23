@@ -45,7 +45,7 @@ vi.mock("@app/lib/platform", () => ({
 }));
 
 vi.mock("@app/lib/cookies", () => ({
-  DUST_HAS_SESSION: "dust-session",
+  RUBY_HAS_SESSION: "ruby-session",
   hasSessionIndicator: () => true,
 }));
 
@@ -71,7 +71,7 @@ vi.mock("@app/lib/swr/user", () => ({
 }));
 
 vi.mock("react-cookie", () => ({
-  useCookies: () => [{ "dust-session": "1" }],
+  useCookies: () => [{ "ruby-session": "1" }],
 }));
 
 const user = {
@@ -138,7 +138,7 @@ describe("PublicFrameRenderer", () => {
       shareToken: "share-token",
       title: "Frame",
       workspaceId: "w_current",
-      vizUrl: "https://viz.dust.tt",
+      vizUrl: "https://viz.ruby.ad",
     };
     const { rerender } = render(createElement(PublicFrameRenderer, props));
 
@@ -163,7 +163,7 @@ describe("PublicFrameRenderer", () => {
         shareToken: "share-token",
         title: "Frame",
         workspaceId: "w_current",
-        vizUrl: "https://viz.dust.tt",
+        vizUrl: "https://viz.ruby.ad",
       })
     );
 
@@ -195,7 +195,7 @@ describe("PublicFrameRenderer", () => {
         shareToken: "share-token",
         title: "Frame",
         workspaceId: "w_current",
-        vizUrl: "https://viz.dust.tt",
+        vizUrl: "https://viz.ruby.ad",
       })
     );
 
@@ -211,7 +211,7 @@ describe("PublicFrameRenderer", () => {
         shareToken: "share-token",
         title: "Frame",
         workspaceId: "w_current",
-        vizUrl: "https://viz.dust.tt",
+        vizUrl: "https://viz.ruby.ad",
       })
     );
 
@@ -229,7 +229,7 @@ describe("PublicFrameRenderer", () => {
         shareToken: "share-token",
         title: "Frame",
         workspaceId: "w_current",
-        vizUrl: "https://viz.dust.tt",
+        vizUrl: "https://viz.ruby.ad",
       })
     );
 

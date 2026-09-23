@@ -27,7 +27,7 @@ export function useAgentFromSearchParam(workspaceId: string) {
   // Entering /conversation/new from an existing conversation remounts the homepage
   // InputBar. Clear the applied marker so we re-push ?agent= through setSelectedAgent;
   // otherwise an already-matching selection looks "synced" without that push and can
-  // lose to the @dust default, which then gets mirrored back into the URL.
+  // lose to the @ruby default, which then gets mirrored back into the URL.
   if (prevConversationIdRef.current !== activeConversationId) {
     const enteredNewConversation =
       activeConversationId === null && prevConversationIdRef.current !== null;

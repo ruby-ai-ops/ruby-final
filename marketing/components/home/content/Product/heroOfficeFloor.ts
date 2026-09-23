@@ -1,7 +1,8 @@
 // Spatial config for the home-page hero office: room geometry (door,
-// interior rects, door-light id), where teammates sit inside each room, and
-// the corridor rail used by walking agents. All coordinates are in
-// plan-space (top-down xy) — heroOfficeIso.ts maps them to screen-space.
+// interior rects, explicit agent spawns, door-light id), where teammates sit
+// inside each room, and the corridor rail used by walking agents. All
+// coordinates are in plan-space (top-down xy) — heroOfficeIso.ts maps them
+// to screen-space.
 
 export type RoomKey = "office-d" | "office-c" | "office-bl" | "office-t";
 
@@ -15,34 +16,68 @@ export interface RoomRect {
 export interface RoomConfig {
   /** Door position in plan-space — used as the entry/exit waypoint. */
   door: { x: number; y: number };
-  /** One or more axis-aligned rects defining the seatable interior. The
-   *  first rect is also where idle agents stand. */
+  /** One or more axis-aligned rects defining solid, seatable letter strokes. */
   interior: RoomRect[];
+  /** Stable idle positions that keep every agent on a solid letter stroke. */
+  agentSpawns: [number, number][];
   /** SVG id of the matching door-light circle in the static markup. */
   lightId: string;
 }
 
 export const ROOMS: Record<RoomKey, RoomConfig> = {
   "office-d": {
-    door: { x: 180, y: 360 },
-    interior: [{ x: 20, y: 20, w: 320, h: 320 }],
+    door: { x: 90, y: 325 },
+    interior: [
+      { x: 80, y: 65, w: 210, h: 50 },
+      { x: 80, y: 100, w: 50, h: 225 },
+      { x: 210, y: 165, w: 40, h: 30 },
+      { x: 285, y: 285, w: 25, h: 30 },
+    ],
+    agentSpawns: [[165, 75]],
     lightId: "light-office-d",
   },
   "office-c": {
-    door: { x: 540, y: 360 },
-    interior: [{ x: 380, y: 20, w: 320, h: 320 }],
+    door: { x: 570, y: 320 },
+    interior: [
+      { x: 440, y: 65, w: 45, h: 205 },
+      { x: 635, y: 65, w: 50, h: 110 },
+      { x: 645, y: 250, w: 30, h: 30 },
+      { x: 500, y: 285, w: 140, h: 25 },
+    ],
+    agentSpawns: [
+      [450, 150],
+      [645, 165],
+      [510, 300],
+      [630, 300],
+    ],
     lightId: "light-office-c",
   },
   "office-bl": {
-    door: { x: 120, y: 540 },
-    interior: [{ x: 20, y: 560, w: 240, h: 140 }],
+    door: { x: 90, y: 685 },
+    interior: [
+      { x: 80, y: 425, w: 210, h: 50 },
+      { x: 80, y: 450, w: 50, h: 240 },
+      { x: 270, y: 630, w: 30, h: 40 },
+    ],
+    agentSpawns: [[120, 585]],
     lightId: "light-office-bl",
   },
   "office-t": {
-    door: { x: 400, y: 360 },
+    door: { x: 555, y: 705 },
     interior: [
-      { x: 120, y: 380, w: 580, h: 150 },
-      { x: 380, y: 530, w: 180, h: 190 },
+      { x: 680, y: 410, w: 20, h: 20 },
+      { x: 440, y: 410, w: 20, h: 20 },
+      { x: 620, y: 440, w: 20, h: 20 },
+      { x: 500, y: 470, w: 20, h: 20 },
+      { x: 605, y: 515, w: 20, h: 20 },
+      { x: 515, y: 545, w: 20, h: 20 },
+      { x: 575, y: 560, w: 20, h: 20 },
+      { x: 560, y: 620, w: 20, h: 20 },
+      { x: 545, y: 680, w: 20, h: 20 },
+    ],
+    agentSpawns: [
+      [510, 480],
+      [585, 570],
     ],
     lightId: "light-office-t",
   },
@@ -52,39 +87,38 @@ export const ROOMS: Record<RoomKey, RoomConfig> = {
  *  point, in this exact order — adding/removing entries changes the office
  *  population without touching the engine.
  *
- *  Each point projects (via heroOfficeIso `iso(px, py, 22)`) to a screen
- *  position that sits at least ~35px inside the corresponding colored room
- *  polygon — leaves ≥10px of room color visible past the human's r=23 disc. */
+ *  Each point projects (via heroOfficeIso `iso(px, py, 22)`) onto a solid
+ *  stroke of the corresponding baked Söhne letter. */
 export const ROOM_POPULATIONS: Record<RoomKey, [number, number][]> = {
   "office-d": [
-    [60, 50],
-    [50, 180],
-    [140, 70],
-    [110, 220],
-    [210, 110],
-    [230, 180],
+    [270, 75],
+    [90, 315],
+    [300, 300],
+    [90, 105],
+    [120, 225],
+    [225, 180],
   ],
   "office-c": [
-    [420, 80],
-    [570, 80],
-    [500, 170],
-    [580, 150],
-    [510, 240],
+    [450, 255],
+    [570, 300],
+    [660, 270],
+    [465, 75],
+    [675, 75],
   ],
   "office-bl": [
-    [60, 580],
-    [100, 620],
-    [150, 570],
-    [170, 600],
+    [270, 435],
+    [90, 675],
+    [285, 645],
+    [90, 465],
   ],
   "office-t": [
-    [160, 400],
-    [310, 400],
-    [460, 400],
-    [580, 410],
-    [400, 540],
-    [420, 620],
-    [440, 510],
+    [690, 420],
+    [555, 690],
+    [450, 420],
+    [615, 525],
+    [525, 555],
+    [630, 450],
+    [570, 630],
   ],
 };
 

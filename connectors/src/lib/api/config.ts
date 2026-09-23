@@ -7,13 +7,13 @@ export const apiConfig = {
       apiKey: EnvironmentConfig.getOptionalEnvVariable("OAUTH_API_KEY") ?? null,
     };
   },
-  getDustFrontAPIUrl: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_FRONT_API");
+  getRubyFrontAPIUrl: (): string => {
+    return EnvironmentConfig.getEnvVariable("RUBY_FRONT_API");
   },
-  getDustAppUrl: (): string => {
+  getRubyAppUrl: (): string => {
     return (
-      EnvironmentConfig.getOptionalEnvVariable("DUST_APP_URL") ??
-      EnvironmentConfig.getEnvVariable("DUST_CLIENT_FACING_URL")
+      EnvironmentConfig.getOptionalEnvVariable("RUBY_APP_URL") ??
+      EnvironmentConfig.getEnvVariable("RUBY_CLIENT_FACING_URL")
     );
   },
   getTextExtractionUrl: (): string => {
@@ -34,8 +34,8 @@ export const apiConfig = {
       "UNTRUSTED_EGRESS_PROXY_PORT"
     );
   },
-  getDustConnectorsWebhooksSecret: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_CONNECTORS_WEBHOOKS_SECRET");
+  getRubyConnectorsWebhooksSecret: (): string => {
+    return EnvironmentConfig.getEnvVariable("RUBY_CONNECTORS_WEBHOOKS_SECRET");
   },
   getConnectorsPublicURL: (): string => {
     return EnvironmentConfig.getEnvVariable("CONNECTORS_PUBLIC_URL");

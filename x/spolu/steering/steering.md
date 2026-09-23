@@ -387,7 +387,7 @@ Dependencies:
 ## Rendering Pending Messages for the Model
 
 When the promoted pending messages are included in the new agent loop's conversation context, they
-are rendered by `renderUserMessage()` (in `helpers.ts`). The existing `<dust_system>` block
+are rendered by `renderUserMessage()` (in `helpers.ts`). The existing `<ruby_system>` block
 already contains correct metadata (sender, timestamp, source) that works for steering messages.
 
 ### Future: `wasPending` flag + steering instruction

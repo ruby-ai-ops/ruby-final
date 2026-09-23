@@ -1,4 +1,4 @@
-import { _getDustGlobalAgent } from "@app/lib/api/assistant/global_agents/configurations/dust/dust";
+import { _getRubyGlobalAgent } from "@app/lib/api/assistant/global_agents/configurations/ruby/ruby";
 import type { MCPServerViewsForGlobalAgentsMap } from "@app/lib/api/assistant/global_agents/tools";
 import { MCP_SERVERS_FOR_GLOBAL_AGENTS } from "@app/lib/api/assistant/global_agents/tools";
 import { getEnabledSkillInstructions } from "@app/lib/api/assistant/skills_rendering";
@@ -70,13 +70,13 @@ function resolveModel(
   return { modelId, temperature: model.temperature, reasoningEffort };
 }
 
-/** Builds the Dust global agent for the given workspace, with the skill's tools attached. */
+/** Builds the Ruby global agent for the given workspace, with the skill's tools attached. */
 export async function getBuildingAgentConfig(
   auth: Authenticator
 ): Promise<BuildingAgentConfig> {
   const featureFlags = await getFeatureFlags(auth);
 
-  const agent = _getDustGlobalAgent(auth, {
+  const agent = _getRubyGlobalAgent(auth, {
     settings: null,
     preFetchedDataSources: null,
     mcpServerViews: MOCK_MCP_SERVER_VIEWS,
@@ -84,13 +84,13 @@ export async function getBuildingAgentConfig(
     featureFlags,
   });
   if (!agent) {
-    throw new Error("Could not build the dust global agent.");
+    throw new Error("Could not build the ruby global agent.");
   }
 
   // Mirrors renderEnabledSkillUserMessageFromInstructions, which needs a SkillResource.
-  const skillInstructionsMessage = `<dust_system>\n${getEnabledSkillInstructions(
+  const skillInstructionsMessage = `<ruby_system>\n${getEnabledSkillInstructions(
     conversationalBuildingSkill
-  )}\n</dust_system>`;
+  )}\n</ruby_system>`;
 
   return {
     agentId: agent.sId,
@@ -101,7 +101,7 @@ export async function getBuildingAgentConfig(
       temperature: agent.model.temperature,
       reasoningEffort: agent.model.reasoningEffort,
     }),
-    // The agent only sees the tools of the servers the skill equips, not the rest of Dust's
+    // The agent only sees the tools of the servers the skill equips, not the rest of Ruby's
     // toolsets: the eval measures the skill.
     tools: getToolSpecifications(),
   };

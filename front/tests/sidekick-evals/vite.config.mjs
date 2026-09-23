@@ -26,10 +26,10 @@ export default defineConfig(() => {
         SIDEKICK_MODEL_ID: process.env.SIDEKICK_MODEL_ID ?? "",
         SIDEKICK_REASONING_EFFORT: process.env.SIDEKICK_REASONING_EFFORT ?? "",
         // Map API keys from non-VITE env vars to VITE prefixed ones for browser compatibility
-        DUST_MANAGED_ANTHROPIC_API_KEY:
-          process.env.DUST_MANAGED_ANTHROPIC_API_KEY ?? "",
-        DUST_MANAGED_OPENAI_API_KEY:
-          process.env.DUST_MANAGED_OPENAI_API_KEY ?? "",
+        RUBY_MANAGED_ANTHROPIC_API_KEY:
+          process.env.RUBY_MANAGED_ANTHROPIC_API_KEY ?? "",
+        RUBY_MANAGED_OPENAI_API_KEY:
+          process.env.RUBY_MANAGED_OPENAI_API_KEY ?? "",
       },
       testTimeout: 300000,
       maxConcurrency: parseInt(process.env.EVAL_MAX_CONCURRENCY ?? "5", 10),

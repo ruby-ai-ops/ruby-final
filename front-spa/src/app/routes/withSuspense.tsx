@@ -1,4 +1,4 @@
-import { Spinner, safeLazy } from "@dust-tt/sparkle";
+import { Spinner, safeLazy } from "@ruby-ai/ui";
 import { Suspense } from "react";
 
 function PageLoader() {

@@ -9,6 +9,6 @@ export function isDevelopment() {
 export function isTest() {
   return process.env.NODE_ENV === "test";
 }
-export function isDustWorkspace(w: LightWorkspaceType) {
-  return w.sId === process.env.PRODUCTION_DUST_WORKSPACE_ID;
+export function isRubyWorkspace(w: LightWorkspaceType) {
+  return w.sId === process.env.PRODUCTION_RUBY_WORKSPACE_ID;
 }

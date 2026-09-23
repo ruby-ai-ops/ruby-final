@@ -6,7 +6,7 @@ import { renderLightWorkspaceType } from "@app/lib/workspace";
 import type { Logger } from "@app/logger/logger";
 import type { SeedContext } from "@app/scripts/seed/factories/types";
 
-// The workspace sId created by dust-hive seed, overridable via DEV_WORKSPACE_SID.
+// The workspace sId created by ruby-hive seed, overridable via DEV_WORKSPACE_SID.
 export const WORKSPACE_SID = process.env.DEV_WORKSPACE_SID || "DevWkSpace";
 
 export async function createSeedContext({
@@ -20,7 +20,7 @@ export async function createSeedContext({
   const workspace = await WorkspaceResource.fetchById(WORKSPACE_SID);
   if (!workspace) {
     throw new Error(
-      `Workspace ${WORKSPACE_SID} not found. Make sure dust-hive seed has run first.`
+      `Workspace ${WORKSPACE_SID} not found. Make sure ruby-hive seed has run first.`
     );
   }
 
@@ -31,7 +31,7 @@ export async function createSeedContext({
   });
   if (memberships.length === 0) {
     throw new Error(
-      `No admin user found in workspace ${WORKSPACE_SID}. Make sure dust-hive seed has run first.`
+      `No admin user found in workspace ${WORKSPACE_SID}. Make sure ruby-hive seed has run first.`
     );
   }
   const membershipUser = memberships[0].user;

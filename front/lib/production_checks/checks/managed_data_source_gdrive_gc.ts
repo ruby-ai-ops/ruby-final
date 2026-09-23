@@ -98,7 +98,7 @@ export const managedDataSourceGCGdriveCheck: CheckFunction = async (
           async () =>
             // biome-ignore lint/plugin/noRawSql: production check uses read replica
             connectorsReplica.query(
-              'SELECT id, "dustFileId" as "coreDocumentId" FROM google_drive_files WHERE "connectorId" = :connectorId AND id > :lastId ORDER BY id ASC LIMIT :batchSize',
+              'SELECT id, "rubyFileId" as "coreDocumentId" FROM google_drive_files WHERE "connectorId" = :connectorId AND id > :lastId ORDER BY id ASC LIMIT :batchSize',
               {
                 replacements: {
                   connectorId: ds.connectorId,
@@ -175,7 +175,7 @@ export const managedDataSourceGCGdriveCheck: CheckFunction = async (
       const actionLinks: ActionLink[] = [
         {
           label: `${notDeleted.length} document${notDeleted.length > 1 ? "s" : ""} not GC'd (connector: ${ds.connectorId})`,
-          url: `/poke/${ds.workspaceId}/data_sources/${dataSourceId}`,
+          url: `/admin/${ds.workspaceId}/data_sources/${dataSourceId}`,
         },
       ];
       reportFailure(

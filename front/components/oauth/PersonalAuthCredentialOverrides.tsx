@@ -1,6 +1,6 @@
 import type { OAuthCredentialInputs } from "@app/types/oauth/lib";
 import { isSupportedOAuthCredential } from "@app/types/oauth/lib";
-import { Input, Label } from "@dust-tt/sparkle";
+import { Input, Label } from "@ruby-ai/ui";
 
 interface PersonalAuthCredentialOverridesProps {
   inputs: OAuthCredentialInputs;

@@ -23,9 +23,9 @@ To target a different workspace:
 DEV_WORKSPACE_SID=MyWorkspace npx tsx scripts/seed/mcp_tools/seed.ts --execute
 ```
 
-With dust-hive:
+With ruby-hive:
 
 ```bash
-dust-hive warm json-not-enforced
-dust-hive feed json-not-enforced mcp_tools
+ruby-hive warm json-not-enforced
+ruby-hive feed json-not-enforced mcp_tools
 ```

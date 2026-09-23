@@ -4,7 +4,7 @@ import {
 } from "@app/components/resources/resources_icons";
 import { getMcpServerViewDisplayName } from "@app/lib/actions/mcp_helper";
 import type { MCPServerViewType } from "@app/lib/api/mcp";
-import { ActionIcons } from "@dust-tt/sparkle";
+import { ActionIcons } from "@ruby-ai/ui";
 
 export function getInfoPageTitle(
   infoMCPServerView: MCPServerViewType | null

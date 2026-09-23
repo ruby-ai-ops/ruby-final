@@ -1,0 +1,30 @@
+[Unit]
+Description=Ruby synthetic DNS resolver for sandbox-controlled accounts
+Wants=systemd-resolved.service
+After=network.target systemd-resolved.service
+Before=ruby-egress-nftables.service
+
+[Service]
+User=ruby-egress-resolver
+Group=ruby-egress-resolver
+ExecStart=/opt/bin/rbx resolve --listen 127.0.0.1:1053
+Restart=on-failure
+RestartSec=2s
+
+# Defense in depth: this process exists specifically to parse attacker-shaped
+# DNS queries. Lock it down so a parser bug cannot escalate beyond the
+# process itself.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET
+RestrictNamespaces=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -9,9 +9,9 @@ import { createPrivateApiMockRequest } from "@app/tests/utils/generic_private_ap
 import { fileStorageMock } from "@app/tests/utils/mocks/file_storage";
 import { SpaceFactory } from "@app/tests/utils/SpaceFactory";
 import {
-  DUST_FILE_CAN_WRITE_HEADER,
-  DUST_FILE_CONTENT_TYPE_HEADER,
-  DUST_FILE_ID_HEADER,
+  RUBY_FILE_CAN_WRITE_HEADER,
+  RUBY_FILE_CONTENT_TYPE_HEADER,
+  RUBY_FILE_ID_HEADER,
   frameV2ContentType,
 } from "@app/types/files";
 import { honoApp } from "@front-api/app";
@@ -301,8 +301,8 @@ describe("HEAD /api/w/:wId/files/path/:canonicalPath", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("text/plain");
-    expect(response.headers.get(DUST_FILE_ID_HEADER)).toBe(file.sId);
-    expect(response.headers.get(DUST_FILE_CONTENT_TYPE_HEADER)).toBe(
+    expect(response.headers.get(RUBY_FILE_ID_HEADER)).toBe(file.sId);
+    expect(response.headers.get(RUBY_FILE_CONTENT_TYPE_HEADER)).toBe(
       frameV2ContentType
     );
     expect(response.headers.get("X-Content-Type-Options")).toBe("nosniff");
@@ -832,7 +832,7 @@ describe("conditional updates through Files paths", () => {
     const { workspace, path, loaded, etag } = await setupRevisionedFile();
     expect(loaded.status).toBe(200);
     expect(await loaded.json()).toEqual({ arbitrary: "ordinary JSON file" });
-    expect(loaded.headers.get(DUST_FILE_CAN_WRITE_HEADER)).toBe("true");
+    expect(loaded.headers.get(RUBY_FILE_CAN_WRITE_HEADER)).toBe("true");
 
     const edited = '{"anything":[1,2,3]}';
     const saved = await request(workspace, path, {
@@ -985,9 +985,9 @@ describe("conditional updates through Files paths", () => {
     const etag = loaded.headers.get("ETag");
     assert(etag);
     expect(loaded.status).toBe(200);
-    expect(loaded.headers.get(DUST_FILE_CAN_WRITE_HEADER)).toBe("false");
+    expect(loaded.headers.get(RUBY_FILE_CAN_WRITE_HEADER)).toBe("false");
     const head = await request(workspace, path, { method: "HEAD" });
-    expect(head.headers.get(DUST_FILE_CAN_WRITE_HEADER)).toBe("false");
+    expect(head.headers.get(RUBY_FILE_CAN_WRITE_HEADER)).toBe("false");
 
     const saved = await request(workspace, path, {
       method: "PUT",
@@ -1029,7 +1029,7 @@ describe("conditional updates through Files paths", () => {
     const pod = await SpaceFactory.project(
       workspace,
       auth.getNonNullableUser().id,
-      { name: "[Dust FS] Test" }
+      { name: "[Ruby FS] Test" }
     );
     const path = `pod-${pod.sId}/notes.json`;
     const saved = await request(workspace, path, {

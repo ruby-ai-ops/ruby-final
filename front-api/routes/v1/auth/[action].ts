@@ -1,4 +1,4 @@
-/* eslint-disable dust/enforce-client-types-in-public-api */
+/* eslint-disable ruby/enforce-client-types-in-public-api */
 // Pass through to workOS, do not enforce return types.
 
 import config from "@app/lib/api/config";

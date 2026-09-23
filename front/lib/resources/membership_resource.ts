@@ -766,7 +766,7 @@ export class MembershipResource extends BaseResource<MembershipModel> {
     }
   ): Promise<Record<string, number>> {
     assert(
-      auth.isDustSuperUser(),
+      auth.isRubySuperUser(),
       "Counting members across different workspaces is only allowed for super users."
     );
 

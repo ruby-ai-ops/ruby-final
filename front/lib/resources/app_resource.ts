@@ -30,10 +30,10 @@ import { Op } from "sequelize";
 export interface AppResource extends ReadonlyAttributesType<AppModel> {}
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 /**
- * @cc [owner:tdraier,label:security;product] dust-app-admin-capability
- * `admin` on the `dust_app` type is the developer capability for Dust apps. Creating an app in a
- * space (on top of `write` on that space) and managing Dust app secrets MUST require
- * `hasWorkspacePermission("admin", "dust_app")`. Reading, running and editing an existing app are
+ * @cc [owner:tdraier,label:security;product] ruby-app-admin-capability
+ * `admin` on the `ruby_app` type is the developer capability for Ruby apps. Creating an app in a
+ * space (on top of `write` on that space) and managing Ruby app secrets MUST require
+ * `hasWorkspacePermission("admin", "ruby_app")`. Reading, running and editing an existing app are
  * governed by its space's verbs (`space-verbs-inherited`), not by this capability.
  */
 export class AppResource extends ResourceWithSpace<AppModel> {
@@ -166,15 +166,15 @@ export class AppResource extends ResourceWithSpace<AppModel> {
     targetWorkspace: LightWorkspaceType,
     targetSpace: SpaceResource,
     {
-      dustAPIProjectId,
+      rubyAPIProjectId,
     }: {
-      dustAPIProjectId: string;
+      rubyAPIProjectId: string;
     }
   ): Promise<Result<AppResource, Error>> {
-    // Only dust super users can clone apps. Authenticator has no write permissions
+    // Only ruby super users can clone apps. Authenticator has no write permissions
     // on the target workspace.
-    if (!auth.isDustSuperUser()) {
-      throw new Error("Only dust super users can clone apps");
+    if (!auth.isRubySuperUser()) {
+      throw new Error("Only ruby super users can clone apps");
     }
 
     if (targetWorkspace.id !== targetSpace.workspaceId) {
@@ -185,7 +185,7 @@ export class AppResource extends ResourceWithSpace<AppModel> {
     const newApp = await AppResource.makeNew(
       {
         description: this.description,
-        dustAPIProjectId,
+        rubyAPIProjectId,
         name: this.name,
         savedConfig: this.savedConfig,
         savedSpecification: this.savedSpecification,
@@ -320,7 +320,7 @@ export class AppResource extends ResourceWithSpace<AppModel> {
       savedSpecification: this.savedSpecification,
       savedConfig: this.savedConfig,
       savedRun: this.savedRun,
-      dustAPIProjectId: this.dustAPIProjectId,
+      rubyAPIProjectId: this.rubyAPIProjectId,
       space: this.space.toJSON(),
     };
   }

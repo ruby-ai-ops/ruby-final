@@ -38,16 +38,16 @@ describe("requestSandboxKillsActivity", () => {
     ]);
 
     await SandboxFactory.create(authenticator, c1, {
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       version: "1.0.0",
     });
     await SandboxFactory.create(authenticator, c2, {
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       version: "2.0.0",
     });
 
     const hasMore = await requestSandboxKillsActivity({
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       version: "2.0.0",
     });
 

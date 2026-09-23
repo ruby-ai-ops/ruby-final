@@ -71,7 +71,7 @@ const EXCLUDED_MCP_SERVERS = new Set([
   "file_generation",
   "image_generation",
   "run_agent",
-  "run_dust_app",
+  "run_ruby_app",
   "agent_memory",
   "deep_dive",
   "interactive_content",
@@ -84,7 +84,7 @@ const EXCLUDED_MCP_SERVERS = new Set([
   "openai_usage",
   "http_client",
   // Internal admin only
-  "poke",
+  "admin",
 ]);
 
 // Connectors to exclude (hidden or bot-only or internal)
@@ -92,7 +92,7 @@ const EXCLUDED_CONNECTORS = new Set<ConnectorProvider>([
   "slack_bot",
   "discord_bot",
   "microsoft_bot",
-  "dust_project", // Internal connector for Dust projects
+  "ruby_project", // Internal connector for Ruby projects
 ]);
 
 // Category mapping for MCP servers
@@ -188,7 +188,7 @@ const CONNECTOR_CATEGORY_MAP: Record<ConnectorProvider, IntegrationCategory> = {
   bigquery: "data",
   salesforce: "crm",
   gong: "transcripts",
-  dust_project: "development", // Internal connector
+  ruby_project: "development", // Internal connector
 };
 
 // Display names for MCP servers (snake_case to Title Case)
@@ -262,7 +262,7 @@ function extractToolsFromServer(
 function getConnectorIcon(
   provider: ConnectorProvider
 ): InternalAllowedIconType {
-  // Map connector providers to their Sparkle icon names
+  // Map connector providers to their RubyUI icon names
   const iconMap: Partial<Record<ConnectorProvider, InternalAllowedIconType>> = {
     confluence: "ConfluenceLogo",
     notion: "NotionLogo",
@@ -410,7 +410,7 @@ export function buildPublicIntegrationRegistry(): IntegrationBase[] {
       name: "Google Meet",
       type: "connector",
       description:
-        "Connect Google Meet recordings to Dust. AI automatically summarizes your meetings, extracts action items, and syncs insights to your workspace.",
+        "Connect Google Meet recordings to Ruby. AI automatically summarizes your meetings, extracts action items, and syncs insights to your workspace.",
       icon: "GcalLogo", // Using Google Calendar logo as closest match
       documentationUrl: null,
       authorizationRequired: true,
@@ -422,7 +422,7 @@ export function buildPublicIntegrationRegistry(): IntegrationBase[] {
       name: "Modjo",
       type: "connector",
       description:
-        "Connect Modjo call recordings to Dust. AI analyzes sales calls, extracts key insights, and helps your team improve performance.",
+        "Connect Modjo call recordings to Ruby. AI analyzes sales calls, extracts key insights, and helps your team improve performance.",
       icon: "ActionMegaphoneIcon",
       documentationUrl: null,
       authorizationRequired: true,

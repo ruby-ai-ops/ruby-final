@@ -3,13 +3,13 @@ import { FIELD_DEFINITIONS } from "@marketing/lib/api/hubspot/contactFormSchema"
 import { TRACKING_AREAS, trackEvent } from "@marketing/lib/tracking";
 import { getStoredUTMParams } from "@marketing/lib/utils/utm";
 import logger from "@marketing/logger/logger";
-import { CheckCircle } from "@dust-tt/sparkle";
+import { CheckCircle } from "@ruby-ai/ui";
 import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
 // Default.com configuration
-const DEFAULT_FORM_ID = 130084;
-const DEFAULT_TEAM_ID = 579;
+const DEFAULT_FORM_ID = Number(process.env.NEXT_PUBLIC_DEFAULT_FORM_ID || 0);
+const DEFAULT_TEAM_ID = Number(process.env.NEXT_PUBLIC_DEFAULT_TEAM_ID || 0);
 
 // Type for Default.com SDK (exposed as window.DefaultSDK)
 interface DefaultSDKInstance {
@@ -63,7 +63,7 @@ export function ContactFormThankYou({ isQualified }: ContactFormThankYouProps) {
   const language = formValues.language ?? "";
   const headquartersRegion = formValues.headquarters_region ?? "";
   const companyHeadcount = formValues.company_headcount_form ?? "";
-  const howToUseDust = formValues.landing_use_cases ?? "";
+  const howToUseRuby = formValues.landing_use_cases ?? "";
   const consentMarketing = formValues.consent_marketing ?? false;
 
   // Get tracking params from sessionStorage for dataLayer
@@ -140,7 +140,7 @@ export function ContactFormThankYou({ isQualified }: ContactFormThankYouProps) {
 
   // Load Default.com SDK and submit form data for all leads
   useEffect(() => {
-    if (defaultTriggeredRef.current) {
+    if (!DEFAULT_FORM_ID || !DEFAULT_TEAM_ID || defaultTriggeredRef.current) {
       return;
     }
     defaultTriggeredRef.current = true;
@@ -169,7 +169,7 @@ export function ContactFormThankYou({ isQualified }: ContactFormThankYouProps) {
               language,
               headquarters_region: headquartersRegion,
               company_headcount_form: companyHeadcount,
-              landing_use_cases: howToUseDust,
+              landing_use_cases: howToUseRuby,
             },
             questions: toDefaultQuestions(FIELD_DEFINITIONS),
             onError: (error) => {
@@ -214,7 +214,7 @@ export function ContactFormThankYou({ isQualified }: ContactFormThankYouProps) {
     language,
     headquartersRegion,
     companyHeadcount,
-    howToUseDust,
+    howToUseRuby,
   ]);
 
   return (
@@ -229,7 +229,7 @@ export function ContactFormThankYou({ isQualified }: ContactFormThankYouProps) {
       </div>
 
       <p className="text-lg text-muted-foreground">
-        We're excited to show you Dust. Book a time with our team below.
+        We're excited to show you Ruby. Book a time with our team below.
       </p>
     </div>
   );

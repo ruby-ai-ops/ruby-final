@@ -65,7 +65,7 @@ PR #24086.
 - Add `GET /api/w/[wId]/assistant/conversations/[cId]/context-usage` endpoint.
 - `ConversationResource.getLatestCompletedAgentMessageRun()` — instance method that finds the last
   succeeded/gracefully-stopped agent message, takes its last `runId`, and returns a `RunResource`.
-- `RunResource.fetchByDustRunId()` — fetch a run resource by its dustRunId.
+- `RunResource.fetchByRubyRunId()` — fetch a run resource by its rubyRunId.
 - Endpoint calls `run.listRunUsages()`, takes max `promptTokens` across usages, resolves model
   config for `contextSize`.
 - Returns `{ model: SupportedModel, contextUsage: number, contextSize: number }`.
@@ -86,7 +86,7 @@ PR #24104. Collocated with the agent loop on `agent-loop-queue-v2`.
 - `runCompaction` in `temporal/agent_loop/lib/compaction.ts` — fetches conversation, finds the
   `CompactionMessageType` by sId+version, calls `updateCompactionMessageWithContentAndFinalStatus`
   (stub sets content to `[COMPACTION]`).
-- `launchCompactionWorkflow` in `client.ts` — fire-and-forget, `DustError` on already-running.
+- `launchCompactionWorkflow` in `client.ts` — fire-and-forget, `RubyError` on already-running.
 - `updateCompactionMessageWithContentAndFinalStatus` in `conversation.ts` — TODO: implement with
   proper locking.
 - Activity registered in `worker.ts`.
@@ -124,7 +124,7 @@ PR #24111. The LLM call that produces the summary.
 - `renderMessagesForCompaction()`: renders messages since the last succeeded compaction into text,
   prepending previous compaction summary as context if one exists.
 - `generateCompactionSummary()`: calls LLM via `runMultiActionsAgent` with an `<analysis>` +
-  `<summary>` block prompt adapted for Dust's multi-agent platform.
+  `<summary>` block prompt adapted for Ruby's multi-agent platform.
 - `extractSummary()`: parses LLM response, strips the `<analysis>` scratchpad.
 - Thread `SupportedModel` through the full chain: `compactConversation` →
   `launchCompactionWorkflow` → workflow → activity → `runCompaction` →

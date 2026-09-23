@@ -13,7 +13,7 @@ import {
 import { useProviders } from "@app/lib/swr/apps";
 import { redactString } from "@app/types/shared/utils/string_utils";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, Chip, Container, cn, Page } from "@dust-tt/sparkle";
+import { Button, Chip, Container, cn, Page } from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface ProvidersProps {
@@ -96,7 +96,7 @@ export function Providers({ owner }: ProvidersProps) {
           <div>
             <Page.SectionHeader
               title="Model Providers"
-              description="Model providers available to your Dust apps."
+              description="Model providers available to your Ruby apps."
             />
             <ul role="list" className="divide-y divide-separator pt-4">
               {filteredProviders.map((provider) => (
@@ -117,7 +117,7 @@ export function Providers({ owner }: ProvidersProps) {
           <div>
             <Page.SectionHeader
               title="Service Providers"
-              description="Service providers enable your Dust Apps to query external data or write to external services."
+              description="Service providers enable your Ruby Apps to query external data or write to external services."
             />
             <ul role="list" className="divide-y divide-separator pt-4">
               {serviceProviders.map((provider) => (
@@ -199,7 +199,7 @@ export function ProvidersPage() {
       <Page.Vertical gap="xl" align="stretch">
         <Page.Header
           title="App Credentials"
-          description="Configure model and service providers to enable advanced capabilities in your Apps. Note: These providers are not used by Dust agents at all, but are required for running your own custom Dust Apps."
+          description="Configure model and service providers to enable advanced capabilities in your Apps. Note: These providers are not used by Ruby agents at all, but are required for running your own custom Ruby Apps."
         />
         <Page.Vertical align="stretch" gap="md">
           <Providers owner={owner} />

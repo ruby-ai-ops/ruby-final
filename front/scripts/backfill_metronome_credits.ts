@@ -107,7 +107,7 @@ async function backfillCreditsOfType(
               workspaceId: workspace.sId,
               creditId: credit.id,
             },
-            `[Backfill] Credit missing invoiceOrLineItemId, cannot determine if "free-renewal-*" or "free-poke", skipping`
+            `[Backfill] Credit missing invoiceOrLineItemId, cannot determine if "free-renewal-*" or "free-admin", skipping`
           );
           continue;
         }
@@ -198,12 +198,12 @@ async function backfillCreditsOfType(
                 startingAt: startingAt.toLocaleDateString("en-GB"),
                 endingBefore: endingBefore.toLocaleDateString("en-GB"),
               },
-              `[Backfill] [DRY RUN] Would create ${metronomeItem} in Metronome (free-poke)`
+              `[Backfill] [DRY RUN] Would create ${metronomeItem} in Metronome (free-admin)`
             );
             continue;
           }
 
-          // "free-poke" credits
+          // "free-admin" credits
           result = await createMetronomeCredit({
             metronomeCustomerId,
             productId: getProductFreeCreditId(),
@@ -211,7 +211,7 @@ async function backfillCreditsOfType(
             amount: initialAmount,
             startingAt: startingAt.toISOString(),
             endingBefore: endingBefore.toISOString(),
-            name: `Free poke credit backfill (${startingAt.toISOString().split("T")[0]})`,
+            name: `Free admin credit backfill (${startingAt.toISOString().split("T")[0]})`,
             idempotencyKey: `createCredit-${workspace.sId}-${startingAt.getTime()}-${endingBefore.getTime()}`,
             priority: 1,
             applicableProductTags: ["usage"],
@@ -274,7 +274,7 @@ async function backfillCreditsForWorkspace(
 
   // Note: a Metronome contract isn't required at the workspace level — only
   // the `free-renewal-*` branch needs one (it edits the contract's recurring
-  // credit segment). `free-poke` and `committed` credits are created at the
+  // credit segment). `free-admin` and `committed` credits are created at the
   // customer level and work without a contract. The recurring branch handles
   // the missing-contract case inline.
 

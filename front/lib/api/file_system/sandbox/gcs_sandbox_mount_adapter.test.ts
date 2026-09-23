@@ -147,7 +147,7 @@ describe("buildMountCommand", () => {
     expect(command).toContain("bucket-x /frames/fil_frame/publications");
   });
 
-  test("sandbox state replica mounts as dust-state without allow_other or list caching", () => {
+  test("sandbox state replica mounts as ruby-state without allow_other or list caching", () => {
     const command = renderRootCommand(
       buildMountCommand({
         bucket: "bucket-x",
@@ -161,10 +161,10 @@ describe("buildMountCommand", () => {
       })
     );
 
-    // Mounted as dust-state: FUSE denies every other uid without allow_other,
+    // Mounted as ruby-state: FUSE denies every other uid without allow_other,
     // which is what keeps the replica invisible to the workload uid 1003.
     expect(command).toContain(
-      "/usr/sbin/runuser -u dust-state -- /usr/bin/gcsfuse"
+      "/usr/sbin/runuser -u ruby-state -- /usr/bin/gcsfuse"
     );
     expect(command).not.toContain("allow_other");
     // Restore must never see a cached LTX listing.
@@ -183,7 +183,7 @@ describe("pod files mount wiring", () => {
   beforeAll(() => {
     // Config reads used by createSandboxAdapter/getAccessBoundaryRules.
     process.env.GOOGLE_CLOUD_PROJECT_ID ??= "test-project";
-    process.env.DUST_PRIVATE_UPLOADS_BUCKET ??= "test-private-uploads";
+    process.env.RUBY_PRIVATE_UPLOADS_BUCKET ??= "test-private-uploads";
   });
 
   test("grants only the pod files prefix", () => {
@@ -233,7 +233,7 @@ describe("pod files mount wiring", () => {
 describe("Frame sandbox mount wiring", () => {
   beforeAll(() => {
     process.env.GOOGLE_CLOUD_PROJECT_ID ??= "test-project";
-    process.env.DUST_PRIVATE_UPLOADS_BUCKET ??= "test-private-uploads";
+    process.env.RUBY_PRIVATE_UPLOADS_BUCKET ??= "test-private-uploads";
   });
 
   test("grants only stable Frame publication, state and files prefixes", () => {
@@ -271,7 +271,7 @@ describe("GCS credential lifecycle", () => {
     expect(result.isOk()).toBe(true);
     const command = getRootCommandCall(execRoot, 1);
     expect(command).toContain(
-      "/usr/local/bin/dust-gcs-token-firewall.sh; firewall_exit=$?"
+      "/usr/local/bin/ruby-gcs-token-firewall.sh; firewall_exit=$?"
     );
     expect(command).toContain("/usr/sbin/runuser -u agent -- /usr/bin/curl");
     expect(command).toContain(
@@ -321,7 +321,7 @@ describe("GCS credential lifecycle", () => {
     expect(result.isOk()).toBe(true);
     expect(execRoot).toHaveBeenCalledTimes(2);
     const firewallCommand = getRootCommandCall(execRoot, 0);
-    expect(firewallCommand).toBe("/usr/local/bin/dust-gcs-token-firewall.sh");
+    expect(firewallCommand).toBe("/usr/local/bin/ruby-gcs-token-firewall.sh");
     expect(requestKill).not.toHaveBeenCalled();
   });
 

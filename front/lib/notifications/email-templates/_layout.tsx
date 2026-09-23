@@ -12,7 +12,7 @@ export const EmailLayout = ({
   return (
     <Html>
       <head>
-        <title>An email from Dust about {workspace.name}</title>
+        <title>An email from Ruby about {workspace.name}</title>
       </head>
       <body
         style={{
@@ -33,11 +33,11 @@ export const EmailLayout = ({
         <div style={{ width: "100%", textAlign: "left", marginTop: "20px" }}>
           <a href={config.getStaticWebsiteUrl()} target="_new">
             <img
-              alt="Dust Logo"
+              alt="Ruby Logo"
               style={{ margin: "0 auto", border: "0px" }}
               width={96}
               height={24}
-              src="https://dust.tt/static/landing/logos/dust/Dust_Logo.png"
+              src="https://ruby.ad/static/landing/logos/ruby/Ruby_Logo.png"
             />
           </a>
         </div>

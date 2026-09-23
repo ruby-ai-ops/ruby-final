@@ -17,7 +17,7 @@ import {
   CpuChip01,
   DropdownMenu,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 export type AgentModelFilterType = {

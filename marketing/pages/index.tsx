@@ -5,7 +5,7 @@ import {
   fetchAuthContext,
   hasWorkosSessionCookie,
 } from "@marketing/lib/api/authContext";
-import { DUST_SKIP_LANDING, shouldSkipLanding } from "@marketing/lib/cookies";
+import { RUBY_SKIP_LANDING, shouldSkipLanding } from "@marketing/lib/cookies";
 import type { NewsItem } from "@marketing/lib/homepage_news";
 import { fetchHomepageNews } from "@marketing/lib/homepage_news";
 import { extractUTMParams } from "@marketing/lib/utils/utm";
@@ -19,6 +19,7 @@ interface HomeProps {
   postLoginReturnToUrl: string;
   news: NewsItem[];
   shape: number;
+  layoutVariant: "homepage";
   gtmTrackingId: string | null;
 }
 
@@ -73,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
   const { inviteToken } = context.query;
 
   // On the marketing root, redirect straight to the product only for visitors
-  // who explicitly asked for it via the "Always open Dust" prompt. Everyone else
+  // who explicitly asked for it via the "Always open Ruby" prompt. Everyone else
   // gets the landing page. Doing it server-side, before rendering, avoids the
   // render + hydrate + client fetch round-trip. The skip-preference check comes
   // first because it is a plain cookie lookup, which keeps the auth-context
@@ -82,7 +83,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
   // the redirect intent doesn't depend on it.
   const cookieHeader = context.req.headers.cookie ?? "";
   if (
-    shouldSkipLanding(context.req.cookies[DUST_SKIP_LANDING]) &&
+    shouldSkipLanding(context.req.cookies[RUBY_SKIP_LANDING]) &&
     hasWorkosSessionCookie(cookieHeader)
   ) {
     const destination = await resolveAuthedRedirectDestination(
@@ -111,6 +112,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async (
     props: {
       postLoginReturnToUrl: postLoginCallbackUrl,
       shape: 0,
+      layoutVariant: "homepage",
       gtmTrackingId: process.env.NEXT_PUBLIC_GTM_TRACKING_ID ?? null,
       news,
     },

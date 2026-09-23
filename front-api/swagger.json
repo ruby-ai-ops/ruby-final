@@ -3,9 +3,9 @@
   "definition": {
     "openapi": "3.0.0",
     "info": {
-      "title": "DUST API Documentation",
+      "title": "RUBY API Documentation",
       "version": "1.0.2",
-      "description": "The OpenAPI specification for the Dust.tt API",
+      "description": "The OpenAPI specification for the Ruby.tt API",
       "license": {
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT"
@@ -13,19 +13,19 @@
     },
     "servers": [
       {
-        "url": "https://dust.tt",
-        "description": "Dust.tt API (us-central1)"
+        "url": "https://ruby.ad",
+        "description": "Ruby.tt API (us-central1)"
       },
       {
-        "url": "https://eu.dust.tt",
-        "description": "Dust.tt API (europe-west1)"
+        "url": "https://app.ruby.ad",
+        "description": "Ruby.tt API (europe-west1)"
       }
     ],
     "tags": [
       { "name": "Users", "description": "User management" },
       { "name": "Agents", "description": "Agent configurations" },
       { "name": "Analytics", "description": "Workspace analytics" },
-      { "name": "Apps", "description": "Dust apps" },
+      { "name": "Apps", "description": "Ruby apps" },
       { "name": "Conversations", "description": "Conversations" },
       { "name": "Datasources", "description": "Data sources" },
       { "name": "DatasourceViews", "description": "Data source views" },

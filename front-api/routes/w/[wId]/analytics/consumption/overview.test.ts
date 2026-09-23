@@ -27,7 +27,7 @@ const OVERVIEW: GetConsumptionOverviewResponse = {
   messageCount: 34243,
   lastRecordAt: "2026-07-12T23:58:00.000Z",
   totalCredits: 7248,
-  topAgent: { agentId: "agent1", name: "dust", credits: 2246 },
+  topAgent: { agentId: "agent1", name: "ruby", credits: 2246 },
   creditUsage: {
     capCredits: 20000,
     status: {
@@ -132,7 +132,7 @@ describe("POST /api/w/:wId/analytics/consumption/overview", () => {
 
     const response = await postAgentOverviewRequest(
       workspace.sId,
-      GLOBAL_AGENTS_SID.DUST,
+      GLOBAL_AGENTS_SID.RUBY,
       { filter: { agents: ["another-agent"], sources: ["slack"] } }
     );
 
@@ -140,7 +140,7 @@ describe("POST /api/w/:wId/analytics/consumption/overview", () => {
     expect(vi.mocked(fetchConsumptionOverview)).toHaveBeenCalledWith(
       expect.anything(),
       expect.objectContaining({
-        filter: { agents: [GLOBAL_AGENTS_SID.DUST], sources: ["slack"] },
+        filter: { agents: [GLOBAL_AGENTS_SID.RUBY], sources: ["slack"] },
         includeWorkspaceContext: false,
       })
     );

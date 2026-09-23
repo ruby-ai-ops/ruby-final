@@ -309,7 +309,7 @@ describe("provisionPaymentGatedActivationContract", () => {
       startingAt: new Date(START_DATE),
       planCode: "CP_BUSINESS_PLAN",
       additionalCustomFields: {
-        DUST_PAYMENT_GATE_TYPE: "subscription_activation",
+        RUBY_PAYMENT_GATE_TYPE: "subscription_activation",
       },
     });
 
@@ -320,7 +320,7 @@ describe("provisionPaymentGatedActivationContract", () => {
         packageAlias: "business-usd",
         planCode: "CP_BUSINESS_PLAN",
         additionalCustomFields: {
-          DUST_PAYMENT_GATE_TYPE: "subscription_activation",
+          RUBY_PAYMENT_GATE_TYPE: "subscription_activation",
         },
         enableStripeBilling: true,
       })

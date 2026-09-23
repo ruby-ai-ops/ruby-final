@@ -24,7 +24,7 @@ describe("launchSandboxKillRequesterWorkflow", () => {
   });
 
   it("reuses the active workflow for duplicate image kill requests", async () => {
-    const input = { baseImage: "dust-base", version: "1.2.3" };
+    const input = { baseImage: "ruby-base", version: "1.2.3" };
 
     const first = await launchSandboxKillRequesterWorkflow(input);
     const second = await launchSandboxKillRequesterWorkflow(input);
@@ -49,18 +49,18 @@ describe("launchSandboxKillRequesterWorkflow", () => {
   it("uses distinct workflow ids for inputs that share display delimiters", () => {
     const workflowIds = [
       makeSandboxKillRequesterWorkflowId({
-        baseImage: "dust-base",
+        baseImage: "ruby-base",
       }),
       makeSandboxKillRequesterWorkflowId({
-        baseImage: "dust-base",
+        baseImage: "ruby-base",
         version: "all",
       }),
       makeSandboxKillRequesterWorkflowId({
-        baseImage: "dust-base-a",
+        baseImage: "ruby-base-a",
         version: "b",
       }),
       makeSandboxKillRequesterWorkflowId({
-        baseImage: "dust-base",
+        baseImage: "ruby-base",
         version: "a-b",
       }),
     ];

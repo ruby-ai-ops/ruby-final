@@ -84,7 +84,7 @@ export abstract class BaseResource<M extends Model & ResourceWithId> {
    * that is not access-controlled is fetchable.
    */
   canFetch(auth: Authenticator): boolean {
-    if (auth.isDustSuperUser()) {
+    if (auth.isRubySuperUser()) {
       return true;
     }
 

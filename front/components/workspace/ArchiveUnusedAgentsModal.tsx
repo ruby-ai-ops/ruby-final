@@ -18,7 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
   Input,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 // What the picker starts from when the workspace has set no threshold of its own.

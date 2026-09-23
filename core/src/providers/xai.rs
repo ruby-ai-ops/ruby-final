@@ -176,7 +176,7 @@ impl Provider for XaiProvider {
         );
         utils::info("Your API key can be found at https://x.ai/developers");
         utils::info("");
-        utils::info("Once ready you can check your setup with `dust provider test xai`");
+        utils::info("Once ready you can check your setup with `ruby provider test xai`");
 
         Ok(())
     }

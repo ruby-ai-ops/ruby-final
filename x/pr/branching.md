@@ -22,9 +22,9 @@ conversation, with explicit lineage back to its parent.
 
 - Sessions discussion: `#initiative_sessions`
 - Main Slack thread:
-  `https://dust4ai.slack.com/archives/C0AQ23Y6JGH/p1775655809989229`
+  `https://ruby4ai.slack.com/archives/C0AQ23Y6JGH/p1775655809989229`
 - Compaction proposal:
-  `https://github.com/dust-tt/dust/pull/23974/changes`
+  `https://github.com/ruby-ai-ops/ruby-final/pull/23974/changes`
 - Figma: https://www.figma.com/design/wJJMfVF6bluurSKfrEuysc/Product---WIP?node-id=5347-9855&t=uWJaIVJ4CZsDIcN0-0
 - Existing intra-conversation branch model:
   `front/lib/models/agent/conversation_branch.ts`
@@ -121,7 +121,7 @@ This stream gives the forked conversation its own working files.
 The important decision here is that the child gets a hard / deep copy of the
 parent conversation files and filesystem state. We do not keep shallow
 references to parent files because the filesystem is becoming mutable and the
-fork must be isolated. A notable exception is Dust knowledge (connections, folders), since it is read-only reference nodes to data (content nodes); for that we can only reuse the content node pointer.
+fork must be isolated. A notable exception is Ruby knowledge (connections, folders), since it is read-only reference nodes to data (content nodes); for that we can only reuse the content node pointer.
 
 This stream is written behind a small abstraction so the current
 conversation datasource implementation can later be replaced by the proper

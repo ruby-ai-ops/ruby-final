@@ -1,7 +1,7 @@
 import { getConversationFeedbacksForUser } from "@app/lib/api/assistant/feedback";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { ConversationError } from "@app/types/assistant/conversation";
-import type { GetFeedbacksResponseType } from "@dust-tt/client";
+import type { GetFeedbacksResponseType } from "@ruby-ai/client";
 import { apiErrorForConversation } from "@front-api/lib/api/assistant/conversation/helper";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";

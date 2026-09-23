@@ -42,11 +42,11 @@ import { readFile } from "fs/promises";
  */
 export type EmailWebhookHeaders = Record<string, string | string[] | undefined>;
 
-export const EMAIL_WEBHOOK_RELAY_HEADER = "x-dust-email-webhook-relayed";
+export const EMAIL_WEBHOOK_RELAY_HEADER = "x-ruby-email-webhook-relayed";
 const EMAIL_WEBHOOK_RELAY_SOURCE_CELL_HEADER =
-  "x-dust-email-webhook-source-cell";
+  "x-ruby-email-webhook-source-cell";
 export const EMAIL_WEBHOOK_RELAY_SOURCE_ERROR_HEADER =
-  "x-dust-email-webhook-source-error";
+  "x-ruby-email-webhook-source-error";
 export const EMAIL_WEBHOOK_RELAY_HEADER_VALUE = "1";
 
 const EMAIL_RELAY_KEY_PREFIX = "email-webhook-relay";

@@ -13,7 +13,7 @@ import {
 import {
   type PostContentFragmentResponseType,
   PublicPostContentFragmentRequestBodySchema,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { apiErrorForConversation } from "@front-api/lib/api/assistant/conversation/helper";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";

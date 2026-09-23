@@ -62,7 +62,7 @@ export const skillManagementSuite: TestSuite = {
       scenarioId: "delete-skill",
       workspaceSeed: WORKSPACE,
       userMessage:
-        "We don't do meeting recaps with Dust anymore, please delete the Meeting Recap skill.",
+        "We don't do meeting recaps with Ruby anymore, please delete the Meeting Recap skill.",
       expectedFinalToolCall: {
         type: "suggestSkillDeletion",
         skillKey: MEETING_RECAP_KEY,

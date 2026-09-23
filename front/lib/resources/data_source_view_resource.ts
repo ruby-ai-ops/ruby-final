@@ -635,7 +635,7 @@ export class DataSourceViewResource extends ResourceWithSpace<DataSourceViewMode
         filter: {
           data_source_views: [
             {
-              data_source_id: this.dataSource.dustAPIDataSourceId,
+              data_source_id: this.dataSource.rubyAPIDataSourceId,
               view_filter: [],
             },
           ],

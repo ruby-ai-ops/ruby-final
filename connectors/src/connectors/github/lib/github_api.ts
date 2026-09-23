@@ -30,8 +30,8 @@ import {
   EnvironmentConfig,
   getOAuthConnectionAccessToken,
 } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, normalizeError, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, normalizeError, Ok } from "@ruby-ai/client";
 import { isLeft } from "fp-ts/lib/Either";
 import { rm } from "fs/promises";
 import * as reporter from "io-ts-reporters";

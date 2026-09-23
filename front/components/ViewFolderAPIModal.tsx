@@ -1,7 +1,7 @@
 import "@uiw/react-textarea-code-editor/dist.css";
 
 import { SuspensedCodeEditor } from "@app/components/SuspensedCodeEditor";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import config from "@app/lib/api/config";
 import type { DataSourceType } from "@app/types/data_source";
 import { assertNever } from "@app/types/shared/utils/assert_never";
@@ -17,7 +17,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface ViewFolderAPIModalProps {
@@ -209,7 +209,7 @@ export function ViewFolderAPIModal({
                 For a detailed documentation of the Data source API, please
                 refer to the{" "}
                 <Hoverable
-                  href={"https://docs.dust.tt/reference/"}
+                  href={"https://docs.ruby.ad/reference/"}
                   variant="highlight"
                 >
                   API Reference

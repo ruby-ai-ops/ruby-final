@@ -13,7 +13,7 @@ import {
   Edit04,
   NavTabPillTrigger,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface PodFileTabNavTriggerProps {

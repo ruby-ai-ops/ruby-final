@@ -4,7 +4,7 @@ import type {
   FileSystemEntry,
 } from "@app/types/api/file_system/types";
 import type {
-  DustFileSystemError,
+  RubyFileSystemError,
   FileSystemMount,
   SandboxOnlyMount,
 } from "@app/types/file_system";
@@ -25,9 +25,9 @@ export type FileSystemNodeIdentity = { nodeId: number | null };
  *
  * All paths are scoped paths (`{scopedPrefix}/{relPath}`, e.g. `conversation-{cId}/report.pdf`).
  * Storage-specific translation is a private detail of each concrete backend.
- * A backend instance is workspace-scoped and created once per `DustFileSystem` factory call.
+ * A backend instance is workspace-scoped and created once per `RubyFileSystem` factory call.
  *
- * Every method that can fail returns `Result<T, DustFileSystemError>` so callers never need
+ * Every method that can fail returns `Result<T, RubyFileSystemError>` so callers never need
  * try/catch. The backend owns the catch and maps storage exceptions to the appropriate code.
  */
 export interface FileSystemBackend {
@@ -40,7 +40,7 @@ export interface FileSystemBackend {
   list(
     scopedPath: string,
     opts?: { maxFiles?: number; includeProcessed?: boolean }
-  ): Promise<Result<FileSystemEntry[], DustFileSystemError>>;
+  ): Promise<Result<FileSystemEntry[], RubyFileSystemError>>;
 
   /**
    * Returns `Ok(null)` when the file does not exist, `Ok(Readable)` on success.
@@ -49,7 +49,7 @@ export interface FileSystemBackend {
    */
   read(
     scopedPath: string
-  ): Promise<Result<Readable | null, DustFileSystemError>>;
+  ): Promise<Result<Readable | null, RubyFileSystemError>>;
 
   /**
    * Returns `Ok(null)` when the file does not exist, `Ok(metadata)` on success.
@@ -60,7 +60,7 @@ export interface FileSystemBackend {
   ): Promise<
     Result<
       { contentType: string; sizeBytes: number } | null,
-      DustFileSystemError
+      RubyFileSystemError
     >
   >;
 
@@ -69,7 +69,7 @@ export interface FileSystemBackend {
    * Unlike `stat`, this never fetches metadata, so it is cheaper for pure existence checks.
    * Returns `Err` on path or permission errors (including `invalid_path`).
    */
-  exists(scopedPath: string): Promise<Result<boolean, DustFileSystemError>>;
+  exists(scopedPath: string): Promise<Result<boolean, RubyFileSystemError>>;
 
   /**
    * When `content` is a `Readable`, the data is streamed to storage without buffering it in
@@ -79,7 +79,7 @@ export interface FileSystemBackend {
     scopedPath: string,
     content: Buffer | string | Readable,
     contentType: string
-  ): Promise<Result<FileSystemNodeIdentity, DustFileSystemError>>;
+  ): Promise<Result<FileSystemNodeIdentity, RubyFileSystemError>>;
 
   /**
    * Create a directory placeholder at `scopedPath`.
@@ -90,7 +90,7 @@ export interface FileSystemBackend {
   ): Promise<
     Result<
       { entry: FileSystemDirectoryEntry } & FileSystemNodeIdentity,
-      DustFileSystemError
+      RubyFileSystemError
     >
   >;
 
@@ -101,7 +101,7 @@ export interface FileSystemBackend {
   delete(
     scopedPath: string,
     opts?: { ignoreNotFound?: boolean }
-  ): Promise<Result<void, DustFileSystemError>>;
+  ): Promise<Result<void, RubyFileSystemError>>;
 
   /** Server-side copy. Does not delete the source. */
   copy({
@@ -110,7 +110,7 @@ export interface FileSystemBackend {
   }: {
     src: string;
     dest: string;
-  }): Promise<Result<void, DustFileSystemError>>;
+  }): Promise<Result<void, RubyFileSystemError>>;
 
   /** Move one entry while preserving the backend's native identity rules. */
   move({
@@ -119,7 +119,7 @@ export interface FileSystemBackend {
   }: {
     src: string;
     dest: string;
-  }): Promise<Result<{ sourceDeletionFailed: boolean }, DustFileSystemError>>;
+  }): Promise<Result<{ sourceDeletionFailed: boolean }, RubyFileSystemError>>;
 
   /**
    * Returns a short-lived signed URL for unauthenticated download.
@@ -129,7 +129,7 @@ export interface FileSystemBackend {
   getDownloadUrl(
     scopedPath: string,
     opts?: { expiresInMs?: number; fileName?: string }
-  ): Promise<Result<string, DustFileSystemError>>;
+  ): Promise<Result<string, RubyFileSystemError>>;
 
   /**
    * Create a sandbox mount adapter for the given mounts.

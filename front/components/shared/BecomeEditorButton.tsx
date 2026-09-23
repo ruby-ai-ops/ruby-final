@@ -1,4 +1,4 @@
-import { Button, UsersPlus } from "@dust-tt/sparkle";
+import { Button, UsersPlus } from "@ruby-ai/ui";
 
 interface BecomeEditorButtonProps {
   isLoading: boolean;

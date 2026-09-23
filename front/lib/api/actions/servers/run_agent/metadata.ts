@@ -7,7 +7,7 @@ import {
 } from "@app/lib/api/actions/servers/files/metadata";
 import { getResourcePrefix } from "@app/lib/resources/string_ids";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { z } from "zod";
 
 export const RUN_AGENT_SERVER_NAME = "run_agent" as const;

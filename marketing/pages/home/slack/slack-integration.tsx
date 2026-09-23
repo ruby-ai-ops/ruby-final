@@ -13,7 +13,7 @@ import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
 import TrustedBy from "@marketing/components/home/TrustedBy";
 import { classNames } from "@marketing/lib/utils";
-import { LegacyButton as Button } from "@dust-tt/sparkle";
+import { LegacyButton as Button } from "@ruby-ai/ui";
 import { useRouter } from "next/router";
 import type { ReactElement, ReactNode } from "react";
 
@@ -50,11 +50,11 @@ interface PainPoint {
 const INSTALLATION_STEPS: InstallationStep[] = [
   {
     number: "1.",
-    title: "Connect to Your Dust Workspace",
-    description: "Log in to Dust as a workspace admin at dust.tt.",
+    title: "Connect to Your Ruby Workspace",
+    description: "Log in to Ruby as a workspace admin at ruby.ad.",
     image: {
       src: "/static/landing/slack/Login.png",
-      alt: "Dust login interface",
+      alt: "Ruby login interface",
     },
   },
   {
@@ -69,16 +69,16 @@ const INSTALLATION_STEPS: InstallationStep[] = [
   },
   {
     number: "3.",
-    title: "Start Using Dust in Slack",
+    title: "Start Using Ruby in Slack",
     description: (
       <>
-        Mention <span className="font-medium text-blue-600">@dust</span> in any
+        Mention <span className="font-medium text-blue-600">@ruby</span> in any
         Slack channel or send a direct message to get started immediately.
       </>
     ),
     image: {
       src: "/static/landing/slack/Slack.png",
-      alt: "Slack interface with Dust integration",
+      alt: "Slack interface with Ruby integration",
     },
   },
 ];
@@ -102,14 +102,14 @@ const PAIN_POINTS: PainPoint[] = [
     icon: "/static/landing/industry/d-green.svg",
     title: "Smart automation that works for you",
     description:
-      "Connect Dust agents to Slack workflows for automated responses and proactive task management.",
+      "Connect Ruby agents to Slack workflows for automated responses and proactive task management.",
     color: "green",
   },
 ];
 
 const DEMO_VIDEO = {
   sectionTitle: "How it works in Slack",
-  videoUrl: "https://fast.wistia.net/embed/iframe/wlvjl8lphk",
+  videoUrl: "/static/workspace-demo/index.html",
   showCaptions: true,
 };
 
@@ -131,7 +131,7 @@ function HeroSection() {
             mono
             className="mb-4 text-4xl font-medium leading-tight md:text-5xl lg:text-6xl xl:text-7xl"
           >
-            Dust app for <br />
+            Ruby app for <br />
             Slack
           </H1>
           <P
@@ -164,7 +164,7 @@ function HeroSection() {
               <div className="relative z-10 mx-auto flex w-full items-center justify-center">
                 <img
                   src="/static/landing/slack/Incident_copilot_slack.png"
-                  alt="Slack integration preview showing Dust AI assistant in action"
+                  alt="Slack integration preview showing Ruby AI assistant in action"
                   className="h-auto w-full max-w-lg rounded-2xl object-contain lg:max-w-xl xl:max-w-2xl"
                 />
               </div>
@@ -256,17 +256,16 @@ function InstallationSection() {
   );
 }
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function SlackIntegration() {
+export default function SlackIntegrationNextJS() {
   const router = useRouter();
 
   return (
     <>
       <PageMetadata
-        title="Dust Slack Integration: AI-Powered Knowledge Hub"
-        description="Transform your Slack workspace into an AI-powered knowledge hub with the Dust app for Slack."
+        title="Ruby Slack Integration: AI-Powered Knowledge Hub"
+        description="Transform your Slack workspace into an AI-powered knowledge hub with the Ruby app for Slack."
         pathname={router.asPath}
-        ogImage="https://dust.tt/static/landing/hero_dust.png"
+        ogImage="https://ruby.ad/static/landing/hero_ruby.png"
       />
 
       <div className="container flex w-full flex-col gap-16 px-2 py-2">
@@ -283,7 +282,7 @@ export default function SlackIntegration() {
   );
 }
 
-SlackIntegration.getLayout = (
+SlackIntegrationNextJS.getLayout = (
   page: ReactElement,
   pageProps: LandingLayoutProps
 ) => {

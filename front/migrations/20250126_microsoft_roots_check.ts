@@ -28,8 +28,8 @@ async function checkDataSource(
     `SELECT id FROM data_sources WHERE project = :projectId AND data_source_id = :dataSourceId;`,
     {
       replacements: {
-        projectId: frontDataSource.dustAPIProjectId,
-        dataSourceId: frontDataSource.dustAPIDataSourceId,
+        projectId: frontDataSource.rubyAPIProjectId,
+        dataSourceId: frontDataSource.rubyAPIDataSourceId,
       },
       type: QueryTypes.SELECT,
     }

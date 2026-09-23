@@ -7,8 +7,8 @@ import { ConnectorResource } from "@connectors/resources/connector_resource";
 import { SlackConfigurationResource } from "@connectors/resources/slack_configuration_resource";
 import type { ModelId, OAuthAPIError } from "@connectors/types";
 import { OAuthAPI } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import { makeScript } from "scripts/helpers";
 
 const PROVIDER = "slack";

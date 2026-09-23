@@ -35,7 +35,7 @@ import {
   resolvePackageAliasForCurrency,
 } from "@app/lib/plans/billing_currency";
 import {
-  isDustCompanyPlan,
+  isRubyCompanyPlan,
   isEnterprisePlanPrefix,
 } from "@app/lib/plans/plan_codes";
 import { renderPlanFromModel } from "@app/lib/plans/renderers";
@@ -482,7 +482,7 @@ async function notifyAdminsOfPaymentFailure({
   }
   if (
     isEnterprisePlanPrefix(subscriptionType.plan.code) ||
-    isDustCompanyPlan(subscriptionType.plan.code)
+    isRubyCompanyPlan(subscriptionType.plan.code)
   ) {
     logger.info(
       {
@@ -1466,7 +1466,7 @@ export async function processStripeWebhookEvent({
           await matchingSubscription.markAsEnded("ended");
           break;
         case "active": {
-          // Race-safety: a poke switch_contract cutover may already have
+          // Race-safety: a admin switch_contract cutover may already have
           // provisioned a pending Metronome subscription for this workspace.
           // Stripe's subscription.deleted can be delivered/processed before
           // Metronome's contract.start webhook that activates it. If a

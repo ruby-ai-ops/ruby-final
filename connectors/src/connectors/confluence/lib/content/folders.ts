@@ -207,7 +207,7 @@ async function deleteFolder(
   const documentId = makeFolderInternalId(folderId);
   localLogger.info(
     { documentId },
-    "Deleting Confluence folder from Dust data source."
+    "Deleting Confluence folder from Ruby data source."
   );
 
   await deleteDataSourceFolder({

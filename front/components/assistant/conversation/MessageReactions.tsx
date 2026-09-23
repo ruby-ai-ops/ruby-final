@@ -1,6 +1,6 @@
 import { useAuth } from "@app/lib/auth/AuthContext";
 import type { MessageReactionType } from "@app/types/assistant/conversation";
-import { Button, Tooltip } from "@dust-tt/sparkle";
+import { Button, Tooltip } from "@ruby-ai/ui";
 
 import { ReactionPill } from "./ReactionPill";
 

@@ -41,7 +41,7 @@ type SeatSyncOutcome =
  * Resolve a workspace's active Metronome contract and reconcile its seat
  * subscriptions to the DB membership state — the same work the debounced
  * `syncMetronomeSeatCountActivity` performs, but callable directly (e.g. from
- * a poke plugin) to run the sync immediately, without the debounce.
+ * a admin plugin) to run the sync immediately, without the debounce.
  *
  * Lives in `lib/api/metronome` rather than `lib/metronome/seats` on purpose:
  * it depends on `SubscriptionResource`, and `subscription_resource` →
@@ -59,7 +59,7 @@ type SeatSyncOutcome =
  *
  * `forceFreeCreditRevokeCheck` runs the ex-free-seat credit revoke check
  * unconditionally instead of only when the cheap gate signals a change (see
- * `syncSeatCount`). Set by the poke plugin, where an operator explicitly
+ * `syncSeatCount`). Set by the admin plugin, where an operator explicitly
  * asked for a thorough pass; left unset on the automatic/debounced path.
  */
 export async function syncMetronomeSeatCountForWorkspace({

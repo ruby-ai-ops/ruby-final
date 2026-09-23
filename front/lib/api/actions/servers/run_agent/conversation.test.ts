@@ -14,8 +14,8 @@ import type {
 import { Err, Ok } from "@app/types/shared/result";
 import { decodeUtf8HeaderValue } from "@app/types/shared/utils/http_headers";
 import { getHeaderFromUserEmail } from "@app/types/user";
-import type { APIError, ConversationPublicType } from "@dust-tt/client";
-import { DustAPI } from "@dust-tt/client";
+import type { APIError, ConversationPublicType } from "@ruby-ai/client";
+import { RubyAPI } from "@ruby-ai/client";
 import assert from "assert";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -136,9 +136,9 @@ function buildRunAgentFixtures({ spaceId }: { spaceId: string | null }): {
 }
 
 function createMockApi(
-  createConversationImpl: DustAPI["createConversation"],
+  createConversationImpl: RubyAPI["createConversation"],
   conversation: ConversationPublicType
-): DustAPI {
+): RubyAPI {
   return {
     createConversation: createConversationImpl,
     getConversation: vi.fn().mockResolvedValue(new Ok(conversation)),
@@ -147,7 +147,7 @@ function createMockApi(
         sId: generateRandomModelSId(),
       })
     ),
-  } as unknown as DustAPI;
+  } as unknown as RubyAPI;
 }
 
 function buildRequest(
@@ -354,8 +354,8 @@ describe("getOrCreateConversation", () => {
         })
       );
 
-      // Built the same way the run_agent tool handler builds its DustAPI.
-      const api = new DustAPI(
+      // Built the same way the run_agent tool handler builds its RubyAPI.
+      const api = new RubyAPI(
         { url: "http://front.test" },
         {
           apiKey: "sk-test",
@@ -391,7 +391,7 @@ describe("getOrCreateConversation", () => {
       const headers = capturedRequests[0].headers;
       // Values with characters above 0xFF (ł, emoji) travel as an RFC 2047
       // encoded-word and round-trip losslessly through the header.
-      const keyNameHeader = headers.get("x-dust-api-key-name");
+      const keyNameHeader = headers.get("x-ruby-api-key-name");
       assert(keyNameHeader);
       expect(keyNameHeader).toMatch(/^=\?utf-8\?B\?/);
       expect(decodeUtf8HeaderValue(keyNameHeader)).toBe(

@@ -1,6 +1,6 @@
 import { H2, P } from "@marketing/components/home/ContentComponents";
-import { cn } from "@marketing/components/poke/shadcn/lib/utils";
-import { BookOpen01, Icon, Robot, Users01, Zap } from "@dust-tt/sparkle";
+import { cn } from "@marketing/components/admin/shadcn/lib/utils";
+import { BookOpen01, Icon, Robot, Users01, Zap } from "@ruby-ai/ui";
 
 type IconType = "robot" | "bolt" | "book" | "users";
 type IconColor = "green" | "orange" | "blue" | "red";
@@ -78,8 +78,8 @@ function DifferentiatorCard({
 
 export function DifferentiatorsSection({
   differentiators,
-  title = "What makes Dust different",
-  subtitle = "Dust is the first platform for building custom AI agents that understand your business, use your tools, and work safely alongside your team",
+  title = "What makes Ruby different",
+  subtitle = "Ruby is the first platform for building custom AI agents that understand your business, use your tools, and work safely alongside your team",
 }: DifferentiatorsSectionProps) {
   return (
     <section className="w-full">

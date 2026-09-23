@@ -299,7 +299,7 @@ describe("processMetronomeWebhook — contract.start", () => {
     expect(restoreWorkspaceAfterSubscription).not.toHaveBeenCalled();
   });
 
-  it("does nothing when PLAN_CODE does not resolve to a Dust plan", async () => {
+  it("does nothing when PLAN_CODE does not resolve to a Ruby plan", async () => {
     const workspace = await setupMetronomeWorkspace(OLD_CONTRACT_ID);
     const event = contractEvent("contract.start", NEW_CONTRACT_ID);
     vi.mocked(getMetronomeContractById).mockResolvedValue(
@@ -795,7 +795,7 @@ describe("processMetronomeWebhook — workspace-level spend threshold", () => {
   });
 });
 
-describe("processMetronomeWebhook — commit.create DUST_CONTRACT_CREDIT_TYPE stamping", () => {
+describe("processMetronomeWebhook — commit.create RUBY_CONTRACT_CREDIT_TYPE stamping", () => {
   function commitCreateEvent(
     commitCustomFields: Record<string, string> | null = null
   ): MetronomeWebhookEvent {

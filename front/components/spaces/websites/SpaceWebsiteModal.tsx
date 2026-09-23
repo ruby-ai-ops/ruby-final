@@ -28,7 +28,7 @@ import {
   SheetHeader,
   SheetTitle,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useReducer, useState } from "react";
 
 const WEBSITE_CAT = "website";

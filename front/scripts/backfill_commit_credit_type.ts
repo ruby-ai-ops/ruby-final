@@ -1,10 +1,10 @@
 /**
- * Backfill `DUST_CONTRACT_CREDIT_TYPE=pool` on existing Metronome AWU commits.
+ * Backfill `RUBY_CONTRACT_CREDIT_TYPE=pool` on existing Metronome AWU commits.
  *
  * New commits get tagged reactively by the `commit.create` /
  * `commit.segment.start` webhook handlers, but commits created before that
  * landed have no tag. The pool balance alert carries a Commit filter on
- * DUST_CONTRACT_CREDIT_TYPE=pool (same key as the ContractCredit filter, as
+ * RUBY_CONTRACT_CREDIT_TYPE=pool (same key as the ContractCredit filter, as
  * Metronome requires), so an untagged AWU commit is excluded from the balance —
  * exactly the early-firing bug the tag fixes. This stamps them so they count.
  *
@@ -69,7 +69,7 @@ async function backfillCommitsForWorkspace(
     if (!execute) {
       logger.info(
         { workspaceId: workspace.sId, commitId: commit.id, name: commit.name },
-        "[Backfill commit type] [DRY RUN] Would stamp DUST_CONTRACT_CREDIT_TYPE=pool"
+        "[Backfill commit type] [DRY RUN] Would stamp RUBY_CONTRACT_CREDIT_TYPE=pool"
       );
       continue;
     }
@@ -93,7 +93,7 @@ async function backfillCommitsForWorkspace(
     }
     logger.info(
       { workspaceId: workspace.sId, commitId: commit.id },
-      "[Backfill commit type] Stamped DUST_CONTRACT_CREDIT_TYPE=pool"
+      "[Backfill commit type] Stamped RUBY_CONTRACT_CREDIT_TYPE=pool"
     );
   }
 }

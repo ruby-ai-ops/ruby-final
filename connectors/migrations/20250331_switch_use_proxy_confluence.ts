@@ -1,5 +1,5 @@
 import { ConnectorResource } from "@connectors/resources/connector_resource";
-import { isConnectorProvider } from "@dust-tt/client";
+import { isConnectorProvider } from "@ruby-ai/client";
 import { makeScript } from "scripts/helpers";
 
 makeScript(

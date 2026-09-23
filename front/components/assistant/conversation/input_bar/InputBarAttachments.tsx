@@ -17,7 +17,7 @@ import type {
 } from "@app/hooks/useFileUploaderService";
 import { isSupportedImageContentType } from "@app/types/files";
 import type { LightWorkspaceType } from "@app/types/user";
-import { CitationGrid, cn } from "@dust-tt/sparkle";
+import { CitationGrid, cn } from "@ruby-ai/ui";
 import { useCallback, useMemo } from "react";
 
 interface FileAttachmentsProps {

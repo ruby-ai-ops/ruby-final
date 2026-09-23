@@ -16,7 +16,7 @@ const config: KnipConfig = {
       ignoreFiles: [
         "**/vite.config.js",
         "**/esbuild.worker.ts",
-        "components/home/content/Product/BlogSection.tsx", // Temporarily disabled due to broken blog.dust.tt images
+        "components/home/content/Product/BlogSection.tsx", // Temporarily disabled due to broken blog.ruby.ad images
       ],
       project: ["**/*.{js,jsx,ts,tsx}"],
       ignoreDependencies: [
@@ -25,7 +25,7 @@ const config: KnipConfig = {
         "yalc",
         "pino-pretty",
         "posthog-node",
-        "@dust-tt/client",
+        "@ruby-ai/client",
         "lefthook", // used as pre-commit hook
       ],
       ignoreBinaries: ["sleep"],

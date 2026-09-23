@@ -50,7 +50,7 @@ import type {
 } from "@app/types/assistant/conversation";
 import { Ok } from "@app/types/shared/result";
 import type { WorkspaceType } from "@app/types/user";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { assert, describe, expect, it, vi } from "vitest";
 
@@ -229,10 +229,10 @@ async function setupTest(
     jsonSchema: null,
     additionalConfiguration: {},
     mcpServerViewId: "mcpServerId",
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: internalMCPServer.id,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
   };
 
   return {
@@ -729,10 +729,10 @@ describe("tryCallMCPTool", () => {
       jsonSchema: null,
       additionalConfiguration: {},
       mcpServerViewId: mcpServerView.sId,
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       internalMCPServerId: internalMCPServer.id,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
       originalName: "semantic_search",
       mcpServerName: "search",
       availability: "auto",
@@ -998,9 +998,9 @@ describe("postProcessMCPToolResult - structuredContent", () => {
     jsonSchema: null,
     additionalConfiguration: {},
     mcpServerViewId: "msv_test",
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     availability: "manual",
     permission: "never_ask",
     toolServerId: "srv_test",
@@ -1241,10 +1241,10 @@ describe("makeServerSideMCPToolConfigurations eager flag", () => {
     jsonSchema: null,
     additionalConfiguration: {},
     mcpServerViewId: "mcpServerId",
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: "internalMCPServerId",
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
   };
 
   function makeTool(

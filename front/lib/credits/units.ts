@@ -1,5 +1,5 @@
 /**
- * Dust credits use fixed-point millionths when persisted or allocated.
+ * Ruby credits use fixed-point millionths when persisted or allocated.
  *
  * Microcredits are not micro-USD: they share the same scale but represent a
  * different unit. Keep conversions here so callers cannot silently disagree on

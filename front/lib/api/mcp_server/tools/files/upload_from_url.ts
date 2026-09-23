@@ -1,10 +1,10 @@
 import { uploadFileFromUrlToFileSystem } from "@app/lib/api/file_system/upload_from_url";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { sanitizeUrlForDisplay } from "@app/types/shared/utils/url_utils";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { mcpError, mcpJsonResponse } from "../response";
-import { getDustFileSystemForScope, validatePathMatchesScope } from "./context";
+import { getRubyFileSystemForScope, validatePathMatchesScope } from "./context";
 import { FILES_SCOPE_SCHEMA } from "./schemas";
 
 const inputSchema = {
@@ -32,7 +32,7 @@ const inputSchema = {
 };
 
 export function registerFilesUploadFromUrlTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "files_upload_from_url",
     {
@@ -49,7 +49,7 @@ export function registerFilesUploadFromUrlTool(server: McpServer) {
         return mcpError(pathError);
       }
 
-      const fsResult = await getDustFileSystemForScope(auth, scope);
+      const fsResult = await getRubyFileSystemForScope(auth, scope);
       if (fsResult.isErr()) {
         return mcpError(fsResult.error);
       }

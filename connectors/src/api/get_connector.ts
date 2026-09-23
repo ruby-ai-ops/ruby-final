@@ -8,7 +8,7 @@ import type {
   ConnectorType,
   WithConnectorsAPIErrorReponse,
 } from "@connectors/types";
-import { isConnectorProvider } from "@dust-tt/client";
+import { isConnectorProvider } from "@ruby-ai/client";
 import type { Request, Response } from "express";
 
 type GetConnectorRes = WithConnectorsAPIErrorReponse<ConnectorType>;

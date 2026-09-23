@@ -7,8 +7,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   ca-certificates curl git unzip xz-utils gnupg lsb-release netcat-openbsd nftables acl \
   && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /etc/dust \
-  && chmod 755 /etc/dust
+RUN mkdir -p /etc/ruby \
+  && chmod 755 /etc/ruby
 
 # Add gcsfuse repository
 RUN curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
@@ -62,7 +62,7 @@ RUN printf '%s\n' \
   'export PATH="$HOME/.local/bin:/opt/bin:/opt/venv/bin:/opt/npm-global/bin:$PATH"' \
   'export VIRTUAL_ENV="/opt/venv"' \
   'export NPM_CONFIG_PREFIX="/opt/npm-global"' \
-  > /etc/profile.d/dust-env.sh
+  > /etc/profile.d/ruby-env.sh
 
 RUN if command -v sudo >/dev/null 2>&1; then \
   echo "sudo must not be installed in sandbox images" >&2; \

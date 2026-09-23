@@ -1,5 +1,5 @@
-import type { LoggerInterface, Result } from "@dust-tt/client";
-import { Ok } from "@dust-tt/client";
+import type { LoggerInterface, Result } from "@ruby-ai/client";
+import { Ok } from "@ruby-ai/client";
 import throttle from "lodash/throttle";
 import type { OAuthConnectionType, OAuthProvider } from "../../oauth/lib";
 import type { OAuthAPIError } from "../../oauth/oauth_api";

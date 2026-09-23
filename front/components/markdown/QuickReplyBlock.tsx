@@ -3,7 +3,7 @@ import {
   TRACKING_AREAS,
   trackEvent,
 } from "@app/lib/tracking";
-import { Button, MessageChatSquare } from "@dust-tt/sparkle";
+import { Button, MessageChatSquare } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useState } from "react";
 import { visit } from "unist-util-visit";

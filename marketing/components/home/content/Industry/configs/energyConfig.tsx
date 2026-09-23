@@ -1,18 +1,18 @@
 import type { IndustryPageConfig } from "@marketing/components/home/content/Industry/configs/utils";
 import { createLayoutConfig } from "@marketing/components/home/content/Industry/configs/utils";
-import { Stars02 } from "@dust-tt/sparkle";
+import { Stars02 } from "@ruby-ai/ui";
 
 export const energyConfig: IndustryPageConfig = {
   seo: {
-    title: "Dust for Energy & Utilities",
+    title: "Ruby for Energy & Utilities",
     description:
       "Streamline operations, reduce costs, and improve customer satisfaction with AI-powered automation for the energy sector.",
   },
   layout: createLayoutConfig([
     "hero",
     "painPoints",
-    "dustInAction",
-    "justUseDust",
+    "rubyInAction",
+    "justUseRuby",
   ]),
 
   hero: {
@@ -23,7 +23,7 @@ export const energyConfig: IndustryPageConfig = {
     },
     title: (
       <>
-        Dust for
+        Ruby for
         <br /> Energy &<br /> Utilities
       </>
     ),
@@ -40,7 +40,7 @@ export const energyConfig: IndustryPageConfig = {
       },
     },
     heroImage: {
-      src: "/static/landing/industry/Dust_connectors_microsoft.webp",
+      src: "/static/landing/industry/Ruby_connectors_microsoft.webp",
       alt: "Energy & Utilities AI-powered automation illustration",
     },
   },
@@ -72,8 +72,8 @@ export const energyConfig: IndustryPageConfig = {
     ],
   },
 
-  dustInAction: {
-    title: "Dust in action",
+  rubyInAction: {
+    title: "Ruby in action",
     useCases: [
       {
         title: "Commercial operations",
@@ -183,12 +183,12 @@ export const energyConfig: IndustryPageConfig = {
       },
     ],
   },
-  justUseDust: {
-    title: "Just use Dust",
+  justUseRuby: {
+    title: "Just use Ruby",
     titleColor: "text-blue-600",
     ctaButtons: {
       primary: {
-        label: "Start Free Trial",
+        label: "Get started",
         href: "/api/workos/login",
       },
       secondary: {

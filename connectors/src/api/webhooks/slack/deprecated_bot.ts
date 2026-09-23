@@ -32,7 +32,7 @@ async function sendSlackMessage(
 }
 
 const REQUIRE_SLACK_BOT_INSTALLATION_MESSAGE =
-  "Hi there! This version of Dust is deprecated. You can ask a Slack admin to install the new version of Dust on your Slack workspace!";
+  "Hi there! This version of Ruby is deprecated. You can ask a Slack admin to install the new version of Ruby on your Slack workspace!";
 
 async function makeSlackDeprecatedBotErrorMessage(
   slackBotConnector: ConnectorResource
@@ -47,7 +47,7 @@ async function makeSlackDeprecatedBotErrorMessage(
     throw slackBotUserIdRes.error;
   }
 
-  return `Oops! That's the deprecated version of Dust. Mention <@${slackBotUserIdRes.value}> instead!`;
+  return `Oops! That's the deprecated version of Ruby. Mention <@${slackBotUserIdRes.value}> instead!`;
 }
 
 export async function handleDeprecatedChatBot({

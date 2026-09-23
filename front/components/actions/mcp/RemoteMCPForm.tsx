@@ -20,7 +20,7 @@ import {
   PopoverContent,
   PopoverRoot,
   PopoverTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useState } from "react";
 import { useController, useFormContext, useWatch } from "react-hook-form";
 

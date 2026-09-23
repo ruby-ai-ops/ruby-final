@@ -46,7 +46,7 @@ const METADATA_ATTRIBUTES = [
   "index",
   "version",
   "type",
-  "dustRunId",
+  "rubyRunId",
 ] as const;
 
 // Attributes are marked as read-only to reflect the stateless nature of our Resource.
@@ -180,7 +180,7 @@ export class AgentStepContentResource extends BaseResource<AgentStepContentModel
       version: cached.version,
       type: cached.type,
       value: cached.value,
-      dustRunId: cached.dustRunId,
+      rubyRunId: cached.rubyRunId,
       createdAt: new Date(cached.createdAt),
       updatedAt: new Date(cached.updatedAt),
     });
@@ -197,7 +197,7 @@ export class AgentStepContentResource extends BaseResource<AgentStepContentModel
       version: this.version,
       type: this.type,
       value: this.value,
-      dustRunId: this.dustRunId,
+      rubyRunId: this.rubyRunId,
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt.toISOString(),
     };
@@ -287,7 +287,7 @@ export class AgentStepContentResource extends BaseResource<AgentStepContentModel
       index: number;
       version: number;
       type: AgentStepContentModel["type"];
-      dustRunId: string | null;
+      rubyRunId: string | null;
     }>
   > {
     const owner = auth.getNonNullableWorkspace();
@@ -328,7 +328,7 @@ export class AgentStepContentResource extends BaseResource<AgentStepContentModel
       index: row.index,
       version: row.version,
       type: row.type,
-      dustRunId: row.dustRunId,
+      rubyRunId: row.rubyRunId,
     }));
   }
 

@@ -6,7 +6,7 @@ import type {
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@app/components/sparkle/ThemeContext", () => ({
+vi.mock("@app/components/ui/ThemeContext", () => ({
   useTheme: () => ({ isDark: false }),
 }));
 

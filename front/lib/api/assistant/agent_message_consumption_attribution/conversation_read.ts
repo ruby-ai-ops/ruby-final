@@ -122,10 +122,10 @@ export async function getConversationConsumption(
     return { billedCredits, details: null };
   }
 
-  const dustRunIds = [
-    ...new Set(billedMessages.flatMap((message) => message.dustRunIds)),
+  const rubyRunIds = [
+    ...new Set(billedMessages.flatMap((message) => message.rubyRunIds)),
   ];
-  const runs = await RunResource.listByDustRunIds(auth, { dustRunIds });
+  const runs = await RunResource.listByRubyRunIds(auth, { rubyRunIds });
   const usages = await RunResource.listRunUsagesForRuns(auth, { runs });
 
   const messageDetails: MessageDetailsEntry[] = billedMessages.map(
@@ -134,7 +134,7 @@ export async function getConversationConsumption(
       details: buildLatestAvailableMessageConsumptionDetails({
         actions: message.actions,
         billedCredits: message.billedCredits,
-        dustRunIds: message.dustRunIds,
+        rubyRunIds: message.rubyRunIds,
         items: message.items,
         runs,
         usages,

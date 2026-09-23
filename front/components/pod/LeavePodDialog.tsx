@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 

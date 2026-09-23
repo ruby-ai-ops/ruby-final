@@ -3,12 +3,12 @@ import {
   UserProfileStep,
 } from "@app/components/onboarding/ProfileOnboardingSteps";
 import { useProfileOnboardingForm } from "@app/components/onboarding/useProfileOnboardingForm";
-import OnboardingLayout from "@app/components/sparkle/OnboardingLayout";
+import OnboardingLayout from "@app/components/ui/OnboardingLayout";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import { useIsMetronomeCheckout } from "@app/lib/client/subscription";
 import { useAppRouter, useSearchParam } from "@app/lib/platform";
 import { getConversationRoute } from "@app/lib/utils/router";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 export function WelcomePage() {
   const { workspace, isAdmin } = useAuth();

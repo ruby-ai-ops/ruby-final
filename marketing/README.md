@@ -1,12 +1,12 @@
 # Installation
 
-## If you have dust-hive
+## If you have ruby-hive
 
 You have it already !
 
-## If you don't have dust-hive
+## If you don't have ruby-hive
 
-- Install dust-hive
+- Install ruby-hive
 - OR
 - install nvm
 - from the root repository `nvm install`

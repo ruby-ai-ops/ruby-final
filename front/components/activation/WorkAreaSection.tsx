@@ -10,7 +10,7 @@ import {
 } from "@app/lib/swr/activation";
 import { getConversationRoute } from "@app/lib/utils/router";
 import type { UserType, WorkspaceType } from "@app/types/user";
-import { Button, Chip, Spinner, Tooltip } from "@dust-tt/sparkle";
+import { Button, Chip, Spinner, Tooltip } from "@ruby-ai/ui";
 import { useCallback, useState } from "react";
 
 export interface WorkAreaSectionCopy {

@@ -1,5 +1,5 @@
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 
 /**
  * Substring that ensures we don't cut a string in the middle of a unicode

@@ -140,7 +140,7 @@ export class DataSourceResource extends ResourceWithSpace<DataSourceModel> {
     const { includeDeleted } = fetchDataSourceOptions ?? {};
 
     // Scope to the authenticated workspace unless the caller performs an intentionally
-    // cross-workspace lookup (e.g. unsafeFetchByDustAPIProjectId).
+    // cross-workspace lookup (e.g. unsafeFetchByRubyAPIProjectId).
     const where: WhereOptions<DataSourceModel> =
       options?.dangerouslyBypassWorkspaceIsolationSecurity
         ? (options?.where ?? {})
@@ -257,14 +257,14 @@ export class DataSourceResource extends ResourceWithSpace<DataSourceModel> {
     }
   }
 
-  static async fetchByDustAPIDataSourceId(
+  static async fetchByRubyAPIDataSourceId(
     auth: Authenticator,
-    dustAPIDataSourceId: string,
+    rubyAPIDataSourceId: string,
     options?: FetchDataSourceOptions
   ): Promise<DataSourceResource | null> {
-    const [dataSource] = await this.fetchByDustAPIDataSourceIds(
+    const [dataSource] = await this.fetchByRubyAPIDataSourceIds(
       auth,
-      [dustAPIDataSourceId],
+      [rubyAPIDataSourceId],
       options
     );
 
@@ -346,28 +346,28 @@ export class DataSourceResource extends ResourceWithSpace<DataSourceModel> {
     );
   }
 
-  static async fetchByDustAPIDataSourceIds(
+  static async fetchByRubyAPIDataSourceIds(
     auth: Authenticator,
-    dustAPIDataSourceIds: string[],
+    rubyAPIDataSourceIds: string[],
     options?: FetchDataSourceOptions
   ) {
     return this.baseFetch(auth, options, {
       where: {
-        dustAPIDataSourceId: dustAPIDataSourceIds,
+        rubyAPIDataSourceId: rubyAPIDataSourceIds,
       },
     });
   }
 
-  static async unsafeFetchByDustAPIProjectId(
+  static async unsafeFetchByRubyAPIProjectId(
     auth: Authenticator,
-    dustAPIProjectId: string,
+    rubyAPIProjectId: string,
     options?: FetchDataSourceOptions
   ): Promise<DataSourceResource | null> {
     const [dataSource] = await this.baseFetch(auth, options, {
       where: {
-        dustAPIProjectId,
+        rubyAPIProjectId,
       },
-      // WORKSPACE_ISOLATION_BYPASS: `dustAPIProjectId` is globally unique, so this lookup is
+      // WORKSPACE_ISOLATION_BYPASS: `rubyAPIProjectId` is globally unique, so this lookup is
       // intentionally cross-workspace. Permissions are still enforced by `canFetch` after fetch.
       // biome-ignore lint/plugin/noUnverifiedWorkspaceBypass: WORKSPACE_ISOLATION_BYPASS verified
       dangerouslyBypassWorkspaceIsolationSecurity: true,
@@ -490,8 +490,8 @@ export class DataSourceResource extends ResourceWithSpace<DataSourceModel> {
   ): Promise<Result<number, Error>> {
     const workspaceId = auth.getNonNullableWorkspace().id;
 
-    // If this is a project datasource, delete the auto-created dust_project connector first
-    if (this.connectorProvider === "dust_project" && this.connectorId) {
+    // If this is a project datasource, delete the auto-created ruby_project connector first
+    if (this.connectorProvider === "ruby_project" && this.connectorId) {
       // Delete the connector
       const connectorsAPI = new ConnectorsAPI(
         config.getConnectorsAPIConfig(),
@@ -520,7 +520,7 @@ export class DataSourceResource extends ResourceWithSpace<DataSourceModel> {
           connectorId: this.connectorId,
           dataSourceId: this.sId,
         },
-        "Successfully deleted dust_project connector for datasource"
+        "Successfully deleted ruby_project connector for datasource"
       );
     }
 
@@ -655,8 +655,8 @@ export class DataSourceResource extends ResourceWithSpace<DataSourceModel> {
       createdAt: this.createdAt.getTime(),
       name: this.name,
       description: this.description,
-      dustAPIProjectId: this.dustAPIProjectId,
-      dustAPIDataSourceId: this.dustAPIDataSourceId,
+      rubyAPIProjectId: this.rubyAPIProjectId,
+      rubyAPIDataSourceId: this.rubyAPIDataSourceId,
       connectorId: this.connectorId,
       connectorProvider: this.connectorProvider,
       assistantDefaultSelected: this.assistantDefaultSelected,

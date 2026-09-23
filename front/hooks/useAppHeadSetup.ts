@@ -39,7 +39,7 @@ export function useAppHeadSetup() {
     }
 
     // Meta tags
-    appendMeta({ name: "apple-mobile-web-app-title", content: "Dust" });
+    appendMeta({ name: "apple-mobile-web-app-title", content: "Ruby" });
     appendMeta({
       name: "viewport",
       content: "width=device-width, initial-scale=1, maximum-scale=1",

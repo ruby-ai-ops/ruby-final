@@ -16,7 +16,7 @@ import {
   Tabs,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo } from "react";
 import type { WebAgentBrowserProps } from "./shared";
 import {

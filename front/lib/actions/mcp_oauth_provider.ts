@@ -58,10 +58,10 @@ export class MCPOAuthProvider implements OAuthClientProvider {
       redirect_uris: [
         finalizeUriForProvider({ provider: "mcp", connection: null }),
       ],
-      client_name: "Dust",
+      client_name: "Ruby",
       ...informationalUris,
-      contacts: ["support@dust.com"],
-      software_id: "dust",
+      contacts: ["support@ruby.com"],
+      software_id: "ruby",
       token_endpoint_auth_method: "none",
       grant_types: ["authorization_code", "refresh_token"],
       response_types: ["code"],

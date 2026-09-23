@@ -1,7 +1,7 @@
 import { apiConfig } from "@connectors/lib/api/config";
 
-export function makeDustAppUrl(path: string) {
-  return `${apiConfig.getDustAppUrl()}${path}`;
+export function makeRubyAppUrl(path: string) {
+  return `${apiConfig.getRubyAppUrl()}${path}`;
 }
 
 export function makeConversationUrl(
@@ -9,7 +9,7 @@ export function makeConversationUrl(
   conversationId?: string | null
 ) {
   if (workspaceId && conversationId) {
-    return makeDustAppUrl(`/w/${workspaceId}/conversation/${conversationId}`);
+    return makeRubyAppUrl(`/w/${workspaceId}/conversation/${conversationId}`);
   }
   return null;
 }
@@ -26,7 +26,7 @@ export function makeAgentDetailsInConversationUrl(
   const q = new URLSearchParams({
     agentDetails: agentConfigurationId,
   });
-  return makeDustAppUrl(
+  return makeRubyAppUrl(
     `/w/${workspaceId}/conversation/${conversationId}?${q.toString()}`
   );
 }

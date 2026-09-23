@@ -170,7 +170,7 @@ describe("renderLightContentFragmentForModel", () => {
     it("renders pasted content as large-paste XML", async () => {
       const result = await renderLightContentFragmentForModel(
         authenticator,
-        makeFileFragment("text/vnd.dust.attachment.pasted"),
+        makeFileFragment("text/vnd.ruby.attachment.pasted"),
         visionModel,
         { excludeImages: false, capabilities: LEGACY }
       );
@@ -183,7 +183,7 @@ describe("renderLightContentFragmentForModel", () => {
       const pasteContent = "Some pasted content that fits inline.";
       const result = await renderLightContentFragmentForModel(
         authenticator,
-        makeFileFragment("text/vnd.dust.attachment.pasted", {
+        makeFileFragment("text/vnd.ruby.attachment.pasted", {
           snippet: pasteContent,
         }),
         visionModel,
@@ -200,7 +200,7 @@ describe("renderLightContentFragmentForModel", () => {
       const snippet = "a".repeat(TRUNCATED_TEXT_SIZE) + TRUNCATED_SUFFIX;
       const result = await renderLightContentFragmentForModel(
         authenticator,
-        makeFileFragment("text/vnd.dust.attachment.pasted", {
+        makeFileFragment("text/vnd.ruby.attachment.pasted", {
           snippet,
           path: "conversation-conv123/pasted-text-1.txt",
         }),
@@ -215,7 +215,7 @@ describe("renderLightContentFragmentForModel", () => {
     it("guides the model to read pasted files when the stored snippet is missing", async () => {
       const result = await renderLightContentFragmentForModel(
         authenticator,
-        makeFileFragment("text/vnd.dust.attachment.pasted", {
+        makeFileFragment("text/vnd.ruby.attachment.pasted", {
           snippet: null,
           path: "conversation-conv123/pasted-text-1.txt",
         }),
@@ -231,7 +231,7 @@ describe("renderLightContentFragmentForModel", () => {
       const fullPaste = "b".repeat(FILE_OFFLOAD_TEXT_SIZE_BYTES + 1);
       const result = await renderLightContentFragmentForModel(
         authenticator,
-        makeFileFragment("text/vnd.dust.attachment.pasted", {
+        makeFileFragment("text/vnd.ruby.attachment.pasted", {
           snippet: fullPaste,
           path: "conversation-conv123/pasted-text-1.txt",
         }),
@@ -380,7 +380,7 @@ describe("renderLightContentFragmentForModel", () => {
     it("renders pasted content as large-paste XML (bypasses new file explorer)", async () => {
       const result = await renderLightContentFragmentForModel(
         authenticator,
-        makeFileFragment("text/vnd.dust.attachment.pasted"),
+        makeFileFragment("text/vnd.ruby.attachment.pasted"),
         visionModel,
         { excludeImages: false, capabilities: FILE_SYSTEM }
       );

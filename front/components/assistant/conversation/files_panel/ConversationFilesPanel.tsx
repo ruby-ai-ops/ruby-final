@@ -6,7 +6,7 @@ import { SandboxStatusChip } from "@app/components/assistant/conversation/files_
 import { SandboxTab } from "@app/components/assistant/conversation/files_panel/SandboxTab";
 import type { ConversationAttachmentItem } from "@app/components/assistant/conversation/files_panel/types";
 import { conversationAttachmentToRow } from "@app/components/assistant/conversation/files_panel/utils";
-import { AppLayoutTitle } from "@app/components/sparkle/AppLayoutTitle";
+import { AppLayoutTitle } from "@app/components/ui/AppLayoutTitle";
 import { useConversationAttachments } from "@app/hooks/conversations/useConversationAttachments";
 import { useConversationSandboxStatus } from "@app/hooks/conversations/useConversationSandboxStatus";
 import { useSendNotification } from "@app/hooks/useNotification";
@@ -23,7 +23,7 @@ import {
   TabsList,
   TabsTrigger,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 interface ConversationFilesPanelProps {

@@ -38,7 +38,7 @@ type RankedEligiblePodNudge = EligiblePodNudge & {
  * Enumerates every (pod, target user) still eligible for activation in the
  * workspace, gates each on `isEligibleForNudge`, and assigns the eligible
  * ones a deterministic slot within the regional workday window. Targeted
- * one-offs (`userIds` set, i.e. poke) skip the window and fire immediately.
+ * one-offs (`userIds` set, i.e. admin) skip the window and fire immediately.
  * This is the planning step: it does not send anything, since state can go
  * stale between this pass and a pod's actual slot later in the day.
  */
@@ -55,7 +55,7 @@ export async function enumerateEligiblePodsForNudgeActivity({
   const now = new Date();
   const dayOfWeek = toZonedTime(now, timezone).getDay();
 
-  // Scheduled runs skip Sat/Sun in the regional timezone. Poke one-offs
+  // Scheduled runs skip Sat/Sun in the regional timezone. Admin one-offs
   // (`userIds` or overrideChecks) still fire immediately, including weekends.
   if (
     userIds == null &&

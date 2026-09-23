@@ -16,7 +16,7 @@ import {
 import { InfiniteScroll } from "@app/components/InfiniteScroll";
 import { isRemoteDatabase } from "@app/lib/data_sources";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import { Checkbox, cn, Icon, Separator, Spinner } from "@dust-tt/sparkle";
+import { Checkbox, cn, Icon, Separator, Spinner } from "@ruby-ai/ui";
 import type { ComponentType, ReactNode } from "react";
 import { Fragment, useCallback, useContext, useMemo } from "react";
 

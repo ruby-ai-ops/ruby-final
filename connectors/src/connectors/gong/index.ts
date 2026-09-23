@@ -37,8 +37,8 @@ import { ConnectorResource } from "@connectors/resources/connector_resource";
 import { GongTranscriptResource } from "@connectors/resources/gong_resources";
 import type { ContentNode, DataSourceConfig } from "@connectors/types";
 import { INTERNAL_MIME_TYPES } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 
 const logger = mainLogger.child({ provider: "gong" });
 

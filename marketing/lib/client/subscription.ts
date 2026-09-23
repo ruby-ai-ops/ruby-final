@@ -1,15 +1,16 @@
 import { getBillingCurrencyForCountry } from "@marketing/lib/plans/billing_currency";
 import { useGeolocation } from "@marketing/lib/swr/geo";
 import type { SupportedCurrency } from "@marketing/types/currency";
+import { useEffect, useState } from "react";
 
 export const PRO_PLAN_COST_MONTHLY = 29;
 export const PRO_PLAN_COST_YEARLY = 27;
 export const BUSINESS_PLAN_COST_MONTHLY = 45;
 
-export const CP_PRO_SEAT_COST_MONTHLY = 30;
-export const CP_PRO_SEAT_COST_YEARLY = 24;
-export const CP_MAX_SEAT_COST_MONTHLY = 150;
-export const CP_MAX_SEAT_COST_YEARLY = 120;
+export const CP_PRO_SEAT_COST_MONTHLY = 20;
+export const CP_PRO_SEAT_COST_YEARLY = 16;
+export const CP_MAX_SEAT_COST_MONTHLY = 40;
+export const CP_MAX_SEAT_COST_YEARLY = 32;
 
 export function formatPriceWithCurrency(
   price: number,
@@ -28,8 +29,14 @@ export function formatPriceWithCurrency(
  */
 export function useUserBillingCurrency(): SupportedCurrency {
   const { geoData } = useGeolocation();
+  const [isMounted, setIsMounted] = useState(false);
 
-  if (geoData?.countryCode) {
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Match the server's currency on the first render, before using cached geo data.
+  if (isMounted && geoData?.countryCode) {
     return getBillingCurrencyForCountry(geoData.countryCode, true);
   }
   return "eur";

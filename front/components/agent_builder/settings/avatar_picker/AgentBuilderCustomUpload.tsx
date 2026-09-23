@@ -3,7 +3,7 @@ import { useFileUploaderService } from "@app/hooks/useFileUploaderService";
 import { clientFetch } from "@app/lib/egress/client";
 import { classNames } from "@app/lib/utils";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, Upload01 } from "@dust-tt/sparkle";
+import { Button, Upload01 } from "@ruby-ai/ui";
 import type { ChangeEvent } from "react";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import type { Crop } from "react-image-crop";

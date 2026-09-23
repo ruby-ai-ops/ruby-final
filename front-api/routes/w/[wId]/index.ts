@@ -11,7 +11,7 @@ import {
   emitAuditLogEventDirect,
   getAuditLogContext,
 } from "@app/lib/api/audit/workos_audit";
-import { validateDustMcpServerAllowedRedirectUris } from "@app/lib/api/mcp_server/dust_mcp_server_settings";
+import { validateRubyMcpServerAllowedRedirectUris } from "@app/lib/api/mcp_server/ruby_mcp_server_settings";
 import type { GetWorkspaceResponseBody } from "@app/lib/api/workspace";
 import {
   renameWorkspace,
@@ -49,7 +49,7 @@ import dataSources from "./data_sources";
 import dataClassificationLabels from "./data-classification-labels";
 import domains from "./domains";
 import dsync from "./dsync";
-import dustAppSecrets from "./dust_app_secrets";
+import rubyAppSecrets from "./ruby_app_secrets";
 import extension from "./extension";
 import fairUseCredits from "./fair-use-credits";
 import featureFlags from "./feature-flags";
@@ -159,8 +159,8 @@ const WorkspaceExtensionMcpToolsUpdateBodySchema = z.object({
   disableExtensionMcpTools: z.boolean(),
 });
 
-const WorkspaceDustMcpServerSettingsUpdateBodySchema = z.object({
-  dustMcpServerSettings: z.object({
+const WorkspaceRubyMcpServerSettingsUpdateBodySchema = z.object({
+  rubyMcpServerSettings: z.object({
     disabled: z.boolean(),
     acceptAllRedirectUris: z.boolean(),
     allowedRedirectUris: z.array(z.string()),
@@ -212,7 +212,7 @@ const WorkspaceSlackPersonalFooterRemovalUpdateBodySchema = z.object({
   slackPersonalAllowFooterRemoval: z.boolean(),
 });
 
-// A null value clears the workspace-wide default agent (falls back to @dust).
+// A null value clears the workspace-wide default agent (falls back to @ruby).
 const WorkspaceDefaultAgentUpdateBodySchema = z.object({
   workspaceDefaultAgentId: z.string().nullable(),
 });
@@ -242,7 +242,7 @@ const PostWorkspaceRequestBodySchema = z.union([
   WorkspaceAgentReinforcementUpdateBodySchema,
   WorkspaceReinforcementBatchModeUpdateBodySchema,
   WorkspaceExtensionMcpToolsUpdateBodySchema,
-  WorkspaceDustMcpServerSettingsUpdateBodySchema,
+  WorkspaceRubyMcpServerSettingsUpdateBodySchema,
   WorkspaceOpenProjectsUpdateBodySchema,
   WorkspaceManualProjectKnowledgeManagementUpdateBodySchema,
   WorkspaceSandboxAgentEgressRequestsUpdateBodySchema,
@@ -644,15 +644,15 @@ app.post(
           enabled: String(!body.disableExtensionMcpTools),
         },
       });
-    } else if ("dustMcpServerSettings" in body) {
-      const { dustMcpServerSettings } = body;
+    } else if ("rubyMcpServerSettings" in body) {
+      const { rubyMcpServerSettings } = body;
 
       if (
-        !dustMcpServerSettings.disabled &&
-        !dustMcpServerSettings.acceptAllRedirectUris
+        !rubyMcpServerSettings.disabled &&
+        !rubyMcpServerSettings.acceptAllRedirectUris
       ) {
-        const validation = validateDustMcpServerAllowedRedirectUris(
-          dustMcpServerSettings.allowedRedirectUris
+        const validation = validateRubyMcpServerAllowedRedirectUris(
+          rubyMcpServerSettings.allowedRedirectUris
         );
         if (validation.isErr()) {
           return apiError(ctx, {
@@ -663,33 +663,33 @@ app.post(
             },
           });
         }
-        dustMcpServerSettings.allowedRedirectUris = validation.value;
+        rubyMcpServerSettings.allowedRedirectUris = validation.value;
       }
 
       const previousMetadata = owner.metadata ?? {};
       const newMetadata = {
         ...previousMetadata,
-        dustMcpServerDisabled: dustMcpServerSettings.disabled,
-        dustMcpServerAcceptAllRedirectUris:
-          dustMcpServerSettings.acceptAllRedirectUris,
-        dustMcpServerAllowedRedirectUris:
-          dustMcpServerSettings.allowedRedirectUris,
+        rubyMcpServerDisabled: rubyMcpServerSettings.disabled,
+        rubyMcpServerAcceptAllRedirectUris:
+          rubyMcpServerSettings.acceptAllRedirectUris,
+        rubyMcpServerAllowedRedirectUris:
+          rubyMcpServerSettings.allowedRedirectUris,
       };
       await workspace.updateWorkspaceSettings({ metadata: newMetadata });
       owner.metadata = newMetadata;
 
       void emitAuditLogEvent({
         auth,
-        action: "dust_mcp_server.settings_updated",
+        action: "ruby_mcp_server.settings_updated",
         targets: [buildAuditLogTarget("workspace", owner)],
         context: getAuditLogContext(auth),
         metadata: {
-          disabled: String(dustMcpServerSettings.disabled),
+          disabled: String(rubyMcpServerSettings.disabled),
           accept_all_redirect_uris: String(
-            dustMcpServerSettings.acceptAllRedirectUris
+            rubyMcpServerSettings.acceptAllRedirectUris
           ),
           allowed_redirect_uris:
-            dustMcpServerSettings.allowedRedirectUris.join(","),
+            rubyMcpServerSettings.allowedRedirectUris.join(","),
         },
       });
     } else if ("allowOpenProjects" in body) {
@@ -942,7 +942,7 @@ app.post(
       }
 
       // Validate the default agent exists and is usable (handles both global
-      // agents and workspace agents). A null value clears the default (@dust).
+      // agents and workspace agents). A null value clears the default (@ruby).
       if (body.workspaceDefaultAgentId) {
         const agent = await getAgentConfiguration(auth, {
           agentId: body.workspaceDefaultAgentId,
@@ -983,7 +983,7 @@ app.post(
         targets: [buildAuditLogTarget("workspace", owner)],
         context: getAuditLogContext(auth),
         metadata: {
-          agent_id: workspaceDefaultAgentId ?? "dust",
+          agent_id: workspaceDefaultAgentId ?? "ruby",
         },
       });
     } else if ("slackPersonalAllowFooterRemoval" in body) {
@@ -1048,7 +1048,7 @@ app.route("/data_source_views", dataSourceViews);
 app.route("/data_sources", dataSources);
 app.route("/domains", domains);
 app.route("/dsync", dsync);
-app.route("/dust_app_secrets", dustAppSecrets);
+app.route("/ruby_app_secrets", rubyAppSecrets);
 app.route("/extension", extension);
 app.route("/fair-use-credits", fairUseCredits);
 app.route("/files", files);

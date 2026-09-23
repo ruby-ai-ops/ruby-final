@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 

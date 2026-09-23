@@ -172,7 +172,7 @@ export const SALESFORCE_SERVER = {
       supported_use_cases: ["personal_actions", "platform_actions"] as const,
     },
     icon: "SalesforceLogo",
-    documentationUrl: "https://docs.dust.tt/docs/salesforce",
+    documentationUrl: "https://docs.ruby.ad/docs/salesforce",
   },
   tools: SALESFORCE_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

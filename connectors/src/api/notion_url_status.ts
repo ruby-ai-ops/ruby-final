@@ -30,7 +30,7 @@ type NotionUrlStatus = {
     exists: boolean;
     type?: "page" | "database";
   };
-  dust: {
+  ruby: {
     synced: boolean;
     lastSync?: string;
     breadcrumbs?: BreadcrumbItem[];
@@ -107,20 +107,20 @@ export const getNotionUrlStatusHandler = withLogging(
         url,
       });
 
-      // Find if URL is synced in Dust
-      const dustFindResult = await findNotionUrl({
+      // Find if URL is synced in Ruby
+      const rubyFindResult = await findNotionUrl({
         connectorId: connector.id,
         url,
       });
 
-      // Build breadcrumbs if the content is synced in Dust
+      // Build breadcrumbs if the content is synced in Ruby
       let breadcrumbs: BreadcrumbItem[] | undefined;
 
-      if (dustFindResult.page !== null || dustFindResult.db !== null) {
+      if (rubyFindResult.page !== null || rubyFindResult.db !== null) {
         const pageOrDbId = pageOrDbIdFromUrl(url);
         if (pageOrDbId) {
           const resourceType =
-            dustFindResult.page !== null ? "page" : "database";
+            rubyFindResult.page !== null ? "page" : "database";
           breadcrumbs = await buildNotionBreadcrumbs(
             connector.id,
             pageOrDbId,
@@ -141,14 +141,14 @@ export const getNotionUrlStatusHandler = withLogging(
                 ? "database"
                 : undefined,
         },
-        dust: {
-          synced: dustFindResult.page !== null || dustFindResult.db !== null,
+        ruby: {
+          synced: rubyFindResult.page !== null || rubyFindResult.db !== null,
           breadcrumbs:
             breadcrumbs && breadcrumbs.length > 0 ? breadcrumbs : undefined,
         },
         summary: generateStatusSummary(
           notionCheckResult.page !== null || notionCheckResult.db !== null,
-          dustFindResult.page !== null || dustFindResult.db !== null
+          rubyFindResult.page !== null || rubyFindResult.db !== null
         ),
       };
 
@@ -167,14 +167,14 @@ export const getNotionUrlStatusHandler = withLogging(
 
 function generateStatusSummary(
   existsInNotion: boolean,
-  syncedInDust: boolean
+  syncedInRuby: boolean
 ): string {
-  if (existsInNotion && syncedInDust) {
-    return "✅ Content is synced and available in Dust";
-  } else if (existsInNotion && !syncedInDust) {
-    return "⚠️ Content exists in Notion but is not synced to Dust";
-  } else if (!existsInNotion && syncedInDust) {
-    return "⚠️ Content was deleted from Notion but still exists in Dust";
+  if (existsInNotion && syncedInRuby) {
+    return "✅ Content is synced and available in Ruby";
+  } else if (existsInNotion && !syncedInRuby) {
+    return "⚠️ Content exists in Notion but is not synced to Ruby";
+  } else if (!existsInNotion && syncedInRuby) {
+    return "⚠️ Content was deleted from Notion but still exists in Ruby";
   } else {
     return "❌ URL not found in Notion";
   }

@@ -1,6 +1,6 @@
 import { clientApiGet } from "@connectors/connectors/microsoft/lib/graph_api";
-import type { LoggerInterface, Result } from "@dust-tt/client";
-import { Err, normalizeError, Ok } from "@dust-tt/client";
+import type { LoggerInterface, Result } from "@ruby-ai/client";
+import { Err, normalizeError, Ok } from "@ruby-ai/client";
 import type { Client } from "@microsoft/microsoft-graph-client";
 import type { DriveItem } from "@microsoft/microsoft-graph-types";
 

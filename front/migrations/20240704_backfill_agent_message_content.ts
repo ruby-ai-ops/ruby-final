@@ -2,7 +2,7 @@
 // import { QueryTypes } from "sequelize";
 
 // import { AgentBrowseAction } from "@app/lib/models/assistant/actions/browse";
-// import { AgentDustAppRunAction } from "@app/lib/models/assistant/actions/dust_app_run";
+// import { AgentRubyAppRunAction } from "@app/lib/models/assistant/actions/ruby_app_run";
 // import { AgentProcessAction } from "@app/lib/models/assistant/actions/process";
 // import { AgentRetrievalAction } from "@app/lib/models/assistant/actions/retrieval";
 // import { AgentTablesQueryAction } from "@app/lib/models/assistant/actions/tables_query";
@@ -62,7 +62,7 @@
 
 //     const [
 //       agentRetrievalActions,
-//       agentDustAppRunActions,
+//       agentRubyAppRunActions,
 //       agentTablesQueryActions,
 //       agentProcessActions,
 //       agentWebsearchActions,
@@ -72,7 +72,7 @@
 //       AgentRetrievalAction.findAll({
 //         where: { agentMessageId: agentMessageIds },
 //       }),
-//       AgentDustAppRunAction.findAll({
+//       AgentRubyAppRunAction.findAll({
 //         where: { agentMessageId: agentMessageIds },
 //       }),
 //       AgentTablesQueryAction.findAll({
@@ -94,7 +94,7 @@
 
 //     const allActions = [
 //       ...agentRetrievalActions,
-//       ...agentDustAppRunActions,
+//       ...agentRubyAppRunActions,
 //       ...agentTablesQueryActions,
 //       ...agentProcessActions,
 //       ...agentWebsearchActions,

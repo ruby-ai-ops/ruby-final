@@ -1,5 +1,5 @@
 import { SharedFramePage } from "@app/components/pages/share/SharedFramePage";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -57,12 +57,12 @@ vi.mock("@app/hooks/useDocumentTitle", () => ({
 
 vi.mock("@app/lib/api/config", () => ({
   default: {
-    getApiBaseUrl: () => "https://dust.tt",
+    getApiBaseUrl: () => "https://ruby.ad",
   },
 }));
 
 vi.mock("@app/lib/cookies", () => ({
-  DUST_HAS_SESSION: "dust-has-session",
+  RUBY_HAS_SESSION: "ruby-has-session",
   hasSessionIndicator: () => mocks.hasSession,
 }));
 
@@ -86,10 +86,10 @@ vi.mock("@app/lib/swr/share", () => ({
       logoUrl: null,
       ogImageUrl: null,
       requiresEmailVerification: mocks.requiresEmailVerification,
-      shareUrl: "https://dust.tt/share/frame/share-token",
+      shareUrl: "https://ruby.ad/share/frame/share-token",
       showSignUpCta: false,
       title: "Quarterly review",
-      vizUrl: "https://viz.dust.tt",
+      vizUrl: "https://viz.ruby.ad",
       workspaceId: "w_123",
       workspaceName: "Acme",
     },
@@ -109,7 +109,7 @@ vi.mock("@app/lib/utils", () => ({
   getFaviconPath: () => "/favicon.png",
 }));
 
-vi.mock("@dust-tt/sparkle", () => ({
+vi.mock("@ruby-ai/ui", () => ({
   LogIn01: () => null,
   Spinner: () => <div>loading</div>,
 }));
@@ -168,7 +168,7 @@ describe("SharedFramePage", () => {
     ).toBeDefined();
     expect(screen.getByRole("link", { name: "Sign in" })).toHaveAttribute(
       "href",
-      "https://dust.tt/api/workos/login?returnTo=%2Fshare%2Fframe%2Fshare-token%3Fsource%3Demail%23section"
+      "https://app.ruby.ad/api/workos/login?returnTo=%2Fshare%2Fframe%2Fshare-token%3Fsource%3Demail%23section"
     );
     expect(screen.queryByText("frame content")).toBeNull();
   });
@@ -234,7 +234,7 @@ describe("SharedFramePage", () => {
     expect(screen.getByText("404: Page not found")).toBeDefined();
     expect(screen.getByRole("link", { name: "Sign in" })).toHaveAttribute(
       "href",
-      "https://dust.tt/api/workos/login?returnTo=%2Fshare%2Fframe%2Fshare-token"
+      "https://app.ruby.ad/api/workos/login?returnTo=%2Fshare%2Fframe%2Fshare-token"
     );
   });
 

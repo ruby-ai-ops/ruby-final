@@ -19,7 +19,7 @@ export const DEFAULT_ACTIVATION_NUDGE_FREQUENCY_CAP_DAYS = 2;
 export const DEFAULT_ACTIVATION_NUDGE_MAX_UNANSWERED_COUNT = 2;
 
 // Max users a single activation workspace workflow may nudge. Applied when
-// enumerating the run; poke can skip it via overrideChecks.
+// enumerating the run; admin can skip it via overrideChecks.
 export const DEFAULT_ACTIVATION_NUDGE_MAX_USERS_PER_RUN = 100;
 
 export type ActivationNudgePerRunCapItem = {
@@ -27,7 +27,7 @@ export type ActivationNudgePerRunCapItem = {
 };
 
 // Keeps the pods that have gone the longest without a nudge (never-nudged
-// first, then oldest last-nudge). Poke can skip the cap via overrideChecks.
+// first, then oldest last-nudge). Admin can skip the cap via overrideChecks.
 export function applyActivationNudgePerRunCap<
   T extends ActivationNudgePerRunCapItem,
 >(items: T[], { overrideChecks }: { overrideChecks: boolean }): T[] {

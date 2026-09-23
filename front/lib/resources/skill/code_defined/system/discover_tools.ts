@@ -1,5 +1,5 @@
 import { isJITMCPServerView } from "@app/lib/actions/mcp_internal_actions/utils";
-import { buildToolsetsContext } from "@app/lib/api/assistant/global_agents/configurations/dust/dust";
+import { buildToolsetsContext } from "@app/lib/api/assistant/global_agents/configurations/ruby/ruby";
 import type { Authenticator } from "@app/lib/auth";
 import { MCPServerViewResource } from "@app/lib/resources/mcp_server_view_resource";
 import type { SystemSkillDefinition } from "@app/lib/resources/skill/code_defined/shared";

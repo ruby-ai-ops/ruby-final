@@ -1,3 +1,3 @@
 #!/bin/bash
-shell() { run_dust_tool shell "$@"; }
+shell() { run_ruby_tool shell "$@"; }
 export -f shell

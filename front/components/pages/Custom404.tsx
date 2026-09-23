@@ -1,5 +1,5 @@
 import CustomErrorPage from "@app/components/pages/CustomErrorPage";
-import { LogIn01 } from "@dust-tt/sparkle";
+import { LogIn01 } from "@ruby-ai/ui";
 
 export default function Custom404() {
   return (

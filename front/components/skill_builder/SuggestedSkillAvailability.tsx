@@ -2,7 +2,7 @@ import { SKILL_AVAILABILITY_DISPLAY } from "@app/lib/skills/labels";
 import { useSkill } from "@app/lib/swr/skill_configurations";
 import type { SkillAvailability } from "@app/types/assistant/skill_configuration_constants";
 import type { SkillAvailabilitySuggestionType } from "@app/types/suggestions/skill_suggestion";
-import { Chip, LoadingBlock, Tooltip } from "@dust-tt/sparkle";
+import { Chip, LoadingBlock, Tooltip } from "@ruby-ai/ui";
 
 interface AvailabilityChipProps {
   availability: SkillAvailability;

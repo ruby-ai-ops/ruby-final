@@ -31,7 +31,7 @@ describe("GET /api/v1/public/branding/:wId/:asset", () => {
     const res = await getBrandingAsset("unknown-workspace", "logo");
 
     expect(res.status).toBe(302);
-    expect(res.headers.get("location")).toContain("DustHorizontalIcon");
+    expect(res.headers.get("location")).toContain("RubyHorizontalIcon");
   });
 
   it("redirects to the default asset for a non-entitled workspace", async () => {
@@ -40,7 +40,7 @@ describe("GET /api/v1/public/branding/:wId/:asset", () => {
     const res = await getBrandingAsset(workspace.sId, "logo");
 
     expect(res.status).toBe(302);
-    expect(res.headers.get("location")).toContain("DustHorizontalIcon");
+    expect(res.headers.get("location")).toContain("RubyHorizontalIcon");
   });
 
   it("redirects to the default asset when no custom asset is uploaded", async () => {
@@ -50,7 +50,7 @@ describe("GET /api/v1/public/branding/:wId/:asset", () => {
     const res = await getBrandingAsset(workspace.sId, "logo");
 
     expect(res.status).toBe(302);
-    expect(res.headers.get("location")).toContain("DustHorizontalIcon");
+    expect(res.headers.get("location")).toContain("RubyHorizontalIcon");
   });
 
   it("serves the asset bytes with correct headers when a custom asset exists", async () => {

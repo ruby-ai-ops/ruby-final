@@ -226,7 +226,7 @@ describe("analyticsConsumptionHref", () => {
     const href = analyticsConsumptionHref(WORKSPACE_ID, {
       filter: { api_key: ["Zapier prod *main*", "a&b"] },
     });
-    const url = new URL(href, "https://dust.tt");
+    const url = new URL(href, "https://ruby.ad");
 
     expect(url.searchParams.getAll("k")).toEqual(["Zapier prod *main*", "a&b"]);
   });
@@ -243,7 +243,7 @@ describe("analyticsConsumptionHref", () => {
 describe("premiumModelUsageAnalyticsHref", () => {
   it("links to the user's Premium model usage for the limit window", () => {
     const href = premiumModelUsageAnalyticsHref(WORKSPACE_ID, "user-1");
-    const url = new URL(href, "https://dust.tt");
+    const url = new URL(href, "https://ruby.ad");
 
     expect(url.pathname).toBe(`/w/${WORKSPACE_ID}/analytics/consumption`);
     expect(url.searchParams.get("p")).toBe("7");

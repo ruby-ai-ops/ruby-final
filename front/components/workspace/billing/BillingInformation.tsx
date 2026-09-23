@@ -15,7 +15,7 @@ import {
   MarkerPin01,
   Spinner,
   User01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useSubscriptionContext } from "./SubscriptionContext";
 
 function formatAddress(address: BillingAddress | null): string | null {

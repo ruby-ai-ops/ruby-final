@@ -1,23 +1,28 @@
 {
-  "name": "@dust-tt/marketing",
+  "name": "@ruby-ai/marketing",
   "version": "0.1.0",
   "private": true,
   "engines": {
     "node": ">=24.16.0"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "NODE_ENV=production next build",
+    "dev": "npm run demo:prepare && next dev",
+    "build": "npm run demo:prepare && next build",
     "start": "next start --keepAliveTimeout 5000",
     "sitemap": "next-sitemap",
-    "contentful:migrate": "contentful-migration --space-id $CONTENTFUL_SPACE_ID --management-token $CONTENTFUL_MANAGEMENT_TOKEN",
-    "tsgo": "tsgo"
+    "tsgo": "tsgo",
+    "demo:install": "npm --prefix demo-workspace/embed ci",
+    "demo:build": "npm --prefix demo-workspace/embed run build",
+    "demo:test": "npm --prefix demo-workspace/upstream ci && npm --prefix demo-workspace/embed run test",
+    "demo:prepare": "npm run demo:install && npm run demo:build",
+    "test:workspace-demo-host": "vitest run --config vitest.config.mjs components/home/content/Product/HomeWorkspaceDemo.test.tsx components/home/content/Product/HomeTeamUsageSection.test.tsx",
+    "build:next": "next build"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^16.1.6",
     "@contentful/rich-text-types": "^17.2.5",
     "@datadog/browser-logs": "^6.13.0",
-    "@dust-tt/sparkle": "^0.7.7",
+    "@ruby-ai/ui": "^0.7.7",
     "@hookform/resolvers": "^3.3.4",
     "@marsidev/react-turnstile": "^1.5.2",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -62,8 +67,6 @@
     "@types/uuid": "^9.0.1",
     "@typescript/native-preview": "^7.0.0-dev.20260224.1",
     "@tailwindcss/postcss": "^4.3.0",
-    "contentful-migration": "^5.1.0",
-
     "next-sitemap": "^4.2.3",
     "postcss": "^8.5.6",
     "typescript": "^5.0.0"

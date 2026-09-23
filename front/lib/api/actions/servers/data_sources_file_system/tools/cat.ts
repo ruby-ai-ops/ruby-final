@@ -14,7 +14,7 @@ import type { Authenticator } from "@app/lib/auth";
 import logger from "@app/logger/logger";
 import { CoreAPI } from "@app/types/core/core_api";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 // Above this size we nudge the model to use `grep` rather than reading the whole
 // document linearly page by page, which can quickly exhaust the context window.
@@ -131,7 +131,7 @@ export async function cat(
 
   // Get dataSource from the data source configuration.
   const dataSource = agentDataSourceConfigurations.find(
-    (config) => config.dataSource.dustAPIDataSourceId === node.data_source_id
+    (config) => config.dataSource.rubyAPIDataSourceId === node.data_source_id
   )?.dataSource;
 
   if (!dataSource) {
@@ -142,7 +142,7 @@ export async function cat(
 
   const dataSourceIdToConnectorMap = new Map();
   dataSourceIdToConnectorMap.set(
-    dataSource.dustAPIDataSourceId,
+    dataSource.rubyAPIDataSourceId,
     dataSource.connectorProvider
   );
 
@@ -150,7 +150,7 @@ export async function cat(
   const readResult = await coreAPI.getDataSourceDocumentText({
     dataSourceId: node.data_source_id,
     documentId: node.node_id,
-    projectId: dataSource.dustAPIProjectId,
+    projectId: dataSource.rubyAPIProjectId,
     offset: offset,
     limit: limit,
     grep: grep,

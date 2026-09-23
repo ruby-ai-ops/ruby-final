@@ -1,5 +1,5 @@
 {
-  "name": "dust-monorepo",
+  "name": "ruby-monorepo",
   "version": "1.0.0",
   "private": true,
   "workspaces": [
@@ -7,9 +7,9 @@
     "front-api",
     "front-spa",
     "marketing",
-    "sparkle",
+    "ui",
     "connectors",
-    "cli/dust-cli",
+    "cli/ruby-cli",
     "extension",
     "viz",
     "sdks/js"
@@ -25,7 +25,10 @@
     "format:changed": "biome check --write --error-on-warnings --changed",
     "test:grit": "command -v grit >/dev/null 2>&1 || { echo 'Error: grit CLI not found. Install it with: brew install getgrit/tap/grit (or: curl -fsSL https://docs.grit.io/install | bash)'; exit 1; } && grit patterns test",
     "doctor": "npx react-doctor@latest --diff",
-    "doctor:full": "npx react-doctor@latest --diff false"
+    "doctor:full": "npx react-doctor@latest --diff false",
+    "branding:check": "node maintenance/upstream/check.mjs",
+    "branding:apply": "node maintenance/upstream/rebrand.mjs",
+    "test:maintenance": "node --test maintenance/upstream/*.test.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.1",

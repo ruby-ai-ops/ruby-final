@@ -40,7 +40,7 @@ import { getActivityLogger } from "@connectors/logger/logger";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { DataSourceConfig, ModelId } from "@connectors/types";
 import { readableStreamToReadable } from "@connectors/types/shared/utils/streams";
-import { Err, INTERNAL_MIME_TYPES, Ok } from "@dust-tt/client";
+import { Err, INTERNAL_MIME_TYPES, Ok } from "@ruby-ai/client";
 import { ApplicationFailure, Context } from "@temporalio/activity";
 
 // Files are uploaded asynchronously, so we can use a high number of parallel uploads.

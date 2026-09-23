@@ -4,7 +4,7 @@ import { SystemSpaceActionsList } from "@app/components/spaces/SystemSpaceAction
 import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
 import { useRequiredPathParam } from "@app/lib/platform";
 import { useSpaceInfo } from "@app/lib/swr/spaces";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 export function SpaceActionsPage() {
   const spaceId = useRequiredPathParam("spaceId");

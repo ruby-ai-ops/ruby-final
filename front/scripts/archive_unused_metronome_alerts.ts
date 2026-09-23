@@ -1,5 +1,5 @@
 /**
- * One-off cleanup: archive the Metronome alerts that Dust no longer uses —
+ * One-off cleanup: archive the Metronome alerts that Ruby no longer uses —
  * the retired spend-cap alerts and the free-seat per-user credit-balance alerts.
  *
  * Per-user, per-API-key and programmatic spend caps are now enforced from Redis

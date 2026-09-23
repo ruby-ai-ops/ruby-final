@@ -1,0 +1,61 @@
+import { createPlugin } from "@app/lib/api/admin/types";
+import { createSpaceAndGroup } from "@app/lib/api/spaces";
+import { Err, Ok } from "@app/types/shared/result";
+
+export const createSpacePlugin = createPlugin({
+  manifest: {
+    id: "create-space",
+    name: "Create a Space",
+    description: "Create a new space",
+    resourceTypes: ["workspaces"],
+    args: {
+      name: {
+        type: "string",
+        label: "Name",
+        description: "Name of the space",
+      },
+      isRestricted: {
+        type: "boolean",
+        label: "Is Restricted",
+        description: "Is the space restricted",
+      },
+      ignoreWorkspaceLimit: {
+        type: "boolean",
+        label: "Ignore Workspace Limit",
+        description: "Ignore workspace limit",
+      },
+    },
+    requiredRoles: ["support"],
+  },
+  execute: async (auth, _, args) => {
+    const { name, isRestricted } = args;
+
+    const formattedName = name.trim();
+    if (formattedName.length === 0) {
+      return new Err(new Error("Name cannot be empty"));
+    }
+
+    const spaceRes = await createSpaceAndGroup(
+      auth,
+      {
+        name: formattedName,
+        isRestricted,
+        spaceKind: "regular",
+      },
+      {
+        ignoreWorkspaceLimit: args.ignoreWorkspaceLimit,
+      }
+    );
+
+    if (spaceRes.isErr()) {
+      return new Err(new Error(spaceRes.error.message));
+    }
+
+    const space = spaceRes.value;
+
+    return new Ok({
+      display: "text",
+      value: `Space ${space.name} created successfully`,
+    });
+  },
+});

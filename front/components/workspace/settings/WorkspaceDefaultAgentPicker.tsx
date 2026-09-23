@@ -6,7 +6,7 @@ import { useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useUnifiedAgentConfigurations } from "@app/lib/swr/assistants";
 import { GLOBAL_AGENTS_SID } from "@app/types/assistant/assistant";
 import type { WorkspaceType } from "@app/types/user";
-import { Avatar, Button, Robot } from "@dust-tt/sparkle";
+import { Avatar, Button, Robot } from "@ruby-ai/ui";
 import { useContext } from "react";
 
 export const WORKSPACE_DEFAULT_AGENT_LABEL = "Default agent";
@@ -38,27 +38,27 @@ function DefaultAgentRow({ owner }: WorkspaceDefaultAgentPickerProps) {
     workspaceId: owner.sId,
   });
 
-  const dustAgent =
-    agentConfigurations.find((a) => a.sId === GLOBAL_AGENTS_SID.DUST) ?? null;
+  const rubyAgent =
+    agentConfigurations.find((a) => a.sId === GLOBAL_AGENTS_SID.RUBY) ?? null;
 
-  // Fall back to @dust when the configured default agent isn't available (e.g.
+  // Fall back to @ruby when the configured default agent isn't available (e.g.
   // unpublished/deleted). `agentConfigurations` only contains viewable agents.
   const displayedDefaultAgent =
     (workspaceDefaultAgentId &&
       agentConfigurations.find((a) => a.sId === workspaceDefaultAgentId)) ||
-    dustAgent;
+    rubyAgent;
 
   const saveDefaultAgent = async (agentId: string | null) => {
-    // Selecting dust clears the stored workspaceDefaultAgentId in the DB.
-    const nextAgentId = agentId === GLOBAL_AGENTS_SID.DUST ? null : agentId;
+    // Selecting ruby clears the stored workspaceDefaultAgentId in the DB.
+    const nextAgentId = agentId === GLOBAL_AGENTS_SID.RUBY ? null : agentId;
 
     // Warn about the implications of using another default agent before
-    // switching. Resetting back to @dust needs no confirmation.
+    // switching. Resetting back to @ruby needs no confirmation.
     if (nextAgentId) {
       const confirmed = await confirm({
         title: "Warning",
         message:
-          "@dust is designed to give your users the best experience by default. A custom default agent may not handle every request as reliably. Do you want to set it as the workspace default anyway?",
+          "@ruby is designed to give your users the best experience by default. A custom default agent may not handle every request as reliably. Do you want to set it as the workspace default anyway?",
         validateVariant: "warning",
         validateLabel: "Yes",
         cancelLabel: "No",
@@ -98,7 +98,7 @@ function DefaultAgentRow({ owner }: WorkspaceDefaultAgentPickerProps) {
                     )
                   : Robot
               }
-              label={displayedDefaultAgent?.name ?? "@dust"}
+              label={displayedDefaultAgent?.name ?? "@ruby"}
             />
           }
         />

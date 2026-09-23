@@ -78,8 +78,8 @@ function getWorkerDirectory(workerName: WorkerName): string | null {
       return path.join(baseDir, "temporal/model_health");
     case "notifications_queue":
       return path.join(baseDir, "temporal/notifications_queue");
-    case "poke":
-      return path.join(baseDir, "poke/temporal");
+    case "admin":
+      return path.join(baseDir, "admin/temporal");
     case "production_checks":
       return path.join(baseDir, "temporal/production_checks");
     case "relocation":

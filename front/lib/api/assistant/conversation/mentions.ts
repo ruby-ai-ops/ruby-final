@@ -177,7 +177,7 @@ export async function resolveUserMentions(
       // TODO: Alternative approach would be to always set pending_project_membership for
       // project conversations and decide at render time whether to show "add to project"
       // (for editors) or "request access" (for non-editors). This would require building
-      // a request access flow. See https://github.com/dust-tt/dust/issues/20852
+      // a request access flow. See https://github.com/ruby-ai-ops/ruby-final/issues/20852
       const status = await getMentionStatus(auth, {
         conversation,
         message,

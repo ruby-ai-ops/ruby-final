@@ -29,9 +29,9 @@ app.get(
     const { documentId } = ctx.req.valid("param");
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const doc = await coreAPI.getDataSourceDocument({
-      dataSourceId: dataSourceView.dataSource.dustAPIDataSourceId,
+      dataSourceId: dataSourceView.dataSource.rubyAPIDataSourceId,
       documentId,
-      projectId: dataSourceView.dataSource.dustAPIProjectId,
+      projectId: dataSourceView.dataSource.rubyAPIProjectId,
       viewFilter: dataSourceView.toViewFilter(),
     });
     if (doc.isErr()) {

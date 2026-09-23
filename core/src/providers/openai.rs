@@ -1188,8 +1188,8 @@ impl Embedder for OpenAIEmbedder {
         }
 
         // BYOK workspaces pass OPENAI_EMBEDDING_API_KEY in credentials (separate from
-        // OPENAI_API_KEY to avoid Dust apps accidentally using their LLM key for embedding).
-        // Non-BYOK and Dust apps fall back to the CORE_DATA_SOURCES_OPENAI_API_KEY env var.
+        // OPENAI_API_KEY to avoid Ruby apps accidentally using their LLM key for embedding).
+        // Non-BYOK and Ruby apps fall back to the CORE_DATA_SOURCES_OPENAI_API_KEY env var.
         if let Some(embedding_key) = credentials.get("OPENAI_EMBEDDING_API_KEY") {
             self.api_key = Some(embedding_key.clone());
             // TODO(BYOK): add support openai EU host
@@ -1197,7 +1197,7 @@ impl Embedder for OpenAIEmbedder {
         } else if credentials.contains_key(BYOK_CREDENTIAL_KEY) {
             return Err(anyhow!(
                 "Credential `OPENAI_EMBEDDING_API_KEY` is not set; a BYOK workspace cannot embed \
-                 with Dust's data-source key."
+                 with Ruby's data-source key."
             ));
         } else {
             let raw_key = std::env::var("CORE_DATA_SOURCES_OPENAI_API_KEY").map_err(|_| {
@@ -1342,7 +1342,7 @@ impl Provider for OpenAIProvider {
         );
         utils::info("Your API key can be found at `https://platform.openai.com/account/api-keys`.");
         utils::info("");
-        utils::info("Once ready you can check your setup with `dust provider test openai`");
+        utils::info("Once ready you can check your setup with `ruby provider test openai`");
 
         Ok(())
     }

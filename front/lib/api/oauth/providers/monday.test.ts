@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@app/lib/api/config", () => ({
   default: {
-    getAppUrl: () => "https://dust.tt",
+    getAppUrl: () => "https://ruby.ad",
     getOAuthMondayClientId: () => "client-id",
   },
 }));

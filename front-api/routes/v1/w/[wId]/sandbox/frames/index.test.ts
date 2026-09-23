@@ -247,7 +247,7 @@ describe("POST /api/v1/w/[wId]/sandbox/frames", () => {
     expect(response.status).toBe(404);
     await expect(response.json()).resolves.toMatchObject({
       error: {
-        message: expect.stringContaining("Configure sharing in the Dust UI"),
+        message: expect.stringContaining("Configure sharing in the Ruby UI"),
       },
     });
     expect(await context.frame.getShareInfo()).toBeNull();

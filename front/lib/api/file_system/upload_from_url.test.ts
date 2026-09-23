@@ -1,5 +1,5 @@
 import { createConversation } from "@app/lib/api/assistant/conversation";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { uploadFileFromUrlToFileSystem } from "@app/lib/api/file_system/upload_from_url";
 import { untrustedFetch } from "@app/lib/egress/server";
 import { createResourceTest } from "@app/tests/utils/generic_resource_tests";
@@ -67,7 +67,7 @@ describe("uploadFileFromUrlToFileSystem", () => {
       spaceId: null,
     });
 
-    const fsResult = await DustFileSystem.forConversation(
+    const fsResult = await RubyFileSystem.forConversation(
       auth,
       conversation.toJSON()
     );
@@ -95,7 +95,7 @@ describe("uploadFileFromUrlToFileSystem", () => {
       spaceId: null,
     });
 
-    const fsResult = await DustFileSystem.forConversation(
+    const fsResult = await RubyFileSystem.forConversation(
       auth,
       conversation.toJSON()
     );
@@ -129,7 +129,7 @@ describe("uploadFileFromUrlToFileSystem", () => {
       contentLength: "15",
     });
 
-    const fsResult = await DustFileSystem.forConversation(
+    const fsResult = await RubyFileSystem.forConversation(
       auth,
       conversation.toJSON()
     );
@@ -167,7 +167,7 @@ describe("uploadFileFromUrlToFileSystem", () => {
       body: "ignored",
     });
 
-    const fsResult = await DustFileSystem.forConversation(
+    const fsResult = await RubyFileSystem.forConversation(
       auth,
       conversation.toJSON()
     );
@@ -208,7 +208,7 @@ describe("uploadFileFromUrlToFileSystem", () => {
       body: Readable.from(abortedBodyChunks()),
     });
 
-    const fsResult = await DustFileSystem.forConversation(
+    const fsResult = await RubyFileSystem.forConversation(
       auth,
       conversation.toJSON()
     );
@@ -237,11 +237,11 @@ describe("uploadFileFromUrlToFileSystem", () => {
     });
 
     mockFetchResponse({
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       body: "<html></html>",
     });
 
-    const fsResult = await DustFileSystem.forConversation(
+    const fsResult = await RubyFileSystem.forConversation(
       auth,
       conversation.toJSON()
     );

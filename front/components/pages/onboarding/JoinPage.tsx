@@ -1,17 +1,17 @@
 import Custom404 from "@app/components/pages/Custom404";
-import OnboardingLayout from "@app/components/sparkle/OnboardingLayout";
+import OnboardingLayout from "@app/components/ui/OnboardingLayout";
 import { useRequiredPathParam, useSearchParam } from "@app/lib/platform";
 import { useJoinData } from "@app/lib/swr/workspaces";
 import {
   AlertCircle,
   Button,
-  DustLogoSquare,
+  RubyLogoSquare,
   Hoverable,
   Icon,
   LogIn01,
   Page,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect } from "react";
 
 export function JoinPage() {
@@ -94,7 +94,7 @@ export function JoinPage() {
   return (
     <OnboardingLayout owner={workspace}>
       <div className="flex h-full flex-col gap-8 pt-4 md:justify-center md:pt-0">
-        <DustLogoSquare className="-ml-11 h-10 w-32" />
+        <RubyLogoSquare className="-ml-11 h-10 w-32" />
         <Page.Header title={`Hello there!`} />
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
@@ -107,17 +107,17 @@ export function JoinPage() {
             ) : (
               <p>
                 You've been invited to join{" "}
-                <strong>{workspace.name}'s workspace on Dust</strong>.
+                <strong>{workspace.name}'s workspace on Ruby</strong>.
               </p>
             )}
           </div>
 
           <p>
-            Dust is a platform giving you access to the best AI agents. It's
+            Ruby is a platform giving you access to the best AI agents. It's
             easy to use and it's a great place for teams to collaborate. Learn
-            more about Dust on{" "}
+            more about Ruby on{" "}
             <Hoverable
-              href="https://dust.tt"
+              href="https://ruby.ad"
               variant="highlight"
               target="_blank"
             >
@@ -138,9 +138,9 @@ export function JoinPage() {
         </div>
         <div className="flex flex-col gap-3 pb-20">
           <p>
-            By signing up, you accept Dust's{" "}
+            By signing up, you accept Ruby's{" "}
             <Hoverable
-              href="https://dust.tt/terms"
+              href="https://ruby.ad/terms"
               variant="highlight"
               target="_blank"
             >

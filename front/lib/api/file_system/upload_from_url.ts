@@ -2,7 +2,7 @@ import {
   frameFileCreateRejectedError,
   frameFileEditRejectedError,
 } from "@app/lib/api/actions/servers/files/tools/utils";
-import type { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import type { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { validateExternalUrl } from "@app/lib/api/url_safety";
 import { untrustedFetch } from "@app/lib/egress/server";
 import {
@@ -73,7 +73,7 @@ function limitReadableStream(
 }
 
 export async function uploadFileFromUrlToFileSystem(
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   {
     path,
     url,
@@ -155,7 +155,7 @@ export async function uploadFileFromUrlToFileSystem(
     });
   }
 
-  const statResult = await dustFs.stat(path);
+  const statResult = await rubyFs.stat(path);
   if (statResult.isErr()) {
     const err = statResult.error;
     switch (err.code) {
@@ -182,12 +182,12 @@ export async function uploadFileFromUrlToFileSystem(
 
   let sourceStream: Readable;
   let getBytesRead: () => number;
-  let writeResult: Awaited<ReturnType<typeof dustFs.write>>;
+  let writeResult: Awaited<ReturnType<typeof rubyFs.write>>;
   try {
     sourceStream = Readable.fromWeb(response.body);
     const limited = limitReadableStream(sourceStream, maxBytes);
     getBytesRead = limited.getBytesRead;
-    writeResult = await dustFs.write(path, limited.stream, finalContentType);
+    writeResult = await rubyFs.write(path, limited.stream, finalContentType);
   } catch {
     return new Err({ message: `Failed to fetch URL: ${sanitizedUrl}` });
   }

@@ -153,7 +153,7 @@ export async function activateCreditPricedFreePlan(
   });
 }
 
-// Called during workspace creation via the Poke plugin. No user is present yet
+// Called during workspace creation via the Admin plugin. No user is present yet
 // (the workspace was just created and no member has joined), so seat assignment
 // is skipped. Invited users receive a seat type through the membership flow.
 export async function activateCreditPricedFreePlanForWorkspace(

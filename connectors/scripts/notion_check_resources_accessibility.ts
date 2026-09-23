@@ -170,7 +170,7 @@ makeScript(
         ? connectorsConfig.getServiceAccount()
         : undefined,
     });
-    const bucket = storage.bucket(connectorsConfig.getDustTmpSyncBucketName());
+    const bucket = storage.bucket(connectorsConfig.getRubyTmpSyncBucketName());
     const gcsPrefix = `notion-check-accessibility/${connectorId}/${name}/${Date.now()}`;
 
     // Upload chunks to GCS and collect file paths
@@ -192,7 +192,7 @@ makeScript(
         metadata: {
           contentType: "text/csv",
           metadata: {
-            dustInternal: "notion-accessibility-check",
+            rubyInternal: "notion-accessibility-check",
             connectorId: connectorId.toString(),
             chunkIndex: i.toString(),
             resourceCount: chunk.length.toString(),

@@ -4,7 +4,7 @@ import type { EditorWithoutSpaceAccess } from "@app/components/skill_builder/Ski
 import { useRemoveSkillSpace } from "@app/components/skill_builder/useRemoveSkillSpace";
 import { getSpaceName } from "@app/lib/spaces";
 import type { LightWorkspaceType } from "@app/types/user";
-import { AlertCircle, Button, ContentMessage } from "@dust-tt/sparkle";
+import { AlertCircle, Button, ContentMessage } from "@ruby-ai/ui";
 import { useController } from "react-hook-form";
 
 interface SkillEditorsAccessWarningProps {

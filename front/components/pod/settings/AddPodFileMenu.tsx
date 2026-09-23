@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSearchbar,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 

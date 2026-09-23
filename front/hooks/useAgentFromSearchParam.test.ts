@@ -261,7 +261,7 @@ describe("useAgentFromSearchParam", () => {
     // Enter new conversation, then simulate the homepage default winning the race
     // before the URL agent is re-applied.
     activeConversationIdHolder.current = null;
-    selectedSingleAgentHolder.current = makeMention("dust");
+    selectedSingleAgentHolder.current = makeMention("ruby");
     agentConfigurationHolder.current = makeAgentConfiguration("agent_1");
     rerender();
 

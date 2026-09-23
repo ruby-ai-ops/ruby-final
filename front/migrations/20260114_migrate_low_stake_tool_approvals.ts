@@ -8,7 +8,7 @@ import {
 import { makeScript } from "@app/scripts/helpers";
 
 const COMMA_SEPARATOR = ",";
-const COMMA_REPLACEMENT = "DUST_COMMA";
+const COMMA_REPLACEMENT = "RUBY_COMMA";
 
 /**
  * Migration script to:

@@ -27,7 +27,7 @@ export const CREDIT_PRICED_BUSINESS_LEGACY_LARGE_PLAN_CODE =
 export const CREDIT_PRICED_FREE_PLAN_CODE = "CP_FREE_PLAN";
 export const CREDIT_PRICED_ENTERPRISE_DEFAULT_PLAN_CODE = "CP_ENT_DEFAULT_PLAN";
 export const CREDIT_PRICED_ENTERPRISE_PILOT_PLAN_CODE = "CP_ENT_PILOT_PLAN";
-export const CREDIT_PRICED_DUST_COMPANY_PLAN_CODE = "CP_DUST_COMPANY";
+export const CREDIT_PRICED_RUBY_COMPANY_PLAN_CODE = "CP_RUBY_COMPANY";
 
 // BYOK plan:
 export const FREE_BYOK_PLAN_CODE = "FREE_BYOK";
@@ -37,8 +37,8 @@ export const FREE_BYOK_PLAN_CODE = "FREE_BYOK";
  */
 export const ENT_PLAN_FAKE_CODE = "ENT_PLAN_FAKE_CODE";
 
-// Dust's own workspace plan.
-export const DUST_COMPANY_PLAN_CODE = "DUST_COMPANY";
+// Ruby's own workspace plan.
+export const RUBY_COMPANY_PLAN_CODE = "RUBY_COMPANY";
 
 /** Plan codes excluded from reinforcement-related batch operations. */
 export const REINFORCEMENT_EXCLUDED_PLAN_CODES = new Set([
@@ -53,9 +53,9 @@ export const isCreditPricedPlanPrefix = (planCode: string) =>
 export const isEnterprisePlanPrefix = (planCode: string) =>
   planCode.startsWith("ENT_") || planCode.startsWith("CP_ENT_");
 
-export const isDustCompanyPlan = (planCode: string) =>
-  planCode === DUST_COMPANY_PLAN_CODE ||
-  planCode === CREDIT_PRICED_DUST_COMPANY_PLAN_CODE;
+export const isRubyCompanyPlan = (planCode: string) =>
+  planCode === RUBY_COMPANY_PLAN_CODE ||
+  planCode === CREDIT_PRICED_RUBY_COMPANY_PLAN_CODE;
 
 // If the plan code starts with PRO_, it's a pro plan
 export const isProPlanPrefix = (planCode: string) =>
@@ -74,18 +74,18 @@ export const isBusinessPlanPrefix = (planCode: string) =>
 // Everything else is free
 export const isFreePlan = (planCode: string) =>
   !isEnterprisePlanPrefix(planCode) &&
-  !isDustCompanyPlan(planCode) &&
+  !isRubyCompanyPlan(planCode) &&
   !isProPlanPrefix(planCode) &&
   !isBusinessPlanPrefix(planCode);
 
 export const isFreeTrialPhonePlan = (planCode: string) =>
   planCode === FREE_TRIAL_PHONE_PLAN_CODE;
 
-// Early plan when anyone could create a dust account
+// Early plan when anyone could create a ruby account
 export const isOldFreePlan = (planCode: string) =>
   planCode === FREE_TEST_PLAN_CODE;
 
-// Plan-type filter buckets exposed on the poke workspaces list, split by
+// Plan-type filter buckets exposed on the admin workspaces list, split by
 // literal plan-code prefix rather than by the semantic `isXxx` helpers above:
 // - enterprise: CP_ENT_*          (current, credit-priced enterprise)
 // - legacy_enterprise: ENT_*      (legacy, pre-credit-priced enterprise)
@@ -93,33 +93,33 @@ export const isOldFreePlan = (planCode: string) =>
 // - business: CP_BUSINESS_*       (current, credit-priced business)
 // - free: FREE_*                  (all free-tier plans, incl. old-free), except F&F below
 // - friends_and_family: FREE_FRIENDSAMILY
-// - dust: DUST_* / CP_DUST_*      (Dust's own company workspace)
-export const POKE_PLAN_TYPE_FILTERS = [
+// - ruby: RUBY_* / CP_RUBY_*      (Ruby's own company workspace)
+export const ADMIN_PLAN_TYPE_FILTERS = [
   "enterprise",
   "business",
   "legacy_enterprise",
   "legacy_pro",
   "free",
   "friends_and_family",
-  "dust",
+  "ruby",
 ] as const;
 
-export type PokePlanTypeFilter = (typeof POKE_PLAN_TYPE_FILTERS)[number];
+export type AdminPlanTypeFilter = (typeof ADMIN_PLAN_TYPE_FILTERS)[number];
 
-export function isPokePlanTypeFilter(
+export function isAdminPlanTypeFilter(
   value: string
-): value is PokePlanTypeFilter {
-  return POKE_PLAN_TYPE_FILTERS.some((filter) => filter === value);
+): value is AdminPlanTypeFilter {
+  return ADMIN_PLAN_TYPE_FILTERS.some((filter) => filter === value);
 }
 
-export type PokeNonFreePlanTypeFilter = Exclude<PokePlanTypeFilter, "free">;
+export type AdminNonFreePlanTypeFilter = Exclude<AdminPlanTypeFilter, "free">;
 
 // Single source of truth for how each non-free bucket maps to plan codes.
-// Consumed to build the SQL filter for the poke workspaces list endpoint:
+// Consumed to build the SQL filter for the admin workspaces list endpoint:
 // `free` has no code pattern of its own there — it's derived as "doesn't
 // match any of these".
-export const POKE_PLAN_CODE_MATCHERS: Record<
-  PokeNonFreePlanTypeFilter,
+export const ADMIN_PLAN_CODE_MATCHERS: Record<
+  AdminNonFreePlanTypeFilter,
   { type: "prefix"; values: string[] } | { type: "exact"; values: string[] }
 > = {
   enterprise: { type: "prefix", values: ["CP_ENT_"] },
@@ -127,7 +127,7 @@ export const POKE_PLAN_CODE_MATCHERS: Record<
   legacy_pro: { type: "prefix", values: ["PRO_"] },
   business: { type: "prefix", values: ["CP_BUSINESS_"] },
   friends_and_family: { type: "exact", values: ["FREE_FRIENDSAMILY"] },
-  dust: { type: "prefix", values: ["DUST_", "CP_DUST_"] },
+  ruby: { type: "prefix", values: ["RUBY_", "CP_RUBY_"] },
 };
 
 export function isProPlan(plan?: PlanType) {
@@ -146,7 +146,7 @@ export function isProOrBusinessPlanCode(plan?: PlanType) {
 }
 
 /**
- * `isUpgraded` returns true if the plan has access to paid Dust features (meaning it's either a
+ * `isUpgraded` returns true if the plan has access to paid Ruby features (meaning it's either a
  * paid plan or a free plan with upgraded access, such as friends and family or a free trial).
  * Plan-specific entitlements such as large-model access must use their dedicated checks instead.
  *
@@ -159,10 +159,10 @@ export const isUpgraded = (plan: PlanType | null): boolean => {
   return ![FREE_TEST_PLAN_CODE, FREE_NO_PLAN_CODE].includes(plan.code);
 };
 
-export function isEnterpriseOrDust(plan: PlanType | null): boolean {
+export function isEnterpriseOrRuby(plan: PlanType | null): boolean {
   return (
     plan !== null &&
-    (isEnterprisePlanPrefix(plan.code) || isDustCompanyPlan(plan.code))
+    (isEnterprisePlanPrefix(plan.code) || isRubyCompanyPlan(plan.code))
   );
 }
 

@@ -7,7 +7,7 @@ import {
 import { MCPServerDetailsSheet } from "@app/components/actions/mcp/MCPServerDetailsSheet";
 import { ConfirmContext } from "@app/components/Confirm";
 import { useSensitivityLabelsController } from "@app/components/shared/labels/useSensitivityLabelsController";
-import { FormProvider } from "@app/components/sparkle/FormProvider";
+import { FormProvider } from "@app/components/ui/FormProvider";
 import { useSendNotification } from "@app/hooks/useNotification";
 import {
   getMcpServerViewDisplayName,
@@ -29,7 +29,7 @@ import { getAgentBuilderRoute } from "@app/lib/utils/router";
 import datadogLogger from "@app/logger/datadogLogger";
 import type { WorkspaceType } from "@app/types/user";
 import { isAdmin } from "@app/types/user";
-import { Avatar, buttonVariants, Icon, LinkExternal01 } from "@dust-tt/sparkle";
+import { Avatar, buttonVariants, Icon, LinkExternal01 } from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useMemo } from "react";
 import { useForm } from "react-hook-form";

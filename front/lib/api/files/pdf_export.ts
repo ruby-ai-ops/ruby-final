@@ -3,7 +3,7 @@ import { PDF_FOOTER_HTML } from "@app/lib/api/files/pdf_footer";
 import { generateVizAccessToken } from "@app/lib/api/viz/access_tokens";
 import type { Authenticator } from "@app/lib/auth";
 import {
-  isDustCompanyPlan,
+  isRubyCompanyPlan,
   isEnterprisePlanPrefix,
   isFriendsAndFamilyPlan,
 } from "@app/lib/plans/plan_codes";
@@ -113,7 +113,7 @@ export async function exportInteractiveContentFileAsPdf(
   const plan = auth.plan();
   const shouldHideFooter =
     plan &&
-    (isDustCompanyPlan(plan.code) ||
+    (isRubyCompanyPlan(plan.code) ||
       isEnterprisePlanPrefix(plan.code) ||
       isFriendsAndFamilyPlan(plan.code));
   const showFooter = !shouldHideFooter;

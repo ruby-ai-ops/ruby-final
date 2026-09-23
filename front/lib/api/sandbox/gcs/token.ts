@@ -139,7 +139,7 @@ export async function mintDownscopedGcsToken({
   });
 }
 
-// Custom role created in dust-infra with only storage.buckets.get.
+// Custom role created in ruby-infra with only storage.buckets.get.
 // No predefined role grants buckets.get without also granting objects.list, and CAB does not
 // support specifying individual permissions, only roles.
 const SANDBOX_STORAGE_MOUNT_ROLE_ID = "sandbox_storage_mount";

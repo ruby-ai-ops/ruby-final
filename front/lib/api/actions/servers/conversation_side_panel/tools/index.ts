@@ -9,12 +9,12 @@ import {
   SET_FILES_SIDE_PANEL_TOOL_NAME,
 } from "@app/lib/api/actions/servers/conversation_side_panel/metadata";
 import { buildInteractiveContentFileNotification } from "@app/lib/api/actions/servers/interactive_content/helpers";
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import { fetchLinkedFileResource } from "@app/lib/api/files/file_system_ops";
 import { FileResource } from "@app/lib/resources/file_resource";
 import { getFileDisplayName, isFrameContentType } from "@app/types/files";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 function buildFilesSidePanelControlNotification(
   progressToken: string | number,
@@ -69,7 +69,7 @@ const handlers: ToolHandlers<typeof CONVERSATION_SIDE_PANEL_TOOLS_METADATA> = {
       const pathWithoutMountPrefix = path.startsWith("/files/")
         ? path.slice("/files/".length)
         : path;
-      const scopedPath = DustFileSystem.normalizeScopedPath(
+      const scopedPath = RubyFileSystem.normalizeScopedPath(
         pathWithoutMountPrefix
       );
       if (!scopedPath) {
@@ -78,7 +78,7 @@ const handlers: ToolHandlers<typeof CONVERSATION_SIDE_PANEL_TOOLS_METADATA> = {
         );
       }
 
-      const fsResult = await DustFileSystem.fromScopedPath(auth, scopedPath);
+      const fsResult = await RubyFileSystem.fromScopedPath(auth, scopedPath);
       if (fsResult.isErr()) {
         return new Err(
           new MCPError(fsResult.error.message, { tracked: false })

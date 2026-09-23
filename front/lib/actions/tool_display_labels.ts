@@ -1097,7 +1097,7 @@ function getDynamicToolDisplayLabels({
     case "openai_usage":
     case "productboard":
     case "common_utilities":
-    case "run_dust_app":
+    case "run_ruby_app":
     case "salesloft":
     case "servicenow":
     case "skill_authoring":
@@ -1113,7 +1113,7 @@ function getDynamicToolDisplayLabels({
     case "vanta":
     case "front":
     case "triggers_management":
-    case "poke":
+    case "admin":
     default:
       return null;
   }

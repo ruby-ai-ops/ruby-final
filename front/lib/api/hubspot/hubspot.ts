@@ -160,9 +160,9 @@ export async function submitToHubSpotPartnerForm(params: {
   addField("partner_ai_proficiency", formData.partner_ai_proficiency || "N/A");
 
   // Step 3 fields
-  addField("partner_dust_usage_duration", formData.partner_dust_usage_duration);
+  addField("partner_ruby_usage_duration", formData.partner_ruby_usage_duration);
   addField("partner_agent_example", formData.partner_agent_example);
-  addField("partner_dust_clients", formData.partner_dust_clients);
+  addField("partner_ruby_clients", formData.partner_ruby_clients);
   addField("any_existing_lead_to_share_", formData.any_existing_lead_to_share_);
   addField("partner_additionnal_details", formData.partner_additionnal_details);
   addField("partner_other_partnerhips", formData.partner_other_partnerhips);

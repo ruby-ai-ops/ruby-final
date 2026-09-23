@@ -30,7 +30,7 @@ import {
   LayerSingle,
   LayersThree01,
   LayersTwo01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 
 // Shared building blocks for the plan-selection pages (SelectSubscriptionPage
@@ -172,7 +172,7 @@ export function FreePlanCard({ onStartFree }: FreePlanCardProps) {
       credits={FREE_SEAT_LIFETIME_AWU_CREDITS.toLocaleString()}
       creditsLabel="credits"
       priceLabel="One-time · never expires"
-      features={["Credits never reset", "Full access to every Dust feature"]}
+      features={["Credits never reset", "Full access to every Ruby feature"]}
       footnote="One-time phone verification required"
       action={
         <Button
@@ -219,7 +219,7 @@ export function PaidPlanCards({
         credits={PRO_SEAT_MONTHLY_AWU_CREDITS.toLocaleString()}
         creditsLabel="credits/mo"
         priceLabel={`${getPriceAsString({ currency, priceInCents: proSeatCost * 100 })}/seat/mo · billed ${period}`}
-        features={["Refills every month", "Full access to every Dust feature"]}
+        features={["Refills every month", "Full access to every Ruby feature"]}
         action={
           <Button
             className="w-full"
@@ -243,7 +243,7 @@ export function PaidPlanCards({
         credits={MAX_SEAT_MONTHLY_AWU_CREDITS.toLocaleString()}
         creditsLabel="credits/mo"
         priceLabel={`${getPriceAsString({ currency, priceInCents: maxSeatCost * 100 })}/seat/mo · billed ${period}`}
-        features={["Refills every month", "Full access to every Dust feature"]}
+        features={["Refills every month", "Full access to every Ruby feature"]}
         action={
           <Button
             className="w-full"

@@ -15,7 +15,7 @@ import {
   CUSTOM_RESOURCE_ALLOWED,
   INTERNAL_ALLOWED_ICONS,
 } from "@app/types/resources_icon_names";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type {
   CallToolResult,
   Notification,
@@ -117,7 +117,7 @@ export function isToolGeneratedFilePath(
 //   - v1 (legacy): `gcsPath` held a raw GCS object name (e.g. `w/{wId}/conversations/...`).
 //     The rendering layer detects these by checking whether the value starts with `w/`.
 //   - v2 (current): `filePath` holds a canonical scoped path (e.g. `conversation-{cId}/photo.png`).
-//     Resolved via DustFileSystem.fromScopedPath at render time.
+//     Resolved via RubyFileSystem.fromScopedPath at render time.
 //
 // The schema accepts both shapes so old stored records continue to parse.
 
@@ -617,7 +617,7 @@ export const ExtractResultResourceSchema = z.object({
   text: z.string(),
 
   // File metadata
-  path: z.string().optional(), // scoped DustFileSystem path (new records)
+  path: z.string().optional(), // scoped RubyFileSystem path (new records)
   fileId: z.string().optional(), // legacy FileResource sId (old records)
   title: z.string(),
   contentType: z.string(),
@@ -691,7 +691,7 @@ export type RenderedWarehouseNodeType = z.infer<
 >;
 
 export const WAREHOUSES_BROWSE_MIME_TYPE =
-  "application/vnd.dust.tool-output.data-warehouses-browse";
+  "application/vnd.ruby.tool-output.data-warehouses-browse";
 
 const WarehousesBrowseSchema = z.object({
   mimeType: z.literal(WAREHOUSES_BROWSE_MIME_TYPE),
@@ -1087,7 +1087,7 @@ export const isAgentPauseOutputResourceType = (
 // Outlook mail folder list tool output.
 
 export const OUTLOOK_MAIL_FOLDER_LIST_MIME_TYPE =
-  "application/vnd.dust.tool-output.outlook-mail-folder-list" as const;
+  "application/vnd.ruby.tool-output.outlook-mail-folder-list" as const;
 
 const OutlookFolderItemSchema = z.object({
   name: z.string(),
@@ -1123,7 +1123,7 @@ export const isOutlookMailFolderListResource = (
 // Clari Copilot tool outputs.
 
 export const CLARI_CALL_LIST_MIME_TYPE =
-  "application/vnd.dust.tool-output.clari-call-list" as const;
+  "application/vnd.ruby.tool-output.clari-call-list" as const;
 
 const ClariCallListResourceSchema = z.object({
   mimeType: z.literal(CLARI_CALL_LIST_MIME_TYPE),
@@ -1153,7 +1153,7 @@ export const isClariCallListResource = (
 };
 
 export const CLARI_CALL_DETAILS_MIME_TYPE =
-  "application/vnd.dust.tool-output.clari-call-details" as const;
+  "application/vnd.ruby.tool-output.clari-call-details" as const;
 
 const ClariCallDetailsResourceSchema = z.object({
   mimeType: z.literal(CLARI_CALL_DETAILS_MIME_TYPE),

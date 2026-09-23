@@ -2,7 +2,7 @@
 
 import { H2 } from "@marketing/components/home/ContentComponents";
 import { ResourceAvatar } from "@marketing/components/resources/resources_icons";
-import { ArrowRight, getPlatformLogo, PuzzlePiece01 } from "@dust-tt/sparkle";
+import { ArrowRight, getPlatformLogo, PuzzlePiece01 } from "@ruby-ai/ui";
 import Link from "next/link";
 
 import type { IntegrationBase } from "../types";

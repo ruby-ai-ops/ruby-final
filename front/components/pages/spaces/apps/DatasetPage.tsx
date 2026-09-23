@@ -10,7 +10,7 @@ import { useApp } from "@app/lib/swr/apps";
 import { useDataset } from "@app/lib/swr/datasets";
 import { useWorkspacePermissions } from "@app/lib/swr/permissions";
 import type { DatasetSchema, DatasetType } from "@app/types/dataset";
-import { Button, Spinner } from "@dust-tt/sparkle";
+import { Button, Spinner } from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 export function DatasetPage() {
@@ -20,7 +20,7 @@ export function DatasetPage() {
   const name = useRequiredPathParam("name");
   const owner = useWorkspace();
   const { hasPermission } = useWorkspacePermissions();
-  const readOnly = !hasPermission("admin", "dust_app");
+  const readOnly = !hasPermission("admin", "ruby_app");
 
   const { app, isAppLoading } = useApp({
     workspaceId: owner.sId,

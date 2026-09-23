@@ -275,7 +275,7 @@ const MAX_RETRY_AFTER_DELAY = 300_000; // 5 minutes
 // If Confluence indicates that we are approaching the rate limit, we delay by this value.
 const NEAR_RATE_LIMIT_DELAY = 60_000; // 1 minute
 
-// Space types that we support indexing in Dust.
+// Space types that we support indexing in Ruby.
 export const CONFLUENCE_SUPPORTED_SPACE_TYPES = [
   "global",
   "collaboration",

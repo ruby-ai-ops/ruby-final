@@ -5,7 +5,7 @@ import {
   CloudArrowLeftRight,
   ContentMessage,
   GithubLogo,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface ConnectWorkspaceGitHubMessageProps {
   owner: LightWorkspaceType;

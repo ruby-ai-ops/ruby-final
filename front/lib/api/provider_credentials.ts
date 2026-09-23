@@ -19,27 +19,27 @@ export const MISSING_EMBEDDING_API_KEY_ERROR_MESSAGE =
 const env = (key: string) =>
   EnvironmentConfig.getOptionalEnvVariable(key) ?? "";
 
-function dustManagedByokProviderKeys(): Record<ProviderCredentialKey, string> {
+function rubyManagedByokProviderKeys(): Record<ProviderCredentialKey, string> {
   return {
-    ANTHROPIC_API_KEY: env("DUST_MANAGED_ANTHROPIC_API_KEY"),
-    OPENAI_API_KEY: env("DUST_MANAGED_OPENAI_API_KEY"),
-    GOOGLE_AI_STUDIO_API_KEY: env("DUST_MANAGED_GOOGLE_AI_STUDIO_API_KEY"),
+    ANTHROPIC_API_KEY: env("RUBY_MANAGED_ANTHROPIC_API_KEY"),
+    OPENAI_API_KEY: env("RUBY_MANAGED_OPENAI_API_KEY"),
+    GOOGLE_AI_STUDIO_API_KEY: env("RUBY_MANAGED_GOOGLE_AI_STUDIO_API_KEY"),
   };
 }
 
-function dustManagedOtherProviderKeys() {
+function rubyManagedOtherProviderKeys() {
   return {
-    // Vertex authenticates with a Dust service account scoped to this project, so the project id
-    // is itself a Dust-managed credential and must never reach a BYOK workspace.
+    // Vertex authenticates with a Ruby service account scoped to this project, so the project id
+    // is itself a Ruby-managed credential and must never reach a BYOK workspace.
     AGENT_PLATFORM_PROJECT_ID: config.getVertexAiProjectId(),
-    AZURE_OPENAI_API_KEY: env("DUST_MANAGED_AZURE_OPENAI_API_KEY"),
-    AZURE_OPENAI_ENDPOINT: env("DUST_MANAGED_AZURE_OPENAI_ENDPOINT"),
-    MISTRAL_API_KEY: env("DUST_MANAGED_MISTRAL_API_KEY"),
-    TEXTSYNTH_API_KEY: env("DUST_MANAGED_TEXTSYNTH_API_KEY"),
-    GOOGLE_AI_STUDIO_API_KEY: env("DUST_MANAGED_GOOGLE_AI_STUDIO_API_KEY"),
-    DEEPSEEK_API_KEY: env("DUST_MANAGED_DEEPSEEK_API_KEY"),
-    FIREWORKS_API_KEY: env("DUST_MANAGED_FIREWORKS_API_KEY"),
-    XAI_API_KEY: env("DUST_MANAGED_XAI_API_KEY"),
+    AZURE_OPENAI_API_KEY: env("RUBY_MANAGED_AZURE_OPENAI_API_KEY"),
+    AZURE_OPENAI_ENDPOINT: env("RUBY_MANAGED_AZURE_OPENAI_ENDPOINT"),
+    MISTRAL_API_KEY: env("RUBY_MANAGED_MISTRAL_API_KEY"),
+    TEXTSYNTH_API_KEY: env("RUBY_MANAGED_TEXTSYNTH_API_KEY"),
+    GOOGLE_AI_STUDIO_API_KEY: env("RUBY_MANAGED_GOOGLE_AI_STUDIO_API_KEY"),
+    DEEPSEEK_API_KEY: env("RUBY_MANAGED_DEEPSEEK_API_KEY"),
+    FIREWORKS_API_KEY: env("RUBY_MANAGED_FIREWORKS_API_KEY"),
+    XAI_API_KEY: env("RUBY_MANAGED_XAI_API_KEY"),
   };
 }
 
@@ -49,32 +49,32 @@ function baseCredentialVariables() {
   return {
     OPENAI_USE_EU_ENDPOINT:
       config.getRegion() === "europe-west1" ? "true" : "false",
-    OPENAI_BASE_URL: env("DUST_MANAGED_OPENAI_BASE_URL"),
+    OPENAI_BASE_URL: env("RUBY_MANAGED_OPENAI_BASE_URL"),
   };
 }
 
 /**
- * The Dust-managed keys, resolved from the environment alone.
+ * The Ruby-managed keys, resolved from the environment alone.
  *
  * This is what a non-BYOK workspace gets, factored out so callers that have no
  * `Authenticator` at all -- the model health probe running in a Temporal worker
- * -- can reach Dust's own credentials without inventing a workspace.
+ * -- can reach Ruby's own credentials without inventing a workspace.
  *
  * Dangerous because it answers for no workspace: it skips `plan.isByok`, so a
- * BYOK workspace's inference would run on Dust's keys, in Dust's provider
+ * BYOK workspace's inference would run on Ruby's keys, in Ruby's provider
  * accounts. If you hold an `Authenticator`, call `getLlmCredentials(auth)`.
  */
-export function dangerouslyGetDustManagedLlmCredentials(): LLMCredentialsType {
+export function dangerouslyGetRubyManagedLlmCredentials(): LLMCredentialsType {
   return {
     ...baseCredentialVariables(),
-    ...dustManagedOtherProviderKeys(),
-    ...dustManagedByokProviderKeys(),
+    ...rubyManagedOtherProviderKeys(),
+    ...rubyManagedByokProviderKeys(),
   };
 }
 
 /**
  * Whether `getLlmCredentials(auth)` answers with credentials the workspace provided rather than
- * Dust's. Recorded per usage row on `run_usages.useWorkspaceCredentials`, so billed usage can be
+ * Ruby's. Recorded per usage row on `run_usages.useWorkspaceCredentials`, so billed usage can be
  * traced back to whose provider account paid for it.
  */
 export function usesWorkspaceProvidedCredentials(auth: Authenticator): boolean {
@@ -84,11 +84,11 @@ export function usesWorkspaceProvidedCredentials(auth: Authenticator): boolean {
 /**
  * Returns LLM credentials for the workspace.
  *
- * - Non-BYOK workspaces: returns Dust-managed keys from environment variables.
+ * - Non-BYOK workspaces: returns Ruby-managed keys from environment variables.
  * - BYOK workspaces: resolves customer-provided keys from OAuth credentials, with no fallback on
- *   Dust-managed keys.
+ *   Ruby-managed keys.
  *
- * `OPENAI_EMBEDDING_API_KEY` is set separately from `OPENAI_API_KEY` so Dust apps
+ * `OPENAI_EMBEDDING_API_KEY` is set separately from `OPENAI_API_KEY` so Ruby apps
  * don't accidentally use the customer's LLM key for embeddings.
  *
  * By default, BYOK workspaces must have `OPENAI_EMBEDDING_API_KEY` configured
@@ -100,10 +100,10 @@ export function usesWorkspaceProvidedCredentials(auth: Authenticator): boolean {
  * @cc [owner:pmilliotte,label:security;product] byok-credentials-are-customer-owned
  * For a workspace whose plan has `isByok`, every provider credential in the returned object MUST
  * come from the keys that workspace configured (`ProviderCredentialResource`), and the object MUST
- * carry `DUST_BYOK: "true"` so downstream consumers can refuse a Dust-managed substitute.
+ * carry `RUBY_BYOK: "true"` so downstream consumers can refuse a Ruby-managed substitute.
  *
- * Nothing that authenticates to a provider may be read from Dust's environment into it: no API key,
- * and no identifier Dust's own service account authenticates against such as
+ * Nothing that authenticates to a provider may be read from Ruby's environment into it: no API key,
+ * and no identifier Ruby's own service account authenticates against such as
  * `AGENT_PLATFORM_PROJECT_ID`. Routing configuration that carries no identity -- the
  * `baseCredentialVariables()` endpoint selectors -- is allowed, since it decides which host the
  * customer's own key is presented to.
@@ -117,7 +117,7 @@ export async function getLlmCredentials(
   const plan = auth.getNonNullablePlan();
 
   if (!plan.isByok) {
-    return dangerouslyGetDustManagedLlmCredentials();
+    return dangerouslyGetRubyManagedLlmCredentials();
   }
 
   const providerCredentials =
@@ -139,7 +139,7 @@ export async function getLlmCredentials(
 
   return {
     ...baseCredentialVariables(),
-    DUST_BYOK: "true",
+    RUBY_BYOK: "true",
     ...credentials,
   };
 }

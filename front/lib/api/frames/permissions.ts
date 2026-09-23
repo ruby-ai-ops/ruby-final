@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import type { Authenticator } from "@app/lib/auth";
 import type { FileResource } from "@app/lib/resources/file_resource";
 
@@ -23,7 +23,7 @@ export async function canWriteFrameV2Source(
     return false;
   }
 
-  const fileSystemResult = await DustFileSystem.fromScopedPath(
+  const fileSystemResult = await RubyFileSystem.fromScopedPath(
     auth,
     sourcePath
   );

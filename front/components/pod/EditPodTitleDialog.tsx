@@ -13,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
   Input,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useCallback, useEffect, useRef, useState } from "react";
 

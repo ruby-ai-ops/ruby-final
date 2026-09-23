@@ -1,6 +1,6 @@
 import { SUPPORTED_REGIONS } from "@app/types/region";
 
-// Cells are standalone deployments of a whole Dust environment.
+// Cells are standalone deployments of a whole Ruby environment.
 export const SUPPORTED_CELLS = [
   "cell-00000",
   "cell-00001",

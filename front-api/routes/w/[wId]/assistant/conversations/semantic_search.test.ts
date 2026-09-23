@@ -115,7 +115,7 @@ async function setupDataSourceMocks(
   vi.spyOn(ConnectorsAPI.prototype, "createConnector").mockResolvedValue(
     new Ok({
       id: mockConnectorId,
-      type: "dust_project",
+      type: "ruby_project",
       workspaceId: workspace.sId,
       dataSourceId: "test-data-source-id",
       connectionId: "test-space-id",
@@ -128,7 +128,7 @@ async function setupDataSourceMocks(
   vi.spyOn(ConnectorsAPI.prototype, "getConnector").mockResolvedValue(
     new Ok({
       id: mockConnectorId,
-      type: "dust_project",
+      type: "ruby_project",
       workspaceId: workspace.sId,
       dataSourceId: "test-data-source-id",
       connectionId: "test-space-id",
@@ -290,17 +290,17 @@ describe("GET /api/w/:wId/assistant/conversations/semantic_search", () => {
       await createDataSourceAndConnectorForProject(auth, projectSpace);
 
       const conv1 = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: projectSpace.id,
       });
       const conv2 = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: projectSpace.id,
       });
       const conv3 = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: projectSpace.id,
       });
@@ -350,12 +350,12 @@ describe("GET /api/w/:wId/assistant/conversations/semantic_search", () => {
       await createDataSourceAndConnectorForProject(auth, projectSpace);
 
       const rootConv = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: projectSpace.id,
       });
       const subConv = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: projectSpace.id,
         depth: 1,
@@ -403,12 +403,12 @@ describe("GET /api/w/:wId/assistant/conversations/semantic_search", () => {
       await createDataSourceAndConnectorForProject(auth, projectSpace);
 
       const conv1 = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: projectSpace.id,
       });
       const conv2 = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: projectSpace.id,
       });
@@ -503,12 +503,12 @@ describe("GET /api/w/:wId/assistant/conversations/semantic_search", () => {
       await createDataSourceAndConnectorForProject(auth, projectSpace2);
 
       const conv1 = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: projectSpace1.id,
       });
       const conv2 = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: projectSpace2.id,
       });
@@ -593,7 +593,7 @@ describe("GET /api/w/:wId/assistant/conversations/semantic_search", () => {
       await createDataSourceAndConnectorForProject(auth, projectSpace);
 
       const conv1 = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: projectSpace.id,
       });
@@ -655,7 +655,7 @@ describe("GET /api/w/:wId/assistant/conversations/semantic_search", () => {
       await createDataSourceAndConnectorForProject(auth, permittedSpace);
 
       const conv1 = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: permittedSpace.id,
       });
@@ -690,7 +690,7 @@ describe("GET /api/w/:wId/assistant/conversations/semantic_search", () => {
       );
 
       const conv2 = await ConversationFactory.create(unpermittedAdminUserAuth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: unpermittedSpace.id,
       });
@@ -740,7 +740,7 @@ describe("GET /api/w/:wId/assistant/conversations/semantic_search", () => {
       await createDataSourceAndConnectorForProject(auth, memberSpace);
 
       const conv1 = await ConversationFactory.create(auth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: memberSpace.id,
       });
@@ -770,7 +770,7 @@ describe("GET /api/w/:wId/assistant/conversations/semantic_search", () => {
       );
 
       const conv2 = await ConversationFactory.create(otherAdminUserAuth, {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
         messagesCreatedAt: [new Date()],
         spaceId: nonMemberSpace.id,
       });

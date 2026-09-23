@@ -2,17 +2,17 @@
 
 Fetch workspace skills, turn each into a text containing its name, description,
 instructions, and enabled tools, embed it, and open an interactive 2D PCA report.
-Everything lives in this directory; no application changes or running Dust services
+Everything lives in this directory; no application changes or running Ruby services
 are required.
 
-Run from a Dust checkout with its usual Node dependencies installed. The local
+Run from a Ruby checkout with its usual Node dependencies installed. The local
 `package.json` records the additional libraries used, which are already present in
-the repository's dependency tree. Use the normal dust-hive dependency workflow in
+the repository's dependency tree. Use the normal ruby-hive dependency workflow in
 a hive; this script does not require installing another environment.
 
 ## Run
 
-Set `DUST_API_KEY` and `OPENAI_EMBEDDING_API_KEY` (`OPENAI_API_KEY` also works), then:
+Set `RUBY_API_KEY` and `OPENAI_EMBEDDING_API_KEY` (`OPENAI_API_KEY` also works), then:
 
 ```sh
 node --import tsx x/aubin/skill-embeddings/cli.ts \
@@ -36,7 +36,7 @@ matching **custom** skills in one response. Built-in/global skills are not expos
 by this public endpoint. By default this means active, published skills. Use
 `--include-unpublished` with an admin API key to include editor-only skills, or
 `--status archived` / `--status suggested` for a separate experiment. Set
-`--dust-url https://YOUR_DUST_REGION_HOST` to the origin for your workspace's region.
+`--ruby-url https://YOUR_RUBY_REGION_HOST` to the origin for your workspace's region.
 If instructions are redacted because the key cannot read a skill's space, the
 script stops instead of embedding incomplete data.
 

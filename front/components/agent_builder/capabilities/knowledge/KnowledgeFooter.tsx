@@ -7,7 +7,7 @@ import {
   getSpaceNameFromTreeItem,
   getVisualForTreeItem,
 } from "@app/components/data_source_view/context/utils";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useNodePath } from "@app/hooks/useNodePath";
 import { getDataSourceNameFromView } from "@app/lib/data_sources";
 import type { DataSourceViewContentNode } from "@app/types/data_source_view";
@@ -22,7 +22,7 @@ import {
   Icon,
   LoadingBlock,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 function KnowledgeFooterItemReadablePath({

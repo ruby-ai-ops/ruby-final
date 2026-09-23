@@ -19,7 +19,7 @@ import {
 } from "@app/components/assistant/conversation/utils";
 import { InfiniteScroll } from "@app/components/InfiniteScroll";
 import { ImportSkillsDialog } from "@app/components/skills/import/ImportSkillsDialog";
-import { SidebarContext } from "@app/components/sparkle/SidebarContext";
+import { SidebarContext } from "@app/components/ui/SidebarContext";
 import {
   useConversations,
   usePodConversationsSummary,
@@ -106,7 +106,7 @@ import {
   XClose,
   Zap,
   ZapOff,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   memo,
@@ -1565,7 +1565,7 @@ const ConversationListItem = memo(
         e.dataTransfer.setData("text/plain", conversation.sId);
         // Add a custom data type to identify conversation drags
         e.dataTransfer.setData(
-          "application/x-dust-conversation",
+          "application/x-ruby-conversation",
           conversation.sId
         );
         // Store the full conversation object as JSON for the drop handler

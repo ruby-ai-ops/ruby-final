@@ -4,7 +4,7 @@ import {
   getInternalMCPServerIconByName,
   getInternalMCPServerToolIcon,
 } from "@app/lib/actions/mcp_internal_actions/constants";
-import { ShapesPlus } from "@dust-tt/sparkle";
+import { ShapesPlus } from "@ruby-ai/ui";
 import type React from "react";
 
 export function getCollapseAnimationStyle(

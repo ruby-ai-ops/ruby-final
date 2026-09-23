@@ -1,13 +1,17 @@
 @import "./fonts.css";
 
-/* Preflight, the Tailwind theme, and sparkle's theme are already emitted by the
-   unified build (components.css → @dust-tt/sparkle/styles/tailwind.css, imported
+/* Preflight, the Tailwind theme, and ui's theme are already emitted by the
+   unified build (components.css → @ruby-ai/ui/styles/tailwind.css, imported
    alongside this file in _app.tsx). Pulling them in here too would ship a second
    copy of preflight and the default-theme :root block. Reference them instead:
    `@reference` gives this entry the theme context it needs to resolve `@apply`
    (h-full, bg-panel-background) without emitting any bytes. */
 @reference "tailwindcss";
-@reference "@dust-tt/sparkle/styles/theme.css";
+@reference "@ruby-ai/ui/styles/theme.css";
+
+:root {
+  --font-display: "RubySerif", "Sohne", Geist, sans-serif;
+}
 
 @layer base {
   /* v4 changed border-color default from gray-200 to currentColor.
@@ -20,24 +24,159 @@
 
   html {
     touch-action: manipulation;
-    /* Geist ships contextual alternates; keep them off. `rlig` is on by default. */
-    font-variant-ligatures: no-contextual;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 0;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-synthesis: none;
+    font-synthesis: weight style;
     interpolate-size: allow-keywords;
   }
 
   @supports (font-synthesis-weight: none) {
     html {
-      font-synthesis: initial;
-      font-synthesis-weight: none;
+      font-synthesis: weight style;
+      font-synthesis-weight: auto;
     }
+  }
+
+  body {
+    font-weight: 500;
   }
 }
 
-/* Token values are intentionally UNLAYERED (like sparkle's tokens.css), not in
+:is(h1, h2, h3, h4, h5, h6):not(.font-mono) {
+  font-family: var(--font-display);
+  letter-spacing: -0.05em;
+  font-weight: 300;
+}
+
+:is(h1, h2, h3, h4, h5, h6):is(.font-mono, [class*="heading-mono-"]) {
+  font-family: var(--font-display);
+  letter-spacing: -0.05em;
+  font-weight: 300;
+}
+
+/* Explicitly branded marketing titles may still use a legacy `mono` heading
+   size token. Keep the token's sizing, but let the approved display treatment
+   win over its inherited font-family. */
+.title-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.05em;
+  font-weight: 300;
+}
+
+/* Shared marketing card surfaces reuse the home hero's radial base and color
+   fields while scaling the blob geometry to each surface. */
+.marketing-card-dark-gradient {
+  background: radial-gradient(
+    circle at 50% 30%,
+    #ffffff 0%,
+    #ebf2ff 50%,
+    #ffffff 80%
+  );
+}
+
+.marketing-gradient-surface {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.marketing-gradient-surface-card {
+  --marketing-gradient-blob-blur: 40px;
+  --marketing-gradient-blob-drift-x: 16px;
+  --marketing-gradient-blob-drift-y: -12px;
+  position: relative;
+}
+
+.marketing-gradient-surface-hero {
+  --marketing-gradient-blob-blur: 80px;
+  --marketing-gradient-blob-drift-x: 40px;
+  --marketing-gradient-blob-drift-y: -30px;
+  position: absolute;
+  top: -96px;
+}
+
+.marketing-gradient-blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(var(--marketing-gradient-blob-blur));
+  animation: marketing-gradient-float 15s infinite alternate ease-in-out;
+  will-change: transform;
+}
+
+.marketing-gradient-blob-blue {
+  width: 55vw;
+  height: 55vw;
+  top: -10%;
+  left: -15%;
+  background: hsla(215, 100%, 90%, 0.5);
+}
+
+.marketing-gradient-blob-cyan {
+  width: 65vw;
+  height: 65vw;
+  right: -15%;
+  bottom: -25%;
+  background: hsla(180, 100%, 90%, 0.4);
+  animation-delay: -5s;
+}
+
+.marketing-gradient-blob-lilac {
+  width: 45vw;
+  height: 45vw;
+  top: 30%;
+  left: 30%;
+  background: hsla(270, 100%, 95%, 0.4);
+  animation-delay: -10s;
+}
+
+.marketing-gradient-surface-card .marketing-gradient-blob-blue {
+  width: 55%;
+  height: 55%;
+}
+
+.marketing-gradient-surface-card .marketing-gradient-blob-cyan {
+  width: 65%;
+  height: 65%;
+}
+
+.marketing-gradient-surface-card .marketing-gradient-blob-lilac {
+  width: 45%;
+  height: 45%;
+}
+
+.home-hero-gradient-fade {
+  background: linear-gradient(
+    to top,
+    #ffffff 0%,
+    rgb(255 255 255 / 0%) 100%
+  );
+}
+
+@keyframes marketing-gradient-float {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(
+      var(--marketing-gradient-blob-drift-x),
+      var(--marketing-gradient-blob-drift-y),
+      0
+    ) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marketing-gradient-blob {
+    animation: none;
+  }
+}
+
+/* Token values are intentionally UNLAYERED (like ui's tokens.css), not in
    `@layer base`. The `border-darker` utility is registered via a self-referential
    `@theme inline { --color-border-darker: var(--color-border-darker) }` in
    theme-extras.css, which emits a circular placeholder into the `theme` layer.
@@ -80,13 +219,136 @@ main {
 body {
   overflow-x: hidden;
   overscroll-behavior: none;
-  /* Pages rely on the browser's default canvas otherwise — gray or black in
-     dark-mode/embedded viewers. Paint the theme background explicitly. */
-  @apply bg-background;
+}
+
+/* The marketing canvas is designed to read best at a slightly denser desktop
+   scale. Use the root type scale instead of browser zoom so full-bleed sections
+   keep their viewport geometry and responsive boundaries. */
+@media (min-width: 1024px) {
+  html {
+    font-size: 110%;
+  }
 }
 
 #__next {
   @apply h-full;
+}
+
+/* Keep the public marketing treatment for white outline buttons independent
+   from the shared product button component. */
+#__next :is(button, a > span).border.border-border.bg-background {
+  border: 0;
+  box-shadow:
+    0 6px 16px -6px rgb(15 23 42 / 0.28),
+    0 2px 5px -2px rgb(15 23 42 / 0.14);
+  transition:
+    box-shadow 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+#__next :is(button, a > span).border.border-border.bg-background:hover {
+  box-shadow:
+    0 10px 24px -8px rgb(15 23 42 / 0.35),
+    0 3px 8px -2px rgb(15 23 42 / 0.16);
+}
+
+/* Marketing-only CTA motion. This targets RubyUI's action-button shape
+   without changing the shared product component or tab/navigation controls. */
+#__next
+  :is(button, a > span).inline-flex.items-center.justify-center:not(:disabled) {
+  transition-property: transform, background-color, border-color, color,
+    box-shadow;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+
+#__next
+  :is(button, a > span).inline-flex.items-center.justify-center:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+
+#__next
+  :is(button, a > span).inline-flex.items-center.justify-center:not(:disabled):active {
+  transform: translateY(0);
+}
+
+#__next :is(button, a > span).bg-primary-800:hover {
+  background-color: var(--color-primary-800);
+}
+
+/* The public homepage uses one restrained hover rhythm without changing
+   RubyUI or interaction timing on other marketing routes. */
+#__next .home-marketing-page :is(a, button) {
+  transition-duration: 280ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#__next
+  .home-marketing-page
+  [class*="transition-"]:not(.home-feature-video):not(
+    .home-integration-bubble
+  ) {
+  transition-duration: 280ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#__next
+  .home-marketing-page
+  :is(button, a > span).inline-flex.items-center.justify-center:not(:disabled),
+#__next
+  .home-marketing-page
+  :is(button, a > span).border.border-border.bg-background {
+  transition-duration: 280ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #__next :is(button, a > span).inline-flex.items-center.justify-center {
+    transform: none;
+    transition-property: background-color, border-color, color, box-shadow;
+  }
+
+  #__next
+    .home-marketing-page
+    :is(a, button, .home-marketing-hover-surface) {
+    transform: none;
+  }
+}
+
+.footer-navigation__art {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  width: min(72%, 820px);
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  opacity: 1;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(0 0 0 / 0.04) 22%,
+    rgb(0 0 0 / 0.48) 58%,
+    rgb(0 0 0 / 0.9) 82%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(0 0 0 / 0.04) 22%,
+    rgb(0 0 0 / 0.48) 58%,
+    rgb(0 0 0 / 0.9) 82%,
+    #000 100%
+  );
+}
+
+.footer-navigation__art-image {
+  transform: translate(72px, 14px) scale(1.08);
+  transform-origin: center center;
+  object-fit: cover;
+  object-position: 78% 30%;
 }
 
 .loading-dots::after {

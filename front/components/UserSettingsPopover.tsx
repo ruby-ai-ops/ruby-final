@@ -9,14 +9,14 @@ import {
   SoundNotificationPreferences,
   useSoundNotificationPreferencesForm,
 } from "@app/components/me/SoundNotificationPreferences";
-import type { ConversationFont } from "@app/components/sparkle/ConversationFontContext";
+import type { ConversationFont } from "@app/components/ui/ConversationFontContext";
 import {
   CONVERSATION_FONT_LABELS,
   CONVERSATION_FONTS,
   useConversationFont,
-} from "@app/components/sparkle/ConversationFontContext";
-import { FormProvider } from "@app/components/sparkle/FormProvider";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+} from "@app/components/ui/ConversationFontContext";
+import { FormProvider } from "@app/components/ui/FormProvider";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useAgentsSectionVisibility } from "@app/hooks/useAgentsSectionVisibility";
 import { useFileUploaderService } from "@app/hooks/useFileUploaderService";
 import { useIsMac } from "@app/hooks/useKeyboardShortcutLabel";
@@ -46,7 +46,7 @@ import {
   ANONYMOUS_USER_IMAGE_URL,
   areConversationExternalNotificationsEnabled,
 } from "@app/types/user";
-import type { OptionTile } from "@dust-tt/sparkle";
+import type { OptionTile } from "@ruby-ai/ui";
 import {
   Avatar,
   Bell01,
@@ -82,7 +82,7 @@ import {
   TabsTrigger,
   User01,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -446,7 +446,7 @@ function CustomizationSection() {
   return (
     <SectionContent
       title="Customization"
-      description="Adjust how Dust looks and behaves for you."
+      description="Adjust how Ruby looks and behaves for you."
       footer={
         <Button
           label="Save"
@@ -460,7 +460,7 @@ function CustomizationSection() {
       <SettingsList className={MODAL_SETTINGS_LIST_CLASSES}>
         <SettingsList.Row
           title="Theme"
-          description="Choose how Dust looks on this device"
+          description="Choose how Ruby looks on this device"
           action={
             <OptionTileGroup
               ariaLabel="Theme"
@@ -577,7 +577,7 @@ function NotificationsSection({ owner }: { owner: WorkspaceType }) {
   return (
     <SectionContent
       title="Notifications"
-      description="Control how and when Dust notifies you"
+      description="Control how and when Ruby notifies you"
       footer={
         <Button
           label="Save"
@@ -731,7 +731,7 @@ function MemorySection({ owner }: { owner: WorkspaceType }) {
                 Enable Memory
               </span>
               <span className="copy-sm text-muted-foreground">
-                Dust builds a personal memory from your conversations and uses
+                Ruby builds a personal memory from your conversations and uses
                 it to tailor future responses.
               </span>
             </div>

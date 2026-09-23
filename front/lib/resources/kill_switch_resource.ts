@@ -1,4 +1,4 @@
-import type { KillSwitchType } from "@app/lib/poke/types";
+import type { KillSwitchType } from "@app/lib/admin/types";
 import { BaseResource } from "@app/lib/resources/base_resource";
 import { KillSwitchModel } from "@app/lib/resources/storage/models/kill_switches";
 import type { ReadonlyAttributesType } from "@app/lib/resources/storage/types";

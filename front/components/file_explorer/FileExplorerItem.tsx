@@ -17,7 +17,7 @@ import {
   getFileExplorerSearchResultTitle,
   getSingularFileCategoryLabelForContentType,
 } from "@app/components/file_explorer/utils";
-import { cn } from "@app/components/poke/shadcn/lib/utils";
+import { cn } from "@app/components/admin/shadcn/lib/utils";
 import { getConnectorProviderLogoWithFallback } from "@app/lib/connector_providers_ui";
 import { getFileTypeIcon } from "@app/lib/file_icon_utils";
 import type { FileSystemFileEntry } from "@app/types/api/file_system/types";
@@ -36,7 +36,7 @@ import {
   Icon,
   Spinner,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { intlFormatDistance } from "date-fns";
 import type React from "react";
 import { useState } from "react";
@@ -61,7 +61,7 @@ type FileExplorerItemProps = {
   | { kind: "thumbnail"; thumbnailSrc: string | null }
 );
 
-// TODO(2026-04-27 FILE SYSTEM): Candidate for Sparkle once the GCS file explorer pattern stabilises.
+// TODO(2026-04-27 FILE SYSTEM): Candidate for RubyUI once the GCS file explorer pattern stabilises.
 export function FileExplorerItem(props: FileExplorerItemProps) {
   const {
     containerClassName,

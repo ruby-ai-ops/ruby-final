@@ -42,7 +42,7 @@ function makeUser(sId: string, id: number): UserType {
     createdAt: 0,
     provider: "google",
     username: sId,
-    email: `${sId}@dust.tt`,
+    email: `${sId}@ruby.ad`,
     firstName: "Test",
     lastName: "User",
     fullName: "Test User",

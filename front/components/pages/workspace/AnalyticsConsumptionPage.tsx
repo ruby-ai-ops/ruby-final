@@ -60,7 +60,7 @@ import {
   Robot,
   SafeSuspense,
   safeLazy,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { domMax, LazyMotion, m, useReducedMotion } from "framer-motion";
 import type { ComponentType, ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";

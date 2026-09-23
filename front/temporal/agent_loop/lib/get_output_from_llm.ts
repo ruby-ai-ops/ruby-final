@@ -1,4 +1,4 @@
-import { isDustLikeAgent } from "@app/lib/api/assistant/global_agents/prompt_context";
+import { isRubyLikeAgent } from "@app/lib/api/assistant/global_agents/prompt_context";
 import type { CacheDiagnosticsKey } from "@app/lib/api/llm/cache_diagnostics";
 import {
   getPreviousMessageId,
@@ -94,7 +94,7 @@ function makeLLMTimeoutResponse(kind: LLMStreamTimeoutKind): GetOutputResponse {
           ? "The agent step hit its time budget before the model response completed"
           : `LLM stream timeout after ${LLM_EVENT_TIMEOUT_MINUTES} minutes waiting for event`,
       isRetryable: true,
-      errorSource: "dust",
+      errorSource: "ruby",
     },
   });
 }
@@ -582,7 +582,7 @@ export async function getOutputFromLLMStream(
           const reasonTags = [
             `model_id:${model.modelId}`,
             `reason:${cacheMissReason.type}`,
-            `is_dust_like_agent:${isDustLikeAgent(agentConfiguration.sId)}`,
+            `is_ruby_like_agent:${isRubyLikeAgent(agentConfiguration.sId)}`,
           ];
           // Count: how often each reason occurs.
           statsDMetrics.increment("llm.cache_miss_reason.count", 1, reasonTags);
@@ -654,7 +654,7 @@ export async function getOutputFromLLMStream(
       contents,
     },
     nativeChainOfThought,
-    dustRunId: llm.getTraceId(),
+    rubyRunId: llm.getTraceId(),
     timeToFirstEvent,
     stopReason,
   });

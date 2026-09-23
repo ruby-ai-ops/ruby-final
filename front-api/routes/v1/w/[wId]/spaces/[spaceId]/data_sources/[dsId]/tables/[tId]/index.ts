@@ -5,7 +5,7 @@ import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import logger from "@app/logger/logger";
 import { CoreAPI } from "@app/types/core/core_api";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import type { GetTableResponseType } from "@dust-tt/client";
+import type { GetTableResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsManager } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";
@@ -157,8 +157,8 @@ app.get(
 
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const tableRes = await coreAPI.getTable({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       tableId: tId,
     });
     if (tableRes.isErr()) {

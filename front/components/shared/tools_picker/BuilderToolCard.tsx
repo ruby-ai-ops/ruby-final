@@ -1,7 +1,7 @@
 import type { BuilderAction } from "@app/components/shared/tools_picker/types";
 import { useActionDisplay } from "@app/components/shared/tools_picker/useActionDisplay";
-import type { ActionCardDiffStatus } from "@dust-tt/sparkle";
-import { ActionCard } from "@dust-tt/sparkle";
+import type { ActionCardDiffStatus } from "@ruby-ai/ui";
+import { ActionCard } from "@ruby-ai/ui";
 
 interface BuilderToolCardProps {
   action: BuilderAction;

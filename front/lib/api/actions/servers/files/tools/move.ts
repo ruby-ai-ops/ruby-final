@@ -5,7 +5,7 @@ import type {
   ToolHandlerResult,
 } from "@app/lib/actions/mcp_internal_actions/tool_definition";
 import {
-  getDustFileSystemForAgentLoop,
+  getRubyFileSystemForAgentLoop,
   requireAgentLoopConversation,
   scopedPathsFromArgs,
 } from "@app/lib/api/actions/servers/files/tools/agent_loop_fs";
@@ -16,7 +16,7 @@ import {
   stripMimeParameters,
 } from "@app/types/files";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 export async function moveHandler(
   { source, dest }: { source: string; dest: string },
@@ -35,7 +35,7 @@ export async function moveHandler(
     );
   }
 
-  const fsResult = await getDustFileSystemForAgentLoop(
+  const fsResult = await getRubyFileSystemForAgentLoop(
     auth,
     conversationRes.value,
     scopedPathsFromArgs(source, dest)
@@ -43,9 +43,9 @@ export async function moveHandler(
   if (fsResult.isErr()) {
     return fsResult;
   }
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
-  const statResult = await dustFs.stat(source);
+  const statResult = await rubyFs.stat(source);
   if (statResult.isErr()) {
     const err = statResult.error;
     switch (err.code) {
@@ -73,7 +73,7 @@ export async function moveHandler(
   if (statResult.value) {
     mimeType = stripMimeParameters(statResult.value.contentType);
   } else {
-    const listResult = await dustFs.list(source, { maxFiles: 1 });
+    const listResult = await rubyFs.list(source, { maxFiles: 1 });
     if (listResult.isErr() || listResult.value.length === 0) {
       return new Err(
         new MCPError(`Source not found: \`${source}\`.`, { tracked: false })
@@ -81,7 +81,7 @@ export async function moveHandler(
     }
   }
 
-  const moveResult = await moveCanonicalFile(auth, dustFs, source, dest);
+  const moveResult = await moveCanonicalFile(auth, rubyFs, source, dest);
   if (moveResult.isErr()) {
     const err = moveResult.error;
     switch (err.code) {

@@ -151,7 +151,7 @@ const SUPPORTED_PAYMENT_METHODS = ["card", "sepa_debit"] as const;
 export const ENTERPRISE_N30_PAYMENTS_DAYS = 30;
 
 // We allow for 3 retries of invoices (not counting first payment)
-// before we give up, void the invoice and remove resources pending payment on Dust
+// before we give up, void the invoice and remove resources pending payment on Ruby
 // At the time of writing, this is only used for Credit Purchase self-serve flow
 export const MAX_PRO_INVOICE_ATTEMPTS_BEFORE_VOIDED = 3;
 
@@ -247,7 +247,7 @@ export const createStripeSubscriptionCheckoutSession = async ({
     custom_text: {
       terms_of_service_acceptance: {
         message:
-          "I have read and accept the [Master Services Agreement](https://dust-tt.notion.site/Master-Services-Agreement-2bdcf30156db4a40bcb20d27b0b1bd4e?pvs=4) and [Data Processing Addendum](https://dust-tt.notion.site/Data-Processing-Addendum-466528e861e34f08949428e06eecd5f4?pvs=4).",
+          "I have read and accept the [Master Services Agreement](https://ruby-ai.notion.site/Master-Services-Agreement-2bdcf30156db4a40bcb20d27b0b1bd4e?pvs=4) and [Data Processing Addendum](https://ruby-ai.notion.site/Data-Processing-Addendum-466528e861e34f08949428e06eecd5f4?pvs=4).",
       },
     },
   });
@@ -342,7 +342,7 @@ export const createEmbeddedMetronomeSetupCheckoutSession = async ({
     custom_text: {
       terms_of_service_acceptance: {
         message:
-          "I have read and accept the [Master Services Agreement](https://dust-tt.notion.site/Master-Services-Agreement-2bdcf30156db4a40bcb20d27b0b1bd4e?pvs=4) and [Data Processing Addendum](https://dust-tt.notion.site/Data-Processing-Addendum-466528e861e34f08949428e06eecd5f4?pvs=4).",
+          "I have read and accept the [Master Services Agreement](https://ruby-ai.notion.site/Master-Services-Agreement-2bdcf30156db4a40bcb20d27b0b1bd4e?pvs=4) and [Data Processing Addendum](https://ruby-ai.notion.site/Data-Processing-Addendum-466528e861e34f08949428e06eecd5f4?pvs=4).",
       },
     },
   });
@@ -834,7 +834,7 @@ export async function createStripeBusinessSubscription({
 }
 
 /**
- * Checks that a subscription created in Stripe is usable by Dust, returns an
+ * Checks that a subscription created in Stripe is usable by Ruby, returns an
  * error otherwise.
  */
 export function assertStripeSubscriptionIsValid(

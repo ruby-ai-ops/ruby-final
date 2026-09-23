@@ -13,7 +13,7 @@ import { useIsMobile } from "@app/lib/swr/useIsMobile";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
 import { FULL_SCREEN_HASH_PARAM } from "@app/types/conversation_side_panel";
 import type { LightWorkspaceType } from "@app/types/user";
-import { ResizableSidePanel } from "@dust-tt/sparkle";
+import { ResizableSidePanel } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import type { ImperativePanelHandle } from "react-resizable-panels";

@@ -1,5 +1,5 @@
 import type { LabsTranscriptsConfigurationType } from "@app/types/labs";
-import { Button, CloudArrowLeftRight, Page, XClose } from "@dust-tt/sparkle";
+import { Button, CloudArrowLeftRight, Page, XClose } from "@ruby-ai/ui";
 
 interface GongConnectionProps {
   transcriptsConfiguration: LabsTranscriptsConfigurationType | null;
@@ -50,7 +50,7 @@ export function GongConnection({
         </>
       ) : (
         <Page.P>
-          Please connect to Gong in the Connection Admin section so Dust can
+          Please connect to Gong in the Connection Admin section so Ruby can
           access your meeting transcripts before processing them.
         </Page.P>
       )}

@@ -24,7 +24,7 @@ export class AppModel extends SoftDeletableWorkspaceAwareModel<AppModel> {
   declare savedSpecification: string | null;
   declare savedConfig: string | null;
   declare savedRun: string | null;
-  declare dustAPIProjectId: string;
+  declare rubyAPIProjectId: string;
 
   declare vaultId: ForeignKey<SpaceModel["id"]>;
 
@@ -69,7 +69,7 @@ AppModel.init(
     savedRun: {
       type: DANGEROUSLY_UNBOUNDED_TEXT,
     },
-    dustAPIProjectId: {
+    rubyAPIProjectId: {
       type: DataTypes.STRING,
       allowNull: false,
     },

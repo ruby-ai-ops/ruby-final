@@ -9,7 +9,7 @@
 #   bash dev/scripts/up.sh --apps-only  # wait for infra, then seed + mprocs
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=up
+RUBY_DEV_SCRIPT_NAME=up
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 DO_INSTALL=0
@@ -36,7 +36,7 @@ if [ "$APPS_ONLY" = 1 ] && [ "$INFRA_ONLY" = 1 ]; then
   exit 1
 fi
 
-if [ "$DO_INSTALL" = 1 ] || [ ! -f "${SCRIPT_DIR}/../../node_modules/@dust-tt/client/package.json" ]; then
+if [ "$DO_INSTALL" = 1 ] || [ ! -f "${SCRIPT_DIR}/../../node_modules/@ruby-ai/client/package.json" ]; then
   bash "${SCRIPT_DIR}/install.sh"
 fi
 

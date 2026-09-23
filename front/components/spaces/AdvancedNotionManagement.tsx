@@ -3,7 +3,7 @@ import { useNotionLastSyncedUrls } from "@app/lib/swr/data_sources";
 import { GetPostNotionSyncResponseBodySchema } from "@app/types/api/spaces";
 import type { DataSourceType } from "@app/types/data_source";
 import type { WorkspaceType } from "@app/types/user";
-import type { DropdownMenu, NotificationType } from "@dust-tt/sparkle";
+import type { DropdownMenu, NotificationType } from "@ruby-ai/ui";
 import {
   Button,
   CheckCircle,
@@ -15,7 +15,7 @@ import {
   Tooltip,
   Trash01,
   XCircle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext } from "@tanstack/react-table";
 import { useCallback, useState } from "react";
 
@@ -59,7 +59,7 @@ export function AdvancedNotionManagement({
   const [checkingStatus, setCheckingStatus] = useState(false);
   const [urlStatus, setUrlStatus] = useState<{
     notion: { exists: boolean; type?: "page" | "database" };
-    dust: {
+    ruby: {
       synced: boolean;
       lastSync?: string;
       breadcrumbs?: Array<{
@@ -220,7 +220,7 @@ export function AdvancedNotionManagement({
       const data = await response.json();
       setUrlStatus({
         notion: data.notion,
-        dust: data.dust,
+        ruby: data.ruby,
         summary: data.summary,
       });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -315,7 +315,7 @@ export function AdvancedNotionManagement({
       <div className="mb-8 border-b pb-6">
         <div className="heading-md p-1">Check Notion URL Status</div>
         <div className="text-element-700 p-1 text-sm">
-          Check if a URL exists in Notion and whether it's synced to Dust
+          Check if a URL exists in Notion and whether it's synced to Ruby
         </div>
 
         <div className="p-1">
@@ -362,8 +362,8 @@ export function AdvancedNotionManagement({
                 )}
               </div>
               <div>
-                <span className="font-medium">Dust:</span>{" "}
-                {urlStatus.dust.synced ? (
+                <span className="font-medium">Ruby:</span>{" "}
+                {urlStatus.ruby.synced ? (
                   <>
                     <Icon
                       visual={CheckCircle}
@@ -371,11 +371,11 @@ export function AdvancedNotionManagement({
                       className="inline text-success-500"
                     />{" "}
                     Synced
-                    {urlStatus.dust.lastSync && (
+                    {urlStatus.ruby.lastSync && (
                       <span className="text-element-600">
                         {" "}
                         (last sync:{" "}
-                        {new Date(urlStatus.dust.lastSync).toLocaleString()})
+                        {new Date(urlStatus.ruby.lastSync).toLocaleString()})
                       </span>
                     )}
                   </>
@@ -390,13 +390,13 @@ export function AdvancedNotionManagement({
                   </>
                 )}
               </div>
-              {urlStatus.dust.synced &&
-                urlStatus.dust.breadcrumbs &&
-                urlStatus.dust.breadcrumbs.length > 0 && (
+              {urlStatus.ruby.synced &&
+                urlStatus.ruby.breadcrumbs &&
+                urlStatus.ruby.breadcrumbs.length > 0 && (
                   <div className="mt-2">
                     <span className="font-medium">Location:</span>{" "}
                     <span className="text-element-600">
-                      {urlStatus.dust.breadcrumbs.map((crumb, index) => (
+                      {urlStatus.ruby.breadcrumbs.map((crumb, index) => (
                         <span key={crumb.id}>
                           {index > 0 && " › "}
                           {crumb.title}

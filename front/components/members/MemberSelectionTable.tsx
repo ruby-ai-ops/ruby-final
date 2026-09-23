@@ -10,7 +10,7 @@ import {
   createSelectionColumn,
   DataTable,
   SearchInput,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type {
   CellContext,
   ColumnDef,

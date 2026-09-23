@@ -49,7 +49,7 @@ app.get("/", ensureIsManager(), validate("query", QuerySchema), async (ctx) => {
   ctx.header("Content-Type", "text/csv");
   ctx.header(
     "Content-Disposition",
-    `attachment; filename="dust_credit_usage_last_${query.days}_days.csv"`
+    `attachment; filename="ruby_credit_usage_last_${query.days}_days.csv"`
   );
   return ctx.body(rowsToCsv(CSV_HEADERS, rows));
 });

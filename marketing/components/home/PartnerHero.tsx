@@ -3,7 +3,7 @@ import { Grid, H2, P } from "@marketing/components/home/ContentComponents";
 import { HomeEyebrow } from "@marketing/components/home/content/Product/HomeEyebrow";
 import { HomeReveal } from "@marketing/components/home/content/Product/HomeReveal";
 import { classNames } from "@marketing/lib/utils";
-import { Building01, Globe01, Icon, PuzzlePiece01 } from "@dust-tt/sparkle";
+import { Building01, Globe01, Icon, PuzzlePiece01 } from "@ruby-ai/ui";
 import Image from "next/image";
 import type { ComponentType } from "react";
 
@@ -190,20 +190,20 @@ export function PartnerHero() {
           </HomeReveal>
           <HomeReveal delay={80} className="max-w-2xl">
             <P size="lg" className="text-balance text-muted-foreground">
-              Bring AI agents to your clients as a Dust service partner,
+              Bring AI agents to your clients as a Ruby service partner,
               reseller, or implementation specialist.
             </P>
           </HomeReveal>
         </div>
       </Grid>
 
-      {/* Why Partner with Dust */}
+      {/* Why Partner with Ruby */}
       <Grid gap="gap-x-8 gap-y-10 md:gap-y-12">
         <HomeReveal className="col-span-12 flex flex-col items-start gap-4 text-left lg:col-span-4">
-          <HomeEyebrow label="Why Dust" />
-          <H2 className="text-left">Why Partner with Dust?</H2>
+          <HomeEyebrow label="Why Ruby" />
+          <H2 className="text-left">Why Partner with Ruby?</H2>
           <P size="md" className="text-muted-foreground">
-            A profitable, well-supported way to bring Dust to the teams you
+            A profitable, well-supported way to bring Ruby to the teams you
             already serve.
           </P>
         </HomeReveal>

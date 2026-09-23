@@ -278,7 +278,7 @@ async function fetchMetronomeExportRows({
 }
 
 /**
- * A ZIP holding the rows behind the consumption figures the poke members table
+ * A ZIP holding the rows behind the consumption figures the admin members table
  * compares for one member over the current billing cycle: the Elasticsearch
  * analytics documents and the Metronome usage buckets, in two CSVs sharing a
  * leading set of columns (see `SHARED_HEADERS`). The RL figure has no file — see
@@ -361,6 +361,6 @@ export async function buildMemberConsumptionExportZip(
 
   return new Ok({
     zip: zip.toBuffer(),
-    filename: `dust_consumption_${workspace.sId}_${user.sId}.zip`,
+    filename: `ruby_consumption_${workspace.sId}_${user.sId}.zip`,
   });
 }

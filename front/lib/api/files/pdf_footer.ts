@@ -1,4 +1,4 @@
-// 16x16 inline version of public/static/landing/logos/dust/Dust_LogoSquare.svg.
+// 16x16 inline version of public/static/landing/logos/ruby/Ruby_LogoSquare.svg.
 // Inlined to avoid bundler-dependent __dirname / cwd path resolution across
 // front (Next.js standalone) and front-api (esbuild bundle).
 const logoSvg = `<svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -38,7 +38,7 @@ export const PDF_FOOTER_HTML = `<!DOCTYPE html>
 <body>
   <div class="footer-content">
     ${logoSvg}
-    <span>Created with Dust</span>
+    <span>Created with Ruby</span>
   </div>
 </body>
 </html>`;

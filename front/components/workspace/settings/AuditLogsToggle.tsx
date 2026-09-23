@@ -3,7 +3,7 @@ import { GovernanceSettingSection } from "@app/components/pages/workspace/govern
 import { useAuditLogsToggle } from "@app/hooks/useAuditLogsToggle";
 import { useAuth, useFeatureFlags } from "@app/lib/auth/AuthContext";
 import type { WorkspaceType } from "@app/types/user";
-import { LayerSingle, SliderToggle } from "@dust-tt/sparkle";
+import { LayerSingle, SliderToggle } from "@ruby-ai/ui";
 
 interface AuditLogsToggleProps {
   owner: WorkspaceType;

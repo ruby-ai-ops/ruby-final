@@ -1,4 +1,4 @@
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 import type { SVGComponentProps } from "react-svg-credit-card-payment-icons";
 import {
   AmericanExpressFlatIcon,

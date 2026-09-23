@@ -1,10 +1,10 @@
 import config from "@app/lib/api/config";
 import {
   areRedirectUrisAllowed,
-  getDustMcpServerAllowedRedirectUris,
-  getDustMcpServerRedirectUriPolicy,
-  isDustMcpServerEnabled,
-} from "@app/lib/api/mcp_server/dust_mcp_server_settings";
+  getRubyMcpServerAllowedRedirectUris,
+  getRubyMcpServerRedirectUriPolicy,
+  isRubyMcpServerEnabled,
+} from "@app/lib/api/mcp_server/ruby_mcp_server_settings";
 import {
   getMcpResourceMetadataUrl,
   getMcpResourceServerUrl,
@@ -25,8 +25,8 @@ type McpServerAuthVariables = {
 };
 
 const WORKOS_AUTHKIT_DOMAIN = getWorkOSAuthKitDomain();
-const DUST_MCP_SERVER_URL = getMcpResourceServerUrl();
-const resourceMetadataUrl = getMcpResourceMetadataUrl(DUST_MCP_SERVER_URL);
+const RUBY_MCP_SERVER_URL = getMcpResourceServerUrl();
+const resourceMetadataUrl = getMcpResourceMetadataUrl(RUBY_MCP_SERVER_URL);
 
 // WorkOS Connect MCP access tokens — see https://workos.com/docs/authkit/mcp
 const JWKS = createRemoteJWKSet(
@@ -96,7 +96,7 @@ export const mcpServerAuthMiddleware = createMiddleware<{
         tokenLength: token.length,
         looksLikeInspectorProxyToken: /^[0-9a-f]{64}$/i.test(token),
       },
-      "[dust-mcp-server] Bearer token is not a JWT — returning 401 challenge so the client can start OAuth. If using MCP Inspector: disable any custom Authorization header in the sidebar and clear stored OAuth tokens for this server URL."
+      "[ruby-mcp-server] Bearer token is not a JWT — returning 401 challenge so the client can start OAuth. If using MCP Inspector: disable any custom Authorization header in the sidebar and clear stored OAuth tokens for this server URL."
     );
     return unauthorizedResponse(c, {
       error: "invalid_token",
@@ -117,7 +117,7 @@ export const mcpServerAuthMiddleware = createMiddleware<{
       throw new Error("Token missing sub claim");
     }
 
-    if (!tokenAudienceMatchesResource(payload.aud, DUST_MCP_SERVER_URL)) {
+    if (!tokenAudienceMatchesResource(payload.aud, RUBY_MCP_SERVER_URL)) {
       logger.info(
         { aud: payload.aud },
         "Token audience does not match MCP resource URL, falling back to application:client_id claim"
@@ -164,8 +164,8 @@ export const mcpServerAuthMiddleware = createMiddleware<{
         organization_missing:
           "Access token is missing a WorkOS organization (org_id claim)",
         workspace_not_found:
-          "Access token organization does not match a Dust workspace",
-        user_not_found: "Dust user not found for access token",
+          "Access token organization does not match a Ruby workspace",
+        user_not_found: "Ruby user not found for access token",
         not_a_member: "User is not a member of the selected workspace",
         invalid_token_payload: "Access token payload is invalid",
       };
@@ -178,7 +178,7 @@ export const mcpServerAuthMiddleware = createMiddleware<{
             org_id: payload.org_id,
           },
         },
-        "[dust-mcp-server] Failed to build workspace-scoped authenticator"
+        "[ruby-mcp-server] Failed to build workspace-scoped authenticator"
       );
 
       return unauthorizedResponse(c, {
@@ -191,22 +191,22 @@ export const mcpServerAuthMiddleware = createMiddleware<{
     const workspace = authenticator.workspace();
     const workspaceMetadata = workspace.metadata;
 
-    if (!isDustMcpServerEnabled(workspaceMetadata)) {
+    if (!isRubyMcpServerEnabled(workspaceMetadata)) {
       logger.warn(
         { workspaceId: workspace.sId },
-        "[dust-mcp-server] MCP server is disabled for workspace"
+        "[ruby-mcp-server] MCP server is disabled for workspace"
       );
       return forbiddenResponse(c, {
         description: "MCP server is disabled for this workspace",
       });
     }
 
-    if (getDustMcpServerRedirectUriPolicy(workspaceMetadata) === "allowlist") {
+    if (getRubyMcpServerRedirectUriPolicy(workspaceMetadata) === "allowlist") {
       const clientId = payload["application:client_id"];
       if (typeof clientId !== "string" || !clientId.trim()) {
         logger.warn(
           { workspaceId: workspace.sId },
-          "[dust-mcp-server] Access token missing application:client_id claim"
+          "[ruby-mcp-server] Access token missing application:client_id claim"
         );
         return forbiddenResponse(c, {
           description:
@@ -224,7 +224,7 @@ export const mcpServerAuthMiddleware = createMiddleware<{
             clientId: clientId.trim(),
             err: applicationResult.error,
           },
-          "[dust-mcp-server] Failed to fetch WorkOS Connect application"
+          "[ruby-mcp-server] Failed to fetch WorkOS Connect application"
         );
         return forbiddenResponse(c, {
           description: "Failed to validate Connect application redirect URIs",
@@ -238,7 +238,7 @@ export const mcpServerAuthMiddleware = createMiddleware<{
           : [];
 
       const allowedPatterns =
-        getDustMcpServerAllowedRedirectUris(workspaceMetadata);
+        getRubyMcpServerAllowedRedirectUris(workspaceMetadata);
       if (!areRedirectUrisAllowed(redirectUris, allowedPatterns)) {
         logger.warn(
           {
@@ -247,7 +247,7 @@ export const mcpServerAuthMiddleware = createMiddleware<{
             redirectUris,
             allowedPatterns,
           },
-          "[dust-mcp-server] Connect application redirect URIs are not allowed"
+          "[ruby-mcp-server] Connect application redirect URIs are not allowed"
         );
         return forbiddenResponse(c, {
           description:
@@ -279,10 +279,10 @@ export const mcpServerAuthMiddleware = createMiddleware<{
           : undefined,
         expected: {
           issuer: WORKOS_AUTHKIT_DOMAIN,
-          audience: DUST_MCP_SERVER_URL,
+          audience: RUBY_MCP_SERVER_URL,
         },
       },
-      "[dust-mcp-server] Token validation failed"
+      "[ruby-mcp-server] Token validation failed"
     );
 
     return unauthorizedResponse(c, {

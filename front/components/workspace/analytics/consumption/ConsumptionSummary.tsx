@@ -7,7 +7,7 @@ import { WORKSPACE_CONSUMPTION_ANALYTICS_SCOPE } from "@app/lib/analytics/consum
 import type { GetConsumptionOverviewResponse } from "@app/lib/api/analytics/consumption/overview";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import { formatAvgCredits, formatCredits } from "@app/lib/client/credits";
-import { ArrowUpRight, Button, LoadingBlock } from "@dust-tt/sparkle";
+import { ArrowUpRight, Button, LoadingBlock } from "@ruby-ai/ui";
 
 export interface ConsumptionSummaryProps {
   workspaceId: string;

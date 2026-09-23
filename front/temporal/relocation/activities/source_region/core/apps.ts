@@ -22,7 +22,7 @@ export async function retrieveAppsCoreIdsBatch({
   lastId?: ModelId;
   workspaceId: string;
 }): Promise<{
-  dustAPIProjectIds: string[];
+  rubyAPIProjectIds: string[];
   hasMore: boolean;
   lastId: ModelId | undefined;
 }> {
@@ -55,31 +55,31 @@ export async function retrieveAppsCoreIdsBatch({
   localLogger.info({ appsCount: apps.length }, "[Core] Retrieved apps");
 
   return {
-    dustAPIProjectIds: apps.map((a) => a.dustAPIProjectId),
+    rubyAPIProjectIds: apps.map((a) => a.rubyAPIProjectId),
     hasMore: apps.length === BATCH_SIZE,
     lastId: apps.length > 0 ? apps[apps.length - 1].id : undefined,
   };
 }
 
 export async function getApp({
-  dustAPIProjectId,
+  rubyAPIProjectId,
   workspaceId,
   sourceCell,
 }: {
-  dustAPIProjectId: string;
+  rubyAPIProjectId: string;
   workspaceId: string;
   sourceCell: CellType;
 }): Promise<{
   dataPath: string;
 }> {
   const localLogger = logger.child({
-    dustAPIProjectId,
+    rubyAPIProjectId,
     sourceCell,
   });
 
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
   const coreSpec = await coreAPI.getSpecificationHashes({
-    projectId: dustAPIProjectId,
+    projectId: rubyAPIProjectId,
   });
   if (coreSpec.isErr()) {
     throw new Error("Failed to get core specification hashes");
@@ -94,7 +94,7 @@ export async function getApp({
   if (specsToFetch) {
     for (const hash of specsToFetch) {
       const coreSpecification = await coreAPI.getSpecification({
-        projectId: dustAPIProjectId,
+        projectId: rubyAPIProjectId,
         specificationHash: hash,
       });
 
@@ -106,7 +106,7 @@ export async function getApp({
   }
 
   const dataSetsToFetch = await coreAPI.getDatasets({
-    projectId: dustAPIProjectId,
+    projectId: rubyAPIProjectId,
   });
 
   localLogger.info({ dataSetsToFetch }, "coreAPI.getDatasets");
@@ -120,7 +120,7 @@ export async function getApp({
     const dataSetVersions = dataSetsToFetch.value.datasets[datasetId];
     for (const dataSetVersion of dataSetVersions) {
       const apiDataset = await coreAPI.getDataset({
-        projectId: dustAPIProjectId,
+        projectId: rubyAPIProjectId,
         datasetName: datasetId,
         datasetHash: dataSetVersion.hash,
       });
@@ -128,7 +128,7 @@ export async function getApp({
       if (apiDataset.isErr()) {
         logger.error(
           {
-            projectId: dustAPIProjectId,
+            projectId: rubyAPIProjectId,
             datasetName: datasetId,
             datasetHash: dataSetVersion.hash,
             error: apiDataset.error,

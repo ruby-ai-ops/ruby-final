@@ -8,10 +8,10 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 export const sendAPIUserEmail = async ({ email }: { email: string }) => {
   const msg = {
     to: email,
-    from: "spolu@dust.tt",
-    subject: "[Dust] OpenAI Outage",
+    from: "spolu@ruby.ad",
+    subject: "[Ruby] OpenAI Outage",
     html: `<p>Hi there—</p>
-    <p>I'm Stan, a cofounder of Dust.</p>
+    <p>I'm Stan, a cofounder of Ruby.</p>
     <p>Since 2:54 UTC today, OpenAI is encountering a full outage of their APIs. They are investigating the issue. You can check their status here: https://status.openai.com/</p>
     <p>Most of our services are directly impacted, and we apologize for the inconvenience. You can keep using assitants based on non-OpenAI models that do not rely on any retrieval from data sources.</p>
     <p>We are closely monitoring the situation and will keep you posted as soon as the incident is resolved.</p>

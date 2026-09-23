@@ -341,7 +341,7 @@ export const GOOGLE_SHEETS_SERVER = {
         "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.readonly" as const,
     },
     icon: "GoogleSpreadsheetLogo",
-    documentationUrl: "https://docs.dust.tt/docs/google-sheets",
+    documentationUrl: "https://docs.ruby.ad/docs/google-sheets",
   },
   tools: GOOGLE_SHEETS_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

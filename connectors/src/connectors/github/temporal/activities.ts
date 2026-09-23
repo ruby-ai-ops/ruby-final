@@ -56,8 +56,8 @@ import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { DataSourceConfig, ModelId } from "@connectors/types";
 import { INTERNAL_MIME_TYPES } from "@connectors/types";
 import { normalizeError } from "@connectors/types/api";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import PQueue from "p-queue";
 
 export async function githubGetReposResultPageActivity(
@@ -804,7 +804,7 @@ async function deleteIssue(
   }
 
   const documentId = getIssueInternalId(repoId.toString(), issueNumber);
-  logger.info({ documentId }, "Deleting GitHub issue from Dust data source.");
+  logger.info({ documentId }, "Deleting GitHub issue from Ruby data source.");
   await deleteDataSourceDocument(
     dataSourceConfig,
     documentId,
@@ -848,7 +848,7 @@ async function deleteDiscussion(
   );
   logger.info(
     { documentId },
-    "Deleting GitHub discussion from Dust data source."
+    "Deleting GitHub discussion from Ruby data source."
   );
   await deleteDataSourceDocument(
     dataSourceConfig,

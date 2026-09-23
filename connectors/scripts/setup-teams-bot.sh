@@ -38,7 +38,7 @@ if [ -z "$1" ]; then
 fi
 
 BOT_NAME="$1"
-RESOURCE_GROUP="${2:-dust-bot-rg}"
+RESOURCE_GROUP="${2:-ruby-bot-rg}"
 WEBHOOK_SECRET="${3:-mywebhooksecret}"
 
 print_status "Setting up Teams bot: $BOT_NAME"
@@ -165,7 +165,7 @@ export MICROSOFT_BOT_NAME=$BOT_NAME
 export MICROSOFT_BOT_ID=$APP_ID
 export MICROSOFT_BOT_PASSWORD=$APP_PASSWORD
 export MICROSOFT_BOT_TENANT_ID=$TENANT_ID
-export DUST_CONNECTORS_WEBHOOKS_SECRET=$WEBHOOK_SECRET
+export RUBY_CONNECTORS_WEBHOOKS_SECRET=$WEBHOOK_SECRET
 EOF
 
 print_status ".env file created with bot configuration"

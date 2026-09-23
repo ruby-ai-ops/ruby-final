@@ -169,9 +169,9 @@ type LatestMessageSummary = {
 };
 
 const shouldByPassPrivateByDefaultUrlRestriction = (auth: Authenticator) => {
-  // Dust super users (poke admins) can always access conversations regardless of participant
+  // Ruby super users (admin admins) can always access conversations regardless of participant
   // restrictions — they need this to debug triggered conversations that have no human participant.
-  if (auth.isDustSuperUser()) {
+  if (auth.isRubySuperUser()) {
     return true;
   }
   const authMethod = auth.authMethod();
@@ -1279,7 +1279,7 @@ export class ConversationResource extends BaseResource<ConversationModel> {
 
     // For all participant-restricted conversations, check if the user is a participant. A userless
     // authenticator (e.g. a userless sandbox token driven by a non-human actor, or a session/oauth
-    // request with no matching Dust user) can never be a participant, so it sees none of them. This
+    // request with no matching Ruby user) can never be a participant, so it sees none of them. This
     // mirrors the null-user handling in canUserAccessPrivateByDefaultConversation.
     const user = auth.user();
     const participations = user
@@ -2051,7 +2051,7 @@ export class ConversationResource extends BaseResource<ConversationModel> {
 
   /**
    * Returns the creation timestamps of the space's nudge conversations, newest
-   * first: the conversations Dust opened itself, identified by the origin their
+   * first: the conversations Ruby opened itself, identified by the origin their
    * opening message carries. This is the activation nudge history.
    */
   static async listNudgeConversationTimestamps(
@@ -2123,7 +2123,7 @@ export class ConversationResource extends BaseResource<ConversationModel> {
 
   /**
    * The origin of the conversation's opening user message, or null if it has
-   * none. Used to tell a conversation Dust opened (an activation nudge) from
+   * none. Used to tell a conversation Ruby opened (an activation nudge) from
    * one the user started.
    */
   async openingUserMessageOrigin(
@@ -4255,8 +4255,8 @@ export class ConversationResource extends BaseResource<ConversationModel> {
 
     // The runIds array ordering is not guaranteed to be chronological. Fetch all runs and pick
     // the most recently created one.
-    const runs = await RunResource.listByDustRunIds(auth, {
-      dustRunIds: message.compactionMessage.runIds,
+    const runs = await RunResource.listByRubyRunIds(auth, {
+      rubyRunIds: message.compactionMessage.runIds,
     });
 
     if (runs.length === 0) {
@@ -4312,8 +4312,8 @@ export class ConversationResource extends BaseResource<ConversationModel> {
 
     // The runIds array ordering is not guaranteed to be chronological. Fetch all runs and pick
     // the most recently created one.
-    const runs = await RunResource.listByDustRunIds(auth, {
-      dustRunIds: message.agentMessage.runIds,
+    const runs = await RunResource.listByRubyRunIds(auth, {
+      rubyRunIds: message.agentMessage.runIds,
     });
 
     if (runs.length === 0) {

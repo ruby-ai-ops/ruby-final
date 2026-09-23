@@ -6,8 +6,8 @@ import {
 import { getTemporalClient } from "@connectors/lib/temporal";
 import type { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { ModelId } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Ok } from "@ruby-ai/client";
 
 export function makeGongKeywordUpdateWorkflowId(
   connector: ConnectorResource

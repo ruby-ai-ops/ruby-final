@@ -6,7 +6,7 @@ import { useConversationSidePanelContext } from "@app/components/assistant/conve
 import { EditConversationTitleDialog } from "@app/components/assistant/conversation/EditConversationTitleDialog";
 import { PlanPanelChip } from "@app/components/assistant/conversation/plan_mode/PlanPanelChip";
 import { getParentConversationTitleLabel } from "@app/components/assistant/conversation/utils";
-import { AppLayoutTitle } from "@app/components/sparkle/AppLayoutTitle";
+import { AppLayoutTitle } from "@app/components/ui/AppLayoutTitle";
 import { useConversation } from "@app/hooks/conversations";
 import { useActiveConversationId } from "@app/hooks/useActiveConversationId";
 import { useAuth } from "@app/lib/auth/AuthContext";
@@ -25,7 +25,7 @@ import {
   FILES_SIDE_PANEL_TYPE,
 } from "@app/types/conversation_side_panel";
 import type { WorkspaceType } from "@app/types/user";
-import type { BreadcrumbsItem } from "@dust-tt/sparkle";
+import type { BreadcrumbsItem } from "@ruby-ai/ui";
 import {
   ArrowLeft,
   Breadcrumbs,
@@ -37,7 +37,7 @@ import {
   Folder,
   GitBranch01,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 const BREADCRUMB_MIDDLE_TRUNCATE_LENGTH = 35;

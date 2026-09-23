@@ -31,13 +31,13 @@ import {
   Button,
   CheckCircle,
   Chip,
-  DustLogoSquare,
+  RubyLogoSquare,
   Icon,
   Input,
   Spinner,
   Tag01,
   XCircle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   EmbeddedCheckout,
@@ -478,7 +478,7 @@ export function CheckoutPage() {
       {/* Left pane: order summary + coupon */}
       <div className="flex w-full flex-col gap-14 overflow-y-auto bg-muted-background p-6 md:w-1/2 md:p-24">
         <div>
-          <Icon visual={DustLogoSquare} size="lg" />
+          <Icon visual={RubyLogoSquare} size="lg" />
         </div>
 
         <div className="flex flex-col gap-11">
@@ -803,10 +803,10 @@ function RightPane({
                 <br />
                 If the issue persists, contact us at{" "}
                 <a
-                  href="mailto:support@dust.tt"
+                  href="mailto:support@ruby.ad"
                   className="text-primary underline"
                 >
-                  support@dust.tt
+                  support@ruby.ad
                 </a>
                 .
               </>
@@ -882,10 +882,10 @@ function RightPane({
                   <br />
                   If the issue persists, contact us at{" "}
                   <a
-                    href="mailto:support@dust.tt"
+                    href="mailto:support@ruby.ad"
                     className="text-primary underline"
                   >
-                    support@dust.tt
+                    support@ruby.ad
                   </a>
                   .
                 </>
@@ -915,10 +915,10 @@ function RightPane({
                   <br />
                   If the issue persists, contact us at{" "}
                   <a
-                    href="mailto:support@dust.tt"
+                    href="mailto:support@ruby.ad"
                     className="text-primary underline"
                   >
-                    support@dust.tt
+                    support@ruby.ad
                   </a>
                   .
                 </>

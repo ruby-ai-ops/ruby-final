@@ -57,7 +57,7 @@ import {
   INTERNAL_MIME_TYPES,
   isConfluenceNotFoundError,
 } from "@connectors/types";
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 
 const UPSERT_CONCURRENT_LIMIT = 10;
 

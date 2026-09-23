@@ -1,7 +1,7 @@
 import { useFreeSeatCounts } from "@app/lib/swr/memberships";
 import type { SubscriptionType } from "@app/types/plan";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Icon, InfoSquare, ProgressBar, Spinner } from "@dust-tt/sparkle";
+import { Icon, InfoSquare, ProgressBar, Spinner } from "@ruby-ai/ui";
 
 interface FreePlanSeatsSectionProps {
   owner: LightWorkspaceType;

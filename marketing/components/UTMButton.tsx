@@ -1,8 +1,8 @@
 "use client";
 
 import { appendUTMParams } from "@marketing/lib/utils/utm";
-import type { RegularButtonProps } from "@dust-tt/sparkle";
-import { Button } from "@dust-tt/sparkle";
+import type { RegularButtonProps } from "@ruby-ai/ui";
+import { Button } from "@ruby-ai/ui";
 
 interface UTMButtonProps extends Omit<RegularButtonProps, "href"> {
   href?: string;

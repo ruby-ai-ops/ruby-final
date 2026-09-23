@@ -225,7 +225,7 @@ export const supportedOtherFileFormats = {
   "application/vnd.google-apps.spreadsheet": [],
   "application/vnd.ms-excel": [".xls"],
   "application/pdf": [".pdf"],
-  "application/vnd.dust.section.json": [".json"],
+  "application/vnd.ruby.section.json": [".json"],
   "message/rfc822": [".eml"],
   "text/comma-separated-values": [".csv"],
   "text/csv": [".csv"],
@@ -233,8 +233,8 @@ export const supportedOtherFileFormats = {
   "text/plain": [".txt", ".log", ".cfg", ".conf"],
   "text/tab-separated-values": [".tsv"],
   "text/tsv": [".tsv"],
-  "text/vnd.dust.attachment.slack.thread": [".txt"],
-  "text/vnd.dust.attachment.pasted": [".txt"],
+  "text/vnd.ruby.attachment.slack.thread": [".txt"],
+  "text/vnd.ruby.attachment.pasted": [".txt"],
   "text/html": [".html", ".htm", ".xhtml", ".xhtml+xml"],
   "text/xml": [".xml"],
   "text/calendar": [".ics"],
@@ -424,7 +424,7 @@ const SupportedContentFragmentTypeSchema = FlexibleEnumSchema<
   | keyof typeof supportedFontFileFormats
   | (typeof INTERNAL_MIME_TYPES_VALUES)[number]
   // Legacy content types still retuned by the API when rendering old messages.
-  | "dust-application/slack"
+  | "ruby-application/slack"
 >();
 
 const SupportedFileContentFragmentTypeSchema = FlexibleEnumSchema<
@@ -434,15 +434,15 @@ const SupportedFileContentFragmentTypeSchema = FlexibleEnumSchema<
   | keyof typeof supportedFontFileFormats
 >();
 
-const FrameContentTypeSchema = z.literal("application/vnd.dust.frame");
+const FrameContentTypeSchema = z.literal("application/vnd.ruby.frame");
 const FrameSlideshowContentTypeSchema = z.literal(
-  "application/vnd.dust.frame.slideshow"
+  "application/vnd.ruby.frame.slideshow"
 );
 const FrameV2ContentTypeSchema = z.literal(
-  "application/vnd.dust.frame.v2+json"
+  "application/vnd.ruby.frame.v2+json"
 );
 const SandboxFunctionContentTypeSchema = z.literal(
-  "application/vnd.dust.sandbox.function"
+  "application/vnd.ruby.sandbox.function"
 );
 
 const ActionGeneratedFileContentTypeSchema = z.union([
@@ -563,7 +563,7 @@ const Timezone = z.string().refine((s) => TIMEZONE_NAMES.includes(s), {
 const ConnectorProvidersSchema = FlexibleEnumSchema<
   | "confluence"
   | "discord_bot"
-  | "dust_project"
+  | "ruby_project"
   | "github"
   | "google_drive"
   | "intercom"
@@ -601,8 +601,8 @@ const DataSourceTypeSchema = z.object({
   name: z.string(),
   description: z.string().nullable(),
   assistantDefaultSelected: z.boolean(),
-  dustAPIProjectId: z.string(),
-  dustAPIDataSourceId: z.string(),
+  rubyAPIProjectId: z.string(),
+  rubyAPIDataSourceId: z.string(),
   connectorId: z.string().nullable(),
   connectorProvider: ConnectorProvidersSchema.nullable(),
   editedByUser: EditedByUserSchema.nullable().optional(),
@@ -857,12 +857,12 @@ const WhitelistableFeaturesSchema = FlexibleEnumSchema<
   | "disable_run_logs"
   | "discord_bot"
   | "dummy_feature_for_flag_testing"
-  | "dust_agent_sonnet_5_default"
-  | "dust_filesystem"
-  | "dust_internal_dangerous_in_cluster_mcp_servers"
-  | "dust_internal_global_agents"
-  | "dust_lean_agent"
-  | "dust_pod_goal"
+  | "ruby_agent_sonnet_5_default"
+  | "ruby_filesystem"
+  | "ruby_internal_dangerous_in_cluster_mcp_servers"
+  | "ruby_internal_global_agents"
+  | "ruby_lean_agent"
+  | "ruby_pod_goal"
   | "fireworks_new_model_feature"
   | "frames_v2"
   | "google_sheets_tool"
@@ -872,7 +872,7 @@ const WhitelistableFeaturesSchema = FlexibleEnumSchema<
   | "knowledge_browser"
   | "labs_mcp_actions_dashboard"
   | "labs_transcripts"
-  | "legacy_dust_apps"
+  | "legacy_ruby_apps"
   | "legacy_trigger_limits"
   | "message_export_from_consumption_index"
   | "netsuite_mcp"
@@ -890,7 +890,7 @@ const WhitelistableFeaturesSchema = FlexibleEnumSchema<
   | "legacy_billing"
   | "plan_mode"
   | "admin_can_see_private_entities"
-  | "poke_mcp"
+  | "admin_mcp"
   | "restricted_spaces_in_input_bar"
   | "salesforce_synced_queries"
   | "salesforce_tool"
@@ -995,7 +995,7 @@ const ActionGeneratedFileBaseSchema = z.object({
 });
 
 const ActionGeneratedFileSchema = z.union([
-  // File backed by a Dust FileResource: always a supported content type.
+  // File backed by a Ruby FileResource: always a supported content type.
   ActionGeneratedFileBaseSchema.extend({
     contentType: ActionGeneratedFileContentTypeSchema,
     fileId: z.string(),
@@ -1392,7 +1392,7 @@ export type ConversationPublicType = z.infer<typeof ConversationSchema>;
 
 /**
  * Subset of {@link ConversationSchema} used by connectors when syncing conversations
- * to a data source (dust_project). `content` is the latest version of each message
+ * to a data source (ruby_project). `content` is the latest version of each message
  * (no per-message version arrays). Matches fields read in sync_conversation and
  * conversation_formatting.
  */
@@ -1966,7 +1966,7 @@ const APIErrorTypeSchema = FlexibleEnumSchema<
   | "data_source_quota_error"
   | "data_source_view_not_found"
   | "dataset_not_found"
-  | "dust_app_secret_not_found"
+  | "ruby_app_secret_not_found"
   | "expired_oauth_token_error"
   | "feature_flag_already_exists"
   | "feature_flag_not_found"
@@ -2043,40 +2043,40 @@ export const WorkspaceDomainSchema = z.object({
 
 export type WorkspaceDomainType = z.infer<typeof WorkspaceDomainSchema>;
 
-export const DustAppTypeSchema = z.object({
+export const RubyAppTypeSchema = z.object({
   appHash: z.string(),
   appId: z.string(),
   workspaceId: z.string(),
 });
 
-export type DustAppType = z.infer<typeof DustAppTypeSchema>;
+export type RubyAppType = z.infer<typeof RubyAppTypeSchema>;
 
-export const DustAppConfigTypeSchema = z.record(z.unknown());
-export type DustAppConfigType = z.infer<typeof DustAppConfigTypeSchema>;
+export const RubyAppConfigTypeSchema = z.record(z.unknown());
+export type RubyAppConfigType = z.infer<typeof RubyAppConfigTypeSchema>;
 
-export const DustAppRunErroredEventSchema = z.object({
+export const RubyAppRunErroredEventSchema = z.object({
   type: z.literal("error"),
   content: z.object({
     code: z.string(),
     message: z.string(),
   }),
 });
-export type DustAppRunErroredEvent = z.infer<
-  typeof DustAppRunErroredEventSchema
+export type RubyAppRunErroredEvent = z.infer<
+  typeof RubyAppRunErroredEventSchema
 >;
 
-export const DustAppRunRunStatusEventSchema = z.object({
+export const RubyAppRunRunStatusEventSchema = z.object({
   type: z.literal("run_status"),
   content: z.object({
     status: z.enum(["running", "succeeded", "errored"]),
     run_id: z.string(),
   }),
 });
-export type DustAppRunRunStatusEvent = z.infer<
-  typeof DustAppRunRunStatusEventSchema
+export type RubyAppRunRunStatusEvent = z.infer<
+  typeof RubyAppRunRunStatusEventSchema
 >;
 
-export const DustAppRunBlockStatusEventSchema = z.object({
+export const RubyAppRunBlockStatusEventSchema = z.object({
   type: z.literal("block_status"),
   content: z.object({
     block_type: BlockTypeSchema,
@@ -2086,11 +2086,11 @@ export const DustAppRunBlockStatusEventSchema = z.object({
     error_count: z.number(),
   }),
 });
-export type DustAppRunBlockStatusEvent = z.infer<
-  typeof DustAppRunBlockStatusEventSchema
+export type RubyAppRunBlockStatusEvent = z.infer<
+  typeof RubyAppRunBlockStatusEventSchema
 >;
 
-export const DustAppRunBlockExecutionEventSchema = z.object({
+export const RubyAppRunBlockExecutionEventSchema = z.object({
   type: z.literal("block_execution"),
   content: z.object({
     block_type: BlockTypeSchema,
@@ -2106,15 +2106,15 @@ export const DustAppRunBlockExecutionEventSchema = z.object({
     ),
   }),
 });
-export type DustAppRunBlockExecutionEvent = z.infer<
-  typeof DustAppRunBlockExecutionEventSchema
+export type RubyAppRunBlockExecutionEvent = z.infer<
+  typeof RubyAppRunBlockExecutionEventSchema
 >;
-export const DustAppRunFinalEventSchema = z.object({
+export const RubyAppRunFinalEventSchema = z.object({
   type: z.literal("final"),
 });
-export type DustAppRunFinalEvent = z.infer<typeof DustAppRunFinalEventSchema>;
+export type RubyAppRunFinalEvent = z.infer<typeof RubyAppRunFinalEventSchema>;
 
-export const DustAppRunTokensEventSchema = z.object({
+export const RubyAppRunTokensEventSchema = z.object({
   type: z.literal("tokens"),
   content: z.object({
     block_type: z.string(),
@@ -2133,9 +2133,9 @@ export const DustAppRunTokensEventSchema = z.object({
     }),
   }),
 });
-export type DustAppRunTokensEvent = z.infer<typeof DustAppRunTokensEventSchema>;
+export type RubyAppRunTokensEvent = z.infer<typeof RubyAppRunTokensEventSchema>;
 
-export const DustAppRunReasoningTokensEventSchema = z.object({
+export const RubyAppRunReasoningTokensEventSchema = z.object({
   type: z.literal("reasoning_tokens"),
   content: z.object({
     block_type: z.string(),
@@ -2152,11 +2152,11 @@ export const DustAppRunReasoningTokensEventSchema = z.object({
     }),
   }),
 });
-export type DustAppRunReasoningTokensEvent = z.infer<
-  typeof DustAppRunReasoningTokensEventSchema
+export type RubyAppRunReasoningTokensEvent = z.infer<
+  typeof RubyAppRunReasoningTokensEventSchema
 >;
 
-export const DustAppRunReasoningItemEventSchema = z.object({
+export const RubyAppRunReasoningItemEventSchema = z.object({
   type: z.literal("reasoning_item"),
   content: z.object({
     block_type: z.string(),
@@ -2171,11 +2171,11 @@ export const DustAppRunReasoningItemEventSchema = z.object({
     item: z.unknown(),
   }),
 });
-export type DustAppRunReasoningItemEvent = z.infer<
-  typeof DustAppRunReasoningItemEventSchema
+export type RubyAppRunReasoningItemEvent = z.infer<
+  typeof RubyAppRunReasoningItemEventSchema
 >;
 
-export const DustAppRunFunctionCallEventSchema = z.object({
+export const RubyAppRunFunctionCallEventSchema = z.object({
   type: z.literal("function_call"),
   content: z.object({
     block_type: z.string(),
@@ -2192,11 +2192,11 @@ export const DustAppRunFunctionCallEventSchema = z.object({
     }),
   }),
 });
-export type DustAppRunFunctionCallEvent = z.infer<
-  typeof DustAppRunFunctionCallEventSchema
+export type RubyAppRunFunctionCallEvent = z.infer<
+  typeof RubyAppRunFunctionCallEventSchema
 >;
 
-export const DustAppRunFunctionCallArgumentsTokensEventSchema = z.object({
+export const RubyAppRunFunctionCallArgumentsTokensEventSchema = z.object({
   type: z.literal("function_call_arguments_tokens"),
   content: z.object({
     block_type: z.string(),
@@ -2213,10 +2213,10 @@ export const DustAppRunFunctionCallArgumentsTokensEventSchema = z.object({
     }),
   }),
 });
-export type DustAppRunFunctionCallArgumentsTokensEvent = z.infer<
-  typeof DustAppRunFunctionCallArgumentsTokensEventSchema
+export type RubyAppRunFunctionCallArgumentsTokensEvent = z.infer<
+  typeof RubyAppRunFunctionCallArgumentsTokensEventSchema
 >;
-export type DustAPICredentials = {
+export type RubyAPICredentials = {
   apiKey: string | (() => string | null | Promise<string | null>);
   workspaceId: string;
   extraHeaders?: Record<string, string>;
@@ -2266,7 +2266,7 @@ const AppTypeSchema = z.object({
   savedSpecification: z.string().nullable(),
   savedConfig: z.string().nullable(),
   savedRun: z.string().nullable(),
-  dustAPIProjectId: z.string(),
+  rubyAPIProjectId: z.string(),
   space: SpaceTypeSchema,
   datasets: z.array(DatasetSchema).optional(),
   coreSpecifications: z.record(z.string()).optional(),
@@ -2282,7 +2282,7 @@ const AppImportTypeSchema = z.object({
   savedSpecification: z.string().nullable(),
   savedConfig: z.string().nullable(),
   savedRun: z.string().nullable(),
-  dustAPIProjectId: z.string(),
+  rubyAPIProjectId: z.string(),
   datasets: z.array(DatasetSchema).optional(),
   coreSpecifications: z.record(z.string()).optional(),
 });
@@ -2317,7 +2317,7 @@ export type GetOrPatchAgentConfigurationResponseType = z.infer<
 // Passthrough is required: beyond `userFavorite`, the endpoint accepts agent configuration
 // patch fields (`instructions`, `agent`, `generation_settings`, `tags`, `editors`, `skills`,
 // `toolset`, ...) which are validated server-side by `agentYAMLConfigPatchSchema`. Stripping
-// unknown keys here would silently drop them (see dust-tt/dust#26698).
+// unknown keys here would silently drop them (see ruby-ai/ruby#26698).
 export const PatchAgentConfigurationRequestSchema = z
   .object({
     userFavorite: z.boolean().optional(),

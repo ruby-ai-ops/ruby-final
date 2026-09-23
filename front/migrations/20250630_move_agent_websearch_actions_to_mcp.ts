@@ -1,8 +1,8 @@
 // import type {
 //   WebsearchQueryResourceType,
 //   WebsearchResultResourceType,
-// } from "@dust-tt/client";
-// import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+// } from "@ruby-ai/client";
+// import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 // import assert from "assert";
 // import type { Logger } from "pino";
 // import type { CreationAttributes } from "sequelize";
@@ -305,8 +305,8 @@
 //         assert(
 //           agentConfiguration ||
 //             isGlobalAgentId(agentMessage.agentConfigurationId) ||
-//             // Dust Next and deepseekc are global agents that were removed from everywhere.
-//             ["dust-next", "deepseek"].includes(
+//             // Ruby Next and deepseekc are global agents that were removed from everywhere.
+//             ["ruby-next", "deepseek"].includes(
 //               agentMessage.agentConfigurationId
 //             ),
 //           `Agent configuration must exist for agent ${agentMessage.agentConfigurationId}`

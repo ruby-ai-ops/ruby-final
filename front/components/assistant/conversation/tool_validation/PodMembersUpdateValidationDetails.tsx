@@ -3,7 +3,7 @@ import type { PodManagerUpdateMembersInput } from "@app/lib/api/actions/servers/
 import type { MemberDisplayInfo } from "@app/lib/swr/assistants";
 import { useMemberDetails } from "@app/lib/swr/assistants";
 import type { LightWorkspaceType, UserType } from "@app/types/user";
-import { Avatar, Chip, cn } from "@dust-tt/sparkle";
+import { Avatar, Chip, cn } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 interface PodMembersUpdateValidationDetailsProps {
@@ -109,7 +109,7 @@ export function PodMembersUpdateValidationDetails({
   const addEntries = Object.entries(membersToAdd);
   const { podLabel, isPodLabelLoading } = usePodLabel({
     owner,
-    dustPodUri: input.dustPod?.uri,
+    rubyPodUri: input.rubyPod?.uri,
     conversationId,
   });
 

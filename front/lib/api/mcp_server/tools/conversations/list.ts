@@ -1,4 +1,4 @@
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { SpaceResource } from "@app/lib/resources/space_resource";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -30,7 +30,7 @@ const inputSchema = {
 };
 
 export function registerConversationsListTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "list_conversations",
     {

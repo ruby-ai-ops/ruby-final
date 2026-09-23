@@ -24,7 +24,7 @@ import {
   SliderToggle,
   TextArea,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { useForm } from "react-hook-form";
 import { Controller, useWatch } from "react-hook-form";
 import { z } from "zod";

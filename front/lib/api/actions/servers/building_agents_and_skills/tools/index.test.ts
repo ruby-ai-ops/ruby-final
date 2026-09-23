@@ -581,7 +581,7 @@ describe("building_agents_and_skills tools", () => {
         authenticator.getNonNullableUser().sId,
       ]);
 
-      // The Poke suggestions list serializes every row via `toJSON`; an `editors` row must not
+      // The Admin suggestions list serializes every row via `toJSON`; an `editors` row must not
       // make that throw.
       expect(() => suggestion?.toJSON()).not.toThrow();
       expect(suggestion?.toJSON()).toMatchObject({

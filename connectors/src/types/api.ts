@@ -1,4 +1,4 @@
-import type { ConnectorProvider } from "@dust-tt/client";
+import type { ConnectorProvider } from "@ruby-ai/client";
 
 import type { ConnectorConfiguration } from "./configuration";
 import type { ContentNodeType } from "./content_nodes";
@@ -131,7 +131,7 @@ export type ProviderVisibility = "public" | "private";
  * own. This is because the Microsoft API does not allow to query a document or
  * list its children using its id alone. We compute an internal id that contains all
  * information. More details here:
- * https://app.notion.com/p/dust-tt/Design-Doc-Microsoft-ids-parents-c27726652aae45abafaac587b971a41d?pvs=4
+ * https://app.notion.com/p/ruby-ai/Design-Doc-Microsoft-ids-parents-c27726652aae45abafaac587b971a41d?pvs=4
  */
 export interface ContentNode {
   expandable: boolean;
@@ -162,4 +162,4 @@ export function isScheduleAlreadyRunning(err: unknown) {
   );
 }
 
-export { errorToString, normalizeError } from "@dust-tt/client";
+export { errorToString, normalizeError } from "@ruby-ai/client";

@@ -10,7 +10,7 @@ import {
   Separator,
   TagBlock,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { Editor } from "@tiptap/react";
 import type { ReactNode } from "react";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`

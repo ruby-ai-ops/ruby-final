@@ -2,7 +2,7 @@
 # Outputs the list of API handler files in front-api/routes that do not have a
 # matching file in front/pages/api. Test files (*.test.ts, *.test.tsx) are
 # excluded. Paths are printed relative to front-api/, e.g.:
-#   routes/w/[wId]/dust_app_secrets/index.ts
+#   routes/w/[wId]/ruby_app_secrets/index.ts
 #
 # Many files under front-api/routes only mount sub-routers (via app.route(...))
 # and are not real handlers. We only consider files that register at least one

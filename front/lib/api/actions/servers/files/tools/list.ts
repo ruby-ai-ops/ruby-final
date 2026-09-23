@@ -4,7 +4,7 @@ import type {
   ToolHandlerResult,
 } from "@app/lib/actions/mcp_internal_actions/tool_definition";
 import {
-  getDustFileSystemForAgentLoop,
+  getRubyFileSystemForAgentLoop,
   requireAgentLoopConversation,
   scopedPathsFromArgs,
 } from "@app/lib/api/actions/servers/files/tools/agent_loop_fs";
@@ -93,7 +93,7 @@ export async function listHandler(
       : undefined
   );
 
-  const fsResult = await getDustFileSystemForAgentLoop(
+  const fsResult = await getRubyFileSystemForAgentLoop(
     extra.auth,
     conversation,
     scopedPaths
@@ -101,8 +101,8 @@ export async function listHandler(
   if (fsResult.isErr()) {
     return fsResult;
   }
-  const dustFs = fsResult.value;
-  const mounts = dustFs.getMounts();
+  const rubyFs = fsResult.value;
+  const mounts = rubyFs.getMounts();
 
   let scopedPrefix: string;
 
@@ -150,7 +150,7 @@ export async function listHandler(
       assertNever(listScope);
   }
 
-  const listRes = await dustFs.list(scopedPrefix, { includeProcessed: true });
+  const listRes = await rubyFs.list(scopedPrefix, { includeProcessed: true });
   if (listRes.isErr()) {
     return new Err(new MCPError("Failed to list files.", { tracked: true }));
   }
@@ -158,7 +158,7 @@ export async function listHandler(
   // Enrich, so we can expose ids for interactive content files.
   const entries = await enrichListWithFileResourceIds(
     extra.auth,
-    dustFs,
+    rubyFs,
     listRes.value
   );
 

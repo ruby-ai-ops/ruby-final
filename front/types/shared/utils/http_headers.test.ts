@@ -1,10 +1,10 @@
-import { encodeUtf8HeaderValue } from "@dust-tt/client";
+import { encodeUtf8HeaderValue } from "@ruby-ai/client";
 import { describe, expect, it } from "vitest";
 
 import { decodeUtf8HeaderValue } from "./http_headers";
 
-// Contract test between the sender (DustAPI's `encodeUtf8HeaderValue` in
-// @dust-tt/client, applied to extra headers in `baseHeaders`) and the receiver
+// Contract test between the sender (RubyAPI's `encodeUtf8HeaderValue` in
+// @ruby-ai/client, applied to extra headers in `baseHeaders`) and the receiver
 // (`decodeUtf8HeaderValue`, used by the front-api auth middleware).
 describe("encodeUtf8HeaderValue / decodeUtf8HeaderValue", () => {
   it("passes ASCII values through raw", () => {

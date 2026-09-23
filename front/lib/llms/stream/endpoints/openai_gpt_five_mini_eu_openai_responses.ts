@@ -1,11 +1,11 @@
-import { WithDustGptFiveMiniConfig } from "@app/lib/llms/providers/openai/models/gpt_five_mini";
-import { defineDustStreamEndpoint } from "@app/lib/llms/stream/dust_stream_endpoint";
+import { WithRubyGptFiveMiniConfig } from "@app/lib/llms/providers/openai/models/gpt_five_mini";
+import { defineRubyStreamEndpoint } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import { OpenAIGptFiveMiniEuropeOpenAIResponsesStream } from "@app/lib/model_constructors/stream/endpoints/openai_gpt_five_mini_eu_openai_responses";
 
-export class DustOpenAIGptFiveMiniEuropeOpenAIResponsesStream extends WithDustGptFiveMiniConfig(
+export class RubyOpenAIGptFiveMiniEuropeOpenAIResponsesStream extends WithRubyGptFiveMiniConfig(
   OpenAIGptFiveMiniEuropeOpenAIResponsesStream
 ) {
   static readonly endpointFilter = {};
 }
 
-defineDustStreamEndpoint(DustOpenAIGptFiveMiniEuropeOpenAIResponsesStream);
+defineRubyStreamEndpoint(RubyOpenAIGptFiveMiniEuropeOpenAIResponsesStream);

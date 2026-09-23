@@ -23,7 +23,7 @@ async function main() {
     "me@yoheinakajima.com",
     "oliranneries@gmail.com",
     "nl.lorenz@gmx.de",
-    "team@dust.tt",
+    "team@ruby.ad",
     "spolu@proton.me",
   ];
 
@@ -42,24 +42,24 @@ export async function sendCancelSubscriptionEmail(
   const cancelMessage = {
     from: {
       name: "Stanislas Polu",
-      email: "spolu@dust.tt",
+      email: "spolu@ruby.ad",
     },
-    subject: `[Dust] Action Required: legacy API`,
+    subject: `[Ruby] Action Required: legacy API`,
     text: `Hi!
 
-First of all, thank you for being a long time user of Dust! We've evolved a lot since you first
-signed up and started using us. I invite you to check out our landing (https://dust.tt) for a quick
+First of all, thank you for being a long time user of Ruby! We've evolved a lot since you first
+signed up and started using us. I invite you to check out our landing (https://ruby.ad) for a quick
 overview of our current focus on amplifying teams potential with customizable and secure AI
-agents. Our platform is extensible as you can turn any of your current Dust app into an
+agents. Our platform is extensible as you can turn any of your current Ruby app into an
 agent action. If you give it a spin, I'd love your feedback.
 
-We noticed that you are still using our legacy API routes (https://dust.tt/api/v1/apps/[user]/...)
+We noticed that you are still using our legacy API routes (https://app.ruby.ad/api/v1/apps/[user]/...)
 which were deprecated in June and are scheduled for shutdown on December 15th. This is a final
 remainder before shutdown of these legacy routes.
 
 To upgrade to the new routes you simply need to replace '/api/v1/apps/[user]/...' with
-'/api/v1/w/[workspace]/apps/...'. Your workspace can be found by logging in Dust and looking at the
-URL, or clicking on Deploy on your associated Dust app.
+'/api/v1/w/[workspace]/apps/...'. Your workspace can be found by logging in Ruby and looking at the
+URL, or clicking on Deploy on your associated Ruby app.
 
 Happy to help you with this process of course. Simply answer to this email.
 

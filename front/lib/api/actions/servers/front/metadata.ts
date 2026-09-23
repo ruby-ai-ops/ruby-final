@@ -361,7 +361,7 @@ export const FRONT_SERVER = {
       "Manage support conversations, messages, and customer interactions.",
     authorization: null,
     icon: "FrontLogo",
-    documentationUrl: "https://docs.dust.tt/docs/front-mcp",
+    documentationUrl: "https://docs.ruby.ad/docs/front-mcp",
   },
   tools: FRONT_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

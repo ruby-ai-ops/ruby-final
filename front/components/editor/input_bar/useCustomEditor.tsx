@@ -34,7 +34,7 @@ import { isMobile } from "@app/lib/utils";
 import type { RichMention } from "@app/types/assistant/mentions";
 import type { DataSourceViewContentNode } from "@app/types/data_source_view";
 import type { WorkspaceType } from "@app/types/user";
-import { markdownStyles } from "@dust-tt/sparkle";
+import { markdownStyles } from "@ruby-ai/ui";
 import { Placeholder } from "@tiptap/extensions";
 import { Markdown } from "@tiptap/markdown";
 import type { Editor } from "@tiptap/react";

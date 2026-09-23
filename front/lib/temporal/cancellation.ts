@@ -1,4 +1,4 @@
-import { DUST_WORKER_SHUTDOWN_ABORT_REASON } from "@app/lib/shutdown_signal";
+import { RUBY_WORKER_SHUTDOWN_ABORT_REASON } from "@app/lib/shutdown_signal";
 
 // The SDK documents WORKER_SHUTDOWN as CancelledFailure.message, but does not
 // expose the reason string from @temporalio/worker's public root module.
@@ -7,7 +7,7 @@ const TEMPORAL_WORKER_SHUTDOWN_ERROR = "CancelledFailure: WORKER_SHUTDOWN";
 const TEMPORAL_USER_CANCELLATION_REASON = "CANCELLED";
 const TEMPORAL_USER_CANCELLATION_ERROR = "CancelledFailure: CANCELLED";
 const WORKER_SHUTDOWN_REASON_TEXTS: readonly string[] = [
-  DUST_WORKER_SHUTDOWN_ABORT_REASON,
+  RUBY_WORKER_SHUTDOWN_ABORT_REASON,
   TEMPORAL_WORKER_SHUTDOWN_REASON,
   TEMPORAL_WORKER_SHUTDOWN_ERROR,
 ];

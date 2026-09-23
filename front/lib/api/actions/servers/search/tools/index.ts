@@ -32,7 +32,7 @@ import {
   parseTimeFrame,
   timeFrameFromNow,
 } from "@app/types/shared/utils/time_frame";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import assert from "assert";
 
@@ -160,7 +160,7 @@ export async function searchFunction(
     (doc): SearchResultResourceType => {
       const dataSourceView = coreSearchArgs.find(
         (args) =>
-          args.dataSourceView.dataSource.dustAPIDataSourceId ===
+          args.dataSourceView.dataSource.rubyAPIDataSourceId ===
           doc.data_source_id
       )?.dataSourceView;
 

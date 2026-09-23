@@ -52,7 +52,7 @@ describe("CursorCloudAgentsClient", () => {
 
     const result = await client.createAgent({
       prompt: { text: "Update the README" },
-      repos: [{ url: "https://github.com/dust-tt/dust", startingRef: "main" }],
+      repos: [{ url: "https://github.com/ruby-ai-ops/ruby-final", startingRef: "main" }],
       autoCreatePR: true,
     });
 
@@ -68,7 +68,7 @@ describe("CursorCloudAgentsClient", () => {
           prompt: { text: "Update the README" },
           repos: [
             {
-              url: "https://github.com/dust-tt/dust",
+              url: "https://github.com/ruby-ai-ops/ruby-final",
               startingRef: "main",
             },
           ],

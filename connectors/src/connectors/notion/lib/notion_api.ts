@@ -10,7 +10,7 @@ import type {
   PropertyKeys,
 } from "@connectors/types";
 import { cacheWithRedis } from "@connectors/types";
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 import type { LogLevel } from "@notionhq/client";
 import {
   APIErrorCode,
@@ -1178,22 +1178,22 @@ export async function retrieveDatabaseChildrenResultPage({
 }
 
 // This function is used to create a text representation of a notion database properties.  We use it
-// to render databases inline (in the Notion Page document on Dust), and to create structured Tables
-// on Dust (we use the CSV format).
-// The function accepts a `dustIdColumn` array which must have the same length as the
-// `pagesProperties`. This array is used to add a column to the CSV that contains the Dust ID of the
-// page (__dust_id). This is useful to uniquely identify the notion page in the CSV.
+// to render databases inline (in the Notion Page document on Ruby), and to create structured Tables
+// on Ruby (we use the CSV format).
+// The function accepts a `rubyIdColumn` array which must have the same length as the
+// `pagesProperties`. This array is used to add a column to the CSV that contains the Ruby ID of the
+// page (__ruby_id). This is useful to uniquely identify the notion page in the CSV.
 // The function returns the CSV as well as the original (non sanitized, non slugified) headers.
 export async function renderDatabaseFromPages({
   databaseTitle,
   pagesProperties,
-  dustIdColumn,
+  rubyIdColumn,
   rowBoundary = "||",
   cellSeparator = " | ",
 }: {
   databaseTitle: string | null;
   pagesProperties: PageObjectProperties[];
-  dustIdColumn?: string[];
+  rubyIdColumn?: string[];
   rowBoundary?: string;
   cellSeparator?: string;
 }): Promise<{
@@ -1204,9 +1204,9 @@ export async function renderDatabaseFromPages({
     return { csv: "", originalHeader: [] };
   }
 
-  if (dustIdColumn && dustIdColumn.length !== pagesProperties.length) {
+  if (rubyIdColumn && rubyIdColumn.length !== pagesProperties.length) {
     throw new Error(
-      "The dustIdColumn should have the same length as the pagesProperties."
+      "The rubyIdColumn should have the same length as the pagesProperties."
     );
   }
 
@@ -1215,13 +1215,13 @@ export async function renderDatabaseFromPages({
     // We remove empty keys.
     .filter((k) => !!k.trim());
 
-  if (dustIdColumn) {
-    header = ["__dust_id", ...header];
+  if (rubyIdColumn) {
+    header = ["__ruby_id", ...header];
   }
   const rows = pagesProperties.map((pageProperties, pageIndex) =>
     header.map((k) => {
-      if (k === "__dust_id" && dustIdColumn) {
-        return dustIdColumn[pageIndex];
+      if (k === "__ruby_id" && rubyIdColumn) {
+        return rubyIdColumn[pageIndex];
       }
       const property = pageProperties[k];
       if (!property) {

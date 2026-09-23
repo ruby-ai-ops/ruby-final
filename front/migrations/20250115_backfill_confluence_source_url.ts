@@ -43,8 +43,8 @@ async function backfillDataSource(
        AND data_source_id = :dataSourceId;`,
     {
       replacements: {
-        dataSourceId: frontDataSource.dustAPIDataSourceId,
-        projectId: frontDataSource.dustAPIProjectId,
+        dataSourceId: frontDataSource.rubyAPIDataSourceId,
+        projectId: frontDataSource.rubyAPIProjectId,
       },
       type: QueryTypes.SELECT,
     }
@@ -80,8 +80,8 @@ async function backfillDataSource(
     execute,
     logger.child({
       configuration,
-      projectId: frontDataSource.dustAPIProjectId,
-      dataSourceId: frontDataSource.dustAPIDataSourceId,
+      projectId: frontDataSource.rubyAPIProjectId,
+      dataSourceId: frontDataSource.rubyAPIDataSourceId,
     })
   );
 }

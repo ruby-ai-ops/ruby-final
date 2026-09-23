@@ -47,7 +47,7 @@ export async function processDataSourceTables({
   const res = await concurrentExecutor(
     data.blobs.tables,
     async (d) => {
-      // If the source URL starts with the source cell Dust URL, replace it with the destination cell Dust URL.
+      // If the source URL starts with the source cell Ruby URL, replace it with the destination cell Ruby URL.
       const sourceUrl =
         d.source_url && d.source_url.startsWith(sourceApiBaseUrl)
           ? d.source_url.replace(sourceApiBaseUrl, destRegionApiBaseUrl)
@@ -73,8 +73,8 @@ export async function processDataSourceTables({
 
       // 1) Upsert the table.
       const upsertRes = await coreAPI.upsertTable({
-        projectId: destIds.dustAPIProjectId,
-        dataSourceId: destIds.dustAPIDataSourceId,
+        projectId: destIds.rubyAPIProjectId,
+        dataSourceId: destIds.rubyAPIDataSourceId,
         tableId: d.table_id,
         name: d.name,
         description: d.description,

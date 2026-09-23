@@ -1,8 +1,8 @@
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import { validatePodFileTabs } from "@app/lib/api/projects/file_tabs";
 import { createResourceTest } from "@app/tests/utils/generic_resource_tests";
 import { SpaceFactory } from "@app/tests/utils/SpaceFactory";
-import { DustFileSystemError } from "@app/types/file_system";
+import { RubyFileSystemError } from "@app/types/file_system";
 import { frameContentType } from "@app/types/files";
 import { DEFAULT_POD_FILE_TAB_ICON } from "@app/types/pod_file_tab";
 import { Err, Ok } from "@app/types/shared/result";
@@ -32,8 +32,8 @@ describe("validatePodFileTabs", () => {
       return new Ok(null);
     });
 
-    vi.spyOn(DustFileSystem, "forPod").mockResolvedValue(
-      new Ok({ stat } as unknown as DustFileSystem)
+    vi.spyOn(RubyFileSystem, "forPod").mockResolvedValue(
+      new Ok({ stat } as unknown as RubyFileSystem)
     );
 
     const result = await validatePodFileTabs(
@@ -79,10 +79,10 @@ describe("validatePodFileTabs", () => {
     const pod = await SpaceFactory.project(workspace, user.id);
     const missingPath = `pod-${pod.sId}/frames/Missing.tsx`;
 
-    vi.spyOn(DustFileSystem, "forPod").mockResolvedValue(
+    vi.spyOn(RubyFileSystem, "forPod").mockResolvedValue(
       new Ok({
         stat: vi.fn(async () => new Ok(null)),
-      } as unknown as DustFileSystem)
+      } as unknown as RubyFileSystem)
     );
 
     const result = await validatePodFileTabs(
@@ -124,8 +124,8 @@ describe("validatePodFileTabs", () => {
       return new Ok(null);
     });
 
-    vi.spyOn(DustFileSystem, "forPod").mockResolvedValue(
-      new Ok({ stat } as unknown as DustFileSystem)
+    vi.spyOn(RubyFileSystem, "forPod").mockResolvedValue(
+      new Ok({ stat } as unknown as RubyFileSystem)
     );
 
     const result = await validatePodFileTabs(
@@ -164,12 +164,12 @@ describe("validatePodFileTabs", () => {
     const pod = await SpaceFactory.project(workspace, user.id);
     const zipPath = `pod-${pod.sId}/archive.zip`;
 
-    vi.spyOn(DustFileSystem, "forPod").mockResolvedValue(
+    vi.spyOn(RubyFileSystem, "forPod").mockResolvedValue(
       new Ok({
         stat: vi.fn(
           async () => new Ok({ contentType: "application/zip", sizeBytes: 10 })
         ),
-      } as unknown as DustFileSystem)
+      } as unknown as RubyFileSystem)
     );
 
     const result = await validatePodFileTabs(
@@ -203,8 +203,8 @@ describe("validatePodFileTabs", () => {
     });
     const pod = await SpaceFactory.project(workspace, user.id);
 
-    vi.spyOn(DustFileSystem, "forPod").mockResolvedValue(
-      new Err(new DustFileSystemError("unauthorized", "Unauthorized"))
+    vi.spyOn(RubyFileSystem, "forPod").mockResolvedValue(
+      new Err(new RubyFileSystemError("unauthorized", "Unauthorized"))
     );
 
     const result = await validatePodFileTabs(

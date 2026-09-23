@@ -1,7 +1,7 @@
 import { BigQueryConnectorManager } from "@connectors/connectors/bigquery";
 import { ConfluenceConnectorManager } from "@connectors/connectors/confluence";
 import { DiscordBotConnectorManager } from "@connectors/connectors/discord_bot";
-import { DustProjectConnectorManager } from "@connectors/connectors/dust_project";
+import { RubyProjectConnectorManager } from "@connectors/connectors/ruby_project";
 import { GithubConnectorManager } from "@connectors/connectors/github";
 import { GongConnectorManager } from "@connectors/connectors/gong";
 import { GoogleDriveConnectorManager } from "@connectors/connectors/google_drive";
@@ -26,8 +26,8 @@ import type {
   SlackConfigurationType,
   WebCrawlerConfiguration,
 } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { assertNever } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { assertNever } from "@ruby-ai/client";
 
 type ConnectorManager =
   | NotionConnectorManager
@@ -40,7 +40,7 @@ type ConnectorManager =
   | GithubConnectorManager
   | GoogleDriveConnectorManager
   | SnowflakeConnectorManager
-  | DustProjectConnectorManager;
+  | RubyProjectConnectorManager;
 
 export function getConnectorManager({
   connectorProvider,
@@ -82,8 +82,8 @@ export function getConnectorManager({
       return new GongConnectorManager(connectorId);
     case "discord_bot":
       return new DiscordBotConnectorManager(connectorId);
-    case "dust_project":
-      return new DustProjectConnectorManager(connectorId);
+    case "ruby_project":
+      return new RubyProjectConnectorManager(connectorId);
     default:
       assertNever(connectorProvider);
   }
@@ -96,7 +96,7 @@ export function createConnector({
   | {
       connectorProvider: Exclude<
         ConnectorProvider,
-        "webcrawler" | "slack" | "slack_bot" | "discord_bot" | "dust_project"
+        "webcrawler" | "slack" | "slack_bot" | "discord_bot" | "ruby_project"
       >;
       params: {
         dataSourceConfig: DataSourceConfig;
@@ -129,7 +129,7 @@ export function createConnector({
       };
     }
   | {
-      connectorProvider: "dust_project";
+      connectorProvider: "ruby_project";
       params: {
         dataSourceConfig: DataSourceConfig;
         connectionId: string;
@@ -171,8 +171,8 @@ export function createConnector({
       return GongConnectorManager.create(params);
     case "discord_bot":
       return DiscordBotConnectorManager.create(params);
-    case "dust_project":
-      return DustProjectConnectorManager.create(params);
+    case "ruby_project":
+      return RubyProjectConnectorManager.create(params);
     default:
       assertNever(connectorProvider);
   }

@@ -13,7 +13,7 @@ import {
   NavigationListItem,
   NavigationListLabel,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import { useState } from "react";
 

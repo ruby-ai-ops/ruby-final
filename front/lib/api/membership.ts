@@ -449,7 +449,7 @@ export async function revokeAndTrackMembership(
 }
 
 // Builds an audit actor from the `author` carried by the membership mutations.
-// These functions run both in request contexts (poke) and system contexts
+// These functions run both in request contexts (admin) and system contexts
 // (Temporal, scripts, checkout), so they only have `author`, not an
 // Authenticator — hence audit events are emitted via `emitAuditLogEventDirect`.
 function auditActorFromAuthor(author: UserType | "no-author"): AuditLogActor {
@@ -597,7 +597,7 @@ export async function updateMembershipSeatAndTrack({
   immediate?: boolean;
   isDirectSync?: boolean;
   // When true, skip the one-shot "returning member" guard on `free`. Reserved
-  // for admin-driven poke overrides: `grantFreeSeatCredits`'s uniqueness key
+  // for admin-driven admin overrides: `grantFreeSeatCredits`'s uniqueness key
   // (`free-seat-credit:{workspaceId}:{userId}`) still prevents a second AWU
   // grant, so this only re-opens the seat assignment, never the credit.
   allowReturningMemberFreeSeat?: boolean;

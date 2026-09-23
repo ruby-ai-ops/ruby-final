@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface UserToolsDialogProps {
   open: boolean;

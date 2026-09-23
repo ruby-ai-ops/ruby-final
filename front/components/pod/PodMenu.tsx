@@ -34,7 +34,7 @@ import {
   Star01,
   UserSquare,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import type { ReactElement } from "react";
 import { useCallback, useState } from "react";

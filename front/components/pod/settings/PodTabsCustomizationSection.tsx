@@ -33,11 +33,11 @@ import {
   PopoverRoot,
   PopoverTrigger,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { DragEvent } from "react";
 import { useMemo, useState } from "react";
 
-const POD_TAB_DRAG_MIME = "application/x-dust-pod-tab-path";
+const POD_TAB_DRAG_MIME = "application/x-ruby-pod-tab-path";
 
 interface PodTabsCustomizationSectionProps {
   owner: LightWorkspaceType;

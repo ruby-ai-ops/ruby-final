@@ -14,7 +14,7 @@ import {
 } from "@app/components/editor/extensions/skill_builder/RawMarkdownBlock";
 import { ToolNodeWithView } from "@app/components/editor/extensions/skill_builder/ToolNodeWithView";
 import type { MCPServerViewType } from "@app/lib/api/mcp";
-import { markdownStyles } from "@dust-tt/sparkle";
+import { markdownStyles } from "@ruby-ai/ui";
 import type { Extensions } from "@tiptap/core";
 import { Markdown } from "@tiptap/markdown";
 import { StarterKit } from "@tiptap/starter-kit";

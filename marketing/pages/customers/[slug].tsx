@@ -15,7 +15,7 @@ import type { CustomerStoryPageProps } from "@marketing/lib/contentful/types";
 import { classNames } from "@marketing/lib/utils";
 import logger from "@marketing/logger/logger";
 import { isString } from "@marketing/types/shared/utils/general";
-import { Chip } from "@dust-tt/sparkle";
+import { Chip } from "@ruby-ai/ui";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -98,8 +98,8 @@ export default function CustomerStoryPage({
   const ogImageUrl =
     story.heroImage?.url ??
     story.companyLogo?.url ??
-    "https://dust.tt/static/og_image.png";
-  const canonicalUrl = `https://dust.tt/customers/${story.slug}`;
+    "https://ruby.ad/static/og_image.png";
+  const canonicalUrl = `https://ruby.ad/customers/${story.slug}`;
   const tocItems = extractTableOfContents(story.body);
 
   return (
@@ -110,7 +110,7 @@ export default function CustomerStoryPage({
         </div>
       )}
       <Head>
-        <title>{`${story.companyName}: ${story.title} | Dust Customer Story`}</title>
+        <title>{`${story.companyName}: ${story.title} | Ruby Customer Story`}</title>
         {preview && <meta name="robots" content="noindex, nofollow" />}
         {story.description && (
           <meta name="description" content={story.description} />
@@ -127,7 +127,7 @@ export default function CustomerStoryPage({
         <meta property="og:type" content="article" />
         <meta property="og:image" content={ogImageUrl} />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:site_name" content="Dust" />
+        <meta property="og:site_name" content="Ruby" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta
@@ -156,14 +156,14 @@ export default function CustomerStoryPage({
               dateModified: story.updatedAt,
               author: {
                 "@type": "Organization",
-                name: "Dust",
+                name: "Ruby",
               },
               publisher: {
                 "@type": "Organization",
-                name: "Dust",
+                name: "Ruby",
                 logo: {
                   "@type": "ImageObject",
-                  url: "https://dust.tt/static/og_image.png",
+                  url: "https://ruby.ad/static/og_image.png",
                 },
               },
               about: {
@@ -344,7 +344,7 @@ export default function CustomerStoryPage({
 
                 <div className="mt-12 rounded-2xl border border-highlight/20 bg-highlight/5 p-6">
                   <p className="font-sans text-foreground">
-                    Interested in learning more about how Dust can help your
+                    Interested in learning more about how Ruby can help your
                     team? Visit our{" "}
                     <A
                       rel="noopener noreferrer"

@@ -1,16 +1,16 @@
 import { PartnerFormThankYou } from "@marketing/components/home/PartnerFormThankYou";
-import { FormProvider } from "@marketing/components/sparkle/FormProvider";
+import { FormProvider } from "@marketing/components/ui/FormProvider";
 import type { TrackingParams } from "@marketing/lib/api/hubspot/contactFormSchema";
 import type {
   PartnerFormData,
   PartnerSubmitResponse,
 } from "@marketing/lib/api/hubspot/partnerFormSchema";
 import {
-  COMPANY_INDUSTRY_OPTIONS,
+  COMPANY_INRUBYRY_OPTIONS,
   HEADQUARTERS_REGION_OPTIONS,
   PARTNER_AI_PROFICIENCY_OPTIONS,
   PARTNER_BUSINESS_MODEL_OPTIONS,
-  PARTNER_DUST_USAGE_DURATION_OPTIONS,
+  PARTNER_RUBY_USAGE_DURATION_OPTIONS,
   PARTNER_PROJECT_DURATION_OPTIONS,
 } from "@marketing/lib/api/hubspot/partnerFormSchema";
 import { clientFetch } from "@marketing/lib/egress/client";
@@ -28,7 +28,7 @@ import {
   Label,
   Spinner,
   TextArea,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 import { useController, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -46,9 +46,9 @@ const PARTNER_FORM_FIELDS = new Set<string>([
   "partner_project_duration",
   "technical_staff",
   "partner_ai_proficiency",
-  "partner_dust_usage_duration",
+  "partner_ruby_usage_duration",
   "partner_agent_example",
-  "partner_dust_clients",
+  "partner_ruby_clients",
   "any_existing_lead_to_share_",
   "partner_additionnal_details",
   "partner_other_partnerhips",
@@ -98,13 +98,13 @@ const BusinessProfileSchema = z.object({
 });
 
 const LastStepSchema = z.object({
-  partner_dust_usage_duration: z.string().min(1, "Please select a duration"),
+  partner_ruby_usage_duration: z.string().min(1, "Please select a duration"),
   partner_agent_example: z
     .string()
-    .min(1, "Please share your favorite Dust Agent"),
-  partner_dust_clients: z
+    .min(1, "Please share your favorite Ruby Agent"),
+  partner_ruby_clients: z
     .string()
-    .min(1, "Please enter the number of Dust clients")
+    .min(1, "Please enter the number of Ruby clients")
     .regex(/^\d+$/, "Please enter a valid number"),
   any_existing_lead_to_share_: z
     .string()
@@ -123,7 +123,7 @@ const STEP_SCHEMAS = {
 const STEP_TITLES = [
   "Become a Partner",
   "Business Profile",
-  "Dust and you",
+  "Ruby and you",
 ] as const;
 
 function usePartnerFormSubmit() {
@@ -345,9 +345,9 @@ export function PartnerForm() {
       partner_project_duration: "",
       technical_staff: "",
       partner_ai_proficiency: "",
-      partner_dust_usage_duration: "",
+      partner_ruby_usage_duration: "",
       partner_agent_example: "",
-      partner_dust_clients: "",
+      partner_ruby_clients: "",
       any_existing_lead_to_share_: "",
       partner_additionnal_details: "",
       partner_other_partnerhips: "",
@@ -404,14 +404,14 @@ export function PartnerForm() {
 
     setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
     document
-      .getElementById("dust-partner-form")
+      .getElementById("ruby-partner-form")
       ?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleBack = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
     document
-      .getElementById("dust-partner-form")
+      .getElementById("ruby-partner-form")
       ?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -512,7 +512,7 @@ export function PartnerForm() {
         <DropdownField
           name="company_industry"
           label="What industry do you specialize in?"
-          options={COMPANY_INDUSTRY_OPTIONS}
+          options={COMPANY_INRUBYRY_OPTIONS}
           placeholder="Select industry"
         />
         <p className="text-sm text-muted-foreground">
@@ -562,19 +562,19 @@ export function PartnerForm() {
 
   const renderLastStepFields = () => (
     <div className="flex flex-col gap-6">
-      {/* Dust Usage Duration */}
+      {/* Ruby Usage Duration */}
       <DropdownField
-        name="partner_dust_usage_duration"
-        label="How long have you been using Dust?"
-        options={PARTNER_DUST_USAGE_DURATION_OPTIONS}
+        name="partner_ruby_usage_duration"
+        label="How long have you been using Ruby?"
+        options={PARTNER_RUBY_USAGE_DURATION_OPTIONS}
         placeholder="Select duration"
         required
       />
 
-      {/* Favorite Dust Agent */}
+      {/* Favorite Ruby Agent */}
       <div className="flex flex-col gap-2">
         <Label>
-          Share your favorite Dust Agent you&apos;ve built
+          Share your favorite Ruby Agent you&apos;ve built
           <span className="text-red-500">*</span>
         </Label>
         <p className="text-sm text-muted-foreground">
@@ -589,19 +589,19 @@ export function PartnerForm() {
         />
       </div>
 
-      {/* Dust Clients Count */}
+      {/* Ruby Clients Count */}
       <div className="flex flex-col gap-2">
         <Label>
-          How many Dust clients do you currently have?
+          How many Ruby clients do you currently have?
           <span className="text-red-500">*</span>
         </Label>
         <Input
-          {...form.register("partner_dust_clients")}
+          {...form.register("partner_ruby_clients")}
           type="number"
           min="0"
           placeholder="eg. 3"
-          isError={!!errors.partner_dust_clients}
-          message={errors.partner_dust_clients?.message}
+          isError={!!errors.partner_ruby_clients}
+          message={errors.partner_ruby_clients?.message}
         />
       </div>
 
@@ -626,7 +626,7 @@ export function PartnerForm() {
       {/* Partnership Vision */}
       <div className="flex flex-col gap-2">
         <Label>
-          How would you envision a partnership with Dust?
+          How would you envision a partnership with Ruby?
           <span className="text-red-500">*</span>
         </Label>
         <TextArea
@@ -698,7 +698,7 @@ export function PartnerForm() {
       {submitResult ? (
         <PartnerFormThankYou />
       ) : (
-        <div id="dust-partner-form" className="flex flex-col gap-6">
+        <div id="ruby-partner-form" className="flex flex-col gap-6">
           <StepIndicator
             currentStep={currentStep}
             totalSteps={totalSteps}
@@ -711,11 +711,11 @@ export function PartnerForm() {
           {currentStep === totalSteps && (
             <div className="text-sm italic text-muted-foreground">
               <p>
-                Dust uses your contact information to communicate with you about
+                Ruby uses your contact information to communicate with you about
                 our products and services. You may unsubscribe at any time.
                 Please review our{" "}
                 <a
-                  href="https://dust.tt/privacy"
+                  href="https://ruby.ad/privacy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline hover:text-foreground"

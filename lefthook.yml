@@ -119,11 +119,11 @@ pre-commit:
       run: cargo fmt -- {staged_files}
       stage_fixed: true
 
-    # Dust Sandbox (Rust) format check
-    dust-sandbox-fmt:
-      tags: dust-sandbox
+    # Ruby Sandbox (Rust) format check
+    ruby-sandbox-fmt:
+      tags: ruby-sandbox
       glob: "*.rs"
-      root: cli/dust-sandbox/
+      root: cli/ruby-sandbox/
       run: cargo fmt -- {staged_files}
       stage_fixed: true
 
@@ -161,7 +161,7 @@ pre-commit:
         echo "  npm run -w connectors migration:generate:pre-deploy <description>"
         echo "  npm run -w connectors migration:generate:post-deploy <description>"
         echo ""
-        echo "See: https://app.notion.com/p/dust-tt/Runbook-Deploy-Run-migrations-5669e328475d489ba16298a77f2aa45c?source=copy_link#36728599d94180898358cf59a8725740"
+        echo "See: https://app.notion.com/p/ruby-ai/Runbook-Deploy-Run-migrations-5669e328475d489ba16298a77f2aa45c?source=copy_link#36728599d94180898358cf59a8725740"
         exit 1
       priority: 1
 
@@ -175,7 +175,7 @@ pre-commit:
         echo "  npm run -w front migration:generate:pre-deploy <description>"
         echo "  npm run -w front migration:generate:post-deploy <description>"
         echo ""
-        echo "See: https://app.notion.com/p/dust-tt/Runbook-Deploy-Run-migrations-5669e328475d489ba16298a77f2aa45c?source=copy_link#36728599d94180898358cf59a8725740"
+        echo "See: https://app.notion.com/p/ruby-ai/Runbook-Deploy-Run-migrations-5669e328475d489ba16298a77f2aa45c?source=copy_link#36728599d94180898358cf59a8725740"
         exit 1
       priority: 1
 

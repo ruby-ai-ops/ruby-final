@@ -1,6 +1,6 @@
 import { importApps } from "@app/lib/utils/apps";
-import type { ImportAppsResponseType } from "@dust-tt/client";
-import { PostAppsRequestSchema } from "@dust-tt/client";
+import type { ImportAppsResponseType } from "@ruby-ai/client";
+import { PostAppsRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsSystemKey } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";

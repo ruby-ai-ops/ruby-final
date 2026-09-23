@@ -1,6 +1,6 @@
 import { parseMentionsInMarkdown } from "@app/lib/api/assistant/parse_mentions";
-import type { ParseMentionsResponseBodyType } from "@dust-tt/client";
-import { ParseMentionsRequestBodySchema } from "@dust-tt/client";
+import type { ParseMentionsResponseBodyType } from "@ruby-ai/client";
+import { ParseMentionsRequestBodySchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { validate } from "@front-api/middlewares/validator";

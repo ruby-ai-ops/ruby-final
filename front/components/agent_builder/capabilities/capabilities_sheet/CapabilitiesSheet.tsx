@@ -1,6 +1,6 @@
 import type { CapabilitiesSheetContentProps } from "@app/components/agent_builder/capabilities/capabilities_sheet/types";
 import { useCapabilitiesPageAndFooter } from "@app/components/agent_builder/capabilities/capabilities_sheet/utils";
-import { MultiPageSheet, MultiPageSheetContent } from "@dust-tt/sparkle";
+import { MultiPageSheet, MultiPageSheetContent } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 

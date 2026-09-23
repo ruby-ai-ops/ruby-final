@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import { callSandboxFunction } from "@app/lib/api/sandbox_functions/call_sandbox_function";
 import { resolveActiveFrameFunctionForUse } from "@app/lib/api/sandbox_functions/frame_share_capability";
 import type { Authenticator } from "@app/lib/auth";
@@ -8,7 +8,7 @@ import { FileResource } from "@app/lib/resources/file_resource";
 import { FRAME_MANIFEST_FILE } from "@app/types/api/frame_manifest";
 import type { SandboxFunctionCallError } from "@app/types/api/sandbox_functions";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
-import type { DustFileSystemError } from "@app/types/file_system";
+import type { RubyFileSystemError } from "@app/types/file_system";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 
@@ -49,7 +49,7 @@ export type CallFrameFunctionError =
   | FrameFunctionExecutionError;
 
 export type CallFrameFunctionFromSourceError =
-  | DustFileSystemError
+  | RubyFileSystemError
   | CallFrameFunctionError;
 
 export type CallFrameFunctionResult = {
@@ -113,7 +113,7 @@ export async function callFrameFunctionFromSource(
     input?: unknown;
   }
 ): Promise<Result<CallFrameFunctionResult, CallFrameFunctionFromSourceError>> {
-  const normalizedSourcePath = DustFileSystem.normalizeScopedPath(sourcePath);
+  const normalizedSourcePath = RubyFileSystem.normalizeScopedPath(sourcePath);
   if (!normalizedSourcePath || !normalizedSourcePath.includes("/")) {
     return new Err(
       new FrameFunctionCallError(
@@ -127,12 +127,12 @@ export async function callFrameFunctionFromSource(
       ? normalizedSourcePath
       : path.posix.join(normalizedSourcePath, FRAME_MANIFEST_FILE);
 
-  const fsResult = await DustFileSystem.forConversation(auth, conversation);
+  const fsResult = await RubyFileSystem.forConversation(auth, conversation);
   if (fsResult.isErr()) {
     return new Err(fsResult.error);
   }
-  const dustFs = fsResult.value;
-  if (!dustFs.isGCSBacked()) {
+  const rubyFs = fsResult.value;
+  if (!rubyFs.isGCSBacked()) {
     return new Err(
       new FrameFunctionCallError(
         "invalid_source",
@@ -141,7 +141,7 @@ export async function callFrameFunctionFromSource(
     );
   }
 
-  const readableMount = dustFs
+  const readableMount = rubyFs
     .getMounts()
     .find(
       (mount) =>
@@ -157,7 +157,7 @@ export async function callFrameFunctionFromSource(
     );
   }
 
-  const mountFilePath = dustFs.toMountFilePath(manifestPath);
+  const mountFilePath = rubyFs.toMountFilePath(manifestPath);
   if (!mountFilePath) {
     return new Err(
       new FrameFunctionCallError("invalid_source", "Invalid Frame source path.")

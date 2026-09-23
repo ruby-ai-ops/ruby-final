@@ -37,7 +37,7 @@ describe("isExemptFromCreditSpendCheckpoint", () => {
     "zendesk",
     "project_kickoff",
     "cli",
-  ] as const)("is exempt for %s: the author cannot resume the pause from a Dust client", async (origin) => {
+  ] as const)("is exempt for %s: the author cannot resume the pause from a Ruby client", async (origin) => {
     const { authenticator: auth } = await createResourceTest({});
 
     expect(
@@ -48,7 +48,7 @@ describe("isExemptFromCreditSpendCheckpoint", () => {
   it.each([
     "web",
     "extension",
-  ] as const)("is not exempt for %s: the author is in a Dust client UI", async (origin) => {
+  ] as const)("is not exempt for %s: the author is in a Ruby client UI", async (origin) => {
     const { authenticator: auth } = await createResourceTest({});
 
     expect(

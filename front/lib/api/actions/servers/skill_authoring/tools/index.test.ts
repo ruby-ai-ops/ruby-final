@@ -49,7 +49,7 @@ function getTool(name: string) {
 }
 
 // The tools under test never read runContext, so a partial extra cast to ToolHandlerExtra is
-// sufficient (mirroring the poke tools test).
+// sufficient (mirroring the admin tools test).
 function makeExtra(auth: Authenticator) {
   const extra: Pick<
     ToolHandlerExtra,

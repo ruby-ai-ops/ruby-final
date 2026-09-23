@@ -9,7 +9,7 @@ import {
   SCOPED_PREFIX_POD,
   sanitizeFileSystemName,
 } from "@app/lib/api/file_system";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import {
   getProcessedContentType,
   hasProcessedVersion,
@@ -21,7 +21,7 @@ import {
 } from "@app/lib/api/frames/package_file_ref_paths";
 import { fetchProjectDataSource } from "@app/lib/api/projects/data_sources";
 import { cleanupProjectFileFragments } from "@app/lib/api/projects/file_cleanup";
-import { requestDustProjectIncrementalSync } from "@app/lib/api/projects/request_incremental_sync";
+import { requestRubyProjectIncrementalSync } from "@app/lib/api/projects/request_incremental_sync";
 import { getDefaultFrameShareScope } from "@app/lib/api/share/frame_sharing";
 import {
   computeFrameContentHash,
@@ -31,7 +31,7 @@ import type { FileRef } from "@app/lib/api/viz/extract_file_refs";
 import { extractFileRefs } from "@app/lib/api/viz/extract_file_refs";
 import type { ShareFrameViewerFile } from "@app/lib/api/viz/share_frame_viewer_files";
 import { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import {
   GCS_RESUMABLE_UPLOAD_CHUNK_SIZE_BYTES,
   GCS_RESUMABLE_UPLOAD_THRESHOLD_BYTES,
@@ -298,7 +298,7 @@ export class FileResource extends BaseResource<FileModel> {
   }
 
   /**
-   * Poke's workspace Frames list. Keyset paginated on `updatedAt` (epoch ms in `lastValue`),
+   * Admin's workspace Frames list. Keyset paginated on `updatedAt` (epoch ms in `lastValue`),
    * backed by the partial index on ("workspaceId", "updatedAt" DESC) for this content type.
    */
   static async listFrameV2ForWorkspacePaginated(
@@ -429,11 +429,11 @@ export class FileResource extends BaseResource<FileModel> {
         // Active allowlist for useFile() refs, if computed.
         authorizedFileAccess: AuthorizedFileAccessAllowlist | null;
       },
-      DustError
+      RubyError
     >
   > {
     if (!validate(token)) {
-      return new Err(new DustError("invalid_id", "Invalid share token"));
+      return new Err(new RubyError("invalid_id", "Invalid share token"));
     }
 
     const shareableFile = await this.shareableFileModel.findOne({
@@ -444,14 +444,14 @@ export class FileResource extends BaseResource<FileModel> {
       dangerouslyBypassWorkspaceIsolationSecurity: true,
     });
     if (!shareableFile) {
-      return new Err(new DustError("file_not_found", "Share not found"));
+      return new Err(new RubyError("file_not_found", "Share not found"));
     }
 
     const [workspace] = await WorkspaceResource.fetchByModelIds([
       shareableFile.workspaceId,
     ]);
     if (!workspace) {
-      return new Err(new DustError("internal_error", "Workspace not found"));
+      return new Err(new RubyError("internal_error", "Workspace not found"));
     }
 
     const file = await this.model.findOne({
@@ -463,7 +463,7 @@ export class FileResource extends BaseResource<FileModel> {
 
     const fileRes = file ? new this(this.model, file.get()) : null;
     if (!fileRes) {
-      return new Err(new DustError("file_not_found", "File not found"));
+      return new Err(new RubyError("file_not_found", "File not found"));
     }
 
     // Verify the associated conversation still exists (not soft-deleted).
@@ -479,7 +479,7 @@ export class FileResource extends BaseResource<FileModel> {
       );
       if (!conversation) {
         return new Err(
-          new DustError("conversation_not_found", "Conversation not found")
+          new RubyError("conversation_not_found", "Conversation not found")
         );
       }
     }
@@ -858,7 +858,7 @@ export class FileResource extends BaseResource<FileModel> {
       return null;
     }
 
-    const sourceDirectory = DustFileSystem.normalizeScopedPath(
+    const sourceDirectory = RubyFileSystem.normalizeScopedPath(
       path.posix.dirname(manifestPath)
     );
 
@@ -886,22 +886,22 @@ export class FileResource extends BaseResource<FileModel> {
       );
     }
 
-    const fileSystemResult = await DustFileSystem.fromScopedPath(
+    const fileSystemResult = await RubyFileSystem.fromScopedPath(
       auth,
       manifestPath
     );
     if (fileSystemResult.isErr()) {
       return new Err(fileSystemResult.error);
     }
-    const dustFileSystem = fileSystemResult.value;
-    if (!dustFileSystem.isGCSBacked()) {
+    const rubyFileSystem = fileSystemResult.value;
+    if (!rubyFileSystem.isGCSBacked()) {
       return new Err(
         new Error(
           "Frames v2 deletion does not yet support the database-backed filesystem."
         )
       );
     }
-    const writeAccess = dustFileSystem.checkWriteAccess(sourceDirectory);
+    const writeAccess = rubyFileSystem.checkWriteAccess(sourceDirectory);
     if (writeAccess.isErr()) {
       return new Err(writeAccess.error);
     }
@@ -944,7 +944,7 @@ export class FileResource extends BaseResource<FileModel> {
         );
       }
 
-      const sourceResult = await dustFileSystem.delete(sourceDirectory, {
+      const sourceResult = await rubyFileSystem.delete(sourceDirectory, {
         ignoreNotFound: true,
       });
       if (sourceResult.isErr()) {
@@ -959,7 +959,7 @@ export class FileResource extends BaseResource<FileModel> {
             spaceModelId: projectSpace.id,
             workspaceModelId: owner.id,
           });
-          requestDustProjectIncrementalSync(auth, projectSpace);
+          requestRubyProjectIncrementalSync(auth, projectSpace);
         }
       } catch (error) {
         return new Err(normalizeError(error));
@@ -1361,7 +1361,7 @@ export class FileResource extends BaseResource<FileModel> {
     version: FileVersion
   ): Promise<string> {
     const expirationDelayMs = 30 * 1000;
-    const promptSaveAs = this.fileName ?? `dust_${this.sId}`;
+    const promptSaveAs = this.fileName ?? `ruby_${this.sId}`;
 
     return this.getSignedUrl(auth, version, expirationDelayMs, promptSaveAs);
   }
@@ -2323,7 +2323,7 @@ export class FileResource extends BaseResource<FileModel> {
           return { verified: false };
         }
 
-        const fsResult = await DustFileSystem.fromScopedPath(
+        const fsResult = await RubyFileSystem.fromScopedPath(
           auth,
           canonicalPath
         );
@@ -2379,7 +2379,7 @@ export class FileResource extends BaseResource<FileModel> {
           return { verified: false };
         }
 
-        const fsResult = await DustFileSystem.fromScopedPath(
+        const fsResult = await RubyFileSystem.fromScopedPath(
           auth,
           canonicalPath
         );
@@ -2738,11 +2738,11 @@ export class FileResource extends BaseResource<FileModel> {
   async revokeSharingGrant(
     auth: Authenticator,
     { grantId }: { grantId: ModelId }
-  ): Promise<Result<{ email: string }, DustError>> {
+  ): Promise<Result<{ email: string }, RubyError>> {
     assert(this.isShareableFrame, "revokeSharingGrant requires a Frame file");
     if (!Number.isSafeInteger(grantId) || grantId < 0) {
       return new Err(
-        new DustError("file_not_found", "Sharing grant not found")
+        new RubyError("file_not_found", "Sharing grant not found")
       );
     }
     const grant = await SharingGrantResource.fetchById(
@@ -2751,7 +2751,7 @@ export class FileResource extends BaseResource<FileModel> {
     );
     if (!grant || grant.email === null) {
       return new Err(
-        new DustError("file_not_found", "Sharing grant not found")
+        new RubyError("file_not_found", "Sharing grant not found")
       );
     }
     const revoked = await grant.revoke(auth);
@@ -2898,7 +2898,7 @@ export class FileResource extends BaseResource<FileModel> {
   ): Promise<
     Result<
       FileResource,
-      Error | { name: "dust_error"; code: string; message: string }
+      Error | { name: "ruby_error"; code: string; message: string }
     >
   > {
     const sourceFileRes = await this.fetchReadyFileForCopy(auth, sourceId);
@@ -2944,7 +2944,7 @@ export class FileResource extends BaseResource<FileModel> {
   ): Promise<
     Result<
       FileResource,
-      Error | { name: "dust_error"; code: string; message: string }
+      Error | { name: "ruby_error"; code: string; message: string }
     >
   > {
     const sourceFileRes = await this.fetchReadyFileForCopy(auth, sourceId);
@@ -3000,8 +3000,8 @@ async function deleteCoreFileArtifactsFromDataSource(
     { resource: file.useCase },
     async (span) => {
       const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
-      const projectId = dataSource.dustAPIProjectId;
-      const dustAPIDataSourceId = dataSource.dustAPIDataSourceId;
+      const projectId = dataSource.rubyAPIProjectId;
+      const rubyAPIDataSourceId = dataSource.rubyAPIDataSourceId;
       const logCtx = {
         workspaceId: auth.workspace()?.sId,
         fileId: file.sId,
@@ -3018,13 +3018,13 @@ async function deleteCoreFileArtifactsFromDataSource(
       span?.setTag("file.use_case", file.useCase);
       span?.setTag("data_source.s_id", dataSource.sId);
       span?.setTag("core.project_id", projectId);
-      span?.setTag("core.data_source_id", dustAPIDataSourceId);
+      span?.setTag("core.data_source_id", rubyAPIDataSourceId);
       span?.setTag("tables.count", tableIds.size);
 
       for (const tableId of tableIds) {
         const delTableRes = await coreAPI.deleteTable({
           projectId,
-          dataSourceId: dustAPIDataSourceId,
+          dataSourceId: rubyAPIDataSourceId,
           tableId,
         });
         if (
@@ -3040,7 +3040,7 @@ async function deleteCoreFileArtifactsFromDataSource(
 
       const delDocRes = await coreAPI.deleteDataSourceDocument({
         projectId,
-        dataSourceId: dustAPIDataSourceId,
+        dataSourceId: rubyAPIDataSourceId,
         documentId: file.sId,
         caller: "file-resource",
       });
@@ -3087,7 +3087,7 @@ async function maybeDeleteCoreArtifactsForIndexedFile(
           spaceId,
           error: dsRes.error,
         },
-        "File delete: project dust_project data source not found; skipping Core cleanup."
+        "File delete: project ruby_project data source not found; skipping Core cleanup."
       );
       return;
     }

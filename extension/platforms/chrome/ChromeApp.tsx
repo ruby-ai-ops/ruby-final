@@ -1,7 +1,7 @@
 import { RootLayout } from "@app/components/app/RootLayout";
 import { CellProvider, useCellContext } from "@app/lib/auth/CellContext";
 import { ClientTypeProvider } from "@app/lib/context/clientType";
-import { SparkleContext } from "@dust-tt/sparkle";
+import { RubyUIContext } from "@ruby-ai/ui";
 import { ChromeExtensionWrapper } from "@extension/platforms/chrome/ChromeExtensionWrapper";
 import { PortProvider } from "@extension/platforms/chrome/context/PortContext";
 import { ChromePlatformService } from "@extension/platforms/chrome/services/platform";
@@ -34,7 +34,7 @@ const ChromeAppInner = () => {
   }, [cells]);
   const router = useMemo(() => createBrowserRouter(routes), []);
 
-  const sparkleContextValue = useMemo(
+  const uiContextValue = useMemo(
     () => ({
       components: {
         link: ReactRouterLinkWrapper,
@@ -49,13 +49,13 @@ const ChromeAppInner = () => {
       <PortProvider>
         <ExtensionAuthProvider>
           <ExtensionFetcherProvider>
-            <SparkleContext.Provider value={sparkleContextValue}>
+            <RubyUIContext.Provider value={uiContextValue}>
               <RootLayout>
                 <ChromeExtensionWrapper>
                   <RouterProvider router={router} />
                 </ChromeExtensionWrapper>
               </RootLayout>
-            </SparkleContext.Provider>
+            </RubyUIContext.Provider>
           </ExtensionFetcherProvider>
         </ExtensionAuthProvider>
       </PortProvider>

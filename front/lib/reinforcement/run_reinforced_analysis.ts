@@ -10,7 +10,7 @@ import type {
 } from "@app/lib/api/llm/types/options";
 import { getLlmCredentials } from "@app/lib/api/provider_credentials";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustBatchEndpointConstructor } from "@app/lib/llms/batch/dust_batch_endpoint";
+import type { RubyBatchEndpointConstructor } from "@app/lib/llms/batch/ruby_batch_endpoint";
 import { getLargeWhitelistedModelWithBatchMode } from "@app/lib/reinforcement/models";
 import {
   hasSuggestionSelfConflict,
@@ -280,7 +280,7 @@ export async function createReinforcedSkillsConversation(
 export async function getReinforcedSkillsLLM(
   auth: Authenticator,
   operationType: ReinforcedSkillsOperationType
-): Promise<LLM<DustBatchEndpointConstructor> | null> {
+): Promise<LLM<RubyBatchEndpointConstructor> | null> {
   const owner = auth.workspace();
   if (!owner) {
     return null;
@@ -299,7 +299,7 @@ export async function getReinforcedSkillsLLM(
   const credentials = await getLlmCredentials(auth, {
     skipEmbeddingApiKeyRequirement: true,
   });
-  const llmParameters: LLMParameters<DustBatchEndpointConstructor> = {
+  const llmParameters: LLMParameters<RubyBatchEndpointConstructor> = {
     credentials,
     modelInfo: { endpoint },
     context: {

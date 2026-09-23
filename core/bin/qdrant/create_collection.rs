@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, Result};
 use clap::Parser;
-use dust::{
+use ruby::{
     data_sources::qdrant::{QdrantClients, QdrantCluster, LEGACY_SHARD_KEY_COUNT},
     providers::{
         embedder::{EmbedderProvidersModelMap, SupportedEmbedderModels},
@@ -140,7 +140,7 @@ async fn create_qdrant_collection(args: &Args) -> Result<()> {
         println!("QDRANT_USE_SHARDING=false, creating collection without distributed features");
     }
 
-    // See https://app.notion.com/p/dust-tt/Design-Doc-Qdrant-re-arch-d0ebdd6ae8244ff593cdf10f08988c27.
+    // See https://app.notion.com/p/ruby-ai/Design-Doc-Qdrant-re-arch-d0ebdd6ae8244ff593cdf10f08988c27.
 
     // First, we create the collection.
     let mut builder = CreateCollectionBuilder::new(collection_name.clone())

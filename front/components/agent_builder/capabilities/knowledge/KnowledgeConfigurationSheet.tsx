@@ -42,12 +42,12 @@ import {
 import { getMCPServerRequirements } from "@app/lib/actions/mcp_internal_actions/input_configuration";
 import type { MCPServerViewType } from "@app/lib/api/mcp";
 import type { TemplateActionPreset } from "@app/types/assistant/templates";
-import type { MultiPageSheetPage, RegularButtonProps } from "@dust-tt/sparkle";
+import type { MultiPageSheetPage, RegularButtonProps } from "@ruby-ai/ui";
 import {
   Avatar,
   MultiPageSheet,
   MultiPageSheetContent,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import uniqueId from "lodash/uniqueId";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";

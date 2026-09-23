@@ -1,7 +1,7 @@
 import path from "node:path";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
-import type { DustFileSystemError } from "@app/types/file_system";
-import { isDustFileSystemError } from "@app/types/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
+import type { RubyFileSystemError } from "@app/types/file_system";
+import { isRubyFileSystemError } from "@app/types/file_system";
 import { contentTypeFromFileName } from "@app/types/files";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
@@ -55,8 +55,8 @@ export class FolderExtractError extends Error {
 }
 
 /**
- * Narrows an extraction failure, which may also carry a `DustFileSystemError` from storage.
- * Mirrors `isFolderArchiveError` and `isDustFileSystemError`.
+ * Narrows an extraction failure, which may also carry a `RubyFileSystemError` from storage.
+ * Mirrors `isFolderArchiveError` and `isRubyFileSystemError`.
  */
 export function isFolderExtractError(
   error: unknown,
@@ -95,7 +95,7 @@ function isSkippedEntry(entryName: string): boolean {
  * Resolves an entry against the destination folder the same way storage will, and returns the
  * result only when it stays inside that folder.
  *
- * Checking the entry name on its own is not enough: `DustFileSystem.normalizeScopedPath` strips
+ * Checking the entry name on its own is not enough: `RubyFileSystem.normalizeScopedPath` strips
  * control characters *before* normalizing, so `.\x01./x` reads as an ordinary relative name here
  * and as `../x` by the time it reaches storage. Resolving through the same normalization is what
  * makes the containment check match what actually gets written.
@@ -108,7 +108,7 @@ function resolveContainedDestPath(
     return null;
   }
 
-  const resolved = DustFileSystem.normalizeScopedPath(
+  const resolved = RubyFileSystem.normalizeScopedPath(
     `${normalizedDestFolder}/${relativePath}`
   );
   if (!resolved || !resolved.startsWith(`${normalizedDestFolder}/`)) {
@@ -130,7 +130,7 @@ function planArchiveExtraction(
   limits: FolderExtractLimits
 ): Result<FolderExtractPlan, FolderExtractError> {
   const normalizedDestFolder =
-    DustFileSystem.normalizeScopedPath(destFolderPath);
+    RubyFileSystem.normalizeScopedPath(destFolderPath);
   if (!normalizedDestFolder) {
     return new Err(
       new FolderExtractError(
@@ -226,12 +226,12 @@ function planArchiveExtraction(
  * `planFolderArchive`/`streamFolderArchive`.
  */
 export async function extractArchiveToFolder(
-  fileSystem: DustFileSystem,
+  fileSystem: RubyFileSystem,
   destFolderPath: string,
   archive: Buffer,
   limits: FolderExtractLimits = DEFAULT_FOLDER_EXTRACT_LIMITS
 ): Promise<
-  Result<FolderExtractResult, FolderExtractError | DustFileSystemError>
+  Result<FolderExtractResult, FolderExtractError | RubyFileSystemError>
 > {
   let zip: AdmZip;
   try {
@@ -259,7 +259,7 @@ export async function extractArchiveToFolder(
       const mkdirResult = await fileSystem.mkdir(destPath);
       // Extracting into an existing tree re-declares directories that are already there.
       if (mkdirResult.isErr()) {
-        if (!isDustFileSystemError(mkdirResult.error, "already_exists")) {
+        if (!isRubyFileSystemError(mkdirResult.error, "already_exists")) {
           return mkdirResult;
         }
         continue;

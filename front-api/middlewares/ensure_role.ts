@@ -103,16 +103,16 @@ export const ensureIsUser = () =>
     await next();
   });
 
-export const ensureIsDustSuperUser = () =>
+export const ensureIsRubySuperUser = () =>
   createMiddleware<WorkspaceAwareCtx>(async (ctx, next) => {
     const auth = ctx.get("auth");
 
-    if (!auth.isDustSuperUser()) {
+    if (!auth.isRubySuperUser()) {
       return apiError(ctx, {
         status_code: 403,
         api_error: {
           type: "workspace_auth_error",
-          message: "Only Dust super users can perform this action.",
+          message: "Only Ruby super users can perform this action.",
         },
       });
     }

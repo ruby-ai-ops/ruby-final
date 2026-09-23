@@ -1,7 +1,7 @@
 // Tailwind base globals (preflight/theme/tokens/keyframes; emits no utilities).
 import "@marketing/styles/global.css";
-// Single unified Tailwind build: scans marketing + sparkle/src in one pass.
-// Replaces the old precompiled `@dust-tt/sparkle/dist/sparkle.css` concat.
+// Single unified Tailwind build: scans marketing + ui/src in one pass.
+// Replaces the old precompiled `@ruby-ai/ui/dist/ui.css` concat.
 import "@marketing/styles/components.css";
 
 import type { NextPage } from "next";
@@ -16,7 +16,6 @@ const DATADOG_CLIENT_TOKEN = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN;
 const DATADOG_SERVICE = process.env.NEXT_PUBLIC_DATADOG_SERVICE;
 const COMMIT_HASH = process.env.NEXT_PUBLIC_COMMIT_HASH;
 
-const CONSOLE_MESSAGE_SHOWN_KEY = "dust_console_message_shown";
 
 // Client-only: as a wrapper this would strip the page tree from the SSR output.
 const PostHogTrackerEffects = dynamic(
@@ -26,13 +25,12 @@ const PostHogTrackerEffects = dynamic(
     ),
   { ssr: false }
 );
-import { RegionSelectionModal } from "@marketing/components/RegionSelectionModal";
 import { NextLinkWrapper } from "@marketing/components/platform/NextLinkWrapper";
 import { FetcherProvider } from "@marketing/components/swr/FetcherContext";
 import { SignUpModalProvider } from "@marketing/hooks/useSignUpModal";
 import { fetcher, fetcherWithBody } from "@marketing/lib/swr/fetcher";
 import { initDatadogLogs } from "@marketing/logger/datadogLogger";
-import { SparkleContext } from "@dust-tt/sparkle";
+import { RubyUIContext } from "@ruby-ai/ui";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 import { useMemo } from "react";
@@ -46,60 +44,6 @@ if (DATADOG_CLIENT_TOKEN) {
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     version: COMMIT_HASH || "",
   });
-}
-
-// Developer console recruitment message.
-if (
-  typeof window !== "undefined" &&
-  typeof console !== "undefined" &&
-  NODE_ENV === "production"
-) {
-  (() => {
-    try {
-      const alreadyShown = localStorage.getItem(CONSOLE_MESSAGE_SHOWN_KEY);
-      if (!alreadyShown) {
-        localStorage.setItem(CONSOLE_MESSAGE_SHOWN_KEY, "true");
-
-        console.log(
-          "%c" +
-            "██████╗ ██╗   ██╗███████╗████████╗\n" +
-            "██╔══██╗██║   ██║██╔════╝╚══██╔══╝\n" +
-            "██║  ██║██║   ██║███████╗   ██║   \n" +
-            "██║  ██║██║   ██║╚════██║   ██║   \n" +
-            "██████╔╝╚██████╔╝███████║   ██║   \n" +
-            "╚═════╝  ╚═════╝ ╚══════╝   ╚═╝   ",
-          "color: #54B47D; font-family: monospace; font-size: 12px; font-weight: bold;"
-        );
-
-        console.log(
-          "%c🚀 Hey there, curious developer!",
-          "color: #418B5C; font-size: 20px; font-weight: bold; margin: 10px 0;"
-        );
-
-        console.log(
-          "%cWe're creating a new AI operating system that has the potential to change how companies operate.\n\n" +
-            "Our mission at Dust is to transform how work gets done by letting any team\n" +
-            "and employee shape the exact agents they need to accelerate their jobs.\n\n" +
-            "Want to help us build this future? We're looking for talented engineers who:\n" +
-            "  • Are passionate about crafting rock-solid code and exceptional experiences at warp speed.\n" +
-            "  • Want to shape the future of work with AI\n\n" +
-            "Join us \\o/",
-          "color: #0A361A; font-size: 14px; line-height: 1.6;"
-        );
-
-        console.log(
-          "%c👉 Learn more about us: %chttps://dust.tt/home/about",
-          "color: #277644; font-size: 16px; font-weight: bold;",
-          "color: #54B47D; font-size: 16px; font-weight: bold; text-decoration: underline;"
-        );
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      // biome-ignore lint/correctness/noUnusedVariables: ignored using `--suppress`
-    } catch (e) {
-      // Silently fail if localStorage is not available or throws an error.
-      // This can happen in private browsing mode or when cookies are disabled.
-    }
-  })();
 }
 
 export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
@@ -117,7 +61,7 @@ type AppPropsWithLayout = AppProps & {
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available.
   const getLayout = Component.getLayout ?? ((page) => page);
-  const sparkleContextValue = useMemo(
+  const uiContextValue = useMemo(
     () => ({ components: { link: NextLinkWrapper } }),
     []
   );
@@ -126,12 +70,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <FetcherProvider fetcher={fetcher} fetcherWithBody={fetcherWithBody}>
       <PostHogProvider client={posthog}>
         <PostHogTrackerEffects />
-        <SparkleContext.Provider value={sparkleContextValue}>
+        <RubyUIContext.Provider value={uiContextValue}>
           <SignUpModalProvider>
             {getLayout(<Component {...pageProps} />, pageProps)}
-            <RegionSelectionModal />
           </SignUpModalProvider>
-        </SparkleContext.Provider>
+        </RubyUIContext.Provider>
       </PostHogProvider>
     </FetcherProvider>
   );

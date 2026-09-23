@@ -1,6 +1,6 @@
 import { mcpServerAuthMiddleware } from "@app/lib/api/mcp_server/auth";
 import { buildMcpAuthInfo } from "@app/lib/api/mcp_server/context";
-import { createDustMcpServer } from "@app/lib/api/mcp_server/server";
+import { createRubyMcpServer } from "@app/lib/api/mcp_server/server";
 import logger from "@app/logger/logger";
 import { createHono } from "@front-api/lib/hono";
 import { StreamableHTTPTransport } from "@hono/mcp";
@@ -17,7 +17,7 @@ function extractBearerToken(authHeader: string | undefined): string | null {
 }
 
 // @hono/mcp reads ctx.get("auth") as MCP AuthInfo. Use a dedicated setter so we
-// do not clobber the Dust Authenticator that requestInstrumentation expects on "auth".
+// do not clobber the Ruby Authenticator that requestInstrumentation expects on "auth".
 function setMcpTransportAuth(c: Context, authInfo: AuthInfo): void {
   c.set("auth", authInfo as never);
 }
@@ -116,10 +116,10 @@ mcpApp.all("/", mcpServerAuthMiddleware, async (c) => {
       workspaceId: auth.workspace().sId,
       method: c.req.method,
     },
-    "[dust-mcp-server] Inbound request"
+    "[ruby-mcp-server] Inbound request"
   );
 
-  const server = createDustMcpServer();
+  const server = createRubyMcpServer();
   const transport = new StreamableHTTPTransport({
     enableJsonResponse: true,
   });

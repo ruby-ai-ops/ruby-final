@@ -19,7 +19,7 @@ const WORKSPACE_CONCURRENCY = 8;
  * their effective access once agent-edit authorization moves off `ensureIsBuilder()` onto
  * the `agent:editor` (write) capability. Keys created (or role-changed) after this deploy
  * are kept in sync by `KeyResource.syncBuilderGroupMembership`, called from the key
- * creation route and `KeyResource.updateRole`. See dust-tt/tasks#9710.
+ * creation route and `KeyResource.updateRole`. See ruby-ai/tasks#9710.
  */
 
 /*

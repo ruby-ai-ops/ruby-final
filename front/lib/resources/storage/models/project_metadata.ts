@@ -29,7 +29,7 @@ export class ProjectMetadataModel extends WorkspaceAwareModel<ProjectMetadataMod
    * Empty means default (system tabs then frame paths).
    */
   declare tabsOrder: CreationOptional<string[]>;
-  /** sId of the agent pre-selected for new conversations in this pod. Null = @dust. */
+  /** sId of the agent pre-selected for new conversations in this pod. Null = @ruby. */
   declare defaultAgentId: CreationOptional<string | null>;
   declare defaultSkillsIds: CreationOptional<string[] | null>;
 }

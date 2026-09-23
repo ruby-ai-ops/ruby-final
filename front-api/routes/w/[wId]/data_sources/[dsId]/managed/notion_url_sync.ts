@@ -1,4 +1,4 @@
-import { syncNotionUrls } from "@app/lib/api/poke/plugins/data_sources/notion_url_sync";
+import { syncNotionUrls } from "@app/lib/api/admin/plugins/data_sources/notion_url_sync";
 import { runOnRedis } from "@app/lib/api/redis";
 import type { Authenticator } from "@app/lib/auth";
 import { getFeatureFlags } from "@app/lib/auth";

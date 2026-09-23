@@ -9,7 +9,7 @@ import { describe, expect, it } from "vitest";
 describe("normalizeSandboxFunctionResult", () => {
   it("accepts a protocol v3 success envelope", () => {
     // Keep the literal stable: bumping SANDBOX_FUNCTION_RESULT_PROTOCOL_VERSION
-    // must fail this pin until the wire shape and dsbx emitter move together.
+    // must fail this pin until the wire shape and rbx emitter move together.
     const envelope = {
       protocolVersion: 3,
       delivery: "stdout",
@@ -97,7 +97,7 @@ describe("normalizeSandboxFunctionResult", () => {
     });
   });
 
-  it("accepts dsbx-minted invocation_failed codes in a protocol v3 outcome", () => {
+  it("accepts rbx-minted invocation_failed codes in a protocol v3 outcome", () => {
     expect(
       normalizeSandboxFunctionResult({
         protocolVersion: 3,
@@ -221,7 +221,7 @@ describe("normalizeSandboxFunctionResult", () => {
 describe("extractResultSpillPointer", () => {
   const pointer = {
     ok: true,
-    resultFile: "/tmp/dust-fn-results/abc.json",
+    resultFile: "/tmp/ruby-fn-results/abc.json",
     resultBytes: 300_000,
   };
 
@@ -240,7 +240,7 @@ describe("extractResultSpillPointer", () => {
     expect(extractResultSpillPointer(pointer)).toEqual(pointer);
   });
 
-  it("tolerates additive fields from a newer dsbx", () => {
+  it("tolerates additive fields from a newer rbx", () => {
     expect(
       extractResultSpillPointer({ ...pointer, futureField: "ignored" })
     ).toEqual(pointer);

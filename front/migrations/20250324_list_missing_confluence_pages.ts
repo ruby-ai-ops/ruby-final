@@ -66,7 +66,7 @@ async function backfillDataSource({
         filter: {
           data_source_views: [
             {
-              data_source_id: frontDataSource.dustAPIDataSourceId,
+              data_source_id: frontDataSource.rubyAPIDataSourceId,
               view_filter: [],
             },
           ],

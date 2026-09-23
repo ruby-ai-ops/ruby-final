@@ -38,10 +38,10 @@ describe("buildProgrammaticCapReachedEmailCopy", () => {
     });
 
     expect(subject).toBe(
-      "[Dust] Your programmatic triggers are paused in Acme"
+      "[Ruby] Your programmatic triggers are paused in Acme"
     );
     expect(content).toContain(
-      'A programmatic trigger in your Dust workspace "Acme" could not run because the workspace\'s monthly programmatic usage limit is set to 0 credits.'
+      'A programmatic trigger in your Ruby workspace "Acme" could not run because the workspace\'s monthly programmatic usage limit is set to 0 credits.'
     );
     expect(content).toContain(
       "Programmatic triggers will remain blocked until you set a positive limit in workspace usage settings."
@@ -57,7 +57,7 @@ describe("buildProgrammaticCapReachedEmailCopy", () => {
     });
 
     expect(subject).toBe(
-      "[Dust] Your workspace has reached its programmatic API credit cap in Acme"
+      "[Ruby] Your workspace has reached its programmatic API credit cap in Acme"
     );
     expect(content).toContain(
       'Your workspace "Acme" has exhausted its monthly programmatic API credit cap of 500 credits.'
@@ -75,7 +75,7 @@ describe("buildProgrammaticCapReachedEmailCopy", () => {
     });
 
     expect(subject).toBe(
-      "[Dust] Your workspace has used 80% of its programmatic API credit cap in Acme"
+      "[Ruby] Your workspace has used 80% of its programmatic API credit cap in Acme"
     );
   });
 });

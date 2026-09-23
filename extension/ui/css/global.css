@@ -1,13 +1,13 @@
 @import "./fonts.css";
 
-/* Preflight, the Tailwind theme, and sparkle's theme are already emitted by the
-   unified build (components.css → @dust-tt/sparkle/styles/tailwind.css, imported
+/* Preflight, the Tailwind theme, and ui's theme are already emitted by the
+   unified build (components.css → @ruby-ai/ui/styles/tailwind.css, imported
    alongside this file in each platform's main.tsx). Pulling them in here too
    would ship a second copy of preflight and the default-theme :root block.
    Reference them instead: `@reference` gives this entry the theme context it
    needs without emitting any bytes. */
 @reference "tailwindcss";
-@reference "@dust-tt/sparkle/styles/theme.css";
+@reference "@ruby-ai/ui/styles/theme.css";
 
 /* Custom scrollbar styles */
 @layer base {

@@ -146,7 +146,7 @@ export interface ToolFootprintMeasurement {
 /**
  * One tool call to measure: the enriched action used to render the result, and the raw arguments
  * string the model emitted for the call. The arguments come straight from the resource rather than
- * the serialized action, so they exclude the inputs Dust injects afterwards.
+ * the serialized action, so they exclude the inputs Ruby injects afterwards.
  */
 export interface ToolCallFootprintInput {
   action: AgentMCPActionWithOutputType;

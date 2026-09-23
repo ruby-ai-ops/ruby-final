@@ -2,7 +2,7 @@ import * as workosAudit from "@app/lib/api/audit/workos_audit";
 import { notifyAdminsTriggerBlockedByProgrammaticCap } from "@app/lib/api/credits/programmatic_cap_trigger_alert";
 import { syncProgrammaticUsageLimit } from "@app/lib/api/credits/programmatic_usage_limit";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { getCachedMetronomeCurrentBillingPeriod } from "@app/lib/metronome/contracts";
 import * as capNotification from "@app/lib/notifications/workflows/programmatic-cap-reached";
 import { CreditUsageConfigurationResource } from "@app/lib/resources/credit_usage_configuration_resource";
@@ -208,7 +208,7 @@ describe("notifyAdminsTriggerBlockedByProgrammaticCap", () => {
 
   it("retries on the next run when the send failed", async () => {
     notify().mockResolvedValueOnce(
-      new Err(new DustError("internal_error", "novu down"))
+      new Err(new RubyError("internal_error", "novu down"))
     );
     const { auth, trigger } = await setup();
 

@@ -7,7 +7,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   File02,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 const MAX_PREVIEW_LINES = 10;
 

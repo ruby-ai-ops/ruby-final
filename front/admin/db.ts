@@ -51,7 +51,7 @@ import { WebhookRequestModel } from "@app/lib/models/agent/triggers/webhook_requ
 import { WebhookRequestTriggerModel } from "@app/lib/models/agent/triggers/webhook_request_trigger";
 import { WebhookSourceModel } from "@app/lib/models/agent/triggers/webhook_source";
 import { WebhookSourcesViewModel } from "@app/lib/models/agent/triggers/webhook_sources_view";
-import { DustAppSecretModel } from "@app/lib/models/dust_app_secret";
+import { RubyAppSecretModel } from "@app/lib/models/ruby_app_secret";
 import { ExtensionConfigurationModel } from "@app/lib/models/extension";
 import { FeatureFlagModel } from "@app/lib/models/feature_flag";
 import { GlobalFeatureFlagModel } from "@app/lib/models/global_feature_flag";
@@ -196,7 +196,7 @@ export function loadAllModels() {
     AuthorizedFileAccessModel,
     SharingGrantModel,
     ExternalViewerSessionModel,
-    DustAppSecretModel,
+    RubyAppSecretModel,
     GroupPermissionModel,
     WebhookSourceModel,
     WebhookSourcesViewModel,

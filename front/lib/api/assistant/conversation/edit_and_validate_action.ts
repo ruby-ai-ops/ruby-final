@@ -2,7 +2,7 @@ import type { ActionApprovalStateType } from "@app/lib/actions/mcp";
 import { isLightServerSideMCPToolConfiguration } from "@app/lib/actions/types/guards";
 import { validateAction } from "@app/lib/api/assistant/conversation/validate_actions";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { AgentMCPActionResource } from "@app/lib/resources/agent_mcp_action_resource";
 import type { ConversationResource } from "@app/lib/resources/conversation_resource";
 import type { Result } from "@app/types/shared/result";
@@ -25,7 +25,7 @@ function getChangedEditedInputs({
 
 function getEditableArguments(
   action: AgentMCPActionResource
-): Result<readonly string[], DustError<"action_not_editable">> {
+): Result<readonly string[], RubyError<"action_not_editable">> {
   const editableArguments = isLightServerSideMCPToolConfiguration(
     action.toolConfiguration
   )
@@ -34,7 +34,7 @@ function getEditableArguments(
 
   if (!editableArguments || editableArguments.length === 0) {
     return new Err(
-      new DustError("action_not_editable", "Action inputs are not editable.")
+      new RubyError("action_not_editable", "Action inputs are not editable.")
     );
   }
 
@@ -58,7 +58,7 @@ export async function editAndValidateAction(
 ): Promise<
   Result<
     void,
-    DustError<
+    RubyError<
       | "action_not_found"
       | "action_not_blocked"
       | "action_not_editable"
@@ -70,13 +70,13 @@ export async function editAndValidateAction(
   const action = await AgentMCPActionResource.fetchById(auth, actionId);
   if (!action) {
     return new Err(
-      new DustError("action_not_found", `Action not found: ${actionId}`)
+      new RubyError("action_not_found", `Action not found: ${actionId}`)
     );
   }
 
   if (action.status !== "blocked_validation_required") {
     return new Err(
-      new DustError(
+      new RubyError(
         "action_not_blocked",
         `Action is not blocked: ${action.status}`
       )
@@ -91,7 +91,7 @@ export async function editAndValidateAction(
     });
     if (validateActionResult.isErr()) {
       return new Err(
-        new DustError(
+        new RubyError(
           "internal_error",
           `Failed to reject action: ${validateActionResult.error.message}`
         )
@@ -110,7 +110,7 @@ export async function editAndValidateAction(
   const disallowedKey = editedKeys.find((key) => !editableArguments.has(key));
   if (!!disallowedKey) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_edited_arguments",
         `Edited arguments are not editable: ${disallowedKey}`
       )
@@ -132,7 +132,7 @@ export async function editAndValidateAction(
   });
   if (validateActionResult.isErr()) {
     return new Err(
-      new DustError(
+      new RubyError(
         "internal_error",
         `Failed to validate action after editing: ${validateActionResult.error.message}`
       )

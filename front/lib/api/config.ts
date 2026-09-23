@@ -2,7 +2,7 @@ import { DEFAULT_PRESTOP_DRAIN_DURATION_MS } from "@app/lib/constants/timeouts";
 import { isDevelopment } from "@app/types/shared/env";
 import { EnvironmentConfig } from "@app/types/shared/utils/config";
 
-const PRODUCTION_DUST_API = "https://dust.tt";
+const PRODUCTION_RUBY_API = "https://app.ruby.ad";
 
 // Pluggable base URL resolver (e.g. RegionContext in the SPA).
 let baseUrlResolver: (() => string) | null = null;
@@ -13,10 +13,10 @@ export function setBaseUrlResolver(fn: (() => string) | null): void {
 
 function publicApiBaseUrl(): string {
   // Using process.env here to make sure the function is usable on the client side.
-  if (!process.env.NEXT_PUBLIC_DUST_API_URL) {
-    throw new Error("NEXT_PUBLIC_DUST_API_URL is not set");
+  if (!process.env.NEXT_PUBLIC_RUBY_API_URL) {
+    throw new Error("NEXT_PUBLIC_RUBY_API_URL is not set");
   }
-  return process.env.NEXT_PUBLIC_DUST_API_URL;
+  return process.env.NEXT_PUBLIC_RUBY_API_URL;
 }
 
 // Returns the resolver's URL if set, or empty string.
@@ -40,6 +40,8 @@ export function getDefaultInit(): Promise<RequestInit> | null {
 }
 
 const config = {
+  getChromeExtensionUrl: (): string => process.env.NEXT_PUBLIC_CHROME_EXTENSION_URL ?? "",
+  getFirefoxExtensionUrl: (): string => process.env.NEXT_PUBLIC_FIREFOX_EXTENSION_URL ?? "",
   getPreStopDrainDurationMs: (): number => {
     const value = EnvironmentConfig.getOptionalEnvVariable(
       "PRESTOP_DRAIN_DURATION_SECONDS"
@@ -66,11 +68,11 @@ const config = {
       return url;
     }
 
-    // We override the NEXT_PUBLIC_DUST_API_URL in `front-internal` to ensure that the
+    // We override the NEXT_PUBLIC_RUBY_API_URL in `front-internal` to ensure that the
     // uploadUrl returned by the file API points to the `http://front-internal-service` and not our
     // public API URL.
     const override = EnvironmentConfig.getOptionalEnvVariable(
-      "DUST_INTERNAL_API_URL"
+      "RUBY_INTERNAL_API_URL"
     );
     if (override) {
       return override;
@@ -81,7 +83,7 @@ const config = {
 
   // The URL a sandbox uses to reach us. Sandboxes run outside our cluster, so
   // this stays the public URL: getApiBaseUrl prefers the internal service
-  // address wherever DUST_INTERNAL_API_URL is set, and nothing in a sandbox can
+  // address wherever RUBY_INTERNAL_API_URL is set, and nothing in a sandbox can
   // reach that. Every sandbox-facing caller must use this one.
   getSandboxApiBaseUrl: (): string => {
     const developmentHostName = config.getSandboxDevFrontHostName();
@@ -94,42 +96,42 @@ const config = {
 
   getStaticWebsiteUrl: (): string => {
     // Using process.env here to make sure the function is usable on the client side.
-    if (!process.env.NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL) {
-      throw new Error("NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL is not set");
+    if (!process.env.NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL) {
+      throw new Error("NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL is not set");
     }
-    return process.env.NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL;
+    return process.env.NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL;
   },
   // URL for the main app pages (/w/..., /share/..., etc.).
   // Use this for page URLs, not API endpoints.
   getAppUrl: (): string => {
     // Using process.env here to make sure the function is usable on the client side.
-    if (!process.env.NEXT_PUBLIC_DUST_APP_URL) {
-      throw new Error("NEXT_PUBLIC_DUST_APP_URL is required");
+    if (!process.env.NEXT_PUBLIC_RUBY_APP_URL) {
+      throw new Error("NEXT_PUBLIC_RUBY_APP_URL is required");
     }
 
-    return process.env.NEXT_PUBLIC_DUST_APP_URL;
+    return process.env.NEXT_PUBLIC_RUBY_APP_URL;
   },
-  // URL for the poke app (front-spa). Falls back to getClientFacingUrl()/poke when not set.
-  getPokeAppUrl: (): string => {
-    return EnvironmentConfig.getEnvVariable("POKE_APP_URL");
+  // URL for the admin app (front-spa). Falls back to getClientFacingUrl()/admin when not set.
+  getAdminAppUrl: (): string => {
+    return EnvironmentConfig.getEnvVariable("ADMIN_APP_URL");
   },
-  // Cloudflare Access team domain used to validate poke JWTs
-  // (e.g. "https://dust.cloudflareaccess.com"). Optional: when unset, poke
+  // Cloudflare Access team domain used to validate admin JWTs
+  // (e.g. "https://ruby.cloudflareaccess.com"). Optional: when unset, admin
   // falls back to the WorkOS super-user session path.
   getCloudflareAccessTeamDomain: (): string | undefined => {
     return EnvironmentConfig.getOptionalEnvVariable(
       "CLOUDFLARE_ACCESS_TEAM_DOMAIN"
     );
   },
-  // Cloudflare Access application Audience (AUD) tag for poke.
+  // Cloudflare Access application Audience (AUD) tag for admin.
   getCloudflareAccessAud: (): string | undefined => {
     return EnvironmentConfig.getOptionalEnvVariable("CLOUDFLARE_ACCESS_AUD");
   },
   // For the WorkOS callback, which must reach the API. Allows overriding the
-  // redirect base URL separately from NEXT_PUBLIC_DUST_API_URL.
+  // redirect base URL separately from NEXT_PUBLIC_RUBY_API_URL.
   getAuthRedirectBaseUrl: (): string => {
     return (
-      EnvironmentConfig.getOptionalEnvVariable("DUST_AUTH_REDIRECT_BASE_URL") ??
+      EnvironmentConfig.getOptionalEnvVariable("RUBY_AUTH_REDIRECT_BASE_URL") ??
       config.getApiBaseUrl()
     );
   },
@@ -138,12 +140,12 @@ const config = {
   getLegacyOAuthRedirectBaseUrl: (): string => {
     return (
       EnvironmentConfig.getOptionalEnvVariable(
-        "DUST_OAUTH_REDIRECT_BASE_URL"
+        "RUBY_OAUTH_REDIRECT_BASE_URL"
       ) ?? config.getAppUrl()
     );
   },
-  getDustInviteTokenSecret: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_INVITE_TOKEN_SECRET");
+  getRubyInviteTokenSecret: (): string => {
+    return EnvironmentConfig.getEnvVariable("RUBY_INVITE_TOKEN_SECRET");
   },
   getIPInfoApiToken: (): string => {
     return EnvironmentConfig.getEnvVariable("IPINFO_API_TOKEN");
@@ -158,19 +160,19 @@ const config = {
       EnvironmentConfig.getOptionalEnvVariable("ANTHROPIC_EAP_API_KEY") ?? null
     );
   },
-  // Anthropic API key for Dust-managed features (e.g. the Academy quiz chat).
+  // Anthropic API key for Ruby-managed features (e.g. the Academy quiz chat).
   // Optional: only set in deployments that serve these features.
-  getDustManagedAnthropicApiKey: (): string | null => {
+  getRubyManagedAnthropicApiKey: (): string | null => {
     return (
       EnvironmentConfig.getOptionalEnvVariable(
-        "DUST_MANAGED_ANTHROPIC_API_KEY"
+        "RUBY_MANAGED_ANTHROPIC_API_KEY"
       ) ?? null
     );
   },
   getSupportEmailAddress: (): { name: string; email: string } => {
     return {
-      name: "Dust team",
-      email: "support@dust.tt",
+      name: "Ruby team",
+      email: "support@ruby.ad",
     };
   },
   getInvitationEmailTemplate: (): string => {
@@ -255,12 +257,12 @@ const config = {
       EnvironmentConfig.getOptionalEnvVariable("CUSTOMERIO_ENABLED") === "true"
     );
   },
-  // Used for communication of front to (itself in prod) for dust-apps execution.
-  getDustDevelopmentSystemAPIKey: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_DEVELOPMENT_SYSTEM_API_KEY");
+  // Used for communication of front to (itself in prod) for ruby-apps execution.
+  getRubyDevelopmentSystemAPIKey: (): string => {
+    return EnvironmentConfig.getEnvVariable("RUBY_DEVELOPMENT_SYSTEM_API_KEY");
   },
-  getDustDevelopmentWorkspaceId: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_DEVELOPMENT_WORKSPACE_ID");
+  getRubyDevelopmentWorkspaceId: (): string => {
+    return EnvironmentConfig.getEnvVariable("RUBY_DEVELOPMENT_WORKSPACE_ID");
   },
   getCoreAPIConfig: (): { url: string; apiKey: string | null } => {
     return {
@@ -275,18 +277,18 @@ const config = {
   } => {
     return {
       url: EnvironmentConfig.getEnvVariable("CONNECTORS_API"),
-      secret: EnvironmentConfig.getEnvVariable("DUST_CONNECTORS_SECRET"),
+      secret: EnvironmentConfig.getEnvVariable("RUBY_CONNECTORS_SECRET"),
       webhookSecret: EnvironmentConfig.getEnvVariable(
-        "DUST_CONNECTORS_WEBHOOKS_SECRET"
+        "RUBY_CONNECTORS_WEBHOOKS_SECRET"
       ),
     };
   },
-  getDustAPIConfig: (): { url: string; nodeEnv: string } => {
+  getRubyAPIConfig: (): { url: string; nodeEnv: string } => {
     return {
-      // Dust production API URL is hardcoded for now.
+      // Ruby production API URL is hardcoded for now.
       url:
-        EnvironmentConfig.getOptionalEnvVariable("DUST_PROD_API") ??
-        PRODUCTION_DUST_API,
+        EnvironmentConfig.getOptionalEnvVariable("RUBY_PROD_API") ??
+        PRODUCTION_RUBY_API,
       nodeEnv:
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         EnvironmentConfig.getOptionalEnvVariable("NODE_ENV") || "development",
@@ -296,10 +298,10 @@ const config = {
     return EnvironmentConfig.getEnvVariable("VIZ_JWT_SECRET");
   },
   getAcademyJwtSecret: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_ACADEMY_JWT_SECRET");
+    return EnvironmentConfig.getEnvVariable("RUBY_ACADEMY_JWT_SECRET");
   },
   getSandboxJwtSecret: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_SANDBOX_JWT_SECRET");
+    return EnvironmentConfig.getEnvVariable("RUBY_SANDBOX_JWT_SECRET");
   },
   getEgressProxyJwtSecret: (): string => {
     return EnvironmentConfig.getEnvVariable("EGRESS_PROXY_JWT_SECRET");
@@ -471,8 +473,8 @@ const config = {
   getStatusPageProvidersPageId: (): string => {
     return EnvironmentConfig.getEnvVariable("STATUS_PAGE_PROVIDERS_PAGE_ID");
   },
-  getStatusPageDustPageId: (): string => {
-    return EnvironmentConfig.getEnvVariable("STATUS_PAGE_DUST_PAGE_ID");
+  getStatusPageRubyPageId: (): string => {
+    return EnvironmentConfig.getEnvVariable("STATUS_PAGE_RUBY_PAGE_ID");
   },
   getStatusPageApiToken: (): string => {
     return EnvironmentConfig.getEnvVariable("STATUS_PAGE_API_TOKEN");
@@ -627,11 +629,11 @@ const config = {
   },
   // Secrets for secure storage of keys and bearer tokens.
   getDeveloperSecretsSecret: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_DEVELOPERS_SECRETS_SECRET");
+    return EnvironmentConfig.getEnvVariable("RUBY_DEVELOPERS_SECRETS_SECRET");
   },
   getMCPServerCredentialsSecret: (): string => {
     return EnvironmentConfig.getEnvVariable(
-      "DUST_MCP_SERVER_CREDENTIALS_SECRET"
+      "RUBY_MCP_SERVER_CREDENTIALS_SECRET"
     );
   },
   // E2B Sandbox.
@@ -653,7 +655,7 @@ const config = {
     )?.replace(/^https?:\/\//, "");
   },
   // Dev-only switch to fully unrestrict sandbox network egress: skips the
-  // dsbx forwarder, tears down in-sandbox nftables redirect, and lets E2B
+  // rbx forwarder, tears down in-sandbox nftables redirect, and lets E2B
   // allow all outbound traffic. Only honored when isDevelopment() to avoid
   // accidental enablement in production.
   getSandboxDevUnrestrictedEgress: (): boolean => {
@@ -725,8 +727,8 @@ const config = {
   getVertexAiProjectId: (): string | undefined => {
     return EnvironmentConfig.getOptionalEnvVariable("VERTEX_AI_PROJECT_ID");
   },
-  getDustWebhooksPublicUrl: (): string | undefined => {
-    return EnvironmentConfig.getOptionalEnvVariable("DUST_WEBHOOKS_PUBLIC_URL");
+  getRubyWebhooksPublicUrl: (): string | undefined => {
+    return EnvironmentConfig.getOptionalEnvVariable("RUBY_WEBHOOKS_PUBLIC_URL");
   },
   getConvertAPIKey: (): string => {
     return EnvironmentConfig.getEnvVariable("CONVERTAPI_API_KEY");

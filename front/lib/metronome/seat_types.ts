@@ -21,7 +21,7 @@ import type { Subscription } from "@metronome/sdk/resources";
 
 /**
  * Fetch all Metronome products and build a `productId → seatType` map from
- * the `DUST_SEAT_TYPE` custom field stamped on each product by the setup
+ * the `RUBY_SEAT_TYPE` custom field stamped on each product by the setup
  * script.
  *
  * Products are global per-environment (not workspace-scoped) and rarely
@@ -61,7 +61,7 @@ const getCachedProductSeatTypes = cacheWithRedis(
 
 /**
  * Returns the `productId → seatType` map for all Metronome products tagged
- * with `DUST_SEAT_TYPE`. Cached in Redis. Call once per request (or job)
+ * with `RUBY_SEAT_TYPE`. Cached in Redis. Call once per request (or job)
  * and pass the map to the sync helpers below.
  */
 export async function getProductSeatTypes(): Promise<
@@ -82,7 +82,7 @@ export const invalidateProductSeatTypesCache = invalidateCacheWithRedis(
 /**
  * Resolve the seat type for a subscription by looking up its product in the
  * cached `productSeatTypes` map. Returns `undefined` when the product isn't
- * tagged with `DUST_SEAT_TYPE` — untagged subscriptions are not seats and
+ * tagged with `RUBY_SEAT_TYPE` — untagged subscriptions are not seats and
  * are ignored by seat-handling code paths.
  *
  * Product names and IDs are intentionally *not* compared: products are

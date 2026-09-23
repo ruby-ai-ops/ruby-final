@@ -1,0 +1,4 @@
+* text=auto eol=lf
+marketing/demo-workspace/upstream/** -text
+marketing/demo-workspace/embed/bundled-assets/** -text
+marketing/public/static/workspace-demo/bundled/** -text

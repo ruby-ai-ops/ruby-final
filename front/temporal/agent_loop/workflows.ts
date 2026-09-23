@@ -423,7 +423,7 @@ export async function agentLoopWorkflow({
       // workflows only process this execution's runs and actions.
       const argsWithRunIds = {
         ...agentLoopArgs,
-        dustRunIds: runIds,
+        rubyRunIds: runIds,
         startStep,
       };
 
@@ -465,7 +465,7 @@ export async function agentLoopWorkflow({
     // workflows only process this execution's runs and actions.
     const argsWithRunIds = {
       ...agentLoopArgs,
-      dustRunIds: runIds,
+      rubyRunIds: runIds,
       startStep,
     };
 

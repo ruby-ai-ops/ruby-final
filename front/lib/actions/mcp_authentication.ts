@@ -1,6 +1,6 @@
 import { getMCPConnectionAccessToken } from "@app/lib/actions/mcp_oauth_access_token";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import type { MCPServerConnectionConnectionType } from "@app/lib/resources/mcp_server_connection_resource";
 import { MCPServerConnectionResource } from "@app/lib/resources/mcp_server_connection_resource";
 import logger from "@app/logger/logger";
@@ -29,7 +29,7 @@ export async function getConnectionForMCPServer(
       access_token_expiry: number | null;
       scrubbed_raw_json: unknown;
     },
-    DustError<"mcp_access_token_error" | "connection_not_found">
+    RubyError<"mcp_access_token_error" | "connection_not_found">
   >
 > {
   const localLogger = logger.child({
@@ -49,7 +49,7 @@ export async function getConnectionForMCPServer(
       "No connection found for MCP server"
     );
     return new Err(
-      new DustError(
+      new RubyError(
         "connection_not_found",
         "No connection found for MCP server"
       )
@@ -62,7 +62,7 @@ export async function getConnectionForMCPServer(
       "MCP server connection is not configured for OAuth"
     );
     return new Err(
-      new DustError("connection_not_found", "Connection not found")
+      new RubyError("connection_not_found", "Connection not found")
     );
   }
 
@@ -77,7 +77,7 @@ export async function getConnectionForMCPServer(
       "Failed to get access token for MCP server"
     );
     return new Err(
-      new DustError(
+      new RubyError(
         "mcp_access_token_error",
         "Failed to get access token for MCP server"
       )
@@ -131,8 +131,8 @@ export class MCPServerRequiresAdminAuthenticationError extends Error {
   ) {
     super(
       reason === "setup"
-        ? `MCP server ${mcpServerId} requires your admin(s) to set up the workspace connection on Dust.`
-        : `MCP server ${mcpServerId} requires your admin(s) to reconnect the workspace connection on Dust.`
+        ? `MCP server ${mcpServerId} requires your admin(s) to set up the workspace connection on Ruby.`
+        : `MCP server ${mcpServerId} requires your admin(s) to reconnect the workspace connection on Ruby.`
     );
     this.name = MCPServerRequiresAdminAuthenticationErrorName;
     this.mcpServerId = mcpServerId;
@@ -173,7 +173,7 @@ export class MCPServerRateLimitedError extends Error {
 }
 
 export function getMCPServerAdminAuthenticationReason(
-  error: DustError<"mcp_access_token_error" | "connection_not_found">
+  error: RubyError<"mcp_access_token_error" | "connection_not_found">
 ): MCPServerAdminAuthenticationReason {
   return error.code === "connection_not_found" ? "setup" : "reconnect";
 }

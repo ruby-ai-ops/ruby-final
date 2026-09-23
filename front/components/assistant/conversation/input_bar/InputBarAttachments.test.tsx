@@ -24,7 +24,7 @@ vi.mock(
   })
 );
 
-vi.mock(import("@app/components/sparkle/ThemeContext"), () => ({
+vi.mock(import("@app/components/ui/ThemeContext"), () => ({
   useTheme: () => ({ isDark: false, theme: "light", setTheme: vi.fn() }),
 }));
 

@@ -629,7 +629,7 @@ async function getAwuPoolCurrentCycleUncached(
 
   // Filter to active, non-seat AWU pool credits and commits. The set of
   // seat product IDs is derived from the contract's tagged subscriptions
-  // (via the `DUST_SEAT_TYPE` custom field) rather than a hardcoded list.
+  // (via the `RUBY_SEAT_TYPE` custom field) rather than a hardcoded list.
   //
   // A pool grant under a superseded contract can still cover `now`,
   // so it must not be excluded.

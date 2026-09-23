@@ -3,7 +3,7 @@ import type {
   InternalAllowedIconType,
 } from "@app/components/resources/resources_icons";
 import { getAvatarFromIcon } from "@app/components/resources/resources_icons";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { usePersistedNavigationSelection } from "@app/hooks/usePersistedNavigationSelection";
 import { useSidebarSectionCollapsed } from "@app/hooks/useSidebarSectionCollapsed";
 import { useSpaceSidebarItemFocus } from "@app/hooks/useSpaceSidebarItemFocus";
@@ -59,7 +59,7 @@ import {
   Terminal,
   Tree,
   Zap,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import sortBy from "lodash/sortBy";
 import uniqBy from "lodash/uniqBy";
 import type { ComponentType, ReactElement, ReactNode } from "react";

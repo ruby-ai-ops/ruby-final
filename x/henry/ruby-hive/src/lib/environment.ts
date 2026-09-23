@@ -1,0 +1,211 @@
+import { mkdir, readdir, rm } from "node:fs/promises";
+import { relative, resolve } from "node:path";
+import { z } from "zod";
+import { createTypeGuard } from "./errors";
+import { directoryExists } from "./fs";
+import {
+  RUBY_HIVE_ENVS,
+  getEnvDir,
+  getInitializedMarkerPath,
+  getMetadataPath,
+  getWorktreeDir,
+} from "./paths";
+import type { PortAllocation } from "./ports";
+import { loadPortAllocation } from "./ports";
+
+const WorktreeOwnerSchema = z.enum(["hive", "external"]);
+export type WorktreeOwner = z.infer<typeof WorktreeOwnerSchema>;
+
+const EnvironmentMetadataFields = z.object({
+  name: z.string(),
+  baseBranch: z.string(),
+  workspaceBranch: z.string(),
+  createdAt: z.string(),
+  repoRoot: z.string(),
+  worktreePath: z.string().optional(),
+  worktreeOwner: WorktreeOwnerSchema.optional(),
+});
+
+export const EnvironmentMetadataSchema = EnvironmentMetadataFields.passthrough();
+
+export type EnvironmentMetadata = z.infer<typeof EnvironmentMetadataFields>;
+
+export const isEnvironmentMetadata =
+  createTypeGuard<EnvironmentMetadata>(EnvironmentMetadataSchema);
+
+export interface Environment {
+  name: string;
+  metadata: EnvironmentMetadata;
+  ports: PortAllocation;
+  initialized: boolean;
+}
+
+export function getEnvironmentWorktreeDir(metadata: EnvironmentMetadata): string {
+  return getWorktreeDir(metadata.name, metadata.repoRoot, metadata.worktreePath);
+}
+
+// Validate environment name
+export function validateEnvName(name: string): { valid: boolean; error?: string } {
+  if (!name) {
+    return { valid: false, error: "Name is required" };
+  }
+
+  if (!/^[a-z][a-z0-9-]*$/.test(name)) {
+    return {
+      valid: false,
+      error:
+        "Name must start with a letter and contain only lowercase letters, numbers, and hyphens",
+    };
+  }
+
+  // Zellij has a 36-character session name limit. Since session names are
+  // formatted as "ruby-hive-{name}" (10-char prefix), env names must be ≤26 chars.
+  if (name.length > 26) {
+    return { valid: false, error: "Name must be 26 characters or less" };
+  }
+
+  return { valid: true };
+}
+
+// Check if environment exists
+export async function environmentExists(name: string): Promise<boolean> {
+  const metadataPath = getMetadataPath(name);
+  const file = Bun.file(metadataPath);
+  return file.exists();
+}
+
+// Create environment directory and save metadata
+export async function createEnvironment(metadata: EnvironmentMetadata): Promise<void> {
+  const envDir = getEnvDir(metadata.name);
+  await mkdir(envDir, { recursive: true });
+  await saveMetadata(metadata);
+}
+
+// Save environment metadata
+export async function saveMetadata(metadata: EnvironmentMetadata): Promise<void> {
+  const path = getMetadataPath(metadata.name);
+  await Bun.write(path, JSON.stringify(metadata, null, 2));
+}
+
+// Load environment metadata
+export async function loadMetadata(name: string): Promise<EnvironmentMetadata | null> {
+  const path = getMetadataPath(name);
+  const file = Bun.file(path);
+
+  if (!(await file.exists())) {
+    return null;
+  }
+
+  const data: unknown = await file.json();
+
+  if (isEnvironmentMetadata(data)) {
+    return data;
+  }
+
+  return null;
+}
+
+// Check if environment has been initialized (DB setup done)
+export async function isInitialized(name: string): Promise<boolean> {
+  const path = getInitializedMarkerPath(name);
+  const file = Bun.file(path);
+  return file.exists();
+}
+
+// Mark environment as initialized
+export async function markInitialized(name: string): Promise<void> {
+  const path = getInitializedMarkerPath(name);
+  await Bun.write(path, new Date().toISOString());
+}
+
+// Get full environment info
+export async function getEnvironment(name: string): Promise<Environment | null> {
+  const metadata = await loadMetadata(name);
+  if (!metadata) {
+    return null;
+  }
+
+  const ports = await loadPortAllocation(name);
+  if (!ports) {
+    return null;
+  }
+
+  const initialized = await isInitialized(name);
+
+  return {
+    name,
+    metadata,
+    ports,
+    initialized,
+  };
+}
+
+// List all environments
+export async function listEnvironments(): Promise<string[]> {
+  const envsExists = await directoryExists(RUBY_HIVE_ENVS);
+  if (!envsExists) {
+    return [];
+  }
+
+  const entries = await readdir(RUBY_HIVE_ENVS, { withFileTypes: true });
+  const names: string[] = [];
+
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      const exists = await environmentExists(entry.name);
+      if (exists) {
+        names.push(entry.name);
+      }
+    }
+  }
+
+  return names.sort();
+}
+
+function isPathAtOrInside(parentPath: string, candidatePath: string): boolean {
+  const relativePath = relative(resolve(parentPath), resolve(candidatePath));
+  return relativePath === "" || !(relativePath.startsWith("..") || relativePath.startsWith("/"));
+}
+
+export function detectEnvironmentFromMetadata(
+  cwd: string,
+  environments: EnvironmentMetadata[]
+): string | null {
+  let bestMatch: { name: string; pathLength: number } | null = null;
+
+  for (const metadata of environments) {
+    const worktreePath = getEnvironmentWorktreeDir(metadata);
+    if (!isPathAtOrInside(worktreePath, cwd)) {
+      continue;
+    }
+
+    if (!bestMatch || worktreePath.length > bestMatch.pathLength) {
+      bestMatch = { name: metadata.name, pathLength: worktreePath.length };
+    }
+  }
+
+  return bestMatch?.name ?? null;
+}
+
+// Detect if the current working directory is inside a registered ruby-hive worktree.
+export async function detectEnvironmentFromCwd(cwd = process.cwd()): Promise<string | null> {
+  const envNames = await listEnvironments();
+  const metadataList: EnvironmentMetadata[] = [];
+
+  for (const envName of envNames) {
+    const metadata = await loadMetadata(envName);
+    if (!metadata) {
+      continue;
+    }
+
+    metadataList.push(metadata);
+  }
+
+  return detectEnvironmentFromMetadata(cwd, metadataList);
+}
+
+// Delete environment directory
+export async function deleteEnvironmentDir(name: string): Promise<void> {
+  const envDir = getEnvDir(name);
+  await rm(envDir, { recursive: true, force: true });
+}

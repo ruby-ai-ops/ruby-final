@@ -7,7 +7,7 @@ import {
 } from "@app/hooks/useSkillSuggestions";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import type { SkillSuggestionType } from "@app/types/suggestions/skill_suggestion";
-import { Lightbulb04, ScrollArea, Spinner } from "@dust-tt/sparkle";
+import { Lightbulb04, ScrollArea, Spinner } from "@ruby-ai/ui";
 import { useCallback, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -154,7 +154,7 @@ export function SkillBuilderSuggestionsPanel({
           Suggestions
         </h2>
         <p className="text-sm text-muted-foreground">
-          Dust continuously analyses conversations using this skill to suggest
+          Ruby continuously analyses conversations using this skill to suggest
           improvements.
         </p>
       </div>

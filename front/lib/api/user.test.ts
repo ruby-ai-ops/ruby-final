@@ -286,7 +286,7 @@ describe("getUserForWorkspace", () => {
       throw new Error("workspace1Resource not found");
     }
 
-    const auth = await Authenticator.fromDustSuperUser({
+    const auth = await Authenticator.fromRubySuperUser({
       user: superUser,
       wId: workspace1.sId,
     });

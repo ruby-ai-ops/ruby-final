@@ -70,7 +70,7 @@ import type { LightWorkspaceType } from "@app/types/user";
  * `MAU_THRESHOLD` custom field — seat and MAU billing are mutually exclusive.
  *
  * Beyond MAU, we require at least one subscription whose product is tagged
- * with `DUST_SEAT_TYPE` (resolved via the Redis-cached product map). Untagged
+ * with `RUBY_SEAT_TYPE` (resolved via the Redis-cached product map). Untagged
  * subscriptions don't count — a contract holding only non-seat subscriptions
  * (e.g. usage-only) doesn't trigger seat sync.
  */
@@ -662,7 +662,7 @@ export async function remapMembershipSeatTypesForContract({
  * Always sets the absolute state per subscription — safe against race
  * conditions and idempotent on replay. No knowledge of specific seat-type
  * names is baked in: adding a new tier flows through as long as its
- * product carries the `DUST_SEAT_TYPE` custom field.
+ * product carries the `RUBY_SEAT_TYPE` custom field.
  *
  * Deferred transitions are written to Metronome with a future `starting_at`;
  * Metronome flips the segment automatically when the date is reached, so no
@@ -1351,7 +1351,7 @@ async function carryConsumptionToNewSeatCredits({
   }
 }
 
-// Summary of the work `syncSeatCount` actually did, surfaced up to the poke
+// Summary of the work `syncSeatCount` actually did, surfaced up to the admin
 // plugin so an operator can see what happened without digging through logs.
 export type SyncSeatCountSummary = {
   seatSubscriptionCount: number;
@@ -1400,7 +1400,7 @@ export async function syncSeatCount({
   assumeEmptySeats?: boolean;
   // Run the (expensive) ex-free-seat credit revoke check unconditionally,
   // instead of only when Metronome's "free" seat assignment list shows
-  // someone moved away from free. Used by the poke "Sync Metronome Seat
+  // someone moved away from free. Used by the admin "Sync Metronome Seat
   // Count" plugin, where an operator explicitly asked for a thorough pass —
   // not by the debounced/automatic sync, which relies on the cheap gate.
   forceFreeCreditRevokeCheck?: boolean;

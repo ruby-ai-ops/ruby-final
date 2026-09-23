@@ -17,7 +17,7 @@ import {
   GongLogo,
   Input,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useMemo, useState } from "react";
 
 // TODO(2025-03-17): share these variables between connectors and front.
@@ -487,12 +487,12 @@ export function GongOptionComponent({
         >
           <ContextItem.Description>
             <div className="text-muted-foreground">
-              If activated, Dust will sync the list of keyword and smart
+              If activated, Ruby will sync the list of keyword and smart
               trackers associated to each call transcript.
               <br />
               {/* The procedure to follow to backfill existing transcripts is a full sync. */}
               Only new transcripts will be affected, please contact us at
-              support@dust.tt if you need to update the existing transcripts.
+              support@ruby.ad if you need to update the existing transcripts.
             </div>
           </ContextItem.Description>
         </ContextItem>
@@ -517,11 +517,11 @@ export function GongOptionComponent({
         >
           <ContextItem.Description>
             <div className="text-muted-foreground">
-              If activated, Dust will sync the account names from CRM context
+              If activated, Ruby will sync the account names from CRM context
               associated to each call transcript.
               <br />
               Only new transcripts will be affected, please contact us at
-              support@dust.tt if you need to update the existing transcripts.
+              support@ruby.ad if you need to update the existing transcripts.
             </div>
           </ContextItem.Description>
         </ContextItem>

@@ -20,7 +20,7 @@ import {
   CONNECTOR_PROVIDERS,
   isConnectorProvider,
 } from "@app/types/data_source";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 export function SpaceCategoryPage() {

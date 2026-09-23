@@ -1,6 +1,6 @@
 # Egress Proxy
 
-`egress-proxy` is the first Rust service for enforcing Dust sandbox outbound network policy.
+`egress-proxy` is the first Rust service for enforcing Ruby sandbox outbound network policy.
 
 Current functionality:
 
@@ -26,7 +26,7 @@ EGRESS_PROXY_HEALTH_ADDR=0.0.0.0:8080
 EGRESS_PROXY_TLS_CERT=/etc/certs/tls.crt
 EGRESS_PROXY_TLS_KEY=/etc/certs/tls.key
 EGRESS_PROXY_JWT_SECRET=<shared with front>
-EGRESS_PROXY_ALLOWED_DOMAINS=dust.tt,eu.dust.tt
+EGRESS_PROXY_ALLOWED_DOMAINS=ruby.ad,app.ruby.ad
 EGRESS_PROXY_POLICY_BUCKET=<gcs bucket name>
 EGRESS_PROXY_POLICY_CACHE_TTL_SECS=60
 EGRESS_PROXY_ENV=production

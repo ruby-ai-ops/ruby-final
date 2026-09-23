@@ -15,8 +15,8 @@ import type { VisualizationConfig } from "@viz/app/lib/visualization-api";
 import { useMemo } from "react";
 
 // Domains that are trusted and don't require user confirmation before navigation.
-// These are Dust platform domains that are considered safe for automatic navigation.
-const TRUSTED_NAVIGATION_DOMAINS = ["dust.tt", "eu.dust.tt"];
+// These are Ruby platform domains that are considered safe for automatic navigation.
+const TRUSTED_NAVIGATION_DOMAINS = ["ruby.ad", "app.ruby.ad"];
 
 interface ServerVisualizationWrapperClientProps {
   allowedOrigins: string[];

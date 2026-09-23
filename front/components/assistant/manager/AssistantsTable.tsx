@@ -6,7 +6,7 @@ import { TableTagSelector } from "@app/components/assistant/manager/TableTagSele
 import { assistantUsageMessage } from "@app/components/assistant/Usage";
 import { ModelTierChip } from "@app/components/model_picker/ModelTierChip";
 import { getModelMakerLogo } from "@app/components/providers/types";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { usePaginationFromUrl } from "@app/hooks/usePaginationFromUrl";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import { getSupportedModelConfig } from "@app/lib/llms/model_configurations";
@@ -36,7 +36,7 @@ import { pluralize } from "@app/types/shared/utils/string_utils";
 import type { TagType } from "@app/types/tag";
 import type { UserType, WorkspaceType } from "@app/types/user";
 import { isAdmin } from "@app/types/user";
-import type { MenuItem } from "@dust-tt/sparkle";
+import type { MenuItem } from "@ruby-ai/ui";
 import {
   Avatar,
   AvatarCellSkeleton,
@@ -52,7 +52,7 @@ import {
   TextCellSkeleton,
   Tooltip,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, HeaderContext } from "@tanstack/react-table";
 import capitalize from "lodash/capitalize";
 import type { ComponentType, ReactNode } from "react";

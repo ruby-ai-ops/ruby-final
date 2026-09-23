@@ -70,7 +70,7 @@ export async function startActivationWorkspaceSchedule({
         args: [{ workspaceId }],
         taskQueue: QUEUE_NAME,
         // Pinned to the same deterministic id used by the on-demand
-        // signalWithStart trigger below, so a poke/admin-forced cycle joins
+        // signalWithStart trigger below, so a admin/admin-forced cycle joins
         // the day's scheduled run instead of starting a second one.
         workflowId: scheduleId,
       },
@@ -139,7 +139,7 @@ export async function deleteActivationWorkspaceSchedule({
 }
 
 // ---------------------------------------------------------------------------
-// On-demand runs (poke/admin-forced cycles)
+// On-demand runs (admin/admin-forced cycles)
 // ---------------------------------------------------------------------------
 
 /**
@@ -173,7 +173,7 @@ export async function triggerActivationWorkspaceWorkflow({
 }
 
 /**
- * One-off poke/admin run against the same workflow function as the daily
+ * One-off admin/admin run against the same workflow function as the daily
  * schedule, but a distinct workflow id so it cannot no-op against an in-flight
  * workday run. `overrideChecks` skips cadence, activation-status, BYOK, and
  * the per-run user cap; membership and credit still apply.
@@ -212,7 +212,7 @@ export async function startActivationWorkspaceWorkflow(
 /**
  * Workspaces that currently have at least one live Activation Pod, i.e. the
  * workspaces that should have a running schedule. Provisioning a workspace's
- * first pod (see the `join-activation-pod` poke plugin) defines scope going
+ * first pod (see the `join-activation-pod` admin plugin) defines scope going
  * forward; this reconcile pass is the safety net that keeps schedules in
  * sync as pods are provisioned/removed outside that hook.
  */

@@ -137,7 +137,7 @@ describe("clientUpload", () => {
   });
 
   it("rewrites the URL and applies the resolved auth context", async () => {
-    setBaseUrlResolver(() => "https://eu.dust.tt");
+    setBaseUrlResolver(() => "https://app.ruby.ad");
     setDefaultInitResolver(async () => ({
       credentials: "omit",
       headers: { Authorization: "Bearer tok" },
@@ -150,7 +150,7 @@ describe("clientUpload", () => {
 
     await clientUpload("/api/w/w1/files/fil_1", new FormData());
 
-    expect(last.url).toBe("https://eu.dust.tt/api/w/w1/files/fil_1");
+    expect(last.url).toBe("https://app.ruby.ad/api/w/w1/files/fil_1");
     expect(last.headers.authorization).toBe("Bearer tok");
     expect(last.withCredentials).toBe(false);
     expect(last.headers["content-type"]).toBeUndefined();
@@ -174,7 +174,7 @@ describe("clientUpload", () => {
   });
 
   it("sends cookies when no default init resolver is set in the SPA", async () => {
-    setBaseUrlResolver(() => "https://eu.dust.tt");
+    setBaseUrlResolver(() => "https://app.ruby.ad");
     installFakeXhr((xhr) => {
       xhr.status = 200;
       xhr.responseText = "{}";
@@ -221,7 +221,7 @@ describe("clientUpload", () => {
 // helper is covered here too: it must observe the same URL and auth context as the upload above.
 describe("clientEventSource", () => {
   it("resolves the same URL and auth context as the other transports", async () => {
-    setBaseUrlResolver(() => "https://eu.dust.tt");
+    setBaseUrlResolver(() => "https://app.ruby.ad");
     setDefaultInitResolver(async () => ({
       credentials: "omit",
       headers: { Authorization: "Bearer tok" },
@@ -234,7 +234,7 @@ describe("clientEventSource", () => {
 
     expect(eventSourceCalls).toHaveLength(1);
     const [{ url, init }] = eventSourceCalls;
-    expect(url).toBe("https://eu.dust.tt/api/w/w1/events");
+    expect(url).toBe("https://app.ruby.ad/api/w/w1/events");
     expect(init?.headers).toEqual({
       authorization: "Bearer tok",
       "x-caller": "1",
@@ -245,7 +245,7 @@ describe("clientEventSource", () => {
   });
 
   it("sends cookies when no default init resolver is set in the SPA", async () => {
-    setBaseUrlResolver(() => "https://eu.dust.tt");
+    setBaseUrlResolver(() => "https://app.ruby.ad");
 
     await clientEventSource("/api/w/w1/events");
 
@@ -276,17 +276,17 @@ describe("clientFetch", () => {
   });
 
   it("rewrites the URL and sends cookies in the SPA context", async () => {
-    setBaseUrlResolver(() => "https://eu.dust.tt");
+    setBaseUrlResolver(() => "https://app.ruby.ad");
     const calls = stubFetch();
 
     await clientFetch("/api/w/w1/files");
 
-    expect(calls[0].input).toBe("https://eu.dust.tt/api/w/w1/files");
+    expect(calls[0].input).toBe("https://app.ruby.ad/api/w/w1/files");
     expect(calls[0].init?.credentials).toBe("include");
   });
 
   it("carries the Bearer token in the extension context", async () => {
-    setBaseUrlResolver(() => "https://dust.tt");
+    setBaseUrlResolver(() => "https://ruby.ad");
     setDefaultInitResolver(async () => ({
       credentials: "omit",
       headers: { Authorization: "Bearer tok" },
@@ -295,7 +295,7 @@ describe("clientFetch", () => {
 
     await clientFetch("/api/w/w1/files", { method: "POST" });
 
-    expect(calls[0].input).toBe("https://dust.tt/api/w/w1/files");
+    expect(calls[0].input).toBe("https://app.ruby.ad/api/w/w1/files");
     expect(calls[0].init?.credentials).toBe("omit");
     expect(calls[0].init?.method).toBe("POST");
     expect(new Headers(calls[0].init?.headers).get("authorization")).toBe(
@@ -335,7 +335,7 @@ describe("clientFetch", () => {
   });
 
   it("does not rewrite non-string inputs", async () => {
-    setBaseUrlResolver(() => "https://eu.dust.tt");
+    setBaseUrlResolver(() => "https://app.ruby.ad");
     const calls = stubFetch();
     const url = new URL("https://other.example/api");
 

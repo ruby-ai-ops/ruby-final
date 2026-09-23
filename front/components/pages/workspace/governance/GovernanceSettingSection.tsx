@@ -1,4 +1,4 @@
-import { Icon, Page } from "@dust-tt/sparkle";
+import { Icon, Page } from "@ruby-ai/ui";
 import type { ComponentType, ReactNode } from "react";
 
 interface GovernanceSettingSectionProps {

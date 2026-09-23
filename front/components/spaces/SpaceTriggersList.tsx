@@ -6,7 +6,7 @@ import { useWebhookSourceViews } from "@app/lib/swr/webhook_source";
 import { formatTimestampToFriendlyDate } from "@app/lib/utils";
 import type { SpaceType } from "@app/types/space";
 import type { LightWorkspaceType } from "@app/types/user";
-import { DataTable, Spinner } from "@dust-tt/sparkle";
+import { DataTable, Spinner } from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import * as React from "react";
 

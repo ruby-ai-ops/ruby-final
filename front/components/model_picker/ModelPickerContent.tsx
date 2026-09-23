@@ -41,7 +41,7 @@ import {
   PopoverContent,
   PopoverRoot,
   PopoverTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface ModelPickerContentProps {
   side: "top" | "bottom";

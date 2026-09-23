@@ -1,3 +1,4 @@
+import { readSandboxArtifact } from "@app/lib/api/sandbox/image/artifacts";
 import {
   getLocalAccountPrivilegeHardeningCommand,
   getRootConsumedPathHardeningCommand,
@@ -10,11 +11,11 @@ import {
   POD_PACKAGE_VERSION,
 } from "@app/lib/api/sandbox/image/pod_package";
 import { PROFILE_DIR } from "@app/lib/api/sandbox/image/profile";
-import { buildDustToolsBinary } from "@app/lib/api/sandbox/image/profile/build";
+import { buildRubyToolsBinary } from "@app/lib/api/sandbox/image/profile/build";
 import { SandboxImage } from "@app/lib/api/sandbox/image/sandbox_image";
 import type { ToolEntry } from "@app/lib/api/sandbox/image/types";
 import {
-  DSBX_TOOL_NAME,
+  RBX_TOOL_NAME,
   PROXY_ONLY_NETWORK_POLICY,
   SANDBOX_AGENT_PROXIED_UID,
 } from "@app/lib/api/sandbox/image/types";
@@ -25,15 +26,15 @@ import { Err, Ok } from "@app/types/shared/result";
 import fs from "fs";
 import path from "path";
 
-const DUST_BEDROCK_IMAGE_VERSION = "1.11.0";
-const DUST_BASE_IMAGE_VERSION = "0.8.118";
-const DSBX_CLI_VERSION = "0.1.63";
+const RUBY_BEDROCK_IMAGE_VERSION = "1.11.0";
+const RUBY_BASE_IMAGE_VERSION = "0.8.118";
+const RBX_CLI_VERSION = "0.1.63";
 // Identity, not coverage list: agent-proxied is a specific Linux user. The
 // nftables ruleset covers SANDBOX_EGRESS_CONTROLLED_UIDS; this constant is
 // the stable identity used when creating the workload account.
 const AGENT_PROXIED_UID = SANDBOX_AGENT_PROXIED_UID;
 // Built from https://github.com/openai/codex at tag rust-v0.115.0 (Apache-2.0).
-// Released via the "Release sandbox tool" GitHub Actions workflow.
+// Built by the manual sandbox-artifacts workflow and injected during assembly.
 const APPLY_PATCH_VERSION = "0.1.0";
 // Modern x86_64 build (requires AVX2). Switch to the baseline variant if a
 // future sandbox CPU lacks it.
@@ -222,37 +223,37 @@ function getAgentProxiedSetupCommand(): string {
 
 function getEgressResolverUserSetupCommand(): string {
   return [
-    "groupadd --system dust-egress-resolver",
-    "useradd --system --no-create-home --gid dust-egress-resolver --shell /usr/sbin/nologin dust-egress-resolver",
+    "groupadd --system ruby-egress-resolver",
+    "useradd --system --no-create-home --gid ruby-egress-resolver --shell /usr/sbin/nologin ruby-egress-resolver",
   ].join(" && ");
 }
 
-function getDustStateUserSetupCommand(): string {
-  // dust-state runs the litestream replication daemon (pod state). Primary
-  // group dust-state owns the replica mount point; supplementary membership
+function getRubyStateUserSetupCommand(): string {
+  // ruby-state runs the litestream replication daemon (pod state). Primary
+  // group ruby-state owns the replica mount point; supplementary membership
   // in `agent` grants rw on the live databases dir shared with agent-proxied
   // function code. Deliberately not egress-controlled: it never executes
   // workload code.
   return [
-    "groupadd --system dust-state",
-    "useradd --system --no-create-home --gid dust-state --groups agent --shell /usr/sbin/nologin dust-state",
+    "groupadd --system ruby-state",
+    "useradd --system --no-create-home --gid ruby-state --groups agent --shell /usr/sbin/nologin ruby-state",
   ].join(" && ");
 }
 
 function getPodStateSetupCommand(): string {
   // /sandbox-state/databases holds the live SQLite files: both agent-proxied
-  // function code (group agent) and the litestream daemon (user dust-state)
+  // function code (group agent) and the litestream daemon (user ruby-state)
   // need rw, so it gets the same setgid + default-ACL treatment as /files.
   // /sandbox-state/replica is the gcsfuse mount point for the litestream replica
   // — the durable copy of pod state. Untrusted workload code must never read
-  // or tamper with it, so the directory is dust-state-only: 0700 here, no
+  // or tamper with it, so the directory is ruby-state-only: 0700 here, no
   // allow_other on the runtime mount.
   return [
     "install -d -o root -g root -m 755 /sandbox-state",
-    "install -d -o dust-state -g agent -m 2770 /sandbox-state/databases",
+    "install -d -o ruby-state -g agent -m 2770 /sandbox-state/databases",
     "setfacl -R -d -m g::rwx /sandbox-state/databases",
     "setfacl -R -m g::rwx /sandbox-state/databases",
-    "install -d -o dust-state -g dust-state -m 700 /sandbox-state/replica",
+    "install -d -o ruby-state -g ruby-state -m 700 /sandbox-state/replica",
   ].join(" && ");
 }
 
@@ -263,7 +264,7 @@ function getSshHardeningCommand(): string {
   // permissive AuthorizedKeysCommand from the base image. Don't "clean up"
   // any of these without checking what happens if exactly one of them flips.
   const sshdConfig = [
-    "# Managed by Dust. Untrusted sandbox code must not reach root through sshd.",
+    "# Managed by Ruby. Untrusted sandbox code must not reach root through sshd.",
     "PermitRootLogin no",
     "PasswordAuthentication no",
     "KbdInteractiveAuthentication no",
@@ -282,7 +283,7 @@ function getSshHardeningCommand(): string {
   const writeSshdConfig = [
     "printf '%s\\n'",
     ...sshdConfig.map(formatShellValue),
-    "> /etc/ssh/sshd_config.d/00-dust-sandbox-hardening.conf",
+    "> /etc/ssh/sshd_config.d/00-ruby-sandbox-hardening.conf",
   ].join(" ");
   // In the bedrock image `sshd.service` is a symlink alias to `ssh.service`
   // and `sshd.socket` does not exist. Masking only the canonical units covers
@@ -301,8 +302,8 @@ function getSshHardeningCommand(): string {
     "touch /etc/ssh/sshd_config",
     ensureSshdConfigInclude,
     writeSshdConfig,
-    "chmod 644 /etc/ssh/sshd_config /etc/ssh/sshd_config.d/00-dust-sandbox-hardening.conf",
-    "if [ -f /etc/pam.d/sshd ]; then sed -i -E '/^[[:space:]]*auth[[:space:]].*pam_permit\\.so/s/^/# Disabled by Dust sandbox SSH hardening: /' /etc/pam.d/sshd; fi",
+    "chmod 644 /etc/ssh/sshd_config /etc/ssh/sshd_config.d/00-ruby-sandbox-hardening.conf",
+    "if [ -f /etc/pam.d/sshd ]; then sed -i -E '/^[[:space:]]*auth[[:space:]].*pam_permit\\.so/s/^/# Disabled by Ruby sandbox SSH hardening: /' /etc/pam.d/sshd; fi",
     disableSshdServices,
     maskSshdServices,
   ].join(" && ");
@@ -310,11 +311,11 @@ function getSshHardeningCommand(): string {
 
 /**
  * @cc [owner:flvndvd,label:product] pdf-ocr-runtime
- * The dust-base runtime MUST provide Tesseract, pytesseract, and English, French,
+ * The ruby-base runtime MUST provide Tesseract, pytesseract, and English, French,
  * and orientation data so the PDF skill can run OCR without installing packages.
  */
-const DUST_BASE_IMAGE = SandboxImage.fromDocker(
-  `dust-sbx-bedrock:${DUST_BEDROCK_IMAGE_VERSION}`
+const RUBY_BASE_IMAGE = SandboxImage.fromDocker(
+  `ruby-sbx-bedrock:${RUBY_BEDROCK_IMAGE_VERSION}`
 )
   // Create agent user first so e2b creates /home/agent with correct ownership.
   .setUser("agent")
@@ -330,30 +331,30 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
   // The root-owned token broker requires /usr/bin/python3.
   .runCmd("apt-get update && apt-get install -y python3", { user: "root" })
   // The per-mount broker helpers live outside the agent's group-writable home and serve
-  // mode-0600 tokens from /run/dust-gcs.
+  // mode-0600 tokens from /run/ruby-gcs.
   .runCmd("mkdir -p /usr/local/bin", { user: "root" })
   .copy(
-    getLocalContent(TOKEN_LOCAL_DIR, "dust-gcs-token-server.py"),
-    "/usr/local/bin/dust-gcs-token-server.py",
+    getLocalContent(TOKEN_LOCAL_DIR, "ruby-gcs-token-server.py"),
+    "/usr/local/bin/ruby-gcs-token-server.py",
     { user: "root" }
   )
   .copy(
-    getLocalContent(TOKEN_LOCAL_DIR, "dust-gcs-write-token.sh"),
-    "/usr/local/bin/dust-gcs-write-token.sh",
+    getLocalContent(TOKEN_LOCAL_DIR, "ruby-gcs-write-token.sh"),
+    "/usr/local/bin/ruby-gcs-write-token.sh",
     { user: "root" }
   )
   .copy(
-    getLocalContent(TOKEN_LOCAL_DIR, "dust-gcs-token-firewall.sh"),
-    "/usr/local/bin/dust-gcs-token-firewall.sh",
+    getLocalContent(TOKEN_LOCAL_DIR, "ruby-gcs-token-firewall.sh"),
+    "/usr/local/bin/ruby-gcs-token-firewall.sh",
     { user: "root" }
   )
   .runCmd(
-    "chown root:root /usr/local/bin/dust-gcs-token-server.py /usr/local/bin/dust-gcs-write-token.sh /usr/local/bin/dust-gcs-token-firewall.sh && " +
-      "chmod 755 /usr/local/bin/dust-gcs-token-server.py /usr/local/bin/dust-gcs-write-token.sh /usr/local/bin/dust-gcs-token-firewall.sh",
+    "chown root:root /usr/local/bin/ruby-gcs-token-server.py /usr/local/bin/ruby-gcs-write-token.sh /usr/local/bin/ruby-gcs-token-firewall.sh && " +
+      "chmod 755 /usr/local/bin/ruby-gcs-token-server.py /usr/local/bin/ruby-gcs-write-token.sh /usr/local/bin/ruby-gcs-token-firewall.sh",
     { user: "root" }
   )
   .runCmd(getEgressResolverUserSetupCommand(), { user: "root" })
-  .runCmd(getDustStateUserSetupCommand(), { user: "root" })
+  .runCmd(getRubyStateUserSetupCommand(), { user: "root" })
   .runCmd(getPodStateSetupCommand(), { user: "root" })
   // Hidden tools: installed but not in manifest (back profile functions)
   .runCmd(
@@ -511,30 +512,17 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
   .runCmd("chown root:root /opt/bin/oxlint && chmod 755 /opt/bin/oxlint", {
     user: "root",
   })
-  .runCmd(
-    `curl -fsSL https://github.com/dust-tt/dust/releases/download/dsbx-v${DSBX_CLI_VERSION}/dsbx-linux-x86_64 -o /tmp/dsbx && ` +
-      `curl -fsSL https://github.com/dust-tt/dust/releases/download/dsbx-v${DSBX_CLI_VERSION}/checksums-sha256.txt -o /tmp/checksums-sha256.txt && ` +
-      "grep dsbx-linux-x86_64 /tmp/checksums-sha256.txt | awk '{print $1 \"  /tmp/dsbx\"}' | sha256sum -c - && " +
-      "chmod +x /tmp/dsbx && " +
-      "mv /tmp/dsbx /opt/bin/dsbx && " +
-      "chown root:root /opt/bin/dsbx && chmod 755 /opt/bin/dsbx",
-    { user: "root" }
-  )
+  .copy(() => readSandboxArtifact("rbx", RBX_CLI_VERSION), "/opt/bin/rbx", { user: "root" })
+  .runCmd("chown root:root /opt/bin/rbx && chmod 755 /opt/bin/rbx", { user: "root" })
   .registerTool({
-    name: DSBX_TOOL_NAME,
-    description: "Dust CLI",
+    name: RBX_TOOL_NAME,
+    description: "Ruby CLI",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
   })
   .runCmd("mkdir -p /skills && chmod 755 /skills", { user: "root" })
-  .runCmd(
-    `curl -fsSL https://github.com/dust-tt/dust/releases/download/apply-patch-v${APPLY_PATCH_VERSION}/apply_patch-linux-x86_64 -o /tmp/apply_patch && ` +
-      `curl -fsSL https://github.com/dust-tt/dust/releases/download/apply-patch-v${APPLY_PATCH_VERSION}/checksums-sha256.txt -o /tmp/checksums-sha256.txt && ` +
-      "grep apply_patch-linux-x86_64 /tmp/checksums-sha256.txt | awk '{print $1 \"  /tmp/apply_patch\"}' | sha256sum -c - && " +
-      "chmod +x /tmp/apply_patch && " +
-      "mv /tmp/apply_patch /opt/bin/apply_patch",
-    { user: "root" }
-  )
+  .copy(() => readSandboxArtifact("apply_patch", APPLY_PATCH_VERSION), "/opt/bin/apply_patch", { user: "root" })
+  .runCmd("chown root:root /opt/bin/apply_patch && chmod 755 /opt/bin/apply_patch", { user: "root" })
   .registerTool({
     name: "apply_patch",
     description:
@@ -543,7 +531,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
       "apply_patch '*** Begin Patch\\n*** Update File: <path>\\n@@ [context]\\n-old\\n+new\\n*** End Patch'",
     returns: "Summary of applied changes (A/M/D per file)",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
     profile: "openai",
   })
   .runCmd(
@@ -617,7 +605,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     "/etc/litestream.yml",
     { user: "root" }
   )
-  // Vendor @dust/pod into the global node_modules (see pod_package.ts for why
+  // Vendor @ruby-ai/pod into the global node_modules (see pod_package.ts for why
   // this is a build-time copy rather than an npm install).
   .runCmd(`mkdir -p ${path.posix.dirname(POD_PACKAGE_IMAGE_DIR)}`, {
     user: "root",
@@ -631,9 +619,9 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     runtime: "node",
   })
   .runCmd(`mkdir -p ${PROFILE_DIR}`, { user: "root" })
-  // Core: compiled dust-tools binary + shared shell infra
-  .copy(buildDustToolsBinary, `${PROFILE_DIR}/dust-tools`, { user: "root" })
-  .runCmd(`chmod +x ${PROFILE_DIR}/dust-tools`, { user: "root" })
+  // Core: compiled ruby-tools binary + shared shell infra
+  .copy(buildRubyToolsBinary, `${PROFILE_DIR}/ruby-tools`, { user: "root" })
+  .runCmd(`chmod +x ${PROFILE_DIR}/ruby-tools`, { user: "root" })
   .copy(
     getLocalContent(PROFILE_LOCAL_DIR, "common.sh"),
     `${PROFILE_DIR}/common.sh`,
@@ -644,7 +632,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     `${PROFILE_DIR}/shell.sh`,
     { user: "root" }
   )
-  // Provider-specific profiles (sourced by common.sh based on DUST_PROFILE)
+  // Provider-specific profiles (sourced by common.sh based on RUBY_PROFILE)
   .copy(
     getLocalContent(PROFILE_LOCAL_DIR, "anthropic.sh"),
     `${PROFILE_DIR}/anthropic.sh`,
@@ -688,61 +676,61 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     "/etc/systemd/system/fluent-bit.service",
     { user: "root" }
   )
-  // Seed /etc/dust/ca-bundle.pem with the system roots so replace-style trust
+  // Seed /etc/ruby/ca-bundle.pem with the system roots so replace-style trust
   // env vars (set unconditionally on the sandbox process) point at a valid
   // file from the moment the sandbox boots. installMitmTrustBundle overwrites
-  // this atomically with (system roots + dsbx CA) once the egress forwarder is
+  // this atomically with (system roots + rbx CA) once the egress forwarder is
   // up; in dev-unrestricted mode it stays the system-only copy.
   .runCmd(
-    "mkdir -p /etc/dust && " +
-      "install -m 644 /etc/ssl/certs/ca-certificates.crt /etc/dust/ca-bundle.pem",
+    "mkdir -p /etc/ruby && " +
+      "install -m 644 /etc/ssl/certs/ca-certificates.crt /etc/ruby/ca-bundle.pem",
     { user: "root" }
   )
-  .copy(buildTrustEnvironmentFile, "/etc/dust/dust-trust.environment", {
+  .copy(buildTrustEnvironmentFile, "/etc/ruby/ruby-trust.environment", {
     user: "root",
   })
   .runCmd(
     "printf '\\n' >> /etc/environment && " +
-      "cat /etc/dust/dust-trust.environment >> /etc/environment",
+      "cat /etc/ruby/ruby-trust.environment >> /etc/environment",
     { user: "root" }
   )
-  .copy(buildTrustProfileScript, "/etc/profile.d/dust-trust.sh", {
+  .copy(buildTrustProfileScript, "/etc/profile.d/ruby-trust.sh", {
     user: "root",
   })
-  .runCmd("chmod 644 /etc/profile.d/dust-trust.sh", { user: "root" })
-  // tmpfiles.d entry; systemd-tmpfiles-setup.service recreates /run/dust on
+  .runCmd("chmod 644 /etc/profile.d/ruby-trust.sh", { user: "root" })
+  // tmpfiles.d entry; systemd-tmpfiles-setup.service recreates /run/ruby on
   // every boot. No build-time --create: /run is tmpfs and any image-time
   // state under /run is discarded at boot anyway.
   .copy(
-    getLocalContent(EGRESS_LOCAL_DIR, "dust-run-dust.tmpfiles"),
-    "/etc/tmpfiles.d/dust-run-dust.conf",
+    getLocalContent(EGRESS_LOCAL_DIR, "ruby-run-ruby.tmpfiles"),
+    "/etc/tmpfiles.d/ruby-run-ruby.conf",
     { user: "root" }
   )
   .copy(
-    getLocalContent(EGRESS_LOCAL_DIR, "dust-install-trust-bundle.sh"),
-    "/usr/local/bin/dust-install-trust-bundle",
+    getLocalContent(EGRESS_LOCAL_DIR, "ruby-install-trust-bundle.sh"),
+    "/usr/local/bin/ruby-install-trust-bundle",
     { user: "root" }
   )
   .runCmd(
-    "chown root:root /usr/local/bin/dust-install-trust-bundle && chmod 755 /usr/local/bin/dust-install-trust-bundle",
+    "chown root:root /usr/local/bin/ruby-install-trust-bundle && chmod 755 /usr/local/bin/ruby-install-trust-bundle",
     {
       user: "root",
     }
   )
   .copy(
     getLocalContent(EGRESS_LOCAL_DIR, "egress-nftables.sh"),
-    "/etc/dust/egress-nftables.sh",
+    "/etc/ruby/egress-nftables.sh",
     { user: "root" }
   )
-  .runCmd("chmod 755 /etc/dust/egress-nftables.sh", { user: "root" })
+  .runCmd("chmod 755 /etc/ruby/egress-nftables.sh", { user: "root" })
   .copy(
-    getLocalContent(EGRESS_LOCAL_DIR, "dust-egress-nftables.service"),
-    "/etc/systemd/system/dust-egress-nftables.service",
+    getLocalContent(EGRESS_LOCAL_DIR, "ruby-egress-nftables.service"),
+    "/etc/systemd/system/ruby-egress-nftables.service",
     { user: "root" }
   )
   .copy(
-    getLocalContent(EGRESS_LOCAL_DIR, "dust-egress-resolver.service"),
-    "/etc/systemd/system/dust-egress-resolver.service",
+    getLocalContent(EGRESS_LOCAL_DIR, "ruby-egress-resolver.service"),
+    "/etc/systemd/system/ruby-egress-resolver.service",
     { user: "root" }
   )
   // The system resolver must remain available to root-owned services without
@@ -752,28 +740,28 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     { user: "root" }
   )
   .copy(
-    getLocalContent(EGRESS_LOCAL_DIR, "dust-resolve1.conf"),
-    "/etc/dbus-1/system.d/dust-resolve1.conf",
+    getLocalContent(EGRESS_LOCAL_DIR, "ruby-resolve1.conf"),
+    "/etc/dbus-1/system.d/ruby-resolve1.conf",
     { user: "root" }
   )
   .copy(
-    getLocalContent(EGRESS_LOCAL_DIR, "dust-systemd1.conf"),
-    "/etc/dbus-1/system.d/dust-systemd1.conf",
+    getLocalContent(EGRESS_LOCAL_DIR, "ruby-systemd1.conf"),
+    "/etc/dbus-1/system.d/ruby-systemd1.conf",
     { user: "root" }
   )
   .copy(
     getLocalContent(EGRESS_LOCAL_DIR, "systemd-resolved-ipc.conf"),
-    "/etc/systemd/system/systemd-resolved.service.d/dust-ipc.conf",
+    "/etc/systemd/system/systemd-resolved.service.d/ruby-ipc.conf",
     { user: "root" }
   )
   .runCmd(
     "mkdir -p /etc/systemd/resolved.conf.d && " +
-      "printf '%s\\n' '[Resolve]' 'DNS=8.8.8.8' 'FallbackDNS=' 'DNSStubListener=yes' > /etc/systemd/resolved.conf.d/dust-sandbox.conf && " +
+      "printf '%s\\n' '[Resolve]' 'DNS=8.8.8.8' 'FallbackDNS=' 'DNSStubListener=yes' > /etc/systemd/resolved.conf.d/ruby-sandbox.conf && " +
       "ln -sfn /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf",
     { user: "root" }
   )
   .runCmd(
-    "systemctl daemon-reload && systemctl enable systemd-resolved.service dust-egress-resolver.service dust-egress-nftables.service",
+    "systemctl daemon-reload && systemctl enable systemd-resolved.service ruby-egress-resolver.service ruby-egress-nftables.service",
     { user: "root" }
   )
   // Run after all apt/npm installs as a final guard against a dependency
@@ -791,7 +779,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     returns:
       "Header with line range + numbered lines (format: '  N\\tcontent')",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
     profile: ["anthropic", "openai"],
   })
   .registerTool({
@@ -802,7 +790,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     returns:
       "Header with line range + numbered lines (format: '  N\\tcontent')",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
     profile: "gemini",
   })
   .registerTool({
@@ -812,7 +800,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     usage: "write_file <path> <content>",
     returns: "'Wrote <path> (<bytes> bytes)' on success",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
     profile: ["anthropic", "gemini"],
   })
   .registerTool({
@@ -822,7 +810,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     usage: "edit_file [--replace-all] <old_text> <new_text> <path>",
     returns: "'Edited <path>' on success, unified diff on stderr",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
     profile: ["anthropic", "gemini"],
   })
   // --- grep_files: anthropic has extra flags ---
@@ -834,7 +822,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
       "grep_files <pattern> [--glob GLOB] [--path PATH] [--max-results N] [--max-per-file N] [--context N] [--offset N] [--output-mode content|files|count] [--case-insensitive] [--max-line-length N]",
     returns: "file:line:content format with match count footer",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
     profile: "anthropic",
   })
   .registerTool({
@@ -845,7 +833,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
       "grep_files <pattern> [--glob GLOB] [--path PATH] [--max-results N] [--max-per-file N] [--context N] [--offset N]",
     returns: "file:line:content format with match count footer",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
     profile: ["openai", "gemini"],
   })
   // --- glob: uniform with pagination ---
@@ -855,7 +843,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     usage: "glob <pattern> [--path PATH] [--offset N] [--limit N]",
     returns: "Sorted file paths with pagination hint",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
   })
   // --- list_dir: uniform with type suffixes and pagination ---
   .registerTool({
@@ -866,7 +854,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     returns: "Sorted paths with type suffixes and pagination hint",
     profile: ["openai", "gemini"],
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
   })
   // --- xlsx_inspect: structural inspection of .xlsx workbooks ---
   .registerTool({
@@ -878,7 +866,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     returns:
       "Workbook overview, or one cell per line: '<address>  <formula or value>  [cached result]  numFmt: <fmt>  [font: <color>]  [fill: <color>]'. Empty cells skipped",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
   })
   // --- pptx_inspect: structural inspection of .pptx decks ---
   .registerTool({
@@ -888,7 +876,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     usage: "pptx_inspect <file> [mode]; see --help",
     returns: "Text report; --qa/--render publish JPEGs and print paths",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
   })
   // --- pptx_slides: safe slide-level structural edits ---
   .registerTool({
@@ -899,7 +887,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
       "pptx_slides <file> (--duplicate N[,N,...] [--count K] [--after M] | --move N --to M | --delete N[,N,...])",
     returns: "A one-line summary of the change and the deck's new slide count",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
   })
   // --- pptx_fonts: install the faces a deck actually asks for ---
   .registerTool({
@@ -909,7 +897,7 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     usage: "pptx_fonts <file> [--install]",
     returns: "One line per family: extracted, fetched, or still substituted",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
   })
   // --- docx_inspect: structural inspection of .docx documents ---
   .registerTool({
@@ -921,20 +909,20 @@ const DUST_BASE_IMAGE = SandboxImage.fromDocker(
     returns:
       "Document overview with theme + default typography and heading outline, or one paragraph/style/section/table/change/field per line. Render mode publishes each page and prints its scoped path (files__cat-readable)",
     runtime: "system",
-    isDustTool: true,
+    isRubyTool: true,
   })
   .withCapability("gcsfuse")
-  .withCapability("dust_filesystem")
+  .withCapability("ruby_filesystem")
   .withResources({ vcpu: 2, memoryMb: 2048 })
   .withNetwork(PROXY_ONLY_NETWORK_POLICY)
   .setWorkdir("/home/agent")
   .withToolManifest()
   .register({
-    imageName: "dust-base",
-    tag: DUST_BASE_IMAGE_VERSION,
+    imageName: "ruby-base",
+    tag: RUBY_BASE_IMAGE_VERSION,
   });
 
-const IMAGES: readonly SandboxImage[] = [DUST_BASE_IMAGE];
+const IMAGES: readonly SandboxImage[] = [RUBY_BASE_IMAGE];
 
 export function getRegisteredImages(): readonly SandboxImage[] {
   return IMAGES.filter((image) => {

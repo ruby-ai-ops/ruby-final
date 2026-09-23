@@ -2,14 +2,14 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 
 const REDIRECT_URIS = [
-  "https://app.dust.tt/oauth/mcp_static/finalize",
-  "https://eu.dust.tt/oauth/mcp_static/finalize",
-  "https://dust.tt/oauth/mcp_static/finalize",
+  "https://app.ruby.ad/oauth/mcp_static/finalize",
+  "https://app.ruby.ad/oauth/mcp_static/finalize",
+  "https://app.ruby.ad/oauth/mcp_static/finalize",
 ];
 
 export function PowerBiSetupInstructions() {
@@ -48,7 +48,7 @@ export function PowerBiSetupInstructions() {
                   <strong>
                     entra.microsoft.com → App registrations → New registration
                   </strong>
-                  . Name it "Dust Power BI MCP", select{" "}
+                  . Name it "Ruby Power BI MCP", select{" "}
                   <strong>organizational directory only</strong>, and leave the
                   redirect URI blank for now. Note the{" "}
                   <strong>Application (client) ID</strong> and{" "}
@@ -193,7 +193,7 @@ export function PowerBiSetupInstructions() {
                 <p className="mt-2 text-muted-foreground">
                   The{" "}
                   <code className="rounded bg-muted px-1">offline_access</code>{" "}
-                  scope allows Dust to automatically refresh the authentication
+                  scope allows Ruby to automatically refresh the authentication
                   token in the background, so users don't have to
                   re-authenticate every time the token expires (typically after
                   one hour).

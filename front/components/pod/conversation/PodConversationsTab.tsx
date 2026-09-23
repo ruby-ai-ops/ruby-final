@@ -46,7 +46,7 @@ import {
   Spinner,
   Zap,
   ZapOff,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -106,14 +106,14 @@ export function PodConversationsTab({
     podId: podInfo.sId,
   });
   // This pod's default agent, applied to new conversations started here. Resolved
-  // downstream in `useHandleMentions`, falling back to @dust.
+  // downstream in `useHandleMentions`, falling back to @ruby.
   const { podMetadata, isPodMetadataLoading } = usePodMetadata({
     workspaceId: owner.sId,
     podId: podInfo.sId,
   });
 
   // Unless a pod default is explicitly set, fall back to the workspace-wide default
-  // agent. The final fallback to @dust happens in `useHandleMentions`.
+  // agent. The final fallback to @ruby happens in `useHandleMentions`.
   const defaultAgentId = resolveDefaultAgentId({
     owner,
     podDefaultAgentId: podMetadata?.defaultAgentId,

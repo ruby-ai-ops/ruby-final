@@ -10,7 +10,7 @@ export const GoogleGeminiThreeDotEightFlashGlobalGoogleAiStudioStreamSetup: Stre
     createInstance: () =>
       new GoogleGeminiThreeDotEightFlashGlobalGoogleAiStudioStream({
         GOOGLE_AI_STUDIO_API_KEY:
-          process.env.DUST_MANAGED_GOOGLE_AI_STUDIO_API_KEY ?? "",
+          process.env.RUBY_MANAGED_GOOGLE_AI_STUDIO_API_KEY ?? "",
       }),
     tests: GEMINI_3_8_FLASH_TESTS,
   };

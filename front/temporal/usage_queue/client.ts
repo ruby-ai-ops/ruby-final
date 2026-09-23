@@ -97,7 +97,7 @@ export async function launchTrackProgrammaticUsageWorkflow({
 }): Promise<Result<undefined, Error>> {
   const { workspaceId } = authType;
 
-  const { agentMessageId, conversationId, dustRunIds } = agentLoopArgs;
+  const { agentMessageId, conversationId, rubyRunIds } = agentLoopArgs;
 
   const client = await getTemporalClientForFrontNamespace();
 
@@ -105,7 +105,7 @@ export async function launchTrackProgrammaticUsageWorkflow({
     agentMessageId,
     conversationId,
     workspaceId,
-    runKey: dustRunIds?.length ? computeRunKey(dustRunIds) : "legacy",
+    runKey: rubyRunIds?.length ? computeRunKey(rubyRunIds) : "legacy",
   });
 
   try {
@@ -147,7 +147,7 @@ export async function launchEmitMetronomeUsageEventsWorkflow({
   agentLoopArgs: AgentLoopArgs;
 }): Promise<Result<undefined, Error>> {
   const { workspaceId } = authType;
-  const { agentMessageId, conversationId, dustRunIds } = agentLoopArgs;
+  const { agentMessageId, conversationId, rubyRunIds } = agentLoopArgs;
 
   const client = await getTemporalClientForFrontNamespace();
 
@@ -155,7 +155,7 @@ export async function launchEmitMetronomeUsageEventsWorkflow({
     agentMessageId,
     conversationId,
     workspaceId,
-    runKey: dustRunIds?.length ? computeRunKey(dustRunIds) : "legacy",
+    runKey: rubyRunIds?.length ? computeRunKey(rubyRunIds) : "legacy",
   });
 
   try {

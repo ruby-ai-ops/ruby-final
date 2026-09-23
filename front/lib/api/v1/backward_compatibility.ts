@@ -36,7 +36,7 @@ import type {
   ConversationPublicType,
   ConversationWithoutContentPublicType,
   // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 
 /**
  * Normalizes deprecated visibility values to their current equivalents.

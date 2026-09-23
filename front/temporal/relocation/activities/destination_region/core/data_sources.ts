@@ -29,10 +29,10 @@ export async function createDataSourceProject({
 
   const auth = await Authenticator.internalAdminForWorkspace(workspaceId);
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), localLogger);
-  const dustProject = await coreAPI.createProject();
-  if (dustProject.isErr()) {
+  const rubyProject = await coreAPI.createProject();
+  if (rubyProject.isErr()) {
     localLogger.error(
-      { error: dustProject.error },
+      { error: rubyProject.error },
       "[Core] Failed to create internal project for the data source."
     );
 
@@ -41,17 +41,17 @@ export async function createDataSourceProject({
 
   const credentials = await getLlmCredentials(auth);
 
-  const dustDataSource = await coreAPI.createDataSource({
-    projectId: dustProject.value.project.project_id.toString(),
+  const rubyDataSource = await coreAPI.createDataSource({
+    projectId: rubyProject.value.project.project_id.toString(),
     config: sourceCoreDataSource.config,
     credentials,
     // Temporary to unblock migration. Name was not returned by the core API.
     name: sourceCoreDataSource.name ?? "",
   });
 
-  if (dustDataSource.isErr()) {
+  if (rubyDataSource.isErr()) {
     localLogger.error(
-      { error: dustDataSource.error },
+      { error: rubyDataSource.error },
       "[Core] Failed to create the data source."
     );
 
@@ -61,8 +61,8 @@ export async function createDataSourceProject({
   localLogger.info("[Core] Created project and data source.");
 
   return {
-    dustAPIProjectId: dustProject.value.project.project_id.toString(),
-    dustAPIDataSourceId: dustDataSource.value.data_source.data_source_id,
+    rubyAPIProjectId: rubyProject.value.project.project_id.toString(),
+    rubyAPIDataSourceId: rubyDataSource.value.data_source.data_source_id,
   };
 }
 
@@ -94,8 +94,8 @@ export async function updateDataSourceCoreIds({
   }
 
   await dataSource.update({
-    dustAPIDataSourceId: destIds.dustAPIDataSourceId,
-    dustAPIProjectId: destIds.dustAPIProjectId,
+    rubyAPIDataSourceId: destIds.rubyAPIDataSourceId,
+    rubyAPIProjectId: destIds.rubyAPIProjectId,
   });
 
   localLogger.info("[Core] Updated data source core ids");

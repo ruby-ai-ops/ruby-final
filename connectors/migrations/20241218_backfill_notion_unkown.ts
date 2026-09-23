@@ -18,7 +18,7 @@ makeScript({}, async ({ execute }, logger) => {
           parents: [folderId],
           parentId: null,
           title: "Orphaned Resources",
-          mimeType: "application/vnd.dust.notion.page",
+          mimeType: "application/vnd.ruby.notion.page",
         });
         logger.info(
           `Upserted folder ${folderId} for connector ${connector.id}`

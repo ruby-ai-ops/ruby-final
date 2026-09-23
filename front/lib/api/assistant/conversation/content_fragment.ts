@@ -39,16 +39,16 @@ import type { ModelId } from "@app/types/shared/model_id";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import type { DustMimeType } from "@dust-tt/client";
+import type { RubyMimeType } from "@ruby-ai/client";
 
 import {
   DATA_SOURCE_MIME_TYPE,
   // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import assert from "assert";
 
 interface ContentFragmentBlob {
-  contentType: DustMimeType | AllSupportedFileContentType;
+  contentType: RubyMimeType | AllSupportedFileContentType;
   fileId: ModelId | null;
   nodeId: string | null;
   nodeDataSourceViewId: ModelId | null;
@@ -94,7 +94,7 @@ export async function toFileContentFragment(
 
   if (processRes.isErr()) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       message:
         `Error creating file for content fragment: ` + processRes.error.message,
       code: processRes.error.code,
@@ -171,7 +171,7 @@ export async function getContentFragmentBlob(
       // Follows CoreContentNode.from_es_data_source_document, see
       // core/src/data_sources/node.rs
       coreContentNode = {
-        data_source_id: dsView.dataSource.dustAPIDataSourceId,
+        data_source_id: dsView.dataSource.rubyAPIDataSourceId,
         data_source_internal_id: "unavailable",
         node_id: DATA_SOURCE_NODE_ID,
         node_type: "folder",

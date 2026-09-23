@@ -7,10 +7,10 @@ import { ConnectorsAPI } from "@app/types/connectors/connectors_api";
 import { SCOPED_PREFIX_POD } from "@app/types/file_system";
 
 /**
- * Fire-and-forget request for a debounced dust_project incremental sync.
+ * Fire-and-forget request for a debounced ruby_project incremental sync.
  * Failures are logged and never thrown to callers.
  */
-export function requestDustProjectIncrementalSync(
+export function requestRubyProjectIncrementalSync(
   auth: Authenticator,
   space: SpaceResource
 ): void {
@@ -29,7 +29,7 @@ export function requestDustProjectIncrementalSync(
     if (dsRes.isErr()) {
       localLogger.warn(
         { error: dsRes.error },
-        "Skipping dust_project incremental sync request: data source not found"
+        "Skipping ruby_project incremental sync request: data source not found"
       );
       return;
     }
@@ -37,7 +37,7 @@ export function requestDustProjectIncrementalSync(
     const connectorId = dsRes.value.connectorId;
     if (!connectorId) {
       localLogger.warn(
-        "Skipping dust_project incremental sync request: connectorId missing"
+        "Skipping ruby_project incremental sync request: connectorId missing"
       );
       return;
     }
@@ -50,14 +50,14 @@ export function requestDustProjectIncrementalSync(
     if (syncRes.isErr()) {
       localLogger.warn(
         { connectorId, error: syncRes.error },
-        "Failed to request dust_project incremental sync"
+        "Failed to request ruby_project incremental sync"
       );
       return;
     }
 
     localLogger.info(
       { connectorId, workflowId: syncRes.value.workflowId },
-      "Requested dust_project incremental sync"
+      "Requested ruby_project incremental sync"
     );
   })().catch((error) => {
     logger.warn(
@@ -66,7 +66,7 @@ export function requestDustProjectIncrementalSync(
         spaceId: space.sId,
         error,
       },
-      "Unexpected error requesting dust_project incremental sync"
+      "Unexpected error requesting ruby_project incremental sync"
     );
   });
 }
@@ -75,7 +75,7 @@ export function requestDustProjectIncrementalSync(
  * If `scopedPath` is under a pod mount (`pod-{spaceId}/...`), request incremental sync.
  * No-op for conversation/user paths.
  */
-export function requestDustProjectIncrementalSyncForScopedPath(
+export function requestRubyProjectIncrementalSyncForScopedPath(
   auth: Authenticator,
   scopedPath: string
 ): void {
@@ -99,11 +99,11 @@ export function requestDustProjectIncrementalSyncForScopedPath(
           spaceId,
           scopedPath,
         },
-        "Skipping dust_project incremental sync request: space not found for scoped path"
+        "Skipping ruby_project incremental sync request: space not found for scoped path"
       );
       return;
     }
-    requestDustProjectIncrementalSync(auth, space);
+    requestRubyProjectIncrementalSync(auth, space);
   })().catch((error) => {
     logger.warn(
       {
@@ -112,7 +112,7 @@ export function requestDustProjectIncrementalSyncForScopedPath(
         scopedPath,
         error,
       },
-      "Unexpected error requesting dust_project incremental sync for scoped path"
+      "Unexpected error requesting ruby_project incremental sync for scoped path"
     );
   });
 }

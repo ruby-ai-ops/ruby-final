@@ -102,12 +102,12 @@ async function getRepoUrl(repoId: string, coreSequelize: Sequelize) {
     return null;
   }
   if (rows[0].source_url.includes("/issues/")) {
-    // turn the issue url into a repo url, e.g. https://github.com/dust-tt/dust/issues/10083 -> https://github.com/dust-tt/dust
+    // turn the issue url into a repo url, e.g. https://github.com/ruby-ai-ops/ruby-final/issues/10083 -> https://github.com/ruby-ai-ops/ruby-final
     const issueUrl = rows[0].source_url;
     const repoUrl = issueUrl.replace(/\/issues\/\d+$/, "");
     return repoUrl;
   } else if (rows[0].source_url.includes("/pull/")) {
-    // turn the pr url into a repo url, e.g. https://github.com/dust-tt/dust/pull/10083 -> https://github.com/dust-tt/dust
+    // turn the pr url into a repo url, e.g. https://github.com/ruby-ai-ops/ruby-final/pull/10083 -> https://github.com/ruby-ai-ops/ruby-final
     const prUrl = rows[0].source_url;
     const repoUrl = prUrl.replace(/\/pull\/\d+$/, "");
     return repoUrl;

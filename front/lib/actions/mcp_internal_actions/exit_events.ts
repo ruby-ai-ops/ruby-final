@@ -10,7 +10,7 @@ import type { ToolContext } from "@app/lib/actions/types";
 import { isAgentLoopRunContext } from "@app/lib/actions/types";
 import { pauseSandboxBashForBlockedChild } from "@app/lib/api/sandbox/sandbox_child_block";
 import type { Authenticator } from "@app/lib/auth";
-import { assertNever, isAgentPauseOutputResourceType } from "@dust-tt/client";
+import { assertNever, isAgentPauseOutputResourceType } from "@ruby-ai/client";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import assert from "assert";
 

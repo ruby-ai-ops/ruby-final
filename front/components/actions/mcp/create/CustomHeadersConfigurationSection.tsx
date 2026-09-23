@@ -9,7 +9,7 @@ import {
   Label,
   SliderToggle,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useController, useFormContext } from "react-hook-form";
 
 interface CustomHeadersConfigurationSectionProps {

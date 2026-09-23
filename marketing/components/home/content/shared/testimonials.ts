@@ -24,7 +24,7 @@ export const TESTIMONIALS = {
 
   everettBerryImpact: {
     quote:
-      "Dust is the most impactful software we've adopted since building Clay. It delivers immediate value while continuously getting smarter.",
+      "Ruby is the most impactful software we've adopted since building Clay. It delivers immediate value while continuously getting smarter.",
     name: "Everett Berry",
     title: "Head of GTM Engineering at Clay",
     logo: "/static/landing/logos/gray/clay.svg",
@@ -32,7 +32,7 @@ export const TESTIMONIALS = {
 
   everettBerryAgents: {
     quote:
-      "I have Dust agents for vendor research, interviewing, and even to check changes in our knowledge base, endless possibilities with the platform.",
+      "I have Ruby agents for vendor research, interviewing, and even to check changes in our knowledge base, endless possibilities with the platform.",
     name: "Everett Berry",
     title: "Head of GTM Engineering at Clay",
     logo: "/static/landing/logos/gray/clay.svg",

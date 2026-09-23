@@ -1,0 +1,374 @@
+import { MAX_DISCOUNT_PERCENT } from "@app/lib/api/assistant/token_pricing";
+import { createPlugin } from "@app/lib/api/admin/types";
+import type { CreditPurchaseBillingTarget } from "@app/lib/credits/committed";
+import { createEnterpriseCreditPurchase } from "@app/lib/credits/committed";
+import {
+  createMetronomeCredit,
+  getMetronomeCustomerStripeCustomerId,
+} from "@app/lib/metronome/client";
+import {
+  getCreditTypeProgrammaticUsdId,
+  getProductFreeCreditId,
+} from "@app/lib/metronome/constants";
+import { resolveCurrencyForExistingMetronomeCustomer } from "@app/lib/metronome/contracts";
+import { isEnterprisePlanPrefix } from "@app/lib/plans/plan_codes";
+import {
+  getStripeSubscription,
+  isEnterpriseSubscription,
+} from "@app/lib/plans/stripe";
+import { CreditResource } from "@app/lib/resources/credit_resource";
+import { ProgrammaticUsageConfigurationResource } from "@app/lib/resources/programmatic_usage_configuration_resource";
+import logger from "@app/logger/logger";
+import { isCreditPricedPlan } from "@app/types/plan";
+import { Err, Ok } from "@app/types/shared/result";
+import { addYears, format } from "date-fns";
+import { z } from "zod";
+import { fromZodError } from "zod-validation-error";
+
+const BuyCreditPurchaseArgsSchema = z
+  .object({
+    amountDollars: z
+      .number()
+      .positive("Amount must be greater than $0")
+      .finite("Amount must be a valid number"),
+    startDate: z.coerce.date(),
+    expirationDate: z.coerce.date(),
+    isFreeCredit: z.boolean(),
+    overrideDiscount: z.boolean(),
+    discountPercent: z
+      .number()
+      .min(0, "Discount must be at least 0%")
+      .max(
+        MAX_DISCOUNT_PERCENT,
+        `Discount cannot exceed ${MAX_DISCOUNT_PERCENT}% (would result in selling below cost)`
+      )
+      .finite("Discount must be a valid number"),
+    purchaseOrderId: z
+      .string()
+      .max(140, "Purchase Order ID cannot exceed 140 characters")
+      .optional(),
+    confirm: z.boolean(),
+    confirmFreeCredit: z.boolean(),
+    confirmProOverride: z.boolean(),
+  })
+  .refine(
+    (data) => {
+      if (data.isFreeCredit) {
+        return data.confirmFreeCredit === true;
+      }
+      return data.confirm === true;
+    },
+    {
+      message: "Please confirm the purchase by checking the confirmation box",
+    }
+  );
+
+export const buyProgrammaticUsageCreditsPlugin = createPlugin({
+  manifest: {
+    id: "buy-programmatic-usage-credits",
+    name: "Buy Programmatic Committed Credits",
+    description:
+      "Purchase committed credits for paying customers. Committed credits are consumed after free credits and before pay-as-you-go (PAYG) credits. An invoice will be sent to the customer.",
+    resourceTypes: ["workspaces"],
+    args: {
+      amountDollars: {
+        type: "number",
+        variant: "text",
+        label: "Credit Amount (US$)",
+        description:
+          "Committed credits amount in USD. Note: this is different from billed amount, as it  excludes VAT, currency conversion and discounts",
+      },
+      isFreeCredit: {
+        type: "boolean",
+        variant: "toggle",
+        label: "Free Credit (no invoice)",
+        description:
+          "Create a free credit instead of a committed credit. No invoice will be sent.",
+      },
+      overrideDiscount: {
+        type: "boolean",
+        variant: "toggle",
+        label: "Override Default Discount",
+        async: true,
+        asyncDescription: true,
+        dependsOn: { field: "isFreeCredit", value: false },
+      },
+      discountPercent: {
+        type: "number",
+        variant: "text",
+        async: true,
+        label: "Billing Discount (%)",
+        description: "Discount applied to the actual credit purchase",
+        dependsOn: { field: "overrideDiscount", value: true },
+      },
+      startDate: {
+        type: "date",
+        async: true,
+        label: "Start Date",
+        description: "When the credits become active.",
+      },
+      expirationDate: {
+        type: "date",
+        async: true,
+        label: "Expiration Date",
+        description: "When the credits expire.",
+      },
+      purchaseOrderId: {
+        type: "string",
+        variant: "text",
+        label: "Purchase Order ID (optional)",
+        description: "Customer's PO number to include on the Stripe invoice.",
+        dependsOn: { field: "isFreeCredit", value: false },
+      },
+      confirm: {
+        type: "boolean",
+        label: "Confirm Purchase",
+        description:
+          "I understand that running this plugin will add committed credits and an invoice will be sent to the customer.",
+        dependsOn: { field: "isFreeCredit", value: false },
+      },
+      confirmFreeCredit: {
+        type: "boolean",
+        label: "Confirm FREE Credit (⚠️ Giving money!)",
+        description:
+          "I understand that this will create FREE credits without an invoice. This is giving money to the customer for free.",
+        dependsOn: { field: "isFreeCredit", value: true },
+      },
+      confirmProOverride: {
+        type: "boolean",
+        label: "⚠️ Confirm Pro Override",
+        description:
+          "I confirm this Pro customer is trusted and will pay the invoice. This is an exceptional override - Pro users normally pay upfront.",
+        dependsOn: { field: "isFreeCredit", value: false },
+      },
+    },
+    requiredRoles: ["billing"],
+  },
+  isApplicableTo: (auth) => {
+    const plan = auth.plan();
+    return plan !== null && !isCreditPricedPlan(plan);
+  },
+  populateAsyncArgs: async (auth) => {
+    const config =
+      await ProgrammaticUsageConfigurationResource.fetchByWorkspaceId(auth);
+    const defaultDiscount = config?.defaultDiscountPercent ?? 0;
+    const workspace = auth.getNonNullableWorkspace();
+
+    const overrideDiscountDescription = `Override the customer's default discount. Current default for ${workspace.name}: ${defaultDiscount}%`;
+
+    const today = new Date();
+    const oneYearFromNow = addYears(today, 1);
+
+    return new Ok({
+      overrideDiscountDescription: overrideDiscountDescription,
+      startDate: format(today, "yyyy-MM-dd"),
+      expirationDate: format(oneYearFromNow, "yyyy-MM-dd"),
+      discountPercent: defaultDiscount,
+    });
+  },
+  execute: async (auth, _, args) => {
+    const validationResult = BuyCreditPurchaseArgsSchema.safeParse(args);
+    if (!validationResult.success) {
+      const validationError = fromZodError(validationResult.error);
+      return new Err(new Error(validationError.message));
+    }
+
+    const validatedArgs = validationResult.data;
+    const workspace = auth.getNonNullableWorkspace();
+
+    const amountMicroUsd = Math.round(validatedArgs.amountDollars * 1_000_000);
+    const startDate = new Date(validatedArgs.startDate);
+    const expirationDate = new Date(validatedArgs.expirationDate);
+
+    if (expirationDate <= startDate) {
+      return new Err(new Error("Expiration date must be after start date."));
+    }
+
+    const originalAmount = validatedArgs.amountDollars;
+
+    // Handle free credit creation (no Stripe invoice).
+    if (validatedArgs.isFreeCredit) {
+      const idempotencyKey = `free-admin-${workspace.sId}-${Date.now()}`;
+
+      const credit = await CreditResource.makeNew(auth, {
+        type: "free",
+        initialAmountMicroUsd: amountMicroUsd,
+        consumedAmountMicroUsd: 0,
+        discount: null,
+        invoiceOrLineItemId: idempotencyKey,
+      });
+
+      const startResult = await credit.start(auth, {
+        startDate,
+        expirationDate,
+      });
+      if (startResult.isErr()) {
+        return new Err(startResult.error);
+      }
+
+      // Mirror the free credit in Metronome if the workspace is provisioned.
+      const metronomeCustomerId = workspace.metronomeCustomerId;
+
+      if (metronomeCustomerId) {
+        const amount = Math.ceil(amountMicroUsd / 1_000_000);
+        const metronomeResult = await createMetronomeCredit({
+          metronomeCustomerId,
+          productId: getProductFreeCreditId(),
+          creditTypeId: getCreditTypeProgrammaticUsdId(),
+          amount,
+          startingAt: startResult.value.startDate.toISOString(),
+          endingBefore: startResult.value.expirationDate.toISOString(),
+          name: `Free admin credit ($${originalAmount.toFixed(2)})`,
+          idempotencyKey: `free-admin-${workspace.sId}-${startDate.getTime()}-${expirationDate.getTime()}`,
+          priority: 1,
+          applicableProductTags: ["usage"],
+        });
+
+        if (metronomeResult.isErr()) {
+          logger.error(
+            {
+              workspaceId: workspace.sId,
+              error: metronomeResult.error.message,
+            },
+            "[Admin Plugin] Failed to create free credit in Metronome"
+          );
+          return new Err(
+            new Error(
+              `Credit created locally but failed to mirror in Metronome: ${metronomeResult.error.message}`
+            )
+          );
+        }
+
+        if (metronomeResult.value) {
+          await credit.setMetronomeCreditId(metronomeResult.value.id);
+        }
+      }
+
+      return new Ok({
+        display: "text",
+        value: `Successfully added FREE credits of $${originalAmount.toFixed(2)} (${format(validatedArgs.startDate, "yyyy-MM-dd")} to ${format(validatedArgs.expirationDate, "yyyy-MM-dd")}). No invoice was sent.`,
+      });
+    }
+
+    // Handle committed credit creation (with Stripe invoice).
+    const subscription = auth.subscriptionResource();
+
+    if (
+      !subscription?.stripeSubscriptionId &&
+      !subscription?.isMetronomeOnlyBilled
+    ) {
+      return new Err(
+        new Error(
+          `Workspace "${workspace.name}" does not have an active subscription.`
+        )
+      );
+    }
+
+    // Determine enterprise + Pro-override gate, identical for both billing
+    // paths. For Stripe-billed we read it off the Stripe subscription; for
+    // Metronome-only we read it off the plan code.
+    let isEnterprise: boolean;
+    if (subscription.stripeSubscriptionId) {
+      const stripeSubscription = await getStripeSubscription(
+        subscription.stripeSubscriptionId
+      );
+      if (!stripeSubscription) {
+        return new Err(new Error("Failed to retrieve Stripe subscription."));
+      }
+      isEnterprise = isEnterpriseSubscription(stripeSubscription);
+    } else {
+      isEnterprise = isEnterprisePlanPrefix(subscription.getPlan().code);
+    }
+
+    if (!isEnterprise && !validatedArgs.confirmProOverride) {
+      return new Err(
+        new Error(
+          "This is a Pro customer. Please check the Pro Override confirmation to proceed."
+        )
+      );
+    }
+
+    let discountPercent: number | undefined;
+    if (validatedArgs.overrideDiscount) {
+      discountPercent =
+        validatedArgs.discountPercent > 0
+          ? validatedArgs.discountPercent
+          : undefined;
+    } else {
+      const config =
+        await ProgrammaticUsageConfigurationResource.fetchByWorkspaceId(auth);
+      const defaultDiscount = config?.defaultDiscountPercent ?? 0;
+      discountPercent = defaultDiscount > 0 ? defaultDiscount : undefined;
+    }
+
+    const customerFacingInfo = validatedArgs.purchaseOrderId
+      ? { purchaseOrderId: validatedArgs.purchaseOrderId }
+      : undefined;
+
+    let billingTarget: CreditPurchaseBillingTarget;
+
+    if (subscription.isMetronomeOnlyBilled) {
+      // Metronome-only: issue the invoice on the linked Stripe customer.
+      if (!workspace.metronomeCustomerId) {
+        return new Err(
+          new Error(
+            `Workspace "${workspace.name}" is not provisioned in Metronome.`
+          )
+        );
+      }
+      const stripeCustomerIdResult = await getMetronomeCustomerStripeCustomerId(
+        workspace.metronomeCustomerId
+      );
+      if (stripeCustomerIdResult.isErr() || !stripeCustomerIdResult.value) {
+        return new Err(
+          new Error(
+            `No Stripe billing configuration found for workspace "${workspace.name}".`
+          )
+        );
+      }
+      const currencyResult = await resolveCurrencyForExistingMetronomeCustomer({
+        metronomeCustomerId: workspace.metronomeCustomerId,
+        stripeSubscriptionId: null,
+      });
+      if (currencyResult.isErr()) {
+        return new Err(
+          new Error(
+            `Failed to resolve billing currency: ${currencyResult.error.message}`
+          )
+        );
+      }
+      billingTarget = {
+        type: "metronome",
+        stripeCustomerId: stripeCustomerIdResult.value,
+        currency: currencyResult.value,
+      };
+    } else {
+      billingTarget = {
+        type: "stripe-subscription",
+        stripeSubscriptionId: subscription.stripeSubscriptionId!,
+      };
+    }
+
+    const result = await createEnterpriseCreditPurchase({
+      auth,
+      billingTarget,
+      amountMicroUsd,
+      discountPercent,
+      startDate,
+      expirationDate,
+      customerFacingInfo,
+    });
+    if (result.isErr()) {
+      return result;
+    }
+
+    const invoiceUrl = `https://dashboard.stripe.com/invoices/${result.value.invoiceOrLineItemId}`;
+
+    return new Ok({
+      display: "textWithLink",
+      value: `Successfully added committed credits of $${originalAmount.toFixed(2)} (${format(validatedArgs.startDate, "yyyy-MM-dd")} to ${format(validatedArgs.expirationDate, "yyyy-MM-dd")}). An invoice has been sent to the customer.`,
+      link: invoiceUrl,
+      linkText: "View Invoice in Stripe",
+    });
+  },
+});

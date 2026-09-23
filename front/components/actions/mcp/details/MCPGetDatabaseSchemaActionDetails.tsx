@@ -17,7 +17,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Table,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 export function MCPGetDatabaseSchemaActionDetails({
   toolOutput,

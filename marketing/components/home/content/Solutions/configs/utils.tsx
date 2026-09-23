@@ -1,4 +1,4 @@
-import type { Rocket02 } from "@dust-tt/sparkle";
+import type { Rocket02 } from "@ruby-ai/ui";
 
 export interface SeoConfig {
   title: string;

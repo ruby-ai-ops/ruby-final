@@ -1,7 +1,7 @@
 import { AdminPageContainer } from "@app/components/layouts/AdminPageContainer";
 import { BrandingSection } from "@app/components/workspace/settings/BrandingSection";
 import { useFeatureFlags, useWorkspace } from "@app/lib/auth/AuthContext";
-import { cn, Page } from "@dust-tt/sparkle";
+import { cn, Page } from "@ruby-ai/ui";
 
 export function WorkspaceBrandingPage() {
   const owner = useWorkspace();

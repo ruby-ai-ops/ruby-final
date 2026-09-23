@@ -1,6 +1,6 @@
 import { checkAppsDeployment } from "@app/lib/api/apps";
-import type { AppsCheckResponseType } from "@dust-tt/client";
-import { AppsCheckRequestSchema } from "@dust-tt/client";
+import type { AppsCheckResponseType } from "@ruby-ai/client";
+import { AppsCheckRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { validate } from "@front-api/middlewares/validator";

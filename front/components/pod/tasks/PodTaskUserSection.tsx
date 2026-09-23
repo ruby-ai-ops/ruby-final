@@ -3,7 +3,7 @@ import { usePodTasksPanel } from "@app/components/pod/tasks/PodTasksPanelContext
 import { SuggestedTaskItem } from "@app/components/pod/tasks/SuggestedTaskItem";
 import type { PodTaskAssigneeType, PodTaskType } from "@app/types/project_task";
 import { POD_TASK_NO_ASSIGNEE_LABEL } from "@app/types/project_task";
-import { Avatar, Button, Card, Icon, Stars02 } from "@dust-tt/sparkle";
+import { Avatar, Button, Card, Icon, Stars02 } from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface PodTaskUserSectionProps {

@@ -1,21 +1,24 @@
 import { H2, P } from "@marketing/components/home/ContentComponents";
-import { HomeReveal } from "@marketing/components/home/content/Product/HomeReveal";
-import { ChevronUp, Separator } from "@dust-tt/sparkle";
+import {
+  MARKETING_SURFACES,
+  isMarketingSurfaceVisible,
+} from "@marketing/lib/marketing_visibility";
+import { ChevronUp, Separator } from "@ruby-ai/ui";
 import { useState } from "react";
 
-export interface SecurityFeature {
+interface SecurityFeature {
   id: string;
   title: string;
   description: string;
   placeholder: string;
 }
 
-const defaultSecurityFeatures: SecurityFeature[] = [
+const securityFeatures: SecurityFeature[] = [
   {
     id: "ingest",
     title: "Your data stays where you want it",
     description:
-      "Choose EU or US hosting. Control exactly which data sources your agents can access. Your organization's intelligence stays yours, never used to train models.",
+      "Control data selection and hosting location within rigorous security parameters.",
     placeholder: "Data Control Placeholder",
   },
   {
@@ -34,61 +37,33 @@ const defaultSecurityFeatures: SecurityFeature[] = [
   },
 ];
 
-interface SecurityFeaturesSectionProps {
-  showHeader?: boolean;
-  // When true, image sits on the right and the accordion on the left (desktop).
-  reverse?: boolean;
-  features?: SecurityFeature[];
-  // When set, an autoplaying video replaces the static image visual.
-  videoSrc?: string;
-  imageSrc?: string;
-  // Optional heading rendered above the accordion column.
-  accordionTitle?: string;
-}
+const visibleSecurityFeatures = securityFeatures.filter(
+  (feature) =>
+    feature.id !== "models" ||
+    isMarketingSurfaceVisible(MARKETING_SURFACES.publicModelDetails)
+);
 
-export function SecurityFeaturesSection({
-  showHeader = true,
-  reverse = false,
-  features = defaultSecurityFeatures,
-  videoSrc,
-  imageSrc = "/static/landing/product/models.svg",
-  accordionTitle,
-}: SecurityFeaturesSectionProps = {}) {
-  const [activeFeature, setActiveFeature] = useState<string>(features[0].id);
-
-  const imageOrder = reverse ? "lg:order-2" : "lg:order-1";
-  const accordionOrder = reverse ? "lg:order-1" : "lg:order-2";
+export function SecurityFeaturesSection() {
+  const [activeFeature, setActiveFeature] = useState<string>("ingest");
 
   return (
     <div className="w-full">
-      {showHeader && (
-        <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center sm:gap-2 lg:px-8">
-          <HomeReveal>
-            <H2 className="text-center text-3xl font-medium md:text-4xl xl:text-5xl">
-              Built with enterprise-grade security
-            </H2>
-          </HomeReveal>
-          <HomeReveal delay={80}>
-            <P size="lg" className="text-base text-muted-foreground sm:text-lg">
-              We've made security our core focus from day one.<br></br> SOC 2,
-              HIPAA, GDPR, and full data sovereignty. Your data is never used to
-              train models. Ship fast without your security team hitting the
-              brakes.
-            </P>
-          </HomeReveal>
-        </div>
-      )}
+      <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 text-center sm:gap-2 sm:px-6 lg:px-8">
+        <H2 className="text-center text-3xl font-medium md:text-4xl xl:text-5xl">
+          Built with enterprise-grade security
+        </H2>
+        <P size="lg" className="text-base text-muted-foreground sm:text-lg">
+          We've made security our core focus from day one.<br></br> SOC 2,
+          HIPAA, GDPR, all the acronyms your security team loves. Ship fast
+          without getting blocked by compliance.
+        </P>
+      </div>
 
-      {/* Same container metrics as the CapabilitySection blocks. */}
-      <div className="mx-auto flex w-full max-w-[1180px] flex-col items-center gap-12 py-14 lg:flex-row lg:gap-20 lg:px-6 lg:py-24">
+      <div className="mt-16 flex flex-col gap-8 lg:flex-row lg:gap-12">
         {/* Image - Above on mobile, left on desktop */}
-        <HomeReveal
-          variant="photo"
-          delay={120}
-          className={`order-1 w-full ${imageOrder} lg:w-1/2`}
-        >
+        <div className="order-1 w-full lg:order-1 lg:w-1/2">
           <div
-            className={`relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl ${
+            className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl ${
               activeFeature === "ingest"
                 ? "bg-rose-50"
                 : activeFeature === "models"
@@ -99,42 +74,35 @@ export function SecurityFeaturesSection({
             }`}
           >
             <div className="relative h-full w-full">
-              {/* Same visual for every accordion title. */}
-              {videoSrc ? (
-                <video
-                  src={videoSrc}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              ) : (
+              {activeFeature === "ingest" && (
                 <img
-                  src={imageSrc}
-                  alt="Security"
-                  className="absolute inset-0 h-full w-full object-cover"
+                  src="/static/landing/product/data.svg"
+                  alt="Data Control"
+                  className="absolute inset-0 h-full w-full object-contain"
+                />
+              )}
+              {activeFeature === "models" && (
+                <img
+                  src="/static/landing/product/model.svg"
+                  alt="Model Selection"
+                  className="absolute inset-0 h-full w-full object-contain"
+                />
+              )}
+              {activeFeature === "access" && (
+                <img
+                  src="/static/landing/product/member.svg"
+                  alt="Access Control"
+                  className="absolute inset-0 h-full w-full object-contain"
                 />
               )}
             </div>
           </div>
-        </HomeReveal>
+        </div>
 
         {/* Accordion - Below on mobile, right on desktop */}
-        <HomeReveal
-          delay={80}
-          className={`order-2 w-full ${accordionOrder} lg:flex lg:w-1/2 lg:items-center`}
-        >
+        <div className="order-2 w-full lg:order-2 lg:flex lg:w-1/2 lg:items-center">
           <div className="flex w-full flex-col items-center lg:items-start">
-            {accordionTitle && (
-              <HomeReveal>
-                <h3 className="mb-2 py-2 text-center font-sans text-3xl font-semibold tracking-[-0.03em] text-foreground lg:text-left lg:text-4xl">
-                  {accordionTitle}
-                </h3>
-              </HomeReveal>
-            )}
-            {features.map((feature) => {
+            {visibleSecurityFeatures.map((feature) => {
               const isActive = activeFeature === feature.id;
               return (
                 <div key={feature.id} className="w-full">
@@ -174,7 +142,7 @@ export function SecurityFeaturesSection({
               );
             })}
           </div>
-        </HomeReveal>
+        </div>
       </div>
     </div>
   );

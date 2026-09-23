@@ -8,7 +8,7 @@ import {
 } from "./verification.js";
 
 const CLIENT_SECRET = "shopify-client-secret";
-const SHOP_DOMAIN = "dust-test.myshopify.com";
+const SHOP_DOMAIN = "ruby-test.myshopify.com";
 
 function makeWebhook({
   payload,

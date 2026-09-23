@@ -1,0 +1,32 @@
+---
+name: ruby-call-agent
+description: Call a Ruby agent for Ruby company context or to access tools, data, and actions unavailable through the current agent's native capabilities. Never use a Ruby agent as a proxy for Slack, Notion, Google Drive, calendars, or any other service when native access is available; use the native tool instead because it is faster and more efficient.
+---
+
+Access Ruby agents that have context on all the company, e.g. recent projects, engineering, sales, marketing, etc., via the Ruby CLI non-interactively, e.g.:
+`$ ruby chat -a ruby -m "create an issue for this: ..."`
+`$ ruby chat -a deep-dive -m "Research all info we have on kubernetes probe failures in recent weeks."`
+
+For GitHub issue creation, use the `ruby` agent rather than `issueBot` or `gh`; `ruby` has specific guidance for writing issues.
+
+A conversation with an agent can be continued after the first message using the argument `-c CONVERSATION_STRING_ID`. The conversation id will be returned in the JSON result from the initial call.
+`$ ruby chat -a ruby -c 'TdWyn4aDt1' -m "also add a subsequent issue about this: ..."`
+
+Use `--projectName` or `--projectId` to create the conversation inside a specific project (space). These cannot be used with `-c` (only for new conversations):
+`$ ruby chat -a prea --projectName "Engineering" -m "summarize recent incidents"`
+`$ ruby chat -a prea --projectId "abc123" -m "summarize recent incidents"`
+
+Use `-d` / `--details` to get detailed message information in the output (raw event stream, tool actions, and full agent message payload):
+`$ ruby chat -a prea -d -m "what's the status of project X?"`
+
+If the CLI errors because login is needed, ask the user to perform it manually.
+
+An agent may take long to answer. Avoid repeating an agent call if possible, especially if it timed out without a clear error, because:
+
+- the agent call may not be idempotent, e.g. when creating an issue, if the conversation on Ruby has been started, repeating will create two issues;
+- multiple conversations are created in the user's Ruby workspace, which bloats their conversation history.
+
+If the CLI timed out but returned a `conversationId` and `messageId`, you can safely fetch the result without side effects:
+`$ ruby chat -c <conversationId> --messageId <messageId>`
+
+Otherwise, wait for a clear answer. If you decide to time out with no conversation ID, make no assumption on success or failure; report back to the user.

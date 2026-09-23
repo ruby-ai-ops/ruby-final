@@ -86,7 +86,7 @@ export async function getDatasetHash(
   // Translate latest if needed.
   if (hash == "latest") {
     const apiDatasets = await coreAPI.getDatasets({
-      projectId: app.dustAPIProjectId,
+      projectId: app.rubyAPIProjectId,
     });
 
     if (apiDatasets.isErr()) {
@@ -103,7 +103,7 @@ export async function getDatasetHash(
   }
 
   const apiDataset = await coreAPI.getDataset({
-    projectId: app.dustAPIProjectId,
+    projectId: app.rubyAPIProjectId,
     datasetName: name,
     datasetHash: hash,
   });

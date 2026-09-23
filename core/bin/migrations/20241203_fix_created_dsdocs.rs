@@ -3,10 +3,10 @@ use std::collections::HashMap;
 use anyhow::{anyhow, Result};
 use clap::Parser;
 use cloud_storage::ListRequest;
-use dust::data_sources::data_source::make_document_id_hash;
-use dust::data_sources::file_storage_document::FileStorageDocument;
-use dust::gcs_client::gcs_client;
-use dust::stores::{postgres, store};
+use ruby::data_sources::data_source::make_document_id_hash;
+use ruby::data_sources::file_storage_document::FileStorageDocument;
+use ruby::gcs_client::gcs_client;
+use ruby::stores::{postgres, store};
 use futures::{pin_mut, StreamExt};
 
 #[derive(Parser, Debug)]

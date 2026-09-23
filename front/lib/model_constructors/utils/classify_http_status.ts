@@ -9,7 +9,7 @@ import { assertNever } from "@app/types/shared/utils/assert_never";
 
 /**
  * Maps an HTTP status to fault domain and error type.
- * 4xx is Dust's request; 5xx is the provider; anything else is unknown.
+ * 4xx is Ruby's request; 5xx is the provider; anything else is unknown.
  */
 export function classifyHttpStatus(status: number | undefined): {
   errorSource: ErrorSource;
@@ -22,20 +22,20 @@ export function classifyHttpStatus(status: number | undefined): {
   switch (status) {
     case 400:
     case 422:
-      return { errorSource: "dust", type: "invalid_request_error" };
+      return { errorSource: "ruby", type: "invalid_request_error" };
     case 401:
-      return { errorSource: "dust", type: "authentication_error" };
+      return { errorSource: "ruby", type: "authentication_error" };
     case 403:
-      return { errorSource: "dust", type: "permission_error" };
+      return { errorSource: "ruby", type: "permission_error" };
     case 404:
-      return { errorSource: "dust", type: "not_found_error" };
+      return { errorSource: "ruby", type: "not_found_error" };
     case 429:
-      return { errorSource: "dust", type: "rate_limit_error" };
+      return { errorSource: "ruby", type: "rate_limit_error" };
     case 503:
       return { errorSource: "provider", type: "overloaded_error" };
     default:
       if (status >= 400 && status < 500) {
-        return { errorSource: "dust", type: "invalid_request_error" };
+        return { errorSource: "ruby", type: "invalid_request_error" };
       }
       if (status >= 500 && status < 600) {
         return { errorSource: "provider", type: "server_error" };

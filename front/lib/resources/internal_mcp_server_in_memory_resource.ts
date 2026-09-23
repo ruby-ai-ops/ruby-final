@@ -24,11 +24,11 @@ import {
   isAutoInternalMCPServerName,
   matchesInternalMCPServerName,
 } from "@app/lib/actions/mcp_internal_actions/constants";
-import { isDeepDiveDisabledByAdmin } from "@app/lib/api/assistant/global_agents/configurations/dust/utils";
+import { isDeepDiveDisabledByAdmin } from "@app/lib/api/assistant/global_agents/configurations/ruby/utils";
 import type { MCPServerType } from "@app/lib/api/mcp";
 import type { Authenticator } from "@app/lib/auth";
 import { getFeatureFlags } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { InternalMCPServerCredentialModel } from "@app/lib/models/agent/actions/internal_mcp_server_credentials";
 import { MCPServerConnectionModel } from "@app/lib/models/agent/actions/mcp_server_connection";
 import { MCPServerViewModel } from "@app/lib/models/agent/actions/mcp_server_view";
@@ -137,7 +137,7 @@ export class InternalMCPServerInMemoryResource {
     const systemSpace = await SpaceResource.fetchWorkspaceSystemSpace(auth);
 
     if (!auth.can("admin", systemSpace)) {
-      throw new DustError(
+      throw new RubyError(
         "unauthorized",
         "The user is not authorized to create an internal MCP server"
       );
@@ -165,7 +165,7 @@ export class InternalMCPServerInMemoryResource {
         });
 
         if (alreadyExistsForSameName) {
-          throw new DustError(
+          throw new RubyError(
             "internal_error",
             "The internal MCP server already exists for this name."
           );
@@ -188,7 +188,7 @@ export class InternalMCPServerInMemoryResource {
     }
 
     if (!sid) {
-      throw new DustError(
+      throw new RubyError(
         "internal_error",
         "Could not find an available id for the internal MCP server."
       );
@@ -196,7 +196,7 @@ export class InternalMCPServerInMemoryResource {
 
     const resolvedServerName = getInternalMCPServerNameAndWorkspaceId(sid);
     if (resolvedServerName.isErr()) {
-      throw new DustError(
+      throw new RubyError(
         "internal_server_not_found",
         "Failed to create internal MCP server, the id is probably invalid."
       );
@@ -255,13 +255,13 @@ export class InternalMCPServerInMemoryResource {
 
   async delete(
     auth: Authenticator
-  ): Promise<Result<number, DustError<"unauthorized">>> {
+  ): Promise<Result<number, RubyError<"unauthorized">>> {
     const canAdministrate =
       await SpaceResource.canAdministrateSystemSpace(auth);
 
     if (!canAdministrate) {
       throw new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "The user is not authorized to delete an internal MCP server"
         )
@@ -553,13 +553,13 @@ export class InternalMCPServerInMemoryResource {
       sharedSecret?: string;
       customHeaders?: Record<string, string> | null;
     }
-  ): Promise<Result<void, DustError<"unauthorized">>> {
+  ): Promise<Result<void, RubyError<"unauthorized">>> {
     const canAdministrate =
       await SpaceResource.canAdministrateSystemSpace(auth);
 
     if (!canAdministrate) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "The user is not authorized to update this MCP server."
         )

@@ -22,7 +22,7 @@ import {
   Hoverable,
   LoadingBlock,
   Page,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
 // A credit is active if it has started and has not expired.
@@ -334,7 +334,7 @@ export function CreditsUsagePage() {
                   Monitor usage and credits for programmatic usage (API keys,
                   automated workflows, etc.). Learn more in the{" "}
                   <Hoverable
-                    href="https://docs.dust.tt/docs/programmatic-usage"
+                    href="https://docs.ruby.ad/docs/programmatic-usage"
                     target="_blank"
                     variant="primary"
                   >

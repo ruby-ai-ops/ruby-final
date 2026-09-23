@@ -86,9 +86,9 @@ describe("sandbox child blocking", () => {
       jsonSchema: null,
       additionalConfiguration: {},
       mcpServerViewId: "test-server-view",
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
       internalMCPServerId: null,
       availability: "auto",
       permission: "low",
@@ -368,7 +368,7 @@ describe("sandbox child blocking", () => {
   });
 
   it("defers while a sibling of the same parent is still blocked, then relaunches once on the last", async () => {
-    // Bash issued `dust call A & dust call B & wait`: two blocked children of
+    // Bash issued `ruby call A & ruby call B & wait`: two blocked children of
     // the same parent. Resolving A alone must not relaunch — only resolving
     // the last one does.
     const { sId: parentId } = await createAction({

@@ -47,7 +47,7 @@ describe("POST /api/v1/w/[wId]/assistant/conversations/[cId]/messages", () => {
       workspace.sId
     );
     const conversation = await ConversationFactory.create(userAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -84,7 +84,7 @@ describe("POST /api/v1/w/[wId]/assistant/conversations/[cId]/messages", () => {
       workspace.sId
     );
     const conversation = await ConversationFactory.create(userAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -108,7 +108,7 @@ describe("POST /api/v1/w/[wId]/assistant/conversations/[cId]/messages", () => {
       workspace.sId
     );
     const conversation = await ConversationFactory.create(userAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -144,7 +144,7 @@ describe("POST /api/v1/w/[wId]/assistant/conversations/[cId]/messages", () => {
       workspace.sId
     );
     const conversation = await ConversationFactory.create(userAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -181,7 +181,7 @@ describe("POST /api/v1/w/[wId]/assistant/conversations/[cId]/messages", () => {
       workspace.sId
     );
     const conversation = await ConversationFactory.create(userAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -220,7 +220,7 @@ describe("POST /api/v1/w/[wId]/assistant/conversations/[cId]/messages", () => {
       workspace.sId
     );
     const conversation = await ConversationFactory.create(userAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -260,7 +260,7 @@ describe("POST /api/v1/w/[wId]/assistant/conversations/[cId]/messages", () => {
       workspace.sId
     );
     const conversation = await ConversationFactory.create(userAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 

@@ -166,7 +166,7 @@ app.post(
     if (provider && connectionId && remoteMetadata) {
       // Allow redirection to public URL in local dev for webhook registrations.
       const baseUrl =
-        config.getDustWebhooksPublicUrl() ?? config.getApiBaseUrl();
+        config.getRubyWebhooksPublicUrl() ?? config.getApiBaseUrl();
       const webhookUrl = buildWebhookUrl({
         apiBaseUrl: baseUrl,
         workspaceId: workspace.sId,

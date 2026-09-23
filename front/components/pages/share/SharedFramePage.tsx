@@ -2,23 +2,23 @@ import { PublicInteractiveContentContainer } from "@app/components/assistant/con
 import Custom404 from "@app/components/pages/Custom404";
 import CustomErrorPage from "@app/components/pages/CustomErrorPage";
 import { EmailVerificationFlow } from "@app/components/pages/share/EmailVerificationFlow";
-import { ThemeProvider } from "@app/components/sparkle/ThemeContext";
+import { ThemeProvider } from "@app/components/ui/ThemeContext";
 import { useDocumentTitle } from "@app/hooks/useDocumentTitle";
 import config from "@app/lib/api/config";
-import { DUST_HAS_SESSION, hasSessionIndicator } from "@app/lib/cookies";
+import { RUBY_HAS_SESSION, hasSessionIndicator } from "@app/lib/cookies";
 import { usePathParam } from "@app/lib/platform";
 import { usePublicFrame } from "@app/lib/swr/frames";
 import { useShareFrameMetadata } from "@app/lib/swr/share";
 import { useUser } from "@app/lib/swr/user";
 import { getFaviconPath } from "@app/lib/utils";
-import { LogIn01, Spinner } from "@dust-tt/sparkle";
+import { LogIn01, Spinner } from "@ruby-ai/ui";
 import { usePostHog } from "posthog-js/react";
 import { useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 
 // Origins from which the share frame is considered as embedded.
 // We hide the header for embedded origins.
-const EMBEDDED_ORIGINS = ["https://dust.tt/blog/"];
+const EMBEDDED_ORIGINS = ["https://ruby.ad/blog/"];
 
 function buildLoginUrl() {
   const returnTo = `${window.location.pathname}${window.location.search}${window.location.hash}`;
@@ -35,8 +35,8 @@ export function SharedFramePage() {
   const posthog = usePostHog();
 
   const [isVerified, setIsVerified] = useState(false);
-  const [cookies] = useCookies([DUST_HAS_SESSION]);
-  const hasSession = hasSessionIndicator(cookies[DUST_HAS_SESSION]);
+  const [cookies] = useCookies([RUBY_HAS_SESSION]);
+  const hasSession = hasSessionIndicator(cookies[RUBY_HAS_SESSION]);
   const {
     user,
     isUserLoading,
@@ -91,7 +91,7 @@ export function SharedFramePage() {
   const humanFriendlyTitle = shareMetadata?.title ?? "";
 
   useDocumentTitle(
-    humanFriendlyTitle ? `${humanFriendlyTitle} - Powered by Dust` : "Dust"
+    humanFriendlyTitle ? `${humanFriendlyTitle} - Powered by Ruby` : "Ruby"
   );
 
   // Set favicon and meta tags for sharing/SEO.
@@ -142,9 +142,9 @@ export function SharedFramePage() {
     addMeta({ property: "og:image:width", content: "1200" });
     addMeta({
       property: "og:image",
-      content: shareMetadata.ogImageUrl ?? "https://dust.tt/static/og/ic.png",
+      content: shareMetadata.ogImageUrl ?? "https://ruby.ad/static/og/ic.png",
     });
-    addMeta({ property: "og:site_name", content: "Dust" });
+    addMeta({ property: "og:site_name", content: "Ruby" });
     addMeta({ property: "og:url", content: shareMetadata.shareUrl });
     addMeta({
       property: "og:image:alt",

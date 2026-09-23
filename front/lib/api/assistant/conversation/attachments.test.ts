@@ -22,7 +22,7 @@ import type {
 } from "@app/types/content_fragment";
 import type { ContentNodeType } from "@app/types/core/content_node";
 import { DATA_SOURCE_NODE_ID } from "@app/types/core/content_node";
-import { DATA_SOURCE_MIME_TYPE } from "@dust-tt/client";
+import { DATA_SOURCE_MIME_TYPE } from "@ruby-ai/client";
 import { describe, expect, it } from "vitest";
 
 const CAT_TOOL = getPrefixedToolName(
@@ -58,7 +58,7 @@ describe("makeFileAttachment", () => {
   it("should mark pasted text files as not searchable, even with a snippet", () => {
     const attachment = makeFileAttachment({
       ...baseArgs,
-      contentType: "text/vnd.dust.attachment.pasted",
+      contentType: "text/vnd.ruby.attachment.pasted",
     });
 
     expect(attachment.isIncludable).toBe(true);

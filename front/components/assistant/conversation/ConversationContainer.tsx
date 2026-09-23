@@ -16,7 +16,7 @@ import { useCreateConversationWithMessage } from "@app/hooks/useCreateConversati
 import { useSendNotification } from "@app/hooks/useNotification";
 import { useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { getRandomGreetingForName } from "@app/lib/client/greetings";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { useAppRouter } from "@app/lib/platform";
 import { useIsMobile } from "@app/lib/swr/useIsMobile";
 import { useWorkspaceUsageStatus } from "@app/lib/swr/user";
@@ -47,7 +47,7 @@ import {
   Page,
   ScrollArea,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useReducedMotion } from "framer-motion";
 import type { CSSProperties } from "react";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -205,7 +205,7 @@ export function ConversationContainerVirtuoso({
       selectedMCPServerViewIds?: string[],
       selectedSpaceIds?: string[],
       modelSelection?: ModelSelectionType
-    ): Promise<Result<undefined, DustError>> => {
+    ): Promise<Result<undefined, RubyError>> => {
       if (isSubmitting) {
         return new Err({
           code: "internal_error",

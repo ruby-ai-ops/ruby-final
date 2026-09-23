@@ -13,7 +13,7 @@ import {
   DialogTrigger,
   Spinner,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface ConfirmDeleteSpaceDialogProps {
   space: SpaceType;

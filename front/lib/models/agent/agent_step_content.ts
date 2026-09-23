@@ -15,11 +15,11 @@ export class AgentStepContentModel extends WorkspaceAwareModel<AgentStepContentM
   declare version: number;
   declare type: AgentContentItemType["type"];
   declare value: AgentContentItemType;
-  // dustRunId of the model run that emitted this content. Anchors consumption attribution: it lets
-  // an async job map a RunUsage (RunModel.dustRunId) to the step contents that run produced.
+  // rubyRunId of the model run that emitted this content. Anchors consumption attribution: it lets
+  // an async job map a RunUsage (RunModel.rubyRunId) to the step contents that run produced.
   // Nullable: backfilled null for existing rows, and content not produced by a model run may lack
-  // one. Not indexed on purpose: the job fetches by agentMessageId then groups by dustRunId.
-  declare dustRunId: string | null;
+  // one. Not indexed on purpose: the job fetches by agentMessageId then groups by rubyRunId.
+  declare rubyRunId: string | null;
 
   declare agentMessage?: NonAttribute<AgentMessageModel>;
 }
@@ -76,7 +76,7 @@ AgentStepContentModel.init(
       type: DataTypes.JSONB,
       allowNull: false,
     },
-    dustRunId: {
+    rubyRunId: {
       type: DataTypes.STRING,
       allowNull: true,
     },

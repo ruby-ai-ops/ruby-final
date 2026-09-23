@@ -10,7 +10,7 @@ import { EditSpaceStaticDatasourcesViews } from "@app/components/spaces/EditSpac
 import { ACTION_BUTTONS_CONTAINER_ID } from "@app/components/spaces/SpacePageHeaders";
 import { SpaceSearchContext } from "@app/components/spaces/search/SpaceSearchContext";
 import { UsedByButton } from "@app/components/spaces/UsedByButton";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { ViewFolderAPIModal } from "@app/components/ViewFolderAPIModal";
 import { useActionButtonsPortal } from "@app/hooks/useActionButtonsPortal";
 import { usePaginationFromUrl } from "@app/hooks/usePaginationFromUrl";
@@ -21,7 +21,7 @@ import {
 } from "@app/lib/connector_providers_ui";
 import {
   getDataSourceNameFromView,
-  isDustProjectDataSource,
+  isRubyProjectDataSource,
 } from "@app/lib/data_sources";
 import { useAppRouter } from "@app/lib/platform";
 import {
@@ -41,7 +41,7 @@ import { isString } from "@app/types/shared/utils/general";
 import type { SpaceType } from "@app/types/space";
 import type { UserType, WorkspaceType } from "@app/types/user";
 import { ANONYMOUS_USER_IMAGE_URL } from "@app/types/user";
-import type { MenuItem } from "@dust-tt/sparkle";
+import type { MenuItem } from "@ruby-ai/ui";
 import {
   Button,
   Chip,
@@ -53,7 +53,7 @@ import {
   Settings01,
   Spinner,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import type { ParsedUrlQuery } from "querystring";
 import type React from "react";
@@ -382,7 +382,7 @@ export const SpaceResourcesList = ({
         // These are managed separately in the Admin workspace settings page.
         return (
           !connectorConfig?.isHiddenAsDataSource &&
-          !isDustProjectDataSource(dataSourceView.dataSource)
+          !isRubyProjectDataSource(dataSourceView.dataSource)
         );
       })
       .map((dataSourceView) => {

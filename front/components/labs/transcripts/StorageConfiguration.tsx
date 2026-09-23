@@ -13,7 +13,7 @@ import {
   MessageDotsCircle,
   Page,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import type { KeyedMutator } from "swr";
@@ -163,7 +163,7 @@ export function StorageConfiguration({
     <Page.Layout direction="vertical">
       <Page.SectionHeader
         title="Store transcripts"
-        description="After each transcribed meeting, store the full transcript in a Dust folder for later use."
+        description="After each transcribed meeting, store the full transcript in a Ruby folder for later use."
       />
       {transcriptsConfiguration.isDefaultWorkspaceConfiguration && (
         <ContentMessage

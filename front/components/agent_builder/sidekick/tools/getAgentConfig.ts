@@ -33,7 +33,7 @@ The response includes:
   Use these block IDs when making instruction suggestions to target specific blocks.
 - pendingSuggestions: Array of suggestions that have been made but not yet accepted/rejected by the user`,
       _meta: {
-        dust: {
+        ruby: {
           timeoutMs: 10_000,
           // Never defer behind tool search: this is Sidekick's primary tool.
           eager: true,

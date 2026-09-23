@@ -1,6 +1,6 @@
 import { getApprovalArgsLabel } from "@app/lib/actions/tool_approval_labels";
 import { SpaceResource } from "@app/lib/resources/space_resource";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { describe, expect, it, vi } from "vitest";
 
 describe("getApprovalArgsLabel", () => {
@@ -20,15 +20,15 @@ describe("getApprovalArgsLabel", () => {
         toolName: "create_conversation",
         agentName: "assistant",
         inputs: {
-          dustPod: {
-            uri: "pod://dust/w/ws123/pods/prj456",
-            mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD,
+          rubyPod: {
+            uri: "pod://ruby/w/ws123/pods/prj456",
+            mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD,
           },
         },
-        argumentsRequiringApproval: ["dustPod"],
+        argumentsRequiringApproval: ["rubyPod"],
       })
     ).resolves.toBe(
-      'Always allow @assistant to Create conversation in "pod://dust/w/ws123/pods/prj456".'
+      'Always allow @assistant to Create conversation in "pod://ruby/w/ws123/pods/prj456".'
     );
 
     expect(fetchByIdSpy).toHaveBeenCalledWith(auth, "prj456");
@@ -50,12 +50,12 @@ describe("getApprovalArgsLabel", () => {
         toolName: "create_conversation",
         agentName: "assistant",
         inputs: {
-          dustPod: {
-            uri: "pod://dust/w/ws123/pods/prj456",
-            mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD,
+          rubyPod: {
+            uri: "pod://ruby/w/ws123/pods/prj456",
+            mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD,
           },
         },
-        argumentsRequiringApproval: ["dustPod"],
+        argumentsRequiringApproval: ["rubyPod"],
       })
     ).resolves.toBe(
       'Always allow @assistant to Create conversation in "Revenue Ops".'

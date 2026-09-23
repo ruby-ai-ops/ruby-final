@@ -9,7 +9,7 @@ import { parseTimeFrame } from "@app/types/shared/utils/time_frame";
 
 function renderMimeType(mimeType: string) {
   return mimeType
-    .replace("application/vnd.dust.", "")
+    .replace("application/vnd.ruby.", "")
     .replace("-", " ")
     .replace(".", " ");
 }

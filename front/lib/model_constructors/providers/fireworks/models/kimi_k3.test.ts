@@ -1,13 +1,13 @@
 // @vitest-environment node
 
-import { DustMoonshotAiKimiK3GlobalFireworksStream } from "@app/lib/llms/stream/endpoints/moonshot_ai_kimi_k3_global_fireworks";
+import { RubyMoonshotAiKimiK3GlobalFireworksStream } from "@app/lib/llms/stream/endpoints/moonshot_ai_kimi_k3_global_fireworks";
 import { MoonshotAiKimiK3GlobalFireworksStream } from "@app/lib/model_constructors/stream/endpoints/moonshot_ai_kimi_k3_global_fireworks";
 import { itKeepsLimitsAndPricingConsistent } from "@app/lib/model_constructors/test/model_limits";
 import type { InputConfig } from "@app/lib/model_constructors/types/input/configuration";
 import { FIREWORKS_KIMI_K3_MODEL_CONFIG } from "@app/types/assistant/models/fireworks";
 import { describe, expect, it } from "vitest";
 
-// Dust product caps, asserted below to leave a 192k prompt budget.
+// Ruby product caps, asserted below to leave a 192k prompt budget.
 const EXPECTED_CONTEXT_SIZE = 256_000;
 const EXPECTED_MAX_OUTPUT_TOKENS = 64_000;
 const EXPECTED_MAX_INPUT_TOKENS = 192_000;
@@ -15,11 +15,11 @@ const EXPECTED_MAX_INPUT_TOKENS = 192_000;
 describe("Kimi K3 model configuration", () => {
   itKeepsLimitsAndPricingConsistent({
     streamEndpoint: MoonshotAiKimiK3GlobalFireworksStream,
-    dustStreamEndpoint: DustMoonshotAiKimiK3GlobalFireworksStream,
+    rubyStreamEndpoint: RubyMoonshotAiKimiK3GlobalFireworksStream,
     modelConfig: FIREWORKS_KIMI_K3_MODEL_CONFIG,
     // Real Fireworks/Moonshot spec, see the config mixin for sources.
     native: { contextSize: 1_040_000, maxOutputTokens: 131_072 },
-    dust: {
+    ruby: {
       contextSize: EXPECTED_CONTEXT_SIZE,
       maxOutputTokens: EXPECTED_MAX_OUTPUT_TOKENS,
     },
@@ -54,14 +54,14 @@ describe("Kimi K3 model configuration", () => {
     expect(FIREWORKS_KIMI_K3_MODEL_CONFIG.defaultReasoningEffort).toBe("light");
   });
 
-  it("forces every Dust request to temperature zero", () => {
+  it("forces every Ruby request to temperature zero", () => {
     const config: InputConfig = {
       reasoning: { effort: "medium" },
       temperature: 0.7,
     };
 
     const parsedConfig =
-      DustMoonshotAiKimiK3GlobalFireworksStream.configParsers.reduce(
+      RubyMoonshotAiKimiK3GlobalFireworksStream.configParsers.reduce(
         (currentConfig, parser) => parser(currentConfig),
         config
       );

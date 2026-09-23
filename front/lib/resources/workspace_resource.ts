@@ -14,7 +14,7 @@ import {
   hasAnyPlanLimitOverride,
   OVERRIDABLE_PLAN_LIMITS,
 } from "@app/lib/plans/plan_limit_overrides";
-import type { KillSwitchType } from "@app/lib/poke/types";
+import type { KillSwitchType } from "@app/lib/admin/types";
 import type {
   ResourceLogJSON,
   ResourceUpdateBlob,

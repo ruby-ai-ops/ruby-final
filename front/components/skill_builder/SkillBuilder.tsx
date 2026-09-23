@@ -30,7 +30,7 @@ import {
   transformSkillTypeToFormData,
 } from "@app/components/skill_builder/skillFormData";
 import { submitSkillBuilderForm } from "@app/components/skill_builder/submitSkillBuilderForm";
-import { FormProvider } from "@app/components/sparkle/FormProvider";
+import { FormProvider } from "@app/components/ui/FormProvider";
 import { useBuilderTracking } from "@app/hooks/useBuilderTracking";
 import { useNavigationLock } from "@app/hooks/useNavigationLock";
 import { useSendNotification } from "@app/hooks/useNotification";
@@ -61,7 +61,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
   ScrollArea,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";

@@ -11,7 +11,7 @@ import type { ParsedUrlQuery } from "querystring";
  * @cc [owner:flvndvd,label:security] provider-callback-default
  * Outside the development override, a stored redirect_uri MUST take precedence.
  * Without one, the connection use case, mcp, mcp_static, and gong MUST use
- * DUST_OAUTH_REDIRECT_BASE_URL when set, otherwise the app URL. The use case
+ * RUBY_OAUTH_REDIRECT_BASE_URL when set, otherwise the app URL. The use case
  * comes from the explicit argument, falling back to connection metadata.
  * All other provider/use-case combinations MUST default to the app URL.
  */

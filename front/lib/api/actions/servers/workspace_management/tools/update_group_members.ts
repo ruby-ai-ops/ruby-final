@@ -54,7 +54,7 @@ export async function updateGroupMembers(
   if (group.isProvisioned()) {
     return new Err(
       new MCPError(
-        `Group ${group.name} [${group.sId}] is provisioned from the identity provider and cannot be edited from Dust.`,
+        `Group ${group.name} [${group.sId}] is provisioned from the identity provider and cannot be edited from Ruby.`,
         { tracked: false }
       )
     );

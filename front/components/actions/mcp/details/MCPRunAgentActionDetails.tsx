@@ -41,7 +41,7 @@ import { useSpaces } from "@app/lib/swr/spaces";
 import { emptyArray } from "@app/lib/swr/swr";
 import type { AgentConfigurationType } from "@app/types/assistant/agent";
 import type { InlineActivityStep } from "@app/types/assistant/conversation";
-import type { AllSupportedWithDustSpecificFileContentType } from "@app/types/files";
+import type { AllSupportedWithRubySpecificFileContentType } from "@app/types/files";
 import type { LightWorkspaceType } from "@app/types/user";
 import {
   AttachmentChip,
@@ -52,7 +52,7 @@ import {
   LinkExternal01,
   Markdown,
   Robot,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Components } from "react-markdown";
 import type { PluggableList } from "react-markdown/lib/react-markdown";
@@ -194,7 +194,7 @@ export function MCPRunAgentActionDetails({
           ref,
           provider: citation.provider,
           contentType:
-            citation.contentType as AllSupportedWithDustSpecificFileContentType,
+            citation.contentType as AllSupportedWithRubySpecificFileContentType,
           title: citation.title,
           href: citation.href,
           description: citation.description,

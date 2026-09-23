@@ -4,7 +4,7 @@ import { getFeatureFlags } from "@app/lib/auth";
 import { isFreeOrigin } from "@app/lib/credits/agent_message_billing";
 import { roundCreditsToMicroCredits } from "@app/lib/credits/units";
 import { awuFromMicroUsd } from "@app/lib/metronome/constants";
-import { isEnterpriseOrDust } from "@app/lib/plans/plan_codes";
+import { isEnterpriseOrRuby } from "@app/lib/plans/plan_codes";
 import {
   addRateLimiterCount,
   getWeightedRateLimiterCount,
@@ -14,7 +14,7 @@ import type { LightWorkspaceType } from "@app/types/user";
 
 // Per-user daily cost cap on free (unbilled) LLM usage — utility calls
 // (title/skill suggestions, etc.) and free agent calls (sidekick). Counted in
-// AWU credits. Enterprise (and Dust internal) accounts get a higher allowance.
+// AWU credits. Enterprise (and Ruby internal) accounts get a higher allowance.
 const FREE_USAGE_COST_WINDOW_SECONDS = 24 * 60 * 60;
 const FREE_USAGE_AWU_CREDITS_LIMIT_PER_DAY = awuFromMicroUsd(5 * 1_000_000);
 const ENTERPRISE_FREE_USAGE_AWU_CREDITS_LIMIT_PER_DAY = awuFromMicroUsd(
@@ -22,7 +22,7 @@ const ENTERPRISE_FREE_USAGE_AWU_CREDITS_LIMIT_PER_DAY = awuFromMicroUsd(
 );
 
 function freeUsageAwuCreditsLimitForAuth(auth: Authenticator): number {
-  return isEnterpriseOrDust(auth.plan())
+  return isEnterpriseOrRuby(auth.plan())
     ? ENTERPRISE_FREE_USAGE_AWU_CREDITS_LIMIT_PER_DAY
     : FREE_USAGE_AWU_CREDITS_LIMIT_PER_DAY;
 }

@@ -29,8 +29,8 @@ async function migrateDataSource({
        AND data_source_id = :dataSourceId;`,
     {
       replacements: {
-        project: frontDataSource.dustAPIProjectId,
-        dataSourceId: frontDataSource.dustAPIDataSourceId,
+        project: frontDataSource.rubyAPIProjectId,
+        dataSourceId: frontDataSource.rubyAPIDataSourceId,
       },
     }
   )) as { id: number; data_source_id: string }[][];
@@ -38,7 +38,7 @@ async function migrateDataSource({
   assert(
     coreDataSourceRows.length === 1 &&
       coreDataSourceRows[0].data_source_id ===
-        frontDataSource.dustAPIDataSourceId,
+        frontDataSource.rubyAPIDataSourceId,
     "Core data source mismatch"
   );
   const coreDataSourceId = coreDataSourceRows[0].id;

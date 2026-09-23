@@ -64,7 +64,7 @@ export interface DeleteUserApprovalsResponseBody {
 }
 
 const USER_METADATA_COMMA_SEPARATOR = ",";
-const USER_METADATA_COMMA_REPLACEMENT = "DUST_COMMA";
+const USER_METADATA_COMMA_REPLACEMENT = "RUBY_COMMA";
 const USER_MEMORY_ENABLED_METADATA_KEY = "userMemoryEnabled";
 const TOOLS_VALIDATION_WILDCARD = "*";
 const USER_SEARCH_DB_BATCH_SIZE = 1000;
@@ -82,7 +82,7 @@ type CachedUserData = {
   image: string | null;
   createdAt: number;
   updatedAt: number;
-  isDustSuperUser: boolean;
+  isRubySuperUser: boolean;
   workOSUserId: string | null;
   lastLoginAt: number | null;
 };
@@ -124,7 +124,7 @@ export class UserResource extends BaseResource<UserModel> {
       | "id"
       | "createdAt"
       | "updatedAt"
-      | "isDustSuperUser"
+      | "isRubySuperUser"
       | "providerId"
       | "imageUrl"
     > &
@@ -275,7 +275,7 @@ export class UserResource extends BaseResource<UserModel> {
       image: user.imageUrl,
       createdAt: user.createdAt.getTime(),
       updatedAt: user.updatedAt.getTime(),
-      isDustSuperUser: user.isDustSuperUser,
+      isRubySuperUser: user.isRubySuperUser,
       workOSUserId: user.workOSUserId,
       lastLoginAt: user.lastLoginAt?.getTime() ?? null,
     };
@@ -307,7 +307,7 @@ export class UserResource extends BaseResource<UserModel> {
       imageUrl: data.image,
       createdAt: new Date(data.createdAt),
       updatedAt: new Date(data.updatedAt),
-      isDustSuperUser: data.isDustSuperUser,
+      isRubySuperUser: data.isRubySuperUser,
       workOSUserId: data.workOSUserId,
       lastLoginAt: data.lastLoginAt ? new Date(data.lastLoginAt) : null,
     };

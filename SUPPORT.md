@@ -1,17 +1,17 @@
 # Support
 
-Thanks for using [Dust](https://dust.tt)! For any question or issue, email [support@dust.tt](mailto:support@dust.tt) — that's the fastest way to get help.
+Thanks for using [Ruby](https://ruby.ad)! For any question or issue, email [support@ruby.ad](mailto:support@ruby.ad) — that's the fastest way to get help.
 
 ## Documentation
 
 For "how do I…?" questions, API guidance, and developer documentation:
 
-- **User guides & developer platform:** https://docs.dust.tt
-- **API reference:** https://docs.dust.tt/reference/developer-platform-overview
+- **User guides & developer platform:** https://docs.ruby.ad
+- **API reference:** https://docs.ruby.ad/reference/developer-platform-overview
 
 ## Bug reports
 
-Search [existing issues](https://github.com/dust-tt/dust/issues) (open and closed) before filing to avoid duplicates. Then open a new issue in the [issue tracker](https://github.com/dust-tt/dust/issues).
+Search [existing issues](https://github.com/ruby-ai-ops/ruby-final/issues) (open and closed) before filing to avoid duplicates. Then open a new issue in the [issue tracker](https://github.com/ruby-ai-ops/ruby-final/issues).
 
 Read [How to Write a Good Bug Report](.github/BUG_REPORT_GUIDELINES.md) before filing. Reports that include the exact error, your region (US or EU), and a URL to where the problem occurs get resolved significantly faster.
 
@@ -21,4 +21,4 @@ Open an issue describing the problem you want to solve and the outcome you need.
 
 ## Security
 
-**Do not report security vulnerabilities in public issues or by email.** Follow [`SECURITY.md`](SECURITY.md) and use our vulnerability disclosure program at https://dust.tt/home/vulnerability.
+**Do not report security vulnerabilities in public issues or by email.** Follow [`SECURITY.md`](SECURITY.md) and use our vulnerability disclosure program at https://ruby.ad/home/vulnerability.

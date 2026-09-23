@@ -41,7 +41,7 @@ export class FrontMcpService extends McpService {
         },
         {
           instructions:
-            "You are running inside a Dust plugin embedded in the Front customer support platform. " +
+            "You are running inside a Ruby plugin embedded in the Front customer support platform. " +
             "The user is working on email conversations in Front. " +
             "When the user's message implicitly or explicitly refers to 'this conversation', 'this email', 'the thread', or 'the customer' without further specification, " +
             "proactively call `front-get-current-conversation` to fetch the current conversation context before answering. " +

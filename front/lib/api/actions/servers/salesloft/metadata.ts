@@ -39,7 +39,7 @@ export const SALESLOFT_SERVER = {
       "Access Salesloft sales cadences (outreach sequences), tasks, and due actions for sales engagement and pipeline outreach.",
     authorization: null,
     icon: "SalesloftLogo",
-    documentationUrl: "https://docs.dust.tt/docs/salesloft-mcp",
+    documentationUrl: "https://docs.ruby.ad/docs/salesloft-mcp",
   },
   tools: SALESLOFT_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

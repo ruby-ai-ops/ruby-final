@@ -38,7 +38,7 @@ export function registerTool(
       description: tool.description,
       inputSchema: tool.schema,
       _meta: {
-        dust: {
+        ruby: {
           stake: tool.stake,
           displayLabels: tool.displayLabels,
           eager: tool.eager,

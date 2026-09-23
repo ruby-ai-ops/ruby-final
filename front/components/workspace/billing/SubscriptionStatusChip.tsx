@@ -1,5 +1,5 @@
 import { isFreePlan } from "@app/lib/plans/plan_codes";
-import { Chip } from "@dust-tt/sparkle";
+import { Chip } from "@ruby-ai/ui";
 import { useSubscriptionContext } from "./SubscriptionContext";
 
 export type SubscriptionStatus = "free" | "active" | "cancelled" | "ended";

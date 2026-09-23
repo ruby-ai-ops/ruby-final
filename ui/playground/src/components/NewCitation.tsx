@@ -1,0 +1,210 @@
+import {
+  Button,
+  Card,
+  Icon,
+  Spinner,
+  Tooltip,
+  XClose,
+  cn,
+} from "@ruby-ai/ui";
+import React from "react";
+
+type NewCitationSize = "sm" | "md" | "lg";
+
+// Visual: Icon-style component (className) or Logo (SVGProps). Size is always forced to "sm" by NewCitation.
+type NewCitationVisual =
+  | React.ComponentProps<typeof Icon>["visual"]
+  | React.ComponentType<React.SVGProps<SVGSVGElement>>;
+type NewCitationVisualProp = NewCitationVisual | NewCitationVisual[];
+
+// Distributive Omit preserves the CardProps union discrimination (link vs button).
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
+type NewCitationProps = DistributiveOmit<
+  React.ComponentProps<typeof Card>,
+  "action" | "size"
+> & {
+  label: string;
+  /** Icon or Logo component(s) to show; rendered at size "sm". Single or array. */
+  visual: NewCitationVisualProp;
+  size?: NewCitationSize;
+  tooltip?: string;
+  isLoading?: boolean;
+  imgSrc?: string;
+  onClose?: () => void;
+};
+
+function isClickableCitationProps(props: {
+  href?: unknown;
+  onClick?: unknown;
+}): props is { href: string } | { onClick: (...args: unknown[]) => void } {
+  return (
+    ("href" in props && props.href != null) ||
+    ("onClick" in props && props.onClick != null)
+  );
+}
+
+const NewCitation = React.forwardRef<HTMLDivElement, NewCitationProps>(
+  (
+    {
+      label,
+      visual,
+      size = "md",
+      tooltip,
+      isLoading,
+      imgSrc,
+      onClose,
+      variant = "secondary",
+      className,
+      ...props
+    },
+    ref
+  ) => {
+    const isInline = size === "sm";
+
+    // Normalize to array and render each icon at size "sm". When loading, show spinner.
+    const iconComponents = Array.isArray(visual) ? visual : [visual];
+    const resolvedVisual = isLoading ? (
+      <Spinner size="xs" />
+    ) : (
+      <>
+        {iconComponents.map(
+          (IconComponent, i) =>
+            IconComponent && <Icon key={i} visual={IconComponent} size="sm" />
+        )}
+      </>
+    );
+
+    // Background image layer — fills behind the normal content, no layout impact.
+    const backgroundImage = imgSrc ? (
+      <img
+        src={imgSrc}
+        alt={label}
+        className="absolute inset-0 h-full w-full rounded-[inherit] object-cover"
+      />
+    ) : null;
+
+    let content: React.ReactNode;
+
+    if (isInline) {
+      // sm: single row [icons] Label
+      content = (
+        <div className="flex items-center gap-2">
+          {resolvedVisual}
+          <div className="flex-1 truncate text-sm">{label}</div>
+        </div>
+      );
+    } else {
+      // md / lg: two rows
+      content = (
+        <>
+          {
+            <div className="flex w-fit items-center gap-2">
+              {resolvedVisual}
+            </div>
+          }
+          {
+            <div
+              className={cn(
+                "line-clamp-1 overflow-hidden text-ellipsis break-all"
+              )}
+            >
+              {label}
+            </div>
+          }
+        </>
+      );
+    }
+
+    // When an image is present, add a full-size white blurred cover between the
+    // image and the content. Both cover and content are invisible until hover.
+    const hoverCover = imgSrc ? (
+      <div
+        className={cn(
+          "absolute inset-0 rounded-[inherit]",
+          "opacity-0 transition-opacity group-hover/card:opacity-100",
+          "bg-white/80 backdrop-blur-sm"
+        )}
+      />
+    ) : null;
+
+    const isClickable = isClickableCitationProps(props);
+
+    const cardElement = (
+      <Card
+        ref={ref}
+        variant={variant}
+        size={size === "sm" ? "sm" : "md"}
+        action={
+          onClose ? (
+            <Button
+              variant="ghost"
+              size="xmini"
+              icon={XClose}
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+            />
+          ) : undefined
+        }
+        containerClassName={cn("flex-none", imgSrc ? "w-28" : "w-40")}
+        className={cn(
+          "relative flex gap-1 flex-col overflow-hidden text-sm",
+          size === "lg" ? "pt-10" : "",
+          isClickable && "cursor-pointer",
+          className
+        )}
+        {...props}
+      >
+        {backgroundImage}
+        {hoverCover}
+        <div
+          className={cn(
+            "relative flex flex-col gap-1",
+            imgSrc &&
+              "opacity-0 transition-opacity group-hover/card:opacity-100"
+          )}
+        >
+          {content}
+        </div>
+      </Card>
+    );
+
+    if (tooltip) {
+      return <Tooltip trigger={cardElement} label={tooltip} />;
+    }
+
+    return cardElement;
+  }
+);
+
+NewCitation.displayName = "NewCitation";
+
+interface NewCitationGridProps extends React.HTMLAttributes<HTMLDivElement> {
+  justify?: "start" | "end";
+}
+
+const NewCitationGrid = React.forwardRef<HTMLDivElement, NewCitationGridProps>(
+  ({ children, className, justify = "start", ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "flex flex-wrap gap-0.5",
+          justify === "end" && "justify-end",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+NewCitationGrid.displayName = "NewCitationGrid";
+
+export { NewCitation, NewCitationGrid };
+export type { NewCitationProps, NewCitationSize };

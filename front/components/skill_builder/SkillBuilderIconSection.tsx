@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverRoot,
   PopoverTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 import { useController } from "react-hook-form";
 

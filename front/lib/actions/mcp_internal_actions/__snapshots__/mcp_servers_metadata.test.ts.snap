@@ -1977,7 +1977,7 @@ exports[`MCP Servers Metadata Snapshot > should have stable tool billing info ac
       "toolCostCategory": "basic",
     },
   },
-  "poke": {
+  "admin": {
     "check_notion_page": {
       "freeUsage": true,
       "toolCostCategory": "basic",
@@ -2117,8 +2117,8 @@ exports[`MCP Servers Metadata Snapshot > should have stable tool billing info ac
       "toolCostCategory": "basic",
     },
   },
-  "run_dust_app": {
-    "run_dust_app": {
+  "run_ruby_app": {
+    "run_ruby_app": {
       "freeUsage": false,
       "toolCostCategory": "basic",
     },
@@ -3336,7 +3336,7 @@ exports[`MCP Servers Metadata Snapshot > should have stable tool stakes across a
     "start_task_agent": "low",
     "update_tasks": "low",
   },
-  "poke": {
+  "admin": {
     "check_notion_page": "low",
     "check_slack_channel": "low",
     "find_workspace_by_connector_id": "low",
@@ -3377,8 +3377,8 @@ exports[`MCP Servers Metadata Snapshot > should have stable tool stakes across a
   "run_agent": {
     "run_agent": "never_ask",
   },
-  "run_dust_app": {
-    "run_dust_app": "never_ask",
+  "run_ruby_app": {
+    "run_ruby_app": "never_ask",
   },
   "salesforce": {
     "create_object": "medium",

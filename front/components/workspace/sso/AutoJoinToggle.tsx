@@ -16,7 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
   Page,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { Organization } from "@workos-inc/node";
 import { useState } from "react";
 
@@ -42,14 +42,14 @@ function DomainAutoJoinModal({
   const validateLabel = domainAutoJoinEnabled ? "De-activate" : "Activate";
   const validateVariant = domainAutoJoinEnabled ? "warning" : "primary";
   const description = domainAutoJoinEnabled ? (
-    "New members will need to be invited in order to gain access to your Dust Workspace."
+    "New members will need to be invited in order to gain access to your Ruby Workspace."
   ) : (
     <span>
       Anyone with a{" "}
       <span className="font-bold">
         {workspaceVerifiedDomains.map((d) => `"@${d.domain}"`).join(", ")}
       </span>{" "}
-      email will have access to your Dust Workspace.
+      email will have access to your Ruby Workspace.
     </span>
   );
 
@@ -171,7 +171,7 @@ export function AutoJoinToggle({
               <Page.H variant="h5">Auto-join Workspace</Page.H>
             </div>
             <Page.P variant="secondary">
-              Allow your team members to access your Dust workspace when they
+              Allow your team members to access your Ruby workspace when they
               authenticate with
               {domains.length > 0
                 ? domains.map((d) => `" @${d.domain}"`).join(", ")

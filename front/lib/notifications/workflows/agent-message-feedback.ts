@@ -2,7 +2,7 @@ import { getAgentConfiguration } from "@app/lib/api/assistant/configuration/agen
 import type { AgentMessageFeedbackDirection } from "@app/lib/api/assistant/conversation/feedbacks";
 import { getEditors } from "@app/lib/api/assistant/editors";
 import { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import type { NotificationAllowedTags } from "@app/lib/notifications";
 import { getNovuClient } from "@app/lib/notifications";
 import { renderEmail as renderDigestEmail } from "@app/lib/notifications/email-templates/agent-message-feedback-digest";
@@ -285,7 +285,7 @@ export const agentMessageFeedbackWorkflow = workflow(
         });
 
         return {
-          subject: `[Dust] ${feedbacks.length} feedback${feedbacks.length > 1 ? "s" : ""} on your agents (👍 ${positiveCount} - 👎 ${negativeCount})`,
+          subject: `[Ruby] ${feedbacks.length} feedback${feedbacks.length > 1 ? "s" : ""} on your agents (👍 ${positiveCount} - 👎 ${negativeCount})`,
           body,
         };
       },
@@ -336,7 +336,7 @@ export const triggerAgentMessageFeedbackNotification = async (
     thumbDirection: AgentMessageFeedbackDirection;
     feedbackId: string;
   }
-): Promise<Result<void, DustError<"internal_error">>> => {
+): Promise<Result<void, RubyError<"internal_error">>> => {
   const userWhoGaveFeedback = auth.user();
 
   if (!userWhoGaveFeedback) {
@@ -349,7 +349,7 @@ export const triggerAgentMessageFeedbackNotification = async (
   );
 
   if (!conversation) {
-    return new Err(new DustError("internal_error", "Conversation not found"));
+    return new Err(new RubyError("internal_error", "Conversation not found"));
   }
 
   if (conversation.depth > 0) {
@@ -367,7 +367,7 @@ export const triggerAgentMessageFeedbackNotification = async (
 
   if (!agentConfiguration) {
     return new Err(
-      new DustError("internal_error", "Agent configuration not found")
+      new RubyError("internal_error", "Agent configuration not found")
     );
   }
 
@@ -422,7 +422,7 @@ export const triggerAgentMessageFeedbackNotification = async (
         .map(({ error }) => error?.join("; "))
         .join("; ");
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: `Failed to trigger agent message feedback notification: errors: ${eventErrors}`,
       });
@@ -431,7 +431,7 @@ export const triggerAgentMessageFeedbackNotification = async (
     // biome-ignore lint/correctness/noUnusedVariables: ignored using `--suppress`
   } catch (error) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: "Failed to trigger agent message feedback notification",
     });

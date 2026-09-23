@@ -125,7 +125,7 @@ export const ConfluenceCheckPageExistsResponseSchema = z.discriminatedUnion(
     z.object({
       exists: z.literal(true),
       ancestors: z.array(ConfluenceAncestorSchema),
-      existsInDust: z.boolean(),
+      existsInRuby: z.boolean(),
       hasChildren: z.boolean(),
       hasReadRestrictions: z.boolean(),
       status: z.string(),

@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 type GlobalAgentActionProps = {
   agent: LightAgentConfigurationType;
@@ -70,7 +70,7 @@ export function GlobalAgentAction({
                   onClick: () => setShowDisabledFreeWorkspacePopup(null),
                 }}
                 rightButtonProps={{
-                  label: "Check Dust plans",
+                  label: "Check Ruby plans",
                   variant: "primary",
                   onClick: () => {
                     void router.push(`/w/${owner.sId}/subscription`);

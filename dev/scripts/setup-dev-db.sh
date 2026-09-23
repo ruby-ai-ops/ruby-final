@@ -3,7 +3,7 @@
 # Dev-user seed runs from apps.sh where runtime secrets (DEV_WORKOS_*) are set.
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=setup-dev-db
+RUBY_DEV_SCRIPT_NAME=setup-dev-db
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh
@@ -19,11 +19,11 @@ core_schema_ready=$(
 if [ "$core_schema_ready" != "1" ]; then
   log "Initializing core + oauth databases (cargo run --bin init_db)..."
   (
-    cd "${DUST_REPO_ROOT}/core"
+    cd "${RUBY_REPO_ROOT}/core"
     cargo run --bin init_db
-  ) >"${DUST_INFRA_LOG_DIR}/core-init-db.log" 2>&1 || {
-    log "Core init_db failed; see ${DUST_INFRA_LOG_DIR}/core-init-db.log"
-    tail -30 "${DUST_INFRA_LOG_DIR}/core-init-db.log"
+  ) >"${RUBY_INFRA_LOG_DIR}/core-init-db.log" 2>&1 || {
+    log "Core init_db failed; see ${RUBY_INFRA_LOG_DIR}/core-init-db.log"
+    tail -30 "${RUBY_INFRA_LOG_DIR}/core-init-db.log"
     exit 1
   }
 else
@@ -41,21 +41,21 @@ if [ "$schema_ready" = "1" ]; then
 else
   log "Applying front migrations..."
   (
-    cd "${DUST_REPO_ROOT}/front"
+    cd "${RUBY_REPO_ROOT}/front"
     npm run migration:apply
-  ) >"${DUST_INFRA_LOG_DIR}/front-migration.log" 2>&1 || {
-    log "Front migration failed; see ${DUST_INFRA_LOG_DIR}/front-migration.log"
-    tail -30 "${DUST_INFRA_LOG_DIR}/front-migration.log"
+  ) >"${RUBY_INFRA_LOG_DIR}/front-migration.log" 2>&1 || {
+    log "Front migration failed; see ${RUBY_INFRA_LOG_DIR}/front-migration.log"
+    tail -30 "${RUBY_INFRA_LOG_DIR}/front-migration.log"
     exit 1
   }
 
   log "Applying connectors migrations..."
   (
-    cd "${DUST_REPO_ROOT}/connectors"
+    cd "${RUBY_REPO_ROOT}/connectors"
     npm run migration:apply
-  ) >"${DUST_INFRA_LOG_DIR}/connectors-migration.log" 2>&1 || {
-    log "Connectors migration failed; see ${DUST_INFRA_LOG_DIR}/connectors-migration.log"
-    tail -30 "${DUST_INFRA_LOG_DIR}/connectors-migration.log"
+  ) >"${RUBY_INFRA_LOG_DIR}/connectors-migration.log" 2>&1 || {
+    log "Connectors migration failed; see ${RUBY_INFRA_LOG_DIR}/connectors-migration.log"
+    tail -30 "${RUBY_INFRA_LOG_DIR}/connectors-migration.log"
     exit 1
   }
 fi

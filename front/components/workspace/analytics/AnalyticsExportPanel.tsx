@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 type ExportTable =
@@ -62,7 +62,7 @@ export function AnalyticsExportPanel({
 
   const csvDownload = useDownloadCsv({
     url: `/api/w/${workspaceId}/analytics/export?table=${table}&startDate=${start}&endDate=${end}`,
-    filename: `dust_${table}_${start}_${end}.csv`,
+    filename: `ruby_${table}_${start}_${end}.csv`,
   });
 
   const selectedLabel =

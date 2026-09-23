@@ -6,7 +6,7 @@ import {
   USER_MEMORY_READ_TOOL_NAME,
   USER_MEMORY_TOOLS_METADATA,
 } from "@app/lib/api/actions/servers/user_memory/metadata";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { getUpdatedContentAndOccurrences } from "@app/lib/api/files/utils";
 import {
   exceedsUserMemoryLimit,
@@ -20,7 +20,7 @@ import { Err, Ok } from "@app/types/shared/result";
 
 async function resolveUserMemoryFile(
   auth: Authenticator
-): Promise<Result<{ fs: DustFileSystem; path: string }, MCPError>> {
+): Promise<Result<{ fs: RubyFileSystem; path: string }, MCPError>> {
   const user = auth.user();
   if (!user) {
     return new Err(
@@ -30,7 +30,7 @@ async function resolveUserMemoryFile(
     );
   }
 
-  const fsResult = await DustFileSystem.forUser(auth);
+  const fsResult = await RubyFileSystem.forUser(auth);
   if (fsResult.isErr()) {
     return new Err(new MCPError(fsResult.error.message, { tracked: false }));
   }

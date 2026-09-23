@@ -29,7 +29,7 @@ async function main() {
   const existingFrontRuns = await RunModel.findAll();
   console.log("Generating alreadyBackfilledRunIds");
   const alreadyBackfilledRunIds = new Set(
-    existingFrontRuns.map((r) => r.dustRunId)
+    existingFrontRuns.map((r) => r.rubyRunId)
   );
 
   console.log("Generating runIdsToBackfill");
@@ -44,14 +44,14 @@ async function main() {
   console.log("Retrieving apps to backfill");
   const appsToBackfill = await AppModel.findAll({
     where: {
-      dustAPIProjectId: projectIdsToBackfill,
+      rubyAPIProjectId: projectIdsToBackfill,
     },
   });
 
   console.log("Generating appByProjectId");
   const appByProjectId = {} as { [key: number]: AppModel };
   appsToBackfill.forEach((a) => {
-    appByProjectId[(a as any).dustAPIProjectId] = a as any;
+    appByProjectId[(a as any).rubyAPIProjectId] = a as any;
   });
 
   console.log("Chunking");
@@ -76,7 +76,7 @@ async function main() {
         const userId = app?.userId;
         const appId = app?.id;
         return {
-          dustRunId: runId,
+          rubyRunId: runId,
           appId,
           userId,
           runType,

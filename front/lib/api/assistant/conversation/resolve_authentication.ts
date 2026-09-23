@@ -11,7 +11,7 @@ import { getMessageChannelId } from "@app/lib/api/assistant/streaming/helpers";
 import { getRedisHybridManager } from "@app/lib/api/redis-hybrid-manager";
 import { resolveSandboxChildBlock } from "@app/lib/api/sandbox/sandbox_child_block";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { AgentMCPActionResource } from "@app/lib/resources/agent_mcp_action_resource";
 import type { ConversationResource } from "@app/lib/resources/conversation_resource";
 import logger from "@app/logger/logger";
@@ -59,7 +59,7 @@ export async function resolveAuthentication(
     outcome: ResolveAuthenticationOutcome;
     kind?: ResolveAuthenticationKind;
   }
-): Promise<Result<void, DustError>> {
+): Promise<Result<void, RubyError>> {
   const { blockedStatus, isMatchingEvent, label } = KIND_CONFIG[kind];
   const owner = auth.getNonNullableWorkspace();
   const user = auth.user();
@@ -95,7 +95,7 @@ export async function resolveAuthentication(
     })
   ) {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         `User is not authorized to resolve ${label} for this action`
       )
@@ -105,13 +105,13 @@ export async function resolveAuthentication(
   const action = await AgentMCPActionResource.fetchById(auth, actionId);
   if (!action) {
     return new Err(
-      new DustError("action_not_found", `Action not found: ${actionId}`)
+      new RubyError("action_not_found", `Action not found: ${actionId}`)
     );
   }
 
   if (action.status !== blockedStatus) {
     return new Err(
-      new DustError(
+      new RubyError(
         "action_not_blocked",
         `Action is not blocked for ${label}: ${action.status}`
       )
@@ -123,7 +123,7 @@ export async function resolveAuthentication(
   // terminated.
   if (!(await action.canAgentMessageResume(auth))) {
     return new Err(
-      new DustError(
+      new RubyError(
         "action_not_blocked",
         "Action belongs to an agent message that can no longer resume"
       )

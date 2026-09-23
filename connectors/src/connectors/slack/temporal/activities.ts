@@ -70,8 +70,8 @@ import {
   normalizeError,
   withRetries,
 } from "@connectors/types";
-import type { DataSourceViewType } from "@dust-tt/client";
-import { DustAPI, Err, Ok } from "@dust-tt/client";
+import type { DataSourceViewType } from "@ruby-ai/client";
+import { RubyAPI, Err, Ok } from "@ruby-ai/client";
 import type { ConversationsInfoResponse, WebClient } from "@slack/web-api";
 import type { Channel } from "@slack/web-api/dist/types/response/ChannelsInfoResponse";
 import type {
@@ -1495,8 +1495,8 @@ export async function autoReadChannelActivity(
     providerVisibility: isPrivate ? "private" : "public",
   });
 
-  const dustAPI = new DustAPI(
-    { url: apiConfig.getDustFrontAPIUrl() },
+  const rubyAPI = new RubyAPI(
+    { url: apiConfig.getRubyFrontAPIUrl() },
     {
       workspaceId: connector.workspaceId,
       apiKey: connector.workspaceAPIKey,
@@ -1512,14 +1512,14 @@ export async function autoReadChannelActivity(
         dataSourceId: connector.dataSourceId,
       });
 
-      const searchRes = await dustAPI.searchDataSourceViews(searchParams);
+      const searchRes = await rubyAPI.searchDataSourceViews(searchParams);
       if (searchRes.isErr()) {
         mainLogger.error({
           connectorId,
           channelId,
           error: searchRes.error.message,
         });
-        return new Err(new Error("Failed to join Slack channel in Dust."));
+        return new Err(new Error("Failed to join Slack channel in Ruby."));
       }
 
       const [dataSourceView] = searchRes.value;
@@ -1540,7 +1540,7 @@ export async function autoReadChannelActivity(
         await withRetries(
           mainLogger.child({ provider: "slack" }),
           async (dataSourceView: DataSourceViewType) => {
-            const updateDataSourceViewRes = await dustAPI.patchDataSourceView(
+            const updateDataSourceViewRes = await rubyAPI.patchDataSourceView(
               dataSourceView,
               {
                 parentsToAdd: [

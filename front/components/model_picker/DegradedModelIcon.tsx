@@ -1,5 +1,5 @@
-import type { DoubleIconProps } from "@dust-tt/sparkle";
-import { DoubleIcon, Icon, InfoCircle } from "@dust-tt/sparkle";
+import type { DoubleIconProps } from "@ruby-ai/ui";
+import { DoubleIcon, Icon, InfoCircle } from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
 // Surfaces the degradation badge is rendered on. Its glyph — and the halo the

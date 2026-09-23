@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   MessageCircle01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface AgentCreatedDialogProps {
   open: boolean;

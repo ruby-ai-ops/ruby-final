@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
   List,
   SearchInput,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 
 const SORT_ITEMS: Record<

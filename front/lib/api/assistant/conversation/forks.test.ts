@@ -126,7 +126,7 @@ async function createAgentMessage(
     conversationId: conversation.id,
     workspaceId: workspace.id,
     status,
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     agentConfigurationVersion: 0,
     skipToolsValidation: false,
     completedAt: status === "created" ? null : new Date(),
@@ -182,9 +182,9 @@ async function createAgentMessage(
       jsonSchema: null,
       additionalConfiguration: {},
       mcpServerViewId: "test-server-view",
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
       internalMCPServerId: null,
       availability: "auto",
       permission: "low",
@@ -267,7 +267,7 @@ async function attachRunToAgentMessage(
 
   const run = await RunResource.makeNew({
     appId: null,
-    dustRunId: generateRandomModelSId(),
+    rubyRunId: generateRandomModelSId(),
     runType: "deploy",
     useWorkspaceCredentials: false,
     workspaceId: auth.getNonNullableWorkspace().id,
@@ -285,7 +285,7 @@ async function attachRunToAgentMessage(
   );
 
   const [updatedCount] = await AgentMessageModel.update(
-    { runIds: [run.dustRunId] },
+    { runIds: [run.rubyRunId] },
     {
       where: {
         id: message.agentMessageId,

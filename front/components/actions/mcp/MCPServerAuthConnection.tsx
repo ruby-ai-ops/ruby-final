@@ -31,7 +31,7 @@ import {
   Planet,
   Tooltip,
   User01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type {
   ForwardRefExoticComponent,
   RefAttributes,
@@ -316,7 +316,7 @@ function OAuthCredentialFields({
   onCredentialChange,
   serverId,
 }: OAuthCredentialFieldsProps) {
-  // Sparkle portals dropdown menus into the last open sheet by default
+  // RubyUI portals dropdown menus into the last open sheet by default
   // (useSheetContainer). These fields render inside a Dialog stacked above the
   // MCP server details Sheet, so the default would mount the menu behind the
   // dialog overlay — invisible and unclickable. Portal to document.body instead.

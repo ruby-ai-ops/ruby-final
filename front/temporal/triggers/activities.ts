@@ -478,7 +478,7 @@ export async function runTriggeredAgentsActivity({
 function buildWakeUpMessageContent(wakeUp: WakeUpType): string {
   let content: string = "";
 
-  content = `<dust_system>\n`;
+  content = `<ruby_system>\n`;
   content += `This is an automatic wake-up message for a previously scheduled follow-up using the wake-up tool.\n`;
   content += `- Wake-up ID: ${wakeUp.sId} [${wakeUp.scheduleConfig.type}]\n`;
   if (wakeUp.scheduleConfig.type === "cron") {
@@ -488,7 +488,7 @@ function buildWakeUpMessageContent(wakeUp: WakeUpType): string {
       content += `- Warning: This wake-up will be automatically expired after. Recreate a new wake-up if needed.\n`;
     }
   }
-  content += `</dust_system>\n`;
+  content += `</ruby_system>\n`;
   content += `Wake-up reason: ${wakeUp.reason}`;
 
   return content;
@@ -568,8 +568,8 @@ export async function runWakeUpActivity({
     mentions: [{ configurationId: wakeUp.agentConfigurationId }],
     context: {
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC",
-      username: "dust_system",
-      fullName: "Dust System",
+      username: "ruby_system",
+      fullName: "Ruby System",
       email: null,
       profilePictureUrl: null,
       origin: "wakeup",

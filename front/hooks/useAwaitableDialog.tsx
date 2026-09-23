@@ -1,4 +1,4 @@
-import type { Button } from "@dust-tt/sparkle";
+import type { Button } from "@ruby-ai/ui";
 import {
   Dialog,
   DialogContainer,
@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useState } from "react";
 

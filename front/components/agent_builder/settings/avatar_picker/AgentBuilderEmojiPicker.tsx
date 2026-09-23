@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverRoot,
   PopoverTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
 
 const DEFAULT_BACKGROUND_COLOR: avatarUtils.AvatarBackgroundColorType =

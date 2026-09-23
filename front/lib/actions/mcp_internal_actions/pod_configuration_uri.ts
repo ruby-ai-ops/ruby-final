@@ -6,7 +6,7 @@ export function makePodConfigurationURI(
   workspaceId: string,
   podId: string
 ): string {
-  return `pod://dust/w/${workspaceId}/pods/${podId}`;
+  return `pod://ruby/w/${workspaceId}/pods/${podId}`;
 }
 
 export type PodConfigInfo = {
@@ -21,7 +21,7 @@ export function parsePodConfigurationURI(
   if (!match) {
     return new Err(
       new Error(
-        `Invalid URI for a pod configuration: ${uri} (expected format: pod://dust/w/<workspaceId>/pods/<podId>, where both segments are opaque IDs, never names)`
+        `Invalid URI for a pod configuration: ${uri} (expected format: pod://ruby/w/<workspaceId>/pods/<podId>, where both segments are opaque IDs, never names)`
       )
     );
   }

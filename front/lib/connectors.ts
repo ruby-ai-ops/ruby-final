@@ -175,12 +175,12 @@ function normalizeGongSourceUrl(url: URL): UrlCandidate {
   return { url: `${url.origin}${url.pathname}?id=${callId}`, provider: "gong" };
 }
 
-function normalizeDustProjectUrl(url: URL): UrlCandidate {
+function normalizeRubyProjectUrl(url: URL): UrlCandidate {
   const path = url.pathname.endsWith("/")
     ? url.pathname.slice(0, -1)
     : url.pathname;
 
-  return { url: `${url.origin}${path}`, provider: "dust_project" };
+  return { url: `${url.origin}${path}`, provider: "ruby_project" };
 }
 
 const providers: Partial<Record<ConnectorProvider, Provider>> = {
@@ -333,12 +333,12 @@ const providers: Partial<Record<ConnectorProvider, Provider>> = {
       return isIntercomAppUrl(url) ? normalizeIntercomUrl(url) : null;
     },
   },
-  dust_project: {
+  ruby_project: {
     matcher: (url: URL): boolean => {
       return url.toString().startsWith(config.getAppUrl());
     },
-    urlNormalizer: normalizeDustProjectUrl,
-    sourceUrlSearchNormalizer: normalizeDustProjectUrl,
+    urlNormalizer: normalizeRubyProjectUrl,
+    sourceUrlSearchNormalizer: normalizeRubyProjectUrl,
   },
 };
 
@@ -365,7 +365,7 @@ function extractThreadNodeId(url: URL): string | null {
 
   // If there is a thread_ts parameter, the link was copied from inside the
   // thread, not from the root message of the thread.
-  // Example: https://dust4ai.slack.com/archives/C05V0P20A72/p1748353621866279?thread_ts=1748353030.562719&cid=C05V0P20A72
+  // Example: https://ruby4ai.slack.com/archives/C05V0P20A72/p1748353621866279?thread_ts=1748353030.562719&cid=C05V0P20A72
   if (threadTs) {
     const channelId = pathParts[channelIndex + 1];
     return `slack-${channelId}-thread-${threadTs}`;
@@ -374,7 +374,7 @@ function extractThreadNodeId(url: URL): string | null {
   // Otherwise, the link may have been copied from the root message of the
   // thread, in which case we can use the channel ID and the 'p' timestamp in
   // the URL, which is the timestamp representing the thread..
-  // Example: https://dust4ai.slack.com/archives/C05V0P20A72/p1748353030562719
+  // Example: https://ruby4ai.slack.com/archives/C05V0P20A72/p1748353030562719
   if (pathParts.length <= channelIndex + 2) {
     return null;
   }

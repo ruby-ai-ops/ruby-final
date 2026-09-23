@@ -61,7 +61,7 @@ const mockAgentMessage: LightAgentMessageType = {
   costCredits: null,
   configuration: {
     sId: "agent_123",
-    name: "dust",
+    name: "ruby",
     pictureUrl: "",
     status: "active",
     canRead: true,

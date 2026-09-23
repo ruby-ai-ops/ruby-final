@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface UpgradePlanDialogProps {
   isOpen: boolean;
@@ -50,7 +50,7 @@ export function UpgradePlanDialog({
             onClick: onClose,
           }}
           rightButtonProps={{
-            label: "Check Dust plans",
+            label: "Check Ruby plans",
             variant: "primary",
             disabled: !canManageBilling,
             tooltip: canManageBilling

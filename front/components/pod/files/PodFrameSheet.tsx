@@ -24,7 +24,7 @@ import {
   SheetTitle,
   Spinner,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useRef, useState } from "react";
 
 interface PodFrameSheetProps {

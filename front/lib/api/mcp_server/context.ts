@@ -4,7 +4,7 @@ import type { AuthInfo } from "@modelcontextprotocol/sdk/server/auth/types.js";
 
 export type { WorkOSWorkspaceAuthenticator } from "@app/lib/api/workos_authenticator";
 
-export const MCP_AUTHENTICATOR_AUTH_EXTRA_KEY = "dustAuthenticator";
+export const MCP_AUTHENTICATOR_AUTH_EXTRA_KEY = "rubyAuthenticator";
 
 type McpRequestExtra = {
   authInfo?: AuthInfo;

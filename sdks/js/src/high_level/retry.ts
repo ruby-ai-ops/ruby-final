@@ -1,6 +1,6 @@
 import {
-  DustCancelledError,
-  DustRateLimitError,
+  RubyCancelledError,
+  RubyRateLimitError,
   isRetryableError,
 } from "../errors/errors";
 
@@ -30,13 +30,13 @@ export interface WithRetryOptions extends Partial<RetryOptions> {
 
 export async function sleep(ms: number, signal?: AbortSignal): Promise<void> {
   if (signal?.aborted) {
-    throw new DustCancelledError("Operation cancelled");
+    throw new RubyCancelledError("Operation cancelled");
   }
 
   return new Promise((resolve, reject) => {
     const onAbort = (): void => {
       clearTimeout(timeoutId);
-      reject(new DustCancelledError("Operation cancelled"));
+      reject(new RubyCancelledError("Operation cancelled"));
     };
 
     signal?.addEventListener("abort", onAbort, { once: true });
@@ -65,7 +65,7 @@ function shouldRetry(
 }
 
 function getRateLimitDelay(error: unknown): number | undefined {
-  return error instanceof DustRateLimitError ? error.retryAfterMs : undefined;
+  return error instanceof RubyRateLimitError ? error.retryAfterMs : undefined;
 }
 
 export async function withRetry<T>(
@@ -80,7 +80,7 @@ export async function withRetry<T>(
 
   for (let attempt = 1; attempt <= opts.maxAttempts; attempt++) {
     if (signal?.aborted) {
-      throw new DustCancelledError("Operation cancelled");
+      throw new RubyCancelledError("Operation cancelled");
     }
 
     try {
@@ -88,7 +88,7 @@ export async function withRetry<T>(
     } catch (error) {
       lastError = error;
 
-      if (error instanceof DustCancelledError) {
+      if (error instanceof RubyCancelledError) {
         throw error;
       }
 

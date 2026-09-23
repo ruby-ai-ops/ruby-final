@@ -54,7 +54,7 @@ vi.mock("@app/types/oauth/lib", () => ({
   getOverridablePersonalAuthInputs: () => null,
 }));
 
-vi.mock("@dust-tt/sparkle", () => ({
+vi.mock("@ruby-ai/ui", () => ({
   Avatar: () => null,
   Card: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   Button: ({ label, onClick }: { label: string; onClick?: () => void }) => (
@@ -117,7 +117,7 @@ describe("SandboxFunctionPersonalAuthCard", () => {
     expect(screen.getByText("Connect account")).toBeDefined();
     expect(
       screen.getByText(
-        "Dust needs access to Google Drive to complete this action."
+        "Ruby needs access to Google Drive to complete this action."
       )
     ).toBeDefined();
     expect(

@@ -1,6 +1,6 @@
 FROM alpine:3.20
 
-LABEL maintainer="Dust <dev@dust.tt>"
+LABEL maintainer="Ruby <dev@ruby.ad>"
 
 RUN set -x \
     && apk add --no-cache linux-pam \

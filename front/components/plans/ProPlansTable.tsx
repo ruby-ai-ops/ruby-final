@@ -6,7 +6,7 @@ import {
 import { classNames } from "@app/lib/utils";
 import type { BillingPeriod, PlanType } from "@app/types/plan";
 import type { WorkspaceType } from "@app/types/user";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@dust-tt/sparkle";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 

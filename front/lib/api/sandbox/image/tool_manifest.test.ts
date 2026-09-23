@@ -126,7 +126,7 @@ describe("toolManifestToCompactText()", () => {
         name: "read_file",
         description: "File reader",
         runtime: "system",
-        isDustTool: true,
+        isRubyTool: true,
       },
       { name: "curl", description: "HTTP client", runtime: "system" },
       {

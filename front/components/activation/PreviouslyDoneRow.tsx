@@ -7,7 +7,7 @@ import { useAppRouter } from "@app/lib/platform";
 import { useActivationRecommendations } from "@app/lib/swr/activation";
 import { getConversationRoute } from "@app/lib/utils/router";
 import type { WorkspaceType } from "@app/types/user";
-import { ChevronDown, ChevronUp, Icon } from "@dust-tt/sparkle";
+import { ChevronDown, ChevronUp, Icon } from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface PreviouslyDoneRowProps {

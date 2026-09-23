@@ -1,4 +1,4 @@
-import { Icon, Spinner } from "@dust-tt/sparkle";
+import { Icon, Spinner } from "@ruby-ai/ui";
 
 const LINE_ANIMATION_STYLE: React.CSSProperties = {
   transformOrigin: "top",

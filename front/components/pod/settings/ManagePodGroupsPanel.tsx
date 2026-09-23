@@ -15,7 +15,7 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { useCallback, useEffect, useMemo, useState } from "react";
 

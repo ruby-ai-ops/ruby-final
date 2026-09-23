@@ -11,7 +11,7 @@ import { isSafeFrameRelativePath } from "@app/types/api/frame_manifest";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 
-export const FRAME_SOURCE_STAGING_ROOT = "/var/lib/dust/frame-sources";
+export const FRAME_SOURCE_STAGING_ROOT = "/var/lib/ruby/frame-sources";
 const FRAME_SOURCE_STAGING_CONCURRENCY = 8;
 
 type FrameSourceFile = { relativePath: string; content: Buffer };

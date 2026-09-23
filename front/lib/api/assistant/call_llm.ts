@@ -47,8 +47,8 @@ const _LLMOutputSchema = z.object({
 export type LLMOutput = z.infer<typeof _LLMOutputSchema>;
 
 /**
- * Temporary wrapper around assistant-v2-multi-actions-agent Dust app to consolidate LLM interactions.
- * This provides a unified interface for calling LLMs while we transition away from individual Dust
+ * Temporary wrapper around assistant-v2-multi-actions-agent Ruby app to consolidate LLM interactions.
+ * This provides a unified interface for calling LLMs while we transition away from individual Ruby
  * apps. Once we have the direct LLM router ready, this wrapper will be fully removed.
  */
 export async function runMultiActionsAgent(

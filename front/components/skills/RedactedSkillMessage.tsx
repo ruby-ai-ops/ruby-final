@@ -12,7 +12,7 @@ import {
 import { concurrentExecutor } from "@app/lib/utils/async_utils";
 import type { SkillType } from "@app/types/assistant/skill_configuration";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, ContentMessage, Lock01, UsersPlus } from "@dust-tt/sparkle";
+import { Button, ContentMessage, Lock01, UsersPlus } from "@ruby-ai/ui";
 import { useContext, useState } from "react";
 
 // Explains to an admin why the private fields of a skill were redacted: it requires spaces they

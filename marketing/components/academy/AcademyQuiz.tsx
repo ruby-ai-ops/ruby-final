@@ -16,7 +16,7 @@ import {
   ConversationMessageTitle,
   Markdown,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface AcademyQuizProps {
@@ -32,7 +32,7 @@ interface AcademyQuizProps {
 
 const TOTAL_QUESTIONS = 5;
 const PASSING_SCORE = 3;
-const AGENT_NAME = "DustMentor";
+const AGENT_NAME = "RubyMentor";
 
 export function AcademyQuiz({
   contentType,

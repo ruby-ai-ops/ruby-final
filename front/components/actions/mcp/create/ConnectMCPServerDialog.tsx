@@ -13,7 +13,7 @@ import type {
   InternalAllowedIconType,
 } from "@app/components/resources/resources_icons";
 import { getAvatarFromIcon } from "@app/components/resources/resources_icons";
-import { FormProvider } from "@app/components/sparkle/FormProvider";
+import { FormProvider } from "@app/components/ui/FormProvider";
 import { useSendNotification } from "@app/hooks/useNotification";
 import {
   getMcpServerViewDisplayName,
@@ -43,7 +43,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";

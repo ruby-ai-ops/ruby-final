@@ -201,7 +201,7 @@ describe("ActivityInboundLogInterceptor", () => {
       "snowflake"
     );
     const error = new Error(
-      `Error uploading to dust: ${JSON.stringify({
+      `Error uploading to ruby: ${JSON.stringify({
         error: {
           type: "workspace_can_use_product_required_error",
           message:

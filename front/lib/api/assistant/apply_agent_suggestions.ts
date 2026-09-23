@@ -10,7 +10,7 @@ import {
   applyInstructionEditsToHtml,
   convertMarkdownToBlockHtml,
 } from "@app/lib/editor/skill_instructions_html";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { getModelsForAuth } from "@app/lib/model_tiers/enabled_models";
 import { AgentResource } from "@app/lib/resources/agent_resource";
 import type { AgentSuggestionResource } from "@app/lib/resources/agent_suggestion_resource";
@@ -28,7 +28,7 @@ import {
   parseAgentSuggestionData,
 } from "@app/types/suggestions/agent_suggestion";
 
-type ApplyAgentSuggestionsError = DustError<"invalid_request_error">;
+type ApplyAgentSuggestionsError = RubyError<"invalid_request_error">;
 
 function pickDefaultAvatar(): string {
   return DROID_AVATAR_URLS[
@@ -57,7 +57,7 @@ async function applyCreateSuggestion(
 ): Promise<Result<undefined, ApplyAgentSuggestionsError>> {
   if (agent.status !== "pending") {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "The agent this suggestion targets has already been created."
       )
@@ -66,7 +66,7 @@ async function applyCreateSuggestion(
 
   if (!auth.hasWorkspacePermission("create", "agent")) {
     return new Err(
-      new DustError("invalid_request_error", "Creating agents is restricted.")
+      new RubyError("invalid_request_error", "Creating agents is restricted.")
     );
   }
 
@@ -119,7 +119,7 @@ async function applyCreateSuggestion(
     },
   });
   if (res.isErr()) {
-    return new Err(new DustError("invalid_request_error", res.error.message));
+    return new Err(new RubyError("invalid_request_error", res.error.message));
   }
 
   return new Ok(undefined);
@@ -131,7 +131,7 @@ async function applyDeleteSuggestion(
 ): Promise<Result<undefined, ApplyAgentSuggestionsError>> {
   if (agent.status !== "active") {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "Only an active agent can be deleted."
       )
@@ -142,7 +142,7 @@ async function applyDeleteSuggestion(
   const agentToArchive = await AgentResource.fetchById(auth, agent.sId);
   if (!agentToArchive) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "The agent this suggestion targets was not found."
       )
@@ -151,12 +151,12 @@ async function applyDeleteSuggestion(
   const archiveResult = await agentToArchive.archive(auth);
   if (archiveResult.isErr()) {
     return new Err(
-      new DustError("invalid_request_error", archiveResult.error.message)
+      new RubyError("invalid_request_error", archiveResult.error.message)
     );
   }
   if (!archiveResult.value) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "The agent this suggestion targets was not found."
       )
@@ -217,7 +217,7 @@ function changeForSuggestion(
     case "sub_agent":
     case "tools":
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_request_error",
           `Suggestions of kind "${data.kind}" cannot be applied server-side yet.`
         )
@@ -274,7 +274,7 @@ async function applyAgentFieldEdits(
   });
   if (contextRes.isErr()) {
     return new Err(
-      new DustError("invalid_request_error", contextRes.error.api_error.message)
+      new RubyError("invalid_request_error", contextRes.error.api_error.message)
     );
   }
 
@@ -288,7 +288,7 @@ async function applyAgentFieldEdits(
     const modelRes = await resolveAgentModelChange(auth, model);
     if (modelRes.isErr()) {
       return new Err(
-        new DustError("invalid_request_error", modelRes.error.message)
+        new RubyError("invalid_request_error", modelRes.error.message)
       );
     }
 
@@ -321,7 +321,7 @@ async function applyAgentFieldEdits(
     },
   });
   if (res.isErr()) {
-    return new Err(new DustError("invalid_request_error", res.error.message));
+    return new Err(new RubyError("invalid_request_error", res.error.message));
   }
 
   return new Ok(undefined);
@@ -339,7 +339,7 @@ async function prepareInstructionsSuggestion(
 ): Promise<Result<PreparedInstructionsUpdate, ApplyAgentSuggestionsError>> {
   if (agent.status !== "active") {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "Only an active agent can have its instructions changed."
       )
@@ -355,7 +355,7 @@ async function prepareInstructionsSuggestion(
   });
   if (!fullAgent || !fullAgent.instructionsHtml) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "The agent this suggestion targets has no block-structured instructions."
       )
@@ -384,7 +384,7 @@ async function commitInstructionsSuggestion(
   });
   if (result.updatedAgentIds.length === 0) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "The agent this suggestion targets could not be updated."
       )

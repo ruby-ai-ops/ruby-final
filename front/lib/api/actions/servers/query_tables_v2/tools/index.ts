@@ -26,7 +26,7 @@ import { concurrentExecutor } from "@app/lib/utils/async_utils";
 import logger from "@app/logger/logger";
 import { CoreAPI } from "@app/types/core/core_api";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 function tablesFromUris(tableUris: string[]): TablesConfigurationToolType {
   return tableUris.map((uri) => ({
@@ -97,7 +97,7 @@ const handlers: ToolHandlers<typeof QUERY_TABLES_V2_TOOLS_METADATA> = {
         const dataSourceView = dataSourceViewsMap.get(
           tableConfiguration.dataSourceViewId
         );
-        if (!dataSourceView || !dataSourceView.dataSource.dustAPIDataSourceId) {
+        if (!dataSourceView || !dataSourceView.dataSource.rubyAPIDataSourceId) {
           return {
             uri,
             tableId: tableConfiguration.tableId,
@@ -106,8 +106,8 @@ const handlers: ToolHandlers<typeof QUERY_TABLES_V2_TOOLS_METADATA> = {
         }
 
         const tableResult = await coreAPI.getTable({
-          projectId: dataSourceView.dataSource.dustAPIProjectId,
-          dataSourceId: dataSourceView.dataSource.dustAPIDataSourceId,
+          projectId: dataSourceView.dataSource.rubyAPIProjectId,
+          dataSourceId: dataSourceView.dataSource.rubyAPIDataSourceId,
           tableId: tableConfiguration.tableId,
           viewFilter: dataSourceView.toViewFilter(),
         });
@@ -166,10 +166,10 @@ const handlers: ToolHandlers<typeof QUERY_TABLES_V2_TOOLS_METADATA> = {
     const invalidTableIds: string[] = [];
     for (const t of tableConfigurations) {
       const dataSourceView = dataSourceViewsMap.get(t.dataSourceViewId);
-      if (dataSourceView && dataSourceView.dataSource.dustAPIDataSourceId) {
+      if (dataSourceView && dataSourceView.dataSource.rubyAPIDataSourceId) {
         validTables.push({
-          project_id: parseInt(dataSourceView.dataSource.dustAPIProjectId),
-          data_source_id: dataSourceView.dataSource.dustAPIDataSourceId,
+          project_id: parseInt(dataSourceView.dataSource.rubyAPIProjectId),
+          data_source_id: dataSourceView.dataSource.rubyAPIDataSourceId,
           table_id: t.tableId,
         });
       } else {
@@ -255,14 +255,14 @@ const handlers: ToolHandlers<typeof QUERY_TABLES_V2_TOOLS_METADATA> = {
     return executeQuery(auth, {
       tables: tableConfigurations.map((t) => {
         const dataSourceView = dataSourceViewsMap.get(t.dataSourceViewId);
-        if (!dataSourceView || !dataSourceView.dataSource.dustAPIDataSourceId) {
+        if (!dataSourceView || !dataSourceView.dataSource.rubyAPIDataSourceId) {
           throw new Error(
             `Missing data source ID for view ${t.dataSourceViewId}`
           );
         }
         return {
-          project_id: parseInt(dataSourceView.dataSource.dustAPIProjectId),
-          data_source_id: dataSourceView.dataSource.dustAPIDataSourceId,
+          project_id: parseInt(dataSourceView.dataSource.rubyAPIProjectId),
+          data_source_id: dataSourceView.dataSource.rubyAPIDataSourceId,
           table_id: t.tableId,
         };
       }),

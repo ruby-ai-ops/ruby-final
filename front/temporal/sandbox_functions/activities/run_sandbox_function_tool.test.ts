@@ -6,8 +6,8 @@ import { MCPServerViewFactory } from "@app/tests/utils/MCPServerViewFactory";
 import { fileStorageMock } from "@app/tests/utils/mocks/file_storage";
 import { SandboxFunctionMCPActionFactory } from "@app/tests/utils/SandboxFunctionMCPActionFactory";
 import { createPersistedSandboxFunctionInvocationTokenTestContext } from "@app/tests/utils/SandboxTokenFactory";
-import type { AgentPauseOutputResourceType } from "@dust-tt/client";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import type { AgentPauseOutputResourceType } from "@ruby-ai/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { describe, expect, it, vi } from "vitest";
 

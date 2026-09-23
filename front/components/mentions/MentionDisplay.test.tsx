@@ -13,8 +13,8 @@ vi.mock("@app/lib/auth/AuthContext", () => ({
   }),
 }));
 
-// Mock Sparkle primitives used by MentionDisplay to simplify tooltip behavior.
-vi.mock("@dust-tt/sparkle", () => {
+// Mock RubyUI primitives used by MentionDisplay to simplify tooltip behavior.
+vi.mock("@ruby-ai/ui", () => {
   const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div data-testid="tooltip-provider">{children}</div>
   );

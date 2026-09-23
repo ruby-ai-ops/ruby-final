@@ -29,7 +29,7 @@ import {
   SheetTrigger,
   Spinner,
   Users01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
 

@@ -34,7 +34,7 @@ const AGENT_NAME = "Internal_IT_Helpdesk_Bot_2";
 const OTHER_USER: UserAsset = {
   sId: "otherUser",
   username: "jdoe",
-  email: "jane.doe@dust.tt",
+  email: "jane.doe@ruby.ad",
   firstName: "Jane",
   lastName: "Doe",
 };
@@ -44,7 +44,7 @@ interface Assets {
   bookKeeperConversations: ConversationAsset[];
   conversations: ConversationAsset[];
   dataSources: DataSourceAsset[];
-  dustConversations: ConversationAsset[];
+  rubyConversations: ConversationAsset[];
   feedbacks: FeedbackAsset[];
   skills: SkillAsset[];
   skillSuggestions: SkillSuggestionAsset[];
@@ -80,8 +80,8 @@ function loadAssets(): Assets {
       "utf-8"
     )
   );
-  const dustConversations = JSON.parse(
-    fs.readFileSync(path.join(assetsDir, "dust-conversations.json"), "utf-8")
+  const rubyConversations = JSON.parse(
+    fs.readFileSync(path.join(assetsDir, "ruby-conversations.json"), "utf-8")
   );
   const feedbacks = JSON.parse(
     fs.readFileSync(path.join(assetsDir, "feedbacks.json"), "utf-8")
@@ -97,7 +97,7 @@ function loadAssets(): Assets {
     bookKeeperConversations,
     conversations,
     dataSources,
-    dustConversations,
+    rubyConversations,
     feedbacks,
     skills,
     skillSuggestions,
@@ -113,14 +113,14 @@ export async function seedReinforcement(
     bookKeeperConversations,
     conversations,
     dataSources,
-    dustConversations,
+    rubyConversations,
     feedbacks,
     skills,
     skillSuggestions,
   } = loadAssets();
 
   // Seed data sources (e.g. books.xml for BookKeeper skill).
-  // This requires a running Dust CoreAPI so it may fail in test environments.
+  // This requires a running Ruby CoreAPI so it may fail in test environments.
   ctx.logger.info("Seeding data sources...");
   const placeholders: Record<string, string> = {};
   try {
@@ -206,14 +206,14 @@ export async function seedReinforcement(
     },
   });
 
-  // Seed additional users for Dust conversations.
+  // Seed additional users for Ruby conversations.
   ctx.logger.info("Seeding additional users...");
   const additionalUsers = await seedUsers(ctx, [OTHER_USER]);
 
-  // Add Dust global agent and seed Dust conversations
-  createdAgents.set("Dust", { sId: GLOBAL_AGENTS_SID.DUST, name: "Dust" });
-  ctx.logger.info("Seeding Dust conversations...");
-  await seedConversations(ctx, dustConversations, {
+  // Add Ruby global agent and seed Ruby conversations
+  createdAgents.set("Ruby", { sId: GLOBAL_AGENTS_SID.RUBY, name: "Ruby" });
+  ctx.logger.info("Seeding Ruby conversations...");
+  await seedConversations(ctx, rubyConversations, {
     agents: createdAgents,
     additionalUsers,
   });
@@ -224,10 +224,10 @@ export async function seedReinforcement(
     additionalUsers,
   });
 
-  // Activate the Poem Analyser skill as JIT skill in Dust conversations
+  // Activate the Poem Analyser skill as JIT skill in Ruby conversations
   if (ctx.execute && poemAnalyserSkill) {
-    ctx.logger.info("Activating JIT skills in Dust conversations...");
-    for (const conv of dustConversations) {
+    ctx.logger.info("Activating JIT skills in Ruby conversations...");
+    for (const conv of rubyConversations) {
       const conversation = await ConversationResource.fetchById(
         ctx.auth,
         conv.sId,
@@ -250,7 +250,7 @@ export async function seedReinforcement(
         });
         if (messageRow?.agentMessageId) {
           await SkillResource.snapshotConversationSkillsForMessage(ctx.auth, {
-            agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+            agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
             agentMessageId: messageRow.agentMessageId,
             conversationId: conversation.id,
           });
@@ -272,7 +272,7 @@ export async function seedReinforcement(
     ctx.logger.info("Indexing analytics to Elasticsearch...");
     const allConversations = [
       ...conversations,
-      ...dustConversations,
+      ...rubyConversations,
       ...bookKeeperConversations,
     ];
     const conversationIds = allConversations.map((c) => c.sId);

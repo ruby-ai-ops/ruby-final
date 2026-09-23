@@ -1,4 +1,4 @@
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useWorkspacePermissions } from "@app/lib/swr/permissions";
 import { useUpdateAgentTags } from "@app/lib/swr/tags";
 import { isGlobalAgentId } from "@app/types/assistant/assistant";
@@ -16,7 +16,7 @@ import {
   DropdownMenuTagList,
   DropdownMenuTrigger,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 type TableTagSelectorProps = {

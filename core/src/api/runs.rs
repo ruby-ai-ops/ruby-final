@@ -249,20 +249,20 @@ pub async fn runs_create(
             .collect::<HashMap<_, _>>(),
     };
 
-    match headers.get("X-Dust-Workspace-Id") {
+    match headers.get("X-Ruby-Workspace-Id") {
         Some(v) => match v.to_str() {
             Ok(v) => {
-                credentials.insert("DUST_WORKSPACE_ID".to_string(), v.to_string());
+                credentials.insert("RUBY_WORKSPACE_ID".to_string(), v.to_string());
             }
             _ => (),
         },
         None => (),
     };
 
-    match headers.get("X-Dust-Feature-Flags") {
+    match headers.get("X-Ruby-Feature-Flags") {
         Some(v) => match v.to_str() {
             Ok(v) => {
-                credentials.insert("DUST_FEATURE_FLAGS".to_string(), v.to_string());
+                credentials.insert("RUBY_FEATURE_FLAGS".to_string(), v.to_string());
             }
             _ => (),
         },
@@ -311,20 +311,20 @@ pub async fn runs_create_stream(
             .collect::<HashMap<_, _>>(),
     };
 
-    match headers.get("X-Dust-Workspace-Id") {
+    match headers.get("X-Ruby-Workspace-Id") {
         Some(v) => match v.to_str() {
             Ok(v) => {
-                credentials.insert("DUST_WORKSPACE_ID".to_string(), v.to_string());
+                credentials.insert("RUBY_WORKSPACE_ID".to_string(), v.to_string());
             }
             _ => (),
         },
         None => (),
     };
 
-    match headers.get("X-Dust-Feature-Flags") {
+    match headers.get("X-Ruby-Feature-Flags") {
         Some(v) => match v.to_str() {
             Ok(v) => {
-                credentials.insert("DUST_FEATURE_FLAGS".to_string(), v.to_string());
+                credentials.insert("RUBY_FEATURE_FLAGS".to_string(), v.to_string());
             }
             _ => (),
         },

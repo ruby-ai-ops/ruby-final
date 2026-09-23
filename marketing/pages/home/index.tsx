@@ -4,7 +4,6 @@ import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
 import type { NewsItem } from "@marketing/lib/homepage_news";
 import { fetchHomepageNews } from "@marketing/lib/homepage_news";
-import { fetchLogoLists } from "@marketing/lib/logo_bars_server";
 import { useRouter } from "next/router";
 import type { ReactElement } from "react";
 
@@ -12,20 +11,17 @@ interface HomeProps {
   news?: NewsItem[];
 }
 
-// Revalidate the homepage every 5 minutes so news and logo-bar edits in
-// Contentful propagate without a deploy. First request after staleness gets
+// Revalidate the homepage every 5 minutes so news edits in the Google
+// Sheet propagate without a deploy. First request after staleness gets
 // the cached version while a fresh one is generated in the background.
 export async function getStaticProps() {
-  const [news, logoLists] = await Promise.all([
-    fetchHomepageNews(),
-    fetchLogoLists(),
-  ]);
+  const news = await fetchHomepageNews();
   return {
     props: {
       shape: 0,
+      layoutVariant: "homepage",
       gtmTrackingId: process.env.NEXT_PUBLIC_GTM_TRACKING_ID ?? null,
       news,
-      logoLists,
     },
     revalidate: 300,
   };
@@ -37,8 +33,8 @@ export function Landing({ news }: HomeProps) {
   return (
     <>
       <PageMetadata
-        title="Dust - Multiplayer AI for human-agent collaboration"
-        description="Dust connects your company knowledge, tools, and teams so you can create, share, and run agents across real workflows. Use different models for different tasks, with people in control."
+        title="Ruby, The AI Teammate"
+        description="Ruby is where people and agents collaborate as co-contributors, so work does not just get done - it gets rewired."
         pathname={router.asPath}
       />
       <IntroSection news={news} />
@@ -46,11 +42,10 @@ export function Landing({ news }: HomeProps) {
   );
 }
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function Home({ news }: HomeProps) {
+export default function HomeNextJS({ news }: HomeProps) {
   return <Landing news={news} />;
 }
 
-Home.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
+HomeNextJS.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
   return <LandingLayout pageProps={pageProps}>{page}</LandingLayout>;
 };

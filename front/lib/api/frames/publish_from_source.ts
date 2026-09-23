@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import type { ValidationWarning } from "@app/lib/api/files/content_validation";
 import { buildAndPublishFramePublication } from "@app/lib/api/frames/build_and_publish";
 import { withFrameSourceLock } from "@app/lib/api/frames/operation_lock";
@@ -26,7 +26,7 @@ import {
   parseFrameManifest,
 } from "@app/types/api/frame_manifest";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
-import type { DustFileSystemError } from "@app/types/file_system";
+import type { RubyFileSystemError } from "@app/types/file_system";
 import {
   contentTypeFromFileName,
   isAllSupportedFileContentType,
@@ -52,7 +52,7 @@ function frameSourceConflictError() {
 }
 
 export type PublishFrameFromSourceError =
-  | DustFileSystemError
+  | RubyFileSystemError
   | FramePublicationError
   | PublishFrameError
   | SandboxFunctionError;
@@ -84,15 +84,15 @@ async function resolveFrameFromSource(
 ): Promise<
   Result<
     {
-      dustFs: DustFileSystem;
+      rubyFs: RubyFileSystem;
       frame: FileResource;
       normalizedPath: string;
       created: boolean;
     },
-    DustFileSystemError | FramePublicationError
+    RubyFileSystemError | FramePublicationError
   >
 > {
-  const normalizedPath = DustFileSystem.normalizeScopedPath(sourcePath);
+  const normalizedPath = RubyFileSystem.normalizeScopedPath(sourcePath);
   if (!normalizedPath) {
     return frameError(
       "invalid_source",
@@ -100,18 +100,18 @@ async function resolveFrameFromSource(
     );
   }
 
-  const fsResult = await DustFileSystem.forConversation(auth, conversation);
+  const fsResult = await RubyFileSystem.forConversation(auth, conversation);
   if (fsResult.isErr()) {
     return new Err(fsResult.error);
   }
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
-  const writeAccess = dustFs.checkWriteAccess(normalizedPath);
+  const writeAccess = rubyFs.checkWriteAccess(normalizedPath);
   if (writeAccess.isErr()) {
     return new Err(writeAccess.error);
   }
 
-  const mountFilePath = dustFs.toMountFilePath(normalizedPath);
+  const mountFilePath = rubyFs.toMountFilePath(normalizedPath);
   if (!mountFilePath) {
     return frameError(
       "invalid_source",
@@ -124,7 +124,7 @@ async function resolveFrameFromSource(
   ]);
   if (existing?.isFrameV2 || existing?.isInteractiveContent) {
     return new Ok({
-      dustFs,
+      rubyFs,
       frame: existing,
       normalizedPath,
       created: false,
@@ -143,7 +143,7 @@ async function resolveFrameFromSource(
   }
 
   const registered = await registerFrameV2FromSourceUsingFileSystem(auth, {
-    dustFs,
+    rubyFs,
     manifestPath: normalizedPath,
   });
   if (registered.isErr()) {
@@ -151,7 +151,7 @@ async function resolveFrameFromSource(
   }
 
   return new Ok({
-    dustFs,
+    rubyFs,
     frame: registered.value.frame,
     normalizedPath,
     created: registered.value.created,
@@ -177,7 +177,7 @@ export async function publishFrameFromSource(
   if (resolved.isErr()) {
     return resolved;
   }
-  const { dustFs, frame, normalizedPath, created } = resolved.value;
+  const { rubyFs, frame, normalizedPath, created } = resolved.value;
 
   if (frame.isFrameV2) {
     const publication = await publishFrameV2FromSource(auth, {
@@ -207,7 +207,7 @@ export async function publishFrameFromSource(
 
   const publication = await publishFrame(auth, {
     file: frame,
-    reader: createMountFrameSourceReader(dustFs, root),
+    reader: createMountFrameSourceReader(rubyFs, root),
     entryRelPath,
     rootScopedPath: root,
     publishedByAgentConfigurationId,
@@ -229,7 +229,7 @@ async function resolveWritableFrameV2Source(
   frame: FileResource
 ): Promise<
   Result<
-    { canonicalManifestPath: string; dustFs: DustFileSystem },
+    { canonicalManifestPath: string; rubyFs: RubyFileSystem },
     FramePublicationError
   >
 > {
@@ -244,21 +244,21 @@ async function resolveWritableFrameV2Source(
     );
   }
 
-  const fsResult = await DustFileSystem.fromScopedPath(
+  const fsResult = await RubyFileSystem.fromScopedPath(
     auth,
     canonicalManifestPath
   );
   if (fsResult.isErr()) {
     return frameError("invalid_source", fsResult.error.message);
   }
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
-  const writeAccess = dustFs.checkWriteAccess(canonicalManifestPath);
+  const writeAccess = rubyFs.checkWriteAccess(canonicalManifestPath);
   if (writeAccess.isErr()) {
     return frameError("unauthorized", writeAccess.error.message);
   }
 
-  return new Ok({ canonicalManifestPath, dustFs });
+  return new Ok({ canonicalManifestPath, rubyFs });
 }
 
 /**
@@ -287,10 +287,10 @@ async function readFrameV2SourceWithSourceLockHeld(
   if (resolved.isErr()) {
     return resolved;
   }
-  const { canonicalManifestPath, dustFs } = resolved.value;
+  const { canonicalManifestPath, rubyFs } = resolved.value;
 
   if (
-    DustFileSystem.normalizeScopedPath(manifestPath) !== canonicalManifestPath
+    RubyFileSystem.normalizeScopedPath(manifestPath) !== canonicalManifestPath
   ) {
     return frameError(
       "invalid_source",
@@ -298,7 +298,7 @@ async function readFrameV2SourceWithSourceLockHeld(
     );
   }
 
-  const manifestBufferResult = await dustFs.readBuffer(canonicalManifestPath);
+  const manifestBufferResult = await rubyFs.readBuffer(canonicalManifestPath);
   if (manifestBufferResult.isErr()) {
     return frameError("invalid_source", manifestBufferResult.error.message);
   }
@@ -316,7 +316,7 @@ async function readFrameV2SourceWithSourceLockHeld(
   }
 
   const sourceDirectoryPath = path.posix.dirname(canonicalManifestPath);
-  const listResult = await dustFs.list(sourceDirectoryPath, {
+  const listResult = await rubyFs.list(sourceDirectoryPath, {
     maxFiles: MAX_FRAME_SOURCE_FILE_COUNT + 1,
   });
   if (listResult.isErr()) {
@@ -389,7 +389,7 @@ async function readFrameV2SourceWithSourceLockHeld(
       content:
         entry.path === canonicalManifestPath
           ? manifestBuffer
-          : await dustFs.readBuffer(entry.path),
+          : await rubyFs.readBuffer(entry.path),
     }),
     { concurrency: FRAME_SOURCE_READ_CONCURRENCY }
   );
@@ -551,13 +551,13 @@ export async function editFrameV2TextAtSource(
     if (resolved.isErr()) {
       return resolved;
     }
-    const { canonicalManifestPath: manifestPath, dustFs } = resolved.value;
+    const { canonicalManifestPath: manifestPath, rubyFs } = resolved.value;
 
     const sourcePath = path.posix.join(
       path.posix.dirname(manifestPath),
       location.relPath
     );
-    const sourceBuffer = await dustFs.readBuffer(sourcePath);
+    const sourceBuffer = await rubyFs.readBuffer(sourcePath);
     if (sourceBuffer.isErr()) {
       return new Err(sourceBuffer.error);
     }
@@ -582,7 +582,7 @@ export async function editFrameV2TextAtSource(
       return frameError("invalid_source", edited.error.message);
     }
 
-    const stat = await dustFs.stat(sourcePath);
+    const stat = await rubyFs.stat(sourcePath);
     if (stat.isErr()) {
       return new Err(stat.error);
     }
@@ -590,7 +590,7 @@ export async function editFrameV2TextAtSource(
       stat.value?.contentType ??
       contentTypeFromFileName(location.relPath) ??
       "text/plain";
-    const writeResult = await dustFs.write(
+    const writeResult = await rubyFs.write(
       sourcePath,
       edited.value,
       contentType
@@ -599,7 +599,7 @@ export async function editFrameV2TextAtSource(
       return new Err(writeResult.error);
     }
     const rollbackSource = () =>
-      dustFs.write(sourcePath, originalSource, contentType);
+      rubyFs.write(sourcePath, originalSource, contentType);
 
     try {
       const publishResult = await publishFrameV2FromSourceWithSourceLockHeld(

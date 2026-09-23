@@ -11,7 +11,7 @@ import {
 import { concurrentExecutor } from "@app/lib/utils/async_utils";
 import type { AgentConfigurationType } from "@app/types/assistant/agent";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, ContentMessage, Lock01, UsersPlus } from "@dust-tt/sparkle";
+import { Button, ContentMessage, Lock01, UsersPlus } from "@ruby-ai/ui";
 import { useContext, useState } from "react";
 
 // Explains to an admin why the private fields of an agent were redacted: the agent is not

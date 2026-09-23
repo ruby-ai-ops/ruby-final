@@ -29,7 +29,7 @@ import type { ConversationWithoutContentType } from "@app/types/assistant/conver
 import { contentTypeFromFileName } from "@app/types/files";
 import { resolveCanonicalScopedPath } from "@app/types/mount_path";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, cn, Download01, Icon, Spinner } from "@dust-tt/sparkle";
+import { Button, cn, Download01, Icon, Spinner } from "@ruby-ai/ui";
 
 interface FilePreviewPanelProps {
   conversation: ConversationWithoutContentType;

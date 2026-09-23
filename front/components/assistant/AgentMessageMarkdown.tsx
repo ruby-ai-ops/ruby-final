@@ -41,8 +41,8 @@ import {
   userMentionDirective,
 } from "@app/lib/mentions/markdown/plugin";
 import type { WorkspaceType } from "@app/types/user";
-import type { StreamingState } from "@dust-tt/sparkle";
-import { Markdown } from "@dust-tt/sparkle";
+import type { StreamingState } from "@ruby-ai/ui";
+import { Markdown } from "@ruby-ai/ui";
 import React from "react";
 import type { Components } from "react-markdown";
 import type { PluggableList } from "react-markdown/lib/react-markdown";
@@ -84,7 +84,7 @@ export const AgentMessageMarkdown = ({
       mention: getAgentMentionPlugin(owner),
       mention_user: getUserMentionPlugin(owner),
       project_task: getTaskDirectiveBlock(owner),
-      dustimg: getImgPlugin(owner),
+      rubyimg: getImgPlugin(owner),
       file_preview: getFilePreviewPlugin(),
       instruction_block: InstructionBlock,
       build_skill: BuildSkillDirectiveBlock,

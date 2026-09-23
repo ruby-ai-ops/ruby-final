@@ -1,5 +1,5 @@
 import { H2 } from "@marketing/components/home/ContentComponents";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 
 export interface MultiProductComparisonColumn {
   key: string;
@@ -11,12 +11,14 @@ interface MultiProductComparisonTableProps {
   title: string;
   columns: MultiProductComparisonColumn[];
   rows: Record<string, string>[];
+  showHighlights?: boolean;
 }
 
 export function MultiProductComparisonTable({
   title,
   columns,
   rows,
+  showHighlights = true,
 }: MultiProductComparisonTableProps) {
   const gridTemplate = `1fr ${columns.map(() => "1fr").join(" ")}`;
   const minWidth = (columns.length + 1) * 160;
@@ -47,13 +49,13 @@ export function MultiProductComparisonTable({
                     key={col.key}
                     className={cn(
                       "flex items-center justify-center gap-1 text-center text-xs uppercase tracking-wider",
-                      col.highlight
+                      col.highlight && showHighlights
                         ? "font-bold text-[#1C91FF]"
                         : "font-normal text-gray-700"
                     )}
                   >
                     {col.label}
-                    {col.highlight && (
+                    {col.highlight && showHighlights && (
                       <span className="rounded bg-[#1C91FF]/10 px-1.5 py-0.5 text-[10px] text-[#1C91FF]">
                         #1 Pick
                       </span>
@@ -81,7 +83,7 @@ export function MultiProductComparisonTable({
                         key={col.key}
                         className={cn(
                           "px-2 text-center",
-                          col.highlight
+                          col.highlight && showHighlights
                             ? "-mx-2 -my-4 flex h-full items-center justify-center border-x border-[#1C91FF]/10 bg-[#1C91FF]/5 px-2 py-6 font-bold text-gray-900"
                             : "text-gray-600"
                         )}

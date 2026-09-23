@@ -7,7 +7,7 @@ import { useWorkspaceGitHubConnection } from "@app/lib/swr/github_connection";
 import { useDetectSkillsFromRepo } from "@app/lib/swr/skill_configurations";
 import type { LightWorkspaceType } from "@app/types/user";
 import { isAdmin } from "@app/types/user";
-import { ContentMessage, cn, InfoCircle, Input } from "@dust-tt/sparkle";
+import { ContentMessage, cn, InfoCircle, Input } from "@ruby-ai/ui";
 import { useEffect } from "react";
 import { useController, useFormContext } from "react-hook-form";
 

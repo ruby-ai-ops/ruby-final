@@ -11,13 +11,13 @@ export const config = {
   getCurrentRegion: (): RegionType => {
     return EnvironmentConfig.getEnvVariable("REGION") as RegionType;
   },
-  getDustRegionSyncEnabled: (): boolean => {
+  getRubyRegionSyncEnabled: (): boolean => {
     return (
       EnvironmentConfig.getEnvVariable("REGION") !== "us-central1" ||
       isDevelopment()
     );
   },
-  getDustRegionSyncMasterUrl: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_US_URL");
+  getRubyRegionSyncMasterUrl: (): string => {
+    return EnvironmentConfig.getEnvVariable("RUBY_US_URL");
   },
 };

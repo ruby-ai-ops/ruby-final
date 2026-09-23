@@ -14,7 +14,7 @@ import { isEmptyString } from "@app/types/shared/utils/general";
 import {
   type PostMessagesResponseBody,
   PublicPostMessagesRequestBodySchema,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { validatePublicModelSelection } from "@front-api/lib/api/assistant/conversation/model_selection";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";

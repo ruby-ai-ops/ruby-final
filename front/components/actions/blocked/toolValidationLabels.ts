@@ -44,13 +44,13 @@ export type ToolValidationLabelData = Pick<
 const MCP_TOOL_OVERRIDES: Partial<
   Record<string, Partial<Record<string, ToolOverride>>>
 > = {
-  "dust-chrome-extension": {
+  "ruby-chrome-extension": {
     interact_with_page: {
       title: (inputs) => `Allow agent to ${inputs.humanReadableDescription}?`,
       alwaysAllowLabel: () => "Allow all the interactions with this tab",
     },
   },
-  "dust-firefox-extension": {
+  "ruby-firefox-extension": {
     interact_with_page: {
       title: (inputs) => `Allow agent to ${inputs.humanReadableDescription}?`,
       alwaysAllowLabel: () => "Allow all the interactions with this tab",
@@ -143,7 +143,7 @@ const MCP_TOOL_OVERRIDES: Partial<
           return `Allow agent to set the Pod default agent?`;
         }
         if (inputs.agentName === null) {
-          return `Allow agent to reset the Pod default agent to @dust?`;
+          return `Allow agent to reset the Pod default agent to @ruby?`;
         }
         return `Allow agent to set the Pod default agent to @${inputs.agentName}?`;
       },

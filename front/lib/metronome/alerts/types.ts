@@ -5,7 +5,7 @@ import type { CustomerAlert } from "@metronome/sdk/resources/v1/customers";
 export type MetronomeAlertStatus = CustomerAlert["customer_status"];
 
 // A Metronome alert resolved for a workspace: its id (for deep-linking from
-// Poke) plus its current evaluation status (for display).
+// Admin) plus its current evaluation status (for display).
 export type MetronomeAlertRef = {
   id: string;
   status: MetronomeAlertStatus;

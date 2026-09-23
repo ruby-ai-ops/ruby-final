@@ -3,7 +3,7 @@ import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import {
   ValidateActionRequestBodySchema,
   type ValidateActionResponseType,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { streamingTag } from "@front-api/middlewares/streaming";
 import type { HandlerResult } from "@front-api/middlewares/utils";

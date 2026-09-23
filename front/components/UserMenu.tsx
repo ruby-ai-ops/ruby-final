@@ -90,7 +90,7 @@ import {
   Terminal,
   User01,
   UsersCheck,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 interface UserMenuProps {
@@ -131,11 +131,13 @@ export function UserMenu({
 
   const isFirefox =
     typeof navigator !== "undefined" && /firefox/i.test(navigator.userAgent);
+  const extensionUrl = isFirefox ? config.getFirefoxExtensionUrl() : config.getChromeExtensionUrl();
   const {
     metadata: extensionLastUsedAt,
     isMetadataLoading: isExtensionLastUsedAtLoading,
   } = useUserMetadata(EXTENSION_LAST_USED_AT_METADATA_KEY);
   const showExtensionMenu =
+    Boolean(extensionUrl) &&
     !isExtensionLastUsedAtLoading &&
     shouldShowExtensionMenu(extensionLastUsedAt?.value);
 
@@ -191,8 +193,8 @@ export function UserMenu({
         id: GLOBAL_AGENTS_SID.HELPER,
         label: "Help",
         pictureUrl:
-          "https://dust.tt/static/systemavatar/helper_avatar_full.png",
-        description: "Help on how to use Dust",
+          "https://ruby.ad/static/systemavatar/helper_avatar_full.png",
+        description: "Help on how to use Ruby",
       });
     } else {
       void router.push(
@@ -427,11 +429,11 @@ export function UserMenu({
             <DropdownMenuSubTrigger label="Help" icon={Heart} />
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <DropdownMenuLabel label="Learn about Dust" />
+                <DropdownMenuLabel label="Learn about Ruby" />
                 <DropdownMenuItem
                   label="Guides & Documentation"
                   icon={BookOpen01}
-                  href="https://docs.dust.tt"
+                  href="https://docs.ruby.ad"
                   target="_blank"
                   onClick={() =>
                     trackUserMenuEvent("help_guides_documentation")
@@ -440,7 +442,7 @@ export function UserMenu({
                 <DropdownMenuItem
                   label="Join the Slack Community"
                   icon={SlackLogo}
-                  href="https://dust-community.tightknit.community/join"
+                  href="https://ruby-community.tightknit.community/join"
                   target="_blank"
                   onClick={() => trackUserMenuEvent("help_slack_community")}
                 />
@@ -484,11 +486,11 @@ export function UserMenu({
             </DropdownMenuPortal>
           </DropdownMenuSub>
           <DropdownMenuItem
-            label="Dust Academy"
+            label="Ruby Academy"
             icon={BookOpen01}
-            href="https://dust.tt/academy"
+            href="https://ruby.ad/academy"
             target="_blank"
-            onClick={() => trackUserMenuEvent("dust_academy")}
+            onClick={() => trackUserMenuEvent("ruby_academy")}
           />
 
           {showExtensionMenu &&
@@ -496,7 +498,7 @@ export function UserMenu({
               <DropdownMenuItem
                 label="Firefox extension"
                 icon={FirefoxLogo}
-                href="https://addons.mozilla.org/firefox/addon/dust/"
+                href={extensionUrl}
                 target="_blank"
                 onClick={() => trackUserMenuEvent("firefox_extension")}
               />
@@ -504,7 +506,7 @@ export function UserMenu({
               <DropdownMenuItem
                 label="Chrome extension"
                 icon={ChromeLogo}
-                href="https://chromewebstore.google.com/detail/dust/fnkfcndbgingjcbdhaofkcnhcjpljhdn"
+                href={extensionUrl}
                 target="_blank"
                 onClick={() => trackUserMenuEvent("chrome_extension")}
               />
@@ -513,7 +515,7 @@ export function UserMenu({
           <DropdownMenuItem
             label="Changelog"
             icon={Announcement01}
-            href="https://docs.dust.tt/docs/changelog"
+            href="https://docs.ruby.ad/docs/changelog"
             target="_blank"
             onClick={() => trackUserMenuEvent("changelog")}
           />
@@ -608,7 +610,7 @@ export function UserMenu({
                           const match = window.location.href.match(regexp);
                           if (match) {
                             window.open(
-                              `/poke/${match[1]}/conversation/${match[2]}`,
+                              `/admin/${match[1]}/conversation/${match[2]}`,
                               "_blank"
                             );
                           }

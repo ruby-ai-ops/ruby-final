@@ -1,4 +1,4 @@
-import { useSheetViewport } from "@dust-tt/sparkle";
+import { useSheetViewport } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import type { IntersectionOptions } from "react-intersection-observer";

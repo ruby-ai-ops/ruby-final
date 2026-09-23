@@ -11,7 +11,7 @@ import { MembershipFactory } from "@app/tests/utils/MembershipFactory";
 import { SpaceFactory } from "@app/tests/utils/SpaceFactory";
 import { UserFactory } from "@app/tests/utils/UserFactory";
 import { WorkspaceFactory } from "@app/tests/utils/WorkspaceFactory";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { describe, expect, it } from "vitest";
 
 import { fetchTableDataSourceConfigurations, getCoreSearchArgs } from "./utils";
@@ -57,7 +57,7 @@ describe("MCP Internal Actions Server Utils", () => {
       });
       const tablesConfiguration = [
         {
-          uri: `table_configuration://dust/w/${otherWorkspace.sId}/table_configurations/${tableConfigId}`,
+          uri: `table_configuration://ruby/w/${otherWorkspace.sId}/table_configurations/${tableConfigId}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.TABLE,
         },
       ];
@@ -144,7 +144,7 @@ describe("MCP Internal Actions Server Utils", () => {
       });
       const tablesConfiguration = [
         {
-          uri: `table_configuration://dust/w/${workspace.sId}/table_configurations/${tableConfigId}`,
+          uri: `table_configuration://ruby/w/${workspace.sId}/table_configurations/${tableConfigId}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.TABLE,
         },
       ];
@@ -167,7 +167,7 @@ describe("MCP Internal Actions Server Utils", () => {
 
       const tablesConfiguration = [
         {
-          uri: `table_configuration://dust/w/${workspace.sId}/data_source_views/dsv_12345/tables/table_name`,
+          uri: `table_configuration://ruby/w/${workspace.sId}/data_source_views/dsv_12345/tables/table_name`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.TABLE,
         },
       ];
@@ -212,7 +212,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: otherWorkspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${otherWorkspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${otherWorkspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -275,7 +275,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: workspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -283,10 +283,10 @@ describe("MCP Internal Actions Server Utils", () => {
       expect(result.isOk()).toBe(true);
       if (result.isOk()) {
         expect(result.value[0].projectId).toBe(
-          folder.dataSource.dustAPIProjectId
+          folder.dataSource.rubyAPIProjectId
         );
         expect(result.value[0].dataSourceId).toBe(
-          folder.dataSource.dustAPIDataSourceId
+          folder.dataSource.rubyAPIDataSourceId
         );
         expect(result.value[0].filter.tags.in).toBeNull();
         expect(result.value[0].filter.tags.not).toBeNull();
@@ -316,7 +316,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: workspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -356,7 +356,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: workspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -395,7 +395,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: workspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -437,7 +437,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: workspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -474,7 +474,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: workspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -513,7 +513,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: workspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -552,7 +552,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: workspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -593,7 +593,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: workspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -647,7 +647,7 @@ describe("MCP Internal Actions Server Utils", () => {
         workspaceId: workspace.id,
       });
       const dataSourceConfiguration = {
-        uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
+        uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       };
 
@@ -705,11 +705,11 @@ describe("MCP Internal Actions Server Utils", () => {
 
       const dataSourceConfigurations = [
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId1}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId1}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId2}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId2}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
       ];
@@ -719,10 +719,10 @@ describe("MCP Internal Actions Server Utils", () => {
       if (result.isOk()) {
         expect(result.value).toHaveLength(2);
         expect(result.value[0].projectId).toBe(
-          folder1.dataSource.dustAPIProjectId
+          folder1.dataSource.rubyAPIProjectId
         );
         expect(result.value[0].dataSourceId).toBe(
-          folder1.dataSource.dustAPIDataSourceId
+          folder1.dataSource.rubyAPIDataSourceId
         );
         expect(result.value[0].filter.tags.in).toBeNull();
         expect(result.value[0].filter.tags.not).toBeNull();
@@ -730,10 +730,10 @@ describe("MCP Internal Actions Server Utils", () => {
         expect(result.value[0].filter.parents.not).toBeNull();
 
         expect(result.value[1].projectId).toBe(
-          folder2.dataSource.dustAPIProjectId
+          folder2.dataSource.rubyAPIProjectId
         );
         expect(result.value[1].dataSourceId).toBe(
-          folder2.dataSource.dustAPIDataSourceId
+          folder2.dataSource.rubyAPIDataSourceId
         );
         expect(result.value[1].filter.tags.in).toBeNull();
         expect(result.value[1].filter.tags.not).toBeNull();
@@ -782,11 +782,11 @@ describe("MCP Internal Actions Server Utils", () => {
 
       const dataSourceConfigurations = [
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId1}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId1}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId2}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId2}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
       ];
@@ -854,11 +854,11 @@ describe("MCP Internal Actions Server Utils", () => {
 
       const dataSourceConfigurations = [
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId1}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId1}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId2}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId2}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
       ];
@@ -963,19 +963,19 @@ describe("MCP Internal Actions Server Utils", () => {
 
       const dataSourceConfigurations = [
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId1}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId1}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId2}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId2}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId3}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId3}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId4}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId4}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
       ];
@@ -1015,28 +1015,28 @@ describe("MCP Internal Actions Server Utils", () => {
 
         // Verify each datasource has correct project and datasource IDs
         expect(result.value[0].projectId).toBe(
-          folder1.dataSource.dustAPIProjectId
+          folder1.dataSource.rubyAPIProjectId
         );
         expect(result.value[0].dataSourceId).toBe(
-          folder1.dataSource.dustAPIDataSourceId
+          folder1.dataSource.rubyAPIDataSourceId
         );
         expect(result.value[1].projectId).toBe(
-          folder2.dataSource.dustAPIProjectId
+          folder2.dataSource.rubyAPIProjectId
         );
         expect(result.value[1].dataSourceId).toBe(
-          folder2.dataSource.dustAPIDataSourceId
+          folder2.dataSource.rubyAPIDataSourceId
         );
         expect(result.value[2].projectId).toBe(
-          folder3.dataSource.dustAPIProjectId
+          folder3.dataSource.rubyAPIProjectId
         );
         expect(result.value[2].dataSourceId).toBe(
-          folder3.dataSource.dustAPIDataSourceId
+          folder3.dataSource.rubyAPIDataSourceId
         );
         expect(result.value[3].projectId).toBe(
-          folder4.dataSource.dustAPIProjectId
+          folder4.dataSource.rubyAPIProjectId
         );
         expect(result.value[3].dataSourceId).toBe(
-          folder4.dataSource.dustAPIDataSourceId
+          folder4.dataSource.rubyAPIDataSourceId
         );
       }
     });
@@ -1098,15 +1098,15 @@ describe("MCP Internal Actions Server Utils", () => {
       // Order: ds2, ds1, ds3
       const dataSourceConfigurations = [
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId2}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId2}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId1}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId1}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
         {
-          uri: `data_source_configuration://dust/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId3}`,
+          uri: `data_source_configuration://ruby/w/${workspace.sId}/data_source_configurations/${dataSourceConfigId3}`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
       ];
@@ -1118,15 +1118,15 @@ describe("MCP Internal Actions Server Utils", () => {
         // Verify order matches input order
         expect(result.value[0].filter.tags.in).toEqual(["ds2-tag"]);
         expect(result.value[0].dataSourceId).toBe(
-          folder2.dataSource.dustAPIDataSourceId
+          folder2.dataSource.rubyAPIDataSourceId
         );
         expect(result.value[1].filter.tags.in).toEqual(["ds1-tag"]);
         expect(result.value[1].dataSourceId).toBe(
-          folder1.dataSource.dustAPIDataSourceId
+          folder1.dataSource.rubyAPIDataSourceId
         );
         expect(result.value[2].filter.tags.in).toEqual(["ds3-tag"]);
         expect(result.value[2].dataSourceId).toBe(
-          folder3.dataSource.dustAPIDataSourceId
+          folder3.dataSource.rubyAPIDataSourceId
         );
       }
     });

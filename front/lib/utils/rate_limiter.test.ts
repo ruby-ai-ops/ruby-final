@@ -512,7 +512,7 @@ describe("fixed-window counter", () => {
       afterSecond.isOk() &&
         afterSecond.value >= roundCreditsToMicroCredits(capCredits)
     ).toBe(true);
-    // The poke read converts the counter back to whole credits.
+    // The admin read converts the counter back to whole credits.
     expect(afterSecond.isOk() && microCreditsToCredits(afterSecond.value)).toBe(
       5
     );

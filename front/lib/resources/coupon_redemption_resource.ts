@@ -210,7 +210,7 @@ export class CouponRedemptionResource extends BaseResource<CouponRedemptionModel
   static async listAllByCoupon(
     coupon: CouponResource
   ): Promise<CouponRedemptionResource[]> {
-    // WORKSPACE_ISOLATION_BYPASS: Poke global view — listing all redemptions
+    // WORKSPACE_ISOLATION_BYPASS: Admin global view — listing all redemptions
     // across workspaces for a single coupon for admin visibility.
     const rows = await this.model.findAll({
       // biome-ignore lint/plugin/noUnverifiedWorkspaceBypass: WORKSPACE_ISOLATION_BYPASS verified

@@ -30,7 +30,7 @@ pub async fn read_handshake<R>(reader: &mut R) -> Result<Handshake, HandshakeErr
 where
     R: AsyncRead + Unpin,
 {
-    // TODO(sandbox-egress): Keep this protocol parser in sync with dsbx forward when the
+    // TODO(sandbox-egress): Keep this protocol parser in sync with rbx forward when the
     // in-sandbox forwarder is implemented.
     let version = read_u8(reader).await?;
     if version != PROTOCOL_VERSION {

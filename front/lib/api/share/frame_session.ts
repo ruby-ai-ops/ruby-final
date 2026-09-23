@@ -6,7 +6,7 @@ import type { LightWorkspaceType } from "@app/types/user";
 import crypto from "crypto";
 import { Op } from "sequelize";
 
-export const FRAME_SESSION_COOKIE_NAME = "dust_frame_session";
+export const FRAME_SESSION_COOKIE_NAME = "ruby_frame_session";
 
 const SESSION_DURATION_SECONDS = 7 * 24 * 60 * 60; // 7 days.
 

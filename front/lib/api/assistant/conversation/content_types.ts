@@ -4,16 +4,16 @@ import type { SupportedContentFragmentType } from "@app/types/content_fragment";
 import { isSupportedDelimitedTextContentType } from "@app/types/files";
 import {
   CONTENT_NODE_MIME_TYPES,
-  isDustMimeType,
+  isRubyMimeType,
   isIncludableInternalMimeType,
   isSupportedImageContentType,
   // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 
 export function isConversationIncludableFileContentType(
   contentType: SupportedContentFragmentType
 ): boolean {
-  if (isDustMimeType(contentType)) {
+  if (isRubyMimeType(contentType)) {
     return isIncludableInternalMimeType(contentType);
   }
   return true;

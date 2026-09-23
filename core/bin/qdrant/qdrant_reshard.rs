@@ -39,7 +39,7 @@
 
 use anyhow::{anyhow, Result};
 use clap::Parser;
-use dust::data_sources::qdrant::{env_var_prefix_for_cluster, QdrantCluster};
+use ruby::data_sources::qdrant::{env_var_prefix_for_cluster, QdrantCluster};
 use serde::Deserialize;
 use std::collections::{BTreeMap, HashSet};
 use std::time::Duration;

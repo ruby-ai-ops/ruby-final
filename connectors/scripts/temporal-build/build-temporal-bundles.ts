@@ -1,6 +1,6 @@
 import type { WorkerName } from "@connectors/temporal/worker_registry";
 import { ALL_WORKERS } from "@connectors/temporal/worker_registry";
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 import { bundleWorkflowCode } from "@temporalio/worker";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
@@ -32,8 +32,8 @@ function getWorkerDirectory(workerName: WorkerName): string {
       return path.join(baseDir, "bigquery/temporal");
     case "confluence":
       return path.join(baseDir, "confluence/temporal");
-    case "dust_project":
-      return path.join(baseDir, "dust_project/temporal");
+    case "ruby_project":
+      return path.join(baseDir, "ruby_project/temporal");
     case "github":
       return path.join(baseDir, "github/temporal");
     case "gong":

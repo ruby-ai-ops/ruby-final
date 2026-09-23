@@ -778,7 +778,7 @@ describe("retryAgentMessage", () => {
     const user = auth.getNonNullableUser().toJSON();
     const postResult = await postUserMessage(auth, {
       conversationResource: emptyConversationResource,
-      content: "Posted by Dust on the user's behalf",
+      content: "Posted by Ruby on the user's behalf",
       mentions: [{ configurationId: agentConfig.sId }],
       context: {
         username: user.username,
@@ -789,7 +789,7 @@ describe("retryAgentMessage", () => {
         origin: "system_activation",
       },
       skipToolsValidation: false,
-      skipDustAutoMention: true,
+      skipRubyAutoMention: true,
       doNotAssociateUser: true,
     });
     if (postResult.isErr()) {
@@ -1961,7 +1961,7 @@ describe("postUserMessage", () => {
           origin: doNotAssociateUser ? "system_activation" : "web",
         },
         skipToolsValidation: false,
-        skipDustAutoMention: true,
+        skipRubyAutoMention: true,
         doNotAssociateUser,
       });
       if (result.isErr()) {
@@ -2002,7 +2002,7 @@ describe("postUserMessage", () => {
           origin: "web",
         },
         skipToolsValidation: false,
-        skipDustAutoMention: true,
+        skipRubyAutoMention: true,
         agenticMessageData: { type: "run_agent", originMessageId },
       });
       if (result.isErr()) {
@@ -2142,14 +2142,14 @@ describe("postUserMessage", () => {
     });
   });
 
-  describe("auto-mention global @dust when posting without mentions", () => {
-    const expectedDustMentionPrefix = serializeMention({
-      id: GLOBAL_AGENTS_SID.DUST,
+  describe("auto-mention global @ruby when posting without mentions", () => {
+    const expectedRubyMentionPrefix = serializeMention({
+      id: GLOBAL_AGENTS_SID.RUBY,
       type: "agent",
-      label: "dust",
+      label: "ruby",
     });
 
-    it("prepends serialized @dust and persists the mention for web origin", async () => {
+    it("prepends serialized @ruby and persists the mention for web origin", async () => {
       const user = auth.getNonNullableUser();
       const userJson = user.toJSON();
 
@@ -2175,16 +2175,16 @@ describe("postUserMessage", () => {
 
       const { userMessage } = result.value;
       expect(userMessage.content).toBe(
-        `${expectedDustMentionPrefix} Hello without explicit mentions`
+        `${expectedRubyMentionPrefix} Hello without explicit mentions`
       );
 
       expect(userMessage.mentions?.length).toBe(1);
       expect(userMessage.mentions?.[0]).toEqual({
-        configurationId: GLOBAL_AGENTS_SID.DUST,
+        configurationId: GLOBAL_AGENTS_SID.RUBY,
       });
 
       const agentMentions = userMessage.richMentions.filter(isRichAgentMention);
-      expect(agentMentions.some((m) => m.id === GLOBAL_AGENTS_SID.DUST)).toBe(
+      expect(agentMentions.some((m) => m.id === GLOBAL_AGENTS_SID.RUBY)).toBe(
         true
       );
 
@@ -2196,14 +2196,14 @@ describe("postUserMessage", () => {
       });
       expect(
         mentionsInDb.some(
-          (m) => m.agentConfigurationId === GLOBAL_AGENTS_SID.DUST
+          (m) => m.agentConfigurationId === GLOBAL_AGENTS_SID.RUBY
         )
       ).toBe(true);
 
       expect(launchAgentLoopWorkflow).toHaveBeenCalled();
     });
 
-    it("auto-mentions @dust again when only the same user already posted", async () => {
+    it("auto-mentions @ruby again when only the same user already posted", async () => {
       const rateLimiterSpy = vi
         .spyOn(rateLimiterModule, "rateLimiter")
         .mockResolvedValue(100);
@@ -2233,7 +2233,7 @@ describe("postUserMessage", () => {
       }
 
       expect(firstFromUser.value.userMessage.content).toBe(
-        `${expectedDustMentionPrefix} first from A`
+        `${expectedRubyMentionPrefix} first from A`
       );
       expect(firstFromUser.value.userMessage.mentions?.length ?? 0).toBe(1);
 
@@ -2271,9 +2271,9 @@ describe("postUserMessage", () => {
         return;
       }
 
-      // With no other humans present, we should still prepend @dust.
+      // With no other humans present, we should still prepend @ruby.
       expect(secondFromUser.value.userMessage.content).toBe(
-        `${expectedDustMentionPrefix} second from A`
+        `${expectedRubyMentionPrefix} second from A`
       );
       expect(secondFromUser.value.userMessage.mentions?.length ?? 0).toBe(1);
 
@@ -2285,14 +2285,14 @@ describe("postUserMessage", () => {
       });
       expect(
         mentionsInDb.some(
-          (m) => m.agentConfigurationId === GLOBAL_AGENTS_SID.DUST
+          (m) => m.agentConfigurationId === GLOBAL_AGENTS_SID.RUBY
         )
       ).toBe(true);
 
       expect(launchAgentLoopWorkflow).toHaveBeenCalled();
     });
 
-    it("prepends serialized @dust for extension origin", async () => {
+    it("prepends serialized @ruby for extension origin", async () => {
       const user = auth.getNonNullableUser();
       const userJson = user.toJSON();
 
@@ -2317,17 +2317,17 @@ describe("postUserMessage", () => {
       }
 
       expect(result.value.userMessage.content).toBe(
-        `${expectedDustMentionPrefix} From extension`
+        `${expectedRubyMentionPrefix} From extension`
       );
       expect(result.value.userMessage.mentions?.[0]).toEqual({
-        configurationId: GLOBAL_AGENTS_SID.DUST,
+        configurationId: GLOBAL_AGENTS_SID.RUBY,
       });
     });
 
-    it("does not auto-mention @dust when global @dust agent is disabled for the workspace", async () => {
+    it("does not auto-mention @ruby when global @ruby agent is disabled for the workspace", async () => {
       await GlobalAgentSettingsModel.create({
         workspaceId: workspace.id,
-        agentId: GLOBAL_AGENTS_SID.DUST,
+        agentId: GLOBAL_AGENTS_SID.RUBY,
         status: "disabled_by_admin",
       });
 
@@ -2368,7 +2368,7 @@ describe("postUserMessage", () => {
       });
       expect(mentionsInDb).toHaveLength(0);
 
-      // Even if @dust is disabled, we should still be able to explicitly call
+      // Even if @ruby is disabled, we should still be able to explicitly call
       // other active agents.
       const rateLimiterSpy = vi
         .spyOn(rateLimiterModule, "rateLimiter")
@@ -2433,7 +2433,7 @@ describe("postUserMessage", () => {
           isRichAgentMention
         );
       expect(agentMentions.some((m) => m.id === agentConfig1.sId)).toBe(true);
-      expect(agentMentions.some((m) => m.id === GLOBAL_AGENTS_SID.DUST)).toBe(
+      expect(agentMentions.some((m) => m.id === GLOBAL_AGENTS_SID.RUBY)).toBe(
         false
       );
 
@@ -2452,12 +2452,12 @@ describe("postUserMessage", () => {
       ).toBe(true);
       expect(
         otherAgentMentionsInDb.some(
-          (m) => m.agentConfigurationId === GLOBAL_AGENTS_SID.DUST
+          (m) => m.agentConfigurationId === GLOBAL_AGENTS_SID.RUBY
         )
       ).toBe(false);
     });
 
-    it("does not auto-mention @dust for api origin", async () => {
+    it("does not auto-mention @ruby for api origin", async () => {
       const user = auth.getNonNullableUser();
       const userJson = user.toJSON();
 
@@ -2486,7 +2486,7 @@ describe("postUserMessage", () => {
       expect(launchAgentLoopWorkflow).not.toHaveBeenCalled();
     });
 
-    it("does not auto-mention @dust when two distinct users already posted", async () => {
+    it("does not auto-mention @ruby when two distinct users already posted", async () => {
       const rateLimiterSpy = vi
         .spyOn(rateLimiterModule, "rateLimiter")
         .mockResolvedValue(100);
@@ -3460,7 +3460,7 @@ describe("editUserMessage", () => {
         origin: "web",
       },
       skipToolsValidation: false,
-      skipDustAutoMention: true,
+      skipRubyAutoMention: true,
     });
 
     if (postResult.isErr()) {
@@ -3566,7 +3566,7 @@ describe("editUserMessage", () => {
         origin: "web",
       },
       skipToolsValidation: false,
-      skipDustAutoMention: true,
+      skipRubyAutoMention: true,
     });
     expect(postResult.isOk()).toBe(true);
     vi.clearAllMocks();
@@ -3791,7 +3791,7 @@ describe("editUserMessage", () => {
     const user = auth.getNonNullableUser().toJSON();
     const postResult = await postUserMessage(auth, {
       conversationResource,
-      content: "Posted by Dust on the user's behalf",
+      content: "Posted by Ruby on the user's behalf",
       mentions: [],
       context: {
         username: user.username,
@@ -3802,7 +3802,7 @@ describe("editUserMessage", () => {
         origin: "system_activation",
       },
       skipToolsValidation: false,
-      skipDustAutoMention: true,
+      skipRubyAutoMention: true,
       doNotAssociateUser: true,
     });
     if (postResult.isErr()) {

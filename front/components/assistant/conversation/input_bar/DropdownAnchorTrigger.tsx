@@ -1,4 +1,4 @@
-import { DropdownMenuTrigger } from "@dust-tt/sparkle";
+import { DropdownMenuTrigger } from "@ruby-ai/ui";
 import type React from "react";
 
 interface DropdownAnchorTriggerProps {

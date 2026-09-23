@@ -5,7 +5,7 @@ import { useIsMobile } from "@app/lib/swr/useIsMobile";
 import { classNames, smoothScrollIntoView } from "@app/lib/utils";
 import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
 import type { UserType, WorkspaceType } from "@app/types/user";
-import { Page } from "@dust-tt/sparkle";
+import { Page } from "@ruby-ai/ui";
 import type { CSSProperties } from "react";
 import { useCallback } from "react";
 

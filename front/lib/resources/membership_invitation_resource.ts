@@ -381,7 +381,7 @@ export class MembershipInvitationResource extends BaseResource<MembershipInvitat
       try {
         decodedToken = verify(
           inviteToken,
-          config.getDustInviteTokenSecret()
+          config.getRubyInviteTokenSecret()
         ) as {
           membershipInvitationId: number;
         };

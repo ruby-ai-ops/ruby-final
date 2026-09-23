@@ -43,7 +43,7 @@ async function setupMessage() {
     workspace,
     conversation,
     agentConfig: agentConfiguration,
-    runIds: [run.dustRunId],
+    runIds: [run.rubyRunId],
   });
   await ConversationResource.updateAgentMessageCostCredits(auth, {
     agentMessageModelId: agentMessage.agentMessageId,
@@ -104,7 +104,7 @@ describe("getConversationConsumption", () => {
       conversationModelId: conversation.id,
       agentMessageModelId: agentMessage.agentMessageId,
       status: "succeeded",
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
       step: 1,
     });
     await AgentMessageConsumptionItemResource.recordItemsIdempotently(auth, {
@@ -184,7 +184,7 @@ describe("getConversationConsumption", () => {
         conversationId: conversation.id,
         rank: 1,
         agentConfigurationId: agentConfiguration.sId,
-        runIds: [previousRun.dustRunId],
+        runIds: [previousRun.rubyRunId],
       });
     if (!previousMessage.agentMessageId) {
       throw new Error("Previous-version agent message was not created.");
@@ -246,7 +246,7 @@ describe("getConversationConsumption", () => {
       conversationModelId: conversation.id,
       agentMessageModelId: agentMessage.agentMessageId,
       status: "succeeded",
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
     });
     await AgentMessageConsumptionItemResource.recordItemsIdempotently(auth, {
       conversation,
@@ -429,7 +429,7 @@ describe("getConversationConsumption", () => {
           rank: 1,
           agentConfigurationId,
           parentId: childUserMessage.id,
-          runIds: [run.dustRunId],
+          runIds: [run.rubyRunId],
         });
       if (!childAgentMessageRow.agentMessageId) {
         throw new Error("Child agent message was not created.");
@@ -485,7 +485,7 @@ describe("getConversationConsumption", () => {
       depth: 1,
     });
     await createAttributedSubAgent({
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST_TASK,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY_TASK,
       originMessageId: child.messageId,
       parentAgentMessageModelId: child.agentMessageModelId,
       parentConversationModelId: child.conversationModelId,
@@ -517,7 +517,7 @@ describe("getConversationConsumption", () => {
     );
     expect(consumption.details?.agents).toHaveLength(2);
     expect(consumption.details?.agents).not.toContainEqual(
-      expect.objectContaining({ agentId: GLOBAL_AGENTS_SID.DUST_TASK })
+      expect.objectContaining({ agentId: GLOBAL_AGENTS_SID.RUBY_TASK })
     );
   });
 });

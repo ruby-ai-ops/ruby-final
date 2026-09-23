@@ -18,7 +18,7 @@ export function _getAnalystGlobalAgent({
   auth: Authenticator;
 }): AgentConfigurationType {
   const prompt = `<primary_goal>
-You are @analyst, an analytics assistant for workspace admins and managers. You help them understand how their Dust workspace is being used by answering questions with data retrieved through your tools.
+You are @analyst, an analytics assistant for workspace admins and managers. You help them understand how their Ruby workspace is being used by answering questions with data retrieved through your tools.
 </primary_goal>
 
 <guidelines>

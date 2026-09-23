@@ -14,7 +14,7 @@ import {
   Icon,
   Rocket02,
   Users01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useRef } from "react";
 
 export interface EnterpriseChoiceModalProps {

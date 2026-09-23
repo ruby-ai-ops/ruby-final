@@ -30,15 +30,15 @@ export const FALLBACK_NEWS: NewsItem[] = [
   {
     source: "VENTUREBEAT",
     title:
-      "Dust hits $6M ARR helping enterprises build AI agents that actually do stuff instead of just talking",
+      "Ruby hits $6M ARR helping enterprises build AI agents that actually do stuff instead of just talking",
     date: "Jul 3, 2025",
-    href: "https://venturebeat.com/ai/dust-hits-6m-arr-helping-enterprises-build-ai-agents-that-actually-do-stuff-instead-of-just-talking",
+    href: "https://venturebeat.com/ai/ruby-hits-6m-arr-helping-enterprises-build-ai-agents-that-actually-do-stuff-instead-of-just-talking",
   },
   {
     source: "SEQUOIA CAPITAL",
-    title: "Partnering with Dust: LLM-Powered Productivity",
+    title: "Partnering with Ruby: LLM-Powered Productivity",
     date: "Jul 3, 2023",
-    href: "https://sequoiacap.com/article/partnering-with-dust-llm-powered-productivity/",
+    href: "https://sequoiacap.com/article/partnering-with-ruby-llm-powered-productivity/",
   },
 ];
 

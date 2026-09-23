@@ -83,7 +83,7 @@ export const sqAgentConfig: SqAgentConfig = {
     ),
     subheadline:
       "Spin up AI teammates that know your business, use your tools, and work safely alongside your team.",
-    ctaButtonText: "Start Free Trial",
+    ctaButtonText: "Get started",
     testimonials: [
       TESTIMONIALS.danielBaralt,
       TESTIMONIALS.everettBerryImpact,
@@ -91,13 +91,13 @@ export const sqAgentConfig: SqAgentConfig = {
     ],
     videos: [
       {
-        id: "dust-in-action",
-        title: "Dust in Action",
+        id: "ruby-in-action",
+        title: "Ruby in Action",
         embedUrl: "https://www.youtube.com/embed/UNrGsKCtAV0",
       },
       {
-        id: "clay-dust-gtm",
-        title: "Clay x Dust - GTM AI",
+        id: "clay-ruby-gtm",
+        title: "Clay x Ruby - GTM AI",
         embedUrl: "https://www.youtube.com/embed/kZ-Zyjjd7ns",
       },
       {
@@ -106,7 +106,7 @@ export const sqAgentConfig: SqAgentConfig = {
         embedUrl: "https://www.youtube.com/embed/38vCIR2yHoA",
       },
     ],
-    usersCount: "3,000+ teams already using Dust",
+    usersCount: "3,000+ teams already using Ruby",
   },
 
   trustedByTitle: "TRUSTED BY LEADING B2B SAAS COMPANIES",
@@ -118,8 +118,8 @@ export const sqAgentConfig: SqAgentConfig = {
       description:
         "Why spend hours searching for information, asking already answered questions, and manually uploading data/files?",
       features: [
-        "Connect to 50+ integrations including Slack, Notion, and Salesforce",
-        "Custom AI assistants trained on your company's knowledge",
+        "Connect approved company knowledge and tools",
+        "Configure team agents around your company's knowledge",
         "Real-time collaboration and handoffs between AI and humans",
         "Complete audit trail and analytics dashboard",
       ],
@@ -164,7 +164,7 @@ export const sqAgentConfig: SqAgentConfig = {
               </div>
               <div className="flex-1 space-y-2">
                 <p className="text-sm font-medium text-primary">
-                  Dust Assistant
+                  Ruby Assistant
                 </p>
                 <p className="text-sm text-muted-foreground">
                   To set up SSO for enterprise accounts, navigate to Settings →
@@ -193,7 +193,7 @@ export const sqAgentConfig: SqAgentConfig = {
       features: [
         "No-code agent builder with templates",
         "Customize agent behavior and permissions",
-        "Deploy to Slack, web, or API",
+        "Deploy agents to the surfaces your team uses",
         "Track performance and iterate quickly",
       ],
       image: {
@@ -266,12 +266,12 @@ export const sqAgentConfig: SqAgentConfig = {
       title: "Connect all your data",
       titleHighlight: "easily and securely",
       description:
-        'Build a central "AI Brain" with all of your company knowledge across Slack, Google Drive, Notion, HubSpot, GitHub, and more, safely and securely.',
+        "Connect your company knowledge to shared agents in one controlled workspace.",
       features: [
-        "50+ native integrations out of the box",
+        "Connect approved company tools and knowledge",
         "Real-time sync keeps data fresh",
         "Granular access controls and permissions",
-        "SOC 2 Type II certified",
+        "Workspace permissions and controlled access",
       ],
       image: {
         src: "/static/landing/enterprise/section2/security_permissions.png",
@@ -327,9 +327,9 @@ export const sqAgentConfig: SqAgentConfig = {
                     <circle cx="4" cy="20" r="2" />
                   </svg>
                 </div>
-                <span className="text-xs font-medium">@Dustagent</span>
+                <span className="text-xs font-medium">@Rubyagent</span>
                 <span className="text-xs text-muted-foreground">
-                  Salesforce
+                  Company tool
                 </span>
               </div>
               <p className="text-xs text-muted-foreground">
@@ -344,7 +344,7 @@ export const sqAgentConfig: SqAgentConfig = {
       title: "Go beyond search",
       titleHighlight: "and chat",
       description:
-        "Dust agents can use multiple tools and produce concrete deliverables: data analyses, lead scoring, automated sales emails, and so much more.",
+        "Ruby agents can use multiple tools and produce concrete deliverables: data analyses, lead scoring, automated sales emails, and so much more.",
       features: [
         "Advanced reasoning across multiple sources",
         "Data analysis and visualization",
@@ -412,7 +412,7 @@ export const sqAgentConfig: SqAgentConfig = {
   bottomTestimonials: {
     title: "Loved by teams everywhere",
     subtitle:
-      "See why leading B2B companies trust Dust to power their operations.",
+      "See why leading B2B companies trust Ruby to power their operations.",
     testimonials: [
       TESTIMONIALS.inesDelbecq,
       TESTIMONIALS.ryanWang,
@@ -422,8 +422,7 @@ export const sqAgentConfig: SqAgentConfig = {
 
   cta: {
     title: "Ready to transform your team?",
-    subtitle:
-      "Join our crew of fast moving builders like Clay, Vanta, and WhatNot :)",
+    subtitle: "Build team agents around your company knowledge and workflows.",
     ctaText: "Schedule a demo",
     ctaLink: "/home/contact",
   },

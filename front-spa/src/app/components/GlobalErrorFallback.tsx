@@ -1,4 +1,4 @@
-import { AlertCircle, Button, Icon } from "@dust-tt/sparkle";
+import { AlertCircle, Button, Icon } from "@ruby-ai/ui";
 
 export function GlobalErrorFallback() {
   return (

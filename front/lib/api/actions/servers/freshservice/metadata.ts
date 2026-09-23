@@ -803,7 +803,7 @@ export const FRESHSERVICE_SERVER = {
       supported_use_cases: ["platform_actions", "personal_actions"] as const,
     },
     icon: "FreshserviceLogo",
-    documentationUrl: "https://docs.dust.tt/docs/freshservice",
+    documentationUrl: "https://docs.ruby.ad/docs/freshservice",
   },
   tools: FRESHSERVICE_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

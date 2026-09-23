@@ -1,5 +1,5 @@
-import type { LoggerInterface, Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { LoggerInterface, Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 
 import type {
   ConnectionCredentials,

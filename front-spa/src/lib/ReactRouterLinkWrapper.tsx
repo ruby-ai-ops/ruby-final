@@ -1,4 +1,4 @@
-import type { SparkleLinkProps } from "@dust-tt/sparkle";
+import type { RubyUILinkProps } from "@ruby-ai/ui";
 import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import url from "url";
@@ -6,7 +6,7 @@ import url from "url";
 // Link wrapper that uses React Router's Link for SPA navigation
 export const ReactRouterLinkWrapper = forwardRef<
   HTMLAnchorElement,
-  SparkleLinkProps
+  RubyUILinkProps
 >(function ReactRouterLinkWrapper(
   { href, children, shallow: _shallow, replace, prefetch: _prefetch, ...props },
   ref

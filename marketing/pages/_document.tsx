@@ -55,10 +55,10 @@ class MyDocument extends Document {
                    process.env.NEXT_PUBLIC_COMMIT_HASH || ""
 }',
                  allowedTracingUrls: [
-                   "https://dust.tt",
-                   "https://eu.dust.tt",
-                   "https://front-edge.dust.tt",
-                   "https://eu.front-edge.dust.tt",
+                   "https://ruby.ad",
+                   "https://eu.ruby.ad",
+                   "https://front-edge.ruby.ad",
+                   "https://eu.front-edge.ruby.ad",
                  ],
                  traceSampleRate: 5,
                  traceContextInjection: 'sampled',

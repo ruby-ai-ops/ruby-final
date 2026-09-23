@@ -23,7 +23,7 @@ async function _getCoreDocuments(
 
   // biome-ignore lint/plugin/noRawSql: Leggit
   const managedDsData = await frontReplica.query(
-    'SELECT id, "connectorId", "connectorProvider", "dustAPIProjectId" \
+    'SELECT id, "connectorId", "connectorProvider", "rubyAPIProjectId" \
          FROM data_sources WHERE id = :frontDataSourceId',
     {
       type: QueryTypes.SELECT,
@@ -34,7 +34,7 @@ async function _getCoreDocuments(
   );
   const managedDs = managedDsData as {
     id: number;
-    dustAPIProjectId: string;
+    rubyAPIProjectId: string;
   }[];
   if (!managedDs.length) {
     return new Err(
@@ -44,10 +44,10 @@ async function _getCoreDocuments(
   const ds = managedDs[0];
   // biome-ignore lint/plugin/noRawSql: production check uses read replica
   const coreDsData = await coreReplica.query(
-    `SELECT id FROM data_sources WHERE "project" = :dustAPIProjectId`,
+    `SELECT id FROM data_sources WHERE "project" = :rubyAPIProjectId`,
     {
       replacements: {
-        dustAPIProjectId: ds.dustAPIProjectId,
+        rubyAPIProjectId: ds.rubyAPIProjectId,
       },
       type: QueryTypes.SELECT,
     }

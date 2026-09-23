@@ -32,7 +32,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   SearchInput,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { PaginationState } from "@tanstack/react-table";
 import { useCallback, useState } from "react";
 

@@ -1,0 +1,83 @@
+import type { ToolHandlers } from "@app/lib/actions/mcp_internal_actions/tool_definition";
+import { buildTools } from "@app/lib/actions/mcp_internal_actions/tool_definition";
+import {
+  GET_WORKSPACE_METADATA_TOOL_NAME,
+  ADMIN_TOOLS_METADATA,
+} from "@app/lib/api/actions/servers/admin/metadata";
+import { agentHandlers } from "@app/lib/api/actions/servers/admin/tools/agents";
+import { connectorHandlers } from "@app/lib/api/actions/servers/admin/tools/connectors";
+import { conversationHandlers } from "@app/lib/api/actions/servers/admin/tools/conversations";
+import { feedbackHandlers } from "@app/lib/api/actions/servers/admin/tools/feedbacks";
+import { skillHandlers } from "@app/lib/api/actions/servers/admin/tools/skills";
+import { userHandlers } from "@app/lib/api/actions/servers/admin/tools/users";
+import {
+  enforceAdminSecurityGates,
+  getTargetAuth,
+  jsonResponse,
+} from "@app/lib/api/actions/servers/admin/tools/utils";
+import { workspaceHandlers } from "@app/lib/api/actions/servers/admin/tools/workspace";
+import config from "@app/lib/api/config";
+import { getMetronomeCustomerUrl } from "@app/lib/metronome/urls";
+import { WorkspaceResource } from "@app/lib/resources/workspace_resource";
+
+const handlers: ToolHandlers<typeof ADMIN_TOOLS_METADATA> = {
+  [GET_WORKSPACE_METADATA_TOOL_NAME]: async ({ workspace_id }, extra) => {
+    const gateResult = await enforceAdminSecurityGates(
+      extra,
+      GET_WORKSPACE_METADATA_TOOL_NAME,
+      workspace_id
+    );
+    if (gateResult.isErr()) {
+      return gateResult;
+    }
+
+    const targetAuthResult = await getTargetAuth(workspace_id);
+    if (targetAuthResult.isErr()) {
+      return targetAuthResult;
+    }
+    const targetAuth = targetAuthResult.value;
+
+    const targetWorkspace = targetAuth.getNonNullableWorkspace();
+    const plan = targetAuth.plan();
+
+    const workspaceResource = await WorkspaceResource.fetchById(workspace_id);
+    const workosEnvironmentId = config.getWorkOSEnvironmentId();
+
+    return jsonResponse({
+      sId: targetWorkspace.sId,
+      name: targetWorkspace.name,
+      segmentation: targetWorkspace.segmentation,
+      ssoEnforced:
+        "ssoEnforced" in targetWorkspace
+          ? targetWorkspace.ssoEnforced
+          : undefined,
+      regionalModelsOnly: targetWorkspace.regionalModelsOnly,
+      plan: plan
+        ? {
+            code: plan.code,
+            name: plan.name,
+          }
+        : null,
+      links: {
+        admin: `${config.getAdminAppUrl()}/${targetWorkspace.sId}`,
+        workos: workspaceResource?.workOSOrganizationId
+          ? `https://dashboard.workos.com/${workosEnvironmentId}/organizations/${workspaceResource.workOSOrganizationId}`
+          : null,
+        metronome: workspaceResource?.metronomeCustomerId
+          ? getMetronomeCustomerUrl(workspaceResource.metronomeCustomerId)
+          : null,
+        health: `https://metabase.ruby.ad/dashboard/34-snowflake-workspace-health?end_date=2030-12-31&start_date=2024-01-01&tab=30-executive-summary&workspace_size_difference_margin=0.2&workspacesid=${targetWorkspace.sId}`,
+      },
+    });
+  },
+
+  ...workspaceHandlers,
+  ...connectorHandlers,
+  ...conversationHandlers,
+  ...userHandlers,
+  ...agentHandlers,
+  ...skillHandlers,
+  ...feedbackHandlers,
+};
+
+export const TOOLS = buildTools(ADMIN_TOOLS_METADATA, handlers);

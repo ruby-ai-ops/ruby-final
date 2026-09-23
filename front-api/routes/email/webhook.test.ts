@@ -82,7 +82,7 @@ function buildSendgridForm(senderEmail: string, messageId: string): FormData {
   form.set("dkim", `{@${senderDomain} : pass}`);
   form.set(
     "envelope",
-    JSON.stringify({ from: senderEmail, to: ["some-agent@dust.team"] })
+    JSON.stringify({ from: senderEmail, to: ["some-agent@ruby.team"] })
   );
   form.set("headers", `Message-ID: ${messageId}`);
   return form;
@@ -292,7 +292,7 @@ describe("POST /api/email/webhook", () => {
       expect(sendEmailToRecipients).toHaveBeenCalledOnce()
     );
     const [{ message }] = vi.mocked(sendEmailToRecipients).mock.calls[0];
-    expect(message.html).toContain("Failed to match a valid Dust user");
+    expect(message.html).toContain("Failed to match a valid Ruby user");
   });
 
   it("ignores an invalid source error header on a relayed request", async () => {
@@ -306,7 +306,7 @@ describe("POST /api/email/webhook", () => {
       expect(sendEmailToRecipients).toHaveBeenCalledOnce()
     );
     const [{ message }] = vi.mocked(sendEmailToRecipients).mock.calls[0];
-    expect(message.html).toContain("Failed to match a valid Dust user");
+    expect(message.html).toContain("Failed to match a valid Ruby user");
   });
 
   it("keeps the local error on a relayed request when it is at least as informative", async () => {

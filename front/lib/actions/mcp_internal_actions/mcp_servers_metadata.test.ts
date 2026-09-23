@@ -134,7 +134,7 @@ function createMockAuthenticator(): Authenticator {
     isAdmin: () => true,
     isManager: () => true,
     isUser: () => true,
-    isDustSuperUser: () => true,
+    isRubySuperUser: () => true,
     role: () => "admin",
     user: () => mockUser,
     groups: () => [],
@@ -165,7 +165,7 @@ async function getToolsFromServer(
   });
 
   const mcpClient = new Client({
-    name: "dust-mcp-metadata-test",
+    name: "ruby-mcp-metadata-test",
     version: "1.0.0",
   });
 

@@ -93,7 +93,7 @@ the UI, so the form preview and the stored row cannot disagree.
 
 ## 5. Functions
 
-Four, all \`fast\` unless one has to call a Dust tool:
+Four, all \`fast\` unless one has to call a Ruby tool:
 
 - \`list-rows\` — one bounded screen of rows with their computed fields.
 - \`create-row\` — validates, stamps \`createdBy\` and \`createdAt\`, returns the created row with its
@@ -109,7 +109,7 @@ Four, all \`fast\` unless one has to call a Dust tool:
 Publish first, then seed the live Frame from the Computer:
 
 \`\`\`bash
-dsbx frame call <frame-id> import-rows --input '<json>'
+rbx frame call <frame-id> import-rows --input '<json>'
 \`\`\`
 
 - At most ${IMPORT_BATCH_SIZE} rows per call, from a file when the JSON gets big.

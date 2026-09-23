@@ -8,7 +8,7 @@ import {
   InfoCircle,
   Plus,
   ReverseLeft,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 import { useFormContext, useFormState } from "react-hook-form";
 

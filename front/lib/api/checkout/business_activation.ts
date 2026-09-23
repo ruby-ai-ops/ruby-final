@@ -101,7 +101,7 @@ function checkoutToMembershipSeatType(
  * Sequence:
  *  1. Validate workspace is on CP_FREE_PLAN.
  *  2. Ensure/create Metronome customer (linked to Stripe).
- *  3. Provision Business Metronome contract (stamped with DUST_PAYMENT_GATE_TYPE
+ *  3. Provision Business Metronome contract (stamped with RUBY_PAYMENT_GATE_TYPE
  *     so contract.start skips the automatic plan swap).
  *  4. Validate coupon + create pending redemption if applicable.
  *  5. Write Redis pending activation status (with couponRedemptionId).

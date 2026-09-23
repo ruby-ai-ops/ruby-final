@@ -9,7 +9,7 @@ import { useCallback, useRef, useState } from "react";
 
 // Hidden in the panel by its origin, so what the user sees first is @analyst's reply to it.
 function openingMessage(view: AnalyticsViewInput): string {
-  return `<dust_system>
+  return `<ruby_system>
 The user just opened the @analyst panel on the workspace Analytics page.
 
 What they have set up on the page right now:
@@ -18,7 +18,7 @@ ${describeAnalyticsView(view)}
 Do NOT call any tools. Greet briefly, naming the period they chose and, when they have any, each
 filter they applied by its name rather than as "the selected filters". Then offer 2-3 example
 questions that fit this exact setup.
-</dust_system>`;
+</ruby_system>`;
 }
 
 /**

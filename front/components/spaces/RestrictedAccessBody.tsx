@@ -3,7 +3,7 @@ import type { SearchMemberType } from "@app/components/members/MemberSelectionTa
 import { MemberSelectionTable } from "@app/components/members/MemberSelectionTable";
 import type { GroupType } from "@app/types/groups";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@dust-tt/sparkle";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface RestrictedAccessBodyProps {

@@ -83,7 +83,7 @@ describe("POST /api/v1/public/frames/[token]/verify-code", () => {
     });
     expect(aliceResponse.status).toBe(200);
     expect(aliceResponse.headers.get("Set-Cookie")).toContain(
-      "dust_frame_session="
+      "ruby_frame_session="
     );
     const bobOtp = await generateFrameOtpChallenge({
       shareToken,
@@ -101,7 +101,7 @@ describe("POST /api/v1/public/frames/[token]/verify-code", () => {
     ).toBe(403);
   });
 
-  it("returns 200 and sets dust_frame_session cookie on valid code", async () => {
+  it("returns 200 and sets ruby_frame_session cookie on valid code", async () => {
     const otpResult = await generateFrameOtpChallenge({
       shareToken,
       email: VIEWER_EMAIL,
@@ -118,7 +118,7 @@ describe("POST /api/v1/public/frames/[token]/verify-code", () => {
 
     const cookie = response.headers.get("Set-Cookie");
     expect(cookie).toBeDefined();
-    expect(String(cookie)).toContain("dust_frame_session=");
+    expect(String(cookie)).toContain("ruby_frame_session=");
 
     const sessions = await ExternalViewerSessionModel.findAll({
       where: { workspaceId: workspace.id, email: VIEWER_EMAIL },

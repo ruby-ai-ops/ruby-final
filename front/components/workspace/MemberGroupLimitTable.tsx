@@ -1,6 +1,6 @@
 import { CreditLimitNumberInput } from "@app/components/workspace/CreditLimitInput";
 import type { GroupRow } from "@app/components/workspace/member_spend_limit_helpers";
-import { Chip, DataTable } from "@dust-tt/sparkle";
+import { Chip, DataTable } from "@ruby-ai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 
 interface MemberGroupLimitTableProps {

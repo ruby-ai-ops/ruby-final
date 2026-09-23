@@ -1,6 +1,6 @@
 import { MODEL_PRICING } from "@app/lib/api/assistant/token_pricing";
 import { getModelConfigByModelId } from "@app/lib/llms/model_configurations";
-import { DustOpenAIGptFiveDotSixTerraLongContextGlobalOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_five_dot_six_terra_long_context_global_openai_responses";
+import { RubyOpenAIGptFiveDotSixTerraLongContextGlobalOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_five_dot_six_terra_long_context_global_openai_responses";
 import { isEndpointAvailable } from "@app/lib/llms/stream/utils/is_endpoint_available";
 import { OpenAIGptFiveDotSixLunaGlobalOpenAIResponsesBatch } from "@app/lib/model_constructors/batch/endpoints/openai_gpt_five_dot_six_luna_global_openai_responses";
 import { OpenAIGptFiveDotSixLunaEuropeOpenAIResponsesStream } from "@app/lib/model_constructors/stream/endpoints/openai_gpt_five_dot_six_luna_eu_openai_responses";
@@ -159,14 +159,14 @@ describe("GPT 5.6 model configurations", () => {
 
     expect(
       isEndpointAvailable(
-        DustOpenAIGptFiveDotSixTerraLongContextGlobalOpenAIResponsesStream,
+        RubyOpenAIGptFiveDotSixTerraLongContextGlobalOpenAIResponsesStream,
         workspace,
         modelFilter
       )
     ).toBe(false);
     expect(
       isEndpointAvailable(
-        DustOpenAIGptFiveDotSixTerraLongContextGlobalOpenAIResponsesStream,
+        RubyOpenAIGptFiveDotSixTerraLongContextGlobalOpenAIResponsesStream,
         {
           ...workspace,
           featureFlags: ["gpt_5_6_terra_long_context"],

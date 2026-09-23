@@ -21,7 +21,7 @@ import {
   NotionLogo,
   SlackLogo,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useMemo } from "react";
 
@@ -41,7 +41,7 @@ function formatActorLabel(
   switch (type) {
     case "agent":
       if (agentId === POD_MANAGER_AGENT_SID || agentId === "project_manager") {
-        return "Dust";
+        return "Ruby";
       }
       const name = agentId ? agentNameById.get(agentId) : null;
       return name || "an agent";

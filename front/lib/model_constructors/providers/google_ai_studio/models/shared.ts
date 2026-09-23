@@ -22,7 +22,7 @@ const baseConfig = inputConfigSchema.extend({
 
 // Supports all native thinking levels (minimal/low/medium/high). Google
 // recommends `temperature: 1` but accepts the whole 0..2 range; the coercion is
-// a Dust product choice applied in the llms layer.
+// a Ruby product choice applied in the llms layer.
 export const geminiV3ConfigSchema = baseConfig.extend({
   reasoning: z
     .object({

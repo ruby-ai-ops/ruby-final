@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import {
   isAllowlistShareScopeStale,
   isAllowlistStale,
@@ -31,7 +31,7 @@ function unverifiableFrameFileRefsShareError(
   unverifiableRefs: string[]
 ): AuthorizedFileAccessShareError {
   return {
-    name: "dust_error",
+    name: "ruby_error",
     code: "invalid_request_error",
     message: `Frame references files that cannot be verified: ${unverifiableRefs.join(", ")}`,
     unverifiableRefs,
@@ -140,7 +140,7 @@ export async function ensureAuthorizedFileAccessForShare(
     suppliedFrameContent ?? (await readFrameFileContent(auth, frameFile));
   if (frameContent === null) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: `Failed to read frame content for authorized file access (file: ${frameFile.sId})`,
     });
@@ -217,7 +217,7 @@ export async function readAllowlistedScopedVizFile({
     workspace.sId
   );
 
-  const fsResult = await DustFileSystem.fromScopedPath(
+  const fsResult = await RubyFileSystem.fromScopedPath(
     auth,
     canonicalScopedPath
   );
@@ -336,7 +336,7 @@ export async function reverifyAuthorAccess(
     return false;
   }
 
-  const fsResult = await DustFileSystem.fromScopedPath(auth, canonicalPath);
+  const fsResult = await RubyFileSystem.fromScopedPath(auth, canonicalPath);
   if (fsResult.isErr()) {
     return false;
   }

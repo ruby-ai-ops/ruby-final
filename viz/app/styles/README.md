@@ -12,7 +12,7 @@ Rendered Frames fetch this small report and observe class usage, including neste
 
 This measures usage of dropped safelisted V3 classes, not arbitrary unknown class names or visual changes to classes that still compile. Reports are skipped when unavailable or when their stylesheet hashes do not match the loaded page. An older host or a standalone Viz page without the host logger will not record events. Deploy the host receiver before Viz to collect rollout data.
 
-A native V4 upgrade can change existing Frames even when every class name exists. Removed opacity utilities no longer work, while slash syntax such as `bg-black/80` does. Default colors, preflight, blur/ring scales, spacing/divider selectors, transforms, outlines, and hover behavior can differ. Review representative saved Frames and slideshows against [Tailwind's upgrade guide](https://tailwindcss.com/docs/upgrade-guide#changes-from-v3) before rollout. Sparkle integration remains separate.
+A native V4 upgrade can change existing Frames even when every class name exists. Removed opacity utilities no longer work, while slash syntax such as `bg-black/80` does. Default colors, preflight, blur/ring scales, spacing/divider selectors, transforms, outlines, and hover behavior can differ. Review representative saved Frames and slideshows against [Tailwind's upgrade guide](https://tailwindcss.com/docs/upgrade-guide#changes-from-v3) before rollout. RubyUI integration remains separate.
 
 To validate the production styles and runtime diagnostics, from the repository root:
 

@@ -398,7 +398,7 @@ export const GOOGLE_CALENDAR_SERVER = {
         "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events",
     },
     icon: "GcalLogo",
-    documentationUrl: "https://docs.dust.tt/docs/google-calendar",
+    documentationUrl: "https://docs.ruby.ad/docs/google-calendar",
   },
   tools: GOOGLE_CALENDAR_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

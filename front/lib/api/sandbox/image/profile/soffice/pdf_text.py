@@ -214,7 +214,7 @@ def cross_shape_overprints(words, shapes, y_fraction: float = OVERPRINT_Y_FRACTI
     return out
 
 
-# A rendered word must poke at least this far past its OWN box's side before the
+# A rendered word must admin at least this far past its OWN box's side before the
 # box is judged to not contain its text. Generous on purpose: LibreOffice
 # substitutes the deck's real (often absent) font and substitutes run wide, so a
 # small horizontal spill is a render artefact, not a defect.

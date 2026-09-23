@@ -166,7 +166,7 @@ export async function storeAgentAnalyticsActivity(
     userMessageModel: userUserMessageRow,
     conversationRow,
     contextOrigin: userUserMessageRow.userContextOrigin,
-    dustRunIds: agentLoopArgs.dustRunIds,
+    rubyRunIds: agentLoopArgs.rubyRunIds,
   });
 }
 
@@ -182,7 +182,7 @@ export async function storeAgentAnalytics(
     userMessageModel: UserMessageModel;
     conversationRow: ConversationModel;
     contextOrigin: UserMessageOrigin | null;
-    dustRunIds?: string[];
+    rubyRunIds?: string[];
   }
 ): Promise<void> {
   const {
@@ -192,7 +192,7 @@ export async function storeAgentAnalytics(
     userMessageModel,
     conversationRow,
     contextOrigin,
-    dustRunIds,
+    rubyRunIds,
   } = params;
   const actions = await AgentMCPActionResource.listByAgentMessageIds(auth, [
     agentAgentMessageRow.id,
@@ -204,11 +204,11 @@ export async function storeAgentAnalytics(
   // before the credit path has tagged the runs collapses every execution into
   // one `LEGACY_RUN_KEY` group and single-ceils the message — under-counting
   // `llm_awu` on multi-execution (interrupt/resume) messages. Idempotent: same
-  // `dustRunIds` → same runKey as the credit/emit paths.
-  if (dustRunIds && dustRunIds.length > 0) {
-    await RunResource.setRunKeyForDustRunIds(auth, {
-      dustRunIds,
-      runKey: computeRunKey(dustRunIds),
+  // `rubyRunIds` → same runKey as the credit/emit paths.
+  if (rubyRunIds && rubyRunIds.length > 0) {
+    await RunResource.setRunKeyForRubyRunIds(auth, {
+      rubyRunIds,
+      runKey: computeRunKey(rubyRunIds),
     });
   }
 
@@ -295,7 +295,7 @@ export async function storeAgentAnalytics(
     : [];
 
   // Resolve API key name from stored ID, falling back to auth context if key was deleted.
-  // System keys are Dust-internal plumbing (Slack bot, connectors, ...), not
+  // System keys are Ruby-internal plumbing (Slack bot, connectors, ...), not
   // workspace API usage: leave api_key_name unset so those messages report as
   // "Not API" in analytics.
   let apiKeyName: string | undefined;
@@ -377,8 +377,8 @@ async function fetchRunUsagesForMessage(
     return [];
   }
 
-  const runResources = await RunResource.listByDustRunIds(auth, {
-    dustRunIds: agentMessage.runIds,
+  const runResources = await RunResource.listByRubyRunIds(auth, {
+    rubyRunIds: agentMessage.runIds,
   });
   return RunResource.listRunUsagesForRuns(auth, {
     runs: runResources,
@@ -1063,7 +1063,7 @@ async function appendNegativeFeedbackTracesToLangfuseDataset({
   for (const feedback of negativeFeedbacks) {
     await addTraceToLangfuseDataset({
       datasetName,
-      dustTraceId: latestTraceId,
+      rubyTraceId: latestTraceId,
       feedbackId: feedback.id,
       workspaceId,
       feedbackContent: feedback.content,

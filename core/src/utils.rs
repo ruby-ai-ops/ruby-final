@@ -38,16 +38,16 @@ impl std::error::Error for ParseError {
 }
 
 pub async fn init_check() -> Result<PathBuf> {
-    let current_dir = tokio::task::spawn_blocking(|| match std::env::var("DUST_DIR") {
-        Ok(dust_dir) => PathBuf::from(shellexpand::tilde(&dust_dir).into_owned()),
+    let current_dir = tokio::task::spawn_blocking(|| match std::env::var("RUBY_DIR") {
+        Ok(ruby_dir) => PathBuf::from(shellexpand::tilde(&ruby_dir).into_owned()),
         Err(_) => PathBuf::from(std::env::current_dir().unwrap()),
     })
     .await?;
 
-    let index_path = current_dir.join("index.dust");
+    let index_path = current_dir.join("index.ruby");
     if !index_path.exists().await {
         Err(anyhow::anyhow!(
-            "Not a Dust directory (index.dust not found in {})",
+            "Not a Ruby directory (index.ruby not found in {})",
             current_dir.display()
         ))?
     }
@@ -55,7 +55,7 @@ pub async fn init_check() -> Result<PathBuf> {
     let store_path = current_dir.join("store.sqlite");
     if !store_path.exists().await {
         Err(anyhow::anyhow!(
-            "Not a Dust directory (store.sqlite not found in {})",
+            "Not a Ruby directory (store.sqlite not found in {})",
             current_dir.display()
         ))?
     }
@@ -177,12 +177,12 @@ impl<B> MakeSpan<B> for CoreRequestMakeSpan {
             method = %request.method(),
             uri = %request.uri(),
             request_span_id = new_id()[0..12].to_string(),
-            dust_client_name = request.extensions()
+            ruby_client_name = request.extensions()
             .get::<Extension<Arc<String>>>()
             .map(|ext| ext.as_ref().as_str())
             .unwrap_or("unknown"),
-            dust_caller = request.headers()
-                .get("x-dust-caller")
+            ruby_caller = request.headers()
+                .get("x-ruby-caller")
                 .and_then(|v| v.to_str().ok())
                 .unwrap_or("unknown")
         )

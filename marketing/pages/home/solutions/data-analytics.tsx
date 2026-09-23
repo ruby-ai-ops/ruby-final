@@ -1,5 +1,3 @@
-import { CONTENTFUL_REVALIDATE_SECONDS } from "@marketing/lib/contentful/client";
-import { fetchLogoLists } from "@marketing/lib/logo_bars_server";
 import { QuoteSection } from "@marketing/components/home/ContentBlocks";
 import { Grid } from "@marketing/components/home/ContentComponents";
 import { BenefitsSection } from "@marketing/components/home/content/Solutions/BenefitsSection";
@@ -16,13 +14,15 @@ import {
 import { DemoVideoSection } from "@marketing/components/home/content/Solutions/DemoVideoSection";
 import { HeroSection } from "@marketing/components/home/content/Solutions/HeroSection";
 import { UseCasesSection } from "@marketing/components/home/content/Solutions/UseCasesSection";
+import { VisibilityGate } from "@marketing/components/home/content/Solutions/VisibilityGate";
 import type { LandingLayoutProps } from "@marketing/components/home/LandingLayout";
 import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
+import { MARKETING_SURFACES } from "@marketing/lib/marketing_visibility";
 import TrustedBy from "@marketing/components/home/TrustedBy";
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
 import { classNames } from "@marketing/lib/utils";
-import { LegacyButton as Button } from "@dust-tt/sparkle";
+import { LegacyButton as Button } from "@ruby-ai/ui";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ReactElement } from "react";
@@ -31,11 +31,7 @@ export async function getStaticProps() {
   return {
     props: {
       gtmTrackingId: process.env.NEXT_PUBLIC_GTM_TRACKING_ID ?? null,
-      logoLists: await fetchLogoLists(),
     },
-    // The logo bar is editor-managed in Contentful, so the page has to
-    // revalidate for a GTM change to go live without a deploy.
-    revalidate: CONTENTFUL_REVALIDATE_SECONDS,
   };
 }
 
@@ -47,8 +43,7 @@ const GRID_SECTION_CLASSES = classNames(
   "2xl:col-start-1"
 );
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function Data() {
+export default function DataNextJS() {
   const router = useRouter();
 
   return (
@@ -71,20 +66,26 @@ export default function Data() {
           <div className={GRID_SECTION_CLASSES}>
             <UseCasesSection useCase={UseCases} />
           </div>
-          <div className={GRID_SECTION_CLASSES}>
-            <DemoVideoSection demoVideo={DemoVideo} />
-          </div>
-          <div className={GRID_SECTION_CLASSES}>
-            <QuoteSection {...Quote} />
-          </div>
-          <TrustedBy />
+          <VisibilityGate surface={MARKETING_SURFACES.demoVideo}>
+            <div className={GRID_SECTION_CLASSES}>
+              <DemoVideoSection demoVideo={DemoVideo} />
+            </div>
+          </VisibilityGate>
+          <VisibilityGate surface={MARKETING_SURFACES.customerProof}>
+            <div className={GRID_SECTION_CLASSES}>
+              <QuoteSection {...Quote} />
+            </div>
+          </VisibilityGate>
+          <VisibilityGate surface={MARKETING_SURFACES.trustedSection}>
+            <TrustedBy />
+          </VisibilityGate>
           <div className={GRID_SECTION_CLASSES}>
             {Hero.ctaButtons && (
               <div className="mt-4 flex justify-center gap-4">
                 {Hero.ctaButtons.primary && (
                   <Link href={Hero.ctaButtons.primary.href} shallow={true}>
                     <Button
-                      variant="highlight"
+                      variant="primary"
                       size="md"
                       label={Hero.ctaButtons.primary.label}
                       icon={Hero.ctaButtons.primary.icon}
@@ -116,6 +117,6 @@ export default function Data() {
   );
 }
 
-Data.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
+DataNextJS.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
   return <LandingLayout pageProps={pageProps}>{page}</LandingLayout>;
 };

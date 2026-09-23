@@ -47,8 +47,8 @@ export async function deleteTable({
       span?.setTag("workspace.id", owner.sId);
       span?.setTag("data_source.s_id", dataSource.sId);
       span?.setTag("table.id", tableId);
-      span?.setTag("core.project_id", dataSource.dustAPIProjectId);
-      span?.setTag("core.data_source_id", dataSource.dustAPIDataSourceId);
+      span?.setTag("core.project_id", dataSource.rubyAPIProjectId);
+      span?.setTag("core.data_source_id", dataSource.rubyAPIDataSourceId);
       return _deleteTable({ owner, dataSource, tableId });
     }
   );
@@ -66,16 +66,16 @@ async function _deleteTable({
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
   const deleteRes = await coreAPI.deleteTable({
-    projectId: dataSource.dustAPIProjectId,
-    dataSourceId: dataSource.dustAPIDataSourceId,
+    projectId: dataSource.rubyAPIProjectId,
+    dataSourceId: dataSource.rubyAPIDataSourceId,
     tableId,
     caller: "tables-api-delete-table",
   });
   if (deleteRes.isErr()) {
     logger.error(
       {
-        projectId: dataSource.dustAPIProjectId,
-        dataSourceId: dataSource.dustAPIDataSourceId,
+        projectId: dataSource.rubyAPIProjectId,
+        dataSourceId: dataSource.rubyAPIDataSourceId,
         dataSourceName: dataSource.name,
         workspaceId: owner.sId,
         error: deleteRes.error,
@@ -184,8 +184,8 @@ export async function upsertTableFromCsv({
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
   const tableRes = await coreAPI.upsertTable({
-    projectId: dataSource.dustAPIProjectId,
-    dataSourceId: dataSource.dustAPIDataSourceId,
+    projectId: dataSource.rubyAPIProjectId,
+    dataSourceId: dataSource.rubyAPIDataSourceId,
     tableId,
     name: tableName,
     description: tableDescription,
@@ -207,8 +207,8 @@ export async function upsertTableFromCsv({
     logger.error(
       {
         ...errorDetails,
-        projectId: dataSource.dustAPIProjectId,
-        dataSourceId: dataSource.dustAPIDataSourceId,
+        projectId: dataSource.rubyAPIProjectId,
+        dataSourceId: dataSource.rubyAPIDataSourceId,
         dataSourceName: dataSource.name,
         workspaceId: owner.sId,
         tableId,
@@ -222,8 +222,8 @@ export async function upsertTableFromCsv({
   if (file) {
     const { bucket, path } = file.getContentBucketAndPath(auth);
     const csvRes = await coreAPI.tableUpsertCSVContent({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       tableId,
       bucket,
       bucketCSVPath: path,
@@ -240,8 +240,8 @@ export async function upsertTableFromCsv({
       logger.error(
         {
           ...errorDetails,
-          projectId: dataSource.dustAPIProjectId,
-          dataSourceId: dataSource.dustAPIDataSourceId,
+          projectId: dataSource.rubyAPIProjectId,
+          dataSourceId: dataSource.rubyAPIDataSourceId,
           dataSourceName: dataSource.name,
           workspaceId: owner.sId,
           tableId,
@@ -254,8 +254,8 @@ export async function upsertTableFromCsv({
       // Otherwise, we will delete the whole previous data while we just failed an upsert.
       if (truncate) {
         const delRes = await coreAPI.deleteTable({
-          projectId: dataSource.dustAPIProjectId,
-          dataSourceId: dataSource.dustAPIDataSourceId,
+          projectId: dataSource.rubyAPIProjectId,
+          dataSourceId: dataSource.rubyAPIDataSourceId,
           tableId,
           caller: "tables-api-truncate-on-upsert-fail",
         });
@@ -265,8 +265,8 @@ export async function upsertTableFromCsv({
             {
               type: "internal_server_error",
               coreAPIError: delRes.error,
-              projectId: dataSource.dustAPIProjectId,
-              dataSourceId: dataSource.dustAPIDataSourceId,
+              projectId: dataSource.rubyAPIProjectId,
+              dataSourceId: dataSource.rubyAPIDataSourceId,
               dataSourceName: dataSource.name,
               workspaceId: owner.sId,
               tableId,

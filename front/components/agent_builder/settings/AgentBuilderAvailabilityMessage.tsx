@@ -3,7 +3,7 @@ import { SpaceLinks } from "@app/components/shared/SpaceLinks";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import type { SpaceType } from "@app/types/space";
 import type { LightWorkspaceType } from "@app/types/user";
-import { ContentMessage, Users01 } from "@dust-tt/sparkle";
+import { ContentMessage, Users01 } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 
 type AgentScope = AgentBuilderFormData["agentSettings"]["scope"];

@@ -27,7 +27,7 @@ import {
   matchesInternalMCPServerName,
 } from "@app/lib/actions/mcp_internal_actions/constants";
 import { tryGetPrefixedToolName } from "@app/lib/actions/tool_name_utils";
-import { isDeepDiveDisabledByAdmin } from "@app/lib/api/assistant/global_agents/configurations/dust/utils";
+import { isDeepDiveDisabledByAdmin } from "@app/lib/api/assistant/global_agents/configurations/ruby/utils";
 import type {
   MCPServerLightType,
   MCPServerType,
@@ -38,7 +38,7 @@ import type {
 } from "@app/lib/api/mcp";
 import type { Authenticator } from "@app/lib/auth";
 import { getFeatureFlags } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { AgentMCPServerConfigurationModel } from "@app/lib/models/agent/actions/mcp";
 import { MCPServerViewModel } from "@app/lib/models/agent/actions/mcp_server_view";
 import { RemoteMCPServerToolMetadataModel } from "@app/lib/models/agent/actions/remote_mcp_server_tool_metadata";
@@ -213,7 +213,7 @@ export class MCPServerViewResource extends ResourceWithSpace<MCPServerViewModel>
         }
       );
       if (!remoteServer) {
-        throw new DustError(
+        throw new RubyError(
           "remote_server_not_found",
           "Remote server not found after creation."
         );
@@ -228,7 +228,7 @@ export class MCPServerViewResource extends ResourceWithSpace<MCPServerViewModel>
         { includeRestricted: true }
       );
       if (!internalServer) {
-        throw new DustError(
+        throw new RubyError(
           "internal_server_not_found",
           "Internal server not found, it might have been deleted from the list of internal servers."
         );
@@ -1320,10 +1320,10 @@ export class MCPServerViewResource extends ResourceWithSpace<MCPServerViewModel>
     // Set on activation with the scope the admin just authorized. Personal connections read their
     // scope from the view, so this is what bounds members to the admin's consent.
     oauthScope?: string
-  ): Promise<Result<number, DustError<"unauthorized">>> {
+  ): Promise<Result<number, RubyError<"unauthorized">>> {
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError("unauthorized", "Not allowed to update OAuth use case.")
+        new RubyError("unauthorized", "Not allowed to update OAuth use case.")
       );
     }
 
@@ -1338,10 +1338,10 @@ export class MCPServerViewResource extends ResourceWithSpace<MCPServerViewModel>
 
   public async clearOAuthScope(
     auth: Authenticator
-  ): Promise<Result<number, DustError<"unauthorized">>> {
+  ): Promise<Result<number, RubyError<"unauthorized">>> {
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError("unauthorized", "Not allowed to clear OAuth scope.")
+        new RubyError("unauthorized", "Not allowed to clear OAuth scope.")
       );
     }
 
@@ -1353,10 +1353,10 @@ export class MCPServerViewResource extends ResourceWithSpace<MCPServerViewModel>
     auth: Authenticator,
     name?: string,
     description?: string
-  ): Promise<Result<number, DustError<"unauthorized">>> {
+  ): Promise<Result<number, RubyError<"unauthorized">>> {
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Not allowed to update name and description."
         )
@@ -1375,7 +1375,7 @@ export class MCPServerViewResource extends ResourceWithSpace<MCPServerViewModel>
   public async updateIsRestrictedToSkills(
     auth: Authenticator,
     isRestrictedToSkills: boolean
-  ): Promise<Result<number, DustError<"unauthorized">>> {
+  ): Promise<Result<number, RubyError<"unauthorized">>> {
     const views = await MCPServerViewResource.listByMCPServer(
       auth,
       this.mcpServerId
@@ -1383,7 +1383,7 @@ export class MCPServerViewResource extends ResourceWithSpace<MCPServerViewModel>
 
     if (views.some((view) => !auth.can("admin", view))) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Not allowed to update skill-only availability."
         )
@@ -1702,7 +1702,7 @@ export class MCPServerViewResource extends ResourceWithSpace<MCPServerViewModel>
    * cross-pod invalidation:
    * - registry change (new auto server): ships with a deploy, which restarts every pod and
    *   empties the cache;
-   * - workspace feature-flag toggle: the mutation site creates the views synchronously (poke
+   * - workspace feature-flag toggle: the mutation site creates the views synchronously (admin
    *   plugin and toggle_feature_flags script), so entries on other pods remain correct;
    * - plan change: the entry is keyed on the plan code, available in memory on the auth;
    * - global rollout percentage change: no per-workspace mutation site exists, so the entry
@@ -1840,11 +1840,11 @@ export class MCPServerViewResource extends ResourceWithSpace<MCPServerViewModel>
       );
 
       // editedByUserId is only meaningful when a workspace admin triggers the creation
-      // (workspace creation, feature-flag toggle). A superuser acting from poke is not a
+      // (workspace creation, feature-flag toggle). A superuser acting from admin is not a
       // member, and just-in-time hydration from a member read is not an admin action: both
       // leave it null, the views are platform-created.
       const editedByUserId =
-        auth.isAdmin() && !auth.isDustSuperUser()
+        auth.isAdmin() && !auth.isRubySuperUser()
           ? (auth.user()?.id ?? null)
           : null;
 

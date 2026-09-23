@@ -3,7 +3,7 @@ import { fetchAutomationTriggerIds } from "@app/lib/api/analytics/automations/tr
 import { resolveConsumptionPeriod } from "@app/lib/api/analytics/consumption/period";
 import { toConsumptionPeriodInput } from "@app/lib/api/analytics/consumption/schema";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { TriggerResource } from "@app/lib/resources/trigger_resource";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
@@ -34,7 +34,7 @@ export async function resolveBulkTriggerSelection(
   auth: Authenticator,
   selection: BulkTriggerSelection
 ): Promise<
-  Result<TriggerResource[], DustError<"limit_reached" | "internal_error">>
+  Result<TriggerResource[], RubyError<"limit_reached" | "internal_error">>
 > {
   if (selection.mode === "ids") {
     return new Ok(
@@ -56,7 +56,7 @@ export async function resolveBulkTriggerSelection(
     limit: MAX_BULK_TRIGGERS + selection.excludeTriggerIds.length + 1,
   });
   if (idsResult.isErr()) {
-    return new Err(new DustError("internal_error", idsResult.error.message));
+    return new Err(new RubyError("internal_error", idsResult.error.message));
   }
 
   const excluded = new Set(selection.excludeTriggerIds);
@@ -65,7 +65,7 @@ export async function resolveBulkTriggerSelection(
   );
   if (triggerIds.length > MAX_BULK_TRIGGERS) {
     return new Err(
-      new DustError(
+      new RubyError(
         "limit_reached",
         `Bulk actions are limited to ${MAX_BULK_TRIGGERS} automations at a time.`
       )

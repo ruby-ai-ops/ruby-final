@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface ModelTierPickerDropdownProps {
   selectedValue: string;

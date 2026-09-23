@@ -16,7 +16,7 @@ import {
   MoonshotLogo,
   OpenaiLogo,
   ZaiLogo,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import {
   AnimatePresence,
   domAnimation,
@@ -113,7 +113,7 @@ function Hero() {
           "mb-5 max-w-3xl text-balance text-foreground"
         )}
       >
-        Dust token credits
+        Ruby token credits
       </h1>
       <p className="copy-lg mb-9 max-w-2xl text-balance text-muted-foreground">
         These are token credits only, excluding action credits. The figures are
@@ -242,16 +242,15 @@ function ModelCreditsTable({ providerSections }: ModelCreditsTableProps) {
 
 // ---------- Page ----------
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: matches pricing page pattern
-export default function Credits({ providerSections }: CreditsPageProps) {
+export default function CreditsNextJS({ providerSections }: CreditsPageProps) {
   const router = useRouter();
 
   return (
     <LazyMotion features={domAnimation}>
       <MotionConfig reducedMotion="user">
         <PageMetadata
-          title="Dust Token Credits: Model Credit Consumption"
-          description="Token credit consumption per model on Dust, in credits per million input and output tokens."
+          title="Ruby Token Credits: Model Credit Consumption"
+          description="Token credit consumption per model on Ruby, in credits per million input and output tokens."
           pathname={router.asPath}
         />
         <Hero />
@@ -261,6 +260,9 @@ export default function Credits({ providerSections }: CreditsPageProps) {
   );
 }
 
-Credits.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
+CreditsNextJS.getLayout = (
+  page: ReactElement,
+  pageProps: LandingLayoutProps
+) => {
   return <LandingLayout pageProps={pageProps}>{page}</LandingLayout>;
 };

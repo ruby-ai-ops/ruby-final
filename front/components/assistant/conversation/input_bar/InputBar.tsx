@@ -16,7 +16,7 @@ import {
 import { useConversationDrafts } from "@app/components/assistant/conversation/input_bar/useConversationDrafts";
 import { RUNNING_AGENT_SWITCH_BLOCK_MESSAGE } from "@app/lib/api/assistant/errors";
 import { useFeatureFlags } from "@app/lib/auth/AuthContext";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { useUnifiedAgentConfigurations } from "@app/lib/swr/assistants";
 import {
   useAddConversationSelectedSpaces,
@@ -81,7 +81,7 @@ interface InputBarProps {
     selectedMCPServerViewIds?: string[],
     selectedSpaceIds?: string[],
     modelSelection?: ModelSelectionType
-  ) => Promise<Result<undefined, DustError>>;
+  ) => Promise<Result<undefined, RubyError>>;
   draftKey: string;
   conversation?: ConversationWithoutContentType;
   space?: SpaceType;

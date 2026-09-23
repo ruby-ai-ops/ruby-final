@@ -153,7 +153,7 @@ describe("POST /api/w/:wId/spaces/:spaceId/project_tasks/:taskId/start", () => {
 
     const response = await startTask(workspace, project.sId, todo.sId, {
       customMessage: "Focus on safe rollout and rollback plan.",
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     });
 
     expect(response.status).toBe(200);

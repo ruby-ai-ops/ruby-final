@@ -1,6 +1,6 @@
 import { useJoinPod } from "@app/lib/swr/pods";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, EmptyCTA } from "@dust-tt/sparkle";
+import { Button, EmptyCTA } from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface PodJoinCTAProps {

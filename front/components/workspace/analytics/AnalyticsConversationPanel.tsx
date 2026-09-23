@@ -14,7 +14,7 @@ import { useAnalyticsConversation } from "@app/hooks/useAnalyticsConversation";
 import { useAnalyticsMCPServer } from "@app/hooks/useAnalyticsMCPServer";
 import type { ConversationType } from "@app/types/assistant/conversation";
 import type { UserType, WorkspaceType } from "@app/types/user";
-import { Button, Icon, Robot, Spinner, XClose } from "@dust-tt/sparkle";
+import { Button, Icon, Robot, Spinner, XClose } from "@ruby-ai/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface AnalyticsConversationPanelHeaderProps {

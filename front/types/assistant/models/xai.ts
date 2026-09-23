@@ -108,7 +108,7 @@ export const GROK_4_5_MODEL_CONFIG: ModelConfigurationType = {
 
 // Specs verified 2026-08-12 against
 // https://docs.x.ai/developers/models/grok-4.6 (500k native context, text and
-// image input, function calling, structured output, reasoning). Dust caps the
+// image input, function calling, structured output, reasoning). Ruby caps the
 // usable context at 256k and output at 64k, leaving a 192k prompt budget below
 // xAI's 200k long-context pricing threshold.
 export const GROK_4_6_MODEL_CONFIG: ModelConfigurationType = {
@@ -147,7 +147,7 @@ export const GROK_4_6_MODEL_CONFIG: ModelConfigurationType = {
 // Specs verified 2026-09-22 against
 // https://docs.x.ai/developers/models/grok-4.7 and
 // https://docs.x.ai/developers/release-notes (500k native context, text and
-// image input, function calling, structured output, reasoning). Dust caps the
+// image input, function calling, structured output, reasoning). Ruby caps the
 // usable context at 256k and output at 64k, leaving a 192k prompt budget below
 // xAI's 200k long-context pricing threshold.
 export const GROK_4_7_MODEL_CONFIG: ModelConfigurationType = {

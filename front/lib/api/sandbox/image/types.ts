@@ -37,9 +37,9 @@ export function devSandboxImageId(
 // Tool Names
 // ---------------------------------------------------------------------------
 
-// Hacky temporary: exported so the `dsbx` entry can be filtered out of the
+// Hacky temporary: exported so the `rbx` entry can be filtered out of the
 // sandbox tool manifest by name when sandbox tools are off.
-export const DSBX_TOOL_NAME = "dsbx";
+export const RBX_TOOL_NAME = "rbx";
 
 // Stable UIDs of the service account and the untrusted workload account.
 export const SANDBOX_AGENT_UID = 1002;
@@ -75,7 +75,7 @@ export interface ToolEntry {
   readonly usage?: string;
   readonly returns?: string;
   readonly runtime: ToolRuntime;
-  readonly isDustTool?: boolean;
+  readonly isRubyTool?: boolean;
   readonly profile?: ToolProfile | readonly ToolProfile[];
 }
 
@@ -137,8 +137,8 @@ export interface NetworkPolicy {
 export const PROXY_ONLY_NETWORK_POLICY: NetworkPolicy = {
   mode: "deny_all",
   allowlist: [
-    // Dust API — the database filesystem daemon runs as root
-    "dust.tt",
+    // Ruby API — the database filesystem daemon runs as root
+    "ruby.ad",
     // GCS — gcsfuse mounts run as root
     "storage.googleapis.com",
     // Datadog EU — sandbox telemetry runs as root
@@ -146,9 +146,9 @@ export const PROXY_ONLY_NETWORK_POLICY: NetworkPolicy = {
     "api.datadoghq.eu",
     // Regional egress proxy — the forwarder (root) connects by resolved IP,
     // but E2B's domain-based allowOut needs the wildcard too.
-    "*.sandbox-egress.dust.tt",
-    "104.199.4.80/32", // eu.sandbox-egress.dust.tt
-    "104.154.146.142/32", // us.sandbox-egress.dust.tt
+    "*.sandbox-egress.ruby.ad",
+    "104.199.4.80/32", // eu.sandbox-egress.ruby.ad
+    "104.154.146.142/32", // us.sandbox-egress.ruby.ad
   ],
 };
 
@@ -180,7 +180,7 @@ export interface ToolManifest {
  * The Docker image must actually have the corresponding tooling installed. The capability tag tells
  * orchestration it is safe to attempt the feature.
  */
-export type SandboxCapability = "dust_filesystem" | "gcsfuse";
+export type SandboxCapability = "ruby_filesystem" | "gcsfuse";
 
 // ---------------------------------------------------------------------------
 // Base Image

@@ -34,9 +34,9 @@ import { Err, Ok } from "@app/types/shared/result";
 type CreateSandboxChildActionResult = {
   actionId: string;
   // Present only when the child is blocked awaiting approval. Pausing the
-  // sandbox freezes the in-sandbox `dsbx` client that is still awaiting THIS
+  // sandbox freezes the in-sandbox `rbx` client that is still awaiting THIS
   // `/call` request, so the caller MUST run this only after the response
-  // (carrying `actionId`) has been flushed — otherwise `dsbx` never receives
+  // (carrying `actionId`) has been flushed — otherwise `rbx` never receives
   // `actionId` and can never poll for the result.
   pauseSandbox?: () => Promise<void>;
 };
@@ -98,7 +98,7 @@ export async function createSandboxChildAction(
     return new Err(new Error("Parent action not found."));
   }
 
-  // A `dsbx` process can outlive its bash tool call. Serving it would set this finished
+  // A `rbx` process can outlive its bash tool call. Serving it would set this finished
   // action's status back to blocked, leaving two steps blocked on one message.
   if (isToolExecutionStatusFinal(parentAction.status)) {
     return new Err(
@@ -208,7 +208,7 @@ export async function createSandboxChildAction(
 
   // User tool approvals ("low"/"medium" stakes) are keyed on the prefixed
   // function-call name the model sees on direct calls (e.g.
-  // `salesforce__update_object`), while `dsbx` sends the raw tool name. Align
+  // `salesforce__update_object`), while `rbx` sends the raw tool name. Align
   // the configuration name so approval checks and recordings share one key.
   const prefixedToolNameRes = tryGetPrefixedToolName(
     serverSideConfig.name,
@@ -312,10 +312,10 @@ export async function createSandboxChildAction(
 
     // Hand the sandbox pause back to the caller instead of pausing here.
     // `pauseSandboxBashForBlockedChild` freezes the whole sandbox via
-    // `betaPause` — including the `dsbx` client still blocked on this `/call`
-    // request. Pausing before the response is flushed would mean `dsbx` never
+    // `betaPause` — including the `rbx` client still blocked on this `/call`
+    // request. Pausing before the response is flushed would mean `rbx` never
     // receives `actionId`, so it could never poll for the result. The caller
-    // runs this after responding; the surviving `dsbx` process then resumes,
+    // runs this after responding; the surviving `rbx` process then resumes,
     // finishes polling, and its output is collected via the bash `tee`/
     // wait-and-collect wake-up flow.
     return new Ok({

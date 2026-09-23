@@ -1,4 +1,4 @@
-import { Button, cn, DustLogo, LogIn01, Page, Spinner } from "@dust-tt/sparkle";
+import { Button, cn, RubyLogo, LogIn01, Page, Spinner } from "@ruby-ai/ui";
 import { useExtensionAuth } from "@extension/ui/components/auth/AuthProvider";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,9 +22,9 @@ export const LoginPage = () => {
   }, [navigate, user, isAuthenticated, isUserSetup]);
 
   const PRIVACY_POLICY_URL =
-    "https://dust-tt.notion.site/Website-Privacy-Policy-a118bb3472f945a1be8e11fbfb733084";
+    "https://ruby-ai.notion.site/Website-Privacy-Policy-a118bb3472f945a1be8e11fbfb733084";
   const TERMS_OF_USE_URL =
-    "https://dust-tt.notion.site/Website-Terms-of-Use-ff8665f52c454e0daf02195ec0d6bafb";
+    "https://ruby-ai.notion.site/Website-Terms-of-Use-ff8665f52c454e0daf02195ec0d6bafb";
 
   if (isLoading || (isAuthenticated && isUserSetup)) {
     return (
@@ -49,8 +49,8 @@ export const LoginPage = () => {
       >
         <div className="flex flex-1 flex-col items-center justify-center gap-4">
           <div className="flex max-w-[400px] flex-col items-center space-y-9 text-center">
-            <Link to="https://dust.tt" target="_blank">
-              <DustLogo className="h-8 w-36" />
+            <Link to="https://ruby.ad" target="_blank">
+              <RubyLogo className="h-8 w-36" />
             </Link>
           </div>
           <div className="max-w-[400px] text-center">
@@ -61,7 +61,7 @@ export const LoginPage = () => {
           </div>
           {authError && authError.code === "user_not_found" && (
             <div className="text-md text-center">
-              Please sign up on the web to start using Dust extension.
+              Please sign up on the web to start using Ruby extension.
             </div>
           )}
           {authError && authError.code !== "user_not_found" && (
@@ -70,14 +70,14 @@ export const LoginPage = () => {
 
           <div className="m-1 flex gap-2 text-center">
             {authError && authError.code === "user_not_found" && (
-              <Link to="https://dust.tt/home">
+              <Link to="https://ruby.ad/home">
                 <Button
                   icon={LogIn01}
                   variant="primary"
                   label="Sign up"
                   onClick={() => {
                     window.open(
-                      "https://dust.tt/api/workos/login?returnTo=/api/login",
+                      "https://app.ruby.ad/api/workos/login?returnTo=/api/login",
                       "_blank"
                     );
                   }}
@@ -97,7 +97,7 @@ export const LoginPage = () => {
           </div>
         </div>
         <p className="text-muted-foreground mx-auto max-w-[300px] text-center">
-          By signing in, you agree to Dust's{" "}
+          By signing in, you agree to Ruby's{" "}
           <Link to={TERMS_OF_USE_URL} target="_blank" className="underline">
             Terms of Use
           </Link>{" "}
@@ -122,9 +122,9 @@ export const LoginPage = () => {
         <div className="flex h-screen flex-col items-center justify-center gap-2 text-center">
           <Page.SectionHeader title="You are not a member of any workspace." />
           <Button
-            label="Sign up on Dust"
+            label="Sign up on Ruby"
             onClick={() => {
-              window.open("https://dust.tt", "_blank");
+              window.open("https://ruby.ad", "_blank");
             }}
           />
           <div className="text-center">Then</div>
@@ -155,9 +155,9 @@ export const LoginPage = () => {
           {authError.code === "user_not_found" ? (
             <>
               <Button
-                label="Sign up on Dust"
+                label="Sign up on Ruby"
                 onClick={() => {
-                  window.open("https://dust.tt", "_blank");
+                  window.open("https://ruby.ad", "_blank");
                 }}
               />
               <div className="text-center">Then</div>
@@ -185,7 +185,7 @@ export const LoginPage = () => {
       )}
     >
       <div className="flex h-screen flex-col items-center justify-center text-center">
-        <Page.SectionHeader title="Something unexpected occurred. Please try logging in again. If the problem persists, contact us at support@dust.tt." />
+        <Page.SectionHeader title="Something unexpected occurred. Please try logging in again. If the problem persists, contact us at support@ruby.ad." />
         <Button label="Logout" onClick={() => handleLogout()} />
       </div>
     </div>

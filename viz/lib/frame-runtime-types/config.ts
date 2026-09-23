@@ -4,7 +4,7 @@ export function createValidationFiles(modules: Record<string, string[]>) {
   const files = new Map<string, string>();
   // These references resolve to data files or child Frames at render time.
   files.set(
-    "node_modules/@types/dust-frame-refs/index.d.ts",
+    "node_modules/@types/ruby-frame-refs/index.d.ts",
     [
       'declare module "fil_*"',
       'declare module "conversation-*"',
@@ -35,7 +35,7 @@ export function createValidationFiles(modules: Record<string, string[]>) {
           resolveJsonModule: true,
           noEmit: true,
           typeRoots: ["./node_modules/@types", "./viz/node_modules/@types"],
-          types: ["react", "dust-frame-refs"],
+          types: ["react", "ruby-frame-refs"],
           paths: modules,
         },
       },

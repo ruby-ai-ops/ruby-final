@@ -43,7 +43,7 @@ const BENEFIT_SLOTS: BenefitSlot[] = [
       icon: "ActionMagnifyingGlassIcon",
       color: "blue",
       title: `Find anything in ${partner}`,
-      description: `Ask Dust to surface the right ${partner} records, threads, or files — no need to remember exact names, filters, or the right view.`,
+      description: `Ask Ruby to surface the right ${partner} records, threads, or files — no need to remember exact names, filters, or the right view.`,
     }),
   },
   {
@@ -53,7 +53,7 @@ const BENEFIT_SLOTS: BenefitSlot[] = [
     build: (partner) => ({
       icon: "ActionDocumentTextIcon",
       color: "green",
-      title: `Take action without leaving Dust`,
+      title: `Take action without leaving Ruby`,
       description: `Update, create, or post in ${partner} from the same conversation where you found the context. One agent, one workflow.`,
     }),
   },
@@ -65,7 +65,7 @@ const BENEFIT_SLOTS: BenefitSlot[] = [
       icon: "ActionLightbulbIcon",
       color: "golden",
       title: `Get a ${partner} recap on demand`,
-      description: `Ask for a digest of what changed, what's stalled, or what to focus on — Dust pulls the data and writes the summary for you.`,
+      description: `Ask for a digest of what changed, what's stalled, or what to focus on — Ruby pulls the data and writes the summary for you.`,
     }),
   },
 ];

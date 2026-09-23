@@ -45,7 +45,7 @@ async function setupMessage() {
     workspace,
     conversation,
     agentConfig: agentConfiguration,
-    runIds: [run.dustRunId],
+    runIds: [run.rubyRunId],
   });
   await ConversationResource.updateAgentMessageCostCredits(auth, {
     agentMessageModelId: agentMessage.agentMessageId,
@@ -145,7 +145,7 @@ describe("GET /api/w/:wId/assistant/conversations/:cId/messages/:mId/consumption
         conversationModelId: conversation.id,
         agentMessageModelId: agentMessage.agentMessageId,
         status: "succeeded",
-        dustRunId: run.dustRunId,
+        rubyRunId: run.rubyRunId,
         functionCallName: "run_consumption_agent",
         toolName: "run_consumption_agent",
         toolServerId: runAgentServerId,

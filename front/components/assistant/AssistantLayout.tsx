@@ -1,7 +1,7 @@
 import { AgentSidebarMenu } from "@app/components/assistant/conversation/SidebarMenu";
 import { AgentDetailsSheet } from "@app/components/assistant/details/AgentDetailsSheet";
 import { MemberDetails } from "@app/components/assistant/details/MemberDetails";
-import { useSetNavChildren } from "@app/components/sparkle/AppLayoutContext";
+import { useSetNavChildren } from "@app/components/ui/AppLayoutContext";
 import { useURLSheet } from "@app/hooks/useURLSheet";
 import type { AuthContextValue } from "@app/lib/auth/AuthContext";
 import { useAppRouter } from "@app/lib/platform";

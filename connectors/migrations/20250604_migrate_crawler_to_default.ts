@@ -6,8 +6,8 @@ import { WebCrawlerConfigurationModel } from "@connectors/lib/models/webcrawler"
 import logger from "@connectors/logger/logger";
 import { ConnectorModel } from "@connectors/resources/storage/models/connector_model";
 import { concurrentExecutor } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import fs from "fs";
 import { makeScript } from "scripts/helpers";
 import { Op } from "sequelize";

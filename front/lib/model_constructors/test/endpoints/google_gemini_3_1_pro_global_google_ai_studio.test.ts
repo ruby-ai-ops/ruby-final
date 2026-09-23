@@ -10,7 +10,7 @@ export const GoogleGeminiThreeDotOneProGlobalGoogleAiStudioStreamSetup: StreamSe
     createInstance: () =>
       new GoogleGeminiThreeDotOneProGlobalGoogleAiStudioStream({
         GOOGLE_AI_STUDIO_API_KEY:
-          process.env.DUST_MANAGED_GOOGLE_AI_STUDIO_API_KEY ?? "",
+          process.env.RUBY_MANAGED_GOOGLE_AI_STUDIO_API_KEY ?? "",
       }),
     // `null` runs the case with its default checkers; a checker array overrides
     // them. Every case always runs.

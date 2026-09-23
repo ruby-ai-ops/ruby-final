@@ -27,7 +27,7 @@ import { mcpWellKnownApp } from "./routes/mcp/well-known";
 import metronomeApp from "./routes/metronome";
 import novuApp from "./routes/novu";
 import oauthApp from "./routes/oauth";
-import pokeApp from "./routes/poke";
+import adminApp from "./routes/admin";
 import shareApp from "./routes/share";
 import sseApp from "./routes/sse";
 import stripeApp from "./routes/stripe";
@@ -62,7 +62,7 @@ apiApp.route("/marketing", marketingApp);
 apiApp.route("/metronome", metronomeApp);
 apiApp.route("/novu", novuApp);
 apiApp.route("/oauth", oauthApp);
-apiApp.route("/poke", pokeApp);
+apiApp.route("/admin", adminApp);
 apiApp.route("/share", shareApp);
 apiApp.route("/sse", sseApp);
 apiApp.route("/stripe", stripeApp);
@@ -93,7 +93,7 @@ honoApp.use("*", requestInstrumentation);
 honoApp.use("*", cors);
 honoApp.use("*", spaRedirect);
 
-// Dust as MCP Server — inbound from remote clients (Inspector, Cursor, etc.).
+// Ruby as MCP Server — inbound from remote clients (Inspector, Cursor, etc.).
 // Mounted at root level so /.well-known/* and /mcp are not under /api/.
 honoApp.route("/mcp", mcpApp);
 honoApp.route("/", mcpWellKnownApp);

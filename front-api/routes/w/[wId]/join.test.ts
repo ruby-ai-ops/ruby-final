@@ -26,7 +26,7 @@ vi.mock("@app/lib/signup", () => ({
 
 beforeAll(() => {
   // Set a test secret for JWT token signing/verification.
-  process.env.DUST_INVITE_TOKEN_SECRET = "test-secret-for-invite-tokens";
+  process.env.RUBY_INVITE_TOKEN_SECRET = "test-secret-for-invite-tokens";
 });
 
 function joinRequest(wId: string, query: Record<string, string> = {}) {

@@ -5,7 +5,7 @@ import { statsDClient } from "@connectors/logger/withlogging";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { ConnectorErrorType } from "@connectors/types";
 import { WithRetriesError } from "@connectors/types";
-import type { ConnectorProvider } from "@dust-tt/client";
+import type { ConnectorProvider } from "@ruby-ai/client";
 import type { Context } from "@temporalio/activity";
 import { ApplicationFailure } from "@temporalio/activity";
 import type {
@@ -16,7 +16,7 @@ import type {
 import tracer from "dd-trace";
 
 import {
-  DustConnectorWorkflowError,
+  RubyConnectorWorkflowError,
   ExternalOAuthTokenError,
   ProviderTransientError,
   RemoteDatabaseConnectionNotReadonlyError,
@@ -29,7 +29,7 @@ import { getConnectorId } from "./temporal";
 const TRACK_SUCCESSFUL_ACTIVITIES_FOR_CONNECTOR_IDS = [145];
 const TRANSIENT_ERROR_PRE_BACKOFF_RETRY_ATTEMPTS = 19;
 
-// Dust API errors reach the interceptor as opaque errors whose message embeds
+// Ruby API errors reach the interceptor as opaque errors whose message embeds
 // the serialized API response, so we match on the error type in the message.
 function isWorkspacePlanNoApiAccessError(err: unknown): err is Error {
   return (
@@ -171,7 +171,7 @@ export class ActivityInboundLogInterceptor
     let startToCloseTimeoutLogged = false;
     const startToCloseTimer = setTimeout(() => {
       startToCloseTimeoutLogged = true;
-      const error = new DustConnectorWorkflowError(
+      const error = new RubyConnectorWorkflowError(
         "Activity execution exceeded startToClose timeout (note: the activity might still be running)",
         "workflow_timeout_failure"
       );
@@ -179,7 +179,7 @@ export class ActivityInboundLogInterceptor
       this.logger.error(
         {
           error,
-          dustError: error,
+          rubyError: error,
           errorType: error.type,
           durationMs: this.context.info.startToCloseTimeoutMs,
           attempt: this.context.info.attempt,
@@ -323,15 +323,15 @@ export class ActivityInboundLogInterceptor
       const durationMs = new Date().getTime() - startTime.getTime();
       if (error && !startToCloseTimeoutLogged) {
         let errorType = "unhandled_internal_activity_error";
-        const isDustError = error instanceof DustConnectorWorkflowError;
-        if (isDustError) {
+        const isRubyError = error instanceof RubyConnectorWorkflowError;
+        if (isRubyError) {
           errorType = error.type;
         }
 
         this.logger.error(
           {
-            error: isDustError ? error : redactErrorForLogs(error),
-            dustError: isDustError ? error : undefined,
+            error: isRubyError ? error : redactErrorForLogs(error),
+            rubyError: isRubyError ? error : undefined,
             error_stack: error?.stack,
             errorType,
             durationMs,

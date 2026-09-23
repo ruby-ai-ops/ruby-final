@@ -4,7 +4,7 @@ import {
   GENERIC_RUN_AGENT_TOOL_SCHEMA,
 } from "@app/lib/api/actions/servers/run_agent/metadata";
 import type { Authenticator } from "@app/lib/auth";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";

@@ -6,7 +6,7 @@ import { useAppRouter } from "@app/lib/platform";
 import type { SubscriptionType } from "@app/types/plan";
 import { isCreditPricedPlan } from "@app/types/plan";
 import { ONE_DAY_MS } from "@app/types/shared/utils/date_utils";
-import { Button, cn } from "@dust-tt/sparkle";
+import { Button, cn } from "@ruby-ai/ui";
 import { useMemo, useRef } from "react";
 
 const SUBSCRIPTION_BANNER_DISPLAY_THRESHOLD_DAYS = 30;
@@ -108,7 +108,7 @@ export function SubscriptionEndBanner({
       {isAdmin && !isEnterprise && (
         <Button
           href={ctaHref}
-          label={isTrial ? "Subscribe to Dust" : "Resume subscription"}
+          label={isTrial ? "Subscribe to Ruby" : "Resume subscription"}
           className="hover:opacity-90 hover:bg-transparent"
           variant="ghost-secondary"
           size="sm"

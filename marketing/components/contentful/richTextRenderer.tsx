@@ -24,13 +24,13 @@ import type {
   Text,
 } from "@contentful/rich-text-types";
 import { BLOCKS, INLINES, MARKS } from "@contentful/rich-text-types";
-import { LegacyButton as Button, cn } from "@dust-tt/sparkle";
+import { LegacyButton as Button, cn } from "@ruby-ai/ui";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
-const DUST_FRAME_SHARE_URL_REGEXP = new RegExp(
-  `^(https?://(?:[a-z0-9-]+\\.)?(?:dust\\.tt${isDevelopment() ? "|localhost:3011" : ""})/share/frame/[a-f0-9-]+)`
+const RUBY_FRAME_SHARE_URL_REGEXP = new RegExp(
+  `^(https?://(?:[a-z0-9-]+\\.)?(?:ruby\\.ad${isDevelopment() ? "|localhost:3011" : ""})/share/frame/[a-f0-9-]+)`
 );
 
 function getYouTubeVideoId(text: string): string | null {
@@ -54,9 +54,9 @@ function getYouTubeVideoId(text: string): string | null {
   return null;
 }
 
-function getDustFrameUrl(text: string): string | null {
+function getRubyFrameUrl(text: string): string | null {
   const normalizedText = text.trim();
-  const match = normalizedText.match(DUST_FRAME_SHARE_URL_REGEXP);
+  const match = normalizedText.match(RUBY_FRAME_SHARE_URL_REGEXP);
   return match ? match[1] : null;
 }
 
@@ -78,11 +78,11 @@ function YouTubeEmbed({ videoId }: { videoId: string }) {
   );
 }
 
-interface DustFrameEmbedProps {
+interface RubyFrameEmbedProps {
   frameUrl: string;
 }
 
-function DustFrameEmbed({ frameUrl }: DustFrameEmbedProps) {
+function RubyFrameEmbed({ frameUrl }: RubyFrameEmbedProps) {
   return (
     <div
       style={{ maxWidth: "1000px" }}
@@ -91,7 +91,7 @@ function DustFrameEmbed({ frameUrl }: DustFrameEmbedProps) {
       <div className="relative aspect-video w-full">
         <iframe
           src={frameUrl}
-          title="Dust Frame"
+          title="Ruby Frame"
           className="absolute inset-0 h-full w-full border-none"
           allowFullScreen
         />
@@ -279,10 +279,10 @@ const renderOptions: Options = {
         return <YouTubeEmbed videoId={youtubeId} />;
       }
 
-      // Check if the paragraph contains only a Dust Frame URL.
-      const frameUrl = getDustFrameUrl(text);
+      // Check if the paragraph contains only a Ruby Frame URL.
+      const frameUrl = getRubyFrameUrl(text);
       if (frameUrl) {
-        return <DustFrameEmbed frameUrl={frameUrl} />;
+        return <RubyFrameEmbed frameUrl={frameUrl} />;
       }
 
       return (
@@ -415,10 +415,10 @@ const renderOptions: Options = {
         return <YouTubeEmbed videoId={youtubeId} />;
       }
 
-      // Check if it's a Dust Frame URL and embed it.
-      const frameUrl = getDustFrameUrl(url);
+      // Check if it's a Ruby Frame URL and embed it.
+      const frameUrl = getRubyFrameUrl(url);
       if (frameUrl) {
-        return <DustFrameEmbed frameUrl={frameUrl} />;
+        return <RubyFrameEmbed frameUrl={frameUrl} />;
       }
 
       const isExternal = url.startsWith("http");

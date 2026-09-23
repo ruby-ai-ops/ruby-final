@@ -18,8 +18,8 @@ import {
   WebCrawlerConfigurationTypeSchema,
   zodParsePayload,
 } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { assertNever, isConnectorProvider } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { assertNever, isConnectorProvider } from "@ruby-ai/client";
 import type { Request, Response } from "express";
 import { z } from "zod";
 
@@ -176,7 +176,7 @@ const _createConnectorAPIHandler = async (
       case "microsoft_bot":
       case "salesforce":
       case "gong":
-      case "dust_project": {
+      case "ruby_project": {
         connectorRes = await createConnector({
           connectorProvider: req.params.connector_provider,
           params: {

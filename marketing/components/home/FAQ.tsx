@@ -1,6 +1,6 @@
 import { H2 } from "@marketing/components/home/ContentComponents";
-import { cn } from "@marketing/components/poke/shadcn/lib/utils";
-import { Minus, Plus, Separator } from "@dust-tt/sparkle";
+import { cn } from "@marketing/components/admin/shadcn/lib/utils";
+import { Minus, Plus, Separator } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import { useState } from "react";
 

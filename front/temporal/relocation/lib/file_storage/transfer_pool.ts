@@ -130,7 +130,7 @@ async function findAvailableJob(
       return deadline;
     }
     const slot = (cursor + offset) % POOL_SIZE;
-    const jobName = `transferJobs/dust-relocation-${pool.id}-${slot}`;
+    const jobName = `transferJobs/ruby-relocation-${pool.id}-${slot}`;
     const job = await getJob(pool, jobName);
     if (job.isErr()) {
       return job;

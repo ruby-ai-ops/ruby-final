@@ -7,102 +7,102 @@ import { Navigate } from "react-router-dom";
 const AnalyticsConsumptionPage = withSuspense(
   () =>
     import(
-      "@dust-tt/front/components/pages/workspace/AnalyticsConsumptionPage"
+      "@ruby-ai/front/components/pages/workspace/AnalyticsConsumptionPage"
     ),
   "AnalyticsConsumptionPage"
 );
 const AnalyticsAutomationsPage = withSuspense(
   () =>
     import(
-      "@dust-tt/front/components/pages/workspace/AnalyticsAutomationsPage"
+      "@ruby-ai/front/components/pages/workspace/AnalyticsAutomationsPage"
     ),
   "AnalyticsAutomationsPage"
 );
 const APIKeysPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/workspace/developers/APIKeysPage"),
+    import("@ruby-ai/front/components/pages/workspace/developers/APIKeysPage"),
   "APIKeysPage"
 );
 const CreditsUsagePage = withSuspense(
   () =>
     import(
-      "@dust-tt/front/components/pages/workspace/developers/CreditsUsagePage"
+      "@ruby-ai/front/components/pages/workspace/developers/CreditsUsagePage"
     ),
   "CreditsUsagePage"
 );
 const ProvidersPage = withSuspense(
   () =>
     import(
-      "@dust-tt/front/components/pages/workspace/developers/ProvidersPage"
+      "@ruby-ai/front/components/pages/workspace/developers/ProvidersPage"
     ),
   "ProvidersPage"
 );
 const SecretsPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/workspace/developers/SecretsPage"),
+    import("@ruby-ai/front/components/pages/workspace/developers/SecretsPage"),
   "SecretsPage"
 );
 const SandboxPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/workspace/developers/SandboxPage"),
+    import("@ruby-ai/front/components/pages/workspace/developers/SandboxPage"),
   "SandboxPage"
 );
 const SelfImprovingSkillsPage = withSuspense(
   () =>
     import(
-      "@dust-tt/front/components/pages/workspace/developers/SelfImprovingSkillsPage"
+      "@ruby-ai/front/components/pages/workspace/developers/SelfImprovingSkillsPage"
     ),
   "SelfImprovingSkillsPage"
 );
 const MembersPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/workspace/MembersPage"),
+  () => import("@ruby-ai/front/components/pages/workspace/MembersPage"),
   "MembersPage"
 );
 const WorkspaceIdentityProvisioningPage = withSuspense(
   () =>
     import(
-      "@dust-tt/front/components/pages/workspace/WorkspaceIdentityProvisioningPage.js"
+      "@ruby-ai/front/components/pages/workspace/WorkspaceIdentityProvisioningPage.js"
     ),
   "WorkspaceIdentityProvisioningPage"
 );
 const ManageSubscriptionPage = withSuspense(
   () =>
     import(
-      "@dust-tt/front/components/pages/workspace/subscription/ManageSubscriptionPage"
+      "@ruby-ai/front/components/pages/workspace/subscription/ManageSubscriptionPage"
     ),
   "ManageSubscriptionPage"
 );
 const SubscriptionPage = withSuspense(
   () =>
     import(
-      "@dust-tt/front/components/pages/workspace/subscription/SubscriptionPage"
+      "@ruby-ai/front/components/pages/workspace/subscription/SubscriptionPage"
     ),
   "SubscriptionPage"
 );
 const WorkspaceBrandingPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/workspace/WorkspaceBrandingPage"),
+    import("@ruby-ai/front/components/pages/workspace/WorkspaceBrandingPage"),
   "WorkspaceBrandingPage"
 );
 const ModelProvidersPage = withSuspense(
   () =>
     import(
-      "@dust-tt/front/components/pages/workspace/model_providers/ModelProvidersPage"
+      "@ruby-ai/front/components/pages/workspace/model_providers/ModelProvidersPage"
     ),
   "ModelProvidersPage"
 );
 const UsagePage = withSuspense(
-  () => import("@dust-tt/front/components/pages/workspace/UsagePage"),
+  () => import("@ruby-ai/front/components/pages/workspace/UsagePage"),
   "UsagePage"
 );
 const BillingPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/workspace/billing/BillingPage"),
+  () => import("@ruby-ai/front/components/pages/workspace/billing/BillingPage"),
   "BillingPage"
 );
 const GovernancePage = withSuspense(
   () =>
     import(
-      "@dust-tt/front/components/pages/workspace/governance/GovernancePage"
+      "@ruby-ai/front/components/pages/workspace/governance/GovernancePage"
     ),
   "GovernancePage"
 );

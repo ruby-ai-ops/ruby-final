@@ -1,0 +1,9 @@
+.worktrees/
+.superpowers/
+node_modules/
+.vinext/
+dist/
+.next/
+work/
+.wrangler/
+*.tsbuildinfo

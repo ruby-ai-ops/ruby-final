@@ -6,7 +6,7 @@ import words from "lodash/words";
 export const FILE_ID_PATTERN = "fil_[A-Za-z0-9]{10,}";
 export const FILE_ID_REGEX = new RegExp(`\\b${FILE_ID_PATTERN}\\b`, "g");
 const PASTED_FILE_CONTENT_TYPE =
-  "text/vnd.dust.attachment.pasted" satisfies AllSupportedFileContentType;
+  "text/vnd.ruby.attachment.pasted" satisfies AllSupportedFileContentType;
 
 export const isPastedFile = (contentType: string | undefined): boolean => {
   return contentType === PASTED_FILE_CONTENT_TYPE;

@@ -42,7 +42,7 @@ verification.
 
 ### Project Configuration
 
-The project is configured to deploy to `dust-infra` (see `.firebaserc`).
+The project is configured to deploy to `ruby-infra` (see `.firebaserc`).
 
 ## Deployment
 
@@ -76,7 +76,7 @@ The emulator runs the following services:
 Create a `.env.local` file in the root folder with:
 
 ```bash
-GCP_WEBHOOK_ROUTER_CONFIG_BUCKET=dust-infra.firebasestorage.app
+GCP_WEBHOOK_ROUTER_CONFIG_BUCKET=ruby-infra.firebasestorage.app
 SLACK_SIGNING_SECRET="your-slack-signing-secret"
 MICROSOFT_BOT_ID_SECRET="your-bot-app-id"
 NOTION_SIGNING_SECRET="your-notion-signing-secret"
@@ -86,18 +86,18 @@ EU_CONNECTOR_URL=http://localhost:3002
 CELL_00002_CONNECTOR_URL=http://localhost:3002
 ```
 
-Note: `GCP_WEBHOOK_ROUTER_CONFIG_BUCKET` must be set to `dust-infra.firebasestorage.app` for the config sync function to work properly with the emulator.
+Note: `GCP_WEBHOOK_ROUTER_CONFIG_BUCKET` must be set to `ruby-infra.firebasestorage.app` for the config sync function to work properly with the emulator.
 
 ## Function URLs
 
 ### Local Development (Emulator)
 
 ```
-http://localhost:5001/dust-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/slack/events
-http://localhost:5001/dust-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/slack/interactions
-http://localhost:5001/dust-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/microsoft/teams/messages
-http://localhost:5001/dust-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/notion
-http://localhost:5001/dust-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/shopify
+http://localhost:5001/ruby-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/slack/events
+http://localhost:5001/ruby-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/slack/interactions
+http://localhost:5001/ruby-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/microsoft/teams/messages
+http://localhost:5001/ruby-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/notion
+http://localhost:5001/ruby-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/shopify
 ```
 
 ### Production
@@ -105,21 +105,21 @@ http://localhost:5001/dust-infra/us-central1/webhookRouter/YOUR_WEBHOOK_SECRET/s
 **Direct Function URL:**
 
 ```
-https://us-central1-dust-infra.cloudfunctions.net/webhookRouter/YOUR_WEBHOOK_SECRET/slack/events
-https://us-central1-dust-infra.cloudfunctions.net/webhookRouter/YOUR_WEBHOOK_SECRET/slack/interactions
-https://us-central1-dust-infra.cloudfunctions.net/webhookRouter/YOUR_WEBHOOK_SECRET/microsoft/teams/messages
-https://us-central1-dust-infra.cloudfunctions.net/webhookRouter/YOUR_WEBHOOK_SECRET/notion
-https://us-central1-dust-infra.cloudfunctions.net/webhookRouter/YOUR_WEBHOOK_SECRET/shopify
+https://us-central1-ruby-infra.cloudfunctions.net/webhookRouter/YOUR_WEBHOOK_SECRET/slack/events
+https://us-central1-ruby-infra.cloudfunctions.net/webhookRouter/YOUR_WEBHOOK_SECRET/slack/interactions
+https://us-central1-ruby-infra.cloudfunctions.net/webhookRouter/YOUR_WEBHOOK_SECRET/microsoft/teams/messages
+https://us-central1-ruby-infra.cloudfunctions.net/webhookRouter/YOUR_WEBHOOK_SECRET/notion
+https://us-central1-ruby-infra.cloudfunctions.net/webhookRouter/YOUR_WEBHOOK_SECRET/shopify
 ```
 
 **Custom Domain (via Firebase Hosting):**
 
 ```
-https://webhook-router.dust.tt/YOUR_WEBHOOK_SECRET/slack/events
-https://webhook-router.dust.tt/YOUR_WEBHOOK_SECRET/slack/interactions
-https://webhook-router.dust.tt/YOUR_WEBHOOK_SECRET/microsoft/teams/messages
-https://webhook-router.dust.tt/YOUR_WEBHOOK_SECRET/notion
-https://webhook-router.dust.tt/YOUR_WEBHOOK_SECRET/shopify
+https://webhook-router.ruby.ad/YOUR_WEBHOOK_SECRET/slack/events
+https://webhook-router.ruby.ad/YOUR_WEBHOOK_SECRET/slack/interactions
+https://webhook-router.ruby.ad/YOUR_WEBHOOK_SECRET/microsoft/teams/messages
+https://webhook-router.ruby.ad/YOUR_WEBHOOK_SECRET/notion
+https://webhook-router.ruby.ad/YOUR_WEBHOOK_SECRET/shopify
 ```
 
 ## Architecture
@@ -136,7 +136,7 @@ Platforms → Firebase Hosting → Firebase Function → [US Endpoint, EU Endpoi
 
 1. Validates the webhook secret from the URL on standard routes
 2. Platform-specific verification:
-   - **Slack**: HMAC signature validation using Dust secret (standard) or client secret (data sync)
+   - **Slack**: HMAC signature validation using Ruby secret (standard) or client secret (data sync)
    - **Teams**: Bot Framework JWT token validation
    - **Notion**: HMAC signature validation
    - **Shopify**: Raw-body HMAC validation using the Shopify app client secret
@@ -159,7 +159,7 @@ Platforms → Firebase Hosting → Firebase Function → [US Endpoint, EU Endpoi
 
 Uses GCP Secret Manager for production:
 
-- `connectors-DUST_CONNECTORS_WEBHOOKS_SECRET` - Webhook secret
+- `connectors-RUBY_CONNECTORS_WEBHOOKS_SECRET` - Webhook secret
 - `SLACK_SIGNING_SECRET` - Slack app signing secret
 - `MICROSOFT_BOT_ID_SECRET` - Microsoft Bot Framework App ID
 - `NOTION_SIGNING_SECRET` - Notion integration signing secret
@@ -170,7 +170,7 @@ The Shopify client secret must exist in the global GCP project before deploying 
 For local development, set environment variables:
 
 ```bash
-export DUST_CONNECTORS_WEBHOOKS_SECRET="your-webhook-secret"
+export RUBY_CONNECTORS_WEBHOOKS_SECRET="your-webhook-secret"
 export SLACK_SIGNING_SECRET="your-slack-signing-secret"
 export MICROSOFT_BOT_ID_SECRET="your-bot-app-id"
 export NOTION_SIGNING_SECRET="your-notion-signing-secret"
@@ -197,7 +197,7 @@ export OAUTH_SHOPIFY_CLIENT_SECRET="your-shopify-client-secret"
 
 ### Slack Endpoints
 
-**Standard Routes** (use Dust signing secret):
+**Standard Routes** (use Ruby signing secret):
 - `POST /:webhookSecret/slack/events` - Slack events
 - `POST /:webhookSecret/slack/interactions` - Slack interactions
 
@@ -227,7 +227,7 @@ Configure the Shopify app with:
 ```toml
 [[webhooks.subscriptions]]
 compliance_topics = ["customers/data_request", "customers/redact", "shop/redact"]
-uri = "https://webhook-router.dust.tt/YOUR_WEBHOOK_SECRET/shopify"
+uri = "https://webhook-router.ruby.ad/YOUR_WEBHOOK_SECRET/shopify"
 ```
 
 ## Development

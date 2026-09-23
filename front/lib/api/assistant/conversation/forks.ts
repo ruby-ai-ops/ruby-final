@@ -11,7 +11,7 @@ import { getSmallWhitelistedModel } from "@app/lib/api/assistant/models";
 import { getFileContent } from "@app/lib/api/files/utils";
 import { uploadFrameContent } from "@app/lib/api/viz/upload_frame_content";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { ConversationForkResource } from "@app/lib/resources/conversation_fork_resource";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { FileResource } from "@app/lib/resources/file_resource";
@@ -116,7 +116,7 @@ async function copyConversationMCPServerViews(
     childConversation: ConversationWithoutContentType;
     transaction: Transaction;
   }
-): Promise<Result<undefined, DustError<CreateConversationForkErrorCode>>> {
+): Promise<Result<undefined, RubyError<CreateConversationForkErrorCode>>> {
   const parentMCPServerViews = await ConversationResource.fetchMCPServerViews(
     auth,
     parentConversation,
@@ -147,7 +147,7 @@ async function copyConversationMCPServerViews(
 
   if (upsertResult.isErr()) {
     return new Err(
-      new DustError(
+      new RubyError(
         "internal_error",
         "Failed to copy MCP server views into the forked conversation."
       )
@@ -168,7 +168,7 @@ async function copyConversationSkills(
     childConversation: ConversationWithoutContentType;
     transaction: Transaction;
   }
-): Promise<Result<undefined, DustError<CreateConversationForkErrorCode>>> {
+): Promise<Result<undefined, RubyError<CreateConversationForkErrorCode>>> {
   const parentSkills = await SkillResource.listEnabledByConversation(auth, {
     conversation: parentConversation,
     transaction,
@@ -190,7 +190,7 @@ async function copyConversationSkills(
 
   if (upsertResult.isErr()) {
     return new Err(
-      new DustError(
+      new RubyError(
         "internal_error",
         "Failed to copy conversation skills into the forked conversation."
       )
@@ -475,7 +475,7 @@ export async function createConversationFork(
     sourceMessageId?: string;
   }
 ): Promise<
-  Result<ConversationForkResult, DustError<CreateConversationForkErrorCode>>
+  Result<ConversationForkResult, RubyError<CreateConversationForkErrorCode>>
 > {
   const parentConversation = await ConversationResource.fetchById(
     auth,
@@ -484,14 +484,14 @@ export async function createConversationFork(
 
   if (!parentConversation) {
     return new Err(
-      new DustError("conversation_not_found", "Conversation not found.")
+      new RubyError("conversation_not_found", "Conversation not found.")
     );
   }
 
   const parentSpace = parentConversation.space;
   if (parentSpace?.isProject() && !parentSpace.isMember(auth)) {
     return new Err(
-      new DustError("unauthorized", "You are not a member of the Pod.")
+      new RubyError("unauthorized", "You are not a member of the Pod.")
     );
   }
 
@@ -509,7 +509,7 @@ export async function createConversationFork(
 
     if (sourceMessage.isErr()) {
       return new Err(
-        new DustError("invalid_request_error", sourceMessage.error.message)
+        new RubyError("invalid_request_error", sourceMessage.error.message)
       );
     }
 
@@ -520,7 +520,7 @@ export async function createConversationFork(
     });
     if (!forkCompactionModel) {
       return new Err(
-        new DustError(
+        new RubyError(
           "internal_error",
           "No whitelisted model available for fork compaction."
         )
@@ -625,7 +625,7 @@ export async function createConversationFork(
     );
 
     return new Err(
-      new DustError(
+      new RubyError(
         "failed_to_copy_files",
         "Failed to copy files from source conversation."
       )

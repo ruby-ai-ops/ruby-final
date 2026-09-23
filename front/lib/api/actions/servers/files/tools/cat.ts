@@ -5,7 +5,7 @@ import type {
 } from "@app/lib/actions/mcp_internal_actions/tool_definition";
 import { CAT_LINES_DEFAULT } from "@app/lib/api/actions/servers/files/metadata";
 import {
-  getDustFileSystemForAgentLoop,
+  getRubyFileSystemForAgentLoop,
   requireAgentLoopConversation,
   scopedPathsFromArgs,
 } from "@app/lib/api/actions/servers/files/tools/agent_loop_fs";
@@ -20,7 +20,7 @@ import {
 import { isLLMVisionSupportedImageContentType } from "@app/types/files";
 import { Err, Ok } from "@app/types/shared/result";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { Readable } from "stream";
 
 const CAT_IMAGE_MAX_BYTES = 2 * 1024 * 1024; // 2 MB vision limit.
@@ -48,7 +48,7 @@ function catImage(
     {
       type: "resource",
       resource: {
-        uri: `dust://files/${path}`,
+        uri: `ruby://files/${path}`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_OUTPUT.MODEL_VISION_IMAGE,
         text: "" as const,
         filePath,
@@ -118,7 +118,7 @@ export async function catHandler(
     return conversationRes;
   }
 
-  const fsResult = await getDustFileSystemForAgentLoop(
+  const fsResult = await getRubyFileSystemForAgentLoop(
     auth,
     conversationRes.value,
     scopedPathsFromArgs(path)
@@ -127,9 +127,9 @@ export async function catHandler(
     return fsResult;
   }
 
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
-  const statResult = await dustFs.stat(path);
+  const statResult = await rubyFs.stat(path);
   if (statResult.isErr()) {
     return new Err(new MCPError(statResult.error.message, { tracked: false }));
   }
@@ -163,7 +163,7 @@ export async function catHandler(
     );
   }
 
-  const readResult = await dustFs.read(path);
+  const readResult = await rubyFs.read(path);
   if (readResult.isErr()) {
     return new Err(new MCPError(readResult.error.message, { tracked: false }));
   }

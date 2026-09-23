@@ -21,8 +21,8 @@ import type {
 import { getLlmCredentials } from "@app/lib/api/provider_credentials";
 import type { Authenticator } from "@app/lib/auth";
 import { convertMarkdownToBlockHtml } from "@app/lib/editor/skill_instructions_html";
-import type { DustBatchEndpointConstructor } from "@app/lib/llms/batch/dust_batch_endpoint";
-import type { DustStreamEndpointConstructor } from "@app/lib/llms/stream/dust_stream_endpoint";
+import type { RubyBatchEndpointConstructor } from "@app/lib/llms/batch/ruby_batch_endpoint";
+import type { RubyStreamEndpointConstructor } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import type { EndpointConfig, Where } from "@app/lib/llms/types/filter";
 import type { Model } from "@app/lib/model_constructors/types/models";
 import { buildSkillAggregationPrompt } from "@app/lib/reinforcement/aggregate_suggestions";
@@ -390,7 +390,7 @@ async function getBatchLLMInstance(
     );
   }
 
-  const llmParameters: LLMParameters<DustBatchEndpointConstructor> = {
+  const llmParameters: LLMParameters<RubyBatchEndpointConstructor> = {
     credentials,
     modelInfo: { endpoint },
     bypassFeatureFlag: true,
@@ -410,7 +410,7 @@ async function getStreamLLMInstance(
   auth: Authenticator,
   credentials: LLMCredentialsType,
   model: Model
-): Promise<LLM<DustStreamEndpointConstructor>> {
+): Promise<LLM<RubyStreamEndpointConstructor>> {
   const filter: Where<EndpointConfig> = {
     model: { eq: model },
   };
@@ -425,7 +425,7 @@ async function getStreamLLMInstance(
     );
   }
 
-  const llmParameters: LLMParameters<DustStreamEndpointConstructor> = {
+  const llmParameters: LLMParameters<RubyStreamEndpointConstructor> = {
     credentials,
     modelInfo: { endpoint },
     bypassFeatureFlag: true,

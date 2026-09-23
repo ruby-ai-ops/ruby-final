@@ -219,7 +219,7 @@ yargs(hideBin(process.argv))
   .option("image", {
     type: "string",
     demandOption: true,
-    describe: "Image name (e.g., dust-base)",
+    describe: "Image name (e.g., ruby-base)",
   })
   .option("tag", {
     type: "string",

@@ -16,8 +16,8 @@ export function sanitizeHeadersArray(rows: HeaderRow[]): HeaderRow[] {
     .filter(({ key, value }) => key.length > 0 && value.length > 0);
 }
 
-// Counterpart of `encodeUtf8HeaderValue` in @dust-tt/client
-// (sdks/js/src/http_headers.ts): DustAPI carries non-Latin-1 extra header
+// Counterpart of `encodeUtf8HeaderValue` in @ruby-ai/client
+// (sdks/js/src/http_headers.ts): RubyAPI carries non-Latin-1 extra header
 // values (emoji or non-Latin scripts in API key names, internationalized user
 // emails) as RFC 2047 encoded-words (`=?utf-8?B?<base64>?=`) since HTTP header
 // values must fit in ISO-8859-1. This decodes them on the receiving end;

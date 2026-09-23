@@ -8,7 +8,7 @@ import type { StreamSetup } from "@app/lib/model_constructors/test/setup";
 export const OpenAIGptSixSolGlobalOpenAIResponsesStreamSetup: StreamSetup = {
   createInstance: () =>
     new OpenAIGptSixSolGlobalOpenAIResponsesStream({
-      OPENAI_API_KEY: process.env.DUST_MANAGED_OPENAI_API_KEY ?? "",
+      OPENAI_API_KEY: process.env.RUBY_MANAGED_OPENAI_API_KEY ?? "",
     }),
   // Characterized against the live API (2026-09-22) with the widest
   // `inputConfigSchema`: "minimal" is rejected with a 400 listing

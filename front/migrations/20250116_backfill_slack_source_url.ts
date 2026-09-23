@@ -61,8 +61,8 @@ async function backfillDataSource(
     execute,
     logger.child({
       slackConfig,
-      projectId: frontDataSource.dustAPIProjectId,
-      dataSourceId: frontDataSource.dustAPIDataSourceId,
+      projectId: frontDataSource.rubyAPIProjectId,
+      dataSourceId: frontDataSource.rubyAPIDataSourceId,
     })
   );
 }
@@ -121,8 +121,8 @@ async function backfillChannels(
       //      AND ds.project = :projectId;`, // leverages the index (ds, node_id)
       //   {
       //     replacements: {
-      //       dataSourceId: frontDataSource.dustAPIDataSourceId,
-      //       projectId: frontDataSource.dustAPIProjectId,
+      //       dataSourceId: frontDataSource.rubyAPIDataSourceId,
+      //       projectId: frontDataSource.rubyAPIProjectId,
       //       nodeIds,
       //     },
       //     type: QueryTypes.SELECT,

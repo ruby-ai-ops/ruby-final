@@ -169,7 +169,7 @@ export const SERVICENOW_SERVER = {
       supported_use_cases: ["platform_actions", "personal_actions"],
     },
     icon: "ActionCloudArrowLeftRightIcon",
-    documentationUrl: "https://docs.dust.tt/docs/servicenow",
+    documentationUrl: "https://docs.ruby.ad/docs/servicenow",
   },
   tools: SERVICENOW_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

@@ -311,7 +311,7 @@ describe("search-backed Manage Skills", () => {
     );
   });
 
-  it("requests Dust-provided skills and archived skills in their own tabs", async () => {
+  it("requests Ruby-provided skills and archived skills in their own tabs", async () => {
     const { search, fetcherWithBody, mount } = await setup();
     mount();
     await screen.findByRole("button", { name: /Weekly report/ });
@@ -369,7 +369,7 @@ describe("search-backed Manage Skills", () => {
     const dialog = await screen.findByRole("dialog", { name: "Import skills" });
     await userEvent.type(
       within(dialog).getByPlaceholderText("https://github.com/owner/repo"),
-      "https://github.com/dust-tt/skills"
+      "https://github.com/ruby-ai/skills"
     );
     await within(dialog).findByText(skill.name, {}, { timeout: 3_000 });
     const importButton = within(dialog).getByRole("button", {

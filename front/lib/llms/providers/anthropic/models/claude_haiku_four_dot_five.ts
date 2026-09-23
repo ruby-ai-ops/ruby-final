@@ -4,12 +4,12 @@ import {
 } from "@app/lib/llms/stream/types/configuration";
 import { CLAUDE_4_5_HAIKU_DEFAULT_MODEL_CONFIG } from "@app/types/assistant/models/anthropic";
 
-export function WithDustClaudeHaikuFourDotFive<
+export function WithRubyClaudeHaikuFourDotFive<
   TBase extends abstract new (
     ...args: any[]
   ) => object,
 >(Base: TBase) {
-  abstract class DustClaudeHaikuFourDotFive extends Base {
+  abstract class RubyClaudeHaikuFourDotFive extends Base {
     static readonly displayName = "Claude 4.5 Haiku";
     static readonly description =
       "Anthropic's Claude 4.5 Haiku model, cost effective and high throughput (200k context).";
@@ -23,11 +23,11 @@ export function WithDustClaudeHaikuFourDotFive<
     ];
 
     // Nest the legacy model config under a single `modelConfig` static (see
-    // `DustStreamEndpointConfiguration`) so consumers can retrieve the full
+    // `RubyStreamEndpointConfiguration`) so consumers can retrieve the full
     // `ModelConfigurationType` off the endpoint without spreading its fields
     // onto the class statics.
     static readonly modelConfig = CLAUDE_4_5_HAIKU_DEFAULT_MODEL_CONFIG;
   }
 
-  return DustClaudeHaikuFourDotFive;
+  return RubyClaudeHaikuFourDotFive;
 }

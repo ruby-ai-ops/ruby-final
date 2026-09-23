@@ -66,7 +66,7 @@ export function registerAllTools(
         description: tool.description,
         inputSchema: tool.schema,
         _meta: {
-          dust: {
+          ruby: {
             stake: tool.stake,
             displayLabels: tool.displayLabels,
             ...(tool.argumentsRequiringApproval

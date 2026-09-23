@@ -1,15 +1,13 @@
-import { cn } from "@marketing/components/poke/shadcn/lib/utils";
+import { cn } from "@marketing/components/admin/shadcn/lib/utils";
 import { classNames } from "@marketing/lib/utils";
 import {
   Circle,
   Hexagon01,
   Icon,
-  Link01,
-  Planet,
-  Robot,
   Square,
+  Star01,
   Triangle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 
@@ -92,9 +90,9 @@ const createHeadingComponent = (Tag: TagName) => {
     const baseClasses = mono
       ? classNames(
           hClasses[Tag].replace(/heading-/g, "heading-mono-"),
-          "font-mono"
+          "title-display"
         )
-      : classNames(hClasses[Tag], "font-sans");
+      : classNames(hClasses[Tag], "title-display");
     return (
       <Tag id={id} className={classNames(baseClasses, className)} style={style}>
         {children}
@@ -110,6 +108,17 @@ export const H2 = createHeadingComponent("h2");
 export const H3 = createHeadingComponent("h3");
 export const H4 = createHeadingComponent("h4");
 export const H5 = createHeadingComponent("h5");
+
+export const MarketingFeatureIcon = ({
+  className = "",
+}: {
+  className?: string;
+}) => (
+  <Icon
+    visual={Star01}
+    className={classNames("h-8 w-8 text-sky-500", className)}
+  />
+);
 
 const pClasses = {
   xxs: "copy-xs",
@@ -229,7 +238,7 @@ export function CloudConnectorsSection() {
         <div className="w-full text-left lg:w-1/2">
           <H3 className="mb-4 sm:mb-6">Work amplified</H3>
           <P size="md" className="text-muted-foreground">
-            Dust is your future-proof AI platform: we are model-agnostic and let
+            Ruby is your future-proof AI platform: we are model-agnostic and let
             you connect all your existing systems.
           </P>
         </div>
@@ -252,11 +261,7 @@ export function SecurityComplianceSection() {
       <div className="grid gap-6 sm:gap-8 md:grid-cols-3">
         <div className="rounded-2xl bg-gray-50 p-6">
           <div className="mb-6 flex h-12 w-12 items-center justify-center">
-            <img
-              src="/static/landing/industry/d-blue.svg"
-              alt="Blue geometric shape"
-              className="h-full w-full object-contain"
-            />
+            <MarketingFeatureIcon />
           </div>
           <H3 className="mb-4">Data privacy</H3>
           <P size="sm" className="text-muted-foreground">
@@ -266,11 +271,7 @@ export function SecurityComplianceSection() {
         </div>
         <div className="rounded-2xl bg-gray-50 p-6">
           <div className="mb-6 flex h-12 w-12 items-center justify-center">
-            <img
-              src="/static/landing/industry/d-red.svg"
-              alt="Red geometric shape"
-              className="h-full w-full object-contain"
-            />
+            <MarketingFeatureIcon />
           </div>
           <H3 className="mb-4">Access control</H3>
           <P size="sm" className="text-muted-foreground">
@@ -280,11 +281,7 @@ export function SecurityComplianceSection() {
         </div>
         <div className="rounded-2xl bg-gray-50 p-6">
           <div className="mb-6 flex h-12 w-12 items-center justify-center">
-            <img
-              src="/static/landing/industry/d-green.svg"
-              alt="Green geometric shape"
-              className="h-full w-full object-contain"
-            />
+            <MarketingFeatureIcon />
           </div>
           <H3 className="mb-4">Compliance</H3>
           <P size="sm" className="text-muted-foreground">
@@ -302,7 +299,7 @@ export function TeamFeatureSection() {
     <div>
       <div className="flex w-full flex-col justify-between gap-6 md:flex-row">
         <div className="flex flex-1 flex-col rounded-2xl bg-blue-50 p-6">
-          <Icon visual={Robot} className="mb-4 h-8 w-8 text-blue-400" />
+          <MarketingFeatureIcon className="mb-4" />
           <h4 className="text-lg font-semibold">Team orchestration</h4>
           <P size="sm" className="mt-1 text-muted-foreground">
             Build and manage teams of specialized agents that collaborate with
@@ -310,7 +307,7 @@ export function TeamFeatureSection() {
           </P>
         </div>
         <div className="flex flex-1 flex-col rounded-2xl bg-golden-50 p-6">
-          <Icon visual={Link01} className="mb-4 h-8 w-8 text-golden-400" />
+          <MarketingFeatureIcon className="mb-4" />
           <h4 className="text-lg font-semibold">
             Context-aware infrastructure
           </h4>
@@ -319,7 +316,7 @@ export function TeamFeatureSection() {
           </P>
         </div>
         <div className="flex flex-1 flex-col rounded-2xl bg-rose-50 p-6">
-          <Icon visual={Planet} className="mb-4 h-8 w-8 text-rose-400" />
+          <MarketingFeatureIcon className="mb-4" />
           <h4 className="text-lg font-semibold">Universal access layer</h4>
           <P size="sm" className="mt-1 text-muted-foreground">
             Seamlessly integrate with your existing tools and systems.

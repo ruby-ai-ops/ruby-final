@@ -3,23 +3,23 @@ import { useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useBotDataSources } from "@app/lib/swr/data_sources";
 import { useSystemSpace } from "@app/lib/swr/spaces";
 import type { WorkspaceType } from "@app/types/user";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
-// Name and description of each messaging app bot, shared with the read-only Poke governance view.
+// Name and description of each messaging app bot, shared with the read-only Admin governance view.
 export const MESSAGING_APP_METADATA = {
   slack_bot: {
     name: "Slack Bot",
-    description: "Whether the Dust Bot can be used in Slack",
-    documentationUrl: "https://docs.dust.tt/docs/slack",
+    description: "Whether the Ruby Bot can be used in Slack",
+    documentationUrl: "https://docs.ruby.ad/docs/slack",
   },
   microsoft_bot: {
     name: "Microsoft Teams Bot",
-    description: "Whether the Dust Bot can be used in Microsoft Teams",
-    documentationUrl: "https://docs.dust.tt/docs/dust-in-teams",
+    description: "Whether the Ruby Bot can be used in Microsoft Teams",
+    documentationUrl: "https://docs.ruby.ad/docs/ruby-in-teams",
   },
   discord_bot: {
     name: "Discord Bot",
-    description: "Whether the Dust Bot can be used in Discord",
+    description: "Whether the Ruby Bot can be used in Discord",
     documentationUrl: undefined,
   },
 } as const;

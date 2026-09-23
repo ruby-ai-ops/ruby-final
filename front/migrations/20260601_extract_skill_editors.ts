@@ -40,7 +40,7 @@ interface WorkspaceSkillEditorExport {
 
 type SkillEditorCsvRecord = Record<string, string | number>;
 
-const DUST_APP_URL = "https://app.dust.tt";
+const RUBY_APP_URL = "https://app.ruby.ad";
 const SKILL_LIST_DELIMITER = "\n";
 
 function compareStrings(left: string, right: string): number {
@@ -50,7 +50,7 @@ function compareStrings(left: string, right: string): number {
 function getSkillBuilderUrl(workspaceId: string, skillId: string): string {
   return new URL(
     getSkillBuilderRoute(workspaceId, skillId),
-    DUST_APP_URL
+    RUBY_APP_URL
   ).toString();
 }
 

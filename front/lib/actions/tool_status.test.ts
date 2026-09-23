@@ -6,29 +6,29 @@ describe("extractArgRequiringApprovalValues", () => {
     const values = extractArgRequiringApprovalValues(
       ["recipient", "retries", "dryRun", "email"],
       {
-        recipient: "team@dust.tt",
+        recipient: "team@ruby.ad",
         retries: 3,
         dryRun: false,
-        email: ["adrien@dust.tt"],
+        email: ["adrien@ruby.ad"],
       }
     );
 
     expect(values).toEqual({
-      recipient: "team@dust.tt",
+      recipient: "team@ruby.ad",
       retries: "3",
       dryRun: "false",
-      email: "adrien@dust.tt",
+      email: "adrien@ruby.ad",
     });
   });
 
   it("serializes multi-element arrays", () => {
     const values = extractArgRequiringApprovalValues(["emails", "ids"], {
-      emails: ["first@dust.tt", "second@dust.tt"],
+      emails: ["first@ruby.ad", "second@ruby.ad"],
       ids: [2, 1],
     });
 
     expect(values).toEqual({
-      emails: '["first@dust.tt","second@dust.tt"]',
+      emails: '["first@ruby.ad","second@ruby.ad"]',
       ids: "[2,1]",
     });
   });

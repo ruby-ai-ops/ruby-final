@@ -2,8 +2,8 @@ import { VALIDATION_MESSAGES } from "@app/components/agent_builder/capabilities/
 import {
   childAgentIdSchema,
   dataSourceConfigurationSchema,
-  dustAppConfigurationSchema,
-  dustProjectSchema,
+  rubyAppConfigurationSchema,
+  rubyProjectSchema,
   jsonSchemaFieldSchema,
   jsonSchemaStringSchema,
   mcpServerViewIdSchema,
@@ -57,16 +57,16 @@ function createDynamicConfigurationFields(requirements: MCPServerRequirements) {
           message: VALIDATION_MESSAGES.childAgent.required,
         })
       : z.null(),
-    dustAppConfiguration: requirements.requiresDustAppConfiguration
-      ? dustAppConfigurationSchema.refine((val) => val !== null, {
-          message: VALIDATION_MESSAGES.dustApp.required,
+    rubyAppConfiguration: requirements.requiresRubyAppConfiguration
+      ? rubyAppConfigurationSchema.refine((val) => val !== null, {
+          message: VALIDATION_MESSAGES.rubyApp.required,
         })
       : z.null(),
-    dustProject: requirements.requiresDustProjectConfiguration
-      ? dustProjectSchema.refine((val) => val !== null, {
-          message: VALIDATION_MESSAGES.dustProject.required,
+    rubyProject: requirements.requiresRubyProjectConfiguration
+      ? rubyProjectSchema.refine((val) => val !== null, {
+          message: VALIDATION_MESSAGES.rubyProject.required,
         })
-      : dustProjectSchema,
+      : rubyProjectSchema,
     secretName: requirements.developerSecretSelection
       ? requirements.developerSecretSelection === "required"
         ? secretNameSchema.refine((val) => val !== null, {
@@ -171,8 +171,8 @@ function createDefaultConfigurationSchema() {
   return z.object({
     ...createBaseConfigurationFields(),
     childAgentId: childAgentIdSchema,
-    dustAppConfiguration: dustAppConfigurationSchema,
-    dustProject: dustProjectSchema,
+    rubyAppConfiguration: rubyAppConfigurationSchema,
+    rubyProject: rubyProjectSchema,
     additionalConfiguration: z.object({}),
   });
 }

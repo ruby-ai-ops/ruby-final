@@ -25,7 +25,7 @@ vi.mock("@app/logger/logger", () => ({
   default: { info: vi.fn(), error: vi.fn(), warn: vi.fn() },
 }));
 
-const CARRY_KEY = "DUST_CARRY_ON_RENEWAL";
+const CARRY_KEY = "RUBY_CARRY_ON_RENEWAL";
 
 const TO_CONTRACT_START = new Date("2026-05-01T00:00:00.000Z");
 const ORIGINAL_ENDING = "2027-04-01T00:00:00.000Z";

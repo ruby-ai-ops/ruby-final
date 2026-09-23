@@ -138,7 +138,7 @@ describe("buildSkillAnalysisPrompt", () => {
   });
 
   it("wraps conversation text in <conversation> tags", () => {
-    const conversationText = "User: What is Dust?\nAgent: Dust is a platform.";
+    const conversationText = "User: What is Ruby?\nAgent: Ruby is a platform.";
     const { userMessage } = buildSkillAnalysisPrompt(conversationText, [
       makeSkill(),
     ]);

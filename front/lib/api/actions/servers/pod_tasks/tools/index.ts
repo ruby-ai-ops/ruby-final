@@ -20,7 +20,7 @@ import { inferProjectTaskSourceFromUrl } from "@app/lib/api/actions/servers/pod_
 import { resolveAgentConfigurationIdByName } from "@app/lib/api/assistant/configuration/agent";
 import config from "@app/lib/api/config";
 import { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { startAgentForProjectTask } from "@app/lib/project_task/start_agent";
 import type { UpdateBlob } from "@app/lib/resources/project_task_resource";
 import { ProjectTaskResource } from "@app/lib/resources/project_task_resource";
@@ -104,7 +104,7 @@ async function resolveAssigneeUpdate(
   space: SpaceResource,
   workspaceId: string,
   itemUserId: string | null | undefined
-): Promise<Result<{ userId?: number | null }, DustError<"user_not_member">>> {
+): Promise<Result<{ userId?: number | null }, RubyError<"user_not_member">>> {
   if (itemUserId === undefined) {
     return new Ok({ userId: undefined });
   }
@@ -117,7 +117,7 @@ async function resolveAssigneeUpdate(
   );
   if (!space.isMember(userAuth)) {
     return new Err(
-      new DustError(
+      new RubyError(
         "user_not_member",
         `User ${itemUserId} is not a member of the Pod.`
       )
@@ -146,7 +146,7 @@ export async function buildTaskUpdatePayload(
   row: ProjectTaskResource,
   item: PodTaskUpdateItem,
   agentConfigId: string | null
-): Promise<Result<{ taskUpdates: UpdateBlob }, DustError<"user_not_member">>> {
+): Promise<Result<{ taskUpdates: UpdateBlob }, RubyError<"user_not_member">>> {
   const actorUserId = auth.user()?.id ?? null;
   const workspaceId = auth.getNonNullableWorkspace().sId;
 
@@ -208,12 +208,12 @@ export function createProjectTasksTools(
       assigneeFilter = "mine",
       statusFilter = "all",
       daysAgo = 7,
-      dustPod,
+      rubyPod,
     }) => {
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod,
+          rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -281,11 +281,11 @@ export function createProjectTasksTools(
       }, "Failed to list tasks");
     },
 
-    [CREATE_TASKS_TOOL_NAME]: async ({ creatorType, tasks, dustPod }) => {
+    [CREATE_TASKS_TOOL_NAME]: async ({ creatorType, tasks, rubyPod }) => {
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod,
+          rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -397,11 +397,11 @@ export function createProjectTasksTools(
       }, "Failed to create tasks");
     },
 
-    [UPDATE_TASKS_TOOL_NAME]: async ({ tasks, dustPod }) => {
+    [UPDATE_TASKS_TOOL_NAME]: async ({ tasks, rubyPod }) => {
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod,
+          rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -465,12 +465,12 @@ export function createProjectTasksTools(
       taskId,
       agentName,
       customMessage,
-      dustPod,
+      rubyPod,
     }) => {
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod,
+          rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;

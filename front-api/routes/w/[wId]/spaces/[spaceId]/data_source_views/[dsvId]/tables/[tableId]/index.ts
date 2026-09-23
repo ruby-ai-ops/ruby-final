@@ -29,8 +29,8 @@ app.get(
     const { tableId } = ctx.req.valid("param");
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const tableRes = await coreAPI.getTable({
-      projectId: dataSourceView.dataSource.dustAPIProjectId,
-      dataSourceId: dataSourceView.dataSource.dustAPIDataSourceId,
+      projectId: dataSourceView.dataSource.rubyAPIProjectId,
+      dataSourceId: dataSourceView.dataSource.rubyAPIDataSourceId,
       tableId,
     });
     if (tableRes.isErr()) {

@@ -4,7 +4,7 @@ import { parsePodConfigurationURI } from "@app/lib/actions/mcp_internal_actions/
 import type { PodManagerEditInformationInput } from "@app/lib/api/actions/servers/pod_manager/types";
 import { useSpaceInfo } from "@app/lib/swr/spaces";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Chip } from "@dust-tt/sparkle";
+import { Chip } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 interface PodEditInformationValidationDetailsProps {
@@ -60,7 +60,7 @@ export function PodEditInformationValidationDetails({
 }: PodEditInformationValidationDetailsProps) {
   const { podLabel, isPodLabelLoading } = usePodLabel({
     owner,
-    dustPodUri: input.dustPod?.uri,
+    rubyPodUri: input.rubyPod?.uri,
     conversationId,
   });
 
@@ -71,18 +71,18 @@ export function PodEditInformationValidationDetails({
   });
 
   const podSpaceId = useMemo(() => {
-    if (input.dustPod?.uri) {
-      const parsed = parsePodConfigurationURI(input.dustPod.uri);
+    if (input.rubyPod?.uri) {
+      const parsed = parsePodConfigurationURI(input.rubyPod.uri);
       if (parsed.isOk()) {
         return parsed.value.podId;
       }
       return null;
     }
     return conversation?.spaceId ?? null;
-  }, [conversation?.spaceId, input.dustPod?.uri]);
+  }, [conversation?.spaceId, input.rubyPod?.uri]);
 
   const isWaitingForConversationSpaceId =
-    !input.dustPod?.uri && !!conversationId && isConversationLoading;
+    !input.rubyPod?.uri && !!conversationId && isConversationLoading;
 
   const { spaceInfo, isSpaceInfoLoading } = useSpaceInfo({
     workspaceId: owner.sId,

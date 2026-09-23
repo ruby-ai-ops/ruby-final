@@ -24,7 +24,7 @@ export function formatAvgCredits(credits: number): string {
 }
 
 // Format AWU credits with full fractional precision (up to 6 decimals,
-// trailing zeros trimmed). Used by Poke debugging views that surface
+// trailing zeros trimmed). Used by Admin debugging views that surface
 // microcredit-derived figures (e.g. the rate-limiter counter), where an
 // integer-rounded display would hide fractional-credit divergence.
 export function formatCreditsPrecise(credits: number): string {

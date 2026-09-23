@@ -119,7 +119,7 @@ export async function determineEligibleActivationUsers(
     return new Ok({ eligible: [], skipped: [] });
   }
 
-  // Poke override skips activation-status entirely: no need to evaluate.
+  // Admin override skips activation-status entirely: no need to evaluate.
   if (overrideChecks) {
     return new Ok({
       eligible: candidates.map(toNudgePlan),

@@ -14,7 +14,7 @@ vi.mock("@app/lib/file_storage/config", () => ({
   default: { getGcsPrivateUploadsBucket: vi.fn(() => "test-bucket") },
 }));
 vi.mock("@app/lib/api/config", () => ({
-  default: { getApiBaseUrl: vi.fn(() => "https://dust.tt") },
+  default: { getApiBaseUrl: vi.fn(() => "https://ruby.ad") },
 }));
 
 function mockStoredFile(content: string, contentType: string) {
@@ -39,7 +39,7 @@ describe("editHandler", () => {
       {
         path: `conversation-${conversation.sId}/notes.txt`,
         old_string: "Hello world",
-        new_string: "Hello Dust",
+        new_string: "Hello Ruby",
       },
       makeExtra(auth, conversation)
     );
@@ -52,7 +52,7 @@ describe("editHandler", () => {
 
     expect(fileStorageMock.saveFileCalls).toHaveLength(1);
     const { filePath, content, contentType } = fileStorageMock.saveFileCalls[0];
-    expect(content.toString("utf8")).toBe("const label = 'Hello Dust';\n");
+    expect(content.toString("utf8")).toBe("const label = 'Hello Ruby';\n");
     expect(contentType).toBe("text/plain");
     expect(filePath).toBe(
       `w/${workspaceId}/conversations/${conversation.sId}/files/notes.txt`
@@ -83,7 +83,7 @@ describe("editHandler", () => {
     const { auth, conversation } = await setupProjectConversation();
     mockStoredFile(
       "export default function App() { return <h1>Old</h1>; }\n",
-      "application/vnd.dust.frame"
+      "application/vnd.ruby.frame"
     );
 
     const result = await editHandler(
@@ -104,7 +104,7 @@ describe("editHandler", () => {
     });
 
     expect(fileStorageMock.saveFileCalls[0].contentType).toBe(
-      "application/vnd.dust.frame"
+      "application/vnd.ruby.frame"
     );
   });
 

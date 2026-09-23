@@ -2,7 +2,7 @@ import {
   getParentFolderRelativePath,
   getScopedRelativePath,
 } from "@app/components/file_explorer/utils";
-import { cn } from "@app/components/poke/shadcn/lib/utils";
+import { cn } from "@app/components/admin/shadcn/lib/utils";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -19,7 +19,7 @@ export function getFileExplorerDropSurfaceClassName(
 }
 
 /** Drag payload MIME type for file explorer file moves. */
-const FILE_EXPLORER_DRAG_MIME = "application/x-dust-file-explorer-file";
+const FILE_EXPLORER_DRAG_MIME = "application/x-ruby-file-explorer-file";
 
 export function setFileExplorerDragData(
   dataTransfer: DataTransfer,

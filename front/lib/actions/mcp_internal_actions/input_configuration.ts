@@ -29,8 +29,8 @@ import {
 import { assertNever } from "@app/types/shared/utils/assert_never";
 import { isString, removeNulls } from "@app/types/shared/utils/general";
 import type { WorkspaceType } from "@app/types/user";
-import type { InternalToolInputMimeType } from "@dust-tt/client";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import type { InternalToolInputMimeType } from "@ruby-ai/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type {
   JSONSchema7 as JSONSchema,
   JSONSchema7Type as JSONSchemaType,
@@ -39,18 +39,18 @@ import type {
 export function getDataSourceURI(config: DataSourceConfiguration): string {
   const { workspaceId, sId, dataSourceViewId, filter } = config;
   if (sId) {
-    return `data_source_configuration://dust/w/${workspaceId}/data_source_configurations/${sId}`;
+    return `data_source_configuration://ruby/w/${workspaceId}/data_source_configurations/${sId}`;
   }
   const encodedFilter = encodeURIComponent(JSON.stringify(filter));
-  return `data_source_configuration://dust/w/${workspaceId}/data_source_views/${dataSourceViewId}/filter/${encodedFilter}`;
+  return `data_source_configuration://ruby/w/${workspaceId}/data_source_views/${dataSourceViewId}/filter/${encodedFilter}`;
 }
 
 function getTableURI(config: TableDataSourceConfiguration): string {
   const { workspaceId, sId, dataSourceViewId, tableId } = config;
   if (sId) {
-    return `table_configuration://dust/w/${workspaceId}/table_configurations/${sId}`;
+    return `table_configuration://ruby/w/${workspaceId}/table_configurations/${sId}`;
   }
-  return `table_configuration://dust/w/${workspaceId}/data_source_views/${dataSourceViewId}/tables/${tableId}`;
+  return `table_configuration://ruby/w/${workspaceId}/data_source_views/${dataSourceViewId}/tables/${tableId}`;
 }
 
 /**
@@ -109,7 +109,7 @@ function generateConfiguredInput({
         "Unreachable: child agent configuration without an sId."
       );
       return {
-        uri: `agent://dust/w/${owner.sId}/agents/${childAgentId}`,
+        uri: `agent://ruby/w/${owner.sId}/agents/${childAgentId}`,
         mimeType,
       };
     }
@@ -248,13 +248,13 @@ function generateConfiguredInput({
       return { values: values, mimeType };
     }
 
-    case INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_APP: {
-      const appId = actionConfiguration.dustAppConfiguration
-        ? actionConfiguration.dustAppConfiguration.appId
+    case INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_APP: {
+      const appId = actionConfiguration.rubyAppConfiguration
+        ? actionConfiguration.rubyAppConfiguration.appId
         : null;
 
       if (!appId) {
-        throw new Error("Invalid Dust App configuration");
+        throw new Error("Invalid Ruby App configuration");
       }
 
       return { appId, mimeType };
@@ -270,11 +270,11 @@ function generateConfiguredInput({
       return { secretName, mimeType };
     }
 
-    case INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD: {
-      if (!actionConfiguration.dustProject) {
+    case INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD: {
+      if (!actionConfiguration.rubyProject) {
         return undefined;
       }
-      const project = actionConfiguration.dustProject;
+      const project = actionConfiguration.rubyProject;
       return {
         uri: makePodConfigurationURI(project.workspaceId, project.projectId),
         mimeType,
@@ -502,8 +502,8 @@ export interface MCPServerRequirements {
       default: string | null;
     }
   >;
-  requiresDustAppConfiguration: boolean;
-  requiresDustProjectConfiguration: boolean;
+  requiresRubyAppConfiguration: boolean;
+  requiresRubyProjectConfiguration: boolean;
   developerSecretSelection: DeveloperSecretSelectionType | null;
   noRequirement: boolean;
 }
@@ -524,8 +524,8 @@ export function getMCPServerRequirements(
       requiredBooleans: [],
       requiredEnums: {},
       requiredLists: {},
-      requiresDustAppConfiguration: false,
-      requiresDustProjectConfiguration: false,
+      requiresRubyAppConfiguration: false,
+      requiresRubyProjectConfiguration: false,
       developerSecretSelection: null,
       noRequirement: false,
     };
@@ -746,19 +746,19 @@ export function getMCPServerRequirements(
       })
     );
 
-  const requiresDustAppConfiguration =
+  const requiresRubyAppConfiguration =
     Object.keys(
       findPathsToConfiguration({
         mcpServerView,
-        mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_APP,
+        mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_APP,
       })
     ).length > 0;
 
-  const requiresDustProjectConfiguration =
+  const requiresRubyProjectConfiguration =
     Object.keys(
       findPathsToConfiguration({
         mcpServerView,
-        mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD,
+        mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD,
       })
     ).length > 0;
 
@@ -777,8 +777,8 @@ export function getMCPServerRequirements(
     requiredBooleans,
     requiredEnums,
     requiredLists,
-    requiresDustAppConfiguration,
-    requiresDustProjectConfiguration,
+    requiresRubyAppConfiguration,
+    requiresRubyProjectConfiguration,
     developerSecretSelection,
     noRequirement:
       !requiresDataSourceConfiguration &&
@@ -792,8 +792,8 @@ export function getMCPServerRequirements(
       !requiredBooleans.some((c) => c.default === null) &&
       !Object.values(requiredEnums).some((c) => c.default === null) &&
       !Object.values(requiredLists).some((c) => c.default === null) &&
-      !requiresDustAppConfiguration &&
-      !requiresDustProjectConfiguration &&
+      !requiresRubyAppConfiguration &&
+      !requiresRubyProjectConfiguration &&
       !developerSecretSelection,
   };
 }

@@ -1,5 +1,5 @@
 import type { FilterSummary } from "@app/components/workspace/analytics/filterPanel/filterState";
-import { Button, Chip } from "@dust-tt/sparkle";
+import { Button, Chip } from "@ruby-ai/ui";
 import {
   AnimatePresence,
   domMax,

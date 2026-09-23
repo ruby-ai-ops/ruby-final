@@ -1,10 +1,10 @@
 import type { IndustryPageConfig } from "@marketing/components/home/content/Industry/configs/utils";
 import { createLayoutConfig } from "@marketing/components/home/content/Industry/configs/utils";
-import { Building02 } from "@dust-tt/sparkle";
+import { Building02 } from "@ruby-ai/ui";
 
 export const retailEcommerceConfig: IndustryPageConfig = {
   seo: {
-    title: "Dust for Retail & e-Commerce",
+    title: "Ruby for Retail & e-Commerce",
     description:
       "The AI Solution trusted by leading retail brands — say goodbye to scattered product data, operational bottlenecks, and missed market intelligence.",
   },
@@ -13,12 +13,12 @@ export const retailEcommerceConfig: IndustryPageConfig = {
     "aiAgents",
     "trustedBy",
     "painPoints",
-    "dustInAction",
+    "rubyInAction",
     "impactMetrics",
     "demoVideo",
     "testimonial",
     "customerStories",
-    "justUseDust",
+    "justUseRuby",
   ]),
   hero: {
     chip: {
@@ -28,7 +28,7 @@ export const retailEcommerceConfig: IndustryPageConfig = {
     },
     title: (
       <>
-        Dust for
+        Ruby for
         <br /> Retail & e-Commerce
       </>
     ),
@@ -46,7 +46,7 @@ export const retailEcommerceConfig: IndustryPageConfig = {
     },
     testimonialCard: {
       quote:
-        "Curiosity turned into necessity: I couldn't do half my job without Dust.",
+        "Curiosity turned into necessity: I couldn't do half my job without Ruby.",
       author: {
         name: "Valentine Chelius",
         title: "Head of Marketing",
@@ -66,7 +66,7 @@ export const retailEcommerceConfig: IndustryPageConfig = {
   aiAgents: {
     title: "AI agents that drive commerce forward",
     description:
-      "Accelerate retail & e-commerce growth with AI agents built for modern commerce. Dust automates customer support, operations, and competitive intelligence—freeing your teams to focus on strategic growth decisions.",
+      "Accelerate retail & e-commerce growth with AI agents built for modern commerce. Ruby automates customer support, operations, and competitive intelligence—freeing your teams to focus on strategic growth decisions.",
     bgColor: "bg-gray-50",
   },
   trustedBy: {
@@ -99,8 +99,8 @@ export const retailEcommerceConfig: IndustryPageConfig = {
       },
     ],
   },
-  dustInAction: {
-    title: "Dust in action",
+  rubyInAction: {
+    title: "Ruby in action",
     useCases: [
       {
         title: "Customer service",
@@ -283,12 +283,12 @@ export const retailEcommerceConfig: IndustryPageConfig = {
     ],
   },
   demoVideo: {
-    sectionTitle: "See Dust in motion",
-    videoUrl: "https://fast.wistia.net/embed/iframe/9u1uft5pg7",
+    sectionTitle: "See Ruby in motion",
+    videoUrl: "/static/workspace-demo/index.html",
   },
   testimonial: {
     quote:
-      "Curiosity turned into necessity: I couldn't do half my job without Dust.",
+      "Curiosity turned into necessity: I couldn't do half my job without Ruby.",
     author: {
       name: "Valentine Chelius",
       title: "Head of Marketing",
@@ -300,12 +300,12 @@ export const retailEcommerceConfig: IndustryPageConfig = {
     bgColor: "bg-green-600",
     textColor: "text-white",
   },
-  justUseDust: {
-    title: "Just use Dust",
+  justUseRuby: {
+    title: "Just use Ruby",
     titleColor: "text-blue-600",
     ctaButtons: {
       primary: {
-        label: "Start Free Trial",
+        label: "Get started",
         href: "/api/workos/login",
       },
       secondary: {

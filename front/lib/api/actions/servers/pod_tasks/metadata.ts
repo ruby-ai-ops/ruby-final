@@ -4,7 +4,7 @@ import {
   PodTasksCreateTasksInputSchema,
   PodTasksUpdateTasksInputSchema,
 } from "@app/lib/api/actions/servers/pod_tasks/types";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { z } from "zod";
 
 export const POD_TASKS_SERVER_NAME = "pod_tasks" as const;
@@ -41,8 +41,8 @@ export const POD_TASKS_TOOLS_METADATA = [
         .describe(
           "When status is 'done' or 'all', limit completed tasks to this many days back. Defaults to 7."
         ),
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -94,7 +94,7 @@ export const POD_TASKS_TOOLS_METADATA = [
         .min(3)
         .optional()
         .describe(
-          "Optional agent name. If provided, the tool searches matching agent configurations and uses the best match. Defaults to Dust."
+          "Optional agent name. If provided, the tool searches matching agent configurations and uses the best match. Defaults to Ruby."
         ),
       customMessage: z
         .string()
@@ -102,8 +102,8 @@ export const POD_TASKS_TOOLS_METADATA = [
         .describe(
           "Optional additional instructions appended to the kickoff message sent to the selected agent."
         ),
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(

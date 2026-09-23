@@ -1,5 +1,5 @@
-use dust::oauth::tests::utils::{do_api_call, do_failing_api_call, HttpMethod};
-use dust::utils;
+use ruby::oauth::tests::utils::{do_api_call, do_failing_api_call, HttpMethod};
+use ruby::utils;
 use serde::Deserialize;
 use serde_json::json;
 

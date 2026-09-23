@@ -4,7 +4,7 @@
  *
  * Font weights (medium/semibold), the size scale (100/125/150),
  * max-w-conversation, and the shared move-square/breathing keyframes already
- * come from `@dust-tt/sparkle/styles/theme.css`. `max-w-48` is native in v4.
+ * come from `@ruby-ai/ui/styles/theme.css`. `max-w-48` is native in v4.
  * Only the marketing-only overrides and keyframes live here.
  */
 

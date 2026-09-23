@@ -1,8 +1,8 @@
 import { useAgentBuilderContext } from "@app/components/agent_builder/AgentBuilderContext";
 import type { MCPFormData } from "@app/components/agent_builder/AgentBuilderFormContext";
 import { ConfigurationSectionContainer } from "@app/components/agent_builder/capabilities/shared/ConfigurationSectionContainer";
-import { useDustAppSecrets } from "@app/lib/swr/apps";
-import type { DustAppSecretType } from "@app/types/dust_app_secret";
+import { useRubyAppSecrets } from "@app/lib/swr/apps";
+import type { RubyAppSecretType } from "@app/types/ruby_app_secret";
 import {
   Button,
   Card,
@@ -10,7 +10,7 @@ import {
   DataTable,
   InfoCircle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { KeyIcon, PencilIcon } from "@heroicons/react/20/solid";
 import type { ColumnDef } from "@tanstack/react-table";
 import sortBy from "lodash/sortBy";
@@ -18,7 +18,7 @@ import sortBy from "lodash/sortBy";
 import React, { useMemo } from "react";
 import { useController } from "react-hook-form";
 
-interface SecretTableData extends DustAppSecretType {
+interface SecretTableData extends RubyAppSecretType {
   onClick: () => void;
 }
 
@@ -57,11 +57,11 @@ export function SecretSection({
   });
 
   const { secrets, isSecretsLoading, isSecretsError } =
-    useDustAppSecrets(owner);
+    useRubyAppSecrets(owner);
 
   const availableSecrets = useMemo(() => sortBy(secrets, "name"), [secrets]);
 
-  const handleRowClick = (secret: DustAppSecretType) => {
+  const handleRowClick = (secret: RubyAppSecretType) => {
     field.onChange(secret.name);
   };
 

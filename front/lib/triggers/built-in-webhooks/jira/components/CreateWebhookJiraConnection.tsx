@@ -12,7 +12,7 @@ import {
   Label,
   Plus,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useMemo, useState } from "react";
 
 export function CreateWebhookJiraConnection({

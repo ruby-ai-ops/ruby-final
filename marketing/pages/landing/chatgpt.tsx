@@ -11,7 +11,7 @@ import { FAQ } from "@marketing/components/home/FAQ";
 import type { LandingLayoutProps } from "@marketing/components/home/LandingLayout";
 import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
-import { OpenaiLogo } from "@dust-tt/sparkle";
+import { OpenaiLogo } from "@ruby-ai/ui";
 import type { ReactElement } from "react";
 
 export async function getStaticProps() {
@@ -29,8 +29,8 @@ export default function ChatGPTLandingPage() {
   return (
     <>
       <PageMetadata
-        title="Dust vs ChatGPT: AI Agents That Close Deals, Not Just Answer Questions"
-        description="Compare Dust and ChatGPT for sales teams. While ChatGPT answers questions, Dust builds AI agents that update your CRM, automate follow-ups, and work inside your existing sales stack."
+        title="Ruby vs ChatGPT: AI Agents That Close Deals, Not Just Answer Questions"
+        description="Compare Ruby and ChatGPT for sales teams. While ChatGPT answers questions, Ruby builds AI agents that update your CRM, automate follow-ups, and work inside your existing sales stack."
         pathname="/landing/chatgpt"
       />
 
@@ -61,8 +61,8 @@ export default function ChatGPTLandingPage() {
       {/* Comparison Table */}
       <div className="mt-8">
         <ComparisonTableSection
-          title="How Dust Compares to ChatGPT"
-          dustHeader={chatgptConfig.comparison.dustHeader}
+          title="How Ruby Compares to ChatGPT"
+          rubyHeader={chatgptConfig.comparison.rubyHeader}
           competitorHeader={chatgptConfig.comparison.competitorHeader}
           competitorLogo={<OpenaiLogo className="h-10 w-10" />}
           features={chatgptConfig.comparison.features}
@@ -73,7 +73,7 @@ export default function ChatGPTLandingPage() {
       <div className="mt-8">
         <DifferentiatorsSection
           differentiators={chatgptConfig.differentiators}
-          title="What makes Dust different"
+          title="What makes Ruby different"
         />
       </div>
 

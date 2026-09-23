@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
 use clap::{Parser, Subcommand};
-use dust::{
+use ruby::{
     data_sources::{
         data_source::{
             make_document_id_hash, DataSource, EmbedderConfig, EmbedderDataSourceConfig,
@@ -82,8 +82,8 @@ enum Commands {
 async fn load_credentials_from_env() -> Credentials {
     // Retrieve the environment variables.
     let mistral_api_key =
-        env::var("DUST_MANAGED_MISTRAL_API_KEY").expect("MISTRAL_API_KEY not set");
-    let openai_api_key = env::var("DUST_MANAGED_OPENAI_API_KEY").expect("OPENAI_API_KEY not set");
+        env::var("RUBY_MANAGED_MISTRAL_API_KEY").expect("MISTRAL_API_KEY not set");
+    let openai_api_key = env::var("RUBY_MANAGED_OPENAI_API_KEY").expect("OPENAI_API_KEY not set");
 
     // Create the credentials HashMap.
     let credentials: Credentials = [

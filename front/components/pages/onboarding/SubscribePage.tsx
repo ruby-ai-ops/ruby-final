@@ -22,7 +22,7 @@ import {
 import { TRACKING_AREAS, withTracking } from "@app/lib/tracking";
 import type { BillingPeriod } from "@app/types/plan";
 import { isDevelopment } from "@app/types/shared/env";
-import { BarHeader, Button, Page, Spinner } from "@dust-tt/sparkle";
+import { BarHeader, Button, Page, Spinner } from "@ruby-ai/ui";
 import { CreditCardIcon } from "@heroicons/react/20/solid";
 import React, { useEffect } from "react";
 
@@ -73,7 +73,7 @@ function CPSubscribePage() {
     return (
       <>
         <BarHeader
-          title="Joining Dust"
+          title="Joining Ruby"
           className="ml-10 lg:ml-0"
           rightActions={
             user && (
@@ -210,7 +210,7 @@ function LegacySubscribePage() {
   return (
     <>
       <BarHeader
-        title="Joining Dust"
+        title="Joining Ruby"
         className="ml-10 lg:ml-0"
         rightActions={
           <>
@@ -249,7 +249,7 @@ function LegacySubscribePage() {
                       </span>
                     </Page.P>
                     <Page.P>
-                      To continue using Dust after your trial ends, subscribe to
+                      To continue using Ruby after your trial ends, subscribe to
                       a paid plan. Select your preferred billing option to get
                       started.
                     </Page.P>

@@ -10,7 +10,7 @@ import { classNames } from "@app/lib/utils";
 import type { ContentNode } from "@app/types/connectors/connectors_api";
 import type { APIError } from "@app/types/error";
 import { pluralize } from "@app/types/shared/utils/string_utils";
-import type { NotificationType } from "@dust-tt/sparkle";
+import type { NotificationType } from "@ruby-ai/ui";
 import {
   Brackets,
   Button,
@@ -21,7 +21,7 @@ import {
   Spinner,
   Tree,
   useSheetViewport,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import React, {
   useCallback,

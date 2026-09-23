@@ -9,7 +9,7 @@ import type { MCPToolType, RemoteMCPServerType } from "@app/lib/api/mcp";
 import { MCP_CLIENT_ID_METADATA_DOCUMENT_URL } from "@app/lib/api/mcp_server/urls";
 import type { Authenticator } from "@app/lib/auth";
 import { toGlobalResponse, untrustedFetch } from "@app/lib/egress/server";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { MCPServerConnectionModel } from "@app/lib/models/agent/actions/mcp_server_connection";
 import { MCPServerViewModel } from "@app/lib/models/agent/actions/mcp_server_view";
 import { RemoteMCPServerModel } from "@app/lib/models/agent/actions/remote_mcp_server";
@@ -464,13 +464,13 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
 
   async delete(
     auth: Authenticator
-  ): Promise<Result<undefined | number, DustError<"unauthorized">>> {
+  ): Promise<Result<undefined | number, RubyError<"unauthorized">>> {
     const canAdministrate =
       await SpaceResource.canAdministrateSystemSpace(auth);
 
     if (!canAdministrate) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "The user is not authorized to delete a remote MCP server"
         )
@@ -548,13 +548,13 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
       lastSyncAt: Date;
       clearError?: boolean;
     }
-  ): Promise<Result<undefined, DustError<"unauthorized">>> {
+  ): Promise<Result<undefined, RubyError<"unauthorized">>> {
     const canAdministrate =
       await SpaceResource.canAdministrateSystemSpace(auth);
 
     if (!canAdministrate) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "The user is not authorized to update the metadata of a remote MCP server"
         )
@@ -604,13 +604,13 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
   async updateUrl(
     auth: Authenticator,
     newUrl: string
-  ): Promise<Result<undefined, DustError<"unauthorized">>> {
+  ): Promise<Result<undefined, RubyError<"unauthorized">>> {
     const canAdministrate =
       await SpaceResource.canAdministrateSystemSpace(auth);
 
     if (!canAdministrate) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "The user is not authorized to update the URL of a remote MCP server"
         )
@@ -635,7 +635,7 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
     const canAdministrate =
       await SpaceResource.canAdministrateSystemSpace(auth);
     if (!canAdministrate) {
-      throw new DustError(
+      throw new RubyError(
         "unauthorized",
         "The user is not authorized to mark a remote MCP server as errored"
       );
@@ -656,7 +656,7 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
    * advertises `client_id_metadata_document_supported`, returns a public-client
    * metadata (`token_endpoint_auth_method: "none"`, no `client_secret`) whose
    * `client_id` is `MCP_CLIENT_ID_METADATA_DOCUMENT_URL`; else (2) attempts
-   * Dynamic Client Registration; else (3) fails with a `DustError` directing the
+   * Dynamic Client Registration; else (3) fails with a `RubyError` directing the
    * caller to Static OAuth. It never performs DCR when CIMD applies.
    */
   static async discoverOAuthMetadata({
@@ -670,7 +670,7 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
     extraScopes?: string;
     customHeaders?: Record<string, string>;
   }): Promise<
-    Result<MCPOAuthConnectionMetadataType, DustError<"internal_error">>
+    Result<MCPOAuthConnectionMetadataType, RubyError<"internal_error">>
   > {
     // More or less copied from the official "MCP Inspector" code, but adapted to our needs.
     // Basically, we do the 2 first steps of the Guided Tour.
@@ -723,7 +723,7 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
         "Failed to select OAuth protected resource URL"
       );
       return new Err(
-        new DustError(
+        new RubyError(
           "internal_error",
           `Failed to discover OAuth metadata for ${serverUrl}: ${error.message}`
         )
@@ -737,7 +737,7 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
       });
       if (!metadata) {
         return new Err(
-          new DustError("internal_error", "Failed to discover OAuth metadata")
+          new RubyError("internal_error", "Failed to discover OAuth metadata")
         );
       }
     } catch (e) {
@@ -746,7 +746,7 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
         "Failed to discover authorization server metadata"
       );
       return new Err(
-        new DustError("internal_error", "Failed to discover OAuth metadata")
+        new RubyError("internal_error", "Failed to discover OAuth metadata")
       );
     }
     //const parsedMetadata = await OAuthMetadataSchema.parseAsync(metadata);
@@ -816,7 +816,7 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
       // failure isn't a broken registration attempt, it's expected, and Static OAuth is the
       // right path.
       const message = metadata.registration_endpoint
-        ? "Failed to register client, this server might require a pre-approval process. Please contact support@dust.com."
+        ? "Failed to register client, this server might require a pre-approval process. Please contact support@ruby.com."
         : "This server does not support automatic OAuth setup (no dynamic client registration " +
           "endpoint). Please use Static OAuth with the client ID/secret provided by the " +
           "server's OAuth application.";
@@ -830,7 +830,7 @@ export class RemoteMCPServerResource extends BaseResource<RemoteMCPServerModel> 
         },
         message
       );
-      return new Err(new DustError("internal_error", message));
+      return new Err(new RubyError("internal_error", message));
     }
   }
 

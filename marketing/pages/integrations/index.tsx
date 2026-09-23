@@ -21,7 +21,7 @@ import {
   getPlatformLogo,
   PuzzlePiece01,
   SearchInput,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -39,16 +39,16 @@ function generateItemListSchema(integrations: IntegrationBase[]) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Dust Integrations",
+    name: "Ruby Integrations",
     description:
-      "Connect Dust AI agents to your favorite tools and data sources",
+      "Connect Ruby AI agents to your favorite tools and data sources",
     numberOfItems: integrations.length,
     itemListElement: integrations.map((integration, index) => ({
       "@type": "ListItem",
       position: index + 1,
       name: integration.name,
       description: integration.description,
-      url: `https://dust.tt/integrations/${integration.slug}`,
+      url: `https://ruby.ad/integrations/${integration.slug}`,
     })),
   };
 }
@@ -122,8 +122,8 @@ export default function IntegrationsPageNextJS({
   return (
     <>
       <PageMetadata
-        title="Integrations | Dust AI Agents"
-        description="Connect Dust to 50+ tools and data sources. Slack, Notion, GitHub, Salesforce, Google Drive, and more. Build AI agents that work with your entire stack."
+        title="Integrations | Ruby AI Agents"
+        description="Connect Ruby to 50+ tools and data sources. Slack, Notion, GitHub, Salesforce, Google Drive, and more. Build AI agents that work with your entire stack."
         pathname={router.asPath}
       />
 
@@ -147,7 +147,7 @@ export default function IntegrationsPageNextJS({
               Integrations
             </H1>
             <P size="lg" className="mb-8 max-w-2xl text-muted-foreground">
-              Connect Dust to your favorite tools and data sources. Build AI
+              Connect Ruby to your favorite tools and data sources. Build AI
               agents that work with your entire stack.
             </P>
 
@@ -229,9 +229,9 @@ export default function IntegrationsPageNextJS({
             <div className="py-12 text-center">
               <p className="text-muted-foreground">
                 No integration found yet... but you can connect any MCP server
-                you want in Dust!{" "}
+                you want in Ruby!{" "}
                 <a
-                  href="https://docs.dust.tt/docs/remote-mcp-server"
+                  href="https://docs.ruby.ad/docs/remote-mcp-server"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-foreground underline hover:text-highlight"

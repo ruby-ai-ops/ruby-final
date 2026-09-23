@@ -1,5 +1,5 @@
 import type { GetConversationFilesResponseBody } from "@app/lib/api/assistant/conversation/files";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { enrichListWithFileResourceIds } from "@app/lib/api/files/file_system_ops";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { SCOPED_PREFIX_CONVERSATION } from "@app/types/file_system";
@@ -38,7 +38,7 @@ app.get(
       });
     }
 
-    const fsResult = await DustFileSystem.forConversation(
+    const fsResult = await RubyFileSystem.forConversation(
       auth,
       conversation.toJSON()
     );
@@ -53,9 +53,9 @@ app.get(
     }
 
     // Scope the listing to the conversation mount only. For pod conversations the
-    // DustFileSystem also has a pod mount and we do not want to expose pod files here.
-    const dustFs = fsResult.value;
-    const listResult = await dustFs.list(`${SCOPED_PREFIX_CONVERSATION}${cId}`);
+    // RubyFileSystem also has a pod mount and we do not want to expose pod files here.
+    const rubyFs = fsResult.value;
+    const listResult = await rubyFs.list(`${SCOPED_PREFIX_CONVERSATION}${cId}`);
     if (listResult.isErr()) {
       return apiError(ctx, {
         status_code: 500,
@@ -68,7 +68,7 @@ app.get(
 
     const files = await enrichListWithFileResourceIds(
       auth,
-      dustFs,
+      rubyFs,
       listResult.value
     );
 

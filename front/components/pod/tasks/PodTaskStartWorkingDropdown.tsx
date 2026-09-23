@@ -3,7 +3,7 @@ import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
 import { GLOBAL_AGENTS_SID } from "@app/types/assistant/assistant";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { DropdownMenuItemProps } from "@dust-tt/sparkle";
+import type { DropdownMenuItemProps } from "@ruby-ai/ui";
 import {
   Avatar,
   Button,
@@ -21,7 +21,7 @@ import {
   Robot,
   TextArea,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 
@@ -115,7 +115,7 @@ export function PodTaskStartWorkingDropdown({
       const defaultAgent =
         (defaultAgentId &&
           activeAgents.find((a) => a.sId === defaultAgentId)) ||
-        activeAgents.find((a) => a.sId === GLOBAL_AGENTS_SID.DUST) ||
+        activeAgents.find((a) => a.sId === GLOBAL_AGENTS_SID.RUBY) ||
         activeAgents[0] ||
         null;
       setSelectedStartAgent(defaultAgent);
@@ -143,7 +143,7 @@ export function PodTaskStartWorkingDropdown({
   const isDefaultAgentUnavailable =
     !agentsLoading &&
     !!defaultAgentId &&
-    defaultAgentId !== GLOBAL_AGENTS_SID.DUST &&
+    defaultAgentId !== GLOBAL_AGENTS_SID.RUBY &&
     !activeAgents.some((a) => a.sId === defaultAgentId);
 
   const redirectMenuLabels = startRedirectMenuLabels(context);
@@ -284,7 +284,7 @@ export function PodTaskStartWorkingDropdown({
                             <Icon visual={InfoCircle} size="xs" />
                           </span>
                         }
-                        label="This Pod's default agent isn't available to you, so @dust is used instead. Discuss with your Pod editors if you think this is an error."
+                        label="This Pod's default agent isn't available to you, so @ruby is used instead. Discuss with your Pod editors if you think this is an error."
                       />
                     )}
                     <Icon

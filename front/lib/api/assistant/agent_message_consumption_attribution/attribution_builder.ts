@@ -93,7 +93,7 @@ function assertValidRunUsage(usage: RunUsageForAttribution): void {
   }
 }
 
-/** Converts provider cost into millionths of a Dust credit. */
+/** Converts provider cost into millionths of a Ruby credit. */
 function creditAmountMicroFromCostMicroUsd(costMicroUsd: number): number {
   return Math.round(
     (costMicroUsd * MICRO_CREDITS_PER_CREDIT) /

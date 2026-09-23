@@ -4,4 +4,4 @@ Statement 0
 */
 SET SESSION statement_timeout = 1200000;
 SET SESSION lock_timeout = 3000;
-DROP INDEX CONCURRENTLY "public"."dust_project_conversations_conversation_id";
+DROP INDEX CONCURRENTLY "public"."ruby_project_conversations_conversation_id";

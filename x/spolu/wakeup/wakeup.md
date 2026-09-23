@@ -5,7 +5,7 @@
 Agents today are purely reactive — they respond to user messages and triggers but cannot schedule
 future actions within a session. A common need: "check if the Slack thread got a reply in 10
 minutes", "remind me at 3pm", "poll this endpoint every hour until it returns 200". Today the
-user must come back and manually poke the agent.
+user must come back and manually admin the agent.
 
 ## Goal
 
@@ -62,9 +62,9 @@ validation, the tool surface, API endpoints, and UI are still follow-up work.
 │  3. Fetch conversation and call getConversation(...)        │
 │  4. postUserMessage into the conversation:                  │
 │     - origin: "wakeup"                                      │
-│     - username: "dust_system"                               │
-│     - fullName: "Dust System"                               │
-│     - content: <dust_system> + "Wake-up reason: ..."        │
+│     - username: "ruby_system"                               │
+│     - fullName: "Ruby System"                               │
+│     - content: <ruby_system> + "Wake-up reason: ..."        │
 │     - mentions: [{ configurationId: agentConfigurationId }] │
 │  5. fireCount++ and:                                        │
 │     - one_shot → status = fired                             │
@@ -169,12 +169,12 @@ fire via `cleanupTemporalAfterFire(...)`.
 2. Verify `status === "scheduled"`.
 3. Fetch the conversation resource and then the full conversation with `getConversation(...)`.
 4. Call `postUserMessage(...)` with:
-   - a `<dust_system>` block containing the wake-up sId, `fireCount / maxFires`, and (when the
+   - a `<ruby_system>` block containing the wake-up sId, `fireCount / maxFires`, and (when the
      wake-up is about to reach `maxFires`) an expiration warning
    - `Wake-up reason: {reason}`
    - `context.origin: "wakeup"`
-   - `context.username: "dust_system"`
-   - `context.fullName: "Dust System"`
+   - `context.username: "ruby_system"`
+   - `context.fullName: "Ruby System"`
    - `mentions: [{ configurationId: wakeUp.agentConfigurationId }]`
 5. Mark the wake-up as fired on success (`markFired(...)` handles one-shot vs cron and the
    `fireCount >= maxFires` expiration transition).
@@ -227,7 +227,7 @@ later.
 Add `"wakeup"` to the `UserMessageOrigin` union type in
 `front/types/assistant/conversation.ts`. The wake-up message:
 
-- Appears in the conversation as a message from "Dust" (not from the human user).
+- Appears in the conversation as a message from "Ruby" (not from the human user).
 - Uses `doNotAssociateUser: true` so it does not mark the conversation as read or appear in the
   user's activity feed as their own message.
 - Mentions the agent so it triggers agent execution.
@@ -309,9 +309,9 @@ When a conversation has active wake-ups (`status = scheduled`):
 
 ### Wake-up message rendering
 
-The wake-up message appears in the conversation thread as a Dust-authored wake-up message:
-- Sender: "Dust"
-- Content: a `<dust_system>` block including the wake-up sId, followed by `Wake-up reason: {reason}`
+The wake-up message appears in the conversation thread as a Ruby-authored wake-up message:
+- Sender: "Ruby"
+- Content: a `<ruby_system>` block including the wake-up sId, followed by `Wake-up reason: {reason}`
 - Visual treatment: can be refined later in the dedicated UI work
 
 ### Notifications
@@ -357,7 +357,7 @@ When a wake-up fires:
    the deletion logic cancels all active wake-ups (Temporal workflows / schedules) and deletes the
    `WakeUpModel` rows explicitly.
 
-3. **Wake-up message content**: The current implementation posts a `<dust_system>` block that
+3. **Wake-up message content**: The current implementation posts a `<ruby_system>` block that
    includes the wake-up sId and `fireCount / maxFires`, and an expiration warning when the
    wake-up is about to reach `maxFires`, followed by `Wake-up reason: {reason}`.
 

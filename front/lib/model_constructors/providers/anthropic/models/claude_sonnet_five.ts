@@ -5,7 +5,7 @@ import { CLAUDE_SONNET_5 } from "@app/lib/model_constructors/types/models";
 
 import { z } from "zod";
 
-// Real model spec. The Dust product cap (250k) is applied in the llms layer.
+// Real model spec. The Ruby product cap (250k) is applied in the llms layer.
 const CONTEXT_SIZE = 1_000_000;
 const DEFAULT_REASONING_EFFORT = "high";
 const MAX_OUTPUT_TOKENS = 128_000;
@@ -21,7 +21,7 @@ const MAX_OUTPUT_TOKENS = 128_000;
 //     "`temperature` may only be set to 1 when thinking is enabled or in
 //     adaptive mode" with thinking on — and anything above 1 fails the
 //     `range: 0..1` check. Hence `z.literal(1)`, defaulted so callers can omit
-//     it. The Dust layer strips it anyway via the `dropTemperature` config
+//     it. The Ruby layer strips it anyway via the `dropTemperature` config
 //     parser, but the endpoint schema mirrors the API rather than that policy.
 //   - Effort "minimal" has no Anthropic equivalent and `assertNever`s in the
 //     converter, so it is excluded from the effort enum.
@@ -66,9 +66,9 @@ export function WithAnthropicClaudeSonnetFiveConfig<
       unknown
     > = configSchema;
 
-    // Typed as `number` (not the literal) so the Dust layer can cap it.
+    // Typed as `number` (not the literal) so the Ruby layer can cap it.
     static readonly contextSize: number = CONTEXT_SIZE;
-    // Typed as `number` (not the literal) so the Dust layer can cap it.
+    // Typed as `number` (not the literal) so the Ruby layer can cap it.
     static readonly maxOutputTokens: number = MAX_OUTPUT_TOKENS;
   }
 

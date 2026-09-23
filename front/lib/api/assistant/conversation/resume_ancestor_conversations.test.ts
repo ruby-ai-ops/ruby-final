@@ -8,7 +8,7 @@ import { createConversation } from "@app/lib/api/assistant/conversation";
 import { resumeAncestorConversations } from "@app/lib/api/assistant/conversation/resume_ancestor_conversations";
 import { retryBlockedActions } from "@app/lib/api/assistant/conversation/retry_blocked_actions";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { ConversationFactory } from "@app/tests/utils/ConversationFactory";
 import { createResourceTest } from "@app/tests/utils/generic_resource_tests";
@@ -82,7 +82,7 @@ describe("resumeAncestorConversations", () => {
 
     vi.mocked(retryBlockedActions).mockResolvedValue(
       new Err(
-        new DustError(
+        new RubyError(
           "agent_loop_already_running",
           "Agent loop already running for this message."
         )
@@ -120,7 +120,7 @@ describe("resumeAncestorConversations", () => {
     // Benign for the caller (handover parent, or already resumed by a sibling validation): the
     // grandparent may still be parked, so the walk must not stop here.
     vi.mocked(retryBlockedActions).mockResolvedValue(
-      new Err(new DustError("no_blocked_actions", "No blocked actions found"))
+      new Err(new RubyError("no_blocked_actions", "No blocked actions found"))
     );
 
     await resumeAncestorConversations(auth, child.conversation, {

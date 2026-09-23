@@ -63,7 +63,7 @@ export async function markFolderAsVisited(
 
   await GoogleDriveFilesModel.upsert({
     connectorId: connectorId,
-    dustFileId: getInternalId(driveFileId),
+    rubyFileId: getInternalId(driveFileId),
     driveFileId: file.id,
     name,
     mimeType: file.mimeType,

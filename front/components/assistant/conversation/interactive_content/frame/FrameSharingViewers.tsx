@@ -14,7 +14,7 @@ import {
   ListGroup,
   SearchMd,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { intlFormatDistance } from "date-fns";
 import { useId, useState } from "react";
 

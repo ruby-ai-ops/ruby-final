@@ -1,7 +1,7 @@
 import type { FileShareScope } from "@app/types/files";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import type { WorkspaceSharingPolicy } from "@app/types/user";
-import { Globe01, Lock01, Users01 } from "@dust-tt/sparkle";
+import { Globe01, Lock01, Users01 } from "@ruby-ai/ui";
 
 interface ScopeOption {
   icon: typeof Lock01;

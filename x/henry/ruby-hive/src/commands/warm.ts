@@ -1,0 +1,280 @@
+import { setCacheSource } from "../lib/cache";
+import { withEnvironments } from "../lib/commands";
+import { startDocker } from "../lib/docker";
+import { isInitialized, markInitialized } from "../lib/environment";
+import { startForwarder } from "../lib/forward";
+import { FORWARDER_PORTS } from "../lib/forwarderConfig";
+import { createTemporalNamespaces, runAllDbInits, runSeedScript } from "../lib/init";
+import { logger } from "../lib/logger";
+import { cleanupServicePorts, formatBlockedPorts } from "../lib/ports";
+import { isServiceRunning, readPid } from "../lib/process";
+import { startService, waitForServiceReady } from "../lib/registry";
+import { CommandError, Err, Ok } from "../lib/result";
+import type { ServiceName } from "../lib/services";
+import { isDockerRunning } from "../lib/state";
+
+interface WarmOptions {
+  noForward?: boolean;
+  forcePorts?: boolean;
+}
+
+// Routes to pre-compile when warming front-api
+// These compile in parallel with the health check to minimize total wait time
+const CRITICAL_ROUTES = [
+  "/api/auth-context", // Auth context API (no workspace)
+  "/api/w/precompile/auth-context", // Auth context API (with workspace)
+  "/api/admin/auth-context", // Admin auth context API (no workspace)
+  "/api/admin/workspaces/precompile/auth-context", // Admin auth context API (with workspace)
+];
+
+// Marketing routes to pre-compile.
+const MARKETING_ROUTES = ["/", "/home"];
+
+// Spawn a detached curl that retries until the server accepts the connection,
+// then triggers route compilation. Output is discarded; failures are silent.
+function preWarmRoutes(port: number, routes: readonly string[]): void {
+  const baseUrl = `http://localhost:${port}`;
+  for (const route of routes) {
+    Bun.spawn(
+      [
+        "curl",
+        "-sf",
+        "-o",
+        "/dev/null",
+        "-m",
+        "180", // 3 minute timeout for slow compilation
+        "--retry",
+        "60",
+        "--retry-delay",
+        "1",
+        "--retry-connrefused",
+        `${baseUrl}${route}`,
+      ],
+      {
+        stdout: "ignore",
+        stderr: "ignore",
+      }
+    ).unref();
+  }
+}
+
+// Check if Temporal server is running (default gRPC port 7233)
+async function isTemporalRunning(): Promise<boolean> {
+  const proc = Bun.spawn(["temporal", "operator", "namespace", "list", "--namespace", "default"], {
+    stdout: "pipe",
+    stderr: "pipe",
+  });
+  await proc.exited;
+  return proc.exitCode === 0;
+}
+
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: orchestration function with necessary complexity
+export const warmCommand = withEnvironments("warm", async (env, options: WarmOptions) => {
+  const startTime = Date.now();
+  const noForward = options.noForward ?? false;
+  const forcePorts = options.forcePorts ?? false;
+
+  // Set cache source to use binaries from main repo
+  await setCacheSource(env.metadata.repoRoot);
+
+  // Check if build watchers are running (should be in cold state)
+  const [uiRunning, sdkRunning] = await Promise.all([
+    isServiceRunning(env.name, "ui"),
+    isServiceRunning(env.name, "sdk"),
+  ]);
+  if (!(uiRunning && sdkRunning)) {
+    const missing = [];
+    if (!uiRunning) missing.push("ui");
+    if (!sdkRunning) missing.push("SDK");
+    return Err(
+      new CommandError(
+        `${missing.join(" and ")} watch is not running. Run 'ruby-hive start' first.`
+      )
+    );
+  }
+
+  // Wait for SDK to be ready (first build complete) before starting front
+  // Front's TypeScript compiler needs SDK types from dist/
+  await waitForServiceReady(env, "sdk");
+
+  // Check if already warm
+  const dockerRunning = await isDockerRunning(env.name);
+
+  if (dockerRunning) {
+    const proxyRunning = await isServiceRunning(env.name, "proxy");
+    if (proxyRunning) {
+      logger.info(`Environment '${env.name}' is already warm`);
+      return Ok(undefined);
+    }
+  }
+
+  logger.info(`Warming environment '${env.name}'...`);
+  console.log();
+
+  // Clean up orphaned processes on service ports
+  const portServices: ServiceName[] = [
+    "proxy",
+    "front-api",
+    "marketing",
+    "core",
+    "connectors",
+    "oauth",
+  ];
+  const servicePids = await Promise.all(portServices.map((service) => readPid(env.name, service)));
+  const allowedPids = new Set(servicePids.filter((pid): pid is number => pid !== null));
+  const { killedPorts, blockedPorts } = await cleanupServicePorts(env.ports, {
+    allowedPids,
+    force: forcePorts,
+  });
+
+  if (blockedPorts.length > 0) {
+    const details = formatBlockedPorts(blockedPorts);
+    return Err(
+      new CommandError(
+        `Ports in use by other processes: ${details}. Stop them or rerun with --force-ports to terminate.`
+      )
+    );
+  }
+  if (killedPorts.length > 0) {
+    logger.warn(`Killed processes on ports: ${killedPorts.join(", ")}`);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+
+  // Check if first warm (needs initialization)
+  const needsInit = !(await isInitialized(env.name));
+
+  // Start Docker + front-api + marketing + proxy + pre-warming all in parallel
+  // Next.js can compile pages while Docker starts and init runs
+  // This maximizes parallelism - by the time init is done, pages are compiled
+  logger.info("Starting Docker, services, and page compilation (all parallel)...");
+  console.log();
+
+  // Start Docker (don't await - let it run in background)
+  const dockerPromise = startDocker(env);
+
+  // Start front-api and marketing immediately to begin page compilation
+  // They will retry connections to DB/Redis until they're ready
+  await Promise.all([startService(env, "front-api"), startService(env, "marketing")]);
+
+  // Start pre-warming immediately - curls will retry until Next.js is ready
+  // Pages compile while Docker containers start and init runs
+  logger.step("Pre-compiling critical pages (parallel with health check)...");
+  preWarmRoutes(env.ports.frontApi, CRITICAL_ROUTES);
+  preWarmRoutes(env.ports.marketing, MARKETING_ROUTES);
+
+  // Start the proxy. It listens on ports.front and routes /api/* to front-api,
+  // /m/api/* and /* to marketing. It does not need its upstreams healthy to
+  // start (it returns 502 until they are).
+  await startService(env, "proxy");
+
+  // Now wait for Docker and start other services
+  await dockerPromise;
+
+  if (needsInit) {
+    logger.info("First warm - initializing (parallel)...");
+    console.log();
+
+    // Run all init tasks in parallel with Rust service compilation
+    const dbInitPromise = runAllDbInits(env);
+    const temporalRunningPromise = isTemporalRunning();
+    const [, , temporalRunning] = await Promise.all([
+      // Start Rust services - they'll compile while init runs
+      startService(env, "core"),
+      startService(env, "oauth"),
+      temporalRunningPromise,
+    ]);
+
+    if (!temporalRunning) {
+      logger.warn("Temporal server is not running. Workers will fail to connect.");
+      logger.warn("Run 'temporal server start-dev' in another terminal.");
+    }
+
+    const initTasks: Promise<void>[] = [dbInitPromise];
+    if (temporalRunning) {
+      initTasks.push(createTemporalNamespaces(env));
+    }
+
+    await Promise.all(initTasks);
+
+    // Run seed script if config exists
+    await runSeedScript(env);
+
+    if (!temporalRunning) {
+      logger.warn(
+        "Skipping initialization marker; Temporal namespaces were not created. Rerun warm once Temporal is running."
+      );
+    } else {
+      await markInitialized(env.name);
+      logger.success("Initialization complete");
+    }
+    console.log();
+
+    // Start remaining services
+    logger.info("Starting remaining services...");
+    await Promise.all([
+      startService(env, "connectors"),
+      startService(env, "front-workers"),
+      startService(env, "front-spa-admin"),
+      startService(env, "front-spa-app"),
+    ]);
+  } else {
+    // Not first warm - start remaining services in parallel
+    const [, temporalRunning] = await Promise.all([
+      Promise.all([
+        startService(env, "core"),
+        startService(env, "oauth"),
+        startService(env, "connectors"),
+        startService(env, "front-workers"),
+        startService(env, "front-spa-admin"),
+        startService(env, "front-spa-app"),
+      ]),
+      isTemporalRunning(),
+    ]);
+
+    if (!temporalRunning) {
+      logger.warn("Temporal server is not running. Workers will fail to connect.");
+      logger.warn("Run 'temporal server start-dev' in another terminal.");
+    }
+  }
+
+  // Wait for services with health checks
+  // Pre-warming is already running in parallel (started above)
+  // Start forwarder as soon as the proxy is healthy (it owns ports.front).
+  logger.step("Waiting for services to be healthy...");
+  await Promise.all([
+    waitForServiceReady(env, "proxy").then(async () => {
+      if (!noForward) {
+        await startForwarder(env.ports.base, env.name);
+      }
+    }),
+    waitForServiceReady(env, "front-api"),
+    waitForServiceReady(env, "marketing"),
+    waitForServiceReady(env, "core"),
+    waitForServiceReady(env, "oauth"),
+  ]);
+  logger.success("All services healthy");
+
+  const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+  console.log();
+  logger.success(`Environment '${env.name}' is now warm! (${elapsed}s)`);
+  console.log();
+  console.log(`  Proxy:       http://localhost:${env.ports.front}    (public entry)`);
+  console.log(`  Marketing:   http://localhost:${env.ports.marketing}`);
+  console.log(`  front-api:   http://localhost:${env.ports.frontApi}`);
+  console.log(`  Core:        http://localhost:${env.ports.core}`);
+  console.log(`  Connectors:  http://localhost:${env.ports.connectors}`);
+  console.log(`  Front app:   http://localhost:${env.ports.frontSpaApp}`);
+  console.log(`  Front admin:  http://localhost:${env.ports.frontSpaAdmin}`);
+  if (!noForward) {
+    console.log();
+    console.log(`  Forwarded:   ports ${FORWARDER_PORTS.join(", ")} → env (for OAuth)`);
+  }
+  console.log();
+  console.log("Next steps:");
+  console.log(`  ruby-hive open ${env.name}      # Open terminal session`);
+  console.log(`  ruby-hive status ${env.name}    # Check service health`);
+  console.log(`  ruby-hive cool ${env.name}      # Stop services, keep SDK`);
+  console.log();
+
+  return Ok(undefined);
+});

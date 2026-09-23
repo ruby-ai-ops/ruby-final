@@ -39,7 +39,7 @@ import {
 } from "@app/types/shared/utils/assert_never";
 import { asDisplayName } from "@app/types/shared/utils/string_utils";
 import type { UserType, WorkspaceType } from "@app/types/user";
-import type { DropdownMenuItemProps } from "@dust-tt/sparkle";
+import type { DropdownMenuItemProps } from "@ruby-ai/ui";
 import {
   Button,
   Chip,
@@ -56,7 +56,7 @@ import {
   Icon,
   LoadingBlock,
   ShapesPlus,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
 type CapabilityPickerSkill = Pick<

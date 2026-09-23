@@ -11,9 +11,9 @@ describe("Frame runtime imports", () => {
 
   it("keeps aliased declarations aligned with renderer package versions", () => {
     expect(frontPackage.devDependencies).toMatchObject({
-      "@dust-frame-runtime/lucide-react": `npm:lucide-react@${vizPackage.dependencies["lucide-react"].replace("^", "")}`,
-      "@dust-frame-runtime/motion": `npm:motion@${vizPackage.dependencies.motion.replace("^", "")}`,
-      "@dust-frame-runtime/recharts": `npm:recharts@${vizPackage.dependencies.recharts}`,
+      "@ruby-ai/frame-runtime-lucide-react": `npm:lucide-react@${vizPackage.dependencies["lucide-react"].replace("^", "")}`,
+      "@ruby-ai/frame-runtime-motion": `npm:motion@${vizPackage.dependencies.motion.replace("^", "")}`,
+      "@ruby-ai/frame-runtime-recharts": `npm:recharts@${vizPackage.dependencies.recharts}`,
     });
   });
 });

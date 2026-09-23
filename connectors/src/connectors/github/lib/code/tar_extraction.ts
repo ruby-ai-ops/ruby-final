@@ -15,8 +15,8 @@ import {
 import { setTimeoutAsync } from "@connectors/lib/async_utils";
 import { ExternalOAuthTokenError } from "@connectors/lib/error";
 import type { Logger } from "@connectors/logger/logger";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import assert from "assert";
 import gunzip from "gunzip-maybe";
 import PQueue from "p-queue";

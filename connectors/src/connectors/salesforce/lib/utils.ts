@@ -3,8 +3,8 @@ import type { SalesforceAPICredentials } from "@connectors/connectors/salesforce
 import { getSalesforceCredentials } from "@connectors/connectors/salesforce/lib/oauth";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { ModelId } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import type { Record } from "jsforce";
 
 export const getConnectorAndCredentials = async (

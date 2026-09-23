@@ -53,12 +53,12 @@
   {
     "sId": "SeedConv04",
     "title": "Help with documentation",
-    "agentName": "Dust",
+    "agentName": "Ruby",
     "exchanges": [
       {
         "user": {
           "sId": "SeedUMsg04",
-          "content": ":mention[Dust]{sId=dust} Can you help me understand how to use this tool?"
+          "content": ":mention[Ruby]{sId=ruby} Can you help me understand how to use this tool?"
         },
         "agent": {
           "sId": "SeedAMsg04",
@@ -70,12 +70,12 @@
   {
     "sId": "SeedConv05",
     "title": "General question",
-    "agentName": "Dust",
+    "agentName": "Ruby",
     "exchanges": [
       {
         "user": {
           "sId": "SeedUMsg05",
-          "content": ":mention[Dust]{sId=dust} What can you help me with today?"
+          "content": ":mention[Ruby]{sId=ruby} What can you help me with today?"
         },
         "agent": {
           "sId": "SeedAMsg05",

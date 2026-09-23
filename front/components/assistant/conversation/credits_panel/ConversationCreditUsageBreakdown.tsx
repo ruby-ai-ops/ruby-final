@@ -1,7 +1,7 @@
 import { getActionStepIcon } from "@app/components/assistant/conversation/actions/inline/utils";
 import { getModelLogoByModelId } from "@app/components/providers/types";
 import { InternalActionIcons } from "@app/components/resources/resources_icons";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import {
   formatCredits,
   formatCreditValue,
@@ -20,9 +20,9 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-  DustLogoSquare,
+  RubyLogoSquare,
   Icon,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 import { useState } from "react";
 
@@ -137,7 +137,7 @@ function ModelRow({ isDark, model }: ModelRowProps) {
     <div className="flex min-w-0 items-center justify-between gap-3 rounded-xl border border-border bg-background p-2">
       <div className="flex min-w-0 items-center gap-2">
         <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted-background">
-          <Icon visual={modelIcon ?? DustLogoSquare} size="xs" />
+          <Icon visual={modelIcon ?? RubyLogoSquare} size="xs" />
         </div>
         <span className="truncate text-base font-medium text-foreground">
           {model.displayName}

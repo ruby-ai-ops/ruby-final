@@ -8,7 +8,7 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@app/lib/api/config", () => ({
   default: {
-    getAppUrl: () => "https://dust.tt",
+    getAppUrl: () => "https://ruby.ad",
     getDevOAuthRedirectBaseUrl: () => undefined,
     getOAuthShopifyClientId: () => "shopify-client-id",
     getOAuthShopifyClientSecret: () => "shopify-client-secret",
@@ -41,7 +41,7 @@ describe("ShopifyOAuthProvider", () => {
       "read_all_orders,read_customers,read_orders,read_products"
     );
     expect(url.searchParams.get("redirect_uri")).toBe(
-      "https://dust.tt/oauth/shopify/finalize"
+      "https://app.ruby.ad/oauth/shopify/finalize"
     );
     expect(url.searchParams.get("state")).toBe("con_shopify");
   });

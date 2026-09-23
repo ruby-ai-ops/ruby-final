@@ -26,7 +26,7 @@ import {
 } from "@app/components/agent_builder/capabilities/mcp/utils/sheetUtils";
 import { AdditionalConfigurationSection } from "@app/components/agent_builder/capabilities/shared/AdditionalConfigurationSection";
 import { ChildAgentSection } from "@app/components/agent_builder/capabilities/shared/ChildAgentSection";
-import { DustAppSection } from "@app/components/agent_builder/capabilities/shared/DustAppSection";
+import { RubyAppSection } from "@app/components/agent_builder/capabilities/shared/RubyAppSection";
 import { JsonSchemaSection } from "@app/components/agent_builder/capabilities/shared/JsonSchemaSection";
 import { NameSection } from "@app/components/agent_builder/capabilities/shared/NameSection";
 import { SecretSection } from "@app/components/agent_builder/capabilities/shared/SecretSection";
@@ -45,18 +45,18 @@ import type {
   BuilderAction,
   MCPServerConfigurationType,
 } from "@app/components/shared/tools_picker/types";
-import { FormProvider } from "@app/components/sparkle/FormProvider";
+import { FormProvider } from "@app/components/ui/FormProvider";
 import { useSendNotification } from "@app/hooks/useNotification";
 import { getAvatar } from "@app/lib/actions/mcp_icons";
 import { getMCPServerRequirements } from "@app/lib/actions/mcp_internal_actions/input_configuration";
 import type { MCPServerViewType } from "@app/lib/api/mcp";
-import type { MultiPageSheetPage } from "@dust-tt/sparkle";
+import type { MultiPageSheetPage } from "@ruby-ai/ui";
 import {
   MultiPageSheet,
   MultiPageSheetContent,
   SearchInput,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, {
   useCallback,
@@ -482,8 +482,8 @@ export function MCPServerViewsSheet({
                   <TimeFrameSection actionType="search" />
                 )}
 
-                {requirements.requiresDustAppConfiguration && (
-                  <DustAppSection />
+                {requirements.requiresRubyAppConfiguration && (
+                  <RubyAppSection />
                 )}
 
                 {requirements.developerSecretSelection && (

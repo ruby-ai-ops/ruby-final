@@ -24,7 +24,7 @@ describe("DELETE /api/w/:wId/spaces/:spaceId/apps/:aId", () => {
   it("returns 409 when the app is used by an active agent", async () => {
     const { workspace, user, globalSpace, auth } =
       await createPrivateApiMockRequest({ role: "admin" });
-    await FeatureFlagFactory.basic(auth, "legacy_dust_apps");
+    await FeatureFlagFactory.basic(auth, "legacy_ruby_apps");
 
     const app = await AppFactory.basic(workspace, globalSpace);
 
@@ -47,7 +47,7 @@ describe("DELETE /api/w/:wId/spaces/:spaceId/apps/:aId", () => {
       modelId: "gpt-4-turbo",
       temperature: 0.7,
       reasoningEffort: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       workspaceId: workspace.id,
       authorId: user.id,
       templateId: null,
@@ -106,7 +106,7 @@ describe("DELETE /api/w/:wId/spaces/:spaceId/apps/:aId", () => {
     const { workspace, globalSpace, auth } = await createPrivateApiMockRequest({
       role: "admin",
     });
-    await FeatureFlagFactory.basic(auth, "legacy_dust_apps");
+    await FeatureFlagFactory.basic(auth, "legacy_ruby_apps");
 
     const app = await AppFactory.basic(workspace, globalSpace);
 

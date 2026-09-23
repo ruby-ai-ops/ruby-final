@@ -157,10 +157,10 @@ describe("formatSlackMessageForLLM", () => {
 
   it("cleans Slack mrkdwn links and user mentions in plain text", () => {
     const result = formatSlackMessageForLLM({
-      text: "Ping <@U050CALAKFD|someone> see <https://dust.tt|docs>",
+      text: "Ping <@U050CALAKFD|someone> see <https://ruby.ad|docs>",
     });
 
-    expect(result.text).toBe("Ping @someone see docs (https://dust.tt)");
+    expect(result.text).toBe("Ping @someone see docs (https://ruby.ad)");
   });
 
   it("exposes file info in the files field", () => {

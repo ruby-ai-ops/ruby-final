@@ -18,7 +18,7 @@ import {
 } from "@app/types/api/frame_storage";
 import type { FileSystemMount, SandboxOnlyMount } from "@app/types/file_system";
 import {
-  DustFileSystemError,
+  RubyFileSystemError,
   SCOPED_PREFIX_CONVERSATION,
   SCOPED_PREFIX_POD,
   SCOPED_PREFIX_USER,
@@ -169,7 +169,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       maxFiles,
       includeProcessed = false,
     }: { maxFiles?: number; includeProcessed?: boolean } = {}
-  ): Promise<Result<FileSystemEntry[], DustFileSystemError>> {
+  ): Promise<Result<FileSystemEntry[], RubyFileSystemError>> {
     const normalised = scopedPath.endsWith("/") ? scopedPath : `${scopedPath}/`;
     const gcsPrefix = this.toGCSPath(normalised);
 
@@ -213,7 +213,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       }
     } catch (err) {
       return new Err(
-        new DustFileSystemError("internal", normalizeError(err).message)
+        new RubyFileSystemError("internal", normalizeError(err).message)
       );
     }
 
@@ -293,7 +293,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
           : 0,
         fileId: null,
         // Thumbnail URLs are application-layer concerns (they point to our API).
-        // DustFileSystem.list() populates this after receiving entries from the backend.
+        // RubyFileSystem.list() populates this after receiving entries from the backend.
         thumbnailUrl: null,
       };
     });
@@ -303,11 +303,11 @@ export class GCSFileSystemBackend implements FileSystemBackend {
 
   async read(
     scopedPath: string
-  ): Promise<Result<Readable | null, DustFileSystemError>> {
+  ): Promise<Result<Readable | null, RubyFileSystemError>> {
     const gcsPath = this.toGCSPath(scopedPath);
     if (!gcsPath) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "invalid_path",
           `GCSFileSystemBackend.read: unrecognised scoped path: ${scopedPath}`
         )
@@ -324,7 +324,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       return new Ok(bucket.file(gcsPath).createReadStream());
     } catch (err) {
       return new Err(
-        new DustFileSystemError("internal", normalizeError(err).message)
+        new RubyFileSystemError("internal", normalizeError(err).message)
       );
     }
   }
@@ -334,13 +334,13 @@ export class GCSFileSystemBackend implements FileSystemBackend {
   ): Promise<
     Result<
       { contentType: string; sizeBytes: number } | null,
-      DustFileSystemError
+      RubyFileSystemError
     >
   > {
     const gcsPath = this.toGCSPath(scopedPath);
     if (!gcsPath) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "invalid_path",
           `GCSFileSystemBackend.stat: unrecognised scoped path: ${scopedPath}`
         )
@@ -365,18 +365,18 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       });
     } catch (err) {
       return new Err(
-        new DustFileSystemError("internal", normalizeError(err).message)
+        new RubyFileSystemError("internal", normalizeError(err).message)
       );
     }
   }
 
   async exists(
     scopedPath: string
-  ): Promise<Result<boolean, DustFileSystemError>> {
+  ): Promise<Result<boolean, RubyFileSystemError>> {
     const gcsPath = this.toGCSPath(scopedPath);
     if (!gcsPath) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "invalid_path",
           `GCSFileSystemBackend.exists: unrecognised scoped path: ${scopedPath}`
         )
@@ -388,7 +388,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       return new Ok(exists);
     } catch (err) {
       return new Err(
-        new DustFileSystemError("internal", normalizeError(err).message)
+        new RubyFileSystemError("internal", normalizeError(err).message)
       );
     }
   }
@@ -397,11 +397,11 @@ export class GCSFileSystemBackend implements FileSystemBackend {
     scopedPath: string,
     content: Buffer | string | Readable,
     contentType: string
-  ): Promise<Result<FileSystemNodeIdentity, DustFileSystemError>> {
+  ): Promise<Result<FileSystemNodeIdentity, RubyFileSystemError>> {
     const gcsPath = this.toGCSPath(scopedPath);
     if (!gcsPath) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "invalid_path",
           `GCSFileSystemBackend.write: unrecognised scoped path: ${scopedPath}`
         )
@@ -424,7 +424,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       return new Ok({ nodeId: null });
     } catch (err) {
       return new Err(
-        new DustFileSystemError("internal", normalizeError(err).message)
+        new RubyFileSystemError("internal", normalizeError(err).message)
       );
     }
   }
@@ -434,13 +434,13 @@ export class GCSFileSystemBackend implements FileSystemBackend {
   ): Promise<
     Result<
       { entry: FileSystemDirectoryEntry } & FileSystemNodeIdentity,
-      DustFileSystemError
+      RubyFileSystemError
     >
   > {
     const gcsPath = this.toGCSPath(scopedPath);
     if (!gcsPath) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "invalid_path",
           `GCSFileSystemBackend.mkdir: unrecognised scoped path: ${scopedPath}`
         )
@@ -453,7 +453,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       const [exists] = await bucket.file(dirGcsPath).exists();
       if (exists) {
         return new Err(
-          new DustFileSystemError(
+          new RubyFileSystemError(
             "already_exists",
             "A directory already exists at this path."
           )
@@ -477,7 +477,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       });
     } catch (err) {
       return new Err(
-        new DustFileSystemError("internal", normalizeError(err).message)
+        new RubyFileSystemError("internal", normalizeError(err).message)
       );
     }
   }
@@ -485,11 +485,11 @@ export class GCSFileSystemBackend implements FileSystemBackend {
   async delete(
     scopedPath: string,
     { ignoreNotFound = false }: { ignoreNotFound?: boolean } = {}
-  ): Promise<Result<void, DustFileSystemError>> {
+  ): Promise<Result<void, RubyFileSystemError>> {
     const gcsPath = this.toGCSPath(scopedPath);
     if (!gcsPath) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "invalid_path",
           `GCSFileSystemBackend.delete: unrecognised scoped path: ${scopedPath}`
         )
@@ -519,14 +519,14 @@ export class GCSFileSystemBackend implements FileSystemBackend {
 
       if (!ignoreNotFound) {
         return new Err(
-          new DustFileSystemError("not_found", `Path not found: ${scopedPath}`)
+          new RubyFileSystemError("not_found", `Path not found: ${scopedPath}`)
         );
       }
 
       return new Ok(undefined);
     } catch (err) {
       return new Err(
-        new DustFileSystemError("internal", normalizeError(err).message)
+        new RubyFileSystemError("internal", normalizeError(err).message)
       );
     }
   }
@@ -541,13 +541,13 @@ export class GCSFileSystemBackend implements FileSystemBackend {
   }: {
     destPrefix: string;
     srcPrefix: string;
-  }): Promise<Result<void, DustFileSystemError>> {
+  }): Promise<Result<void, RubyFileSystemError>> {
     const bucket = getPrivateUploadBucket();
     const { files } = await bucket.getAllFilesByPrefix({ prefix: srcPrefix });
 
     if (files.length === 0) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "not_found",
           `Directory not found or empty: ${srcPrefix}`
         )
@@ -568,12 +568,12 @@ export class GCSFileSystemBackend implements FileSystemBackend {
   }: {
     src: string;
     dest: string;
-  }): Promise<Result<void, DustFileSystemError>> {
+  }): Promise<Result<void, RubyFileSystemError>> {
     const srcGCS = this.toGCSPath(src);
     const destGCS = this.toGCSPath(dest);
     if (!srcGCS) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "invalid_path",
           `GCSFileSystemBackend.copy: unrecognised source path: ${src}`
         )
@@ -582,7 +582,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
 
     if (!destGCS) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "invalid_path",
           `GCSFileSystemBackend.copy: unrecognised destination path: ${dest}`
         )
@@ -606,7 +606,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       });
     } catch (err) {
       return new Err(
-        new DustFileSystemError("internal", normalizeError(err).message)
+        new RubyFileSystemError("internal", normalizeError(err).message)
       );
     }
   }
@@ -617,14 +617,14 @@ export class GCSFileSystemBackend implements FileSystemBackend {
   }: {
     src: string;
     dest: string;
-  }): Promise<Result<{ sourceDeletionFailed: boolean }, DustFileSystemError>> {
+  }): Promise<Result<{ sourceDeletionFailed: boolean }, RubyFileSystemError>> {
     const destExists = await this.exists(dest);
     if (destExists.isErr()) {
       return destExists;
     }
     if (destExists.value) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "already_exists",
           "File name already exists in the destination directory."
         )
@@ -651,11 +651,11 @@ export class GCSFileSystemBackend implements FileSystemBackend {
   async getDownloadUrl(
     scopedPath: string,
     opts?: { expiresInMs?: number; fileName?: string }
-  ): Promise<Result<string, DustFileSystemError>> {
+  ): Promise<Result<string, RubyFileSystemError>> {
     const gcsPath = this.toGCSPath(scopedPath);
     if (!gcsPath) {
       return new Err(
-        new DustFileSystemError(
+        new RubyFileSystemError(
           "invalid_path",
           `GCSFileSystemBackend.getDownloadUrl: unrecognised scoped path: ${scopedPath}`
         )
@@ -666,7 +666,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       const [exists] = await getPrivateUploadBucket().file(gcsPath).exists();
       if (!exists) {
         return new Err(
-          new DustFileSystemError("not_found", `Path not found: ${scopedPath}`)
+          new RubyFileSystemError("not_found", `Path not found: ${scopedPath}`)
         );
       }
 
@@ -677,7 +677,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
       return new Ok(url);
     } catch (err) {
       return new Err(
-        new DustFileSystemError("internal", normalizeError(err).message)
+        new RubyFileSystemError("internal", normalizeError(err).message)
       );
     }
   }
@@ -747,7 +747,7 @@ export class GCSFileSystemBackend implements FileSystemBackend {
         return "sandbox_state_replica";
 
       // Read and written directly by the workload, so it takes the same `allow_other` access
-      // model as the agent-facing file mounts rather than the dust-state-only model the
+      // model as the agent-facing file mounts rather than the ruby-state-only model the
       // Litestream replica needs.
       case "frame_persistent_files":
         return "workload";

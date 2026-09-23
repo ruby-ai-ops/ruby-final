@@ -46,7 +46,7 @@ export function getDisplayNameForDataSource(
   aggregate: boolean = false
 ) {
   if (ds.connectorProvider) {
-    if (ds.connectorProvider === "dust_project") {
+    if (ds.connectorProvider === "ruby_project") {
       return aggregate ? "Pods" : ds.name;
     }
     if (ds.connectorProvider === "webcrawler") {
@@ -93,22 +93,22 @@ export function isManaged(ds: DataSource): ds is DataSource & WithConnector {
 }
 
 /** Pod-owned connector for files/conversations; must not be edited via connected-data selection. */
-export function isDustProjectDataSource(ds: {
+export function isRubyProjectDataSource(ds: {
   connectorProvider: ConnectorProvider | null;
 }): boolean {
-  return ds.connectorProvider === "dust_project";
+  return ds.connectorProvider === "ruby_project";
 }
 
 // Counts toward the plan's connected data sources limit (limits.connections.count):
 // managed content connectors the user explicitly adds. Excludes bot integrations,
-// the web crawler, and the system-created project connector (dust_project).
+// the web crawler, and the system-created project connector (ruby_project).
 export function doesConnectorProviderCountTowardConnectionsLimit(
   connectorProvider: ConnectorProvider
 ): boolean {
   return (
     isManagedConnectorProvider(connectorProvider) &&
     !isBotIntegration(connectorProvider) &&
-    connectorProvider !== "dust_project"
+    connectorProvider !== "ruby_project"
   );
 }
 

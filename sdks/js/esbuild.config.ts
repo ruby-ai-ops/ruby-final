@@ -81,7 +81,7 @@ async function buildTarget(target: BuildTarget) {
 }
 
 async function build() {
-  console.log("🔨 Building @dust-tt/client...\n");
+  console.log("🔨 Building @ruby-ai/client...\n");
 
   // Build all targets
   for (const target of buildTargets) {

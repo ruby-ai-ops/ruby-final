@@ -51,7 +51,7 @@ import {
   SearchInput,
   SliderToggle,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type {
   ColumnDef,
   PaginationState,
@@ -285,7 +285,7 @@ export function AutomationsTriggersTable({
   const exportDate = new Date().toISOString().slice(0, 10);
   const csvDownload = useDownloadCsv({
     url: `/api/w/${workspaceId}/analytics/automations/triggers`,
-    filename: `dust_automations_${exportDate}.csv`,
+    filename: `ruby_automations_${exportDate}.csv`,
     body: exportBody,
     disabled: isTriggersLoading || !!isTriggersError || totalCount === 0,
   });

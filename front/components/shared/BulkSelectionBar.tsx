@@ -1,5 +1,5 @@
 import { pluralize } from "@app/types/shared/utils/string_utils";
-import { Button, cn, Hoverable, Spinner } from "@dust-tt/sparkle";
+import { Button, cn, Hoverable, Spinner } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 
 interface BulkSelectionBarProps {

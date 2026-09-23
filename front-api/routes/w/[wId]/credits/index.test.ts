@@ -46,7 +46,7 @@ describe("GET /api/w/[wId]/credits", () => {
 
     await createFreeCredit({
       auth,
-      invoiceOrLineItemId: `free-poke-${workspace.sId}-${nowMs}`,
+      invoiceOrLineItemId: `free-admin-${workspace.sId}-${nowMs}`,
       startDate: new Date(nowMs - 24 * 60 * 60 * 1000),
       expirationDate: new Date(nowMs + 24 * 60 * 60 * 1000),
     });
@@ -75,7 +75,7 @@ describe("GET /api/w/[wId]/credits", () => {
 
     await createFreeCredit({
       auth,
-      invoiceOrLineItemId: `free-poke-${workspace.sId}-${nowMs}`,
+      invoiceOrLineItemId: `free-admin-${workspace.sId}-${nowMs}`,
       startDate: new Date(nowMs - 24 * 60 * 60 * 1000),
       expirationDate: new Date(nowMs + 24 * 60 * 60 * 1000),
     });

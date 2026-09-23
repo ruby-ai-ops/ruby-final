@@ -1,7 +1,7 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
 import { H2 } from "@marketing/components/home/ContentComponents";
-import { cn } from "@marketing/components/poke/shadcn/lib/utils";
-import { Check, Icon, XClose } from "@dust-tt/sparkle";
+import { cn } from "@marketing/components/admin/shadcn/lib/utils";
+import { Check, Icon, XClose } from "@ruby-ai/ui";
 import Image from "next/image";
 import type { ReactNode } from "react";
 
@@ -10,13 +10,13 @@ type FeatureStatus = "yes" | "no" | "partial";
 interface ComparisonFeature {
   name: string;
   description?: string;
-  dust: FeatureStatus;
+  ruby: FeatureStatus;
   competitor: FeatureStatus;
 }
 
 interface ComparisonTableSectionProps {
   title?: string;
-  dustHeader: string;
+  rubyHeader: string;
   competitorHeader: string;
   competitorLogo?: ReactNode;
   features: ComparisonFeature[];
@@ -59,8 +59,8 @@ function StatusIcon({ status }: StatusIconProps) {
 }
 
 export function ComparisonTableSection({
-  title = "How Dust Compares to Glean",
-  dustHeader,
+  title = "How Ruby Compares to Glean",
+  rubyHeader,
   competitorHeader,
   competitorLogo,
   features,
@@ -75,8 +75,8 @@ export function ComparisonTableSection({
           <div />
           <div className="flex items-center justify-center rounded-tl-xl bg-linear-to-b from-blue-500 to-blue-600 p-4">
             <Image
-              src="/static/landing/logos/dust/Dust_Logo_White.svg"
-              alt={dustHeader}
+              src="/static/landing/logos/ruby/Ruby_Logo_White.png"
+              alt={rubyHeader}
               width={80}
               height={24}
               unoptimized
@@ -112,7 +112,7 @@ export function ComparisonTableSection({
                 )}
               </div>
               <div className="flex items-center justify-center border-l border-gray-100 bg-blue-50/50 p-4">
-                <StatusIcon status={feature.dust} />
+                <StatusIcon status={feature.ruby} />
               </div>
               <div className="flex items-center justify-center border-l border-gray-100 p-4">
                 <StatusIcon status={feature.competitor} />

@@ -6,7 +6,7 @@ import {
   Div3D,
   Hover3D,
   Rocket02,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import Link from "next/link";
 import type { FC } from "react";
 
@@ -62,10 +62,10 @@ export const HeroSection: FC<HeroSectionProps> = ({
     <div className="container flex w-full flex-col pt-24">
       <Grid>
         <div className="col-span-12 flex flex-col justify-center py-4 sm:max-w-[100%] md:max-w-[90%] lg:col-span-6 lg:col-start-1 lg:h-[100%] lg:max-w-[100%] 2xl:col-span-6">
-          <H3 className={accentColor}>Dust for {uptitle}</H3>
+          <H3 className={accentColor}>Ruby for {uptitle}</H3>
           <H1
             mono
-            className="text-5xl font-medium leading-tight md:text-6xl lg:text-7xl"
+            className="title-display font-['Bricolage_Grotesque'] text-5xl font-medium leading-tight tracking-[-0.05em] md:text-6xl lg:text-7xl"
           >
             {title}
           </H1>
@@ -77,7 +77,7 @@ export const HeroSection: FC<HeroSectionProps> = ({
               {ctaButtons.primary && (
                 <Link href={ctaButtons.primary.href} shallow={true}>
                   <Button
-                    variant="highlight"
+                    variant="primary"
                     size="md"
                     label={ctaButtons.primary.label}
                     icon={Rocket02}

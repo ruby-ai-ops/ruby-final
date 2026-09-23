@@ -38,7 +38,7 @@ import {
   ClipboardCheck,
   cn,
   useCopyToClipboard,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -147,8 +147,8 @@ export default function ChapterPage({
   quizSettings,
 }: ChapterPageProps) {
   const [isCopied, copyToClipboard] = useCopyToClipboard();
-  const ogImageUrl = courseImage?.url ?? "https://dust.tt/static/og_image.png";
-  const canonicalUrl = `https://dust.tt/academy/${courseSlug}/chapter/${chapter.slug}`;
+  const ogImageUrl = courseImage?.url ?? "https://ruby.ad/static/og_image.png";
+  const canonicalUrl = `https://ruby.ad/academy/${courseSlug}/chapter/${chapter.slug}`;
   const tocItems = extractTableOfContents(chapter.chapterContent);
   const browserId = useAcademyBrowserId();
   const anonBrowserId = academyUser ? undefined : browserId;
@@ -204,7 +204,7 @@ export default function ChapterPage({
         </div>
       )}
       <Head>
-        <title>{`${chapter.title} | ${courseTitle} | Dust Academy`}</title>
+        <title>{`${chapter.title} | ${courseTitle} | Ruby Academy`}</title>
         {preview && <meta name="robots" content="noindex, nofollow" />}
         {chapter.description && (
           <meta name="description" content={chapter.description} />
@@ -218,7 +218,7 @@ export default function ChapterPage({
         <meta property="og:type" content="article" />
         <meta property="og:image" content={ogImageUrl} />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:site_name" content="Dust" />
+        <meta property="og:site_name" content="Ruby" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={chapter.title} />

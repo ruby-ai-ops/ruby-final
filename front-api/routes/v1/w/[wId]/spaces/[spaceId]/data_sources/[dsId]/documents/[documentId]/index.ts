@@ -26,8 +26,8 @@ import type {
   DeleteDocumentResponseType,
   GetDocumentResponseType,
   UpsertDocumentResponseType,
-} from "@dust-tt/client";
-import { PostDataSourceDocumentRequestSchema } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { PostDataSourceDocumentRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";
@@ -310,8 +310,8 @@ app.get(
 
     const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
     const docRes = await coreAPI.getDataSourceDocument({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       documentId,
     });
 
@@ -481,7 +481,7 @@ app.post(
             `Data sources document upload size is limited to ` +
             `${plan.limits.dataSources.documents.sizeMb}MB on your current plan. ` +
             `You are attempting to upload ${fullText.length} bytes. ` +
-            `Contact support@dust.tt if you want to increase it.`,
+            `Contact support@ruby.ad if you want to increase it.`,
         },
       });
     }
@@ -500,8 +500,8 @@ app.post(
         logger.info(
           {
             workspace: owner.sId,
-            datasource_project_id: dataSource.dustAPIProjectId,
-            datasource_id: dataSource.dustAPIDataSourceId,
+            datasource_project_id: dataSource.rubyAPIProjectId,
+            datasource_id: dataSource.rubyAPIDataSourceId,
             quota_used: quotaUsed,
             quota_limit: activeSeats * DATASOURCE_QUOTA_PER_SEAT,
           },
@@ -520,8 +520,8 @@ app.post(
         {
           error,
           workspace: owner.sId,
-          datasource_project_id: dataSource.dustAPIProjectId,
-          datasource_id: dataSource.dustAPIDataSourceId,
+          datasource_project_id: dataSource.rubyAPIProjectId,
+          datasource_id: dataSource.rubyAPIDataSourceId,
         },
         "Unable to enforce datasource quota"
       );
@@ -677,10 +677,10 @@ app.post(
         });
       }
 
-      // Create document with the Dust internal API.
+      // Create document with the Ruby internal API.
       const upsertRes = await coreAPI.upsertDataSourceDocument({
-        projectId: dataSource.dustAPIProjectId,
-        dataSourceId: dataSource.dustAPIDataSourceId,
+        projectId: dataSource.rubyAPIProjectId,
+        dataSourceId: dataSource.rubyAPIDataSourceId,
         documentId,
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         tags: (body.tags || []).map((tag) => safeSubstring(tag, 0)),
@@ -783,10 +783,10 @@ app.delete(
 
     const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
     const delRes = await coreAPI.deleteDataSourceDocument({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       documentId,
-      caller: ctx.req.header("X-Dust-Caller") ?? "public-api",
+      caller: ctx.req.header("X-Ruby-Caller") ?? "public-api",
     });
 
     if (delRes.isErr()) {

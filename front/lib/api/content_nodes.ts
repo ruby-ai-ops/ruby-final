@@ -8,7 +8,7 @@ import type { CoreAPIContentNode } from "@app/types/core/content_node";
 import type { DataSourceViewType } from "@app/types/data_source_view";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 const NON_EXPANDABLE_NODES_MIME_TYPES = [
   INTERNAL_MIME_TYPES.GITHUB.DISCUSSIONS,
@@ -65,7 +65,7 @@ export function getContentNodeInternalIdFromTableId(
     case "webcrawler":
     case "zendesk":
     case "discord_bot":
-    case "dust_project":
+    case "ruby_project":
       throw new Error(
         `Provider ${dataSource.connectorProvider} is not supported`
       );

@@ -11,12 +11,12 @@ makeScript(
     },
     dataSourceId: {
       type: "string",
-      description: "The data source ID (dustAPIDataSourceId)",
+      description: "The data source ID (rubyAPIDataSourceId)",
       required: true,
     },
     projectId: {
       type: "string",
-      description: "The project ID (dustAPIProjectId)",
+      description: "The project ID (rubyAPIProjectId)",
       required: true,
     },
     workspaceId: {
@@ -66,8 +66,8 @@ makeScript(
     const result = await getDataSourceDocuments({
       dataSourceCoreIds: {
         id,
-        dustAPIDataSourceId: dataSourceId,
-        dustAPIProjectId: projectId,
+        rubyAPIDataSourceId: dataSourceId,
+        rubyAPIProjectId: projectId,
       },
       pageCursor,
       sourceCell,

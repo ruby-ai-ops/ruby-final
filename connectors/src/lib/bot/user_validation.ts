@@ -1,5 +1,5 @@
 import { dataSourceConfigFromConnector } from "@connectors/lib/api/data_source_config";
-import { getDustAPI } from "@connectors/lib/api/dust_api";
+import { getRubyAPI } from "@connectors/lib/api/ruby_api";
 import logger from "@connectors/logger/logger";
 import type { ConnectorResource } from "@connectors/resources/connector_resource";
 import { cacheWithRedis } from "@connectors/types";
@@ -10,10 +10,10 @@ async function getActiveMemberEmails(
   const ds = dataSourceConfigFromConnector(connector);
 
   // List the emails of all active members in the workspace.
-  const dustAPI = getDustAPI(ds);
+  const rubyAPI = getRubyAPI(ds);
 
   const activeMemberEmailsRes =
-    await dustAPI.getActiveMemberEmailsInWorkspace();
+    await rubyAPI.getActiveMemberEmailsInWorkspace();
   if (activeMemberEmailsRes.isErr()) {
     logger.error("Error getting all members in workspace.", {
       error: activeMemberEmailsRes.error,

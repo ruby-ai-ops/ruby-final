@@ -159,7 +159,7 @@ export type FormatAgentMarkdownForSlackOptions = {
     conversationId: string;
   };
   /**
-   * When true, log a warning if any Dust-only directive syntax remains after
+   * When true, log a warning if any Ruby-only directive syntax remains after
    * known transforms. Enable only for the **final** agent `message.content` from
    * a successful generation (e.g. `agent_message_success`). Keep false for
    * in-progress buffers (streaming, length fallback), cancelled runs, or any
@@ -169,7 +169,7 @@ export type FormatAgentMarkdownForSlackOptions = {
 };
 
 /**
- * Turns Dust-specific markdown directives into Slack-friendly text. Citations
+ * Turns Ruby-specific markdown directives into Slack-friendly text. Citations
  * (`:cite[…]`) are left intact for {@link annotateCitations}.
  */
 export function formatAgentMarkdownForSlack(
@@ -195,7 +195,7 @@ export function formatAgentMarkdownForSlack(
           unsupportedDirectives: unsupported,
           preview: out.length > 400 ? `${out.slice(0, 400)}…` : out,
         },
-        "Slack agent markdown: unsupported Dust directive(s) after formatting"
+        "Slack agent markdown: unsupported Ruby directive(s) after formatting"
       );
     }
   }

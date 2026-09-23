@@ -76,12 +76,12 @@ describe("model health counters", () => {
     });
   });
 
-  it("counts a dust-attributed failure as an attempt but not as an error", async () => {
+  it("counts a ruby-attributed failure as an attempt but not as an error", async () => {
     // The numerator is provider-attributed outages only: a 429 we raised or a
     // malformed request says nothing about the provider's health.
     await record({
       outcome: "error",
-      errorSource: "dust",
+      errorSource: "ruby",
       errorType: "rate_limit_error",
     });
 

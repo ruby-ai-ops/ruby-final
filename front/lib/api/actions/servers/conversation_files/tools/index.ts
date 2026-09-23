@@ -48,7 +48,7 @@ import { isImageContent, isTextContent } from "@app/types/assistant/generation";
 import type { ModelConfigurationType } from "@app/types/assistant/models/types";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 
 const MAX_CONTENT_SIZE_FOR_LIST_FILES = 1024 * 256; // 256KB.

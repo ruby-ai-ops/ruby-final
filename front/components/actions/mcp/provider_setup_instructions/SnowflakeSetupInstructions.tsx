@@ -4,7 +4,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -49,7 +49,7 @@ export function SnowflakeSetupInstructions({
                   1. Create the OAuth Security Integration:
                 </p>
                 <pre className="overflow-x-auto whitespace-pre-wrap rounded-md bg-muted p-3 text-xs">
-                  {`CREATE SECURITY INTEGRATION dust_oauth
+                  {`CREATE SECURITY INTEGRATION ruby_oauth
   TYPE = OAUTH
   ENABLED = TRUE
   OAUTH_CLIENT = CUSTOM
@@ -65,7 +65,7 @@ export function SnowflakeSetupInstructions({
                   2. Get the Client ID and Client Secret:
                 </p>
                 <pre className="overflow-x-auto whitespace-pre-wrap rounded-md bg-muted p-3 text-xs">
-                  {`SELECT SYSTEM$SHOW_OAUTH_CLIENT_SECRETS('DUST_OAUTH');`}
+                  {`SELECT SYSTEM$SHOW_OAUTH_CLIENT_SECRETS('RUBY_OAUTH');`}
                 </pre>
                 <p className="mt-2 text-muted-foreground">
                   This returns a JSON object with{" "}
@@ -83,7 +83,7 @@ export function SnowflakeSetupInstructions({
                   3. (Optional) Grant the integration to specific roles:
                 </p>
                 <pre className="overflow-x-auto whitespace-pre-wrap rounded-md bg-muted p-3 text-xs">
-                  {`GRANT USAGE ON INTEGRATION dust_oauth TO ROLE <role_name>;`}
+                  {`GRANT USAGE ON INTEGRATION ruby_oauth TO ROLE <role_name>;`}
                 </pre>
               </div>
             </div>

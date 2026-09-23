@@ -1,7 +1,7 @@
 import { FILE_OFFLOAD_TEXT_SIZE_BYTES } from "@app/lib/actions/action_output_limits";
 import { isResourceContentWithText } from "@app/lib/actions/mcp_internal_actions/output_schemas";
 import type { ToolRunContext } from "@app/lib/actions/types";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { makeFileName } from "@app/lib/api/files/action_output_fs/naming";
 import {
   resolveResourceOutput,
@@ -31,17 +31,17 @@ export interface PersistedToolOutput {
 }
 
 /**
- * Builds the DustFileSystem associated with a tool run context: the conversation file system when
+ * Builds the RubyFileSystem associated with a tool run context: the conversation file system when
  * running in an agent loop, the file system of the Pod the Frame runs in when running in a
  * sandbox function invocation.
  */
-async function getDustFileSystemForRunContext(
+async function getRubyFileSystemForRunContext(
   auth: Authenticator,
   runContext: ToolRunContext
-): Promise<Result<DustFileSystem, Error>> {
+): Promise<Result<RubyFileSystem, Error>> {
   switch (runContext.contextType) {
     case "agent_loop":
-      return DustFileSystem.forConversation(auth, runContext.conversation);
+      return RubyFileSystem.forConversation(auth, runContext.conversation);
     case "sandbox_function":
       if (!runContext.pod) {
         return new Err(
@@ -50,7 +50,7 @@ async function getDustFileSystemForRunContext(
           )
         );
       }
-      return DustFileSystem.forPod(auth, runContext.pod);
+      return RubyFileSystem.forPod(auth, runContext.pod);
     default:
       return assertNever(runContext);
   }
@@ -85,7 +85,7 @@ function getToolOutputsScopedPath(
 }
 
 /**
- * Writes content to the conversation root via DustFileSystem.
+ * Writes content to the conversation root via RubyFileSystem.
  * Returns the scoped path (e.g. "conversation-{cId}/{fileName}") on success.
  * Use for user-facing generated files (PDFs, audio, etc.) that should be visible at the top level.
  * Use writeToToolOutputsFolder for internal outputs the model reads back during execution.
@@ -103,7 +103,7 @@ export async function writeToConversationFolder(
     fileName: string;
   }
 ): Promise<Result<string, Error>> {
-  const fsResult = await DustFileSystem.forConversation(auth, conversation);
+  const fsResult = await RubyFileSystem.forConversation(auth, conversation);
   if (fsResult.isErr()) {
     return new Err(new Error(fsResult.error.message));
   }
@@ -125,7 +125,7 @@ export async function writeToConversationFolder(
 }
 
 /**
- * Writes content to the pod (project space) root via DustFileSystem.
+ * Writes content to the pod (project space) root via RubyFileSystem.
  * Returns the scoped path (e.g. "pod-{spaceId}/{fileName}") on success.
  * Use for user-facing generated files (PDFs, audio, etc.) that should be visible at the top level.
  * Use writeToToolOutputsFolder for internal outputs the model reads back during execution.
@@ -143,7 +143,7 @@ export async function writeToPodFolder(
     fileName: string;
   }
 ): Promise<Result<string, Error>> {
-  const fsResult = await DustFileSystem.forPod(auth, space);
+  const fsResult = await RubyFileSystem.forPod(auth, space);
   if (fsResult.isErr()) {
     return new Err(new Error(fsResult.error.message));
   }
@@ -164,7 +164,7 @@ export async function writeToPodFolder(
 /**
  * Writes content to the .tool_outputs folder of the file system associated with the tool run
  * context (conversation in an agent loop, pod in a sandbox function invocation) via
- * DustFileSystem. Returns the scoped path (e.g. "conversation-{cId}/.tool_outputs/{fileName}" or
+ * RubyFileSystem. Returns the scoped path (e.g. "conversation-{cId}/.tool_outputs/{fileName}" or
  * "pod-{pId}/.tool_outputs/{fileName}") on success.
  */
 export async function writeToToolOutputsFolder(
@@ -180,7 +180,7 @@ export async function writeToToolOutputsFolder(
     contentType: AllSupportedFileContentType;
   }
 ): Promise<Result<string, Error>> {
-  const fsResult = await getDustFileSystemForRunContext(auth, runContext);
+  const fsResult = await getRubyFileSystemForRunContext(auth, runContext);
   if (fsResult.isErr()) {
     return new Err(new Error(fsResult.error.message));
   }
@@ -201,10 +201,10 @@ export async function writeToToolOutputsFolder(
 
 /**
  * Attempts to persist a tool output block to the run context's .tool_outputs folder via
- * DustFileSystem. Returns null if the block does not qualify for persistence.
+ * RubyFileSystem. Returns null if the block does not qualify for persistence.
  *
  * Sandbox function invocations never offload here: Frame sandboxes do not mount
- * `/files/pod-*`, so dsbx cannot rehydrate an archive written to the pod FS. Large outputs
+ * `/files/pod-*`, so rbx cannot rehydrate an archive written to the pod FS. Large outputs
  * stay inline on the action output / poll path instead.
  *
  * Call this as a side effect from processToolResults.

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Point Postgres/Redis/Elasticsearch/Temporal/Qdrant at ${DUST_DATA_ROOT} so a
+# Point Postgres/Redis/Elasticsearch/Temporal/Qdrant at ${RUBY_DATA_ROOT} so a
 # single Docker volume keeps their state across image rebuilds. First run on an
 # empty volume is a fresh cluster; infra.sh then recreates DBs, indices, and
 # the Qdrant collection. Everything else (ports, users, configs) stays in the
 # image.
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=init-data-dirs
+RUBY_DEV_SCRIPT_NAME=init-data-dirs
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh
@@ -28,13 +28,13 @@ ensure_postgres() {
   fi
 
   local conf="/etc/postgresql/${PG_VERSION}/main/postgresql.conf"
-  local target="${DUST_POSTGRES_DATA_ROOT}/${PG_VERSION}/main"
+  local target="${RUBY_POSTGRES_DATA_ROOT}/${PG_VERSION}/main"
   local current initdb
   current="$(awk -F"'" '/^data_directory/ {print $2}' "$conf")"
   initdb="/usr/lib/postgresql/${PG_VERSION}/bin/initdb"
 
-  mkdir -p "$DUST_POSTGRES_DATA_ROOT"
-  chown postgres:postgres "$DUST_POSTGRES_DATA_ROOT"
+  mkdir -p "$RUBY_POSTGRES_DATA_ROOT"
+  chown postgres:postgres "$RUBY_POSTGRES_DATA_ROOT"
 
   if [ "$current" != "$target" ]; then
     log "Pointing Postgres at ${target}"
@@ -50,33 +50,33 @@ ensure_postgres() {
     sudo -u postgres "$initdb" -D "$target"
   fi
 
-  chown -R postgres:postgres "$DUST_POSTGRES_DATA_ROOT"
+  chown -R postgres:postgres "$RUBY_POSTGRES_DATA_ROOT"
   chmod 0700 "$target"
 }
 
 ensure_redis() {
-  mkdir -p "$DUST_REDIS_DATA_DIR"
+  mkdir -p "$RUBY_REDIS_DATA_DIR"
   if id redis >/dev/null 2>&1; then
-    chown -R redis:redis "$DUST_REDIS_DATA_DIR"
+    chown -R redis:redis "$RUBY_REDIS_DATA_DIR"
   fi
 }
 
 ensure_elasticsearch() {
-  mkdir -p "$DUST_ELASTICSEARCH_DATA_DIR"
+  mkdir -p "$RUBY_ELASTICSEARCH_DATA_DIR"
   if id elasticsearch >/dev/null 2>&1; then
-    chown -R elasticsearch:elasticsearch "$(dirname "$DUST_ELASTICSEARCH_DATA_DIR")"
+    chown -R elasticsearch:elasticsearch "$(dirname "$RUBY_ELASTICSEARCH_DATA_DIR")"
   fi
 }
 
 ensure_temporal() {
-  mkdir -p "$(dirname "$DUST_TEMPORAL_DB_FILE")"
+  mkdir -p "$(dirname "$RUBY_TEMPORAL_DB_FILE")"
 }
 
 ensure_qdrant() {
   mkdir -p "$QDRANT__STORAGE__STORAGE_PATH" "$QDRANT__STORAGE__SNAPSHOTS_PATH"
 }
 
-mkdir -p "$DUST_DATA_ROOT"
+mkdir -p "$RUBY_DATA_ROOT"
 
 ensure_postgres
 ensure_redis
@@ -84,4 +84,4 @@ ensure_elasticsearch
 ensure_temporal
 ensure_qdrant
 
-log "Data directories ready under ${DUST_DATA_ROOT}"
+log "Data directories ready under ${RUBY_DATA_ROOT}"

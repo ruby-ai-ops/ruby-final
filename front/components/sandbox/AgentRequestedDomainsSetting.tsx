@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 // Workspace-wide toggle for whether agents can request additional domains

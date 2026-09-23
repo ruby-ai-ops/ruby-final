@@ -1,5 +1,5 @@
 import type { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { GCS_RESUMABLE_UPLOAD_THRESHOLD_BYTES } from "@app/lib/file_storage";
 import type {
   FileResource,
@@ -40,7 +40,7 @@ export const parseUploadRequest = async (
 ): Promise<
   Result<
     File,
-    Omit<DustError, "code"> & {
+    Omit<RubyError, "code"> & {
       code:
         | "internal_server_error"
         | "file_too_large"
@@ -136,7 +136,7 @@ export const parseUploadRequest = async (
       uploadPromise.catch(() => {});
 
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_server_error",
         message: FILE_UPLOAD_TIMED_OUT_MESSAGE,
       });
@@ -146,7 +146,7 @@ export const parseUploadRequest = async (
 
     if (!maybeFiles || maybeFiles.length === 0) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "file_type_not_supported",
         message: "No file postprocessed.",
       });
@@ -158,7 +158,7 @@ export const parseUploadRequest = async (
     if (error instanceof Error) {
       if (error.message.startsWith("options.maxTotalFileSize")) {
         return new Err({
-          name: "dust_error",
+          name: "ruby_error",
           code: "file_too_large",
           message:
             "File is too large or the size passed to the File instance in the DB does not match the size of the uploaded file.",
@@ -167,7 +167,7 @@ export const parseUploadRequest = async (
       // entire message: options.allowEmptyFiles is false, file size should be greater than 0
       if (error.message.startsWith("options.allowEmptyFiles")) {
         return new Err({
-          name: "dust_error",
+          name: "ruby_error",
           code: "file_is_empty",
           message: "File is empty.",
         });
@@ -175,7 +175,7 @@ export const parseUploadRequest = async (
     }
 
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_server_error",
       message: `Error uploading file : ${error instanceof Error ? error : new Error(JSON.stringify(error))}`,
     });

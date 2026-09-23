@@ -1,0 +1,58 @@
+import { SkillResource } from "@app/lib/resources/skill/skill_resource";
+import { SpaceResource } from "@app/lib/resources/space_resource";
+import type { AdminGetSkillDetails } from "@app/types/api/admin/skills";
+import { adminApp } from "@front-api/middlewares/ctx";
+import { apiError, type HandlerResult } from "@front-api/middlewares/utils";
+import { validate } from "@front-api/middlewares/validator";
+import { z } from "zod";
+
+const ParamsSchema = z.object({
+  sId: z.string(),
+});
+
+// Mounted at /api/admin/workspaces/:wId/skills/:sId/details.
+const app = adminApp();
+
+/** @ignoreswagger */
+app.get(
+  "/",
+  validate("param", ParamsSchema),
+  async (ctx): HandlerResult<AdminGetSkillDetails> => {
+    const auth = ctx.get("auth");
+    const { sId } = ctx.req.valid("param");
+
+    const skill = await SkillResource.fetchById(auth, sId);
+    if (!skill) {
+      return apiError(ctx, {
+        status_code: 404,
+        api_error: {
+          type: "skill_not_found",
+          message: "Skill not found.",
+        },
+      });
+    }
+
+    const serializedSkill = skill.toJSON(auth);
+    const editedByUser = await skill.fetchEditedByUser(auth);
+    const spaces = await SpaceResource.fetchByIds(
+      auth,
+      serializedSkill.requestedSpaceIds
+    );
+
+    const agentsUsage = await skill.fetchUsage(auth);
+    const usedBySkillsMap = await SkillResource.batchFetchUsedBySkills(auth, [
+      skill,
+    ]);
+    const usedBySkills = usedBySkillsMap.get(skill.sId) ?? [];
+
+    return ctx.json({
+      skill: serializedSkill,
+      editedByUser: editedByUser ? editedByUser.toJSON() : null,
+      spaces: await SpaceResource.enrichSpacesWithAccess(auth, spaces),
+      agentsUsage,
+      usedBySkills,
+    });
+  }
+);
+
+export default app;

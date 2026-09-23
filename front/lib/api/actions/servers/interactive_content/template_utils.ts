@@ -6,7 +6,7 @@ import { isServerSideMCPServerConfiguration } from "@app/lib/actions/types/guard
 import type { DataSourceConfiguration } from "@app/lib/api/assistant/configuration/types";
 import { getSkillDataSourceConfigurations } from "@app/lib/api/assistant/skill_actions";
 import config from "@app/lib/api/config";
-import { DustFileSystem, parseScopedPrefix } from "@app/lib/api/file_system";
+import { RubyFileSystem, parseScopedPrefix } from "@app/lib/api/file_system";
 import type { Authenticator } from "@app/lib/auth";
 import { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
 import { SkillResource } from "@app/lib/resources/skill/skill_resource";
@@ -25,7 +25,7 @@ async function fetchTemplateFromCanonicalPath(
 ): Promise<Result<string, MCPError>> {
   const { conversation } = runContext;
 
-  const fsResult = await DustFileSystem.forAgentLoop(auth, {
+  const fsResult = await RubyFileSystem.forAgentLoop(auth, {
     conversation,
     scopedPaths: [canonicalPath],
   });
@@ -38,9 +38,9 @@ async function fetchTemplateFromCanonicalPath(
     );
   }
 
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
-  const statResult = await dustFs.stat(canonicalPath);
+  const statResult = await rubyFs.stat(canonicalPath);
   if (statResult.isErr()) {
     return new Err(
       new MCPError(
@@ -67,7 +67,7 @@ async function fetchTemplateFromCanonicalPath(
     );
   }
 
-  const readResult = await dustFs.readBuffer(canonicalPath);
+  const readResult = await rubyFs.readBuffer(canonicalPath);
   if (readResult.isErr()) {
     return new Err(
       new MCPError(
@@ -91,7 +91,7 @@ async function fetchTemplateFromCanonicalPath(
  * Fetches template content from a knowledge node (by node ID) or a canonical file system path.
  *
  * - Node ID: looks up the document via the Core API across the agent's data sources.
- * - Canonical path (e.g. `pod-{spaceId}/...` or `conversation-{cId}/...`): reads directly from the DustFileSystem.
+ * - Canonical path (e.g. `pod-{spaceId}/...` or `conversation-{cId}/...`): reads directly from the RubyFileSystem.
  */
 export async function fetchTemplateContent(
   auth: Authenticator,
@@ -183,8 +183,8 @@ export async function fetchTemplateContent(
     agentDataSourceConfigurations.push({
       ...config,
       dataSource: {
-        dustAPIProjectId: dataSource.dustAPIProjectId,
-        dustAPIDataSourceId: dataSource.dustAPIDataSourceId,
+        rubyAPIProjectId: dataSource.rubyAPIProjectId,
+        rubyAPIDataSourceId: dataSource.rubyAPIDataSourceId,
         connectorProvider: dataSource.connectorProvider,
         name: dataSource.name,
       },
@@ -228,7 +228,7 @@ export async function fetchTemplateContent(
 
   // Get dataSource from the data source configuration.
   const dataSource = agentDataSourceConfigurations.find(
-    (config) => config.dataSource.dustAPIDataSourceId === node.data_source_id
+    (config) => config.dataSource.rubyAPIDataSourceId === node.data_source_id
   )?.dataSource;
 
   if (!dataSource) {
@@ -244,7 +244,7 @@ export async function fetchTemplateContent(
   const readResult = await coreAPI.getDataSourceDocumentText({
     dataSourceId: node.data_source_id,
     documentId: node.node_id,
-    projectId: dataSource.dustAPIProjectId,
+    projectId: dataSource.rubyAPIProjectId,
   });
   if (readResult.isErr()) {
     return new Err(

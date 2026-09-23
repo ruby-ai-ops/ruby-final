@@ -123,7 +123,7 @@ export const ROLE_REGISTRY: Record<
   models_tier: {
     use: { verbs: ["use"], levels: ["instance"] },
   },
-  dust_app: {
+  ruby_app: {
     admin: { verbs: ["admin"], levels: ["type"] },
   },
   trigger: {

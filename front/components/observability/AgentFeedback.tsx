@@ -11,7 +11,7 @@ import {
   ThumbsDown,
   ThumbsUp,
   ValueCard,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 const FeedbackDistributionChart = safeLazy(
   () =>

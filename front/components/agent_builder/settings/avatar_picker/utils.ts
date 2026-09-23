@@ -1,7 +1,7 @@
 import type { SelectedEmojiType } from "@app/components/agent_builder/settings/avatar_picker/types";
 import { EMOJI_AVATAR_BASE_URL } from "@app/components/agent_builder/settings/avatar_picker/types";
-import type { EmojiMartData as EmojiData } from "@dust-tt/sparkle";
-import { avatarUtils, DataEmojiMart } from "@dust-tt/sparkle";
+import type { EmojiMartData as EmojiData } from "@ruby-ai/ui";
+import { avatarUtils, DataEmojiMart } from "@ruby-ai/ui";
 
 export function makeUrlForEmojiAndBackground(
   emoji: SelectedEmojiType,

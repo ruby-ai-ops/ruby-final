@@ -53,7 +53,7 @@ app.get(
     }
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const run = await coreAPI.getRunStatus({
-      projectId: found.dustAPIProjectId,
+      projectId: found.rubyAPIProjectId,
       runId,
     });
     if (run.isErr()) {

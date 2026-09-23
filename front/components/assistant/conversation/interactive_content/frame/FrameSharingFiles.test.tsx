@@ -1,6 +1,6 @@
 import { FrameSharingFiles } from "@app/components/assistant/conversation/interactive_content/frame/FrameSharingFiles";
 import type { ShareFrameViewerFile } from "@app/lib/api/viz/share_frame_viewer_files";
-import { Button, Popover } from "@dust-tt/sparkle";
+import { Button, Popover } from "@ruby-ai/ui";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";

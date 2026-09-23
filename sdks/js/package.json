@@ -1,25 +1,27 @@
 {
-  "name": "@dust-tt/client",
+  "name": "@ruby-ai/client",
   "version": "1.2.9",
   "engines": {
     "node": ">=24.16.0"
   },
-  "description": "Client for Dust API",
+  "description": "Client for Ruby API",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dust-tt/dust.git"
+    "url": "git+https://github.com/ruby-ai-ops/ruby-final.git"
   },
-  "author": "Dust (Permutation Labs SAS)",
-  "license": "ISC",
+  "author": "Ruby AI",
   "bugs": {
-    "url": "https://github.com/dust-tt/dust/issues"
+    "url": "https://github.com/ruby-ai-ops/ruby-final/issues"
   },
-  "homepage": "https://github.com/dust-tt/dust-sdk-js",
+  "homepage": "https://github.com/ruby-ai-ops/ruby-final/tree/ruby-main/sdks/js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/client.esm.js",
   "typings": "dist/index.d.ts",
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "npm run build:types && npm run build:bundle",
     "build:types": "tsgo",
@@ -54,9 +56,12 @@
   },
   "watch": {
     "build": {
-      "patterns": ["src"],
+      "patterns": [
+        "src"
+      ],
       "extensions": "ts",
       "ignore": ""
     }
-  }
+  },
+  "private": true
 }

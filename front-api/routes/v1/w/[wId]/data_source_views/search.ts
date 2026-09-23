@@ -1,6 +1,6 @@
 import { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
-import type { SearchDataSourceViewsResponseType } from "@dust-tt/client";
-import { SearchDataSourceViewsRequestSchema } from "@dust-tt/client";
+import type { SearchDataSourceViewsResponseType } from "@ruby-ai/client";
+import { SearchDataSourceViewsRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsSystemKey } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";

@@ -161,9 +161,9 @@ export async function trackProgrammaticUsageActivity(
 
   const userMessageOrigin = userMessage.userContextOrigin;
 
-  // Use dustRunIds from this specific agent loop execution if available,
+  // Use rubyRunIds from this specific agent loop execution if available,
   // fall back to all accumulated runIds on the message (legacy behavior).
-  const effectiveRunIds = agentLoopArgs.dustRunIds ?? agentMessage.runIds;
+  const effectiveRunIds = agentLoopArgs.rubyRunIds ?? agentMessage.runIds;
 
   if (
     AGENT_MESSAGE_STATUSES_TO_TRACK.includes(agentMessage.status) &&
@@ -186,7 +186,7 @@ export async function trackProgrammaticUsageActivity(
     const result = await trackProgrammaticCost(
       auth,
       {
-        dustRunIds: effectiveRunIds,
+        rubyRunIds: effectiveRunIds,
         userMessageOrigin,
       },
       localLogger
@@ -286,9 +286,9 @@ export async function emitMetronomeUsageEventsActivity(
     return;
   }
 
-  // Use dustRunIds from this specific agent loop execution if available,
+  // Use rubyRunIds from this specific agent loop execution if available,
   // fall back to all accumulated runIds on the message (legacy behavior).
-  const effectiveRunIds = agentLoopArgs.dustRunIds ?? agentMessage.runIds;
+  const effectiveRunIds = agentLoopArgs.rubyRunIds ?? agentMessage.runIds;
   if (!effectiveRunIds || effectiveRunIds.length === 0) {
     return;
   }
@@ -355,10 +355,10 @@ export async function emitMetronomeUsageEventsActivity(
   );
 
   // Attribute usage to the parent (triggering) agent only for *hidden helper*
-  // sub-agents (e.g. the dust-task / dust-planning runs spawned by "go deep").
+  // sub-agents (e.g. the ruby-task / ruby-planning runs spawned by "go deep").
   // These run in their own child conversation under the workspace system key and
   // are not meaningful to users on their own, so surfacing them by their own name
-  // (e.g. "dust-task") is confusing — we attribute their usage to the user-facing
+  // (e.g. "ruby-task") is confusing — we attribute their usage to the user-facing
   // parent agent that spawned them instead. Other sub-agents (real user agents
   // invoked via run_agent / agent_handover) keep their own attribution.
   let agentId = agentMessage.agentConfigurationId ?? null;
@@ -386,7 +386,7 @@ export async function emitMetronomeUsageEventsActivity(
   }
 
   // Resolve API key name from the stored numeric FK. We deliberately never surface
-  // the workspace system key ("DustSystemKey") as the API key name: sub-agent runs
+  // the workspace system key ("RubySystemKey") as the API key name: sub-agent runs
   // and other internal flows authenticate with the system key, but that is an
   // implementation detail, not a meaningful billing attribution. In those cases we
   // leave the API key name unset (it surfaces as "unknown" in the event).
@@ -402,8 +402,8 @@ export async function emitMetronomeUsageEventsActivity(
   }
 
   // Get LLM run usages.
-  const runs = await RunResource.listByDustRunIds(auth, {
-    dustRunIds: effectiveRunIds,
+  const runs = await RunResource.listByRubyRunIds(auth, {
+    rubyRunIds: effectiveRunIds,
   });
   const runUsages = await RunResource.listRunUsagesForRuns(auth, { runs });
 
@@ -428,7 +428,7 @@ export async function emitMetronomeUsageEventsActivity(
     };
   });
 
-  // Deterministic runKey based on the specific dustRunIds being processed.
+  // Deterministic runKey based on the specific rubyRunIds being processed.
   // Same runIds → same transaction IDs → Metronome deduplicates retries.
   // Different runIds (new agent loop execution) → different transaction IDs.
   // Shared with the credit-cost flow (computeRunKey) so the credit recompute

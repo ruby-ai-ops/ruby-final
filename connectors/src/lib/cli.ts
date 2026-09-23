@@ -35,8 +35,8 @@ import type {
   WebcrawlerCommandType,
 } from "@connectors/types";
 import { isConnectorError } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { assertNever } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { assertNever } from "@ruby-ai/client";
 import fs from "fs";
 import PQueue from "p-queue";
 import readline from "readline";
@@ -340,7 +340,7 @@ export const batch = async ({
         "snowflake",
         "zendesk",
         "bigquery",
-        "dust_project",
+        "ruby_project",
       ];
       if (!PROVIDERS_ALLOWING_RESTART.includes(args.provider)) {
         throw new Error(

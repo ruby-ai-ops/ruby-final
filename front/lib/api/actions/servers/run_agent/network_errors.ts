@@ -1,5 +1,5 @@
 import { normalizeError } from "@app/types/shared/utils/error_utils";
-import type { APIError } from "@dust-tt/client";
+import type { APIError } from "@ruby-ai/client";
 
 /**
  * Patterns that indicate transient network errors. These errors are typically caused by

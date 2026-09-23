@@ -1,16 +1,16 @@
 {
-  "client_id": "https://app.dust.tt/.well-known/oauth-client.json",
-  "client_name": "Dust",
-  "client_uri": "https://dust.tt",
-  "logo_uri": "https://dust.tt/static/AppIcon.png",
-  "tos_uri": "https://dust.tt/terms",
-  "policy_uri": "https://dust.tt/privacy",
-  "contacts": ["support@dust.com"],
-  "software_id": "dust",
+  "client_id": "https://app.ruby.ad/.well-known/oauth-client.json",
+  "client_name": "Ruby",
+  "client_uri": "https://ruby.ad",
+  "logo_uri": "https://ruby.ad/static/AppIcon.png",
+  "tos_uri": "https://ruby.ad/terms",
+  "policy_uri": "https://ruby.ad/privacy",
+  "contacts": ["support@ruby.com"],
+  "software_id": "ruby",
   "redirect_uris": [
-    "https://app.dust.tt/oauth/mcp/finalize",
-    "https://dust.tt/oauth/mcp/finalize",
-    "https://eu.dust.tt/oauth/mcp/finalize"
+    "https://app.ruby.ad/oauth/mcp/finalize",
+    "https://app.ruby.ad/oauth/mcp/finalize",
+    "https://app.ruby.ad/oauth/mcp/finalize"
   ],
   "token_endpoint_auth_method": "none",
   "grant_types": ["authorization_code", "refresh_token"],

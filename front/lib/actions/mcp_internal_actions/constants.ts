@@ -61,14 +61,14 @@ import { OUTLOOK_MAIL_SERVER } from "@app/lib/api/actions/servers/outlook/mail_m
 import { PLAN_MODE_SERVER } from "@app/lib/api/actions/servers/plan_mode/metadata";
 import { POD_MANAGER_SERVER } from "@app/lib/api/actions/servers/pod_manager/metadata";
 import { POD_TASKS_SERVER } from "@app/lib/api/actions/servers/pod_tasks/metadata";
-import { POKE_SERVER } from "@app/lib/api/actions/servers/poke/metadata";
+import { ADMIN_SERVER } from "@app/lib/api/actions/servers/admin/metadata";
 import { PRODUCTBOARD_SERVER } from "@app/lib/api/actions/servers/productboard/metadata";
 import {
   QUERY_TABLES_V2_SERVER,
   TABLE_QUERY_V2_SERVER_NAME,
 } from "@app/lib/api/actions/servers/query_tables_v2/metadata";
 import { RUN_AGENT_SERVER } from "@app/lib/api/actions/servers/run_agent/metadata";
-import { RUN_DUST_APP_SERVER } from "@app/lib/api/actions/servers/run_dust_app/metadata";
+import { RUN_RUBY_APP_SERVER } from "@app/lib/api/actions/servers/run_ruby_app/metadata";
 import { SALESFORCE_SERVER } from "@app/lib/api/actions/servers/salesforce/metadata";
 import { SALESLOFT_SERVER } from "@app/lib/api/actions/servers/salesloft/metadata";
 import {
@@ -216,7 +216,7 @@ export const AVAILABLE_INTERNAL_MCP_SERVER_NAMES = [
   "productboard",
   "common_utilities",
   "run_agent",
-  "run_dust_app",
+  "run_ruby_app",
   "salesforce",
   "salesloft",
   "servicenow",
@@ -244,7 +244,7 @@ export const AVAILABLE_INTERNAL_MCP_SERVER_NAMES = [
   "triggers_management",
   "pod_manager",
   "pod_tasks",
-  "poke",
+  "admin",
   "sandbox",
   "ask_user_question",
   "wakeups",
@@ -383,18 +383,18 @@ export const INTERNAL_MCP_SERVERS = ensureUniqueToolNames({
     timeoutMs: undefined,
     metadata: INCLUDE_DATA_SERVER,
   },
-  run_dust_app: {
+  run_ruby_app: {
     id: 10,
     availability: "auto",
     allowMultipleInstances: true,
     isRestricted: ({ featureFlags }) => {
-      return !featureFlags.includes("legacy_dust_apps");
+      return !featureFlags.includes("legacy_ruby_apps");
     },
     isPreview: false,
     tools_arguments_requiring_approval: undefined,
     tools_retry_policies: undefined,
     timeoutMs: undefined,
-    metadata: RUN_DUST_APP_SERVER,
+    metadata: RUN_RUBY_APP_SERVER,
   },
   notion: {
     id: 11,
@@ -1004,8 +1004,8 @@ export const INTERNAL_MCP_SERVERS = ensureUniqueToolNames({
     isPreview: false,
     isRestricted: undefined,
     tools_arguments_requiring_approval: {
-      create_conversation: ["dustPod"],
-      add_message_to_conversation: ["dustPod"],
+      create_conversation: ["rubyPod"],
+      add_message_to_conversation: ["rubyPod"],
     },
     tools_retry_policies: undefined,
     timeoutMs: undefined,
@@ -1070,16 +1070,16 @@ export const INTERNAL_MCP_SERVERS = ensureUniqueToolNames({
     timeoutMs: undefined,
     metadata: USER_MENTIONS_SERVER,
   },
-  poke: {
+  admin: {
     id: 1027,
     availability: "manual",
     allowMultipleInstances: false,
-    isRestricted: ({ featureFlags }) => !featureFlags.includes("poke_mcp"),
+    isRestricted: ({ featureFlags }) => !featureFlags.includes("admin_mcp"),
     isPreview: true,
     tools_arguments_requiring_approval: undefined,
     tools_retry_policies: undefined,
     timeoutMs: undefined,
-    metadata: POKE_SERVER,
+    metadata: ADMIN_SERVER,
   },
   ask_user_question: {
     id: 1028,
@@ -1358,7 +1358,7 @@ type DynamicInternalMCPToolNameOverrides = {
   include_data: "find_tags";
   missing_action_catcher: string;
   run_agent: string;
-  run_dust_app: string;
+  run_ruby_app: string;
   search: "find_tags";
 };
 

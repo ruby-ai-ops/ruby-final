@@ -189,7 +189,7 @@ app.post(
       });
     }
 
-    // Reorder all keys as Dust API expects them ordered.
+    // Reorder all keys as Ruby API expects them ordered.
     const data = body.dataset.data.map((d: any) => {
       return Object.keys(d)
         .sort()
@@ -201,7 +201,7 @@ app.post(
 
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const d = await coreAPI.createDataset({
-      projectId: appResource.dustAPIProjectId,
+      projectId: appResource.rubyAPIProjectId,
       datasetId: body.dataset.name,
       data,
     });

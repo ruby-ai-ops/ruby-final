@@ -10,8 +10,8 @@ import type { Logger } from "@connectors/logger/logger";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { ConnectionCredentials, ModelId } from "@connectors/types";
 import { getConnectionCredentials } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { assertNever, Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { assertNever, Err, Ok } from "@ruby-ai/client";
 import * as t from "io-ts";
 
 export const remoteDBDatabaseCodec = t.type({
@@ -275,7 +275,7 @@ export const saveNodesFromPermissions = async ({
 /**
  * Builds an internal ID from a database name, schema name, and table name.
  * If the schema name or table name is not provided, it will be returned as null.
- * As we use "." as the separator in the internal ID, we use "__DUST_DOT__" as the replacement in the input.
+ * As we use "." as the separator in the internal ID, we use "__RUBY_DOT__" as the replacement in the input.
  *
  * @param databaseName - The name of the database.
  * @param schemaName - The name of the schema.
@@ -292,7 +292,7 @@ export const buildInternalId = ({
 }) => {
   return [databaseName, schemaName, tableName]
     .filter((name) => name !== undefined)
-    .map((name) => name!.replaceAll(".", "__DUST_DOT__"))
+    .map((name) => name!.replaceAll(".", "__RUBY_DOT__"))
     .join(".");
 };
 
@@ -309,7 +309,7 @@ export const parseInternalId = (
 } => {
   const [databaseName, schemaName, tableName] = internalId
     .split(".")
-    .map((name) => name.replaceAll("__DUST_DOT__", "."));
+    .map((name) => name.replaceAll("__RUBY_DOT__", "."));
   if (!databaseName) {
     throw new Error(
       "Invalid internal ID, it requires at least a database name: " + internalId

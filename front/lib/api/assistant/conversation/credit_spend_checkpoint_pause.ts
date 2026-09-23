@@ -3,7 +3,7 @@ import { getUserMessageIdFromMessageId } from "@app/lib/api/assistant/conversati
 import { publishConversationRelatedEvent } from "@app/lib/api/assistant/streaming/events";
 import { finalizeAgentMessagesWithoutWorkflow } from "@app/lib/api/cancel";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import logger from "@app/logger/logger";
 import { launchAgentLoopWorkflow } from "@app/temporal/agent_loop/client";
@@ -35,7 +35,7 @@ async function findPausedAgentMessage(
   auth: Authenticator,
   conversation: ConversationResource,
   { messageId }: { messageId: string }
-): Promise<Result<FindPausedAgentMessageResult, DustError>> {
+): Promise<Result<FindPausedAgentMessageResult, RubyError>> {
   const {
     agentMessageId,
     agentMessageVersion,
@@ -52,7 +52,7 @@ async function findPausedAgentMessage(
     })
   ) {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         "User is not authorized to resolve this pause"
       )
@@ -70,7 +70,7 @@ async function findPausedAgentMessage(
   }
   if (status !== "paused") {
     return new Err(
-      new DustError(
+      new RubyError(
         "agent_message_not_resumable",
         "Agent message is not paused at the spend checkpoint"
       )
@@ -90,7 +90,7 @@ async function findPausedAgentMessage(
   const dataRes = await getFullAgentLoopDataWithAuth(auth, agentLoopArgs);
   if (dataRes.isErr()) {
     return new Err(
-      new DustError("agent_message_not_resumable", dataRes.error.message)
+      new RubyError("agent_message_not_resumable", dataRes.error.message)
     );
   }
 
@@ -126,7 +126,7 @@ export async function continueCreditSpendCheckpointPause(
   auth: Authenticator,
   conversation: ConversationResource,
   { messageId }: { messageId: string }
-): Promise<Result<void, DustError | Error>> {
+): Promise<Result<void, RubyError | Error>> {
   const foundRes = await findPausedAgentMessage(auth, conversation, {
     messageId,
   });
@@ -155,7 +155,7 @@ export async function continueCreditSpendCheckpointPause(
   const startStep = nextStep(agentMessage);
   let launchRes: Result<
     undefined,
-    Error | DustError<"agent_loop_already_running">
+    Error | RubyError<"agent_loop_already_running">
   >;
   try {
     launchRes = await launchAgentLoopWorkflow({
@@ -171,7 +171,7 @@ export async function continueCreditSpendCheckpointPause(
   }
   if (launchRes.isErr()) {
     const isAlreadyRunning =
-      launchRes.error instanceof DustError &&
+      launchRes.error instanceof RubyError &&
       launchRes.error.code === "agent_loop_already_running";
     if (!isAlreadyRunning) {
       // Without a running workflow the message would be stuck off `paused` with nothing to clear
@@ -212,7 +212,7 @@ export async function declineCreditSpendCheckpointPause(
   auth: Authenticator,
   conversation: ConversationResource,
   { messageId }: { messageId: string }
-): Promise<Result<void, DustError | Error>> {
+): Promise<Result<void, RubyError | Error>> {
   const foundRes = await findPausedAgentMessage(auth, conversation, {
     messageId,
   });

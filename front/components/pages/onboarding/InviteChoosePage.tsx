@@ -7,11 +7,11 @@ import {
   BarHeader,
   Button,
   cn,
-  DustLogoSquare,
+  RubyLogoSquare,
   Icon,
   Page,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback } from "react";
 
 export function InviteChoosePage() {
@@ -42,11 +42,11 @@ export function InviteChoosePage() {
 
   return (
     <Page variant="normal">
-      <BarHeader title="Joining Dust" className="ml-10 lg:ml-0" />
+      <BarHeader title="Joining Ruby" className="ml-10 lg:ml-0" />
       <div className="mx-auto mt-40 flex max-w-2xl flex-col gap-8">
         <div className="flex flex-col gap-2">
           <div className="items-left justify-left flex flex-row">
-            <Icon visual={DustLogoSquare} size="md" />
+            <Icon visual={RubyLogoSquare} size="md" />
           </div>
           <span className="heading-2xl text-foreground">
             Hello {user?.firstName}!

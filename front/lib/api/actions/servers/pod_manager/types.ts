@@ -1,4 +1,4 @@
-import { DustPodConfigurationSchema } from "@app/lib/actions/mcp_internal_actions/input_schemas";
+import { RubyPodConfigurationSchema } from "@app/lib/actions/mcp_internal_actions/input_schemas";
 import { z } from "zod";
 
 const PodMemberRoleSchema = z.enum(["member", "editor"]);
@@ -12,7 +12,7 @@ export const PodMembersToRemoveSchema = z.array(z.string());
 export const PodManagerUpdateMembersInputSchema = z.object({
   membersToAdd: PodMembersToAddSchema.optional(),
   membersToRemove: PodMembersToRemoveSchema.optional(),
-  dustPod: DustPodConfigurationSchema.optional(),
+  rubyPod: RubyPodConfigurationSchema.optional(),
 });
 
 export const PodManagerEditInformationInputSchema = z.object({
@@ -20,18 +20,18 @@ export const PodManagerEditInformationInputSchema = z.object({
   description: z.string().optional(),
   access: PodAccessSchema.optional(),
   pinnedFramePath: z.string().nullable().optional(),
-  dustPod: DustPodConfigurationSchema.optional(),
+  rubyPod: RubyPodConfigurationSchema.optional(),
 });
 
 const PodManagerMoveConversationInputSchema = z.object({
   destination: z.enum(["pod", "personal"]),
   conversationId: z.string().optional(),
-  dustPod: DustPodConfigurationSchema.optional(),
+  rubyPod: RubyPodConfigurationSchema.optional(),
 });
 
 const PodManagerDefaultAgentInputSchema = z.object({
   agentName: z.string().nullable(),
-  dustPod: DustPodConfigurationSchema.optional(),
+  rubyPod: RubyPodConfigurationSchema.optional(),
 });
 
 export type PodMemberRole = z.infer<typeof PodMemberRoleSchema>;

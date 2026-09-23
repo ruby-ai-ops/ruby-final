@@ -18,7 +18,7 @@ describe("Cursor Cloud Agents tools", () => {
     const result = await tool.handler(
       {
         prompt: "Review this pull request",
-        pullRequestUrl: "https://github.com/dust-tt/dust/pull/123",
+        pullRequestUrl: "https://github.com/ruby-ai-ops/ruby-final/pull/123",
         repositoryUrls: [],
       },
       makeExtra(auth, conversation)

@@ -86,8 +86,8 @@ makeScript({}, async ({ execute }, logger) => {
     skills: skillsToLink,
   });
 
-  // Add Dust global agent for conversations
-  createdAgents.set("Dust", { sId: GLOBAL_AGENTS_SID.DUST, name: "Dust" });
+  // Add Ruby global agent for conversations
+  createdAgents.set("Ruby", { sId: GLOBAL_AGENTS_SID.RUBY, name: "Ruby" });
 
   await seedConversations(ctx, conversationsAsset, {
     agents: createdAgents,

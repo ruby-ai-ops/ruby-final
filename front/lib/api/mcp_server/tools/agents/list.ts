@@ -1,5 +1,5 @@
 import { getAgentConfigurationsForView } from "@app/lib/api/assistant/configuration/views";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { filterAndSortAgents } from "@app/lib/utils";
 import { compareAgentsForSort } from "@app/types/assistant/assistant";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -22,7 +22,7 @@ const inputSchema = {
 };
 
 export function registerAgentsListTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "list_agents",
     {

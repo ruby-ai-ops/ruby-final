@@ -1,0 +1,88 @@
+.autoplay-composer-control {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 4px 10px;
+  gap: 6px;
+  border: 1px solid color-mix(in srgb, currentColor 38%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: #73777d;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.autoplay-composer-control:hover {
+  background: rgb(127 127 127 / 8%);
+  color: #54585e;
+}
+
+.autoplay-composer-counter {
+  display: inline-block;
+  width: 4.75rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.autoplay-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.composer-toolbar > [aria-hidden="true"]:first-child,
+.slack-toolbar > [aria-hidden="true"]:first-child,
+.teams-toolbar > [aria-hidden="true"]:first-child {
+  min-width: 0;
+  overflow: hidden;
+}
+
+[data-autoplay-outgoing] {
+  animation: autoplay-conversation-out 140ms ease-in forwards;
+}
+
+[data-autoplay-transition="in"]
+  .conversation-scroll:not([data-autoplay-outgoing]) {
+  animation: autoplay-conversation-in 140ms ease-out both;
+}
+
+@keyframes autoplay-conversation-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes autoplay-conversation-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 627px) {
+  .autoplay-composer-control {
+    min-width: 44px;
+    min-height: 44px;
+    padding-inline: 6px;
+  }
+
+  .autoplay-composer-counter {
+    width: 3.9rem;
+  }
+
+  .composer-toolbar,
+  .slack-toolbar,
+  .teams-toolbar {
+    flex-wrap: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-autoplay-transition] .conversation-scroll {
+    animation: none;
+  }
+}

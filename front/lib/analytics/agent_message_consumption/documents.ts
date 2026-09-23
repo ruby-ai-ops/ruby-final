@@ -48,7 +48,7 @@ export function buildAgentMessageConsumptionAnalyticsDocuments(
   const allocationResult = buildLatestMessageConsumptionAllocation({
     actions: input.actions,
     billedCredits: input.billedCredits,
-    dustRunIds: input.dustRunIds,
+    rubyRunIds: input.rubyRunIds,
     items: input.items,
     runs: input.runs,
     usages: input.usages,

@@ -4,10 +4,10 @@ import {
   BarHeader,
   Button,
   cn,
-  DustLogo,
+  RubyLogo,
   Page,
   Rocket02,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { UserDropdownMenu } from "@extension/ui/components/navigation/UserDropdownMenu";
 import { Link } from "react-router-dom";
 
@@ -33,15 +33,15 @@ export const SubscribePage = () => {
       >
         <div className="flex flex-1 flex-col items-center justify-center gap-4">
           <div className="flex max-w-[400px] flex-col items-center text-center">
-            <Link to="https://dust.tt" target="_blank">
-              <DustLogo className="h-8 w-36" />
+            <Link to="https://ruby.ad" target="_blank">
+              <RubyLogo className="h-8 w-36" />
             </Link>
           </div>
           <div className="max-w-[400px] text-center">
             <Page.H variant="h4">Almost there!</Page.H>
           </div>
           <div className="text-center text-lg">
-            Subscribe to start using Dust agent from anywhere in your browser.
+            Subscribe to start using Ruby agent from anywhere in your browser.
           </div>
 
           {cellInfo && (

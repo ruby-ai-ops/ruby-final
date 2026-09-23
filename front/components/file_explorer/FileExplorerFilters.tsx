@@ -1,5 +1,5 @@
 import type { FileExplorerFilter } from "@app/components/file_explorer/types";
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 const FILTER_CHIPS: {

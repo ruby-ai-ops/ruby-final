@@ -71,17 +71,17 @@ export async function getAgentConfigurationRequirementsFromCapabilities(
         .map((action) => action.mcpServerViewId)
     );
 
-  // Collect Dust App permissions by space.
-  const dustAppIds = removeNulls(
+  // Collect Ruby App permissions by space.
+  const rubyAppIds = removeNulls(
     actions
       .filter(isServerSideMCPServerConfiguration)
-      .map((action) => action.dustAppConfiguration?.appId)
+      .map((action) => action.rubyAppConfiguration?.appId)
   );
-  let dustAppRequirements: ModelId[] = [];
+  let rubyAppRequirements: ModelId[] = [];
 
-  if (dustAppIds.length > 0) {
-    const dustApps = await AppResource.fetchByIds(auth, dustAppIds);
-    dustAppRequirements = dustApps.map((app) => app.space.id);
+  if (rubyAppIds.length > 0) {
+    const rubyApps = await AppResource.fetchByIds(auth, rubyAppIds);
+    rubyAppRequirements = rubyApps.map((app) => app.space.id);
   }
 
   // Collect Pod permissions by space. Only spaces whose canonical sId matches a configured id
@@ -90,7 +90,7 @@ export async function getAgentConfigurationRequirementsFromCapabilities(
     removeNulls(
       actions
         .filter(isServerSideMCPServerConfiguration)
-        .map((action) => action.dustProject?.projectId ?? null)
+        .map((action) => action.rubyProject?.projectId ?? null)
     )
   );
   const pods = await SpaceResource.fetchByIds(auth, [...podIds]);
@@ -104,7 +104,7 @@ export async function getAgentConfigurationRequirementsFromCapabilities(
   const requestedSpaceIds = uniq([
     ...dsViewRequirements,
     ...mcpServerViewRequirements,
-    ...dustAppRequirements,
+    ...rubyAppRequirements,
     ...podRequirements,
     ...skillRequirements,
   ]).filter((id) => !ignoreSpaceModelIds.has(id));

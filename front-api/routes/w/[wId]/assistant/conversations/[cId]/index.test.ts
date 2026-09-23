@@ -30,7 +30,7 @@ async function setupUserRequestWithConversation({
   );
 
   const conversation = await ConversationFactory.create(adminAuth, {
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     requestedSpaceIds: [globalSpace.id],
     messagesCreatedAt: [new Date()],
   });
@@ -131,7 +131,7 @@ describe("GET /api/w/:wId/assistant/conversations/:cId", () => {
     );
 
     const conversation = await ConversationFactory.create(refreshedAdminAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       requestedSpaceIds: [projectSpace.id],
       spaceId: projectSpace.id,
       messagesCreatedAt: [new Date()],
@@ -164,7 +164,7 @@ describe("GET /api/w/:wId/assistant/conversations/:cId", () => {
     );
 
     const conversation = await ConversationFactory.create(regularUserAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       requestedSpaceIds: [globalSpace.id],
       messagesCreatedAt: [new Date()],
     });
@@ -190,7 +190,7 @@ describe("GET /api/w/:wId/assistant/conversations/:cId", () => {
     });
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       requestedSpaceIds: [globalSpace.id],
       messagesCreatedAt: [new Date()],
     });
@@ -222,7 +222,7 @@ describe("PATCH /api/w/:wId/assistant/conversations/:cId", () => {
     });
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       requestedSpaceIds: [globalSpace.id],
       messagesCreatedAt: [new Date()],
     });
@@ -250,7 +250,7 @@ describe("PATCH /api/w/:wId/assistant/conversations/:cId", () => {
     });
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       requestedSpaceIds: [globalSpace.id],
       messagesCreatedAt: [new Date()],
     });
@@ -269,7 +269,7 @@ describe("PATCH /api/w/:wId/assistant/conversations/:cId", () => {
     });
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       requestedSpaceIds: [globalSpace.id],
       messagesCreatedAt: [new Date()],
     });
@@ -304,7 +304,7 @@ describe("PATCH /api/w/:wId/assistant/conversations/:cId", () => {
     });
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       requestedSpaceIds: [globalSpace.id],
       messagesCreatedAt: [new Date()],
     });

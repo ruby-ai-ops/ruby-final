@@ -1,0 +1,124 @@
+import { setInternalWorkspaceSegmentation } from "@app/lib/api/workspace";
+import type { LightWorkspaceType } from "@app/types/user";
+import { adminApp } from "@front-api/middlewares/ctx";
+import { withAdminWorkspace } from "@front-api/middlewares/admin_auth";
+import type { HandlerResult } from "@front-api/middlewares/utils";
+import { validate } from "@front-api/middlewares/validator";
+import { z } from "zod";
+
+import agentConfigurations from "./agent_configurations";
+import analytics from "./analytics";
+import apps from "./apps";
+import assistants from "./assistants";
+import authContext from "./auth-context";
+import cancelPendingContract from "./cancel_pending_contract";
+import conversations from "./conversations";
+import credits from "./credits";
+import dataRetention from "./data_retention";
+import dataSourceViews from "./data_source_views";
+import dataSources from "./data_sources";
+import downgrade from "./downgrade";
+import dsync from "./dsync";
+import features from "./features";
+import files from "./files";
+import frames from "./frames";
+import governancePermissions from "./governance_permissions";
+import groupPermissions from "./group_permissions";
+import groups from "./groups";
+import invitations from "./invitations";
+import llmTraces from "./llm-traces";
+import mcp from "./mcp";
+import mcpServerViews from "./mcp_server_views";
+import memberships from "./memberships";
+import messagingApps from "./messaging_apps";
+import modelTiers from "./model_tiers";
+import projects from "./projects";
+import seatLimitsSchedule from "./seat_limits_schedule";
+import skillSuggestions from "./skill_suggestions";
+import skills from "./skills";
+import slackWorkflows from "./slack-workflows";
+import spaces from "./spaces";
+import switchContract from "./switch_contract";
+import triggers from "./triggers";
+import upgrade from "./upgrade";
+import upgradeEnterprise from "./upgrade_enterprise";
+import webhookSources from "./webhook_sources";
+import workspaceInfo from "./workspace-info";
+
+export const WorkspaceSegmentationSchema = z.object({
+  segmentation: z.literal("interesting").nullable(),
+});
+
+export type SegmentWorkspaceResponseBody = {
+  workspace: LightWorkspaceType;
+};
+
+// Mounted at /api/admin/workspaces/:wId.
+const app = adminApp();
+
+// `auth-context` runs without `withAdminWorkspace` because it needs to handle
+// the missing-workspace case (cross-region redirect). It re-scopes the
+// unscoped admin Authenticator itself. Must be mounted before the
+// `withAdminWorkspace` middleware below.
+app.route("/auth-context", authContext);
+
+// Every route below re-scopes the unscoped Admin `Authenticator` (set by the
+// parent /admin `adminAuth`) to the target workspace.
+app.use("*", withAdminWorkspace);
+
+/** @ignoreswagger */
+app.patch(
+  "/",
+  validate("json", WorkspaceSegmentationSchema),
+  async (ctx): HandlerResult<SegmentWorkspaceResponseBody> => {
+    const auth = ctx.get("auth");
+    const { segmentation } = ctx.req.valid("json");
+
+    const workspace = await setInternalWorkspaceSegmentation(
+      auth,
+      segmentation
+    );
+
+    return ctx.json({ workspace });
+  }
+);
+
+app.route("/agent_configurations", agentConfigurations);
+app.route("/analytics", analytics);
+app.route("/cancel_pending_contract", cancelPendingContract);
+app.route("/apps", apps);
+app.route("/assistants", assistants);
+app.route("/conversations", conversations);
+app.route("/credits", credits);
+app.route("/data_retention", dataRetention);
+app.route("/data_source_views", dataSourceViews);
+app.route("/data_sources", dataSources);
+app.route("/downgrade", downgrade);
+app.route("/dsync", dsync);
+app.route("/features", features);
+app.route("/files", files);
+app.route("/frames", frames);
+app.route("/governance_permissions", governancePermissions);
+app.route("/group_permissions", groupPermissions);
+app.route("/groups", groups);
+app.route("/invitations", invitations);
+app.route("/llm-traces", llmTraces);
+app.route("/mcp", mcp);
+app.route("/mcp_server_views", mcpServerViews);
+app.route("/memberships", memberships);
+app.route("/messaging_apps", messagingApps);
+app.route("/model_tiers", modelTiers);
+app.route("/projects", projects);
+app.route("/seat_limits_schedule", seatLimitsSchedule);
+app.route("/skill_suggestions", skillSuggestions);
+app.route("/skills", skills);
+app.route("/slack-workflows", slackWorkflows);
+app.route("/spaces", spaces);
+app.route("/switch_contract", switchContract);
+app.route("/triggers", triggers);
+app.route("/upgrade", upgrade);
+app.route("/upgrade_enterprise", upgradeEnterprise);
+app.route("/webhook_sources", webhookSources);
+app.route("/workspace-info", workspaceInfo);
+
+export default app;

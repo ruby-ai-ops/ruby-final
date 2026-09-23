@@ -5,7 +5,7 @@ import {
   InfoCircle,
   RefreshCw02,
   UsersPlus,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 type BuilderType = "agent" | "skill";
 

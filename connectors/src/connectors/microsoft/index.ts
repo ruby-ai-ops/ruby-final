@@ -70,14 +70,14 @@ import type {
 } from "@connectors/types";
 import { concurrentExecutor } from "@connectors/types/shared/utils/async_utils";
 import { isString } from "@connectors/types/shared/utils/general";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
 import {
   assertNever,
   Err,
   normalizeError,
   Ok,
   removeNulls,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { Client, GraphError } from "@microsoft/microsoft-graph-client";
 import type { Site } from "@microsoft/microsoft-graph-types";
 import { decodeJwt } from "jose";

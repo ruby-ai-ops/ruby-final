@@ -36,11 +36,11 @@ pub async fn write_rows_to_bucket(
     // Read all rows and upload to GCS
     let mut wtr = Writer::from_writer(vec![]);
 
-    // We need to append the row_id in a __dust_id field
+    // We need to append the row_id in a __ruby_id field
     // It's important to have it LAST in the headers as the table schema do not show it
-    // and when the csv will be used as-is for the sqlite database, the dust_id will be completely ignored (as it should).
+    // and when the csv will be used as-is for the sqlite database, the ruby_id will be completely ignored (as it should).
     // See Row.to_csv_record
-    field_names.push("__dust_id".to_string());
+    field_names.push("__ruby_id".to_string());
 
     // Write the header.
     wtr.write_record(field_names.iter().map(String::as_str))?;
@@ -67,9 +67,9 @@ impl GoogleCloudStorageDatabasesStore {
     }
 
     pub fn get_bucket() -> Result<String> {
-        match std::env::var("DUST_TABLES_BUCKET") {
+        match std::env::var("RUBY_TABLES_BUCKET") {
             Ok(bucket) => Ok(bucket),
-            Err(_) => Err(anyhow!("DUST_TABLES_BUCKET is not set")),
+            Err(_) => Err(anyhow!("RUBY_TABLES_BUCKET is not set")),
         }
     }
 

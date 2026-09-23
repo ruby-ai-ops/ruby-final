@@ -188,7 +188,7 @@ export async function setUserSpendLimit(
   });
 
   // Reconcile the user's credit state from live usage — same path as the
-  // poke reconcile button and the seat-sync reconcile.
+  // admin reconcile button and the seat-sync reconcile.
   const metronomeContractId = auth.subscription()?.metronomeContractId ?? null;
   if (metronomeContractId) {
     void reconcileUser({
@@ -281,7 +281,7 @@ export async function expireUserSpendLimitOverride(
   void emitAuditLogEventDirect({
     workspace: auth.getNonNullableWorkspace(),
     action: "membership.pool_cap_override_expired",
-    actor: { type: "system", id: "spend-limit-expiration", name: "Dust" },
+    actor: { type: "system", id: "spend-limit-expiration", name: "Ruby" },
     targets: [
       buildAuditLogTarget("workspace", workspace),
       buildAuditLogTarget("user", {

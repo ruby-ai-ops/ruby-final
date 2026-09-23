@@ -16,7 +16,7 @@ import {
   Input,
   Spinner,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ChangeEvent } from "react";
 import { useCallback, useState } from "react";
 

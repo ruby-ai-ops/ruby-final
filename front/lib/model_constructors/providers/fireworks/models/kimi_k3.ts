@@ -5,7 +5,7 @@ import { z } from "zod";
 // Real model spec, verified 2026-07-27 against
 // https://fireworks.ai/models/fireworks/kimi-k3 (1040k context) and
 // https://platform.kimi.ai/docs/guide/kimi-k3-quickstart (max_completion_tokens
-// defaults to 131k). The Dust product caps (256k context, 64k output) are
+// defaults to 131k). The Ruby product caps (256k context, 64k output) are
 // applied in the llms layer.
 const CONTEXT_SIZE = 1_040_000;
 const MAX_OUTPUT_TOKENS = 131_072;
@@ -25,7 +25,7 @@ const DEFAULT_REASONING_EFFORT = "maximal";
 // and rejects only `minimal`. We expose the documented set only, since
 // undocumented efforts can change without notice.
 //
-// The default is `max`, as Moonshot documents. Dust's legacy low/medium/high
+// The default is `max`, as Moonshot documents. Ruby's legacy low/medium/high
 // efforts are folded onto K3's low/high/max by the `mapReasoningEffortToLowHighMax`
 // config parser in the llms layer.
 const configSchema = fireworksConfigSchema.extend({
@@ -44,9 +44,9 @@ export function WithMoonshotAiKimiK3Config<
 
     static readonly configSchema = configSchema;
 
-    // Typed as `number` (not the literal) so the Dust layer can cap it.
+    // Typed as `number` (not the literal) so the Ruby layer can cap it.
     static readonly contextSize: number = CONTEXT_SIZE;
-    // Typed as `number` (not the literal) so the Dust layer can cap it.
+    // Typed as `number` (not the literal) so the Ruby layer can cap it.
     static readonly maxOutputTokens: number = MAX_OUTPUT_TOKENS;
   }
 

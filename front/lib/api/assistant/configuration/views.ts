@@ -439,11 +439,11 @@ export async function getAgentConfigurationsForView({
 
   if (
     agentsGetView === "admin_internal" &&
-    !auth.isDustSuperUser() &&
+    !auth.isRubySuperUser() &&
     !auth.isAdmin()
   ) {
     throw new Error(
-      "Superuser view is for dust superusers or internal admin auths only."
+      "Superuser view is for ruby superusers or internal admin auths only."
     );
   }
 

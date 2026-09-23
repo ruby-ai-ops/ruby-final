@@ -8,7 +8,7 @@ import type { SuggestAgentNameArgs } from "@app/lib/api/actions/servers/building
 import { getAgentConfiguration } from "@app/lib/api/assistant/configuration/agent";
 import { getAgentIdFromName } from "@app/lib/api/assistant/configuration/helpers";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import {
   executeWithLockResult,
   isLockAcquisitionTimeoutError,
@@ -31,18 +31,18 @@ async function validateAgentNameChange(
     {
       name: string;
     },
-    DustError<"unauthorized" | "invalid_request_error" | "name_conflict">
+    RubyError<"unauthorized" | "invalid_request_error" | "name_conflict">
   >
 > {
   if (!agent.canEdit) {
     return new Err(
-      new DustError("unauthorized", "Only editors of this agent can rename it.")
+      new RubyError("unauthorized", "Only editors of this agent can rename it.")
     );
   }
 
   if (agent.status !== "active") {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "Only active agents can be renamed."
       )
@@ -52,13 +52,13 @@ async function validateAgentNameChange(
   const trimmedName = name.trim();
   if (!trimmedName) {
     return new Err(
-      new DustError("invalid_request_error", "Agent name cannot be empty.")
+      new RubyError("invalid_request_error", "Agent name cannot be empty.")
     );
   }
 
   if (/\s/.test(trimmedName)) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "Agent name cannot contain spaces."
       )
@@ -67,7 +67,7 @@ async function validateAgentNameChange(
 
   if (trimmedName === agent.name) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         `The agent is already named "${agent.name}".`
       )
@@ -76,7 +76,7 @@ async function validateAgentNameChange(
 
   if (await getAgentIdFromName(auth, trimmedName)) {
     return new Err(
-      new DustError(
+      new RubyError(
         "name_conflict",
         `An agent with the name "${trimmedName}" already exists.`
       )

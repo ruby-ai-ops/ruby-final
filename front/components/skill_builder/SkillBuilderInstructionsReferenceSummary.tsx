@@ -15,7 +15,7 @@ import {
   Chip,
   cn,
   File02,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { RefObject } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 

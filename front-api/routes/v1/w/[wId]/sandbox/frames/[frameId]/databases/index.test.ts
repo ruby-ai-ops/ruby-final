@@ -2,7 +2,7 @@ import { ensureFrameSandboxReady } from "@app/lib/api/sandbox/lifecycle";
 import {
   listDatabasesOnReadySandbox,
   queryDatabaseOnReadySandbox,
-} from "@app/lib/api/sandbox_functions/dsbx_db";
+} from "@app/lib/api/sandbox_functions/rbx_db";
 import { Authenticator } from "@app/lib/auth";
 import type { FileResource } from "@app/lib/resources/file_resource";
 import { WorkspaceResource } from "@app/lib/resources/workspace_resource";
@@ -29,7 +29,7 @@ vi.mock(import("@app/lib/api/sandbox/lifecycle"), async (importOriginal) => {
 });
 
 vi.mock(
-  import("@app/lib/api/sandbox_functions/dsbx_db"),
+  import("@app/lib/api/sandbox_functions/rbx_db"),
   async (importOriginal) => {
     const actual = await importOriginal();
     return {

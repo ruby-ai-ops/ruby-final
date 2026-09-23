@@ -1,12 +1,12 @@
-# Dust MCP server
+# Ruby MCP server
 
-Dust exposes itself as an **MCP server** so external clients (Cursor, Claude Desktop, etc.) can call Dust over the Model Context Protocol with OAuth.
+Ruby exposes itself as an **MCP server** so external clients (Cursor, Claude Desktop, etc.) can call Ruby over the Model Context Protocol with OAuth.
 
 ## Big picture
 
-- **Dust** is the MCP **resource server** (tools, data).
+- **Ruby** is the MCP **resource server** (tools, data).
 - **WorkOS AuthKit** is the **authorization server** (OAuth, org picker, JWTs).
-- Each authenticated session is scoped to a **Dust user + workspace**, derived from the WorkOS org the user picks during OAuth.
+- Each authenticated session is scoped to a **Ruby user + workspace**, derived from the WorkOS org the user picks during OAuth.
 
 HTTP entrypoints live in `front-api/routes/mcp/`. This folder holds the auth and tool logic consumed by those routes.
 
@@ -24,17 +24,17 @@ HTTP entrypoints live in `front-api/routes/mcp/`. This folder holds the auth and
 
 ## Key concepts (stable)
 
-**Workspace = WorkOS organization.** Dust workspaces map to WorkOS orgs via `workOSOrganizationId`. Not all workspaces have one (especially free/demo). See `front/lib/api/workos/organization.ts` and the org migration in `front/migrations/20250602_migrate_organizations.ts`.
+**Workspace = WorkOS organization.** Ruby workspaces map to WorkOS orgs via `workOSOrganizationId`. Not all workspaces have one (especially free/demo). See `front/lib/api/workos/organization.ts` and the org migration in `front/migrations/20250602_migrate_organizations.ts`.
 
-**Tools use a standard `Authenticator`.** Once auth is resolved, tool code should look like any other Dust backend code that receives an `Authenticator` — same permissions, same APIs.
+**Tools use a standard `Authenticator`.** Once auth is resolved, tool code should look like any other Ruby backend code that receives an `Authenticator` — same permissions, same APIs.
 
-**Each HTTP request gets its own transport and server.** Auth middleware builds a fresh `authInfo` (with the Dust `Authenticator` in `extra`) that `@hono/mcp` passes to tool handlers. No `Mcp-Session-Id` — stateless mode works across multiple front-api pods.
+**Each HTTP request gets its own transport and server.** Auth middleware builds a fresh `authInfo` (with the Ruby `Authenticator` in `extra`) that `@hono/mcp` passes to tool handlers. No `Mcp-Session-Id` — stateless mode works across multiple front-api pods.
 
-**Tools use `registerDustMcpTool`.** Handlers receive `(auth, args)`; the wrapper reads auth from `extra.authInfo`.
+**Tools use `registerRubyMcpTool`.** Handlers receive `(auth, args)`; the wrapper reads auth from `extra.authInfo`.
 
 ## Adding a tool
 
-Add a file under `tools/` and register it with `registerDustMcpTool` in `tools/index.ts`. Handlers receive `(auth, args)`. MCP clients cache tool lists — reconnect after adding or renaming tools.
+Add a file under `tools/` and register it with `registerRubyMcpTool` in `tools/index.ts`. Handlers receive `(auth, args)`. MCP clients cache tool lists — reconnect after adding or renaming tools.
 
 ## Local dev & config
 

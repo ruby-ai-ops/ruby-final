@@ -1,5 +1,5 @@
 // Types.
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { getFrameV2NameFromManifestPath } from "@app/types/api/frame_manifest";
 import { z } from "zod";
 
@@ -10,9 +10,9 @@ import type { UserType } from "./user";
 const uniq = <T>(arr: T[]): T[] => Array.from(new Set(arr));
 
 export const TABLE_PREFIX = "TABLE:";
-export const DUST_FILE_CAN_WRITE_HEADER = "X-Dust-File-Can-Write";
-export const DUST_FILE_ID_HEADER = "X-Dust-File-Id";
-export const DUST_FILE_CONTENT_TYPE_HEADER = "X-Dust-File-Content-Type";
+export const RUBY_FILE_CAN_WRITE_HEADER = "X-Ruby-File-Can-Write";
+export const RUBY_FILE_ID_HEADER = "X-Ruby-File-Id";
+export const RUBY_FILE_CONTENT_TYPE_HEADER = "X-Ruby-File-Content-Type";
 
 export type FileStatus = "created" | "failed" | "ready";
 
@@ -34,7 +34,7 @@ export type FileUseCase =
   // context datasource. Accessible to all conversations within the project.
   | "project_context"
   // Skill attachment: file attached to a skill configuration, synced to the
-  // sandbox at /dust/skills/<skill-name>/<filename>.
+  // sandbox at /ruby/skills/<skill-name>/<filename>.
   | "skill_attachment"
   // Workspace branding: logo/favicon uploaded by workspace admins.
   | "workspace_branding";
@@ -261,7 +261,7 @@ export function parseAuthorizedFileAccessEntry(
   return authorizedFileAccessEntrySchema.parse(data);
 }
 
-export type AuthorizedFileAccessShareError = Omit<DustError, "code"> & {
+export type AuthorizedFileAccessShareError = Omit<RubyError, "code"> & {
   code: "invalid_request_error" | "internal_error";
   unverifiableRefs?: string[];
 };
@@ -544,7 +544,7 @@ export const FILE_FORMATS = {
   },
 
   // Custom for section json files generated from tables query results.
-  "application/vnd.dust.section.json": {
+  "application/vnd.ruby.section.json": {
     cat: "data",
     exts: [".json"],
     isSafeToDisplay: true,
@@ -561,12 +561,12 @@ export const FILE_FORMATS = {
     isSafeToDisplay: true,
   },
   // Internal content type for pasted text attachments in conversations.
-  "text/vnd.dust.attachment.pasted": {
+  "text/vnd.ruby.attachment.pasted": {
     cat: "data",
     exts: [".txt"],
     isSafeToDisplay: true,
   },
-  "text/vnd.dust.attachment.slack.thread": {
+  "text/vnd.ruby.attachment.slack.thread": {
     cat: "data",
     exts: [".txt"],
     isSafeToDisplay: true,
@@ -741,11 +741,11 @@ export const FILE_FORMATS = {
 // Define a type that is the list of all keys from FILE_FORMATS.
 export type SupportedFileContentType = keyof typeof FILE_FORMATS;
 
-export const frameContentType = "application/vnd.dust.frame";
-export const frameV2ContentType = "application/vnd.dust.frame.v2+json";
-export const frameSlideshowContentType = "application/vnd.dust.frame.slideshow";
+export const frameContentType = "application/vnd.ruby.frame";
+export const frameV2ContentType = "application/vnd.ruby.frame.v2+json";
+export const frameSlideshowContentType = "application/vnd.ruby.frame.slideshow";
 export const sandboxFunctionContentType =
-  "application/vnd.dust.sandbox.function";
+  "application/vnd.ruby.sandbox.function";
 
 // Interactive Content MIME types for specialized use cases (not exposed via APIs).
 export const INTERACTIVE_CONTENT_FILE_FORMATS = {
@@ -806,11 +806,11 @@ export type AllSupportedFileContentType =
   | SandboxFunctionFileContentType
   | SupportedFileContentType;
 
-export type AllSupportedWithDustSpecificFileContentType =
+export type AllSupportedWithRubySpecificFileContentType =
   | AllSupportedFileContentType
-  | "application/vnd.dust.tool-output.data-source-search-result"
-  | "application/vnd.dust.tool-output.websearch-result"
-  | "application/vnd.dust.tool-output.data-source-node-content";
+  | "application/vnd.ruby.tool-output.data-source-search-result"
+  | "application/vnd.ruby.tool-output.websearch-result"
+  | "application/vnd.ruby.tool-output.data-source-node-content";
 
 export type SupportedImageContentType = {
   [K in keyof typeof FILE_FORMATS]: (typeof FILE_FORMATS)[K] extends {

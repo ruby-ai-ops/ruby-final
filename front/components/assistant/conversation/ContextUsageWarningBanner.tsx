@@ -1,7 +1,7 @@
 import { useCompactConversation } from "@app/hooks/conversations";
 import type { GetConversationContextUsageResponse } from "@app/lib/api/assistant/conversation/context_usage";
 import type { LightWorkspaceType } from "@app/types/user";
-import { ContentMessageInline, Hoverable, InfoCircle } from "@dust-tt/sparkle";
+import { ContentMessageInline, Hoverable, InfoCircle } from "@ruby-ai/ui";
 
 interface ContextUsageWarningBannerProps {
   owner: LightWorkspaceType;

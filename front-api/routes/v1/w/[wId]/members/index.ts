@@ -2,7 +2,7 @@ import { getMembers } from "@app/lib/api/workspace";
 import type {
   GetWorkspaceMembersResponseBody,
   UserType,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsAdmin } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";

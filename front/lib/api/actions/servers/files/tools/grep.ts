@@ -10,7 +10,7 @@ import {
   GREP_MATCHES_MAX,
 } from "@app/lib/api/actions/servers/files/metadata";
 import {
-  getDustFileSystemForAgentLoop,
+  getRubyFileSystemForAgentLoop,
   requireAgentLoopConversation,
   scopedPathsFromArgs,
 } from "@app/lib/api/actions/servers/files/tools/agent_loop_fs";
@@ -31,7 +31,7 @@ export async function grepHandler(
     return conversationRes;
   }
 
-  const fsResult = await getDustFileSystemForAgentLoop(
+  const fsResult = await getRubyFileSystemForAgentLoop(
     auth,
     conversationRes.value,
     scopedPathsFromArgs(path)
@@ -39,9 +39,9 @@ export async function grepHandler(
   if (fsResult.isErr()) {
     return fsResult;
   }
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
-  const statResult = await dustFs.stat(path);
+  const statResult = await rubyFs.stat(path);
   if (statResult.isErr()) {
     return new Err(new MCPError(statResult.error.message, { tracked: false }));
   }
@@ -76,7 +76,7 @@ export async function grepHandler(
   }
   const regex = regexResult.value;
 
-  const readResult = await dustFs.read(path);
+  const readResult = await rubyFs.read(path);
   if (readResult.isErr()) {
     return new Err(new MCPError(readResult.error.message, { tracked: false }));
   }

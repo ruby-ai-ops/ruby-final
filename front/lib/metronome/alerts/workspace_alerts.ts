@@ -94,7 +94,7 @@ const WORKSPACE_ALERTS_CACHE_TTL_MS = 60 * 1000;
  * cap/warning/low/critical, usage cap, and the account-wide defaults) — each
  * with its id (for deep-linking) and current evaluation status (for display) —
  * in a single, Redis-cached alert-list scan. Replaces the half-dozen separate
- * `findMetronomeAlert` lookups the Poke workspace-info page used to do per load.
+ * `findMetronomeAlert` lookups the Admin workspace-info page used to do per load.
  * Throws on Metronome failure — callers degrade to nulls.
  */
 export const getCachedWorkspaceMetronomeAlerts = cacheWithRedis(

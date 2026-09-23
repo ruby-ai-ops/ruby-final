@@ -1,12 +1,12 @@
 import { dropTemperature } from "@app/lib/llms/stream/types/configuration";
 import { GPT_5_1_MODEL_CONFIG } from "@app/types/assistant/models/openai";
 
-export function WithDustGptFiveDotOneConfig<
+export function WithRubyGptFiveDotOneConfig<
   TBase extends abstract new (
     ...args: any[]
   ) => object,
 >(Base: TBase) {
-  abstract class DustGptFiveDotOne extends Base {
+  abstract class RubyGptFiveDotOne extends Base {
     static readonly displayName = "GPT-5.1";
     static readonly description =
       "OpenAI's GPT-5.1 reasoning model (400k context).";
@@ -15,11 +15,11 @@ export function WithDustGptFiveDotOneConfig<
     static readonly configParsers = [dropTemperature];
 
     // Nest the legacy model config under a single `modelConfig` static (see
-    // `DustStreamEndpointConfiguration`) so consumers can retrieve the full
+    // `RubyStreamEndpointConfiguration`) so consumers can retrieve the full
     // `ModelConfigurationType` off the endpoint without spreading its fields
     // onto the class statics.
     static readonly modelConfig = GPT_5_1_MODEL_CONFIG;
   }
 
-  return DustGptFiveDotOne;
+  return RubyGptFiveDotOne;
 }

@@ -1,0 +1,11 @@
+[Unit]
+Description=Ruby egress nftables rules for sandbox-controlled accounts
+After=network.target systemd-resolved.service ruby-egress-resolver.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/ruby/egress-nftables.sh
+
+[Install]
+WantedBy=multi-user.target

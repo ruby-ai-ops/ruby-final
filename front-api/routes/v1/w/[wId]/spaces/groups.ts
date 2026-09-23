@@ -1,11 +1,11 @@
 import { SpaceResource } from "@app/lib/resources/space_resource";
-import type { GetAutoGroupIdsForSpacesResponseType } from "@dust-tt/client";
+import type { GetAutoGroupIdsForSpacesResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsSystemKey } from "@front-api/middlewares/ensure_role";
 import { validate } from "@front-api/middlewares/validator";
 import { z } from "zod";
 
-export type { GetAutoGroupIdsForSpacesResponseType } from "@dust-tt/client";
+export type { GetAutoGroupIdsForSpacesResponseType } from "@ruby-ai/client";
 
 const GetAutoGroupIdsForSpacesQuerySchema = z.object({
   spaceIds: z

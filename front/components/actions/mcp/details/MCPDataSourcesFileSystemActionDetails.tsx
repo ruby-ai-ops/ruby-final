@@ -9,7 +9,7 @@ import {
   getVisualForContentNodeType,
 } from "@app/lib/content_nodes";
 import { formatDataSourceDisplayName } from "@app/types/core/utils";
-import type { BreadcrumbsItem } from "@dust-tt/sparkle";
+import type { BreadcrumbsItem } from "@ruby-ai/ui";
 import {
   Breadcrumbs,
   Citation,
@@ -19,7 +19,7 @@ import {
   Icon,
   Markdown,
   MarkerPin01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 export function DataSourceNodeContentDetails({
   toolOutput,

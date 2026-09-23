@@ -811,7 +811,7 @@ export const DEFAULT_REMOTE_MCP_SERVERS: DefaultRemoteMCPServerConfig[] = [
     },
   },
   */
-  //Removed temporaly see https://dust4ai.slack.com/archives/C050SM8NSPK/p1754397289272209
+  //Removed temporaly see https://ruby4ai.slack.com/archives/C050SM8NSPK/p1754397289272209
   /*
   {
     id: ? 10004,
@@ -910,7 +910,7 @@ export const DEFAULT_REMOTE_MCP_SERVERS: DefaultRemoteMCPServerConfig[] = [
       "Query Power BI semantic models, retrieve schemas, and execute DAX queries directly from your conversations.",
     url: "https://api.fabric.microsoft.com/v1/mcp/powerbi",
     icon: "PowerBiLogo",
-    documentationUrl: "https://docs.dust.tt/docs/power-bi",
+    documentationUrl: "https://docs.ruby.ad/docs/power-bi",
     featureFlag: "power_bi_mcp",
     authMethod: "oauth-static",
     scope: "https://analysis.windows.net/powerbi/api/.default offline_access",
@@ -1175,7 +1175,7 @@ export const DEFAULT_REMOTE_MCP_SERVERS: DefaultRemoteMCPServerConfig[] = [
       "NetSuite tools for querying records, running searches, and interacting with your NetSuite account via the AI Connector Service.",
     url: "",
     icon: "NetSuiteLogo",
-    documentationUrl: "https://docs.dust.tt/docs/netsuite",
+    documentationUrl: "https://docs.ruby.ad/docs/netsuite",
     authMethod: "oauth-static",
     supportedOAuthUseCases: ["platform_actions", "personal_actions"],
     scope: "mcp",
@@ -1519,7 +1519,7 @@ export const DEFAULT_REMOTE_MCP_SERVERS: DefaultRemoteMCPServerConfig[] = [
       "Contentsquare tools for digital experience analytics — explore site metrics, funnels, journeys, page comparisons, and top errors across your projects.",
     url: "https://api.contentsquare.com/mcp",
     icon: "ContentsquareLogo",
-    documentationUrl: "https://docs.dust.tt/docs/remote-mcp-server",
+    documentationUrl: "https://docs.ruby.ad/docs/remote-mcp-server",
     connectionInstructions:
       "Contentsquare uses OAuth. You will be prompted to sign in with your Contentsquare account. Access is scoped to the projects you have permission to view.",
     authMethod: "oauth-dynamic",
@@ -1641,9 +1641,9 @@ export const DEFAULT_REMOTE_MCP_SERVERS: DefaultRemoteMCPServerConfig[] = [
       "Praiz tools to search and read your meetings, calls, and transcripts — keep your CRM and team in sync with your customer conversations.",
     url: "https://mcp.praiz.io/mcp",
     icon: "PraizLogo",
-    documentationUrl: "https://docs.dust.tt/docs/remote-mcp-server",
+    documentationUrl: "https://docs.ruby.ad/docs/remote-mcp-server",
     connectionInstructions:
-      "Praiz uses OAuth. You will be prompted to sign in with your Praiz account and approve the requested scopes directly from the Dust chat.",
+      "Praiz uses OAuth. You will be prompted to sign in with your Praiz account and approve the requested scopes directly from the Ruby chat.",
     authMethod: "oauth-dynamic",
     toolStakes: {
       search: "never_ask",
@@ -1998,7 +1998,7 @@ export const DEFAULT_REMOTE_MCP_SERVERS: DefaultRemoteMCPServerConfig[] = [
       "Napta tools for resource management and staffing — search employees, skills, and allocations, then create, update, and confirm assignments on projects.",
     url: "https://mcp.napta.io/mcp",
     icon: "NaptaLogo",
-    documentationUrl: "https://docs.dust.tt/docs/remote-mcp-server",
+    documentationUrl: "https://docs.ruby.ad/docs/remote-mcp-server",
     connectionInstructions:
       "Napta uses OAuth. You will be prompted to sign in with your Napta account in a browser window to authorize access.",
     authMethod: "oauth-dynamic",
@@ -2213,7 +2213,7 @@ export const DEFAULT_REMOTE_MCP_SERVERS: DefaultRemoteMCPServerConfig[] = [
       "Adomik tools for ad revenue analytics — explore programmatic advertising performance, reporting, and monetization data across your ad partners.",
     url: "https://mcp.adomik.com/mcp",
     icon: "AdomikLogo",
-    documentationUrl: "https://docs.dust.tt/docs/remote-mcp-server",
+    documentationUrl: "https://docs.ruby.ad/docs/remote-mcp-server",
     connectionInstructions:
       "Adomik uses OAuth. You will be prompted to sign in with your Adomik account in a browser window to authorize access.",
     authMethod: "oauth-dynamic",
@@ -2326,7 +2326,7 @@ export const DEFAULT_REMOTE_MCP_SERVERS: DefaultRemoteMCPServerConfig[] = [
     url: "",
     icon: "DatabricksLogo",
     documentationUrl:
-      "https://docs.dust.tt/docs/user-documentation/agents/tools/databricks",
+      "https://docs.ruby.ad/docs/user-documentation/agents/tools/databricks",
     connectionInstructions:
       "Enter your Databricks workspace host URL and the client ID/secret of a Databricks OAuth " +
       "app. The MCP URL and the OAuth authorization/token endpoints are derived automatically.",
@@ -2356,7 +2356,7 @@ export const DEFAULT_REMOTE_MCP_SERVERS: DefaultRemoteMCPServerConfig[] = [
     url: "",
     icon: "DatabricksLogo",
     documentationUrl:
-      "https://docs.dust.tt/docs/user-documentation/agents/tools/databricks",
+      "https://docs.ruby.ad/docs/user-documentation/agents/tools/databricks",
     connectionInstructions:
       "Enter your Databricks workspace host URL and the client ID/secret of a Databricks OAuth " +
       "app. The MCP URL and the OAuth authorization/token endpoints are derived automatically.",

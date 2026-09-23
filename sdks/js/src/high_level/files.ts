@@ -1,5 +1,5 @@
-import { apiErrorToDustError, DustUnknownError } from "../errors/errors";
-import type { DustAPI } from "../index";
+import { apiErrorToRubyError, RubyUnknownError } from "../errors/errors";
+import type { RubyAPI } from "../index";
 import { APIErrorSchema, isSupportedFileContentType } from "../types";
 import { hasStringProperty } from "./guards";
 import type { AttachmentInput, FileInfo } from "./types";
@@ -10,9 +10,9 @@ import {
 } from "./types";
 
 export class FilesAPI {
-  private _client: DustAPI;
+  private _client: RubyAPI;
 
-  constructor(client: DustAPI) {
+  constructor(client: RubyAPI) {
     this._client = client;
   }
 
@@ -59,7 +59,7 @@ export class FilesAPI {
     if (result.isErr()) {
       throw result.error instanceof Error
         ? result.error
-        : apiErrorToDustError(result.error);
+        : apiErrorToRubyError(result.error);
     }
 
     const uploadedFile = result.value;
@@ -76,7 +76,7 @@ export class FilesAPI {
     const result = await this._client.deleteFile({ fileID: fileId });
 
     if (result.isErr()) {
-      throw apiErrorToDustError(result.error);
+      throw apiErrorToRubyError(result.error);
     }
   }
 
@@ -84,23 +84,23 @@ export class FilesAPI {
     const result = await this._client.downloadFile({ fileID: fileId });
 
     if (!result) {
-      throw new DustUnknownError("Download failed: no response received");
+      throw new RubyUnknownError("Download failed: no response received");
     }
 
     if (result.isErr()) {
       if (result.error instanceof Error) {
-        throw new DustUnknownError(result.error.message, {
+        throw new RubyUnknownError(result.error.message, {
           cause: result.error,
         });
       }
       const parsed = APIErrorSchema.safeParse(result.error);
       if (parsed.success) {
-        throw apiErrorToDustError(parsed.data);
+        throw apiErrorToRubyError(parsed.data);
       }
       const message = hasStringProperty(result.error, "message")
         ? result.error.message
         : "Download failed with unknown error";
-      throw new DustUnknownError(message);
+      throw new RubyUnknownError(message);
     }
 
     return result.value;

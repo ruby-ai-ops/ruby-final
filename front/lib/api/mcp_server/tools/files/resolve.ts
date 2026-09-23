@@ -2,13 +2,13 @@ import {
   SCOPED_PREFIX_CONVERSATION,
   SCOPED_PREFIX_POD,
 } from "@app/lib/api/file_system";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { FileResource } from "@app/lib/resources/file_resource";
 import type { LightWorkspaceType } from "@app/types/user";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { mcpError, mcpJsonResponse } from "../response";
-import { getDustFileSystemForScope } from "./context";
+import { getRubyFileSystemForScope } from "./context";
 import type { FilesScope } from "./schemas";
 import { FILES_SCOPE_SCHEMA } from "./schemas";
 
@@ -62,7 +62,7 @@ const inputSchema = {
 };
 
 export function registerFilesResolveTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "files_resolve",
     {
@@ -98,7 +98,7 @@ export function registerFilesResolveTool(server: McpServer) {
         );
       }
 
-      const fsResult = await getDustFileSystemForScope(auth, scope);
+      const fsResult = await getRubyFileSystemForScope(auth, scope);
       if (fsResult.isErr()) {
         return mcpError(fsResult.error);
       }

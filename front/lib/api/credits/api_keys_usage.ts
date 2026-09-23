@@ -111,7 +111,7 @@ async function fetchRateLimiterSpendByKeyId({
  * Per-API-key credit consumption for the workspace's current billing cycle, as
  * measured by the three independent counters (Elasticsearch, the Redis
  * rate-limiter enforcement reads, and Metronome), alongside each key's cap and
- * credit state. Poke-only: it exists to spot divergence between the three,
+ * credit state. Admin-only: it exists to spot divergence between the three,
  * which points at a counter or metric issue.
  */
 export async function getApiKeysUsage(

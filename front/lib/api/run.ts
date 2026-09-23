@@ -96,7 +96,7 @@ function extractUsageFromExecutions(
  * Drains a CoreAPI `createRunStream` result: parses `block_execution` SSE events to aggregate
  * token usages, optionally records the trace list (for blocking responses), forwards each raw
  * chunk to `onChunk` (used by SSE streaming responses to write to the client), and on completion
- * creates the `RunResource` row and records the usage. Returns the dustRunId so the caller can
+ * creates the `RunResource` row and records the usage. Returns the rubyRunId so the caller can
  * fetch run status / shape the response.
  *
  * The shared usage/trace bookkeeping is identical across blocking/streaming/non-blocking
@@ -106,7 +106,7 @@ export async function consumeRunStream({
   auth,
   appModelId,
   workspaceModelId,
-  useDustCredentials,
+  useRubyCredentials,
   blocksConfig,
   runStream,
   collectTraces,
@@ -115,18 +115,18 @@ export async function consumeRunStream({
   auth: Authenticator;
   appModelId: ModelId;
   workspaceModelId: ModelId;
-  useDustCredentials: boolean;
+  useRubyCredentials: boolean;
   blocksConfig: Record<string, any>;
   runStream: {
     chunkStream: AsyncIterable<Uint8Array>;
-    dustRunId: Promise<string>;
+    rubyRunId: Promise<string>;
   };
   collectTraces: boolean;
   onChunk?: (chunk: Uint8Array) => void | Promise<void>;
 }): Promise<{
   usages: RunUsageType[];
   traces: RunTrace[];
-  dustRunId: string;
+  rubyRunId: string;
 }> {
   const usages: RunUsageType[] = [];
   const traces: RunTrace[] = [];
@@ -171,24 +171,24 @@ export async function consumeRunStream({
 
   // TODO(2025-04-23): We should record usage earlier, as soon as we get the runId. So we know
   // that the run is available before we yield the "agent_message_success" event.
-  const dustRunId = await runStream.dustRunId;
+  const rubyRunId = await runStream.rubyRunId;
   const run = await RunResource.makeNew({
-    dustRunId,
+    rubyRunId,
     appId: appModelId,
     runType: "deploy",
     workspaceId: workspaceModelId,
-    useWorkspaceCredentials: !useDustCredentials,
+    useWorkspaceCredentials: !useRubyCredentials,
   });
 
   // App runs are invoked through the public API, so their usage is programmatic.
   await run.recordRunUsage(auth, usages, {
     usageType: USAGE_TYPE_PROGRAMMATIC,
     // A BYOK workspace reaches the provider on its own keys even when the app run asked for
-    // Dust-managed credentials, because that is all `getLlmCredentials` can hand it.
+    // Ruby-managed credentials, because that is all `getLlmCredentials` can hand it.
     useWorkspaceCredentials:
-      !useDustCredentials || usesWorkspaceProvidedCredentials(auth),
+      !useRubyCredentials || usesWorkspaceProvidedCredentials(auth),
   });
-  return { usages, traces, dustRunId };
+  return { usages, traces, rubyRunId };
 }
 
 export async function getSpecification(
@@ -198,7 +198,7 @@ export async function getSpecification(
   const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
 
   const s = await coreAPI.getSpecification({
-    projectId: app.dustAPIProjectId,
+    projectId: app.rubyAPIProjectId,
     specificationHash,
   });
 
@@ -207,8 +207,8 @@ export async function getSpecification(
   }
   // TODO(spolu): check type compatibility at run time.
   const libDir = path.join(process.cwd(), "lib");
-  const dustPegJs = fs.readFileSync(libDir + "/dust.pegjs", "utf8");
-  const specParser = peg.generate(dustPegJs);
+  const rubyPegJs = fs.readFileSync(libDir + "/ruby.pegjs", "utf8");
+  const specParser = peg.generate(rubyPegJs);
 
   const spec = specParser.parse(
     s.value.specification.data
@@ -228,7 +228,7 @@ export async function getRun(
 } | null> {
   const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
   const r = await coreAPI.getRunStatus({
-    projectId: app.dustAPIProjectId,
+    projectId: app.rubyAPIProjectId,
     runId: runId as string,
   });
   if (r.isErr()) {

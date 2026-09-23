@@ -8,7 +8,7 @@ import type {
   MembershipSeatType,
   MembershipUpgradeRequestType,
 } from "@app/types/memberships";
-import type { DataTableSkeletonCellProps } from "@dust-tt/sparkle";
+import type { DataTableSkeletonCellProps } from "@ruby-ai/ui";
 import {
   Button,
   Check,
@@ -17,7 +17,7 @@ import {
   LoadingBlock,
   Spinner,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 

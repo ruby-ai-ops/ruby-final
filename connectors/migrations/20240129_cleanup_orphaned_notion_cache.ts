@@ -1,5 +1,5 @@
 import { connectorsSequelize } from "@connectors/resources/storage";
-import { normalizeError } from "@dust-tt/client";
+import { normalizeError } from "@ruby-ai/client";
 
 async function main() {
   await connectorsSequelize.query(`

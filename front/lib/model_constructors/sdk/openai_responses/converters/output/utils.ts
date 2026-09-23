@@ -311,7 +311,7 @@ function responseErrorToErrorEvent(
       });
     case "rate_limit_exceeded":
       return buildErrorEvent({
-        errorSource: "dust",
+        errorSource: "ruby",
         metadata,
         type: "rate_limit_error",
         message: error.message,
@@ -341,7 +341,7 @@ function responseErrorToErrorEvent(
     case "failed_to_download_image":
     case "image_file_not_found":
       return buildErrorEvent({
-        errorSource: "dust",
+        errorSource: "ruby",
         metadata,
         type: "invalid_request_error",
         message: error.message,
@@ -395,7 +395,7 @@ export function outputItemToEvents(
           case "refusal":
             return [
               buildErrorEvent({
-                errorSource: "dust",
+                errorSource: "ruby",
                 metadata,
                 type: "refusal_error",
                 message: part.refusal,
@@ -560,7 +560,7 @@ export async function* rawOutputToEvents(
         return;
       case "response.incomplete":
         yield buildErrorEvent({
-          errorSource: "dust",
+          errorSource: "ruby",
           metadata,
           type: "stop_error",
           message:
@@ -679,7 +679,7 @@ export function responseToEvents(
   if (response.status === "incomplete") {
     return [
       buildErrorEvent({
-        errorSource: "dust",
+        errorSource: "ruby",
         metadata,
         type: "stop_error",
         message:

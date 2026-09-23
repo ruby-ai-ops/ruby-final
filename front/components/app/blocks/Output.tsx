@@ -2,7 +2,7 @@ import { useRunBlock } from "@app/lib/swr/apps";
 import type { AppType, SpecificationBlockType } from "@app/types/app";
 import type { TraceType } from "@app/types/run";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, Clipboard, Hoverable, InfoCircle } from "@dust-tt/sparkle";
+import { Button, Clipboard, Hoverable, InfoCircle } from "@ruby-ai/ui";
 import {
   CheckCircleIcon,
   ChevronDownIcon,

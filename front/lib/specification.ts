@@ -382,10 +382,10 @@ export function moveBlockDown(
 }
 
 function escapeTripleBackticks(s: string): string {
-  return s.replace(/```/g, "<DUST_TRIPLE_BACKTICKS>");
+  return s.replace(/```/g, "<RUBY_TRIPLE_BACKTICKS>");
 }
 export function restoreTripleBackticks(s: string): string {
-  return s.replace(/<DUST_TRIPLE_BACKTICKS>/g, "```");
+  return s.replace(/<RUBY_TRIPLE_BACKTICKS>/g, "```");
 }
 
 export function dumpSpecification(

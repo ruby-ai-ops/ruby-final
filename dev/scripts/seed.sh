@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Idempotent dev-user seed, mirroring dust-hive's dust_hive_seed.sql flow.
+# Idempotent dev-user seed, mirroring ruby-hive's ruby_hive_seed.sql flow.
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=seed-dev-user
+RUBY_DEV_SCRIPT_NAME=seed-dev-user
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh
 source "$(dirname "$0")/env.sh"
 
-SEED_LOG="${DUST_INFRA_LOG_DIR}/seed-dev-user.log"
+SEED_LOG="${RUBY_INFRA_LOG_DIR}/seed-dev-user.log"
 touch "$SEED_LOG"
 log() {
   echo "[seed-dev-user] $*" | tee -a "$SEED_LOG"
@@ -18,9 +18,9 @@ on_seed_error() {
   local exit_code=$?
   log "Seed failed (exit ${exit_code}). Full log: ${SEED_LOG}"
   for extra_log in init-plans.log upgrade-workspace.log; do
-    if [ -s "${DUST_INFRA_LOG_DIR}/${extra_log}" ]; then
+    if [ -s "${RUBY_INFRA_LOG_DIR}/${extra_log}" ]; then
       log "--- tail ${extra_log} ---"
-      tail -20 "${DUST_INFRA_LOG_DIR}/${extra_log}" | tee -a "$SEED_LOG"
+      tail -20 "${RUBY_INFRA_LOG_DIR}/${extra_log}" | tee -a "$SEED_LOG"
     fi
   done
   exit "$exit_code"
@@ -47,12 +47,12 @@ if [ -z "${DEV_WORKOS_USER_ID:-}" ]; then
 fi
 
 if [ -z "${DEV_WORKOS_USER_EMAIL:-}" ]; then
-  log "DEV_WORKOS_USER_EMAIL not set; skipping full dust-hive seed"
+  log "DEV_WORKOS_USER_EMAIL not set; skipping full ruby-hive seed"
   exit 0
 fi
 
-SQL_FILE="${DUST_REPO_ROOT}/front/lib/dev/dust_hive_seed.sql"
-STATE_FILE="/tmp/dust-dev-seed.json"
+SQL_FILE="${RUBY_REPO_ROOT}/front/lib/dev/ruby_hive_seed.sql"
+STATE_FILE="/tmp/ruby-dev-seed.json"
 WORKSPACE_ID="DevWkSpace"
 
 escape_sql() {
@@ -84,13 +84,13 @@ run_init_plans() {
   log "Ensuring subscription plans exist (init_plans.sh)..."
   log "Using FRONT_DATABASE_URI=${FRONT_DATABASE_URI}"
   (
-    cd "${DUST_REPO_ROOT}/front"
+    cd "${RUBY_REPO_ROOT}/front"
     export FRONT_DATABASE_URI NODE_ENV=development
-    export PATH="${DUST_REPO_ROOT}/node_modules/.bin:${PATH}"
+    export PATH="${RUBY_REPO_ROOT}/node_modules/.bin:${PATH}"
     ./admin/init_plans.sh
-  ) >"${DUST_INFRA_LOG_DIR}/init-plans.log" 2>&1 || {
-    log "init_plans failed; see ${DUST_INFRA_LOG_DIR}/init-plans.log"
-    tail -40 "${DUST_INFRA_LOG_DIR}/init-plans.log" | tee -a "$SEED_LOG"
+  ) >"${RUBY_INFRA_LOG_DIR}/init-plans.log" 2>&1 || {
+    log "init_plans failed; see ${RUBY_INFRA_LOG_DIR}/init-plans.log"
+    tail -40 "${RUBY_INFRA_LOG_DIR}/init-plans.log" | tee -a "$SEED_LOG"
     return 1
   }
   log "init_plans succeeded"
@@ -98,7 +98,7 @@ run_init_plans() {
 
 ensure_dev_super_user() {
   PGPASSWORD=dev psql "$FRONT_DATABASE_URI" -q -c \
-    "UPDATE users SET \"isDustSuperUser\" = true, \"updatedAt\" = NOW()
+    "UPDATE users SET \"isRubySuperUser\" = true, \"updatedAt\" = NOW()
      WHERE \"workOSUserId\" = $(escape_sql "$DEV_WORKOS_USER_ID")" \
     >/dev/null 2>&1 || true
 }
@@ -107,16 +107,16 @@ ensure_free_upgraded_subscription() {
   local workspace_sid="${1:-$WORKSPACE_ID}"
   log "Ensuring workspace $workspace_sid is on FREE_UPGRADED_PLAN..."
   (
-    cd "${DUST_REPO_ROOT}/front"
-    export PATH="${DUST_REPO_ROOT}/node_modules/.bin:${PATH}"
+    cd "${RUBY_REPO_ROOT}/front"
+    export PATH="${RUBY_REPO_ROOT}/node_modules/.bin:${PATH}"
     NODE_ENV=development npx tsx admin/cli.ts workspace upgrade --wId "$workspace_sid"
-  ) >"${DUST_INFRA_LOG_DIR}/upgrade-workspace.log" 2>&1 || {
-    if grep -q "already subscribed" "${DUST_INFRA_LOG_DIR}/upgrade-workspace.log"; then
+  ) >"${RUBY_INFRA_LOG_DIR}/upgrade-workspace.log" 2>&1 || {
+    if grep -q "already subscribed" "${RUBY_INFRA_LOG_DIR}/upgrade-workspace.log"; then
       log "Workspace already on FREE_UPGRADED_PLAN"
       return 0
     fi
-    log "Workspace upgrade failed; see ${DUST_INFRA_LOG_DIR}/upgrade-workspace.log"
-    tail -30 "${DUST_INFRA_LOG_DIR}/upgrade-workspace.log"
+    log "Workspace upgrade failed; see ${RUBY_INFRA_LOG_DIR}/upgrade-workspace.log"
+    tail -30 "${RUBY_INFRA_LOG_DIR}/upgrade-workspace.log"
     return 1
   }
 }

@@ -10,8 +10,8 @@ import {
   WebCrawlerConfigurationTypeSchema,
   zodParsePayload,
 } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { assertNever } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { assertNever } from "@ruby-ai/client";
 import type { Request, Response } from "express";
 
 type PatchConnectorConfigurationResBody =
@@ -76,7 +76,7 @@ const _patchConnectorConfiguration = async (
     case "gong":
     case "slack_bot":
     case "slack":
-    case "dust_project": {
+    case "ruby_project": {
       throw new Error(
         `Connector type ${connector.type} does not support configuration patching`
       );

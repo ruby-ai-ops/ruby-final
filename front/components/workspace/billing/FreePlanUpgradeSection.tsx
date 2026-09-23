@@ -1,4 +1,4 @@
-import { Check, Icon } from "@dust-tt/sparkle";
+import { Check, Icon } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 
 const UPGRADE_FEATURES = [

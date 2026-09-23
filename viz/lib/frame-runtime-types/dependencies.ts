@@ -64,14 +64,15 @@ function artifactPath({
   sourceRoots: [string, string][];
   vizRoot: string;
 }): string {
-  const normalized = path.resolve(fileName);
+  const normalized = path.resolve(fileName).replaceAll(path.sep, "/");
   for (const [source, target] of sourceRoots) {
-    if (normalized.startsWith(`${source}/`)) {
-      return `${target}${normalized.slice(source.length)}`;
+    const normalizedSource = path.resolve(source).replaceAll(path.sep, "/");
+    if (normalized.startsWith(`${normalizedSource}/`)) {
+      return `${target}${normalized.slice(normalizedSource.length)}`;
     }
   }
-  if (normalized.startsWith(`${vizRoot}/`)) {
-    return `viz/${path.relative(vizRoot, normalized)}`;
+  if (normalized.startsWith(`${path.resolve(vizRoot).replaceAll(path.sep, "/")}/`)) {
+    return `viz/${path.relative(vizRoot, normalized).replaceAll(path.sep, "/")}`;
   }
   throw new Error(`Frame declaration is outside Viz: ${fileName}`);
 }

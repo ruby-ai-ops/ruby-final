@@ -69,7 +69,7 @@ export async function getConsumptionExportDownloadUrl(
 
   const downloadUrl = await bucket.getSignedUrl(path, {
     expirationDelayMs: DOWNLOAD_URL_EXPIRATION_DELAY_MS,
-    promptSaveAs: `dust_consumption_lines_export_${workspaceId}.csv`,
+    promptSaveAs: `ruby_consumption_lines_export_${workspaceId}.csv`,
   });
 
   return new Ok(downloadUrl);

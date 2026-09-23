@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSearchbar,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useMemo, useState } from "react";
 
 interface TriggerPodSelectorProps {

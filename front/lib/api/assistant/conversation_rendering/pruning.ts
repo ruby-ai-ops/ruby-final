@@ -3,9 +3,9 @@ import type { Interaction } from "@app/lib/api/assistant/conversation/interactio
 import type { ModelMessageTypeMultiActions } from "@app/types/assistant/generation";
 
 const PRUNED_TOOL_RESULT_PLACEHOLDER =
-  "<dust_system>" +
+  "<ruby_system>" +
   "This tool result is no longer available (pruned to prevent context window overflow)." +
-  "</dust_system>";
+  "</ruby_system>";
 const PRUNED_TOOL_RESULT_TOKENS = 24;
 
 // Pruning advances through history in batches of this size, not message by message. Every move

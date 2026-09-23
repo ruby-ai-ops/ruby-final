@@ -1,0 +1,238 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import React, { useState } from "react";
+
+import type { ToolbarProps } from "../index_with_tw_base";
+import {
+  Bold01,
+  CodeSquare01,
+  Code01,
+  Heading01,
+  Italic01,
+  CheckDone01,
+  List,
+  DoubleQuotes,
+  Toolbar,
+  ToolbarContent,
+  ToolbarIcon,
+  ToolbarLink,
+} from "../index_with_tw_base";
+
+const TOOLBAR_VARIANTS = ["inline", "overlay"] as const;
+
+interface ToolbarPreviewProps
+  extends Pick<ToolbarProps, "variant" | "scroll" | "onClose"> {}
+
+function ToolbarPreview({ variant, scroll, onClose }: ToolbarPreviewProps) {
+  const [isLinkDialogOpen, setIsLinkDialogOpen] = useState(false);
+  const [linkText, setLinkText] = useState("Ruby");
+  const [linkUrl, setLinkUrl] = useState("ruby.ad");
+  const isOverlay = variant === "overlay";
+  const buttonSize = isOverlay ? "xs" : "sm";
+
+  function handleToolbarAction(): void {}
+
+  function handleLinkDialogOpen(): void {
+    setIsLinkDialogOpen(true);
+  }
+
+  function handleLinkDialogOpenChange(open: boolean): void {
+    setIsLinkDialogOpen(open);
+  }
+
+  function handleLinkSubmit(): void {
+    setIsLinkDialogOpen(false);
+  }
+
+  function handleLinkTextChange(value: string): void {
+    setLinkText(value);
+  }
+
+  function handleLinkUrlChange(value: string): void {
+    setLinkUrl(value);
+  }
+
+  const groups = [
+    {
+      id: "text",
+      items: [
+        <ToolbarIcon
+          key="heading"
+          icon={Heading01}
+          onClick={handleToolbarAction}
+          active
+          tooltip="Heading"
+          size={buttonSize}
+        />,
+        <ToolbarIcon
+          key="bold"
+          icon={Bold01}
+          onClick={handleToolbarAction}
+          active
+          tooltip="Bold"
+          size={buttonSize}
+        />,
+        <ToolbarIcon
+          key="italic"
+          icon={Italic01}
+          onClick={handleToolbarAction}
+          tooltip="Italic"
+          size={buttonSize}
+        />,
+      ],
+    },
+    {
+      id: "link",
+      items: [
+        <ToolbarLink
+          key="link"
+          isOpen={isLinkDialogOpen}
+          onOpenChange={handleLinkDialogOpenChange}
+          onOpenDialog={handleLinkDialogOpen}
+          onSubmit={handleLinkSubmit}
+          linkText={linkText}
+          linkUrl={linkUrl}
+          onLinkTextChange={handleLinkTextChange}
+          onLinkUrlChange={handleLinkUrlChange}
+          active={isLinkDialogOpen}
+          tooltip="Link"
+          size={buttonSize}
+        />,
+      ],
+    },
+    {
+      id: "lists",
+      items: [
+        <ToolbarIcon
+          key="bulleted-list"
+          icon={CheckDone01}
+          onClick={handleToolbarAction}
+          tooltip="Bulleted list"
+          size={buttonSize}
+        />,
+        <ToolbarIcon
+          key="ordered-list"
+          icon={List}
+          onClick={handleToolbarAction}
+          tooltip="Ordered list"
+          size={buttonSize}
+        />,
+        <ToolbarIcon
+          key="blockquote"
+          icon={DoubleQuotes}
+          onClick={handleToolbarAction}
+          tooltip="Blockquote"
+          size={buttonSize}
+        />,
+      ],
+    },
+    {
+      id: "code",
+      items: [
+        <ToolbarIcon
+          key="inline-code"
+          icon={Code01}
+          onClick={handleToolbarAction}
+          tooltip="Inline code"
+          size={buttonSize}
+        />,
+        <ToolbarIcon
+          key="code-block"
+          icon={CodeSquare01}
+          onClick={handleToolbarAction}
+          tooltip="Code block"
+          size={buttonSize}
+        />,
+      ],
+    },
+  ];
+
+  const toolbar = (
+    <Toolbar variant={variant} scroll={scroll} onClose={onClose}>
+      <ToolbarContent groups={groups} />
+    </Toolbar>
+  );
+
+  if (isOverlay) {
+    return (
+      <div className="relative h-14 w-full max-w-[520px] rounded-xl border border-border/70 bg-background p-2">
+        {toolbar}
+      </div>
+    );
+  }
+
+  return toolbar;
+}
+
+function renderToolbarStory({ variant, scroll, onClose }: ToolbarProps) {
+  return <ToolbarPreview variant={variant} scroll={scroll} onClose={onClose} />;
+}
+
+function handleOverlayClose(
+  _event: React.MouseEvent<HTMLButtonElement>
+): void {}
+
+const meta = {
+  title: "Navigation/Toolbar",
+  component: Toolbar,
+  tags: ["a11y-issues", "autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: `A formatting toolbar for rich-text editing, typically driving a text editor's commands. Use **variant** \`inline\` to sit within the editor flow or \`overlay\` for a floating bubble menu, with an optional \`onClose\` and a **scroll** flag for horizontally scrollable actions. **ToolbarContent** lays out actions as **groups** with separators; **ToolbarIcon** renders an icon button (with \`active\`, \`tooltip\`, \`size\`) and **ToolbarLink** provides a link-insertion control with its own dialog state.
+
+**When to use**
+- To present text-formatting controls (bold, italic, lists, code, links) for an editor.
+
+**Guidelines**
+- Group related actions in **ToolbarContent**'s \`groups\` so separators fall in sensible places.
+- Set the \`active\` prop on **ToolbarIcon** to reflect the formatting applied at the current selection.
+- For general page-level actions rather than text formatting, use a **Bar** or **HoveringBar**.`,
+      },
+    },
+  },
+  argTypes: {
+    variant: {
+      options: TOOLBAR_VARIANTS,
+      control: { type: "select" },
+    },
+    scroll: {
+      control: { type: "boolean" },
+    },
+  },
+} satisfies Meta<typeof Toolbar>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+/**
+ * The `inline` variant, sitting in the editor flow. The story supplies a
+ * full formatting toolbar (text styles, link dialog, lists, code) as
+ * children via `ToolbarContent` groups — `children: null` in the args is
+ * only a type placeholder.
+ *
+ * @summary Inline formatting toolbar within the editor flow.
+ */
+export const Inline: Story = {
+  args: {
+    children: null,
+    variant: "inline",
+    scroll: false,
+  },
+  render: renderToolbarStory,
+};
+
+/**
+ * The `overlay` variant: a floating bubble menu with `scroll` for narrow
+ * containers and an `onClose` affordance.
+ *
+ * @summary Floating overlay toolbar with close and scroll.
+ */
+export const Overlay: Story = {
+  args: {
+    children: null,
+    variant: "overlay",
+    scroll: true,
+    onClose: handleOverlayClose,
+  },
+  render: renderToolbarStory,
+};

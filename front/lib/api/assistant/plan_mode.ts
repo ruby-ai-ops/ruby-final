@@ -1,6 +1,6 @@
 import { PLAN_FILE_NAME } from "@app/lib/api/actions/servers/plan_mode/metadata";
 import { publishConversationEvent } from "@app/lib/api/assistant/streaming/events";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { writeToConversationFolder } from "@app/lib/api/files/action_output_fs";
 import type { Authenticator } from "@app/lib/auth";
 import { executeWithLock } from "@app/lib/lock";
@@ -36,7 +36,7 @@ export async function getActivePlanContent(
   auth: Authenticator,
   conversation: ConversationWithoutContentType
 ): Promise<Result<string | null, Error>> {
-  const fsResult = await DustFileSystem.forConversation(auth, conversation);
+  const fsResult = await RubyFileSystem.forConversation(auth, conversation);
   if (fsResult.isErr()) {
     return new Err(new Error(fsResult.error.message));
   }
@@ -74,7 +74,7 @@ export async function closePlan(
   auth: Authenticator,
   conversation: ConversationWithoutContentType
 ): Promise<Result<void, Error>> {
-  const fsResult = await DustFileSystem.forConversation(auth, conversation);
+  const fsResult = await RubyFileSystem.forConversation(auth, conversation);
   if (fsResult.isErr()) {
     return new Err(new Error(fsResult.error.message));
   }

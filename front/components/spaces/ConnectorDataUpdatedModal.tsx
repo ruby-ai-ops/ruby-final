@@ -10,7 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
   Stars02,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 type DataSourceViewSelectionModalProps = {
   isOpen: boolean;
@@ -70,7 +70,7 @@ export const ConnectorDataUpdatedModal = ({
             <Hoverable
               variant="highlight"
               onClick={() => {
-                window.open("https://docs.dust.tt/docs/data", "_blank");
+                window.open("https://docs.ruby.ad/docs/data", "_blank");
               }}
             >
               documentation

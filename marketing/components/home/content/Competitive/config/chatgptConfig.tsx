@@ -14,12 +14,12 @@ interface HeroConfig {
 interface ComparisonFeature {
   name: string;
   description?: string;
-  dust: "yes" | "no" | "partial";
+  ruby: "yes" | "no" | "partial";
   competitor: "yes" | "no" | "partial";
 }
 
 interface ComparisonConfig {
-  dustHeader: string;
+  rubyHeader: string;
   competitorHeader: string;
   features: ComparisonFeature[];
 }
@@ -64,87 +64,81 @@ export interface ChatGPTConfig {
 
 export const chatgptConfig: ChatGPTConfig = {
   hero: {
-    chip: "Dust vs ChatGPT - Sales Use Case Comparison",
+    chip: "Ruby vs ChatGPT - Sales Use Case Comparison",
     headline: (
       <>
         <span className="text-gray-900">ChatGPT gives advice.</span>
         <br />
         <span className="bg-linear-to-r from-blue-500 to-emerald-500 bg-clip-text text-transparent">
-          Dust closes deals.
+          Ruby helps teams get work done.
         </span>
       </>
     ),
-    postItText:
-      '"I love updating HubSpot fields one by one after every call" – said no sales rep ever',
-    valuePropTitle:
-      "Why top sales teams like Watershed, Clay, and Vanta choose Dust:",
+    postItText: "From repetitive follow-up to a team agent.",
+    valuePropTitle: "Why teams use Ruby for agent-led work:",
     valueProps: [
-      "Automate CRM updates, follow-ups, and RFPs — no manual copy-paste",
-      "50+ integrations with Salesforce, HubSpot, Slack, Notion, and more",
-      "No-code setup: build powerful sales agents in minutes, not months",
+      "Automate approved sales workflows with team agents.",
+      "Connect approved company knowledge and tools to your agents.",
+      "Build specialized agents around the way your team works.",
     ],
-    ctaButtonText: "Start Free Trial",
-    trustBadges: [
-      "No credit card required",
-      "Set up in minutes",
-      "SOC 2 Type II certified",
-    ],
+    ctaButtonText: "Get started",
+    trustBadges: [],
   },
 
   comparison: {
-    dustHeader: "DUST",
+    rubyHeader: "RUBY",
     competitorHeader: "ChatGPT",
     features: [
       {
         name: "Actions on external sales tools",
         description:
-          "Update CRM records, send follow-ups, and trigger workflows directly",
-        dust: "yes",
+          "Connect approved company tools and knowledge to shared agents",
+        ruby: "yes",
         competitor: "partial",
       },
       {
         name: "Multi-model AI",
-        description:
-          "GPT-5.3, Claude, Gemini, Mistral—choose the best per task",
-        dust: "yes",
+        description: "Ruby manages model routing for every task",
+        ruby: "yes",
         competitor: "no",
       },
       {
         name: "Transparent pricing",
-        description: "$29/mo per user with no hidden fees or minimums",
-        dust: "yes",
+        description:
+          "Paid Lite, Pro, Plus, and Max seats with published credit allowances",
+        ruby: "yes",
         competitor: "no",
       },
       {
-        name: "50+ integrations",
-        description: "Salesforce, HubSpot, Slack, Notion, GitHub, and more",
-        dust: "yes",
+        name: "Connected company knowledge",
+        description:
+          "Use approved company knowledge and tools with your team agents.",
+        ruby: "yes",
         competitor: "yes",
       },
       {
         name: "Automated workflows",
-        description:
-          "Schedule agents to run automatically or trigger from external events",
-        dust: "yes",
+        description: "Support focused workflows with shared agent instructions",
+        ruby: "yes",
         competitor: "partial",
       },
       {
         name: "Team collaboration",
         description:
-          "Share agents, knowledge bases, and workflows across your sales team",
-        dust: "yes",
+          "Share agents, company knowledge, and instructions across your sales team",
+        ruby: "yes",
         competitor: "no",
       },
       {
         name: "Interactive dashboards (Frames)",
-        description: "Real-time React components for sales data visualization",
-        dust: "yes",
+        description: "Share structured work outputs with your sales team",
+        ruby: "yes",
         competitor: "no",
       },
       {
         name: "SOC 2 Type II certified",
         description: "Enterprise-grade security and compliance",
-        dust: "yes",
+        ruby: "yes",
         competitor: "yes",
       },
     ],
@@ -153,21 +147,21 @@ export const chatgptConfig: ChatGPTConfig = {
   testimonials: [
     {
       quote:
-        "Dust is the most impactful software we've adopted since building Clay. It delivers immediate value while continuously getting smarter and more valuable over time.",
+        "Ruby is the most impactful software we've adopted since building Clay. It delivers immediate value while continuously getting smarter and more valuable over time.",
       name: "Everett Berry",
       title: "Head of GTM Engineering at Clay",
       logo: "/static/landing/logos/color/clay.png",
     },
     {
       quote:
-        "Dust has transformed how our sales team operates. Our reps spend time selling, not updating spreadsheets — the AI handles the admin work automatically.",
+        "Ruby has transformed how our sales team operates. Our reps spend time selling, not updating spreadsheets — the AI handles the admin work automatically.",
       name: "Amance Carbero-Caux",
       title: "Employee Experience Manager at PayFit",
       logo: "/static/landing/logos/color/payfit.png",
     },
     {
       quote:
-        "We cut RFP response time by 97% and our reps finally focus on deals, not documentation. Dust plugs right into our existing sales stack.",
+        "We cut RFP response time by 97% and our reps finally focus on deals, not documentation. Ruby plugs right into our existing sales stack.",
       name: "Danny Barati",
       title: "Business Systems Lead for GTM at Vanta",
       logo: "/static/landing/logos/gray/vanta.svg",
@@ -234,13 +228,13 @@ export const chatgptConfig: ChatGPTConfig = {
 
   faq: [
     {
-      question: "How is Dust different from ChatGPT for sales teams?",
+      question: "How is Ruby different from ChatGPT for sales teams?",
       answer: (
         <>
           <p>
             ChatGPT is a great conversational AI, but it can't take action in
-            your sales tools. Dust is built around AI agents that actually
-            execute tasks in your stack. With Dust, your sales team gets AI
+            your sales tools. Ruby is built around AI agents that actually
+            execute tasks in your stack. With Ruby, your sales team gets AI
             teammates that can:
           </p>
           <ul>
@@ -248,32 +242,29 @@ export const chatgptConfig: ChatGPTConfig = {
             <li>Draft and send follow-up emails after every call</li>
             <li>Generate RFP responses from your knowledge base</li>
             <li>
-              Collaborate across Slack, Salesforce, HubSpot, and 50+ tools
+              Collaborate across your approved company tools and knowledge
             </li>
           </ul>
         </>
       ),
     },
     {
-      question: "Can Dust integrate with my existing CRM?",
+      question: "Can Ruby integrate with my existing CRM?",
       answer: (
         <>
           <p>
-            Yes. Dust connects directly with Salesforce, HubSpot, and other
-            leading CRMs. Your agents can read pipeline data, update fields,
-            create tasks, and trigger workflows — without reps having to do it
-            manually. We also support Slack, Notion, Google Drive, GitHub, and
-            50+ other tools out of the box.
+            Yes. Ruby can connect team agents to approved company tools and
+            knowledge so they can support your workflows with the right context.
           </p>
         </>
       ),
     },
     {
-      question: "What does a sales agent in Dust actually do?",
+      question: "What does a sales agent in Ruby actually do?",
       answer: (
         <>
           <p>
-            A Dust sales agent is a specialized AI teammate configured for your
+            A Ruby sales agent is a specialized AI teammate configured for your
             specific workflows. Examples include:
           </p>
           <ul>
@@ -312,28 +303,13 @@ export const chatgptConfig: ChatGPTConfig = {
       ),
     },
     {
-      question: "Is Dust secure for enterprise use?",
+      question: "Is Ruby secure for enterprise use?",
       answer: (
         <>
-          <p>Absolutely. Dust is built for enterprise security requirements:</p>
-          <ul>
-            <li>
-              <strong>SOC 2 Type II certified</strong> with annual audits
-            </li>
-            <li>
-              <strong>SSO and SCIM</strong> support for identity management
-            </li>
-            <li>
-              <strong>Data residency options</strong> including EU hosting
-            </li>
-            <li>
-              <strong>Your data is never used</strong> to train AI models
-            </li>
-            <li>
-              <strong>Fine-grained permissions</strong> with Spaces and
-              role-based access
-            </li>
-          </ul>
+          <p>
+            Ruby is designed for teams that need controlled access to company
+            knowledge and tools while they build and use shared agents.
+          </p>
         </>
       ),
     },
@@ -341,13 +317,8 @@ export const chatgptConfig: ChatGPTConfig = {
 
   cta: {
     title: "Start building AI teammates for your Sales team",
-    subtitle:
-      "Join 500+ companies using Dust to transform their sales operations",
-    buttonText: "Start Free Trial",
-    trustBadges: [
-      "No credit card required",
-      "Set up in 5 minutes",
-      "SOC 2 Type II certified",
-    ],
+    subtitle: "Build your first team agent with Ruby.",
+    buttonText: "Get started",
+    trustBadges: [],
   },
 };

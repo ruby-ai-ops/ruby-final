@@ -1,4 +1,4 @@
-import { Clock, Icon } from "@dust-tt/sparkle";
+import { Clock, Icon } from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 const TASKS = [

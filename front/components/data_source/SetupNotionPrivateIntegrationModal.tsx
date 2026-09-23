@@ -2,7 +2,7 @@ import { clientFetch } from "@app/lib/egress/client";
 import type { GetNotionWebhookConfigResponseBody } from "@app/types/api/data_sources/managed_notion";
 import type { DataSourceType } from "@app/types/data_source";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { NotificationType } from "@dust-tt/sparkle";
+import type { NotificationType } from "@ruby-ai/ui";
 import {
   Button,
   Clipboard,
@@ -16,7 +16,7 @@ import {
   Page,
   Spinner,
   useCopyToClipboard,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 interface SetupNotionPrivateIntegrationModalProps {

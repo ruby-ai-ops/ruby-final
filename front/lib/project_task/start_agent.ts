@@ -138,13 +138,13 @@ async function resolveDefaultAgentIdForTask(
     podDefaultAgentId: metadata?.defaultAgentId ?? null,
     hasWorkspaceDefaultAgentFeature: hasWorkspaceDefaultAgent,
   });
-  if (!candidateId || candidateId === GLOBAL_AGENTS_SID.DUST) {
-    return GLOBAL_AGENTS_SID.DUST;
+  if (!candidateId || candidateId === GLOBAL_AGENTS_SID.RUBY) {
+    return GLOBAL_AGENTS_SID.RUBY;
   }
 
   const agent = await AgentResource.fetchById(auth, candidateId);
   if (!agent || !auth.can("read", agent) || agent.status !== "active") {
-    return GLOBAL_AGENTS_SID.DUST;
+    return GLOBAL_AGENTS_SID.RUBY;
   }
   return candidateId;
 }
@@ -294,7 +294,7 @@ export async function startAgentForProjectTask(
     "Read the attached file in full for more instructions.";
 
   // Use the explicitly requested agent if provided, otherwise fall back to the
-  // pod/workspace default agent for tasks (resolves to @dust when none applies).
+  // pod/workspace default agent for tasks (resolves to @ruby when none applies).
   const resolvedAgentConfigurationId =
     agentConfigurationId ?? (await resolveDefaultAgentIdForTask(auth, space));
 

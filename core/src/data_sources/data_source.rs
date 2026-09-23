@@ -1,6 +1,6 @@
 use super::file_storage_document::FileStorageDocument;
 use super::node::ProviderVisibility;
-use super::qdrant::{DustQdrantClient, QdrantCluster, QdrantTenant};
+use super::qdrant::{RubyQdrantClient, QdrantCluster, QdrantTenant};
 use crate::consts::DATA_SOURCE_DOCUMENT_SYSTEM_TAG_PREFIX;
 use crate::data_sources::qdrant::{QdrantClients, QdrantDataSourceConfig};
 use crate::data_sources::splitter::{splitter, SplitterID};
@@ -93,7 +93,7 @@ pub struct Chunk {
 /// A parent is represented by a string of characters that:
 /// - should be unique per workspace;
 /// - should be the same as the one used in connectors for permissions (often
-///   the one stored in DB `dust-connectors` in the parent document
+///   the one stored in DB `ruby-connectors` in the parent document
 ///   corresponding table)
 ///
 /// For some sources, this is well emboodied by  the parent's external id,
@@ -107,13 +107,13 @@ pub struct Chunk {
 /// 2nd place in the array
 ///
 /// Additional note: in cases where selection of elements to sync is done on
-/// Dust side and not on provider's side, we need to be able to list all the
+/// Ruby side and not on provider's side, we need to be able to list all the
 /// children of a resource given its id (this is the case for google drive and
 /// microsoft for instance). While google drive's API and ids allows it, this is
 /// not the case for Microsoft. Therefore, for microsoft, instead of using the
 /// provider id directly, we compute our own document id containing all
 /// information for the querying the document using Microsoft's API. More details
-/// [here](https://app.notion.com/p/dust-tt/Design-Doc-Microsoft-ids-parents-c27726652aae45abafaac587b971a41d?pvs=4)
+/// [here](https://app.notion.com/p/ruby-ai/Design-Doc-Microsoft-ids-parents-c27726652aae45abafaac587b971a41d?pvs=4)
 ///
 /// Parents array
 /// -------------
@@ -519,14 +519,14 @@ impl DataSource {
     pub fn shadow_write_qdrant_client(
         &self,
         qdrant_clients: &QdrantClients,
-    ) -> Option<DustQdrantClient> {
+    ) -> Option<RubyQdrantClient> {
         match self.shadow_write_qdrant_cluster() {
             Some(cluster) => Some(qdrant_clients.client(cluster)),
             None => None,
         }
     }
 
-    pub fn main_qdrant_client(&self, qdrant_clients: &QdrantClients) -> DustQdrantClient {
+    pub fn main_qdrant_client(&self, qdrant_clients: &QdrantClients) -> RubyQdrantClient {
         qdrant_clients.client(self.main_qdrant_cluster())
     }
 
@@ -1710,7 +1710,7 @@ impl DataSource {
     async fn retrieve_chunks_without_query(
         &self,
         store: Box<dyn Store + Sync + Send>,
-        qdrant_client: DustQdrantClient,
+        qdrant_client: RubyQdrantClient,
         top_k: usize,
         filter: &Option<SearchFilter>,
         view_filter: &Option<SearchFilter>,
@@ -2574,7 +2574,7 @@ mod tests {
     }
 }
 
-pub const DATA_SOURCE_MIME_TYPE: &str = "application/vnd.dust.datasource";
+pub const DATA_SOURCE_MIME_TYPE: &str = "application/vnd.ruby.datasource";
 pub const DATA_SOURCE_INDEX_NAME: &str = "core.data_sources";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

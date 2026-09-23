@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Plus,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 export default function NewBlock({
   spec,
@@ -118,7 +118,7 @@ export default function NewBlock({
       typeNames: ["input"],
       name: "Input",
       description:
-        "Select a dataset of inputs used for the design your Dust app. Each element in the dataset kicks off a separate parallel execution of the Dust app.",
+        "Select a dataset of inputs used for the design your Ruby app. Each element in the dataset kicks off a separate parallel execution of the Ruby app.",
     });
   }
 

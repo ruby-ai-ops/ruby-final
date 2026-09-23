@@ -11,14 +11,14 @@ import {
 import { UsedByButton } from "@app/components/spaces/UsedByButton";
 import { usePaginationFromUrl } from "@app/hooks/usePaginationFromUrl";
 import { useSkillMenuItems } from "@app/hooks/useSkillMenuItems";
-import { isDustProvidedSkill } from "@app/lib/skill";
+import { isRubyProvidedSkill } from "@app/lib/skill";
 import { classNames } from "@app/lib/utils";
 import type { GetSkillsWithRelationsResponseBody } from "@app/types/api/skills";
 import type { SkillAvailability } from "@app/types/assistant/skill_configuration";
 import type { AgentsAndSkillsUsageType } from "@app/types/data_source";
 import type { LightWorkspaceType, UserType } from "@app/types/user";
-import type { MenuItem } from "@dust-tt/sparkle";
-import { Checkbox, DataTable, Label, LoadingBlock } from "@dust-tt/sparkle";
+import type { MenuItem } from "@ruby-ai/ui";
+import { Checkbox, DataTable, Label, LoadingBlock } from "@ruby-ai/ui";
 import type {
   CellContext,
   ColumnDef,
@@ -30,14 +30,14 @@ import { useMemo, useState } from "react";
 
 const SKELETON_ROW_COUNT = 16;
 
-// A Dust-provided skill can never be edited, and a "members and agents"
+// A Ruby-provided skill can never be edited, and a "members and agents"
 // skill can only be batch-edited by someone who can make skills auto-discoverable.
 export function isSkillSelectable(
   skill: { editedBy: number | null; availability: SkillAvailability },
   canMakeSkillAutoDiscoverable: boolean
 ): boolean {
   return (
-    !isDustProvidedSkill(skill) &&
+    !isRubyProvidedSkill(skill) &&
     (canMakeSkillAutoDiscoverable || skill.availability !== "users_and_agents")
   );
 }

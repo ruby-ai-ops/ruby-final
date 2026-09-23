@@ -91,7 +91,7 @@ export class GoogleDriveFilesModel extends ConnectorBaseModel<GoogleDriveFilesMo
   declare lastUpsertedTs: Date | null;
   declare skipReason: string | null;
   declare connectorId: ForeignKey<ConnectorModel["id"]>;
-  declare dustFileId: string;
+  declare rubyFileId: string;
   declare driveFileId: string;
   declare name: string;
   declare mimeType: string;
@@ -121,7 +121,7 @@ GoogleDriveFilesModel.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    dustFileId: {
+    rubyFileId: {
       type: DataTypes.STRING,
       allowNull: false,
     },

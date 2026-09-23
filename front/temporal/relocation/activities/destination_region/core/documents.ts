@@ -51,7 +51,7 @@ export async function processDataSourceDocuments({
   const res = await concurrentExecutor(
     data.blobs.documents,
     async (d) => {
-      // If the source URL starts with the source cell Dust URL, replace it with the destination cell Dust URL.
+      // If the source URL starts with the source cell Ruby URL, replace it with the destination cell Ruby URL.
       const sourceUrl =
         d.source_url && d.source_url.startsWith(sourceApiBaseUrl)
           ? d.source_url.replace(sourceApiBaseUrl, destRegionApiBaseUrl)
@@ -78,8 +78,8 @@ export async function processDataSourceDocuments({
 
       return coreAPI.upsertDataSourceDocument({
         // Override the project and data source ids to the ones in the destination cell.
-        projectId: destIds.dustAPIProjectId,
-        dataSourceId: destIds.dustAPIDataSourceId,
+        projectId: destIds.rubyAPIProjectId,
+        dataSourceId: destIds.rubyAPIDataSourceId,
         documentId: d.document_id,
         timestamp: d.timestamp,
         tags: d.tags,

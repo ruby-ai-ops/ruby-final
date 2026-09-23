@@ -186,7 +186,7 @@ describe("constructPromptMultiActions - system prompt stability", () => {
 
     expect(extensionPrompt).toEqual(webPrompt);
     expect(systemPromptToText(webPrompt)).toContain(
-      "When the current user message's `<dust_system>` metadata identifies its source as `extension`"
+      "When the current user message's `<ruby_system>` metadata identifies its source as `extension`"
     );
   });
 
@@ -782,7 +782,7 @@ describe("globalAgentInjectsUserContext", () => {
   });
 
   it("should return false for non-sidekick agents", () => {
-    expect(globalAgentInjectsUserContext(GLOBAL_AGENTS_SID.DUST)).toBe(false);
+    expect(globalAgentInjectsUserContext(GLOBAL_AGENTS_SID.RUBY)).toBe(false);
     expect(globalAgentInjectsUserContext(GLOBAL_AGENTS_SID.DEEP_DIVE)).toBe(
       false
     );
@@ -798,7 +798,7 @@ describe("globalAgentInjectsWorkspaceContext", () => {
   });
 
   it("should return false for non-sidekick agents", () => {
-    expect(globalAgentInjectsWorkspaceContext(GLOBAL_AGENTS_SID.DUST)).toBe(
+    expect(globalAgentInjectsWorkspaceContext(GLOBAL_AGENTS_SID.RUBY)).toBe(
       false
     );
     expect(

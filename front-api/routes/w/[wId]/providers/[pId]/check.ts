@@ -126,7 +126,7 @@ app.post(
           const errRes = await testCountTokens.json();
           const errType = errRes.error?.type ?? "unknown error";
           const errMessage =
-            errRes.error?.message ?? "contact us at support@dust.tt";
+            errRes.error?.message ?? "contact us at support@ruby.ad";
           return ctx.json(
             { ok: false, error: `[${errType}] ${errMessage}` },
             400

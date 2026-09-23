@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 export function MobileOrExtensionAgentBrowser({
   owner,

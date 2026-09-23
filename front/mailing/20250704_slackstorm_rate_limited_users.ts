@@ -82,10 +82,10 @@ function workspaceUrl(auth: Authenticator) {
     return `http://localhost:3000/w/${auth.getNonNullableWorkspace().sId}/`;
   }
   if (REGION === "US") {
-    return `https://dust.tt/w/${auth.getNonNullableWorkspace().sId}/`;
+    return `https://app.ruby.ad/w/${auth.getNonNullableWorkspace().sId}/`;
   }
   if (REGION === "EU") {
-    return `https://eu.dust.tt/w/${auth.getNonNullableWorkspace().sId}/`;
+    return `https://app.ruby.ad/w/${auth.getNonNullableWorkspace().sId}/`;
   }
   assert(false);
 }
@@ -127,7 +127,7 @@ async function contactWorkspace(workspaceId: string) {
   let email = `Hi there,
 
 We're following up in the context of Slack's update to its terms in the context
-of Dust[0].
+of Ruby[0].
 
 # What's happening
 
@@ -147,13 +147,13 @@ While the search by keyword provided by Slack today is not as powerful as our
 previous semantic search capabilities, we are actively working with Slack to
 support their upcoming APIs as part of this new MCP server.
 
-We're also happy to announce that the Dust Slack app that allows you to summon
-Dust agents in Slack is now officially listed on the Slack marketplace and
+We're also happy to announce that the Ruby Slack app that allows you to summon
+Ruby agents in Slack is now officially listed on the Slack marketplace and
 benefits from higher rate limits.
 
 # What it means for you
 
-(i) If you haven't already, you can enable the Slack integration to summon Dust
+(i) If you haven't already, you can enable the Slack integration to summon Ruby
     agents from Slack in your workspace settings.
 
 (ii) You can enable the new Slack tools under 'Space > Administration >
@@ -179,21 +179,21 @@ capabilities.`;
 
 Please reply to this email if you have any questions.
 
-The Dust team.
+The Ruby team.
 
 
-[0] https://dust-tt.notion.site/Slack-Terms-of-Service-update-and-API-Changes-21728599d94180f3b2b4e892e6d20af6
-[1] https://docs.dust.tt/docs/slack-mcp
+[0] https://ruby-ai.notion.site/Slack-Terms-of-Service-update-and-API-Changes-21728599d94180f3b2b4e892e6d20af6
+[1] https://docs.ruby.ad/docs/slack-mcp
 [2] ${workspaceUrl(auth)}spaces/${systemSpace.sId}/categories/actions
 `;
 
   const msg = {
     to: admins.members.map((a) => a.email),
-    from: "team@dust.tt",
-    cc: admins.members.map((a) => a.email).includes("spolu@dust.tt")
+    from: "team@ruby.ad",
+    cc: admins.members.map((a) => a.email).includes("spolu@ruby.ad")
       ? undefined
-      : "spolu@dust.tt",
-    subject: "[Dust] Follow-up on Slack terms update - Action required",
+      : "spolu@ruby.ad",
+    subject: "[Ruby] Follow-up on Slack terms update - Action required",
     text: email,
   };
 

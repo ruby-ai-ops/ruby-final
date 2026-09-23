@@ -42,7 +42,7 @@ describe("/subtle1 PostHog proxy", () => {
       body: '{"batch":[]}',
       headers: {
         "content-type": "application/json",
-        host: "us-api.dust.tt",
+        host: "us-api.ruby.ad",
       },
     });
 

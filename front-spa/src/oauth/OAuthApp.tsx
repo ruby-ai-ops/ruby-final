@@ -1,9 +1,9 @@
-import { ErrorBoundary } from "@dust-tt/front/components/error_boundary/ErrorBoundary";
-import { OAuthFinalizePage } from "@dust-tt/front/components/pages/oauth/OAuthFinalizePage";
-import { OAuthSetupRedirectPage } from "@dust-tt/front/components/pages/oauth/OAuthSetupRedirectPage";
-import { CellProvider } from "@dust-tt/front/lib/auth/CellContext";
-import { FetcherProvider } from "@dust-tt/front/lib/swr/FetcherContext";
-import { fetcher, fetcherWithBody } from "@dust-tt/front/lib/swr/fetcher";
+import { ErrorBoundary } from "@ruby-ai/front/components/error_boundary/ErrorBoundary";
+import { OAuthFinalizePage } from "@ruby-ai/front/components/pages/oauth/OAuthFinalizePage";
+import { OAuthSetupRedirectPage } from "@ruby-ai/front/components/pages/oauth/OAuthSetupRedirectPage";
+import { CellProvider } from "@ruby-ai/front/lib/auth/CellContext";
+import { FetcherProvider } from "@ruby-ai/front/lib/swr/FetcherContext";
+import { fetcher, fetcherWithBody } from "@ruby-ai/front/lib/swr/fetcher";
 import { GlobalErrorFallback } from "@spa/app/components/GlobalErrorFallback";
 import { RootRouterLayout } from "@spa/app/layouts/RootRouterLayout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";

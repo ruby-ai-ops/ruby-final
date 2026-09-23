@@ -90,14 +90,14 @@ export async function googleTables(
     },
   });
   for (const file of csvFiles) {
-    const { driveFileId, dustFileId, connectorId } = file;
+    const { driveFileId, rubyFileId, connectorId } = file;
 
     const dataSourceConfig = dataSourceConfigFromConnector(connector);
 
     const parents = await getGoogleParents(connectorId, driveFileId, memo);
     await updateParents({
       dataSourceConfig,
-      tableId: dustFileId,
+      tableId: rubyFileId,
       parents,
       execute,
       logger,

@@ -1,0 +1,79 @@
+import { InvitationsDataTable } from "@app/components/admin/invitations/table";
+import { MembersDataTable } from "@app/components/admin/members/table";
+import { useWorkspace } from "@app/lib/auth/AuthContext";
+import { useAdminPageMetadata } from "@app/admin-app/swr/currentPage";
+import { useAdminMemberships } from "@app/admin-app/swr/memberships";
+import { useAdminWorkspaceInfo } from "@app/admin-app/swr/workspace_info";
+import { MEMBERSHIP_SEAT_TYPES } from "@app/types/memberships";
+import { LinkWrapper, Spinner } from "@ruby-ai/ui";
+
+export function MembershipsPage() {
+  const owner = useWorkspace();
+  useAdminPageMetadata({ name: owner.name, subtitle: "Memberships" });
+
+  const {
+    data: membershipsData,
+    isLoading,
+    isError,
+  } = useAdminMemberships({
+    owner,
+    disabled: false,
+  });
+
+  const { data: workspaceInfo } = useAdminWorkspaceInfo({
+    owner,
+    disabled: false,
+  });
+
+  // Restrict the seat dropdown to the seats entitled by the current contract
+  // (like SwitchContractDialog). Fall back to all seat types when the contract
+  // has no seat plan (e.g. not a Metronome contract).
+  const seatPlan = workspaceInfo?.seatPlan ?? null;
+  const availableSeatTypes = seatPlan
+    ? MEMBERSHIP_SEAT_TYPES.filter((st) => st === "none" || st in seatPlan)
+    : undefined;
+
+  if (isLoading) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (isError || !membershipsData) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <p>Error loading memberships.</p>
+      </div>
+    );
+  }
+
+  const { members, pendingInvitations } = membershipsData;
+
+  return (
+    <>
+      <h3 className="text-xl font-bold">
+        Members of workspace{" "}
+        <LinkWrapper href={`/admin/${owner.sId}`} className="text-highlight-500">
+          {owner.name}
+        </LinkWrapper>
+      </h3>
+      <div className="flex-grow p-6">
+        <div className="flex justify-center">
+          <MembersDataTable
+            availableSeatTypes={availableSeatTypes}
+            members={members}
+            owner={owner}
+          />
+        </div>
+        <div className="flex justify-center">
+          <InvitationsDataTable
+            invitations={pendingInvitations}
+            owner={owner}
+          />
+        </div>
+      </div>
+    </>
+  );
+}

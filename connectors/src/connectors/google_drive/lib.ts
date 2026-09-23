@@ -44,7 +44,7 @@ import {
   isGoogleSheetContentNodeInternalId,
 } from "@connectors/types";
 import { withTransaction } from "@connectors/types/shared/utils/sql_utils";
-import { removeNulls } from "@dust-tt/client";
+import { removeNulls } from "@ruby-ai/client";
 import type { InferAttributes, WhereOptions } from "sequelize";
 
 const SHEET_PARENT_UPDATES_CONCURRENCY = 8;
@@ -147,10 +147,10 @@ export async function internalDeleteFile(
     const dataSourceConfig = dataSourceConfigFromConnector(connector);
     await deleteDataSourceFolder({
       dataSourceConfig,
-      folderId: googleDriveFile.dustFileId,
+      folderId: googleDriveFile.rubyFileId,
       loggerArgs: {
         ...loggerArgs,
-        folderId: getInternalId(googleDriveFile.dustFileId),
+        folderId: getInternalId(googleDriveFile.rubyFileId),
       },
     });
   } else if (googleDriveFile.mimeType === "text/csv") {
@@ -158,18 +158,18 @@ export async function internalDeleteFile(
     const dataSourceConfig = dataSourceConfigFromConnector(connector);
     await deleteDataSourceTable({
       dataSourceConfig,
-      tableId: googleDriveFile.dustFileId,
+      tableId: googleDriveFile.rubyFileId,
       loggerArgs: {
         ...loggerArgs,
-        tableId: getInternalId(googleDriveFile.dustFileId),
+        tableId: getInternalId(googleDriveFile.rubyFileId),
       },
     });
   } else {
     const dataSourceConfig = dataSourceConfigFromConnector(connector);
     await deleteDataSourceDocument(
       dataSourceConfig,
-      googleDriveFile.dustFileId,
-      { ...loggerArgs, documentId: getInternalId(googleDriveFile.dustFileId) }
+      googleDriveFile.rubyFileId,
+      { ...loggerArgs, documentId: getInternalId(googleDriveFile.rubyFileId) }
     );
   }
 
@@ -199,12 +199,12 @@ export async function updateParentsField(
   });
   const dataSourceConfig = dataSourceConfigFromConnector(connector);
 
-  logger.info({ file: file.dustFileId, parentIds }, "Updating parents");
+  logger.info({ file: file.rubyFileId, parentIds }, "Updating parents");
 
   if (isGoogleDriveFolder(file) || isGoogleDriveSpreadSheetFile(file)) {
     await upsertDataSourceFolder({
       dataSourceConfig,
-      folderId: file.dustFileId,
+      folderId: file.rubyFileId,
       parents: parentIds,
       parentId: parentIds[1] ?? null,
       title: file.name ?? "",
@@ -229,7 +229,7 @@ export async function updateParentsField(
           dataSourceConfig,
           tableId,
           parents: [tableId, ...parentIds],
-          parentId: file.dustFileId,
+          parentId: file.rubyFileId,
         });
       },
       { concurrency: SHEET_PARENT_UPDATES_CONCURRENCY }
@@ -237,7 +237,7 @@ export async function updateParentsField(
   } else {
     await updateDataSourceDocumentParents({
       dataSourceConfig,
-      documentId: file.dustFileId,
+      documentId: file.rubyFileId,
       parents: parentIds,
       parentId: parentIds[1] ?? null,
     });
@@ -263,13 +263,13 @@ export async function updateFolderMetadata(
   const dataSourceConfig = dataSourceConfigFromConnector(connector);
 
   logger.info(
-    { file: folder.dustFileId, parentIds, title: driveFile.name },
+    { file: folder.rubyFileId, parentIds, title: driveFile.name },
     "Updating folder metadata"
   );
 
   await upsertDataSourceFolder({
     dataSourceConfig,
-    folderId: folder.dustFileId,
+    folderId: folder.rubyFileId,
     parents: parentIds,
     parentId: parentIds[1] ?? null,
     title: driveFile.name,
@@ -344,7 +344,7 @@ export async function fixParentsConsistency({
       const googleFile = googleFiles.find((f) => f.id === file.driveFileId);
       if (!googleFile) {
         logger.info(
-          { dustFileId: file.dustFileId },
+          { rubyFileId: file.rubyFileId },
           "File does not exist in Google Drive, deleting"
         );
         if (execute) {
@@ -360,12 +360,12 @@ export async function fixParentsConsistency({
         const googleParents = parents.map((p) => getInternalId(p));
         const localParents = await getLocalParents(
           connector.id,
-          file.dustFileId,
+          file.rubyFileId,
           `${startSyncTs}`
         );
         if (parents[parents.length - 1] === "gdrive_outside_sync") {
           logger.info(
-            { dustFileId: file.dustFileId },
+            { rubyFileId: file.rubyFileId },
             "File is outside of sync, deleting"
           );
           if (execute) {
@@ -378,7 +378,7 @@ export async function fixParentsConsistency({
             {
               localParents,
               googleParents,
-              dustFileId: file.dustFileId,
+              rubyFileId: file.rubyFileId,
             },
             "Parents not consistent with gdrive, updating"
           );
@@ -387,11 +387,11 @@ export async function fixParentsConsistency({
           const existingParents = await GoogleDriveFilesModel.findAll({
             where: {
               connectorId: connector.id,
-              dustFileId: googleParents,
+              rubyFileId: googleParents,
             },
           });
           const missing = googleParents.filter(
-            (id) => !existingParents.find((f) => f.dustFileId === id)
+            (id) => !existingParents.find((f) => f.rubyFileId === id)
           );
 
           logger.info({ missing: missing }, "Missing folders, restoring");
@@ -424,7 +424,7 @@ export async function fixParentsConsistency({
 
                 await GoogleDriveFilesModel.upsert({
                   connectorId: connector.id,
-                  dustFileId: missingFolderId,
+                  rubyFileId: missingFolderId,
                   driveFileId: getDriveFileId(missingFolderId),
                   name: missingFolder.name,
                   mimeType: missingFolder.mimeType,

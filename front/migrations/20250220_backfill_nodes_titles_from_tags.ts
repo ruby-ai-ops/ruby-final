@@ -26,16 +26,16 @@ async function getCoreDataSourceId(
   frontDataSource: DataSourceModel,
   coreSequelize: Sequelize
 ): Promise<number | null> {
-  const { dustAPIProjectId, dustAPIDataSourceId } = frontDataSource;
+  const { rubyAPIProjectId, rubyAPIDataSourceId } = frontDataSource;
   const coreDataSource: any = (
     await coreSequelize.query(
       `SELECT id
        FROM data_sources
-       WHERE project = :dustAPIProjectId
-         AND data_source_id = :dustAPIDataSourceId
+       WHERE project = :rubyAPIProjectId
+         AND data_source_id = :rubyAPIDataSourceId
        LIMIT 1`,
       {
-        replacements: { dustAPIProjectId, dustAPIDataSourceId },
+        replacements: { rubyAPIProjectId, rubyAPIDataSourceId },
         type: QueryTypes.SELECT,
       }
     )
@@ -159,8 +159,8 @@ async function migrateDataSource(
   parentLogger: typeof Logger
 ) {
   const logger = parentLogger.child({
-    project: frontDataSource.dustAPIProjectId,
-    dataSourceId: frontDataSource.dustAPIDataSourceId,
+    project: frontDataSource.rubyAPIProjectId,
+    dataSourceId: frontDataSource.rubyAPIDataSourceId,
   });
   logger.info("MIGRATE");
 

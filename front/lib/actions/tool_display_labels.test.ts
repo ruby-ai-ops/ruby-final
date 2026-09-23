@@ -111,13 +111,13 @@ describe("getToolDisplayLabels", () => {
     ["gdrive-abc123", "Google Drive file"],
     ["gdrive-sharedWithMe", "Google Drive shared with me"],
     ["notion-unknown", "Notion orphaned resources"],
-    ["project-context-folder", "Dust project context"],
+    ["project-context-folder", "Ruby project context"],
     ["intercom-teams-12", "Intercom conversations"],
     ["intercom-team-12-team_abc", "Intercom team"],
     ["zendesk-brand-12-34", "Zendesk brand"],
     ["microsoft-anything-opaque", "Microsoft content"],
     ["gong-transcript-folder-12", "Gong transcripts"],
-    ["dpd_1234567890abcdef", "Dust project folder"],
+    ["dpd_1234567890abcdef", "Ruby project folder"],
   ])("uses provider labels for data source file node ID %s", (nodeId, target) => {
     expect(
       getToolDisplayLabels({
@@ -202,7 +202,7 @@ describe("getToolDisplayLabels", () => {
       "conversation-Fx7LXcp8VP/reports/1786717219013_quarterly-results.csv",
       "“reports/1786717219013_quarterly-results.csv” from conversation",
     ],
-  ])("labels Dust file system path %s as %s", (path, target) => {
+  ])("labels Ruby file system path %s as %s", (path, target) => {
     expect(
       getToolDisplayLabels({
         internalMCPServerName: "files",
@@ -215,7 +215,7 @@ describe("getToolDisplayLabels", () => {
     });
   });
 
-  it("keeps non-Dust file system paths unchanged", () => {
+  it("keeps non-Ruby file system paths unchanged", () => {
     expect(
       getToolDisplayLabels({
         internalMCPServerName: "files",

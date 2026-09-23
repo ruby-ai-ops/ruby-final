@@ -3,7 +3,7 @@
 -- Creates a workspace on the FREE_BYOK plan and adds an existing user as admin.
 -- If the user already has a BYOK workspace, returns the existing one.
 --
--- USAGE: psql $FRONT_DATABASE_URI -v email="'john.doe@dust.tt'" -f lib/dev/byok_seed.sql
+-- USAGE: psql $FRONT_DATABASE_URI -v email="'john.doe@ruby.ad'" -f lib/dev/byok_seed.sql
 -- ============================================================
 
 WITH
@@ -65,7 +65,7 @@ inserted_workspace AS (
   INSERT INTO workspaces ("sId", name, metadata, "createdAt", "updatedAt")
   SELECT
     s.workspace_sid,
-    'Dust (BYOK)',
+    'Ruby (BYOK)',
     '{"isBusiness": false}'::jsonb,
     NOW(),
     NOW()
@@ -125,7 +125,7 @@ inserted_conversations_space AS (
 -- Step 6a: Seed default governance capabilities (type-wide -1 grants on the global group).
 -- Mirrors seedWorkspaceCapabilities (front/lib/api/permissions/governance_seeding.ts): a fresh
 -- workspace resolves every "everyone" capability to the global group. Keep in sync with
--- CAPABILITY_SEEDERS and with dust_hive_seed.sql.
+-- CAPABILITY_SEEDERS and with ruby_hive_seed.sql.
 inserted_group_permissions AS (
   INSERT INTO group_permissions (
     "workspaceId", "groupId", "grantType", "resourceType", "resourceId", "createdAt", "updatedAt"

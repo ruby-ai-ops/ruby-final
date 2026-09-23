@@ -1,9 +1,9 @@
-import { WithDustGptSixAstraConfig } from "@app/lib/llms/providers/openai/models/gpt_six_astra";
-import { defineDustStreamEndpoint } from "@app/lib/llms/stream/dust_stream_endpoint";
+import { WithRubyGptSixAstraConfig } from "@app/lib/llms/providers/openai/models/gpt_six_astra";
+import { defineRubyStreamEndpoint } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import { PREMIUM_MODEL_ENDPOINT_FILTER } from "@app/lib/llms/utils/endpoint_filters";
 import { OpenAIGptSixAstraEuropeOpenAIResponsesStream } from "@app/lib/model_constructors/stream/endpoints/openai_gpt_six_astra_eu_openai_responses";
 
-export class DustOpenAIGptSixAstraEuropeOpenAIResponsesStream extends WithDustGptSixAstraConfig(
+export class RubyOpenAIGptSixAstraEuropeOpenAIResponsesStream extends WithRubyGptSixAstraConfig(
   OpenAIGptSixAstraEuropeOpenAIResponsesStream
 ) {
   static readonly endpointFilter = {
@@ -14,4 +14,4 @@ export class DustOpenAIGptSixAstraEuropeOpenAIResponsesStream extends WithDustGp
   };
 }
 
-defineDustStreamEndpoint(DustOpenAIGptSixAstraEuropeOpenAIResponsesStream);
+defineRubyStreamEndpoint(RubyOpenAIGptSixAstraEuropeOpenAIResponsesStream);

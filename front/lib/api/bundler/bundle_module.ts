@@ -6,7 +6,7 @@ import path from "path";
 
 /**
  * Reads a module's source tree, abstracted from storage so the engine works over any backend
- * (an in-memory tree, DustFileSystem). Paths are root-relative
+ * (an in-memory tree, RubyFileSystem). Paths are root-relative
  * (e.g. `index.ts`, `components/Chart.tsx`).
  */
 export interface SourceReader {

@@ -1,6 +1,6 @@
 import { isSimulatedFailureModelDegraded } from "@app/lib/api/llm/simulated_failure_model";
-import { WithDustSimulatedFailureModelConfig } from "@app/lib/llms/providers/openai/models/simulated_failure_model";
-import { defineDustStreamEndpoint } from "@app/lib/llms/stream/dust_stream_endpoint";
+import { WithRubySimulatedFailureModelConfig } from "@app/lib/llms/providers/openai/models/simulated_failure_model";
+import { defineRubyStreamEndpoint } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import { OpenAISimulatedFailureModelGlobalOpenAIResponsesStream } from "@app/lib/model_constructors/stream/endpoints/openai_simulated_failure_model_global_openai_responses";
 import { InternalServerError } from "openai";
 import type {
@@ -29,7 +29,7 @@ function syntheticModelUnavailableError(): InternalServerError {
  * degradation row exists, streams MUST call the Mini delegate and MUST
  * NOT mutate serving degradation state directly.
  */
-export class DustOpenAISimulatedFailureModelGlobalOpenAIResponsesStream extends WithDustSimulatedFailureModelConfig(
+export class RubyOpenAISimulatedFailureModelGlobalOpenAIResponsesStream extends WithRubySimulatedFailureModelConfig(
   OpenAISimulatedFailureModelGlobalOpenAIResponsesStream
 ) {
   static readonly endpointFilter = {
@@ -48,6 +48,6 @@ export class DustOpenAISimulatedFailureModelGlobalOpenAIResponsesStream extends 
   }
 }
 
-defineDustStreamEndpoint(
-  DustOpenAISimulatedFailureModelGlobalOpenAIResponsesStream
+defineRubyStreamEndpoint(
+  RubyOpenAISimulatedFailureModelGlobalOpenAIResponsesStream
 );

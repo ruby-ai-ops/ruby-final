@@ -25,15 +25,15 @@ export type ParsedStdoutResult =
     })
   // The runner spilled an oversized result to a sandbox-local file instead of
   // inlining it: the caller must read the file back (resolveSpilledResult)
-  // to obtain the outcome. Never emitted by older dsbx versions.
+  // to obtain the outcome. Never emitted by older rbx versions.
   | (ParsedStdoutResultBase & {
       outcome: null;
       spill: SandboxFunctionResultSpillPointer;
     });
 
 /**
- * Parse a protocol v3 (or legacy) result envelope from dsbx stdout.
- * Uses the last non-empty line, matching other dsbx stdout parsers, and parses
+ * Parse a protocol v3 (or legacy) result envelope from rbx stdout.
+ * Uses the last non-empty line, matching other rbx stdout parsers, and parses
  * it exactly once for both the outcome and the timing diagnostics.
  * Never throws: malformed output becomes an invocation_failed outcome.
  */

@@ -57,13 +57,13 @@ describe("RawMarkdownBlock", () => {
 
     it("captures a link definition as a raw block", () => {
       // A link definition ([label]: url) is a top-level markdown token ("def").
-      editor.commands.setContent("[dust]: https://dust.tt", {
+      editor.commands.setContent("[ruby]: https://ruby.ad", {
         contentType: "markdown",
       });
 
       const blocks = rawBlocks(editor);
       expect(blocks).toHaveLength(1);
-      expect(blocks[0]).toContain("[dust]:");
+      expect(blocks[0]).toContain("[ruby]:");
     });
 
     it("preserves raw content through getMarkdown round-trip", () => {

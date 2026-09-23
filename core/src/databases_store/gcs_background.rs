@@ -21,9 +21,9 @@ pub struct GoogleCloudStorageBackgroundProcessingStore {}
 
 impl GoogleCloudStorageBackgroundProcessingStore {
     fn get_bucket() -> Result<String> {
-        match std::env::var("DUST_TABLE_UPDATES_BUCKET") {
+        match std::env::var("RUBY_TABLE_UPDATES_BUCKET") {
             Ok(bucket) => Ok(bucket),
-            Err(_) => Err(anyhow!("DUST_TABLE_UPDATES_BUCKET is not set")),
+            Err(_) => Err(anyhow!("RUBY_TABLE_UPDATES_BUCKET is not set")),
         }
     }
 

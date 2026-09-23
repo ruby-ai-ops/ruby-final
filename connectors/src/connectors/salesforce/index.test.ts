@@ -1,7 +1,7 @@
 import { ConnectorManagerError } from "@connectors/connectors/interface";
 import { ExternalOAuthTokenError } from "@connectors/lib/error";
 import { INTERNAL_MIME_TYPES } from "@connectors/types";
-import { Err, Ok } from "@dust-tt/client";
+import { Err, Ok } from "@ruby-ai/client";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {

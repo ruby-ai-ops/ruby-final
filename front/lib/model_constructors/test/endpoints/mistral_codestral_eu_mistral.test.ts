@@ -8,7 +8,7 @@ import type { StreamSetup } from "@app/lib/model_constructors/test/setup";
 export const MistralCodestralEuropeMistralStreamSetup: StreamSetup = {
   createInstance: () =>
     new MistralCodestralEuropeMistralStream({
-      MISTRAL_API_KEY: process.env.DUST_MANAGED_MISTRAL_API_KEY ?? "",
+      MISTRAL_API_KEY: process.env.RUBY_MANAGED_MISTRAL_API_KEY ?? "",
     }),
   // Codestral is a non-reasoning model: only `none` is accepted, so every other
   // reasoning effort is rejected by the config schema.

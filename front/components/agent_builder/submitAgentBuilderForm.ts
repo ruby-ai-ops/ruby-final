@@ -421,9 +421,9 @@ export async function submitAgentBuilderForm({
                   action.configuration.additionalConfiguration
                 )
               : {},
-          dustAppConfiguration: action.configuration.dustAppConfiguration,
+          rubyAppConfiguration: action.configuration.rubyAppConfiguration,
           secretName: action.configuration.secretName,
-          dustProject: action.configuration.dustProject,
+          rubyProject: action.configuration.rubyProject,
         };
       },
       { concurrency: 3 }

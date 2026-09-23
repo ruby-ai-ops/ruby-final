@@ -15,8 +15,8 @@ import type {
   AgentNameSuggestionType,
   AgentSuggestionState,
 } from "@app/types/suggestions/agent_suggestion";
-import type { ActionCardState } from "@dust-tt/sparkle";
-import { ActionCardBlock, Avatar } from "@dust-tt/sparkle";
+import type { ActionCardState } from "@ruby-ai/ui";
+import { ActionCardBlock, Avatar } from "@ruby-ai/ui";
 
 export function mapSuggestionStateToCardState(
   state: AgentSuggestionState

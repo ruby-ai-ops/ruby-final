@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { RUNNER_ERROR_CODES } from "../../../cli/dust-sandbox/functions-runner/protocol";
+import { RUNNER_ERROR_CODES } from "../../../cli/ruby-sandbox/functions-runner/protocol";
 import { FRAME_FUNCTION_REFERENCE_REGEX } from "../../../viz/app/lib/frame-function-slug";
 import {
   isValidSandboxFunctionSlug,
@@ -80,16 +80,16 @@ describe("isValidSandboxFunctionSlug", () => {
     }
   });
 
-  // `dsbx function run <name>` validates against is_valid_name in
-  // cli/dust-sandbox/src/commands/function/mod.rs, which allows [A-Za-z0-9_-] only, and then
-  // resolves the name to `<name>.<ext>` in a flat read_dir of $DUST_FUNCTIONS_DIR. A slug is one
-  // file in that flat mount, so it must never grow a character dsbx would refuse.
-  it("produces names dsbx can resolve", () => {
-    const dsbxValidName = /^[A-Za-z0-9_-]+$/;
+  // `rbx function run <name>` validates against is_valid_name in
+  // cli/ruby-sandbox/src/commands/function/mod.rs, which allows [A-Za-z0-9_-] only, and then
+  // resolves the name to `<name>.<ext>` in a flat read_dir of $RUBY_FUNCTIONS_DIR. A slug is one
+  // file in that flat mount, so it must never grow a character rbx would refuse.
+  it("produces names rbx can resolve", () => {
+    const rbxValidName = /^[A-Za-z0-9_-]+$/;
 
     for (const slug of ["greet", "add-task", "list-notes-2"]) {
       expect(isValidSandboxFunctionSlug(slug)).toBe(true);
-      expect(dsbxValidName.test(slug)).toBe(true);
+      expect(rbxValidName.test(slug)).toBe(true);
     }
   });
 });

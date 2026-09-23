@@ -138,10 +138,10 @@ function _getManagedDataSourceAgent(
       childAgentId: null,
       additionalConfiguration: {},
       timeFrame: null,
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       jsonSchema: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
     });
   }
 

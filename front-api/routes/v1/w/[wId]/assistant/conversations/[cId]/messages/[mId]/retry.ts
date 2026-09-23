@@ -3,7 +3,7 @@ import { batchRenderMessages } from "@app/lib/api/assistant/messages";
 import { addBackwardCompatibleAgentMessageFields } from "@app/lib/api/v1/backward_compatibility";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { isAgentMessageType } from "@app/types/assistant/conversation";
-import type { RetryMessageResponseType } from "@dust-tt/client";
+import type { RetryMessageResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { streamingTag } from "@front-api/middlewares/streaming";
 import type { HandlerResult } from "@front-api/middlewares/utils";

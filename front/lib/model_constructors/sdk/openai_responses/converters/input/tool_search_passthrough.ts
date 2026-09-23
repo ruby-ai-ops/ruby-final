@@ -25,9 +25,9 @@ type OpenAIToolSearchItem =
   | ResponseInputItem.ToolSearchCall
   | ResponseToolSearchOutputItemParam;
 
-// Validate only the stable fields Dust relies on. `.passthrough()` deliberately
+// Validate only the stable fields Ruby relies on. `.passthrough()` deliberately
 // preserves the complete provider item so new OpenAI replay fields do not need
-// plumbing through shared Dust types.
+// plumbing through shared Ruby types.
 const toolSearchCallSchema: z.ZodType<ResponseInputItem.ToolSearchCall> = z
   .object({
     type: z.literal("tool_search_call"),

@@ -1,7 +1,7 @@
 import { handlePatchDataSourceView } from "@app/lib/api/data_source_view";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import type { DataSourceViewResponseType } from "@dust-tt/client";
-import { PatchDataSourceViewRequestSchema } from "@dust-tt/client";
+import type { DataSourceViewResponseType } from "@ruby-ai/client";
+import { PatchDataSourceViewRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";

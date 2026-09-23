@@ -33,7 +33,7 @@ import {
   DialogTitle,
   Icon,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { Fragment, useEffect, useRef, useState } from "react";
 
 const MAX_HEADER_AVATARS = 3;

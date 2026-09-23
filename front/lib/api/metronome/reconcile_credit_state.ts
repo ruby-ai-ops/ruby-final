@@ -90,7 +90,7 @@ type UserReconcileReport = {
 type ReconcileCreditStateReport = PoolReconcileReport | UserReconcileReport;
 
 /**
- * Debug/reconcile entry point behind the poke "Check & Reconcile Credit State"
+ * Debug/reconcile entry point behind the admin "Check & Reconcile Credit State"
  * plugin. For the requested credit state machine — pool, programmatic, or a
  * single user — it recomputes the state the workspace *should* be in from the
  * live source of truth (Metronome balance + PAYG for pool, the programmatic cap

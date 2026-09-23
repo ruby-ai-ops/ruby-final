@@ -17,14 +17,14 @@ import {
   getWebhookFormDefaultValues,
 } from "@app/components/agent_builder/triggers/webhook/webhookEditionFormSchema";
 import { getAvatarFromIcon } from "@app/components/resources/resources_icons";
-import { FormProvider } from "@app/components/sparkle/FormProvider";
+import { FormProvider } from "@app/components/ui/FormProvider";
 import { useCanUseSelectedExecutionMode } from "@app/hooks/useTriggerExecutionModes";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import { normalizeWebhookIcon } from "@app/lib/webhook_source";
 import type { WebhookSourceViewType } from "@app/types/triggers/webhooks";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { MultiPageSheetPage } from "@dust-tt/sparkle";
-import { MultiPageSheet, MultiPageSheetContent } from "@dust-tt/sparkle";
+import type { MultiPageSheetPage } from "@ruby-ai/ui";
+import { MultiPageSheet, MultiPageSheetContent } from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useCallback, useEffect, useMemo, useState } from "react";

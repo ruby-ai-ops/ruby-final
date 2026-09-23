@@ -4,7 +4,7 @@ import { useDataSourceViewContentNodes } from "@app/lib/swr/data_source_views";
 import type { ContentNodesViewType } from "@app/types/connectors/content_nodes";
 import type { DataSourceViewType } from "@app/types/data_source_view";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Tree } from "@dust-tt/sparkle";
+import { Tree } from "@ruby-ai/ui";
 import { useCallback } from "react";
 
 const getUseResourceHook =

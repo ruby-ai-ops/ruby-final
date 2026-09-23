@@ -29,7 +29,7 @@ type MissingActionCoverage = {
   actionModelId: ModelId;
   tool: string;
   status: string;
-  dustRunId: string;
+  rubyRunId: string;
   runUsageIds: string;
   parentAction: string;
   parentItem: "completed" | "missing" | "pending" | "n/a";
@@ -61,8 +61,8 @@ async function getCoverageSnapshot(
     throw new Error(`Agent message ${agentMessageId} was not found.`);
   }
 
-  const dustRunIds = [...new Set(creditContext.runIds ?? [])];
-  const runs = await RunResource.listByDustRunIds(auth, { dustRunIds });
+  const rubyRunIds = [...new Set(creditContext.runIds ?? [])];
+  const runs = await RunResource.listByRubyRunIds(auth, { rubyRunIds });
   const usages = await RunResource.listRunUsagesForRuns(auth, { runs });
   const [actions, items] = await Promise.all([
     AgentMCPActionResource.listByAgentMessageIds(auth, [
@@ -84,31 +84,31 @@ async function getCoverageSnapshot(
       .map((item) => [item.agentMCPActionId, item])
   );
   const actionById = new Map(actions.map((action) => [action.sId, action]));
-  const dustRunIdByRunModelId = new Map(
-    runs.map((run) => [run.id, run.dustRunId])
+  const rubyRunIdByRunModelId = new Map(
+    runs.map((run) => [run.id, run.rubyRunId])
   );
-  const runUsageIdsByDustRunId = new Map<string, ModelId[]>();
+  const runUsageIdsByRubyRunId = new Map<string, ModelId[]>();
   for (const usage of usages) {
-    const dustRunId = dustRunIdByRunModelId.get(usage.runModelId);
-    if (!dustRunId) {
+    const rubyRunId = rubyRunIdByRunModelId.get(usage.runModelId);
+    if (!rubyRunId) {
       continue;
     }
-    const runUsageIds = runUsageIdsByDustRunId.get(dustRunId) ?? [];
+    const runUsageIds = runUsageIdsByRubyRunId.get(rubyRunId) ?? [];
     runUsageIds.push(usage.runUsageModelId);
-    runUsageIdsByDustRunId.set(dustRunId, runUsageIds);
+    runUsageIdsByRubyRunId.set(rubyRunId, runUsageIds);
   }
 
   const attributableActions = actions.filter((action) => {
-    const dustRunId = action.stepContent.dustRunId;
-    return dustRunId && runUsageIdsByDustRunId.has(dustRunId);
+    const rubyRunId = action.stepContent.rubyRunId;
+    return rubyRunId && runUsageIdsByRubyRunId.has(rubyRunId);
   });
   const missingActions = attributableActions.flatMap((action) => {
     if (toolItemByActionModelId.has(action.id)) {
       return [];
     }
 
-    const { dustRunId } = action.stepContent;
-    if (!dustRunId) {
+    const { rubyRunId } = action.stepContent;
+    if (!rubyRunId) {
       return [];
     }
     const childInfo = action.stepContext.sandboxChildActionInfo;
@@ -125,8 +125,8 @@ async function getCoverageSnapshot(
         actionModelId: action.id,
         tool: action.toolConfiguration.originalName,
         status: action.status,
-        dustRunId,
-        runUsageIds: (runUsageIdsByDustRunId.get(dustRunId) ?? []).join(","),
+        rubyRunId,
+        runUsageIds: (runUsageIdsByRubyRunId.get(rubyRunId) ?? []).join(","),
         parentAction: parentAction?.sId ?? "n/a",
         parentItem: parentAction
           ? parentItem?.completedAt === null

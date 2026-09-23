@@ -14,7 +14,7 @@ import {
   Input,
   SliderToggle,
   ZendeskLogo,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 export function ZendeskConfigView({
@@ -145,7 +145,7 @@ export function ZendeskConfigView({
       >
         <ContextItem.Description>
           <div className="text-muted-foreground">
-            If activated, Dust will also sync the unresolved tickets.
+            If activated, Ruby will also sync the unresolved tickets.
           </div>
         </ContextItem.Description>
       </ContextItem>
@@ -171,7 +171,7 @@ export function ZendeskConfigView({
         <ContextItem.Description>
           <div className="text-muted-foreground">
             Enable this option to prevent customer names and email addresses
-            from being synced with Dust. This does not impact data within
+            from being synced with Ruby. This does not impact data within
             tickets, only the metadata attached to tickets.
           </div>
         </ContextItem.Description>
@@ -184,7 +184,7 @@ export function ZendeskConfigView({
         <ContextItem.Description>
           <div className="mb-4 flex items-start justify-between gap-4 text-muted-foreground">
             Set the retention period (in days), tickets older than the retention
-            period will not be synced with Dust.
+            period will not be synced with Ruby.
             <div className="flex items-center gap-2">
               <Input
                 value={retentionInput}

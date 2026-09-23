@@ -41,7 +41,7 @@ async function setupConversation() {
     workspace,
     conversation,
     agentConfig: agentConfiguration,
-    runIds: [run.dustRunId],
+    runIds: [run.rubyRunId],
   });
   await ConversationResource.updateAgentMessageCostCredits(auth, {
     agentMessageModelId: agentMessage.agentMessageId,

@@ -405,7 +405,7 @@ CREATE TABLE IF NOT EXISTS "google_drive_files"
     "lastSeenTs"     TIMESTAMP WITH TIME ZONE,
     "lastUpsertedTs" TIMESTAMP WITH TIME ZONE,
     "skipReason"     VARCHAR(255),
-    "dustFileId"     VARCHAR(255)             NOT NULL,
+    "rubyFileId"     VARCHAR(255)             NOT NULL,
     "driveFileId"    VARCHAR(255)             NOT NULL,
     "name"           TEXT                     NOT NULL DEFAULT '',
     "mimeType"       VARCHAR(255)             NOT NULL DEFAULT '',
@@ -527,8 +527,8 @@ CREATE TABLE IF NOT EXISTS "microsoft_bot_messages"
     "userActivityId"     VARCHAR(255)             NOT NULL,
     "agentActivityId"    VARCHAR(255)             NOT NULL,
     "replyToId"          VARCHAR(255),
-    "dustConversationId" VARCHAR(255),
-    "dustAgentMessageId" VARCHAR(255),
+    "rubyConversationId" VARCHAR(255),
+    "rubyAgentMessageId" VARCHAR(255),
     "connectorId"        BIGINT                   NOT NULL REFERENCES "connectors" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     "id"                 BIGSERIAL,
     PRIMARY KEY ("id")
@@ -536,7 +536,7 @@ CREATE TABLE IF NOT EXISTS "microsoft_bot_messages"
 
 CREATE INDEX IF NOT EXISTS "microsoft_bot_messages_connector_id" ON "microsoft_bot_messages" ("connectorId");
 CREATE INDEX IF NOT EXISTS "microsoft_bot_messages_connector_id_conversation_id" ON "microsoft_bot_messages" ("connectorId", "conversationId");
-CREATE INDEX IF NOT EXISTS "microsoft_bot_messages_connector_id_dust_conversation_id" ON "microsoft_bot_messages" ("connectorId", "dustConversationId");
+CREATE INDEX IF NOT EXISTS "microsoft_bot_messages_connector_id_ruby_conversation_id" ON "microsoft_bot_messages" ("connectorId", "rubyConversationId");
 
 CREATE TABLE IF NOT EXISTS "notion_connector_block_cache_entries"
 (
@@ -1061,7 +1061,7 @@ CREATE TABLE IF NOT EXISTS "gong_users"
 
 CREATE UNIQUE INDEX IF NOT EXISTS "gong_users_connector_id_gong_id" ON "gong_users" ("connectorId", "gongId");
 
-CREATE TABLE IF NOT EXISTS "dust_project_configurations"
+CREATE TABLE IF NOT EXISTS "ruby_project_configurations"
 (
     "createdAt"    TIMESTAMP WITH TIME ZONE NOT NULL,
     "updatedAt"    TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -1072,10 +1072,10 @@ CREATE TABLE IF NOT EXISTS "dust_project_configurations"
     PRIMARY KEY ("id")
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS "dust_project_configurations_connector_id" ON "dust_project_configurations" ("connectorId");
-CREATE UNIQUE INDEX IF NOT EXISTS "dust_project_configurations_project_id" ON "dust_project_configurations" ("projectId");
+CREATE UNIQUE INDEX IF NOT EXISTS "ruby_project_configurations_connector_id" ON "ruby_project_configurations" ("connectorId");
+CREATE UNIQUE INDEX IF NOT EXISTS "ruby_project_configurations_project_id" ON "ruby_project_configurations" ("projectId");
 
-CREATE TABLE IF NOT EXISTS "dust_project_conversations"
+CREATE TABLE IF NOT EXISTS "ruby_project_conversations"
 (
     "createdAt"         TIMESTAMP WITH TIME ZONE NOT NULL,
     "updatedAt"         TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -1089,12 +1089,12 @@ CREATE TABLE IF NOT EXISTS "dust_project_conversations"
     PRIMARY KEY ("id")
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS "dust_project_conversations_conversation_id" ON "dust_project_conversations" ("conversationId");
-CREATE UNIQUE INDEX IF NOT EXISTS "dust_project_conversations_connector_id_conversation_id" ON "dust_project_conversations" ("connectorId", "conversationId");
-CREATE INDEX IF NOT EXISTS "dust_project_conversations_connector_id_source_updated_at" ON "dust_project_conversations" ("connectorId", "sourceUpdatedAt");
-CREATE INDEX IF NOT EXISTS "dust_project_conversations_connector_id_project_id_conversation" ON "dust_project_conversations" ("connectorId", "projectId", "conversationId");
+CREATE UNIQUE INDEX IF NOT EXISTS "ruby_project_conversations_conversation_id" ON "ruby_project_conversations" ("conversationId");
+CREATE UNIQUE INDEX IF NOT EXISTS "ruby_project_conversations_connector_id_conversation_id" ON "ruby_project_conversations" ("connectorId", "conversationId");
+CREATE INDEX IF NOT EXISTS "ruby_project_conversations_connector_id_source_updated_at" ON "ruby_project_conversations" ("connectorId", "sourceUpdatedAt");
+CREATE INDEX IF NOT EXISTS "ruby_project_conversations_connector_id_project_id_conversation" ON "ruby_project_conversations" ("connectorId", "projectId", "conversationId");
 
-CREATE TABLE IF NOT EXISTS "dust_project_mount_files"
+CREATE TABLE IF NOT EXISTS "ruby_project_mount_files"
 (
     "createdAt"       TIMESTAMP WITH TIME ZONE NOT NULL,
     "updatedAt"       TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -1107,9 +1107,9 @@ CREATE TABLE IF NOT EXISTS "dust_project_mount_files"
     PRIMARY KEY ("id")
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS "dust_project_mount_files_connector_id_scoped_path" ON "dust_project_mount_files" ("connectorId", "scopedPath");
-CREATE INDEX IF NOT EXISTS "dust_project_mount_files_connector_id_source_updated_at" ON "dust_project_mount_files" ("connectorId", "sourceUpdatedAt");
-CREATE INDEX IF NOT EXISTS "dust_project_mount_files_connector_project_scoped" ON "dust_project_mount_files" ("connectorId", "projectId", "scopedPath");
+CREATE UNIQUE INDEX IF NOT EXISTS "ruby_project_mount_files_connector_id_scoped_path" ON "ruby_project_mount_files" ("connectorId", "scopedPath");
+CREATE INDEX IF NOT EXISTS "ruby_project_mount_files_connector_id_source_updated_at" ON "ruby_project_mount_files" ("connectorId", "sourceUpdatedAt");
+CREATE INDEX IF NOT EXISTS "ruby_project_mount_files_connector_project_scoped" ON "ruby_project_mount_files" ("connectorId", "projectId", "scopedPath");
 CREATE EXTENSION IF NOT EXISTS unaccent;
 
 CREATE OR REPLACE FUNCTION notion_pages_trigger() RETURNS trigger AS

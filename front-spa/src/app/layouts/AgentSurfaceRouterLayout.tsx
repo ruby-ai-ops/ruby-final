@@ -1,5 +1,5 @@
-import { AssistantLayout } from "@dust-tt/front/components/assistant/AssistantLayout";
-import { useAuth, useWorkspace } from "@dust-tt/front/lib/auth/AuthContext";
+import { AssistantLayout } from "@ruby-ai/front/components/assistant/AssistantLayout";
+import { useAuth, useWorkspace } from "@ruby-ai/front/lib/auth/AuthContext";
 import { Outlet } from "react-router-dom";
 
 /**

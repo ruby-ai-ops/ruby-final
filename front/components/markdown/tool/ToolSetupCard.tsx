@@ -23,7 +23,7 @@ import {
 import { GLOBAL_SPACE_NAME } from "@app/types/groups";
 import { asDisplayToolName } from "@app/types/shared/utils/string_utils";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, ContentMessage } from "@dust-tt/sparkle";
+import { Button, ContentMessage } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useMemo, useState } from "react";
 

@@ -29,13 +29,13 @@ export function SpacePageHeader({
       if (category === "managed" && !dataSourceView) {
         return (
           <>
-            Here you can authorize Connections and control what data Dust can
+            Here you can authorize Connections and control what data Ruby can
             access. Once connected, data can be distributed to Open Spaces
             (accessible to all workspace members) or Restricted Spaces (limited
             access). <br />
             Need help? Check out our{" "}
             <LinkWrapper
-              href="https://docs.dust.tt/docs/data"
+              href="https://docs.ruby.ad/docs/data"
               className="text-highlight"
               target="_blank"
             >

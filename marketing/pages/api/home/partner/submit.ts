@@ -33,7 +33,7 @@ export default async function handler(
   const tracking = TrackingParamsSchema.parse(req.body.tracking ?? {});
   const { pageUri: rawPageUri, pageName: rawPageName } = req.body;
   const pageUri = isString(rawPageUri) ? rawPageUri : "";
-  const pageName = isString(rawPageName) ? rawPageName : "Partner with Dust";
+  const pageName = isString(rawPageName) ? rawPageName : "Partner with Ruby";
 
   // Extract and validate domain
   const domain = extractDomain(formData.email);

@@ -25,7 +25,7 @@ const EMPTY_DEGRADED_MODEL_IDS: ReadonlySet<string> = new Set();
 /**
  * @cc [owner:Nils-Fedrigo,label:product] hosting-region-only-when-guaranteed
  * `modelProps.hostingRegion` is the current cell's region when
- * `useRunsOnRegionalHosting` says the workspace runs models on Dust-managed
+ * `useRunsOnRegionalHosting` says the workspace runs models on Ruby-managed
  * regional hosting, and `null` otherwise.
  */
 // The model lists every surface rendering `ModelPickerContent` offers, and what

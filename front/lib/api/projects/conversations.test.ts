@@ -5,7 +5,7 @@ import {
   toPodConversationListItem,
 } from "@app/lib/api/projects/conversations";
 import { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import {
   AgentMessageModel,
   MessageModel,
@@ -287,7 +287,7 @@ describe("moveConversationToProject", () => {
 
     expect(result.isErr()).toBe(true);
     if (result.isErr()) {
-      expect(result.error).toBeInstanceOf(DustError);
+      expect(result.error).toBeInstanceOf(RubyError);
       expect(result.error.code).toBe("conversation_agent_running");
       expect(result.error.message).toContain(
         "Wait for the agent to finish before moving this conversation."
@@ -317,7 +317,7 @@ describe("moveConversationToProject", () => {
 
     expect(result.isErr()).toBe(true);
     if (result.isErr()) {
-      expect(result.error).toBeInstanceOf(DustError);
+      expect(result.error).toBeInstanceOf(RubyError);
       expect(result.error.code).toBe("unauthorized");
       expect(result.error.message).toContain("You must be a member of");
       expect(result.error.message).toContain(projectSpace.name);
@@ -839,7 +839,7 @@ describe("moveConversationToProject", () => {
 
     expect(result.isErr()).toBe(true);
     if (result.isErr()) {
-      expect(result.error).toBeInstanceOf(DustError);
+      expect(result.error).toBeInstanceOf(RubyError);
       expect(result.error.code).toBe("unauthorized");
       expect(result.error.message).toContain("You must be an editor of");
       expect(result.error.message).toContain(sourceProject.name);
@@ -890,7 +890,7 @@ describe("moveConversationToProject", () => {
 
     expect(result.isErr()).toBe(true);
     if (result.isErr()) {
-      expect(result.error).toBeInstanceOf(DustError);
+      expect(result.error).toBeInstanceOf(RubyError);
       expect(result.error.code).toBe("internal_error");
       expect(result.error.message).toBe(
         "Conversation is already in the project"
@@ -1073,7 +1073,7 @@ describe("moveConversationOutOfProject", () => {
 
     expect(result.isErr()).toBe(true);
     if (result.isErr()) {
-      expect(result.error).toBeInstanceOf(DustError);
+      expect(result.error).toBeInstanceOf(RubyError);
       expect(result.error.code).toBe("internal_error");
       expect(result.error.message).toBe("Conversation is not in a project");
     }
@@ -1124,7 +1124,7 @@ describe("moveConversationOutOfProject", () => {
 
     expect(result.isErr()).toBe(true);
     if (result.isErr()) {
-      expect(result.error).toBeInstanceOf(DustError);
+      expect(result.error).toBeInstanceOf(RubyError);
       expect(result.error.code).toBe("unauthorized");
       expect(result.error.message).toContain("You must be an editor of");
       expect(result.error.message).toContain(projectSpace.name);

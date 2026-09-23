@@ -68,7 +68,7 @@ export interface ReasoningEvent {
 
 // Opaque provider-specific block (e.g. an Anthropic server-tool block) captured
 // for verbatim replay. The block stays opaque to the generic pipeline.
-// Passthrough blocks only originate from labs Dust talks to directly (Anthropic
+// Passthrough blocks only originate from labs Ruby talks to directly (Anthropic
 // only today). Fireworks-hosted labs (moonshot_ai, thinking_machines, z_ai) and
 // the noop lab never produce one. xai reuses the OpenAI Responses converter,
 // which tags its passthrough blocks under the "openai" provider, so "xai" never
@@ -142,7 +142,7 @@ export const ERROR_TYPES = [
 export type ErrorType = (typeof ERROR_TYPES)[number];
 
 // Fault domain of the failure, not the code layer that happened to catch it.
-export const ERROR_SOURCES = ["provider", "dust", "unknown"] as const;
+export const ERROR_SOURCES = ["provider", "ruby", "unknown"] as const;
 export type ErrorSource = (typeof ERROR_SOURCES)[number];
 
 export type ErrorContent = {

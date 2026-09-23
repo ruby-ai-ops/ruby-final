@@ -1,7 +1,7 @@
 import { CreateConnectionOAuthModal } from "@app/components/data_source/CreateConnectionOAuthModal";
 import { CreateOrUpdateConnectionBigQueryModal } from "@app/components/data_source/CreateOrUpdateConnectionBigQueryModal";
 import { CreateOrUpdateConnectionSnowflakeModal } from "@app/components/data_source/CreateOrUpdateConnectionSnowflakeModal";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useSendNotification } from "@app/hooks/useNotification";
 import { useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useCellContext } from "@app/lib/auth/CellContext";
@@ -53,7 +53,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useState } from "react";
 
 export type DataSourceIntegration = {
@@ -475,7 +475,7 @@ export const AddConnectionMenu = ({
             case "microsoft_bot":
             case "slack_bot":
             case "discord_bot":
-            case "dust_project":
+            case "ruby_project":
             case undefined:
               return null;
             default:
@@ -498,7 +498,7 @@ export const AddConnectionMenu = ({
             <DialogHeader>
               <DialogTitle>Coming Soon!</DialogTitle>
               <DialogDescription>
-                Please email us at support@dust.tt for early access.
+                Please email us at support@ruby.ad for early access.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter
@@ -517,7 +517,7 @@ export const AddConnectionMenu = ({
                 variant: "highlight",
                 onClick: () => {
                   window.open(
-                    `mailto:support@dust.tt?subject=Early access to the ${showPreviewPopupForProvider.connector} connection`
+                    `mailto:support@ruby.ad?subject=Early access to the ${showPreviewPopupForProvider.connector} connection`
                   );
                 },
               }}

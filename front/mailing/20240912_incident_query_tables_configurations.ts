@@ -21,18 +21,18 @@ const sendIncidentEmail = async ({
   const msg = {
     to: email,
     // to: "spolu@pm.me",
-    from: "spolu@dust.tt",
+    from: "spolu@ruby.ad",
     subject:
-      "[Dust] Resolved incident: Agent Query Tables configurations issue",
+      "[Ruby] Resolved incident: Agent Query Tables configurations issue",
     html: `<p>Hi there,</p>
     <p>An erroneous deletion logic introduced on Sept 4th impacted the selection of tables in agents relying on the "Query Tables" tool. The other elements of configuration of these agents—instructions, other tools—weren't affected. We fixed the issue and were able to recover the last valid selection of tables for agents that were used in the past 4 weeks. Inactive agents may still be affected.</p>
     <p>As last editor of the following agents relying on Query Tables, we invite you to check and potentialy repair the Query Tables tool configuration for each of them:</p>
     <ul>
     ${assistants.map((a) => `<li>${a.agentName}: <a href="${a.assistantBuilderURL}">${a.assistantBuilderURL}</a></li>`).join("\n")}
     </ul>
-    <p>We take the safety of your assitant configurations very seriously, a full incident report is availabe here[0]. As an editor of agents, your contribution is key to the success of Dust, please simply reply to this email if you have any outstanding questions, we're here to help.</p>
+    <p>We take the safety of your assitant configurations very seriously, a full incident report is availabe here[0]. As an editor of agents, your contribution is key to the success of Ruby, please simply reply to this email if you have any outstanding questions, we're here to help.</p>
     <p>-stan</p>
-    <p>[0] <a href="https://dust-tt.notion.site/Incident-L2-Table-Query-Configuration-Loss-5f68431d4f3d4542ae833b8900ea0cc1">https://dust-tt.notion.site/Incident-L2-Table-Query-Configuration-Loss-5f68431d4f3d4542ae833b8900ea0cc1</a>
+    <p>[0] <a href="https://ruby-ai.notion.site/Incident-L2-Table-Query-Configuration-Loss-5f68431d4f3d4542ae833b8900ea0cc1">https://ruby-ai.notion.site/Incident-L2-Table-Query-Configuration-Loss-5f68431d4f3d4542ae833b8900ea0cc1</a>
 `,
   };
 
@@ -95,7 +95,7 @@ HAVING COUNT("atqct"."id") = 0
       workspaceId: row.workspaceId,
       agentName: row.agentName,
       agentId: row.agentId,
-      assistantBuilderURL: `https://dust.tt/w/${row.workspaceId}/builder/assistants/${row.agentId}`,
+      assistantBuilderURL: `https://app.ruby.ad/w/${row.workspaceId}/builder/assistants/${row.agentId}`,
     });
   }
 

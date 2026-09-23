@@ -58,7 +58,7 @@ export class LLMTraceBuffer {
   private outputByteSize = 0;
   private truncated = false;
   private readonly MAX_OUTPUT_SIZE = 64 * 1024; // 64KB for output only.
-  private readonly CACHE_METRIC_AGENT_IDS = ["dust", "deep-dive"];
+  private readonly CACHE_METRIC_AGENT_IDS = ["ruby", "deep-dive"];
 
   private content = "";
   private finishReason: LLMTraceOutput["finishReason"] = "unknown";

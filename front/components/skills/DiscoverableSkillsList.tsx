@@ -2,7 +2,7 @@ import { useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { getSkillAvatarIcon } from "@app/lib/skill";
 import { useSearchSkills, useSkills } from "@app/lib/swr/skill_configurations";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, Spinner, Tooltip } from "@dust-tt/sparkle";
+import { Button, Spinner, Tooltip } from "@ruby-ai/ui";
 import { useState } from "react";
 
 const DISCOVERABLE_SKILLS_PAGE_SIZE = 50;

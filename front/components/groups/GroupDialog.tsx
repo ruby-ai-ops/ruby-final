@@ -15,7 +15,7 @@ import {
   InfoCircle,
   Input,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { MouseEvent } from "react";
 import { useState } from "react";
 

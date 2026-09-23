@@ -26,7 +26,7 @@ Provide URLs for sub-pages that that are relevant to the summary.
 
 /**
  * Uses a direct LLM call via runMultiActionsAgent.
- * This avoids creating a conversation and streaming through the Dust API, instead making a direct
+ * This avoids creating a conversation and streaming through the Ruby API, instead making a direct
  * LLM call for faster summarization.
  */
 export async function summarizeWithLLM({

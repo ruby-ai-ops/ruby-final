@@ -198,7 +198,7 @@ impl Provider for DeepseekProvider {
         );
         utils::info("Your API key can be found at `https://platform.deepseek.com/api-keys`.");
         utils::info("");
-        utils::info("Once ready you can check your setup with `dust provider test deepseek`");
+        utils::info("Once ready you can check your setup with `ruby provider test deepseek`");
 
         Ok(())
     }

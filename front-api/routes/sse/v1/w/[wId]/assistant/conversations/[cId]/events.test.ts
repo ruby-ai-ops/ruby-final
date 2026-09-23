@@ -88,7 +88,7 @@ async function setupConversation() {
     workspace.sId
   );
   const conversation = await ConversationFactory.create(userAuth, {
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     messagesCreatedAt: [new Date()],
   });
   return { workspace, key, conversation };

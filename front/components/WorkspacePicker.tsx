@@ -13,7 +13,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
   Label,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface WorkspacePickerRadioGroupProps {
   user: UserTypeWithWorkspaces;

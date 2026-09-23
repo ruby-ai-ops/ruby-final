@@ -24,7 +24,7 @@ export function logToolInvocation({
   });
 
   try {
-    spawnSync("logger", ["-t", "dust_tool", payload], { stdio: "ignore" });
+    spawnSync("logger", ["-t", "ruby_tool", payload], { stdio: "ignore" });
   } catch {
     // Telemetry must never break the tool. `logger` may be absent on dev hosts
     // (macOS) and spawn errors (ENOENT, EACCES) should be silently swallowed.

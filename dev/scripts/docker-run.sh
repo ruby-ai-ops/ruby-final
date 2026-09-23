@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run the Dust shared dev container locally (laptop) or attach to it.
+# Run the Ruby shared dev container locally (laptop) or attach to it.
 #
 # Binds the repo for live edits but overlays node_modules and core/target with
 # named Docker volumes so container npm install / cargo builds stay on the
@@ -22,14 +22,14 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-IMAGE_NAME="${DUST_DEV_IMAGE:-dust-dev}"
-CONTAINER_NAME="${DUST_DEV_CONTAINER:-dust-dev}"
-VOLUME_PREFIX="${DUST_DEV_VOLUME_PREFIX:-dust-dev}"
+IMAGE_NAME="${RUBY_DEV_IMAGE:-ruby-dev}"
+CONTAINER_NAME="${RUBY_DEV_CONTAINER:-ruby-dev}"
+VOLUME_PREFIX="${RUBY_DEV_VOLUME_PREFIX:-ruby-dev}"
 
-# Build for Docker's native architecture by default. Set DUST_DEV_PLATFORM
+# Build for Docker's native architecture by default. Set RUBY_DEV_PLATFORM
 # (for example linux/amd64) to opt into a different platform explicitly.
-if [ -n "${DUST_DEV_PLATFORM:-}" ]; then
-  PLATFORM="$DUST_DEV_PLATFORM"
+if [ -n "${RUBY_DEV_PLATFORM:-}" ]; then
+  PLATFORM="$RUBY_DEV_PLATFORM"
 else
   docker_arch="$(docker info --format '{{.Architecture}}')"
   case "$docker_arch" in
@@ -44,7 +44,7 @@ fi
 case "$PLATFORM" in
   linux/amd64|linux/arm64) ;;
   *)
-    echo "Unsupported DUST_DEV_PLATFORM: ${PLATFORM}" >&2
+    echo "Unsupported RUBY_DEV_PLATFORM: ${PLATFORM}" >&2
     echo "Supported values: linux/amd64, linux/arm64" >&2
     exit 1
     ;;
@@ -65,11 +65,11 @@ DEV_VOLUMES=(
   "${VOLUME_PREFIX}-front-spa-vite:/workspace/front-spa/.vite"
   "${VOLUME_PREFIX}-front-api-cache:/workspace/front-api/.cache"
   "${VOLUME_PREFIX}-front-api-dist:/workspace/front-api/dist"
-  "${VOLUME_PREFIX}-sparkle-dist:/workspace/sparkle/dist"
+  "${VOLUME_PREFIX}-ui-dist:/workspace/ui/dist"
   # Postgres/Redis/Elasticsearch/Temporal/Qdrant state, relocated under one root
   # by init-data-dirs.sh — otherwise it lives in the container layer and is lost
   # on every rebuild.
-  "${VOLUME_PREFIX}-data:/var/lib/dust-dev"
+  "${VOLUME_PREFIX}-data:/var/lib/ruby-dev"
   "${VOLUME_PREFIX}-gcloud-config:/root/.config/gcloud"
   "${VOLUME_PREFIX}-git-spice-config:/root/.config/git-spice"
 )
@@ -108,7 +108,7 @@ while [ "$#" -gt 0 ]; do
 done
 
 collect_env_args() {
-  ENV_ARGS=(-e DUST_IN_CONTAINER=1 -e "SSH_AUTH_SOCK=${SSH_AUTH_SOCK_MOUNT_DST}")
+  ENV_ARGS=(-e RUBY_IN_CONTAINER=1 -e "SSH_AUTH_SOCK=${SSH_AUTH_SOCK_MOUNT_DST}")
   for var in \
     OP_SERVICE_ACCOUNT_TOKEN \
     OP_ENVIRONMENT_ID \
@@ -129,7 +129,7 @@ exec_interactive() {
     -e SHELL=/bin/zsh \
     -e LANG=C.UTF-8 \
     -e LC_ALL=C.UTF-8 \
-    -e DUST_IN_CONTAINER=1 \
+    -e RUBY_IN_CONTAINER=1 \
     -e "SSH_AUTH_SOCK=${SSH_AUTH_SOCK_MOUNT_DST}" \
     "${ENV_ARGS[@]}" \
     "$CONTAINER_NAME" \
@@ -153,7 +153,7 @@ ensure_container_running() {
     -e SHELL=/bin/zsh \
     -e LANG=C.UTF-8 \
     -e LC_ALL=C.UTF-8 \
-    -e DUST_IN_CONTAINER=1 \
+    -e RUBY_IN_CONTAINER=1 \
     -e "SSH_AUTH_SOCK=${SSH_AUTH_SOCK_MOUNT_DST}" \
     -p 3000:3000 \
     -p 3010:3010 \

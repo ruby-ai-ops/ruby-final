@@ -17,7 +17,7 @@ const MAX_OUTPUT_TOKENS = 64_000;
 // support interleaved thinking. That is why the endpoint overrides the
 // converter's thinking leaf with `reasoningToExtendedThinkingConfig` below.
 //
-// Our effort names are therefore a Dust abstraction over `budget_tokens`
+// Our effort names are therefore a Ruby abstraction over `budget_tokens`
 // (mapped in `EXTENDED_THINKING_BUDGET_TOKENS`), not an API parameter. The API
 // only requires the budget to be >= 1024 and < `max_tokens`, so `xhigh` (8192)
 // and `maximal` (16384) are accepted too — verified live on 2026-07-27 — but we
@@ -78,9 +78,9 @@ export function WithAnthropicClaudeHaikuFourDotFiveConfig<
       unknown
     > = configSchema;
 
-    // Typed as `number` (not the literal) so the Dust layer can cap it.
+    // Typed as `number` (not the literal) so the Ruby layer can cap it.
     static readonly contextSize: number = CONTEXT_SIZE;
-    // Typed as `number` (not the literal) so the Dust layer can cap it.
+    // Typed as `number` (not the literal) so the Ruby layer can cap it.
     static readonly maxOutputTokens: number = MAX_OUTPUT_TOKENS;
 
     // Haiku 4.5 has extended thinking but not adaptive thinking, so it overrides

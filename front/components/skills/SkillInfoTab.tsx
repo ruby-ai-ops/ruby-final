@@ -29,7 +29,7 @@ import {
   Separator,
   Spinner,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import sortBy from "lodash/sortBy";
 import { useCallback, useMemo, useState } from "react";
 

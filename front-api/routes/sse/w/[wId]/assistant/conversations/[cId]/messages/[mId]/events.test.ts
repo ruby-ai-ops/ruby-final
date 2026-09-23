@@ -79,7 +79,7 @@ describe("GET /api/sse/w/[wId]/assistant/conversations/[cId]/messages/[mId]/even
   it("streams events for an agent message to the client", async () => {
     const { workspace, auth } = await createPrivateApiMockRequest();
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const agentMessageId = await getMessageSIdByRank(auth, conversation.sId, 1);
@@ -89,7 +89,7 @@ describe("GET /api/sse/w/[wId]/assistant/conversations/[cId]/messages/[mId]/even
       data: {
         type: "generation_tokens",
         created: 0,
-        configurationId: "dust",
+        configurationId: "ruby",
         messageId: "msg",
         text: "hello",
         classification: "tokens",

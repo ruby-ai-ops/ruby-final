@@ -155,7 +155,7 @@ makeScript(
       logger.error("No data source found for connector ID");
       return;
     }
-    const { dustAPIProjectId: projectId, dustAPIDataSourceId: dataSourceId } =
+    const { rubyAPIProjectId: projectId, rubyAPIDataSourceId: dataSourceId } =
       dataSource;
 
     const coreDataSourceId = await getCoreDataSourceId(

@@ -1,5 +1,5 @@
 /**
- * Shared types for the DustFileSystem abstraction.
+ * Shared types for the RubyFileSystem abstraction.
  *
  * Scoped path: the agent/API-visible path format, e.g. `conversation-{cId}/report.pdf`,
  * `pod-{pId}/data.csv`, or `user-{uId}/memory.md`. Every public interface accepts and
@@ -73,7 +73,7 @@ export type SandboxOnlyMount = SandboxOnlyMountConfig &
     | { kind: "frame_persistent_files"; frameId: string }
   );
 
-export type DustFileSystemErrorCode =
+export type RubyFileSystemErrorCode =
   | "unauthorized"
   | "not_found"
   | "invalid_path"
@@ -82,22 +82,22 @@ export type DustFileSystemErrorCode =
   | "already_exists"
   | "internal";
 
-export class DustFileSystemError extends Error {
+export class RubyFileSystemError extends Error {
   constructor(
-    readonly code: DustFileSystemErrorCode,
+    readonly code: RubyFileSystemErrorCode,
     message: string
   ) {
     super(message);
-    this.name = "DustFileSystemError";
+    this.name = "RubyFileSystemError";
   }
 }
 
-export function isDustFileSystemError(
+export function isRubyFileSystemError(
   err: unknown,
-  code?: DustFileSystemErrorCode
-): err is DustFileSystemError {
+  code?: RubyFileSystemErrorCode
+): err is RubyFileSystemError {
   return (
-    err instanceof DustFileSystemError &&
+    err instanceof RubyFileSystemError &&
     (code === undefined || err.code === code)
   );
 }

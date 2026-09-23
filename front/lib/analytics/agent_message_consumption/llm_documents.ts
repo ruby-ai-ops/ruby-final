@@ -45,33 +45,33 @@ function emptyGrossCredits(): AgentMessageConsumptionAnalyticsLlmGrossCreditMicr
 // Match each model run to the step stored on its output content. If no content identifies the run,
 // use its zero-based position in the message's run list.
 function stepIndexByRunModelId({
-  dustRunIds,
+  rubyRunIds,
   runs,
   stepContents,
 }: Pick<
   AgentMessageConsumptionAnalyticsInput,
-  "dustRunIds" | "runs" | "stepContents"
+  "rubyRunIds" | "runs" | "stepContents"
 >): Map<ModelId, number> {
-  const fallbackStepByDustRunId = new Map(
-    dustRunIds.map((dustRunId, index) => [dustRunId, index])
+  const fallbackStepByRubyRunId = new Map(
+    rubyRunIds.map((rubyRunId, index) => [rubyRunId, index])
   );
-  const contentStepByDustRunId = new Map<string, number>();
+  const contentStepByRubyRunId = new Map<string, number>();
   for (const content of stepContents) {
-    if (content.dustRunId === null) {
+    if (content.rubyRunId === null) {
       continue;
     }
 
-    const current = contentStepByDustRunId.get(content.dustRunId);
+    const current = contentStepByRubyRunId.get(content.rubyRunId);
     if (current === undefined || content.step < current) {
-      contentStepByDustRunId.set(content.dustRunId, content.step);
+      contentStepByRubyRunId.set(content.rubyRunId, content.step);
     }
   }
 
   return new Map(
     runs.map((run) => [
       run.id,
-      contentStepByDustRunId.get(run.dustRunId) ??
-        fallbackStepByDustRunId.get(run.dustRunId) ??
+      contentStepByRubyRunId.get(run.rubyRunId) ??
+        fallbackStepByRubyRunId.get(run.rubyRunId) ??
         0,
     ])
   );

@@ -3,7 +3,7 @@
 import { CONVERSATION_ERROR_TYPES } from "@app/types/assistant/conversation";
 import type { CoreAPIError } from "@app/types/core/core_api";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import type { ConnectorsAPIError } from "@dust-tt/client";
+import type { ConnectorsAPIError } from "@ruby-ai/client";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import type { CellInfo } from "./cell";
 
@@ -83,7 +83,7 @@ const API_ERROR_TYPES = [
   "service_unavailable",
   // Use by agent creation / update
   "assistant_saving_error",
-  // Used in the DustAPI client:
+  // Used in the RubyAPI client:
   "unexpected_error_format",
   "unexpected_response_format",
   "unexpected_network_error",
@@ -99,8 +99,8 @@ const API_ERROR_TYPES = [
   "template_not_found",
   // Invitations:
   "invitation_already_sent_recently",
-  // DustAppSecrets:
-  "dust_app_secret_not_found",
+  // RubyAppSecrets:
+  "ruby_app_secret_not_found",
   // Key:
   "key_not_found",
   "insufficient_key_scope",

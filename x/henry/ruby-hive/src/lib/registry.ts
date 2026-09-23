@@ -1,0 +1,399 @@
+// Service registry - centralized configuration for all services
+
+import { stat } from "node:fs/promises";
+import { type Environment, getEnvironmentWorktreeDir } from "./environment";
+import { logger } from "./logger";
+import { getEnvFilePath, getLogPath } from "./paths";
+import type { PortAllocation } from "./ports";
+import { isServiceRunning, readFileTail, spawnShellDaemon } from "./process";
+import { ALL_SERVICES, type ServiceName } from "./services";
+import { buildShell } from "./shell";
+
+// Readiness check types - how to determine if a service is ready
+export type ReadinessCheck =
+  | { type: "http"; url: (ports: PortAllocation) => string }
+  | { type: "file"; path: (env: Environment) => string };
+
+// Service configuration
+export interface ServiceConfig {
+  // Working directory relative to worktree (e.g., "front", "core", "sdks/js")
+  cwd: string;
+  // Whether this service needs nvm sourced
+  needsNvm: boolean;
+  // Whether this service needs env.sh sourced
+  needsEnvSh: boolean;
+  // Build the start command (receives environment for port info)
+  buildCommand: (env: Environment) => string;
+  // Readiness check (optional) - how to determine if service is ready
+  readinessCheck?: ReadinessCheck;
+  // Port key from PortAllocation (for display purposes)
+  portKey?: keyof PortAllocation;
+}
+
+// Service registry - defines how each service runs
+export const SERVICE_REGISTRY: Record<ServiceName, ServiceConfig> = {
+  ui: {
+    cwd: "ui",
+    needsNvm: true,
+    needsEnvSh: false,
+    buildCommand: () => "npm run watch",
+    readinessCheck: {
+      type: "file",
+      path: (env) => `${getEnvironmentWorktreeDir(env.metadata)}/ui/dist/esm/index.js`,
+    },
+  },
+  sdk: {
+    cwd: "sdks/js",
+    needsNvm: true,
+    needsEnvSh: false,
+    buildCommand: () => "npm run watch",
+    readinessCheck: {
+      type: "file",
+      path: (env) => `${getEnvironmentWorktreeDir(env.metadata)}/sdks/js/dist/client.esm.js`,
+    },
+  },
+  "front-api": {
+    cwd: "front-api",
+    needsNvm: true,
+    needsEnvSh: true,
+    // forbid-next.cjs throws if anything loads `next` at runtime, guaranteeing
+    // the Hono server (not Next) serves every request. Mirrors the front-hono
+    // proc in tools/mprocs.yaml.
+    // HOSTNAME=127.0.0.1 forces an IPv4 bind: "localhost" resolves to ::1 on
+    // macOS, but the port forwarder connects upstream over IPv4, so without
+    // this the forwarded port (3000) cannot reach front-api.
+    // Inline PORT= shadows the env.sh `PORT=ports.front` export so front-api
+    // binds its own dedicated port instead of stealing the proxy port.
+    buildCommand: (env) =>
+      `HOSTNAME=127.0.0.1 PORT=${env.ports.frontApi} NODE_ENV=development NODE_OPTIONS=--require=./forbid-next.cjs npm run dev`,
+    readinessCheck: {
+      type: "http",
+      url: (ports) => `http://localhost:${ports.frontApi}/api/healthz`,
+    },
+    portKey: "frontApi",
+  },
+  marketing: {
+    cwd: "marketing",
+    needsNvm: true,
+    needsEnvSh: true,
+    // -p overrides PORT inherited from env.sh.
+    buildCommand: (env) => `npm run dev -- -p ${env.ports.marketing}`,
+    readinessCheck: {
+      type: "http",
+      url: (ports) => `http://localhost:${ports.marketing}/`,
+    },
+    portKey: "marketing",
+  },
+  proxy: {
+    cwd: "x/henry/ruby-hive",
+    needsNvm: false,
+    needsEnvSh: false,
+    buildCommand: (env) =>
+      `bun run src/proxy-daemon.ts ${env.ports.front} ${env.ports.frontApi} ${env.ports.marketing}`,
+    readinessCheck: {
+      type: "http",
+      url: (ports) => `http://localhost:${ports.front}/__hive/healthz`,
+    },
+    portKey: "front",
+  },
+  core: {
+    cwd: "core",
+    needsNvm: false,
+    needsEnvSh: true,
+    buildCommand: () => "cargo run --bin core-api",
+    readinessCheck: {
+      type: "http",
+      url: (ports) => `http://localhost:${ports.core}/`,
+    },
+    portKey: "core",
+  },
+  oauth: {
+    cwd: "core",
+    needsNvm: false,
+    needsEnvSh: true,
+    buildCommand: () => "cargo run --bin oauth",
+    readinessCheck: {
+      type: "http",
+      url: (ports) => `http://localhost:${ports.oauth}/`,
+    },
+    portKey: "oauth",
+  },
+  connectors: {
+    cwd: "connectors",
+    needsNvm: true,
+    needsEnvSh: true,
+    buildCommand: (env) =>
+      `TEMPORAL_NAMESPACE=ruby-hive-${env.name}-connectors npx tsx src/start.ts -p ${env.ports.connectors}`,
+    portKey: "connectors",
+  },
+  "front-workers": {
+    cwd: "front",
+    needsNvm: true,
+    needsEnvSh: true,
+    buildCommand: () => "./admin/dev_worker.sh",
+  },
+  "front-spa-admin": {
+    cwd: "front-spa",
+    needsNvm: false,
+    needsEnvSh: true,
+    buildCommand: (env) => `npm run dev:admin -- --port ${env.ports.frontSpaAdmin} --host 127.0.0.1`,
+    readinessCheck: {
+      type: "http",
+      url: (ports) => `http://localhost:${ports.frontSpaAdmin}/`,
+    },
+    portKey: "frontSpaAdmin",
+  },
+  "front-spa-app": {
+    cwd: "front-spa",
+    needsNvm: false,
+    needsEnvSh: true,
+    buildCommand: (env) => `npm run dev:app -- --port ${env.ports.frontSpaApp} --host 127.0.0.1`,
+    readinessCheck: {
+      type: "http",
+      url: (ports) => `http://localhost:${ports.frontSpaApp}/`,
+    },
+    portKey: "frontSpaApp",
+  },
+  viz: {
+    cwd: "viz",
+    needsNvm: true,
+    needsEnvSh: true,
+    buildCommand: (env) => `npm run dev -- -p ${env.ports.viz}`,
+    readinessCheck: {
+      type: "http",
+      url: (ports) => `http://localhost:${ports.viz}/`,
+    },
+    portKey: "viz",
+  },
+  storybook: {
+    cwd: "ui",
+    needsNvm: true,
+    needsEnvSh: false,
+    // The package.json script hard-codes 6006, so pass the port ourselves.
+    buildCommand: (env) =>
+      `npx storybook dev -p ${env.ports.storybook} --host 127.0.0.1 --exact-port --ci`,
+    readinessCheck: {
+      type: "http",
+      url: (ports) => `http://localhost:${ports.storybook}/`,
+    },
+    portKey: "storybook",
+  },
+  "sqlite-worker": {
+    cwd: "core",
+    needsNvm: false,
+    needsEnvSh: true,
+    // Only needed to power in-conversation SQL table queries; started on demand
+    // rather than with the rest of core since most work never touches it.
+    // DATABASES_STORE_DATABASE_URI is intentionally omitted: the binary now
+    // stores table data in GCS (RUBY_TABLES_BUCKET) and no longer reads it.
+    buildCommand: (env) =>
+      `IS_LOCAL_DEV=1 CORE_API_KEY=ruby-hive SQLITE_WORKER_PORT=${env.ports.sqliteWorker} cargo run --bin sqlite-worker`,
+    readinessCheck: {
+      type: "http",
+      url: (ports) => `http://localhost:${ports.sqliteWorker}/`,
+    },
+    portKey: "sqliteWorker",
+  },
+};
+
+const registryKeys = Object.keys(SERVICE_REGISTRY) as ServiceName[];
+const missingKeys = ALL_SERVICES.filter((service) => !registryKeys.includes(service));
+const extraKeys = registryKeys.filter((service) => !ALL_SERVICES.includes(service));
+if (missingKeys.length > 0 || extraKeys.length > 0) {
+  throw new Error(
+    `SERVICE_REGISTRY mismatch. Missing: ${missingKeys.join(", ") || "none"}. Extra: ${
+      extraKeys.join(", ") || "none"
+    }.`
+  );
+}
+
+// Services to start during warm (all services except ui, SDK, viz, storybook and
+// sqlite-worker which start at spawn/manually).
+export const WARM_SERVICES: ServiceName[] = ALL_SERVICES.filter(
+  (service) =>
+    service !== "ui" &&
+    service !== "sdk" &&
+    service !== "viz" &&
+    service !== "storybook" &&
+    service !== "sqlite-worker"
+);
+
+// Build the full shell command for a service
+// Note: For Rust services, cargo run is used with a symlinked target directory
+// This gives us incremental compilation - only changed code is recompiled
+function buildServiceCommand(env: Environment, service: ServiceName): string {
+  const config = SERVICE_REGISTRY[service];
+
+  if (config.needsEnvSh) {
+    return buildShell({
+      sourceEnv: getEnvFilePath(env.name),
+      sourceNvm: config.needsNvm,
+      run: config.buildCommand(env),
+    });
+  }
+
+  return buildShell({
+    sourceNvm: config.needsNvm,
+    run: config.buildCommand(env),
+  });
+}
+
+// Get the working directory for a service
+function getServiceCwd(env: Environment, service: ServiceName): string {
+  const config = SERVICE_REGISTRY[service];
+  const worktreePath = getEnvironmentWorktreeDir(env.metadata);
+  return `${worktreePath}/${config.cwd}`;
+}
+
+// Start a single service (assumes dependencies are already running)
+export async function startService(env: Environment, service: ServiceName): Promise<void> {
+  if (await isServiceRunning(env.name, service)) {
+    logger.info(`${service} already running`);
+    return;
+  }
+
+  logger.step(`Starting ${service}...`);
+
+  const command = buildServiceCommand(env, service);
+  const cwd = getServiceCwd(env, service);
+
+  await spawnShellDaemon(env.name, service, command, { cwd });
+  logger.success(`${service} started`);
+}
+
+// Check if a service is healthy (for services with HTTP readiness check)
+export async function checkServiceHealth(
+  service: ServiceName,
+  ports: PortAllocation,
+  timeoutMs = 2000
+): Promise<boolean> {
+  const config = SERVICE_REGISTRY[service];
+  if (!config.readinessCheck || config.readinessCheck.type !== "http") {
+    return true; // No HTTP health check defined, assume healthy if running
+  }
+
+  const url = config.readinessCheck.url(ports);
+  try {
+    const response = await fetch(url, { signal: AbortSignal.timeout(timeoutMs) });
+    return response.ok;
+  } catch {
+    // Network error or timeout means service is not healthy
+    return false;
+  }
+}
+
+// Wait for HTTP service to become healthy
+async function waitForHttpReady(
+  service: ServiceName,
+  url: string,
+  timeoutMs: number
+): Promise<void> {
+  logger.step(`Waiting for ${service} to be healthy...`);
+
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    try {
+      const response = await fetch(url, { signal: AbortSignal.timeout(2000) });
+      if (response.ok) {
+        logger.success(`${service} is healthy`);
+        return;
+      }
+    } catch {
+      // Network error or timeout - service not ready yet, continue polling
+    }
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
+
+  throw new Error(`${service} health check timed out`);
+}
+
+// Wait for file-based service (like SDK build) to be ready
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: complex build wait with error detection
+async function waitForFileReady(
+  service: ServiceName,
+  env: Environment,
+  targetPath: string,
+  timeoutMs: number
+): Promise<void> {
+  logger.step(`Waiting for ${service} to build...`);
+
+  const logFile = getLogPath(env.name, service);
+  const start = Date.now();
+  const checkInterval = 500;
+  let lastLogSize = 0;
+
+  while (Date.now() - start < timeoutMs) {
+    // Check if build output exists
+    const targetFile = Bun.file(targetPath);
+    if (await targetFile.exists()) {
+      logger.success(`${service} build complete`);
+      return;
+    }
+
+    // Check log for errors
+    const log = Bun.file(logFile);
+    if (await log.exists()) {
+      const info = await stat(logFile);
+      if (info.size !== lastLogSize) {
+        lastLogSize = info.size;
+        const logContent = await readFileTail(logFile, 4000);
+        if (logContent.includes("npm error") || logContent.includes("Error:")) {
+          const errorLines = logContent
+            .split("\n")
+            .filter((l) => l.includes("error") || l.includes("Error"))
+            .slice(0, 5)
+            .join("\n");
+          throw new Error(`${service} build failed:\n${errorLines}`);
+        }
+      }
+    }
+
+    // Check if process is still running
+    if (!(await isServiceRunning(env.name, service))) {
+      const logContent = (await log.exists()) ? await log.text() : "No log available";
+      throw new Error(`${service} process exited unexpectedly. Log:\n${logContent.slice(-500)}`);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, checkInterval));
+  }
+
+  throw new Error(`${service} build timed out after ${timeoutMs / 1000}s`);
+}
+
+// Wait for a service to become ready (unified function for all readiness check types)
+export async function waitForServiceReady(
+  env: Environment,
+  service: ServiceName,
+  timeoutMs = 120000
+): Promise<void> {
+  const config = SERVICE_REGISTRY[service];
+  if (!config.readinessCheck) {
+    return; // No readiness check, nothing to wait for
+  }
+
+  const check = config.readinessCheck;
+  if (check.type === "http") {
+    return waitForHttpReady(service, check.url(env.ports), timeoutMs);
+  }
+  // check.type === "file"
+  return waitForFileReady(service, env, check.path(env), timeoutMs);
+}
+
+// Get HTTP health checks for active services (for status display)
+export function getHealthChecks(
+  ports: PortAllocation
+): Array<{ service: ServiceName; url: string }> {
+  const checks: Array<{ service: ServiceName; url: string }> = [];
+
+  for (const service of ALL_SERVICES) {
+    const config = SERVICE_REGISTRY[service];
+    if (config.readinessCheck?.type === "http") {
+      checks.push({
+        service,
+        url: config.readinessCheck.url(ports),
+      });
+    }
+  }
+
+  return checks;
+}

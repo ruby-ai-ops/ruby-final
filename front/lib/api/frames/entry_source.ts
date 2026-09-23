@@ -1,13 +1,13 @@
 import path from "node:path";
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import type { FileResource } from "@app/lib/resources/file_resource";
 import { parseFrameManifest } from "@app/types/api/frame_manifest";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 
-type FrameEntrySourceError = DustError<"file_not_found" | "invalid_file">;
+type FrameEntrySourceError = RubyError<"file_not_found" | "invalid_file">;
 
 /**
  * @cc [owner:davidebbo,label:product] frame-entry-source-reads-current-sources
@@ -24,30 +24,30 @@ export async function readFrameV2EntrySource(
   const sourceDirectory = frame.getFrameV2SourceDirectoryPath(auth);
   if (!manifestPath || !sourceDirectory) {
     return new Err(
-      new DustError("file_not_found", "Frame source folder not found.")
+      new RubyError("file_not_found", "Frame source folder not found.")
     );
   }
 
-  const fileSystemResult = await DustFileSystem.fromScopedPath(
+  const fileSystemResult = await RubyFileSystem.fromScopedPath(
     auth,
     manifestPath
   );
   if (fileSystemResult.isErr()) {
     return new Err(
-      new DustError("file_not_found", fileSystemResult.error.message)
+      new RubyError("file_not_found", fileSystemResult.error.message)
     );
   }
-  const dustFs = fileSystemResult.value;
+  const rubyFs = fileSystemResult.value;
 
-  const manifestBuffer = await dustFs.readBuffer(manifestPath);
+  const manifestBuffer = await rubyFs.readBuffer(manifestPath);
   if (manifestBuffer.isErr()) {
     return new Err(
-      new DustError("file_not_found", manifestBuffer.error.message)
+      new RubyError("file_not_found", manifestBuffer.error.message)
     );
   }
   if (manifestBuffer.value === null) {
     return new Err(
-      new DustError(
+      new RubyError(
         "file_not_found",
         `Frame manifest not found: ${manifestPath}`
       )
@@ -56,20 +56,20 @@ export async function readFrameV2EntrySource(
 
   const manifest = parseFrameManifest(manifestBuffer.value);
   if (manifest.isErr()) {
-    return new Err(new DustError("invalid_file", manifest.error));
+    return new Err(new RubyError("invalid_file", manifest.error));
   }
 
   const entryPath = path.posix.join(
     sourceDirectory,
     manifest.value.uiEntryPoint
   );
-  const entryBuffer = await dustFs.readBuffer(entryPath);
+  const entryBuffer = await rubyFs.readBuffer(entryPath);
   if (entryBuffer.isErr()) {
-    return new Err(new DustError("file_not_found", entryBuffer.error.message));
+    return new Err(new RubyError("file_not_found", entryBuffer.error.message));
   }
   if (entryBuffer.value === null) {
     return new Err(
-      new DustError(
+      new RubyError(
         "file_not_found",
         `Frame entry file not found: ${manifest.value.uiEntryPoint}`
       )

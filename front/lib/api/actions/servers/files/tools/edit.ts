@@ -10,7 +10,7 @@ import {
   FILES_SERVER_NAME,
 } from "@app/lib/api/actions/servers/files/metadata";
 import {
-  getDustFileSystemForAgentLoop,
+  getRubyFileSystemForAgentLoop,
   requireAgentLoopConversation,
   scopedPathsFromArgs,
 } from "@app/lib/api/actions/servers/files/tools/agent_loop_fs";
@@ -46,7 +46,7 @@ export async function editHandler(
     return conversationRes;
   }
 
-  const fsResult = await getDustFileSystemForAgentLoop(
+  const fsResult = await getRubyFileSystemForAgentLoop(
     auth,
     conversationRes.value,
     scopedPathsFromArgs(path)
@@ -55,9 +55,9 @@ export async function editHandler(
     return fsResult;
   }
 
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
-  const statResult = await dustFs.stat(path);
+  const statResult = await rubyFs.stat(path);
   if (statResult.isErr()) {
     return new Err(new MCPError(statResult.error.message, { tracked: false }));
   }
@@ -93,7 +93,7 @@ export async function editHandler(
     );
   }
 
-  const readResult = await dustFs.readBuffer(path);
+  const readResult = await rubyFs.readBuffer(path);
   if (readResult.isErr()) {
     return new Err(new MCPError(readResult.error.message, { tracked: false }));
   }
@@ -144,7 +144,7 @@ export async function editHandler(
   }
 
   // Reusing the stored content type keeps a Frame source frame-typed on the mount.
-  const writeResult = await dustFs.write(path, updatedBuffer, contentType);
+  const writeResult = await rubyFs.write(path, updatedBuffer, contentType);
   if (writeResult.isErr()) {
     const err = writeResult.error;
     switch (err.code) {

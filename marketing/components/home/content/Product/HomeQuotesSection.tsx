@@ -52,7 +52,7 @@ const SLIDE_CSS = `
 `;
 
 // Quote section per Figma node 3248:1478. Two-column layout: a light-blue
-// panel with the testimonial as a 56px Geist semibold headline, attribution
+// panel with the testimonial as a 56px Söhne semibold headline, attribution
 // at the bottom-left, prev/next arrows at the bottom-right cycling through
 // the quotes array. Photo of the speaker fills the right column.
 //
@@ -112,7 +112,7 @@ export function HomeQuotesSection({ quotes }: HomeQuotesSectionProps) {
       <div className="mx-auto w-full max-w-[1180px] px-6">
         <HomeReveal className="flex flex-col items-stretch gap-4 lg:flex-row">
           <div
-            className={`flex flex-1 flex-col gap-8 rounded-2xl p-10 transition-colors duration-300 md:p-14 lg:gap-12 ${activeQuote.bg ?? "bg-blue-50"}`}
+            className={`flex flex-1 flex-col gap-8 rounded-2xl p-6 sm:p-10 md:p-14 transition-colors duration-300 lg:gap-12 ${activeQuote.bg ?? "bg-blue-50"}`}
           >
             {/* Stack a ghost copy of every quote in the same grid cell so
                 the cell always sizes to the tallest quote — the card height

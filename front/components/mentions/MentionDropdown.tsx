@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
   Eye,
   MessagePlusCircle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React from "react";
 
 interface MentionDropdownProps {

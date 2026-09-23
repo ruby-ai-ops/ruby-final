@@ -8,7 +8,7 @@ import type { KeyType } from "@app/types/key";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import { pluralize } from "@app/types/shared/utils/string_utils";
 import type { RoleType, WorkspaceType } from "@app/types/user";
-import type { DataTableSkeletonCellProps, MenuItem } from "@dust-tt/sparkle";
+import type { DataTableSkeletonCellProps, MenuItem } from "@ruby-ai/ui";
 import {
   Building04,
   Button,
@@ -32,7 +32,7 @@ import {
   SearchInput,
   Tooltip,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type {
   ColumnDef,
   PaginationState,
@@ -778,7 +778,7 @@ export function APIKeysTable({
         <>
           {keys.length === 0 ? (
             <div className="py-8 text-center text-sm text-muted-foreground">
-              Create an API key to start using Dust programmatically.
+              Create an API key to start using Ruby programmatically.
             </div>
           ) : filteredRows.length === 0 ? (
             <div className="py-8 text-center text-sm text-muted-foreground">

@@ -11,7 +11,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 type CreateConnectionOAuthModalProps = {
@@ -80,7 +80,7 @@ export function CreateConnectionOAuthModal({
                       <strong>Disclosure</strong>
                     </div>
                     <div className="copy-sm font-normal text-muted-foreground">
-                      Dust's use of information received from the Google APIs
+                      Ruby's use of information received from the Google APIs
                       will adhere to{" "}
                       <Hoverable
                         variant="highlight"
@@ -99,7 +99,7 @@ export function CreateConnectionOAuthModal({
                     <div className="copy-sm font-normal text-muted-foreground">
                       By connecting Google Drive, you acknowledge and agree that
                       within your Google Drive, the data contained in the files
-                      and folders that you choose to synchronize with Dust will
+                      and folders that you choose to synchronize with Ruby will
                       be transmitted to third-party entities, including but not
                       limited to Artificial Intelligence (AI) model providers,
                       for the purpose of processing and analysis. This process

@@ -29,7 +29,7 @@ lazy_static! {
 
 /// We support three Slack apps. Our default `connection` app (for data source connections) a
 /// `personal_actions` app (for personal MCP server interactions) and a `bot` app (for interactions
-/// with Dust from Slack).
+/// with Ruby from Slack).
 #[derive(Debug, PartialEq, Clone)]
 pub enum SlackUseCase {
     Connection,

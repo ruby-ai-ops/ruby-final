@@ -1,8 +1,8 @@
 use anyhow::Result;
 use clap::Parser;
-use dust::databases::{remote_databases::remote_database::get_remote_database, table::Table};
-use dust::project::Project;
-use dust::utils;
+use ruby::databases::{remote_databases::remote_database::get_remote_database, table::Table};
+use ruby::project::Project;
+use ruby::utils;
 use tokio;
 
 #[derive(Parser)]

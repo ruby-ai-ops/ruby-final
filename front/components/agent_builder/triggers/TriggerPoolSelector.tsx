@@ -14,7 +14,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
   Label,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useController, useFormContext } from "react-hook-form";
 
 const POOL_OPTIONS: { value: TriggerExecutionMode; label: string }[] = [

@@ -17,7 +17,7 @@ import {
   Tabs,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 type AgentBuilderRightPanelTabType = "sidekick" | "preview" | "insights";

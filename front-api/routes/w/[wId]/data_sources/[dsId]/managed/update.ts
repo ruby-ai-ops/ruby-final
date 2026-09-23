@@ -17,7 +17,7 @@ import {
 import { isAPIError } from "@app/types/error";
 import { sendUserOperationMessage } from "@app/types/shared/user_operation";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { isConnectorsAPIError } from "@dust-tt/client";
+import { isConnectorsAPIError } from "@ruby-ai/client";
 import { workspaceApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";

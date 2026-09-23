@@ -572,7 +572,7 @@ export const MONDAY_SERVER = {
       supported_use_cases: ["personal_actions", "platform_actions"],
     },
     icon: "MondayLogo",
-    documentationUrl: "https://docs.dust.tt/docs/monday",
+    documentationUrl: "https://docs.ruby.ad/docs/monday",
   },
   tools: MONDAY_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

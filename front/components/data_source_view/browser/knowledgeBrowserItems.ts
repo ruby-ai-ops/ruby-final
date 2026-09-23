@@ -24,7 +24,7 @@ import { removeNulls } from "@app/types/shared/utils/general";
 import { pluralize } from "@app/types/shared/utils/string_utils";
 import type { EnrichedSpaceType } from "@app/types/space";
 import { SPACE_KINDS } from "@app/types/space";
-import { Folder } from "@dust-tt/sparkle";
+import { Folder } from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
 interface KnowledgeBrowserItemBase {

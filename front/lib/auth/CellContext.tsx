@@ -16,38 +16,38 @@ import {
 import { useSWRConfig } from "swr";
 
 const STORAGE_KEY =
-  import.meta.env?.VITE_DUST_CELL_STORAGE_KEY ?? "dust-cell-api";
+  import.meta.env?.VITE_RUBY_CELL_STORAGE_KEY ?? "ruby-cell-api";
 
 const LEGACY_REGION_STORAGE_KEY =
-  import.meta.env?.VITE_DUST_REGION_STORAGE_KEY ?? "dust-region-api";
+  import.meta.env?.VITE_RUBY_REGION_STORAGE_KEY ?? "ruby-region-api";
 
-const DEFAULT_URL = import.meta.env?.VITE_DUST_API_URL ?? "";
+const DEFAULT_URL = import.meta.env?.VITE_RUBY_API_URL ?? "";
 
-const DEFAULT_CELL: CellType = isCellType(import.meta.env?.VITE_DUST_CELL ?? "")
-  ? (import.meta.env?.VITE_DUST_CELL as CellType)
+const DEFAULT_CELL: CellType = isCellType(import.meta.env?.VITE_RUBY_CELL ?? "")
+  ? (import.meta.env?.VITE_RUBY_CELL as CellType)
   : "cell-00000";
 
 // Client-side cell catalog — mirrors front/lib/api/cells/config.ts CELLS, but
-// resolves URLs from Vite env (VITE_DUST_API_URL_US / _EU / _CELL_00002) instead of server env.
+// resolves URLs from Vite env (VITE_RUBY_API_URL_US / _EU / _CELL_00002) instead of server env.
 function getCellInfo(cell: CellType): CellInfo {
   switch (cell) {
     case "cell-00000":
       return {
         name: cell,
         region: "us-central1",
-        url: import.meta.env?.VITE_DUST_API_URL_US ?? DEFAULT_URL,
+        url: import.meta.env?.VITE_RUBY_API_URL_US ?? DEFAULT_URL,
       };
     case "cell-00001":
       return {
         name: cell,
         region: "europe-west1",
-        url: import.meta.env?.VITE_DUST_API_URL_EU ?? DEFAULT_URL,
+        url: import.meta.env?.VITE_RUBY_API_URL_EU ?? DEFAULT_URL,
       };
     case "cell-00002":
       return {
         name: cell,
         region: "europe-west1",
-        url: import.meta.env?.VITE_DUST_API_URL_CELL_00002 ?? DEFAULT_URL,
+        url: import.meta.env?.VITE_RUBY_API_URL_CELL_00002 ?? DEFAULT_URL,
       };
     default:
       assertNever(cell);

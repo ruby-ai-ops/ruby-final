@@ -79,7 +79,7 @@ describe("GET /api/v1/w/[wId]/assistant/agent_configurations/[sId]", () => {
             handle: "API-created agent",
             description: "Created through the API",
             scope: "visible",
-            avatar_url: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+            avatar_url: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
             max_steps_per_run: 8,
             visualization_enabled: false,
           },
@@ -234,7 +234,7 @@ describe("GET /api/v1/w/[wId]/assistant/agent_configurations/[sId]", () => {
     );
     expect(archiveResponse.status).toBe(200);
 
-    for (const agentId of ["dust", agentConfig.sId]) {
+    for (const agentId of ["ruby", agentConfig.sId]) {
       const response = await getAgentConfiguration(workspace, key, agentId);
       const data = await response.json();
       expect(response.status).toBe(200);
@@ -262,7 +262,7 @@ describe("GET /api/v1/w/[wId]/assistant/agent_configurations/[sId]", () => {
 });
 
 describe("PATCH /api/v1/w/[wId]/assistant/agent_configurations/[sId]", () => {
-  it("applies configuration patch fields beyond userFavorite (regression dust-tt/dust#26698)", async () => {
+  it("applies configuration patch fields beyond userFavorite (regression ruby-ai/ruby#26698)", async () => {
     const { workspace, key, agentConfig } = await setupTest();
 
     const response = await patchAgentConfiguration(

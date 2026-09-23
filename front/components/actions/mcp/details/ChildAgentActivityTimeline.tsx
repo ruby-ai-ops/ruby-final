@@ -3,7 +3,7 @@ import type { PendingToolCall } from "@app/components/assistant/conversation/typ
 import { getPendingToolCallKey } from "@app/components/assistant/conversation/types";
 import { getToolCallDisplayLabel } from "@app/lib/actions/tool_display_labels";
 import type { InlineActivityStep } from "@app/types/assistant/conversation";
-import { AnimatedText, Check, XCircle } from "@dust-tt/sparkle";
+import { AnimatedText, Check, XCircle } from "@ruby-ai/ui";
 
 interface ChildAgentActivityTimelineProps {
   inlineActivitySteps: InlineActivityStep[];

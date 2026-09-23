@@ -1,5 +1,5 @@
 import { H2, H3, P } from "@marketing/components/home/ContentComponents";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import { AlertTriangle, Check, Cpu, Lock, Settings } from "lucide-react";
 import type { ReactNode } from "react";
 

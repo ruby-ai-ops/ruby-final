@@ -398,7 +398,7 @@ export class SnowflakeOAuthProvider implements BaseOAuthStrategyProvider {
         token: accessToken,
 
         // Route through the static-IP proxy when configured so customers with
-        // an IP-restricted Snowflake network policy (allowlisting only Dust's
+        // an IP-restricted Snowflake network policy (allowlisting only Ruby's
         // static egress IP) can complete the warehouse access check. Mirrors
         // the runtime client at `lib/api/actions/servers/snowflake/client.ts`.
         proxyHost: EnvironmentConfig.getOptionalEnvVariable("PROXY_HOST"),

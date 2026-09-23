@@ -84,8 +84,8 @@ async function listPrivateChannelIdsWithToken(
 }
 
 // Resolves the workspace Slack / Slack Bot connector and returns the set of
-// private channel IDs the Dust bot has joined.
-async function listDustBotPrivateChannelIds(
+// private channel IDs the Ruby bot has joined.
+async function listRubyBotPrivateChannelIds(
   auth: Authenticator
 ): Promise<Result<Set<string>, Error>> {
   const [[dataSourceSlack], [dataSourceSlackBot]] = await Promise.all([
@@ -143,8 +143,8 @@ async function listDustBotPrivateChannelIds(
 
 /**
  * Lists private Slack channels the current user is a member of *and* where the
- * Dust bot is present. User membership is discovered via the personal Slack
- * Tools OAuth token (ToS-safe; scoped to the requesting admin). Dust presence
+ * Ruby bot is present. User membership is discovered via the personal Slack
+ * Tools OAuth token (ToS-safe; scoped to the requesting admin). Ruby presence
  * is the intersection with the bot's joined private channels — matching the
  * public-channel picker, which only surfaces channels the bot can write to.
  */
@@ -191,7 +191,7 @@ export async function listUserPrivateSlackChannels(
 
   const [userChannelsRes, botChannelIdsRes] = await Promise.all([
     listPrivateChannelsWithToken(tokenRes.value.access_token, teamId),
-    listDustBotPrivateChannelIds(auth),
+    listRubyBotPrivateChannelIds(auth),
   ]);
 
   if (userChannelsRes.isErr()) {

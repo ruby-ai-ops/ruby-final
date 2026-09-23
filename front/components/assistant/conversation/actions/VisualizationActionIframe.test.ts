@@ -14,7 +14,7 @@ const mocks = vi.hoisted(() => ({
   logInfo: vi.fn(),
 }));
 
-vi.mock("@app/components/sparkle/ThemeContext", () => ({
+vi.mock("@app/components/ui/ThemeContext", () => ({
   useTheme: () => ({ isDark: mocks.isDark }),
 }));
 
@@ -173,7 +173,7 @@ describe("getSandboxFunctionInvocationAccessError", () => {
 });
 
 describe("VisualizationActionIframe", () => {
-  it("passes the resolved Dust theme in the iframe URL and reloads on changes", () => {
+  it("passes the resolved Ruby theme in the iframe URL and reloads on changes", () => {
     mocks.isDark = true;
     const props = {
       agentConfigurationId: null,
@@ -187,7 +187,7 @@ describe("VisualizationActionIframe", () => {
         complete: true,
         identifier: "viz-fil_frame",
       },
-      vizUrl: "https://viz.dust.tt",
+      vizUrl: "https://viz.ruby.ad",
       workspaceId: "w_current",
     };
     const { container, rerender } = render(
@@ -221,7 +221,7 @@ describe("VisualizationActionIframe", () => {
           complete: true,
           identifier: "viz-fil_frame",
         },
-        vizUrl: "https://viz.dust.tt",
+        vizUrl: "https://viz.ruby.ad",
         workspaceId: "w_current",
       })
     );
@@ -290,7 +290,7 @@ describe("VisualizationActionIframe", () => {
           complete: true,
           identifier: "viz-fil_frame",
         },
-        vizUrl: "https://viz.dust.tt",
+        vizUrl: "https://viz.ruby.ad",
         workspaceId: "w_current",
       })
     );
@@ -349,7 +349,7 @@ describe("VisualizationActionIframe", () => {
           complete: true,
           identifier: "viz-fil_frame",
         },
-        vizUrl: "https://viz.dust.tt",
+        vizUrl: "https://viz.ruby.ad",
         workspaceId: "w_current",
       })
     );
@@ -407,7 +407,7 @@ describe("VisualizationActionIframe", () => {
           complete: true,
           identifier: "viz-fil_frame",
         },
-        vizUrl: "https://viz.dust.tt",
+        vizUrl: "https://viz.ruby.ad",
         workspaceId: "w_current",
       })
     );

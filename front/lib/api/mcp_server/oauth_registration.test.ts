@@ -4,19 +4,19 @@ import { describe, expect, it } from "vitest";
 describe("sanitizeOAuthRegistrationRequestBody", () => {
   it("removes device_code from grant_types", () => {
     const body = JSON.stringify({
-      client_name: "Raycast MCP: Dust (dev)",
+      client_name: "Raycast MCP: Ruby (dev)",
       grant_types: [
         "authorization_code",
         "refresh_token",
         "urn:ietf:params:oauth:grant-type:device_code",
       ],
-      redirect_uris: ["raycast://oauth?package_name=mcp_server_dust_(dev)"],
+      redirect_uris: ["raycast://oauth?package_name=mcp_server_ruby_(dev)"],
     });
 
     expect(JSON.parse(sanitizeOAuthRegistrationRequestBody(body))).toEqual({
-      client_name: "Raycast MCP: Dust (dev)",
+      client_name: "Raycast MCP: Ruby (dev)",
       grant_types: ["authorization_code", "refresh_token"],
-      redirect_uris: ["raycast://oauth?package_name=mcp_server_dust_(dev)"],
+      redirect_uris: ["raycast://oauth?package_name=mcp_server_ruby_(dev)"],
     });
   });
 

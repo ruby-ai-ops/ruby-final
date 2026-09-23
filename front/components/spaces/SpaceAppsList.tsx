@@ -11,7 +11,7 @@ import type { AppType } from "@app/types/app";
 import { isString } from "@app/types/shared/utils/general";
 import type { SpaceType } from "@app/types/space";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, DataTable, Plus, Spinner, Terminal } from "@dust-tt/sparkle";
+import { Button, DataTable, Plus, Spinner, Terminal } from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import sortBy from "lodash/sortBy";
 import type { ParsedUrlQuery } from "querystring";

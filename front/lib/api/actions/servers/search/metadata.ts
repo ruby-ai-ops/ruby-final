@@ -2,7 +2,7 @@ import { ConfigurableToolInputSchemas } from "@app/lib/actions/mcp_internal_acti
 import type { ServerMetadata } from "@app/lib/actions/mcp_internal_actions/tool_definition";
 import { SearchWithDataSourcesInputSchema } from "@app/lib/actions/mcp_internal_actions/types";
 import { FIND_TAGS_TOOL_NAME } from "@app/lib/api/actions/servers/data_sources_file_system/metadata";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { z } from "zod";
 
 // Define constants locally to avoid circular dependency with constants.ts

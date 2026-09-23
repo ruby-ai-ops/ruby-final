@@ -1,16 +1,16 @@
 import type {
   CredentialsType,
-  DustManagedCredentialsType,
+  RubyManagedCredentialsType,
   ProviderType,
 } from "../provider";
 
 const {
-  DUST_MANAGED_SERP_API_KEY = "",
-  DUST_MANAGED_BROWSERLESS_API_KEY = "",
-  DUST_MANAGED_FIRECRAWL_API_KEY = "",
-  DUST_MANAGED_ELEVENLABS_API_KEY = "",
-  DUST_MANAGED_SPIDER_API_KEY = "",
-  DUST_MANAGED_EXA_API_KEY = "",
+  RUBY_MANAGED_SERP_API_KEY = "",
+  RUBY_MANAGED_BROWSERLESS_API_KEY = "",
+  RUBY_MANAGED_FIRECRAWL_API_KEY = "",
+  RUBY_MANAGED_ELEVENLABS_API_KEY = "",
+  RUBY_MANAGED_SPIDER_API_KEY = "",
+  RUBY_MANAGED_EXA_API_KEY = "",
 } = process.env;
 
 export const credentialsFromProviders = (
@@ -82,13 +82,13 @@ export const credentialsFromProviders = (
   return credentials;
 };
 
-export const dustManagedServiceCredentials = (): DustManagedCredentialsType => {
+export const rubyManagedServiceCredentials = (): RubyManagedCredentialsType => {
   return {
-    SERP_API_KEY: DUST_MANAGED_SERP_API_KEY,
-    BROWSERLESS_API_KEY: DUST_MANAGED_BROWSERLESS_API_KEY,
-    FIRECRAWL_API_KEY: DUST_MANAGED_FIRECRAWL_API_KEY,
-    ELEVENLABS_API_KEY: DUST_MANAGED_ELEVENLABS_API_KEY,
-    SPIDER_API_KEY: DUST_MANAGED_SPIDER_API_KEY,
-    EXA_API_KEY: DUST_MANAGED_EXA_API_KEY,
+    SERP_API_KEY: RUBY_MANAGED_SERP_API_KEY,
+    BROWSERLESS_API_KEY: RUBY_MANAGED_BROWSERLESS_API_KEY,
+    FIRECRAWL_API_KEY: RUBY_MANAGED_FIRECRAWL_API_KEY,
+    ELEVENLABS_API_KEY: RUBY_MANAGED_ELEVENLABS_API_KEY,
+    SPIDER_API_KEY: RUBY_MANAGED_SPIDER_API_KEY,
+    EXA_API_KEY: RUBY_MANAGED_EXA_API_KEY,
   };
 };

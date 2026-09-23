@@ -135,43 +135,43 @@ export default function BlogPage({
   return (
     <>
       <Head>
-        <title>{`Blog - Page ${currentPage} | Dust`}</title>
+        <title>{`Blog - Page ${currentPage} | Ruby`}</title>
         <meta
           name="description"
-          content="Insights, tutorials, and updates from the Dust team on AI agents, enterprise productivity, and building with AI."
+          content="Insights, tutorials, and updates from the Ruby team on AI agents, enterprise productivity, and building with AI."
         />
         <meta
           property="og:title"
-          content={`Blog - Page ${currentPage} | Dust`}
+          content={`Blog - Page ${currentPage} | Ruby`}
         />
         <meta
           property="og:description"
-          content="Insights, tutorials, and updates from the Dust team on AI agents and enterprise productivity."
+          content="Insights, tutorials, and updates from the Ruby team on AI agents and enterprise productivity."
         />
         <meta property="og:type" content="website" />
         <meta
           property="og:url"
-          content={`https://dust.tt/blog/page/${currentPage}`}
+          content={`https://ruby.ad/blog/page/${currentPage}`}
         />
         <meta property="og:image" content="/static/og_image.png" />
         <link
           rel="canonical"
-          href={`https://dust.tt/blog/page/${currentPage}`}
+          href={`https://ruby.ad/blog/page/${currentPage}`}
         />
         {currentPage > 1 && (
           <link
             rel="prev"
             href={
               currentPage === 2
-                ? "https://dust.tt/blog"
-                : `https://dust.tt/blog/page/${currentPage - 1}`
+                ? "https://ruby.ad/blog"
+                : `https://ruby.ad/blog/page/${currentPage - 1}`
             }
           />
         )}
         {currentPage < totalPages && (
           <link
             rel="next"
-            href={`https://dust.tt/blog/page/${currentPage + 1}`}
+            href={`https://ruby.ad/blog/page/${currentPage + 1}`}
           />
         )}
       </Head>

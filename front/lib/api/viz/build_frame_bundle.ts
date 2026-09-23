@@ -4,7 +4,7 @@ import type {
   SourceReader,
 } from "@app/lib/api/bundler/bundle_module";
 import { bundleModule } from "@app/lib/api/bundler/bundle_module";
-import type { DustFileSystem } from "@app/lib/api/file_system";
+import type { RubyFileSystem } from "@app/lib/api/file_system";
 import { validateTypeScriptSyntax } from "@app/lib/api/files/content_validation";
 import { injectSourceLocationTags } from "@app/lib/api/viz/source_location_tags";
 import logger from "@app/logger/logger";
@@ -91,7 +91,7 @@ export async function buildFrameBundle({
  * `conversation-<cId>/dashboards/sales`) as a {@link FrameSourceReader}.
  */
 export function createMountFrameSourceReader(
-  dustFs: DustFileSystem,
+  rubyFs: RubyFileSystem,
   rootScopedPath: string
 ): FrameSourceReader {
   const root = rootScopedPath.replace(/\/+$/, "");
@@ -99,7 +99,7 @@ export function createMountFrameSourceReader(
 
   return {
     async list(): Promise<string[]> {
-      const listResult = await dustFs.list(root);
+      const listResult = await rubyFs.list(root);
       if (listResult.isErr()) {
         logger.warn(
           { err: listResult.error, root },
@@ -114,7 +114,7 @@ export function createMountFrameSourceReader(
         .map((entry) => entry.path.slice(prefix.length));
     },
     async read(relPath: string): Promise<string | null> {
-      const bufferResult = await dustFs.readBuffer(`${root}/${relPath}`);
+      const bufferResult = await rubyFs.readBuffer(`${root}/${relPath}`);
       if (bufferResult.isErr()) {
         logger.warn(
           { err: bufferResult.error, root, relPath },

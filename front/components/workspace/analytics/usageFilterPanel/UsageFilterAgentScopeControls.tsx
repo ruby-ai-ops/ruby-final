@@ -1,7 +1,7 @@
 import type { UsageFilterAgentScope } from "@app/components/workspace/analytics/usageFilter";
 import { USAGE_FILTER_SCOPE_LABEL } from "@app/components/workspace/analytics/usageFilter";
 import { UsageFilterSection } from "@app/components/workspace/analytics/usageFilterPanel/UsageFilterSection";
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 
 interface UsageFilterAgentScopeControlsProps {
   scopes: readonly UsageFilterAgentScope[];

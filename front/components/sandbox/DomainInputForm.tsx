@@ -1,5 +1,5 @@
 import { normalizeEgressPolicyDomain } from "@app/types/sandbox/egress_policy";
-import { Button, Input, Plus } from "@dust-tt/sparkle";
+import { Button, Input, Plus } from "@ruby-ai/ui";
 import { useState } from "react";
 
 const DOMAIN_INPUT_HINT =

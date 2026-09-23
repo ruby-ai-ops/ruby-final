@@ -1,4 +1,4 @@
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { getConnectorProviderLogoWithFallback } from "@app/lib/connector_providers_ui";
 import type { DataSourceTag } from "@app/types/data_source";
 import {
@@ -7,7 +7,7 @@ import {
   DropdownMenuTagList,
   SearchDropdownMenu,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface TagSearchProps {
   searchInputValue: string;

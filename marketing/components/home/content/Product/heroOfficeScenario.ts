@@ -70,7 +70,7 @@ const ICON_PEN = `
   <path d="M12 20h9"/>
   <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/>
 `;
-const ICON_SPARKLE = `
+const ICON_RUBY_UI = `
   <path d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7z"/>
   <circle cx="19" cy="19" r="0.9" fill="#FFFFFF" stroke="none"/>
   <circle cx="5" cy="19" r="0.9" fill="#FFFFFF" stroke="none"/>
@@ -667,7 +667,7 @@ const onboardingScenario: Scenario = {
 };
 
 // ---------------------------------------------------------------------------
-// Scenario 4B: Knowledge — Org navigation (Kai, Clara, Tom, Nora + Dust)
+// Scenario 4B: Knowledge — Org navigation (Kai, Clara, Tom, Nora + Ruby)
 // ---------------------------------------------------------------------------
 
 const orgNavScenario: Scenario = {
@@ -675,10 +675,10 @@ const orgNavScenario: Scenario = {
     {
       id: "a8",
       startRoom: "office-c",
-      label: "@Dust",
+      label: "@Ruby",
       cardRole: "Agent · Knowledge",
-      iconSvg: ICON_SPARKLE,
-      iconImage: "/static/landing/home/agent-dust.png",
+      iconSvg: ICON_RUBY_UI,
+      iconImage: "/static/landing/home/agent-ruby.png",
     },
   ],
   cast: [
@@ -691,7 +691,7 @@ const orgNavScenario: Scenario = {
     {
       type: "person",
       ref: "clara",
-      msg: "@{kai} — @Dust has full context on our {Slack} channels, {Notion} spaces, and {Gmail} threads. Best way to get up to speed fast.",
+      msg: "@{kai} — @Ruby has full context on our {Slack} channels, {Notion} spaces, and {Gmail} threads. Best way to get up to speed fast.",
       holdMs: 5000,
       reactions: [
         { from: "kai", emoji: "👋", at: 3200 },
@@ -703,7 +703,7 @@ const orgNavScenario: Scenario = {
     {
       type: "person",
       ref: "kai",
-      msg: "@Dust I'm already in 40+ Slack channels. What should I actually be paying attention to?",
+      msg: "@Ruby I'm already in 40+ Slack channels. What should I actually be paying attention to?",
       holdMs: 4400,
     },
     { type: "pause", ms: 300 },
@@ -753,7 +753,7 @@ const orgNavScenario: Scenario = {
     {
       type: "person",
       ref: "clara",
-      msg: "@{kai} this is why I stopped writing onboarding docs. @Dust just knows. 😄",
+      msg: "@{kai} this is why I stopped writing onboarding docs. @Ruby just knows. 😄",
       holdMs: 4200,
       reactions: [
         { from: "kai", emoji: "😄", at: 2800 },

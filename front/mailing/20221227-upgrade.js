@@ -6,7 +6,7 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 export const sendUpgradeEmail = async (user) => {
   const msg = {
     to: user.email,
-    from: "spolu@dust.tt",
+    from: "spolu@ruby.ad",
     subject: "[XP1] Upgrade and Activation Key",
     text: `Thank you for being among the first users of XP1!
 
@@ -32,7 +32,7 @@ peak of what's coming:
   - Preserve state when the extension is closed / tab switched
   - Cycle through previous queries with up-arrow
   - Access to previous sessions
-- Ability to  run Dust apps from XP1
+- Ability to  run Ruby apps from XP1
 
 Have any other ideas? Don't hesitate to respond to this email directly
 with any question, feature request, or just to let us know how you
@@ -42,7 +42,7 @@ Looking forward to hearing from you.
 
 -stan
 
-[0] https://chrome.google.com/webstore/detail/dust-xp1/okgjeakekjeppjocmfaeeeaianominge`,
+[0] https://chrome.google.com/webstore/detail/ruby-xp1/okgjeakekjeppjocmfaeeeaianominge`,
   };
 
   await sgMail.send(msg);

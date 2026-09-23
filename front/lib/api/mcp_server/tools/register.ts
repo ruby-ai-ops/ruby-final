@@ -7,36 +7,36 @@ import type {
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type { z } from "zod";
 
-type DustMcpInputSchema = Record<string, z.ZodTypeAny>;
+type RubyMcpInputSchema = Record<string, z.ZodTypeAny>;
 
-type InferMcpToolArgs<T extends DustMcpInputSchema> = {
+type InferMcpToolArgs<T extends RubyMcpInputSchema> = {
   [K in keyof T]: z.infer<T[K]>;
 };
 
-type DustMcpToolConfig<T extends DustMcpInputSchema | undefined = undefined> = {
+type RubyMcpToolConfig<T extends RubyMcpInputSchema | undefined = undefined> = {
   title?: string;
   description?: string;
   inputSchema?: T;
   _meta?: Record<string, unknown>;
 };
 
-type DustMcpToolHandlerResult = CallToolResult | Promise<CallToolResult>;
+type RubyMcpToolHandlerResult = CallToolResult | Promise<CallToolResult>;
 
-type DustMcpToolHandler<T extends DustMcpInputSchema | undefined> =
-  T extends DustMcpInputSchema
+type RubyMcpToolHandler<T extends RubyMcpInputSchema | undefined> =
+  T extends RubyMcpInputSchema
     ? (
         auth: WorkOSWorkspaceAuthenticator,
         args: InferMcpToolArgs<T>
-      ) => DustMcpToolHandlerResult
-    : (auth: WorkOSWorkspaceAuthenticator) => DustMcpToolHandlerResult;
+      ) => RubyMcpToolHandlerResult
+    : (auth: WorkOSWorkspaceAuthenticator) => RubyMcpToolHandlerResult;
 
-export function registerDustMcpTool<
-  T extends DustMcpInputSchema | undefined = undefined,
+export function registerRubyMcpTool<
+  T extends RubyMcpInputSchema | undefined = undefined,
 >(
   server: McpServer,
   name: string,
-  config: DustMcpToolConfig<T>,
-  handler: DustMcpToolHandler<T>
+  config: RubyMcpToolConfig<T>,
+  handler: RubyMcpToolHandler<T>
 ): void {
   if (config.inputSchema === undefined) {
     server.registerTool(
@@ -48,7 +48,7 @@ export function registerDustMcpTool<
       },
       ((extra) => {
         const auth = getAuthenticatorFromMcpContext(extra);
-        return (handler as DustMcpToolHandler<undefined>)(auth);
+        return (handler as RubyMcpToolHandler<undefined>)(auth);
       }) as ToolCallback<undefined>
     );
     return;
@@ -56,6 +56,6 @@ export function registerDustMcpTool<
 
   server.registerTool(name, config, ((args, extra) => {
     const auth = getAuthenticatorFromMcpContext(extra);
-    return (handler as DustMcpToolHandler<DustMcpInputSchema>)(auth, args);
-  }) as ToolCallback<DustMcpInputSchema>);
+    return (handler as RubyMcpToolHandler<RubyMcpInputSchema>)(auth, args);
+  }) as ToolCallback<RubyMcpInputSchema>);
 }

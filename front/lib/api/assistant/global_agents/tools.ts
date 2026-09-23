@@ -101,10 +101,10 @@ export function _getDefaultWebActionsForGlobalAgent({
       childAgentId: null,
       additionalConfiguration: {},
       timeFrame: null,
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       jsonSchema: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
     },
   ];
 }
@@ -137,10 +137,10 @@ export function _getToolsetsToolsConfiguration({
       childAgentId: null,
       additionalConfiguration: {},
       timeFrame: null,
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       jsonSchema: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
     },
   ];
 }
@@ -171,10 +171,10 @@ export function _getAgentRouterToolsConfiguration({
       childAgentId: null,
       additionalConfiguration: {},
       timeFrame: null,
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       jsonSchema: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
     },
   ];
 }

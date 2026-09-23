@@ -170,7 +170,7 @@ export function extractArgRequiringApprovalValues(
       value.length === 1 &&
       (isString(value[0]) || isNumberOrBoolean(value[0]))
     ) {
-      // Handle single-element arrays (e.g., ["adrien@dust.tt"]).
+      // Handle single-element arrays (e.g., ["adrien@ruby.ad"]).
       result[argName] = value[0].toString();
     } else {
       const stableValue = stableStringify(value);

@@ -889,11 +889,11 @@ describe("SandboxResource.dangerouslyRequestKillForBaseImage", () => {
     const other = await makeConversation();
 
     await SandboxFactory.create(authenticator, c1, {
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       version: "1.0.0",
     });
     await SandboxFactory.create(authenticator, c2, {
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       version: "2.0.0",
     });
     await SandboxFactory.create(authenticator, other, {
@@ -902,7 +902,7 @@ describe("SandboxResource.dangerouslyRequestKillForBaseImage", () => {
     });
 
     const affected = await SandboxResource.dangerouslyRequestKillForBaseImage({
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       limit: 10,
     });
 
@@ -920,17 +920,17 @@ describe("SandboxResource.dangerouslyRequestKillForBaseImage", () => {
     const cNullVersion = await makeConversation();
 
     await SandboxFactory.create(authenticator, cMatch, {
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       version: "2.0.0",
     });
     await SandboxFactory.create(authenticator, cDifferent, {
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       version: "1.0.0",
     });
     const nullVersionSandbox = await SandboxFactory.create(
       authenticator,
       cNullVersion,
-      { baseImage: "dust-base", version: "0.0.0-test" }
+      { baseImage: "ruby-base", version: "0.0.0-test" }
     );
     await SandboxModel.update(
       { version: null },
@@ -938,7 +938,7 @@ describe("SandboxResource.dangerouslyRequestKillForBaseImage", () => {
     );
 
     const affected = await SandboxResource.dangerouslyRequestKillForBaseImage({
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       version: "2.0.0",
       limit: 10,
     });
@@ -957,19 +957,19 @@ describe("SandboxResource.dangerouslyRequestKillForBaseImage", () => {
     const cFresh = await makeConversation();
 
     await SandboxFactory.create(authenticator, cDeleted, {
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       status: "deleted",
     });
     await SandboxFactory.create(authenticator, cAlreadyMarked, {
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       killRequestedAt: new Date("2020-01-01"),
     });
     await SandboxFactory.create(authenticator, cFresh, {
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
     });
 
     const affected = await SandboxResource.dangerouslyRequestKillForBaseImage({
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       limit: 10,
     });
 
@@ -986,11 +986,11 @@ describe("SandboxResource.dangerouslyRequestKillForBaseImage", () => {
   it("respects the limit", async () => {
     for (let i = 0; i < 3; i++) {
       const c = await makeConversation();
-      await SandboxFactory.create(authenticator, c, { baseImage: "dust-base" });
+      await SandboxFactory.create(authenticator, c, { baseImage: "ruby-base" });
     }
 
     const affected = await SandboxResource.dangerouslyRequestKillForBaseImage({
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       limit: 2,
     });
 
@@ -1208,14 +1208,14 @@ describe("SandboxResource.ensureActive", () => {
         envVars: expect.objectContaining({
           DST_API_TOKEN: "image-token",
           DSEC_SECRET_TOKEN: "__DSEC_01010101010101010101010101010101__",
-          SSL_CERT_FILE: "/etc/dust/ca-bundle.pem",
+          SSL_CERT_FILE: "/etc/ruby/ca-bundle.pem",
           SSL_CERT_DIR: "/etc/ssl/certs",
-          CURL_CA_BUNDLE: "/etc/dust/ca-bundle.pem",
-          REQUESTS_CA_BUNDLE: "/etc/dust/ca-bundle.pem",
-          AWS_CA_BUNDLE: "/etc/dust/ca-bundle.pem",
-          GIT_SSL_CAINFO: "/etc/dust/ca-bundle.pem",
-          NODE_EXTRA_CA_CERTS: "/run/dust/egress-ca.pem",
-          DENO_CERT: "/run/dust/egress-ca.pem",
+          CURL_CA_BUNDLE: "/etc/ruby/ca-bundle.pem",
+          REQUESTS_CA_BUNDLE: "/etc/ruby/ca-bundle.pem",
+          AWS_CA_BUNDLE: "/etc/ruby/ca-bundle.pem",
+          GIT_SSL_CAINFO: "/etc/ruby/ca-bundle.pem",
+          NODE_EXTRA_CA_CERTS: "/run/ruby/egress-ca.pem",
+          DENO_CERT: "/run/ruby/egress-ca.pem",
           DENO_TLS_CA_STORE: "system,mozilla",
           CONVERSATION_ID: conversation.sId,
           WORKSPACE_ID: workspace.sId,
@@ -1538,7 +1538,7 @@ describe("SandboxResource.updateLastActivityAt", () => {
     const sandbox = await SandboxResource.makeNew(authenticator, {
       providerId: "throttle-test-provider",
       status: "running",
-      baseImage: "dust-base",
+      baseImage: "ruby-base",
       version: "0.0.0-test",
     });
 

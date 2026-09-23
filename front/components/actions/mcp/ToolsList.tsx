@@ -31,7 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   InfoCircle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { memo } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 

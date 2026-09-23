@@ -5,20 +5,20 @@ import type {
   AllPlugins,
   InferPluginArgsAtExecution,
   PluginResponse,
-} from "@app/lib/api/poke/types";
+} from "@app/lib/api/admin/types";
 import type { Authenticator } from "@app/lib/auth";
 import { BaseResource } from "@app/lib/resources/base_resource";
 import {
   PluginRunModel,
-  POKE_PLUGIN_RUN_MAX_ARGS_LENGTH,
-  POKE_PLUGIN_RUN_MAX_RESULT_AND_ERROR_LENGTH,
+  ADMIN_PLUGIN_RUN_MAX_ARGS_LENGTH,
+  ADMIN_PLUGIN_RUN_MAX_RESULT_AND_ERROR_LENGTH,
 } from "@app/lib/resources/storage/models/plugin_runs";
 import type { ReadonlyAttributesType } from "@app/lib/resources/storage/types";
 import type {
   PluginArgs,
   PluginResourceTarget,
   PluginRunType,
-} from "@app/types/poke/plugins";
+} from "@app/types/admin/plugins";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
@@ -56,7 +56,7 @@ function trimPluginRunResultOrError(result: PluginResponse | string): string {
     typeof result === "string" ? result : JSON.stringify(result.value);
 
   // Trim to max size of the field in the DB.
-  return stringResult.slice(0, POKE_PLUGIN_RUN_MAX_RESULT_AND_ERROR_LENGTH);
+  return stringResult.slice(0, ADMIN_PLUGIN_RUN_MAX_RESULT_AND_ERROR_LENGTH);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -85,7 +85,7 @@ export class PluginRunResource extends BaseResource<PluginRunModel> {
     const pluginRun = await this.model.create({
       args: JSON.stringify(sanitizedArgs).slice(
         0,
-        POKE_PLUGIN_RUN_MAX_ARGS_LENGTH
+        ADMIN_PLUGIN_RUN_MAX_ARGS_LENGTH
       ),
       author: authorEmail,
       pluginId: plugin.manifest.id,
@@ -200,7 +200,7 @@ export class PluginRunResource extends BaseResource<PluginRunModel> {
   }
 
   toJSON(): PluginRunType {
-    // The value in DB is truncated to POKE_PLUGIN_RUN_MAX_ARGS_LENGTH so may not be a valid JSON.
+    // The value in DB is truncated to ADMIN_PLUGIN_RUN_MAX_ARGS_LENGTH so may not be a valid JSON.
     const parsedArgsResult = this.args ? safeParseJSON(this.args) : new Ok({});
 
     return {

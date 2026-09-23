@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { enrichListWithFileResourceIds } from "@app/lib/api/files/file_system_ops";
 import { createProjectFolder } from "@app/lib/api/projects/context";
 import { PostPodFolderRequestBodySchema } from "@app/lib/api/projects/pod_mount_schemas";
@@ -8,7 +8,7 @@ import type {
   PostSpaceFolderResponseBody,
 } from "@app/types/api/file_system/types";
 import {
-  isDustFileSystemError,
+  isRubyFileSystemError,
   SCOPED_PREFIX_POD,
 } from "@app/types/file_system";
 import { workspaceApp } from "@front-api/middlewares/ctx";
@@ -42,7 +42,7 @@ app.get(
       });
     }
 
-    const fsResult = await DustFileSystem.forPod(auth, space);
+    const fsResult = await RubyFileSystem.forPod(auth, space);
     if (fsResult.isErr()) {
       return apiError(ctx, {
         status_code: 500,
@@ -53,8 +53,8 @@ app.get(
       });
     }
 
-    const dustFs = fsResult.value;
-    const listResult = await dustFs.list(`${SCOPED_PREFIX_POD}${space.sId}`);
+    const rubyFs = fsResult.value;
+    const listResult = await rubyFs.list(`${SCOPED_PREFIX_POD}${space.sId}`);
     if (listResult.isErr()) {
       return apiError(ctx, {
         status_code: 500,
@@ -67,7 +67,7 @@ app.get(
 
     const files = await enrichListWithFileResourceIds(
       auth,
-      dustFs,
+      rubyFs,
       listResult.value
     );
 
@@ -112,7 +112,7 @@ app.post(
     });
     if (createResult.isErr()) {
       return apiError(c, {
-        status_code: isDustFileSystemError(createResult.error, "already_exists")
+        status_code: isRubyFileSystemError(createResult.error, "already_exists")
           ? 409
           : 400,
         api_error: {

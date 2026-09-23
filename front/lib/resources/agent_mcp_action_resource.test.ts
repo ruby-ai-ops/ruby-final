@@ -36,7 +36,7 @@ import type {
 import { frameV2ContentType } from "@app/types/files";
 import type { ModelId } from "@app/types/shared/model_id";
 import type { WorkspaceType } from "@app/types/user";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 // In-memory GCS mock: writes persist content that reads can return.
@@ -477,7 +477,7 @@ describe("listBlockedActionsForConversation", () => {
       step: removedAction.stepContent.step,
       index: removedAction.stepContent.index,
       version: removedAction.stepContent.version + 1,
-      dustRunId: null,
+      rubyRunId: null,
       type: "text_content",
       value: { type: "text_content", value: "The retry did not call a tool" },
     });
@@ -631,10 +631,10 @@ describe("Output items with GCS storage", () => {
     jsonSchema: null,
     additionalConfiguration: {},
     mcpServerViewId: "test-server-view",
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     availability: "auto",
     permission: "never_ask",
     toolServerId: "test-server",
@@ -1248,10 +1248,10 @@ describe("listGeneratedFilesForConversation", () => {
     jsonSchema: null,
     additionalConfiguration: {},
     mcpServerViewId: "test-server-view",
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     availability: "auto",
     permission: "never_ask",
     toolServerId: "test-server",

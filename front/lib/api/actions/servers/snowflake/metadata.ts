@@ -151,7 +151,7 @@ export const SNOWFLAKE_SERVER = {
       supported_use_cases: ["personal_actions", "platform_actions"],
     },
     icon: "SnowflakeLogo",
-    documentationUrl: "https://docs.dust.tt/docs/snowflake-tool",
+    documentationUrl: "https://docs.ruby.ad/docs/snowflake-tool",
   },
   tools: SNOWFLAKE_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

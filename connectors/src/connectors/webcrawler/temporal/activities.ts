@@ -217,7 +217,7 @@ function getFirecrawlScrapeOptions<
 
 function getFirecrawlWebhookConfig(connector: ConnectorResource) {
   return {
-    url: `${apiConfig.getConnectorsPublicURL()}/webhooks/${apiConfig.getDustConnectorsWebhooksSecret()}/firecrawl`,
+    url: `${apiConfig.getConnectorsPublicURL()}/webhooks/${apiConfig.getRubyConnectorsWebhooksSecret()}/firecrawl`,
     metadata: {
       connectorId: String(connector.id),
     },
@@ -249,7 +249,7 @@ async function startCrawlJob(
     maxConcurrency: 2,
     delay: 3,
     // Ok to `as` for now. API support actions but the SDK doesn't have the types
-    // PR: https://github.com/dust-tt/dust/pull/14308
+    // PR: https://github.com/ruby-ai-ops/ruby-final/pull/14308
     scrapeOptions: getFirecrawlScrapeOptions(
       webCrawlerConfig
     ) as CrawlScrapeOptions & { actions?: Action[] },

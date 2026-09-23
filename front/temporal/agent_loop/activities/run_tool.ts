@@ -41,7 +41,7 @@ import assert from "assert";
 const CONVERSATION_CACHE_TTL_MS = 5000;
 
 // Extracts sIds of accessed datasources/tables from tool augmentedInputs.
-// Dust-internal MCP servers receive { uri } objects whose last path segment is
+// Ruby-internal MCP servers receive { uri } objects whose last path segment is
 // the configuration sId. External MCP servers (e.g. Airtable) bypass that
 // augmentation and may send entries like { tableId, fieldIds } with no uri, so
 // uri access must be guarded and we fall back to tableId when available.

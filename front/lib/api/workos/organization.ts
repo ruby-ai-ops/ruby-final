@@ -25,7 +25,7 @@ import assert from "assert";
 import uniqueId from "lodash/uniqueId";
 
 /**
- * Ensure active Dust memberships exist as WorkOS organization memberships.
+ * Ensure active Ruby memberships exist as WorkOS organization memberships.
  * Idempotent create-or-update via `updateWorkOSMembershipRole`.
  * Users without a `workOSUserId` are skipped (they cannot be linked yet).
  *

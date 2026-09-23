@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
   DropdownTooltipTrigger,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback } from "react";
 import { PodNotificationMenu } from "./settings/PodNotificationMenu";
 

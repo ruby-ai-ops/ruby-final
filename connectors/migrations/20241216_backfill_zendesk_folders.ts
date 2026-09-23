@@ -34,7 +34,7 @@ makeScript({}, async ({ execute }, logger) => {
             parents: [brandInternalId],
             parentId: null,
             title: brand.name,
-            mimeType: "application/vnd.dust.zendesk.brand",
+            mimeType: "application/vnd.ruby.zendesk.brand",
           });
 
           const helpCenterNode = brand.getHelpCenterContentNode(connectorId);
@@ -47,7 +47,7 @@ makeScript({}, async ({ execute }, logger) => {
             ],
             parentId: helpCenterNode.parentInternalId,
             title: helpCenterNode.title,
-            mimeType: "application/vnd.dust.zendesk.helpcenter",
+            mimeType: "application/vnd.ruby.zendesk.helpcenter",
           });
 
           const ticketsNode = brand.getTicketsContentNode(connectorId);
@@ -57,7 +57,7 @@ makeScript({}, async ({ execute }, logger) => {
             parents: [ticketsNode.internalId, ticketsNode.parentInternalId],
             parentId: ticketsNode.parentInternalId,
             title: ticketsNode.title,
-            mimeType: "application/vnd.dust.zendesk.tickets",
+            mimeType: "application/vnd.ruby.zendesk.tickets",
           });
         },
         { concurrency: FOLDER_CONCURRENCY }
@@ -85,7 +85,7 @@ makeScript({}, async ({ execute }, logger) => {
             parents,
             parentId: parents[1],
             title: category.name,
-            mimeType: "application/vnd.dust.zendesk.category",
+            mimeType: "application/vnd.ruby.zendesk.category",
           });
         },
         { concurrency: FOLDER_CONCURRENCY }

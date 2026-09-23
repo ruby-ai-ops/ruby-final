@@ -48,12 +48,7 @@ export const getConfig = async ({
   );
   const version = packageJson.version;
 
-  if (!isDevelopment && !process.env.DATADOG_CLIENT_TOKEN) {
-    throw new Error(
-      "❌ DATADOG_CLIENT_TOKEN=[Firefox extension logs collection token] must be set when building for production or release.\n" +
-        "The token can be found on https://app.datadoghq.eu/organization-settings/client-tokens"
-    );
-  }
+  // Optional Ruby analytics: initialized by the runtime only when configured.
   const baseManifestPath = resolvePath("./manifests/manifest.base.json");
   const envManifestPath = resolvePath(`./manifests/manifest.${env}.json`);
 
@@ -203,7 +198,7 @@ export const getConfig = async ({
         ),
       }),
       new WebpackBar({
-        name: `DustExt Firefox [${env}]`,
+        name: `RubyExt Firefox [${env}]`,
         color: "#FF7139",
       }),
       new webpack.EnvironmentPlugin({
@@ -211,11 +206,11 @@ export const getConfig = async ({
         COMMIT_HASH: process.env.COMMIT_HASH || getCommitHash(),
         DATADOG_CLIENT_TOKEN: process.env.DATADOG_CLIENT_TOKEN || "",
         DATADOG_ENV: isDevelopment ? "dev" : "prod",
-        DUST_EXTENSION_VERSION: `firefox-${version}`,
-        NEXT_PUBLIC_DUST_APP_URL: process.env.NEXT_PUBLIC_DUST_APP_URL || "",
-        NEXT_PUBLIC_DUST_API_URL: process.env.NEXT_PUBLIC_DUST_API_URL || "",
-        NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL:
-          process.env.NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL || "",
+        RUBY_EXTENSION_VERSION: `firefox-${version}`,
+        NEXT_PUBLIC_RUBY_APP_URL: process.env.NEXT_PUBLIC_RUBY_APP_URL || "",
+        NEXT_PUBLIC_RUBY_API_URL: process.env.NEXT_PUBLIC_RUBY_API_URL || "",
+        NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL:
+          process.env.NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL || "",
         NEXT_PUBLIC_VIRTUOSO_LICENSE_KEY:
           process.env.NEXT_PUBLIC_VIRTUOSO_LICENSE_KEY || "",
         VIZ_PUBLIC_URL: process.env.VIZ_PUBLIC_URL || "",
@@ -275,7 +270,7 @@ export const getConfig = async ({
       packageDirPath
         ? new ZipPlugin({
             path: packageDirPath,
-            filename: `Dust_Extension_Firefox.${env}.v${version}.zip`,
+            filename: `Ruby_Extension_Firefox.${env}.v${version}.zip`,
           })
         : null,
       isDevelopment

@@ -17,7 +17,7 @@ export const addClientVersionHeaders = (
   ...headers,
   "X-Commit-Hash": `${process.env.COMMIT_HASH}`,
   "X-Build-Date": `${process.env.BUILD_DATE}`,
-  "X-Dust-Extension-Version": `${process.env.DUST_EXTENSION_VERSION}`,
+  "X-Ruby-Extension-Version": `${process.env.RUBY_EXTENSION_VERSION}`,
 });
 
 export const resHandler = async (res: Response) => {

@@ -101,7 +101,7 @@ const LIST_TOOL = {
 // and adds an example of the cross-scope promotion the agent can perform there.
 const COPY_DESCRIPTION_BASE =
   "Copy a file between scoped paths, keeping the source intact. " +
-  `Does not support frame files (\`application/vnd.dust.frame\`); use \`${getPrefixedToolName(FILES_SERVER_NAME, FILES_MOVE_ACTION_NAME)}\` for those. ` +
+  `Does not support frame files (\`application/vnd.ruby.frame\`); use \`${getPrefixedToolName(FILES_SERVER_NAME, FILES_MOVE_ACTION_NAME)}\` for those. ` +
   "Useful for duplicating a file without round-tripping content through the agent. " +
   "Overwrites `dest` if it already exists.";
 
@@ -110,7 +110,7 @@ const COPY_DESCRIPTION_BASE =
 // with no FileResource record, breaking interactive rendering.
 const MOVE_DESCRIPTION_BASE =
   "Move a file from one scoped path to another, removing the source after a successful transfer. " +
-  "Frame files (`application/vnd.dust.frame`) must be moved rather than copied.";
+  "Frame files (`application/vnd.ruby.frame`) must be moved rather than copied.";
 
 const COPY_TOOL = {
   description:

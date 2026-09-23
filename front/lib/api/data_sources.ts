@@ -16,8 +16,8 @@ import type { Authenticator } from "@app/lib/auth";
 import { CONNECTOR_CONFIGURATIONS } from "@app/lib/connector_providers";
 import { MAX_NODE_TITLE_LENGTH } from "@app/lib/content_nodes_constants";
 import { isRemoteDatabase } from "@app/lib/data_sources";
-import { DustError } from "@app/lib/error";
-import { getDustDataSourcesBucket } from "@app/lib/file_storage";
+import { RubyError } from "@app/lib/error";
+import { getRubyDataSourcesBucket } from "@app/lib/file_storage";
 import { isGCSNotFoundError } from "@app/lib/file_storage/types";
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
@@ -31,7 +31,7 @@ import { withTransaction } from "@app/lib/utils/sql_utils";
 import { cleanTimestamp } from "@app/lib/utils/timestamps";
 import logger from "@app/logger/logger";
 import tracer from "@app/logger/tracer";
-import { launchScrubDataSourceWorkflow } from "@app/poke/temporal/client";
+import { launchScrubDataSourceWorkflow } from "@app/admin-app/temporal/client";
 import type { FrontDataSourceDocumentSectionType } from "@app/types/api/public/data_sources";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
 import { DEFAULT_EMBEDDING_PROVIDER_ID } from "@app/types/assistant/models/embedding";
@@ -70,7 +70,7 @@ import type {
   DataSourceSearchQuery,
   DataSourceSearchResponseType,
   // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import assert from "assert";
 import type { Transaction } from "sequelize";
 import type { ConversationResource } from "../resources/conversation_resource";
@@ -270,19 +270,19 @@ export async function hardDeleteDataSource(
   // Delete all files in the data source's bucket.
   //
   // The GCS object key for a data source document is
-  // `{dustAPIProjectId}/{dataSourceInternalId}/{documentIdHash}/{version}.json`. The trailing
+  // `{rubyAPIProjectId}/{dataSourceInternalId}/{documentIdHash}/{version}.json`. The trailing
   // slash on the prefix is REQUIRED: GCS matches `prefix` as a raw byte string, not by path
-  // segment, so a bare `dustAPIProjectId` (e.g. "1134") also matches every sibling project whose
+  // segment, so a bare `rubyAPIProjectId` (e.g. "1134") also matches every sibling project whose
   // id merely starts with the same digits (e.g. "11340", "1134276"), deleting unrelated data
   // sources' files across other workspaces. Projects map 1-1 to data sources, so scoping the
-  // prefix to `{dustAPIProjectId}/` deletes exactly this data source's files and nothing else.
-  const { dustAPIProjectId } = dataSource;
-  const prefix = `${dustAPIProjectId}/`;
+  // prefix to `{rubyAPIProjectId}/` deletes exactly this data source's files and nothing else.
+  const { rubyAPIProjectId } = dataSource;
+  const prefix = `${rubyAPIProjectId}/`;
 
   let files;
 
   do {
-    files = await getDustDataSourcesBucket().getFiles({
+    files = await getRubyDataSourcesBucket().getFiles({
       prefix,
       maxResults: FILE_BATCH_SIZE,
     });
@@ -309,7 +309,7 @@ export async function hardDeleteDataSource(
                   {
                     path: f.name,
                     dataSourceId: dataSource.sId,
-                    dustAPIProjectId,
+                    rubyAPIProjectId,
                   },
                   "File not found during deletion, skipping"
                 );
@@ -387,11 +387,11 @@ export async function hardDeleteDataSource(
         "data_source.connector_provider",
         dataSource.connectorProvider ?? "none"
       );
-      span?.setTag("core.project_id", dustAPIProjectId);
-      span?.setTag("core.data_source_id", dataSource.dustAPIDataSourceId);
+      span?.setTag("core.project_id", rubyAPIProjectId);
+      span?.setTag("core.data_source_id", dataSource.rubyAPIDataSourceId);
       return coreAPI.deleteDataSource({
-        projectId: dustAPIProjectId,
-        dataSourceId: dataSource.dustAPIDataSourceId,
+        projectId: rubyAPIProjectId,
+        dataSourceId: dataSource.rubyAPIDataSourceId,
         caller: "data-sources-api-hard-delete",
       });
     }
@@ -402,7 +402,7 @@ export async function hardDeleteDataSource(
     if (
       !isCoreDataSourceNotFoundError(
         coreDeleteRes.error,
-        dataSource.dustAPIDataSourceId
+        dataSource.rubyAPIDataSourceId
       )
     ) {
       throw new Error(
@@ -519,7 +519,7 @@ export async function upsertDocument({
 
       data_source: CoreAPIDataSource;
     },
-    DustError
+    RubyError
   >
 > {
   // enforcing validation on the parents and parent_id
@@ -531,7 +531,7 @@ export async function upsertDocument({
   // parents must comply to the invariant parents[0] === document_id
   if (documentParents[0] !== documentId) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_parents",
         "Invalid request body, parents[0] and document_id should be equal"
       )
@@ -543,7 +543,7 @@ export async function upsertDocument({
     documentParents[1] !== documentParentId
   ) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_parent_id",
         "Invalid request body, parents[1] and parent_id should be equal"
       )
@@ -553,7 +553,7 @@ export async function upsertDocument({
   // Enforce a max size on the title: since these will be synced in ES we don't support arbitrarily large titles.
   if (title && title.length > MAX_NODE_TITLE_LENGTH) {
     return new Err(
-      new DustError(
+      new RubyError(
         "title_too_long",
         `Invalid title: title too long (max ${MAX_NODE_TITLE_LENGTH} characters).`
       )
@@ -567,7 +567,7 @@ export async function upsertDocument({
 
     if (!isSourceUrlValid) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_url",
           "Invalid request body, `source_url` if provided must be a valid URL."
         )
@@ -601,7 +601,7 @@ export async function upsertDocument({
 
   if (!generatedSection) {
     return new Err(
-      new DustError(
+      new RubyError(
         "text_or_section_required",
         "Invalid request body, `text` or `section` must be provided."
       )
@@ -619,12 +619,12 @@ export async function upsertDocument({
     fullText.length > 1024 * 1024 * plan.limits.dataSources.documents.sizeMb
   ) {
     return new Err(
-      new DustError(
+      new RubyError(
         "data_source_quota_error",
         `Data sources document upload size is limited to ` +
           `${plan.limits.dataSources.documents.sizeMb}MB on your current plan. ` +
           `You are attempting to upload ${fullText.length} bytes. ` +
-          `Contact support@dust.tt if you want to increase it.`
+          `Contact support@ruby.ad if you want to increase it.`
       )
     );
   }
@@ -638,17 +638,17 @@ export async function upsertDocument({
       "Failed to get LLM credentials to upsert document"
     );
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         MISSING_EMBEDDING_API_KEY_ERROR_MESSAGE
       )
     );
   }
 
-  // Create document with the Dust internal API.
+  // Create document with the Ruby internal API.
   const upsertRes = await coreAPI.upsertDataSourceDocument({
-    projectId: dataSource.dustAPIProjectId,
-    dataSourceId: dataSource.dustAPIDataSourceId,
+    projectId: dataSource.rubyAPIProjectId,
+    dataSourceId: dataSource.rubyAPIDataSourceId,
     documentId,
     tags: nonNullTags,
     parentId: documentParentId,
@@ -664,7 +664,7 @@ export async function upsertDocument({
 
   if (upsertRes.isErr()) {
     return new Err(
-      new DustError(
+      new RubyError(
         "core_api_error",
         "There was an error upserting the document."
       )
@@ -687,7 +687,7 @@ export async function handleDataSourceSearch({
 }): Promise<
   Result<
     DataSourceSearchResponseType,
-    Omit<DustError, "code"> & { code: "data_source_error" }
+    Omit<RubyError, "code"> & { code: "data_source_error" }
   >
 > {
   let credentials: LLMCredentialsType;
@@ -699,7 +699,7 @@ export async function handleDataSourceSearch({
       "Failed to get LLM credentials to search data source"
     );
     return new Err(
-      new DustError(
+      new RubyError(
         "data_source_error",
         MISSING_EMBEDDING_API_KEY_ERROR_MESSAGE
       )
@@ -708,8 +708,8 @@ export async function handleDataSourceSearch({
 
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
   const data = await coreAPI.searchDataSource(
-    dataSource.dustAPIProjectId,
-    dataSource.dustAPIDataSourceId,
+    dataSource.rubyAPIProjectId,
+    dataSource.rubyAPIDataSourceId,
     {
       query: searchQuery.query,
       topK: searchQuery.top_k,
@@ -745,7 +745,7 @@ export async function handleDataSourceSearch({
 
   if (data.isErr()) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "data_source_error",
       message: data.error.message,
     });
@@ -803,7 +803,7 @@ export async function upsertTable({
     | {
         table: CoreAPITable;
       },
-    DustError
+    RubyError
   >
 > {
   const owner = auth.getNonNullableWorkspace();
@@ -811,7 +811,7 @@ export async function upsertTable({
   const { name, description, fileId, truncate, async } = params;
   if (!fileId && truncate) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "missing_csv",
       message: "Cannot truncate a table without providing a CSV.",
     });
@@ -824,7 +824,7 @@ export async function upsertTable({
   // parents must comply to the invariant parents[0] === document_id
   if (tableParents[0] !== tableId) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_parents",
       message: "Invalid parents: parents[0] and table_id should be equal",
     });
@@ -836,7 +836,7 @@ export async function upsertTable({
     tableParents[1] !== tableParentId
   ) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_parent_id",
       message: "Invalid parents: parents[1] and parent_id should be equal",
     });
@@ -845,7 +845,7 @@ export async function upsertTable({
   // Enforce a max size on the title: since these will be synced in ES we don't support arbitrarily large titles.
   if (params.title && params.title.length > MAX_NODE_TITLE_LENGTH) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "title_too_long",
       message:
         "Invalid title:" +
@@ -881,7 +881,7 @@ export async function upsertTable({
 
     if (!isSourceUrlValid) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "invalid_url",
         message:
           "Invalid request: `source_url` if provided must be a valid URL",
@@ -895,8 +895,8 @@ export async function upsertTable({
   if (fileId) {
     const file = await FileResource.fetchById(auth, fileId);
     if (!file) {
-      return new Err<DustError>({
-        name: "dust_error",
+      return new Err<RubyError>({
+        name: "ruby_error",
         code: "file_not_found",
         message:
           "The file associated with the fileId you provided was not found",
@@ -906,15 +906,15 @@ export async function upsertTable({
 
     const { bucket, path } = file.getContentBucketAndPath(auth);
     const schemaRes = await coreAPI.tableValidateCSVContent({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       bucket,
       bucketCSVPath: path,
     });
     if (schemaRes.isErr()) {
       if (schemaRes.error.code === "invalid_csv_content") {
         return new Err({
-          name: "dust_error",
+          name: "ruby_error",
           code: "invalid_csv_content",
           message: schemaRes.error.message,
         });
@@ -929,7 +929,7 @@ export async function upsertTable({
           "Error validating CSV content"
         );
         return new Err({
-          name: "dust_error",
+          name: "ruby_error",
           code: "internal_error",
           message: schemaRes.error.message,
         });
@@ -937,7 +937,7 @@ export async function upsertTable({
     }
     if (!params.allowEmptySchema && schemaRes.value.schema.length === 0) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "invalid_csv_content",
         message: "Invalid CSV content, skipping",
       });
@@ -976,7 +976,7 @@ export async function upsertTable({
       );
 
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "data_source_error",
         message:
           "There was an error enqueueing the table for asynchronous upsert.",
@@ -1009,7 +1009,7 @@ export async function upsertTable({
   if (tableRes.isErr()) {
     if (tableRes.error.type === "internal_server_error") {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: tableRes.error.message,
       });
@@ -1017,7 +1017,7 @@ export async function upsertTable({
 
     if (tableRes.error.type === "invalid_request_error") {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "invalid_csv_and_file",
         message: "Invalid request body: " + tableRes.error.message,
       });
@@ -1025,7 +1025,7 @@ export async function upsertTable({
 
     if (tableRes.error.type === "not_found_error") {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: tableRes.error.notFoundError.type,
         message: tableRes.error.notFoundError.message,
       });
@@ -1057,16 +1057,16 @@ export async function createDataSourceFolder(
 ) {
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
-  // Create folder with the Dust internal API.
+  // Create folder with the Ruby internal API.
   const upsertRes = await coreAPI.upsertDataSourceFolder({
-    dataSourceId: dataSource.dustAPIDataSourceId,
+    dataSourceId: dataSource.rubyAPIDataSourceId,
     folderId,
     mimeType,
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     parentId: parentId || null,
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     parents: parents || [folderId],
-    projectId: dataSource.dustAPIProjectId,
+    projectId: dataSource.rubyAPIProjectId,
     providerVisibility: "public",
     sourceUrl,
     timestamp: Date.now(),
@@ -1080,7 +1080,7 @@ export async function createDataSourceFolder(
   return new Ok(upsertRes.value);
 }
 
-type DataSourceCreationError = Omit<DustError, "code"> & {
+type DataSourceCreationError = Omit<RubyError, "code"> & {
   code: "invalid_request_error" | "plan_limit_error" | "internal_server_error";
   dataSourceError?: CoreAPIError;
 };
@@ -1108,14 +1108,14 @@ export async function createDataSourceWithoutProvider(
 ): Promise<Result<DataSourceViewResource, DataSourceCreationError>> {
   if (name.startsWith("managed-")) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_request_error",
       message: "The data source name cannot start with `managed-`.",
     });
   }
   if (!isDataSourceNameValid(name)) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_request_error",
       message: "Data source names cannot be empty.",
     });
@@ -1141,7 +1141,7 @@ export async function createDataSourceWithoutProvider(
         dataSources.length >= plan.limits.dataSources.count
       ) {
         return new Err({
-          name: "dust_error",
+          name: "ruby_error",
           code: "plan_limit_error",
           message: "Your plan does not allow you to create more data sources.",
         });
@@ -1149,7 +1149,7 @@ export async function createDataSourceWithoutProvider(
 
       if (dataSources.some((ds) => ds.name === name)) {
         return new Err({
-          name: "dust_error",
+          name: "ruby_error",
           code: "invalid_request_error",
           message: "Data source with that name already exist.",
         });
@@ -1160,13 +1160,13 @@ export async function createDataSourceWithoutProvider(
       const embedderConfig = EMBEDDING_CONFIGS[dataSourceEmbedder];
       const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
-      const dustProject = await coreAPI.createProject();
-      if (dustProject.isErr()) {
+      const rubyProject = await coreAPI.createProject();
+      if (rubyProject.isErr()) {
         return new Err({
-          name: "dust_error",
+          name: "ruby_error",
           code: "internal_server_error",
           message: "Failed to create internal project for the data source.",
-          dataSourceError: dustProject.error,
+          dataSourceError: rubyProject.error,
         });
       }
 
@@ -1179,15 +1179,15 @@ export async function createDataSourceWithoutProvider(
           "Failed to get LLM credentials to create data source"
         );
         return new Err(
-          new DustError(
+          new RubyError(
             "invalid_request_error",
             MISSING_EMBEDDING_API_KEY_ERROR_MESSAGE
           )
         );
       }
 
-      const dustDataSource = await coreAPI.createDataSource({
-        projectId: dustProject.value.project.project_id.toString(),
+      const rubyDataSource = await coreAPI.createDataSource({
+        projectId: rubyProject.value.project.project_id.toString(),
         config: {
           qdrant_config: {
             cluster: DEFAULT_QDRANT_CLUSTER,
@@ -1206,12 +1206,12 @@ export async function createDataSourceWithoutProvider(
         name,
       });
 
-      if (dustDataSource.isErr()) {
+      if (rubyDataSource.isErr()) {
         return new Err({
-          name: "dust_error",
+          name: "ruby_error",
           code: "internal_server_error",
           message: "Failed to create the data source.",
-          dataSourceError: dustDataSource.error,
+          dataSourceError: rubyDataSource.error,
         });
       }
 
@@ -1220,9 +1220,9 @@ export async function createDataSourceWithoutProvider(
           {
             name,
             description,
-            dustAPIProjectId: dustProject.value.project.project_id.toString(),
-            dustAPIDataSourceId:
-              dustDataSource.value.data_source.data_source_id,
+            rubyAPIProjectId: rubyProject.value.project.project_id.toString(),
+            rubyAPIDataSourceId:
+              rubyDataSource.value.data_source.data_source_id,
             workspaceId: owner.id,
             assistantDefaultSelected: false,
             conversationId: conversation?.id,
@@ -1371,9 +1371,9 @@ export async function computeDataSourceStatistics(
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
   return coreAPI.getDataSourceStats(
-    dataSources.map(({ dustAPIProjectId, dustAPIDataSourceId }) => ({
-      project_id: parseInt(dustAPIProjectId),
-      data_source_id: dustAPIDataSourceId,
+    dataSources.map(({ rubyAPIProjectId, rubyAPIDataSourceId }) => ({
+      project_id: parseInt(rubyAPIProjectId),
+      data_source_id: rubyAPIDataSourceId,
     }))
   );
 }

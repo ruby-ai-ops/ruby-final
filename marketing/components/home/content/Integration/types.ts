@@ -33,10 +33,10 @@ export interface IntegrationBase {
   name: string;
   type: IntegrationType;
   description: string;
-  // Icon name as returned by the integrations API — a Sparkle platform logo
-  // name (e.g. "GammaLogo"). Resolve at render time via Sparkle's
+  // Icon name as returned by the integrations API — a RubyUI platform logo
+  // name (e.g. "GammaLogo"). Resolve at render time via RubyUI's
   // `getPlatformLogo(name, fallback)`; front may ship logos newer than the
-  // Sparkle bundled here, so a runtime fallback is required.
+  // RubyUI bundled here, so a runtime fallback is required.
   icon: string;
   documentationUrl: string | null;
   authorizationRequired: boolean;
@@ -53,7 +53,7 @@ export interface IntegrationUseCase {
   icon: InternalAllowedIconType | CustomResourceIconType;
 }
 
-// Color variants for benefit cards. The Sparkle/Tailwind palette already exposes
+// Color variants for benefit cards. The RubyUI/Tailwind palette already exposes
 // `bg-X-50` / `text-X-600` pairs for these; the BenefitCard renderer maps from
 // this token to the right class names.
 export type BenefitCardColor =

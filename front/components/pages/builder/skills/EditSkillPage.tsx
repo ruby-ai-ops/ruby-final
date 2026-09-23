@@ -6,7 +6,7 @@ import { useDocumentTitle } from "@app/hooks/useDocumentTitle";
 import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
 import { useRequiredPathParam } from "@app/lib/platform";
 import { useSkill } from "@app/lib/swr/skill_configurations";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 export function EditSkillPage() {
   const owner = useWorkspace();
@@ -19,7 +19,7 @@ export function EditSkillPage() {
     withRelations: true,
   });
 
-  useDocumentTitle(skill ? `Dust - ${skill.name}` : "Dust - Skill");
+  useDocumentTitle(skill ? `Ruby - ${skill.name}` : "Ruby - Skill");
 
   const isNotFound =
     isSkillError ||

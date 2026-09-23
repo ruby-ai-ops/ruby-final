@@ -31,7 +31,7 @@ export const TRACKING_AREAS = {
   AUTH: "auth",
   NAVIGATION: "navigation",
   SOLUTIONS: "solutions",
-  INDUSTRY: "industry",
+  INRUBYRY: "industry",
   CONTACT: "contact",
   COMPETITIVE: "competitive",
 
@@ -51,7 +51,7 @@ export const TRACKING_AREAS = {
   TOOLS: "tools",
   FRAMES: "frames",
   TRIGGERS: "triggers",
-  DUST_WRAPPED: "dust_wrapped",
+  RUBY_WRAPPED: "ruby_wrapped",
   MENTIONS: "mentions",
   SKILLS: "skills",
   SIDEKICK: "sidekick",

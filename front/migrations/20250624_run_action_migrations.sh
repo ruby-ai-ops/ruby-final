@@ -47,11 +47,11 @@ RETRIEVAL_WORKSPACES=$(mktemp)
 WEBSEARCH_WORKSPACES=$(mktemp)
 BROWSE_WORKSPACES=$(mktemp)
 TABLES_QUERY_WORKSPACES=$(mktemp)
-DUST_APP_RUN_WORKSPACES=$(mktemp)
+RUBY_APP_RUN_WORKSPACES=$(mktemp)
 PROCESS_WORKSPACES=$(mktemp)
 
 # Clean up temp files on exit
-trap "rm -f $RETRIEVAL_WORKSPACES $WEBSEARCH_WORKSPACES $BROWSE_WORKSPACES $TABLES_QUERY_WORKSPACES $DUST_APP_RUN_WORKSPACES $PROCESS_WORKSPACES" EXIT
+trap "rm -f $RETRIEVAL_WORKSPACES $WEBSEARCH_WORKSPACES $BROWSE_WORKSPACES $TABLES_QUERY_WORKSPACES $RUBY_APP_RUN_WORKSPACES $PROCESS_WORKSPACES" EXIT
 
 echo "Step 1: Analyzing current action configurations..."
 echo
@@ -67,8 +67,8 @@ npx tsx 20250624_check_action_configurations_by_workspace.ts | while IFS= read -
         CURRENT_TYPE="browse"
     elif [[ "$line" == "TABLES_QUERY CONFIGURATIONS:"* ]]; then
         CURRENT_TYPE="tables_query"
-    elif [[ "$line" == "DUST_APP_RUN CONFIGURATIONS:"* ]]; then
-        CURRENT_TYPE="dust_app_run"
+    elif [[ "$line" == "RUBY_APP_RUN CONFIGURATIONS:"* ]]; then
+        CURRENT_TYPE="ruby_app_run"
     elif [[ "$line" == "PROCESS CONFIGURATIONS:"* ]]; then
         CURRENT_TYPE="process"
     elif [[ "$line" =~ ^[[:space:]]+([a-zA-Z0-9]+)[[:space:]]\(.*\):[[:space:]]+[0-9]+[[:space:]]configuration\(s\)$ ]]; then
@@ -88,8 +88,8 @@ npx tsx 20250624_check_action_configurations_by_workspace.ts | while IFS= read -
             tables_query)
                 echo "$WORKSPACE_SID" >> "$TABLES_QUERY_WORKSPACES"
                 ;;
-            dust_app_run)
-                echo "$WORKSPACE_SID" >> "$DUST_APP_RUN_WORKSPACES"
+            ruby_app_run)
+                echo "$WORKSPACE_SID" >> "$RUBY_APP_RUN_WORKSPACES"
                 ;;
             process)
                 echo "$WORKSPACE_SID" >> "$PROCESS_WORKSPACES"
@@ -179,8 +179,8 @@ rm -f "${WEBSEARCH_WORKSPACES}.combined"
 echo "Migrating TABLES_QUERY configurations..."
 run_migration_with_arg "20250514_migrate_tables_query_to_mcp.ts" "$TABLES_QUERY_WORKSPACES" "tables_query" "wId"
 
-echo "Migrating DUST_APP_RUN configurations..."
-run_migration_with_arg "20250521_migrate_dust_app_mcp.ts" "$DUST_APP_RUN_WORKSPACES" "dust_app_run" "workspaceId"
+echo "Migrating RUBY_APP_RUN configurations..."
+run_migration_with_arg "20250521_migrate_ruby_app_mcp.ts" "$RUBY_APP_RUN_WORKSPACES" "ruby_app_run" "workspaceId"
 
 echo "Migrating PROCESS/EXTRACT configurations..."
 run_migration_with_arg "20250526_migrate_extract_to_mcp.ts" "$PROCESS_WORKSPACES" "process" "workspaceId"

@@ -83,7 +83,7 @@ import {
   stringifyExportTableAsCsv,
 } from "@app/lib/api/analytics/export_tables";
 import logger from "@app/logger/logger";
-import { GetAnalyticsExportRequestSchema } from "@dust-tt/client";
+import { GetAnalyticsExportRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsAdmin } from "@front-api/middlewares/ensure_role";
 import { apiError } from "@front-api/middlewares/utils";
@@ -163,7 +163,7 @@ app.get("/", ensureIsAdmin(), async (ctx) => {
   ctx.header("Content-Type", "text/csv");
   ctx.header(
     "Content-Disposition",
-    `attachment; filename="dust_${q.data.table}_${q.data.startDate}_${q.data.endDate}.csv"`
+    `attachment; filename="ruby_${q.data.table}_${q.data.startDate}_${q.data.endDate}.csv"`
   );
   return ctx.body(stringifyExportTableAsCsv(result.value));
 });

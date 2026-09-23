@@ -9,7 +9,7 @@ export const DeepSeekDeepSeekVFourDotOneFlashGlobalFireworksStreamSetup: StreamS
   {
     createInstance: () =>
       new DeepSeekDeepSeekVFourDotOneFlashGlobalFireworksStream({
-        FIREWORKS_API_KEY: process.env.DUST_MANAGED_FIREWORKS_API_KEY ?? "",
+        FIREWORKS_API_KEY: process.env.RUBY_MANAGED_FIREWORKS_API_KEY ?? "",
       }),
     tests: {
       "simple/no-tools/t-default/r-default": null,

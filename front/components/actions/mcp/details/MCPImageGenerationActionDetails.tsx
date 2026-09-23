@@ -4,7 +4,7 @@ import { isGenerateImageInputType } from "@app/lib/actions/mcp_internal_actions/
 import { useFileMetadata } from "@app/lib/swr/files";
 import { stripFileExtension } from "@app/types/files";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Chip, cn, Image01 } from "@dust-tt/sparkle";
+import { Chip, cn, Image01 } from "@ruby-ai/ui";
 
 // "high" is retained for historical actions generated before the 4K tier was
 // removed from the agent-facing tool; the write path is now capped at "medium".

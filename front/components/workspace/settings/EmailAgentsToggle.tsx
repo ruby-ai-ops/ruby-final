@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 const ENABLE_EMAIL_AGENTS_CONFIRMATION_MESSAGE =
@@ -22,7 +22,7 @@ const ENABLE_EMAIL_AGENTS_CONFIRMATION_MESSAGE =
 
 export const EMAIL_AGENTS_LABEL = "Email agents";
 export const EMAIL_AGENTS_DESCRIPTION = `Whether members can reach agents by email at AGENT_NAME@${ASSISTANT_EMAIL_SUBDOMAIN}`;
-const DOCUMENTATION_URL = "https://docs.dust.tt/docs/email-agents";
+const DOCUMENTATION_URL = "https://docs.ruby.ad/docs/email-agents";
 
 interface EmailAgentsToggleProps {
   owner: WorkspaceType;

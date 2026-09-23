@@ -22,7 +22,7 @@ import type {
   AdminSuccessResponseType,
   GithubCommandType,
 } from "@connectors/types";
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 import { Op } from "sequelize";
 
 async function getGitHubConnector(args: GithubCommandType["args"]) {

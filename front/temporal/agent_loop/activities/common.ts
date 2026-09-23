@@ -878,7 +878,7 @@ const CREDITS_EXHAUSTED_ERROR_TITLE = "Workspace out of credits";
 
 export function creditsExhaustedMessage(auth: Authenticator): string {
   return auth.isAdmin()
-    ? "Your workspace has run out of credits. Please purchase more credits to continue using Dust."
+    ? "Your workspace has run out of credits. Please purchase more credits to continue using Ruby."
     : "Your workspace has run out of credits. Please contact your administrator to purchase more credits.";
 }
 
@@ -931,7 +931,7 @@ export async function finalizeCreditStop(
           errorTitle: CREDITS_EXHAUSTED_ERROR_TITLE,
         },
       },
-      runIds: agentLoopArgs.dustRunIds ?? [],
+      runIds: agentLoopArgs.rubyRunIds ?? [],
     },
     agentMessage,
     conversation,

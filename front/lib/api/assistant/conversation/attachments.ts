@@ -44,7 +44,7 @@ import type { AllSupportedFileContentType } from "@app/types/files";
 import { isSupportedDelimitedTextContentType } from "@app/types/files";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { CONTENT_NODE_MIME_TYPES } from "@dust-tt/client";
+import { CONTENT_NODE_MIME_TYPES } from "@ruby-ai/client";
 
 export function isFileAttachmentType(
   attachment: ConversationAttachmentType

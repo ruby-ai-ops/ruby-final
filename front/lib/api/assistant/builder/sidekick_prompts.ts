@@ -26,7 +26,7 @@ export function buildTemplatePrompt({
   sidekickInstructions,
   agentFacingDescription,
 }: TemplateResource): string {
-  return `<dust_system>
+  return `<ruby_system>
 The user is creating a new agent based on the "${handle}" template.
 NEVER call \`get_agent_config\` in this first message.
 Here is a brief description of what the agent should do:
@@ -40,7 +40,7 @@ Follow the <using_templates> section from your instructions to act on the sideki
 <sidekickInstructions>
 ${sidekickInstructions}
 </sidekickInstructions>
-</dust_system>`;
+</ruby_system>`;
 }
 
 // ─── Existing-agent prompt ───────────────────────────────────────────────
@@ -72,7 +72,7 @@ ${suggestionDirectives}
 </pending_suggestions>`
     : "";
 
-  return `<dust_system>
+  return `<ruby_system>
 This is an existing agent.
 
 ## Opening message
@@ -88,7 +88,7 @@ Do not make assumptions about the users's intent. Given that this is an existing
 ${dataSections ? `\n${dataSections}\n` : ""}
 </existing_agent_data_section>
 ${pendingSuggestionsSection}
-</dust_system>`;
+</ruby_system>`;
 }
 
 function formatFeedbackItem(f: AgentMessageFeedbackWithMetadataType): string {
@@ -226,7 +226,7 @@ async function fetchInsightsMarkdown(
 /**
  * Builds the sidekick first-message for an existing agent. Fetches feedback,
  * insights, and pending suggestions in parallel and assembles them into the
- * dust_system prompt.
+ * ruby_system prompt.
  */
 export async function buildExistingAgentPrompt(
   auth: Authenticator,
@@ -261,7 +261,7 @@ export async function buildExistingAgentPrompt(
 export function buildShrinkWrapPrompt(
   shrinkWrappedConversation: string
 ): string {
-  return `<dust_system>
+  return `<ruby_system>
 Your task is to analyze the conversation below and suggest a configuration for a new agent
 that can replicate its workflow with different inputs.
 
@@ -345,7 +345,7 @@ Before suggesting agent instructions, confirm your understanding:
 
 Unless the conversation is very short and unambiguous, wait for confirmation before generating
 the full suggestion set.
-</dust_system>`;
+</ruby_system>`;
 }
 
 /**

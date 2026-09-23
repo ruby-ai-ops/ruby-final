@@ -5,8 +5,8 @@ import type { Logger } from "@connectors/logger/logger";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import { SlackConfigurationResource } from "@connectors/resources/slack_configuration_resource";
 import type { SlackAutoReadPattern } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { DustAPI, Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { RubyAPI, Err, Ok } from "@ruby-ai/client";
 import { WorkflowExecutionAlreadyStartedError } from "@temporalio/common";
 
 export function findMatchingChannelPatterns(
@@ -55,9 +55,9 @@ export async function autoReadChannel(
 
   // Check if the workspace is in maintenance mode before launching the workflow
   const dataSourceConfig = dataSourceConfigFromConnector(connector);
-  const dustAPI = new DustAPI(
+  const rubyAPI = new RubyAPI(
     {
-      url: apiConfig.getDustFrontAPIUrl(),
+      url: apiConfig.getRubyFrontAPIUrl(),
     },
     {
       apiKey: dataSourceConfig.workspaceAPIKey,
@@ -69,7 +69,7 @@ export async function autoReadChannel(
   // Probe the workspace: /exists does no work beyond authentication and
   // returns an error when the workspace is gone, relocated, in maintenance or
   // on a plan without API access. Nothing to auto-read in those cases.
-  const existsRes = await dustAPI.exists();
+  const existsRes = await rubyAPI.exists();
   if (existsRes.isErr()) {
     logger.info(
       {

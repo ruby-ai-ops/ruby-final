@@ -2,7 +2,7 @@ import type { AgentActionSpecification } from "@app/lib/actions/types/agent";
 import { AGENT_SIDEKICK_AGENT_STATE_SERVER } from "@app/lib/api/actions/servers/agent_sidekick_agent_state/metadata";
 import { AGENT_SIDEKICK_CONTEXT_SERVER } from "@app/lib/api/actions/servers/agent_sidekick_context/metadata";
 import { ASK_USER_QUESTION_SERVER } from "@app/lib/api/actions/servers/ask_user_question/metadata";
-import { _getSidekickGlobalAgent } from "@app/lib/api/assistant/global_agents/configurations/dust/sidekick";
+import { _getSidekickGlobalAgent } from "@app/lib/api/assistant/global_agents/configurations/ruby/sidekick";
 import type { SidekickContext } from "@app/lib/api/assistant/global_agents/sidekick_context";
 import type { MCPServerViewsForGlobalAgentsMap } from "@app/lib/api/assistant/global_agents/tools";
 import { MCP_SERVERS_FOR_GLOBAL_AGENTS } from "@app/lib/api/assistant/global_agents/tools";

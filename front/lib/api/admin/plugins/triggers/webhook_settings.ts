@@ -1,0 +1,107 @@
+import { createPlugin } from "@app/lib/api/admin/types";
+import type { TriggerExecutionMode } from "@app/types/assistant/triggers";
+import { TRIGGER_EXECUTION_MODES } from "@app/types/assistant/triggers";
+import { Err, Ok } from "@app/types/shared/result";
+
+export const webhookSettingsPlugin = createPlugin({
+  manifest: {
+    id: "webhook-settings",
+    name: "Update Webhook Settings",
+    description:
+      "Update execution per day limit and execution mode for webhook triggers",
+    resourceTypes: ["triggers"],
+    args: {
+      executionPerDayLimitOverride: {
+        type: "number",
+        label: "Execution Per Day Limit",
+        description:
+          "Maximum number of executions per day for this webhook trigger",
+        async: true,
+      },
+      executionMode: {
+        type: "enum",
+        label: "Execution Mode",
+        description: "Execution mode for the webhook trigger",
+        values: [],
+        async: true,
+        multiple: false,
+      },
+    },
+    requiredRoles: ["support"],
+  },
+  populateAsyncArgs: async (auth, resource) => {
+    if (!resource) {
+      return new Err(new Error("Trigger not found"));
+    }
+
+    const executionModes: {
+      label: string;
+      value: string;
+      checked?: boolean;
+    }[] = [
+      {
+        label: "User pool",
+        value: "user_pool",
+        checked: resource.executionMode === "user_pool",
+      },
+      {
+        label: "Workspace pool",
+        value: "workspace_pool",
+        checked: resource.executionMode === "workspace_pool",
+      },
+    ];
+
+    return new Ok({
+      executionPerDayLimitOverride: resource.executionPerDayLimitOverride ?? 0,
+      executionMode: executionModes,
+    });
+  },
+  execute: async (auth, resource, args) => {
+    if (!resource) {
+      return new Err(new Error("Trigger not found"));
+    }
+
+    const executionPerDayLimitOverride = args.executionPerDayLimitOverride;
+    const executionMode = args.executionMode[0] as
+      | TriggerExecutionMode
+      | undefined;
+
+    if (executionPerDayLimitOverride < 1) {
+      return new Err(
+        new Error("Execution per day limit must be greater than 0")
+      );
+    }
+
+    if (executionMode && !TRIGGER_EXECUTION_MODES.includes(executionMode)) {
+      return new Err(
+        new Error(
+          `Execution mode must be one of ${TRIGGER_EXECUTION_MODES.join(", ")}`
+        )
+      );
+    }
+
+    // Update the trigger using the resource method
+    const updateResult = await resource.updateWebhookSettings(
+      executionPerDayLimitOverride,
+      executionMode ?? resource.executionMode
+    );
+    if (updateResult.isErr()) {
+      return new Err(updateResult.error);
+    }
+
+    const limitText = `${executionPerDayLimitOverride} per day`;
+    const modeText = executionMode ?? "not set";
+
+    return new Ok({
+      display: "text",
+      value: `Webhook trigger settings updated successfully:\n- Execution limit: ${limitText}\n- Execution mode: ${modeText}`,
+    });
+  },
+  isApplicableTo: (auth, resource) => {
+    if (!resource) {
+      return false;
+    }
+
+    return resource.kind === "webhook";
+  },
+});

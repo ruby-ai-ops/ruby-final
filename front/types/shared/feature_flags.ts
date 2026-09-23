@@ -1,25 +1,25 @@
 export const WHITELISTABLE_FEATURES_CONFIG = {
   skills_search: {
     description: "Enable Elasticsearch-backed skill search",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "aubin-tchoi",
   },
   new_manage_skills_page: {
     description:
       "Enable the search-backed Manage Skills page (requires skills_search)",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "aubin-tchoi",
   },
-  dust_lean_agent: {
+  ruby_lean_agent: {
     description:
-      "Enable @dust-lean, a Dust agent that starts without tools, skills, or company knowledge",
-    stage: "dust_only",
+      "Enable @ruby-lean, a Ruby agent that starts without tools, skills, or company knowledge",
+    stage: "ruby_only",
     owner: "aubin-tchoi",
   },
   stateful_conversation_window: {
     description:
       "Restore agent-loop context windows from the previous model step checkpoint",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "flvndvd",
   },
   group_seat_provisioning: {
@@ -28,10 +28,10 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
     stage: "ask_owner",
     owner: "tdraier",
   },
-  dust_filesystem: {
+  ruby_filesystem: {
     description:
       "Allow fresh Pods and standalone conversations to use the database-backed filesystem",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "flvndvd",
   },
   frames_v2: {
@@ -47,19 +47,19 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   },
   anthropic_vertex_fallback: {
     description: "Fallback to Vertex Anthropic for some Anthropic models",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "flvndvd",
   },
   openai_flex_processing: {
     description:
       "Run trigger and wake-up agent runs on OpenAI flex processing (cheaper, slower), falling back to standard processing when flex does not deliver",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "Nils-Fedrigo",
   },
   use_vertex_for_supported_models: {
     description:
       "Route LLM calls through Vertex AI when supported instead of the direct provider's API",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "pmilliotte",
   },
   audit_logs: {
@@ -69,13 +69,13 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   },
   custom_model_feature: {
     description: "Access to custom models loaded from external config",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "flvndvd",
   },
-  dust_internal_global_agents: {
+  ruby_internal_global_agents: {
     description:
-      "Access to internal global agents (dust-edge, dust-quick, dust-oai, dust-goog, custom model agents and their variants)",
-    stage: "dust_only",
+      "Access to internal global agents (ruby-edge, ruby-quick, ruby-oai, ruby-goog, custom model agents and their variants)",
+    stage: "ruby_only",
     owner: "fontanierh",
   },
   gpt_5_6_terra_long_context: {
@@ -89,9 +89,9 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
     stage: "self_serve",
     owner: "Nils-Fedrigo",
   },
-  dust_agent_sonnet_5_default: {
-    description: "Use Claude Sonnet 5 as the default model for the @dust agent",
-    stage: "dust_only",
+  ruby_agent_sonnet_5_default: {
+    description: "Use Claude Sonnet 5 as the default model for the @ruby agent",
+    stage: "ruby_only",
     owner: "pmilliotte",
   },
   notion_private_integration: {
@@ -107,7 +107,7 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   claude_fable_5_feature: {
     description:
       "Access to Claude Fable family of models (served through the EAP Anthropic key)",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "fontanierh",
   },
   deepseek_feature: {
@@ -118,12 +118,12 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   },
   exa_people_and_company: {
     description: "Access to Exa MCP server (search_people, search_companies)",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "spolu",
   },
   disable_run_logs: {
     description: "Disable logging of agent runs",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "spolu",
   },
   disable_computer_feature: {
@@ -164,7 +164,7 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   openai_concise_reasoning_summaries: {
     description:
       "Use concise reasoning summaries for supported OpenAI models in the new LLM router",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "fontanierh",
   },
   salesforce_synced_queries: {
@@ -186,7 +186,7 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   },
   show_debug_tools: {
     description: "Display debug tools in the interface",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "spolu",
   },
   usage_data_api: {
@@ -197,18 +197,18 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   },
   noop_model_feature: {
     description: "Access to noop model in the agent builder",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "davidebbo",
   },
   simulated_failure_model_feature: {
     description: "Access to the simulated failure model",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "frankaloia",
   },
   automatic_model_health_routing: {
     description:
       "Let a model-health breach seen on this workspace's traffic degrade the endpoint",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "frankaloia",
   },
   slack_message_splitting: {
@@ -217,8 +217,8 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
     stage: "self_serve",
     owner: "frankaloia",
   },
-  legacy_dust_apps: {
-    description: "Access to legacy Dust Apps (editor and associated tools)",
+  legacy_ruby_apps: {
+    description: "Access to legacy Ruby Apps (editor and associated tools)",
     stage: "self_serve",
     owner: "spolu",
   },
@@ -233,22 +233,22 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
     stage: "self_serve",
     owner: "LeandreLeBizec",
   },
-  dust_internal_dangerous_in_cluster_mcp_servers: {
+  ruby_internal_dangerous_in_cluster_mcp_servers: {
     description:
-      "EXPERIMENTAL FEATURE. DUST INTERNAL ONLY. Allow remote MCP servers pointing at hosts on the MCP_IN_CLUSTER_HOSTS allowlist, reached in-cluster instead of through the untrusted egress proxy.",
-    stage: "dust_only",
+      "EXPERIMENTAL FEATURE. RUBY INTERNAL ONLY. Allow remote MCP servers pointing at hosts on the MCP_IN_CLUSTER_HOSTS allowlist, reached in-cluster instead of through the untrusted egress proxy.",
+    stage: "ruby_only",
     owner: "id13",
   },
   agent_stream_long_polling: {
     description:
       "Start agent event streams with long polling for this workspace",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "id13",
   },
   discord_bot: {
     description:
       "Discord bot integration for workspace-level Discord integration",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "frankaloia",
   },
   servicenow_tool: {
@@ -263,12 +263,12 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   },
   run_tools_from_prompt: {
     description: "Enable /run command to directly call tools without LLM",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "davidebbo",
   },
   conversations_slack_notifications: {
     description: "Enable slack notifications",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "matteotrab",
   },
   reinforced_agents: {
@@ -285,18 +285,18 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   },
   collapsible_messages: {
     description: "Enable collapsible messages in conversations",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "ykmsd",
   },
   conversation_consumption_details: {
     description:
       "Show the detailed credit attribution for agent messages in conversations",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "flvndvd",
   },
-  poke_mcp: {
-    description: "Enable the Poke MCP server for cross-workspace data access.",
-    stage: "dust_only",
+  admin_mcp: {
+    description: "Enable the Admin MCP server for cross-workspace data access.",
+    stage: "ruby_only",
     owner: "aubin-tchoi",
   },
   legacy_billing: {
@@ -325,7 +325,7 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   },
   dummy_feature_for_flag_testing: {
     description: "Dummy feature flag used for testing feature flag behavior",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "davidebbo",
   },
   sensitivity_labels: {
@@ -336,20 +336,20 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   },
   remote_db_query_identity_labels: {
     description:
-      "Attach Dust workspace/agent/user sIds as BigQuery job labels and Snowflake QUERY_TAG for remote database cost attribution",
+      "Attach Ruby workspace/agent/user sIds as BigQuery job labels and Snowflake QUERY_TAG for remote database cost attribution",
     stage: "self_serve",
     owner: "fraggle",
   },
   restricted_spaces_in_input_bar: {
     description:
       "Allow users to explicitly select Spaces from the conversation input bar.",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "fontanierh",
   },
   disable_formatting_prompt: {
     description:
       "Skip injecting the OpenAI formatting meta prompt entirely (no markdown/paragraph style guidance)",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "fontanierh",
   },
   workspace_default_agent: {
@@ -367,19 +367,19 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   activation_force_nudge: {
     description:
       "Bypass the activated-user check in the activation orchestrator so already-activated users are still nudged",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "frankaloia",
   },
-  dust_pod_goal: {
+  ruby_pod_goal: {
     description:
-      "Enable the Dust Pod Goal skill for persistent job loops in Pods",
-    stage: "dust_only",
+      "Enable the Ruby Pod Goal skill for persistent job loops in Pods",
+    stage: "ruby_only",
     owner: "frankaloia",
   },
   user_memory: {
     description:
       "Enable the user_memory internal MCP server: agents can store and retrieve per-user memory in a user-scoped filesystem.",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "PopDaph",
   },
   similar_agents_check: {
@@ -391,13 +391,13 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   enforce_premium_model_message_limit: {
     description:
       "Enforce the premium-model cap: once the user has spent 25 premium-tier messages in the rolling week, run the message on the Standard stream instead, on workspaces with a non-credit-priced (legacy) plan. Usage is counted regardless, so the flag only controls enforcement.",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "id13",
   },
   editable_tool_inputs: {
     description:
       "Allow editing tool inputs before approving a tool call in the tool validation UI.",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "matteotrab",
   },
   skip_free_usage_rate_limit: {
@@ -445,53 +445,53 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   conversational_building: {
     description:
       "Enable the building_agents_and_skills MCP server: agents can propose agent and skill updates from a conversation as reviewable suggestions.",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "fabiencelier",
   },
   agent_message_consumption_writes: {
     description:
       "Write agent-message consumption items and outbox events as usage is incurred. Shadow mode keeps existing billing.",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "id13",
   },
   agent_message_consumption_bills: {
     description:
       "Use agent-message consumption items for Metronome, costCredits, and usage counters. Requires agent_message_consumption_writes.",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "id13",
   },
   knowledge_browser: {
     description:
       "Browse spaces and folders from the knowledge pickers of the composer and skill builder instead of searching only",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "smb2268",
   },
   discovery_homepage: {
     description: "New homepage optimized for skill and agents discovery",
-    stage: "dust_only",
+    stage: "ruby_only",
     owner: "adrsimon",
   },
 } as const satisfies Record<string, FeatureFlag>;
 
-export type FeatureFlagStage = "dust_only" | "ask_owner" | "self_serve";
+export type FeatureFlagStage = "ruby_only" | "ask_owner" | "self_serve";
 
 export const FEATURE_FLAG_STAGE_LABELS: Record<FeatureFlagStage, string> = {
-  dust_only: "Dust-only",
+  ruby_only: "Ruby-only",
   ask_owner: "Ask owner",
   self_serve: "Self-serve",
 };
 
 export const FEATURE_FLAG_STAGE_DESCRIPTIONS: Record<FeatureFlagStage, string> =
   {
-    dust_only:
-      "Cannot be activated outside Dust workspaces, the feature is not ready.",
+    ruby_only:
+      "Cannot be activated outside Ruby workspaces, the feature is not ready.",
     ask_owner: "Ask the eng owner before activating.",
     self_serve:
       "Safe to activate if you understand the feature and its impact on the workspace.",
   };
 
 export const FEATURE_FLAG_STAGES = [
-  "dust_only",
+  "ruby_only",
   "ask_owner",
   "self_serve",
 ] as const satisfies readonly FeatureFlagStage[];

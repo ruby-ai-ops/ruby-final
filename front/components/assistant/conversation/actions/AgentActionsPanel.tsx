@@ -8,7 +8,7 @@ import type { AgentMessageWithStreaming } from "@app/components/assistant/conver
 import { useConversationMessageAction } from "@app/hooks/conversations";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Spinner, XClose } from "@dust-tt/sparkle";
+import { Spinner, XClose } from "@ruby-ai/ui";
 
 import type React from "react";
 

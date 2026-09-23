@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-# Dust shared dev image — system toolchain and infra binaries only.
+# Ruby shared dev image — system toolchain and infra binaries only.
 # Used by Cursor Cloud Agents, local docker-run, and other AI agents.
 # Application source is bind-mounted or checked out at runtime; deps are built in `install`.
 #
@@ -18,11 +18,11 @@ ARG TARGETARCH
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LEFTHOOK_EXCLUDE=front-lint-test-filenames,front-typecheck,front-circular,front-docs-check,connectors-lint-test-filenames,connectors-typecheck,lint-staged \
-    DUST_IN_CONTAINER=1 \
+    RUBY_IN_CONTAINER=1 \
     RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH="/usr/local/cargo/bin:/root/.temporalio/bin:/opt/qdrant:${PATH}" \
-    BASH_ENV=/tmp/dust-shell-env.sh
+    BASH_ENV=/tmp/ruby-shell-env.sh
 
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -284,19 +284,19 @@ RUN service postgresql start \
   && sudo -u postgres psql -c "ALTER USER dev WITH SUPERUSER;" \
   && service postgresql stop
 
-RUN mkdir -p /tmp/dust-infra /opt/temporal /var/lib/dust-dev /root/.config/mprocs \
+RUN mkdir -p /tmp/ruby-infra /opt/temporal /var/lib/ruby-dev /root/.config/mprocs \
   && printf '%s\n' \
     '# Sourced via BASH_ENV until infra.sh materializes 1Password + local-dev env.' \
     'return 0 2>/dev/null || true' \
-    > /tmp/dust-shell-env.sh \
+    > /tmp/ruby-shell-env.sh \
   && printf '%s\n' \
-    '# Dust shared dev container — refreshed by materialize_dev_environment at runtime.' \
-    'export BASH_ENV=/tmp/dust-shell-env.sh' \
+    '# Ruby shared dev container — refreshed by materialize_dev_environment at runtime.' \
+    'export BASH_ENV=/tmp/ruby-shell-env.sh' \
     '' \
     '# Interactive shells skip BASH_ENV; load materialized secrets here.' \
-    'if [ -f /tmp/dust-shell-env.sh ]; then' \
+    'if [ -f /tmp/ruby-shell-env.sh ]; then' \
     '  # shellcheck disable=SC1091' \
-    '  . /tmp/dust-shell-env.sh' \
+    '  . /tmp/ruby-shell-env.sh' \
     'fi' \
     '' \
     'if [ -f /workspace/dev/bashrc ]; then' \
@@ -311,12 +311,12 @@ RUN mkdir -p /tmp/dust-infra /opt/temporal /var/lib/dust-dev /root/.config/mproc
     'fi' \
     > /root/.bash_profile \
   && printf '%s\n' \
-    '# Dust shared dev container — refreshed by materialize_dev_environment at runtime.' \
+    '# Ruby shared dev container — refreshed by materialize_dev_environment at runtime.' \
     'export SHELL=/bin/zsh' \
     '' \
-    'if [ -f /tmp/dust-shell-env.sh ]; then' \
+    'if [ -f /tmp/ruby-shell-env.sh ]; then' \
     '  # shellcheck disable=SC1091' \
-    '  . /tmp/dust-shell-env.sh' \
+    '  . /tmp/ruby-shell-env.sh' \
     'fi' \
     '' \
     'if [ -f /workspace/dev/zshrc ]; then' \

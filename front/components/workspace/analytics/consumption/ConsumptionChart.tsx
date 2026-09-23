@@ -27,7 +27,7 @@ import {
   formatCreditValue,
 } from "@app/lib/client/credits";
 import type { ConsumptionScopeFilter } from "@app/types/api/analytics/consumption";
-import { ButtonsSwitch, ButtonsSwitchList, cn } from "@dust-tt/sparkle";
+import { ButtonsSwitch, ButtonsSwitchList, cn } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {

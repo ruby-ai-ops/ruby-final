@@ -33,7 +33,7 @@ import { removeNulls } from "@app/types/shared/utils/general";
 import { asDisplayToolName } from "@app/types/shared/utils/string_utils";
 import type { SpaceType } from "@app/types/space";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { DropdownMenuFilterOption } from "@dust-tt/sparkle";
+import type { DropdownMenuFilterOption } from "@ruby-ai/ui";
 import {
   Attachment01,
   BookOpen01,
@@ -56,8 +56,8 @@ import {
   SearchMd,
   Spinner,
   UploadCloud02,
-} from "@dust-tt/sparkle";
-import type { ButtonVariantType } from "@dust-tt/sparkle/dist/esm/components/Button";
+} from "@ruby-ai/ui";
+import type { ButtonVariantType } from "@ruby-ai/ui/dist/esm/components/Button";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const SEARCH_RESULTS_PLACEHOLDER_COUNT = 5;
@@ -73,7 +73,7 @@ const getKeyForConnectorProvider = ({
     return `ds-webcrawler`;
   } else if (!connectorProvider) {
     return `ds-folder`;
-  } else if (connectorProvider === "dust_project") {
+  } else if (connectorProvider === "ruby_project") {
     return `ds-project`;
   } else {
     return `ds-${dataSourceId}`;
@@ -113,7 +113,7 @@ interface InputBarAttachmentsPickerProps {
 
 const PAGE_SIZE = 25;
 const PROJECT_FILTER_KEY = getKeyForConnectorProvider({
-  connectorProvider: "dust_project",
+  connectorProvider: "ruby_project",
   dataSourceId: "project",
 });
 

@@ -65,7 +65,7 @@ async function createActivationPod(
   });
 }
 
-// A nudge is a conversation Dust opened in the pod: its opening message
+// A nudge is a conversation Ruby opened in the pod: its opening message
 // carries the nudge origin and has no author. `replyAt` adds a message from the
 // pod's user afterwards.
 async function createNudge(
@@ -83,7 +83,7 @@ async function createNudge(
   }
 ) {
   const conversation = await ConversationFactory.create(auth, {
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     spaceId: pod.id,
     messagesCreatedAt: [],
     conversationCreatedAt: nudgedAt,
@@ -93,7 +93,7 @@ async function createNudge(
     auth,
     workspace,
     conversation,
-    content: "Run the Dust Learning workflow.",
+    content: "Run the Ruby Learning workflow.",
     origin: "system_activation",
     authorless: true,
     createdAt: nudgedAt,
@@ -607,7 +607,7 @@ describe("postActivationNudge", () => {
       throw new Error("Expected the nudge to open with a user message.");
     }
 
-    // No author: the nudge is Dust reaching out, not the user talking to
+    // No author: the nudge is Ruby reaching out, not the user talking to
     // themselves.
     expect(nudgeMessage.user).toBeNull();
     expect(nudgeMessage.context.origin).toBe("system_activation");

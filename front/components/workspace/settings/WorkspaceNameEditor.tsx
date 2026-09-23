@@ -12,7 +12,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useEffect, useState } from "react";
 
 export function WorkspaceNameEditor({ owner }: { owner: WorkspaceType }) {

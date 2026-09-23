@@ -13,10 +13,10 @@ import type { AgentDef } from "@marketing/components/home/content/Product/heroOf
 // ---------------------------------------------------------------------------
 // Avatar builders for the chat card header. The card's user avatar is a
 // 42px CSS-styled HTML disc with the teammate's photo as background; the
-// agent avatar is the same disc with an embedded sparkle robot SVG instead.
+// agent avatar is the same disc with an embedded ui robot SVG instead.
 // ---------------------------------------------------------------------------
 
-/** Sparkle-robot fallback used when an agent didn't pass a custom icon. */
+/** RubyUI-robot fallback used when an agent didn't pass a custom icon. */
 const AGENT_AVATAR_FALLBACK_SVG =
   '<rect x="4" y="7" width="16" height="12" rx="3"/><circle cx="9" cy="13" r="1.2" fill="white" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="white" stroke="none"/><path d="M12 4v3"/><circle cx="12" cy="3.4" r="1" fill="white" stroke="none"/>';
 
@@ -292,7 +292,7 @@ export function createChatCard(deps: ChatCardDeps): ChatCardModule {
       // card inside it. The anchor's transform is updated per rAF to follow
       // the speaker's screen position; the inner card animates independently.
       const anchor = document.createElement("div");
-      anchor.className = "dust-floor-card-anchor";
+      anchor.className = "ruby-floor-card-anchor";
 
       const card = document.createElement("div");
       card.className = "chat-card" + (isAgent ? " agent-card" : "");
@@ -642,7 +642,7 @@ export function createChatCard(deps: ChatCardDeps): ChatCardModule {
     const fy = from.top + from.height / 2;
 
     const fly = document.createElement("div");
-    fly.className = "dust-floor-fly-emoji";
+    fly.className = "ruby-floor-fly-emoji";
     fly.textContent = emoji;
     // Anchor the static position; the animation drives motion via transform
     // (kept on the GPU compositor).

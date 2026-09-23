@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=init-databases
+RUBY_DEV_SCRIPT_NAME=init-databases
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh
@@ -31,7 +31,7 @@ for _ in $(seq 1 30); do
   sleep 1
 done
 
-for db in dust_api dust_databases_store dust_front dust_front_test dust_connectors dust_connectors_test dust_oauth; do
+for db in ruby_api ruby_databases_store ruby_front ruby_front_test ruby_connectors ruby_connectors_test ruby_oauth; do
   if ! PGPASSWORD=dev psql "$admin_uri" -tc "SELECT 1 FROM pg_database WHERE datname='$db'" | grep -q 1; then
     log "Creating database $db"
     PGPASSWORD=dev createdb -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U dev "$db"

@@ -8,7 +8,7 @@ import {
 } from "@app/lib/actions/mcp_internal_actions/output_schemas";
 import { isWebbrowseInputType } from "@app/lib/actions/mcp_internal_actions/types";
 import { validateUrl } from "@app/types/shared/utils/url_utils";
-import { Card, FaviconIcon, Globe01 } from "@dust-tt/sparkle";
+import { Card, FaviconIcon, Globe01 } from "@ruby-ai/ui";
 
 interface BrowseResultItemProps {
   result: BrowseResultResourceType;

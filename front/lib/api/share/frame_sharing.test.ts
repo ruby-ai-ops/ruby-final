@@ -234,8 +234,8 @@ describe("sendFrameOtpEmail", () => {
     expect(sendEmailWithTemplate).toHaveBeenCalledWith(
       expect.objectContaining({
         to: "user@example.com",
-        from: { name: "Dust team", email: "support@dust.tt" },
-        subject: "Your Dust login code",
+        from: { name: "Ruby team", email: "support@ruby.ad" },
+        subject: "Your Ruby login code",
       })
     );
 

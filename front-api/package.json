@@ -1,5 +1,5 @@
 {
-  "name": "@dust-tt/front-api",
+  "name": "@ruby-ai/front-api",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,8 +11,8 @@
     "docs": "tsx scripts/generate-swagger.ts 2>&1 | tee /dev/stderr | grep -E \"YAML.*Error\" && { echo \"Could not generate swagger because of errors\" && exit 1; } || npx --yes @redocly/cli@1.25.5 lint --extends recommended-strict --skip-rule operation-operationId --lint-config error public/swagger.json routes/swagger-private.json",
     "docs:check": "npx --yes @redocly/cli@1.25.5 lint --extends recommended-strict --skip-rule operation-operationId --lint-config error public/swagger.json routes/swagger-private.json",
     "create-db-migration": "../scripts/db/create_db_migration_file.sh",
-    "migration:generate:pre-deploy": "MIGRATION_DB_URI_VAR=FRONT_DATABASE_URI MIGRATION_SHADOW_PREFIX=dust_front_shadow_to MIGRATION_ADMIN_DB_PATH=../front/admin/db.ts ../scripts/db/generate-migration.sh pre-deploy",
-    "migration:generate:post-deploy": "MIGRATION_DB_URI_VAR=FRONT_DATABASE_URI MIGRATION_SHADOW_PREFIX=dust_front_shadow_to MIGRATION_ADMIN_DB_PATH=../front/admin/db.ts ../scripts/db/generate-migration.sh post-deploy",
+    "migration:generate:pre-deploy": "MIGRATION_DB_URI_VAR=FRONT_DATABASE_URI MIGRATION_SHADOW_PREFIX=ruby_front_shadow_to MIGRATION_ADMIN_DB_PATH=../front/admin/db.ts ../scripts/db/generate-migration.sh pre-deploy",
+    "migration:generate:post-deploy": "MIGRATION_DB_URI_VAR=FRONT_DATABASE_URI MIGRATION_SHADOW_PREFIX=ruby_front_shadow_to MIGRATION_ADMIN_DB_PATH=../front/admin/db.ts ../scripts/db/generate-migration.sh post-deploy",
     "migration:apply:pre-deploy": "node ../scripts/db/run-migrate.cjs --command pre-deploy --execute",
     "migration:apply:post-deploy": "node ../scripts/db/run-migrate.cjs --command post-deploy --execute",
     "migration:apply": "npm run migration:apply:pre-deploy && npm run migration:apply:post-deploy",

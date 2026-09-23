@@ -1,0 +1,764 @@
+import { makeUrlForEmojiAndBackground } from "@app/components/agent_builder/settings/avatar_picker/utils";
+import {
+  AdminForm,
+  AdminFormControl,
+  AdminFormField,
+  AdminFormItem,
+  AdminFormLabel,
+  AdminFormMessage,
+} from "@app/components/admin/shadcn/ui/form";
+import { USED_MODEL_CONFIGS } from "@app/components/providers/types";
+import { useSendNotification } from "@app/hooks/useNotification";
+import { useSubmitFunction } from "@app/lib/client/utils";
+import { clientFetch } from "@app/lib/egress/client";
+import { useAppRouter, useRequiredPathParam } from "@app/lib/platform";
+import { useAdminAssistantTemplate } from "@app/admin-app/swr";
+import { useAdminPageMetadata } from "@app/admin-app/swr/currentPage";
+import { TAILWIND_BACKGROUND_COLORS } from "@app/types/assistant/avatar";
+import { CLAUDE_4_SONNET_DEFAULT_MODEL_CONFIG } from "@app/types/assistant/models/anthropic";
+import type {
+  CreateTemplateFormType,
+  TemplateTagCodeType,
+} from "@app/types/assistant/templates";
+import {
+  CreateTemplateFormSchema,
+  MULTI_ACTION_PRESETS,
+  TEMPLATE_VISIBILITIES,
+  TEMPLATES_TAGS_CONFIG,
+} from "@app/types/assistant/templates";
+import { removeNulls } from "@app/types/shared/utils/general";
+import {
+  AssistantCard,
+  Button,
+  ColorPicker,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  EmojiPicker,
+  Input,
+  Markdown,
+  TextArea,
+} from "@ruby-ai/ui";
+import { ioTsResolver } from "@hookform/resolvers/io-ts";
+import map from "lodash/map";
+import { ChevronDownIcon } from "lucide-react";
+import type React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { Control } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
+
+function InputField({
+  control,
+  name,
+  title,
+  placeholder,
+  type = "text",
+}: {
+  control: Control<CreateTemplateFormType>;
+  name: keyof CreateTemplateFormType;
+  title?: string;
+  placeholder?: string;
+  type?: string;
+}) {
+  return (
+    <AdminFormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <AdminFormItem>
+          <AdminFormLabel className="capitalize">{title ?? name}</AdminFormLabel>
+          {typeof field.value === "string" ? (
+            <AdminFormControl>
+              <Input
+                placeholder={placeholder ?? name}
+                type={type}
+                {...field}
+                value={field.value} // Ensuring value is a string
+              />
+            </AdminFormControl>
+          ) : (
+            <div>
+              <p className="text-warning">
+                Invalid input type: {typeof field.value}. Expected a string.
+              </p>
+            </div>
+          )}
+          <AdminFormMessage />
+        </AdminFormItem>
+      )}
+    />
+  );
+}
+
+type Picker = (handleSelect: (value: string) => void) => React.ReactNode;
+
+function PickerInputField({
+  buttonLabel,
+  control,
+  name,
+  picker,
+  placeholder,
+  title,
+}: {
+  buttonLabel?: string;
+  control: Control<CreateTemplateFormType>;
+  name: keyof CreateTemplateFormType;
+  picker: Picker;
+  placeholder?: string;
+  title?: string;
+}) {
+  const pickerRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <AdminFormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <AdminFormItem>
+          <AdminFormLabel className="capitalize">{title ?? name}</AdminFormLabel>
+          {typeof field.value === "string" ? (
+            <AdminFormControl>
+              <div className="flex flex-row gap-2">
+                <Input
+                  readOnly
+                  placeholder={placeholder ?? name}
+                  {...field}
+                  value={field.value} // Ensuring value is a string
+                />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <div ref={pickerRef}>
+                      <Button variant="outline" label={buttonLabel} />
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {picker((value: string) => {
+                      field.onChange(value);
+                      pickerRef.current?.click();
+                    })}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </AdminFormControl>
+          ) : (
+            <div>
+              <p className="text-warning">
+                Invalid input type: {typeof field.value}. Expected a string.
+              </p>
+            </div>
+          )}
+          <AdminFormMessage />
+        </AdminFormItem>
+      )}
+    />
+  );
+}
+
+function TextareaField({
+  control,
+  name,
+  title,
+  placeholder,
+  previewMardown = false,
+  rows = 30,
+}: {
+  control: Control<CreateTemplateFormType>;
+  name: keyof CreateTemplateFormType;
+  title?: string;
+  placeholder?: string;
+  previewMardown?: boolean;
+  rows?: number;
+}) {
+  return (
+    <AdminFormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <AdminFormItem>
+          <AdminFormLabel className="capitalize">{title ?? name}</AdminFormLabel>
+          {typeof field.value === "string" ? (
+            previewMardown && field.value.length > 0 ? (
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <AdminFormControl>
+                    <TextArea
+                      placeholder={placeholder ?? name}
+                      rows={rows}
+                      {...field} // Ensure `value` is a string
+                      value={field.value} // Explicitly setting value as a string
+                    />
+                  </AdminFormControl>
+                </div>
+                <div className="rounded-xl border p-2">
+                  <Markdown content={field.value} />
+                </div>
+              </div>
+            ) : (
+              <AdminFormControl>
+                <TextArea
+                  placeholder={placeholder ?? name}
+                  rows={rows}
+                  {...field} // Ensure `value` is a string
+                  value={field.value} // Explicitly setting value as a string
+                />
+              </AdminFormControl>
+            )
+          ) : (
+            <div>
+              <p className="text-warning">
+                Invalid input type: {typeof field.value}. Expected a string.
+              </p>
+            </div>
+          )}
+          <AdminFormMessage />
+        </AdminFormItem>
+      )}
+    />
+  );
+}
+
+function PresetActionsField({
+  control,
+  name,
+  title,
+}: {
+  control: Control<CreateTemplateFormType>;
+  name: keyof CreateTemplateFormType;
+  title?: string;
+}) {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "presetActions",
+  });
+
+  return (
+    <AdminFormField
+      control={control}
+      name={name}
+      render={() => {
+        return (
+          <AdminFormItem>
+            <AdminFormLabel className="capitalize">
+              {title ?? name}
+            </AdminFormLabel>
+            {fields.map((field, index) => (
+              <div key={field.id} className="grid grid-cols-5 gap-4">
+                <InputField
+                  control={control}
+                  // @ts-expect-error - TS doesn't like the dynamic key
+                  name={`presetActions.${index}.name`}
+                  title="Tool Name"
+                  placeholder="Tool Name"
+                />
+                <SelectField
+                  control={control}
+                  // @ts-expect-error - TS doesn't like the dynamic key
+                  name={`presetActions.${index}.type`}
+                  title="Tool Type"
+                  options={Object.entries(MULTI_ACTION_PRESETS).map(
+                    ([value, display]) => ({
+                      value,
+                      display,
+                    })
+                  )}
+                />
+                <TextareaField
+                  control={control}
+                  // @ts-expect-error - TS doesn't like the dynamic key
+                  name={`presetActions.${index}.description`}
+                  title="Tool Description"
+                  placeholder="Description of the action"
+                  rows={5}
+                />
+                <TextareaField
+                  control={control}
+                  // @ts-expect-error - TS doesn't like the dynamic key
+                  name={`presetActions.${index}.help`}
+                  title="Tool Help content"
+                  placeholder="This is the text displayed on the template's sidebar just on top of the button to add the tool."
+                  rows={5}
+                />
+                <AdminFormItem>
+                  <AdminFormLabel className="capitalize">Remove</AdminFormLabel>
+                  <div>
+                    <Button
+                      variant="outline"
+                      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                        e.preventDefault();
+                        remove(index);
+                      }}
+                      label="Remove Tool"
+                    />
+                  </div>
+                </AdminFormItem>
+              </div>
+            ))}
+            <br />
+            <Button
+              variant="outline"
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                e.preventDefault();
+                const pendingAction = {
+                  name: "",
+                  type: "",
+                  description: "",
+                  help: "",
+                };
+                // @ts-expect-error - TS killed me today
+                append(pendingAction);
+              }}
+              label="Add Tool"
+            />
+            <AdminFormMessage />
+          </AdminFormItem>
+        );
+      }}
+    />
+  );
+}
+
+const tagOptions: {
+  label: string;
+  value: TemplateTagCodeType;
+}[] = map(TEMPLATES_TAGS_CONFIG, (config, key) => ({
+  label: config.label,
+  value: key as TemplateTagCodeType,
+}));
+
+interface SelectFieldOption {
+  value: string;
+  display?: string;
+}
+
+function SelectField({
+  control,
+  name,
+  title,
+  options,
+}: {
+  control: Control<CreateTemplateFormType>;
+  name: keyof CreateTemplateFormType;
+  title?: string;
+  options: SelectFieldOption[];
+}) {
+  return (
+    <AdminFormField
+      control={control}
+      name={name}
+      render={({ field }) => {
+        const selectedOption = options.find((o) => o.value === field.value);
+        const displayLabel =
+          selectedOption?.display ?? selectedOption?.value ?? title ?? name;
+
+        return (
+          <AdminFormItem>
+            <AdminFormLabel className="capitalize">
+              {title ?? name}
+            </AdminFormLabel>
+            <AdminFormControl>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    label={displayLabel}
+                    icon={ChevronDownIcon}
+                    isSelect
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {options.map((option) => (
+                    <DropdownMenuItem
+                      key={option.value}
+                      label={option.display ?? option.value}
+                      onClick={() => field.onChange(option.value)}
+                    />
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </AdminFormControl>
+            <AdminFormMessage />
+          </AdminFormItem>
+        );
+      }}
+    />
+  );
+}
+
+function PreviewDialog({ form }: { form: any }) {
+  const [open, setOpen] = useState(false);
+
+  const emoji = form.getValues("emoji");
+  const backgroundColor = form.getValues("backgroundColor");
+  const [id, unified] = emoji ? emoji.split("/") : [];
+
+  const avatarVisual = makeUrlForEmojiAndBackground(
+    {
+      id,
+      unified,
+      native: "",
+    },
+    backgroundColor
+  );
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" label="Preview Template Card" />
+      </DialogTrigger>
+      <DialogContent className="bg-primary-50 sm:max-w-[600px]">
+        <DialogHeader>
+          <DialogTitle>Preview</DialogTitle>
+        </DialogHeader>
+        <AssistantCard
+          title={form.getValues("handle")}
+          pictureUrl={avatarVisual}
+          description={form.getValues("userFacingDescription") ?? ""}
+          onClick={() => console.log("clicked")}
+        />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function TemplateDetailPage() {
+  const templateId = useRequiredPathParam("tId");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useAppRouter();
+
+  const sendNotification = useSendNotification();
+
+  const { assistantTemplate } = useAdminAssistantTemplate({
+    templateId: templateId === "new" ? null : templateId,
+  });
+
+  useAdminPageMetadata({
+    name: assistantTemplate?.handle,
+    type: "Page",
+    sId: templateId === "new" ? undefined : templateId,
+  });
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: ignored using `--suppress`
+  const onSubmit = useCallback(
+    (values: CreateTemplateFormType) => {
+      const cleanedValues = Object.fromEntries(
+        removeNulls(
+          Object.entries(values).map(([key, value]) => {
+            if (typeof value !== "string") {
+              return [key, value];
+            }
+            const cleanedValue = value.trim();
+            if (!cleanedValue) {
+              return null;
+            }
+            return [key, cleanedValue];
+          })
+        )
+      );
+
+      void submit();
+
+      async function submit() {
+        setIsSubmitting(true);
+        try {
+          const method = assistantTemplate ? "PATCH" : "POST";
+          const url = assistantTemplate
+            ? `/api/admin/templates/${assistantTemplate.sId}`
+            : "/api/admin/templates";
+          const r = await clientFetch(url, {
+            method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(cleanedValues),
+          });
+
+          if (!r.ok) {
+            throw new Error(
+              `Something went wrong: ${r.status} ${await r.text()}`
+            );
+          }
+          sendNotification({
+            title: `Template ${assistantTemplate ? "updated" : "created"}`,
+            type: "success",
+            description: `Template ${
+              assistantTemplate ? "updated" : "created"
+            } successfully.`,
+          });
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          router.back();
+        } catch (e) {
+          setIsSubmitting(false);
+          sendNotification({
+            title: "Error creating template",
+            type: "error",
+            description: `${e}`,
+          });
+        }
+      }
+    },
+    [assistantTemplate, sendNotification, setIsSubmitting, router]
+  );
+
+  const { submit: onDelete } = useSubmitFunction(async () => {
+    if (assistantTemplate === null) {
+      window.alert(
+        "An error occurred while attempting to delete the template (can't find the template)."
+      );
+      return;
+    }
+
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this template? There's no going back."
+      )
+    ) {
+      return;
+    }
+    try {
+      const r = await clientFetch(
+        `/api/admin/templates/${assistantTemplate.sId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!r.ok) {
+        throw new Error("Failed to delete template.");
+      }
+      await router.push("/admin/templates");
+    } catch (e) {
+      console.error(e);
+      window.alert(
+        "An error occurred while attempting to delete the template."
+      );
+    }
+  });
+
+  const form = useForm<CreateTemplateFormType>({
+    resolver: ioTsResolver(CreateTemplateFormSchema),
+    defaultValues: {
+      userFacingDescription: "",
+      agentFacingDescription: "",
+      handle: "",
+      presetInstructions: "",
+      presetModelId: CLAUDE_4_SONNET_DEFAULT_MODEL_CONFIG.modelId,
+      helpInstructions: "",
+      helpActions: "",
+      sidekickInstructions: "",
+      emoji: "black_cat/1f408-200d-2b1b", // 🐈‍⬛.
+      backgroundColor: "bg-pink-300",
+      tags: [],
+      visibility: "draft",
+    },
+  });
+
+  useEffect(() => {
+    if (assistantTemplate) {
+      // Override default values of the form with existing template.
+      Object.entries(assistantTemplate).forEach(([key, value]) => {
+        form.setValue(key as unknown as any, value ?? "");
+      });
+    }
+  }, [assistantTemplate, form]);
+
+  if (isSubmitting) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center bg-primary-50">
+        <div className="text-primary-900">Creating/Updating template...</div>
+      </div>
+    );
+  }
+
+  if (Object.keys(form.formState.errors).length > 0) {
+    // Useful to debug in case you have an error on a field that is not rendered
+    console.log("Form errors", form.formState.errors);
+  }
+
+  return (
+    <div className="mx-auto h-full w-full max-w-7xl flex-grow flex-col items-center justify-center p-8 pt-8">
+      <AdminForm {...form}>
+        <form className="space-y-8">
+          <div className="grid grid-cols-3 gap-4">
+            <InputField
+              control={form.control}
+              name="handle"
+              placeholder="myAssistant"
+            />
+            <SelectField
+              control={form.control}
+              name="visibility"
+              title="Visibility"
+              options={TEMPLATE_VISIBILITIES.map((v) => ({
+                value: v,
+                display: v,
+              }))}
+            />
+            <AdminFormField
+              control={form.control}
+              name="tags"
+              render={({ field }) => {
+                const selectedTags: TemplateTagCodeType[] = field.value;
+                const displayLabel =
+                  selectedTags.length > 0
+                    ? selectedTags
+                        .map((t) => TEMPLATES_TAGS_CONFIG[t].label)
+                        .join(", ")
+                    : "Select tags";
+
+                return (
+                  <AdminFormItem>
+                    <AdminFormLabel>Tags</AdminFormLabel>
+                    <AdminFormControl>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="outline"
+                            label={displayLabel}
+                            icon={ChevronDownIcon}
+                            isSelect
+                          />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          {tagOptions.map((option) => {
+                            const isChecked = selectedTags.includes(
+                              option.value
+                            );
+                            return (
+                              <DropdownMenuCheckboxItem
+                                key={option.value}
+                                label={option.label}
+                                checked={isChecked}
+                                onCheckedChange={() => {
+                                  const next = isChecked
+                                    ? selectedTags.filter(
+                                        (t) => t !== option.value
+                                      )
+                                    : [...selectedTags, option.value];
+                                  field.onChange(next);
+                                }}
+                              />
+                            );
+                          })}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </AdminFormControl>
+                    <AdminFormMessage />
+                  </AdminFormItem>
+                );
+              }}
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            <SelectField
+              control={form.control}
+              name="presetModelId"
+              title="Preset Model"
+              options={USED_MODEL_CONFIGS.map((config) => ({
+                value: config.modelId,
+                display: config.displayName,
+              }))}
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            <PickerInputField
+              control={form.control}
+              name="emoji"
+              picker={(handleSelect) => (
+                <EmojiPicker
+                  theme="light"
+                  previewPosition="none"
+                  onEmojiSelect={(emoji) =>
+                    handleSelect(`${emoji.id}/${emoji.unified}`)
+                  }
+                />
+              )}
+              buttonLabel="Pick"
+            />
+            <PickerInputField
+              control={form.control}
+              name="backgroundColor"
+              title="Background Color"
+              picker={(handleSelect) => (
+                <ColorPicker
+                  selectedColor={form.getValues("backgroundColor")}
+                  colors={TAILWIND_BACKGROUND_COLORS}
+                  onColorSelect={(color) => {
+                    handleSelect(color);
+                  }}
+                />
+              )}
+              buttonLabel="Pick"
+            />
+            <div className="flex h-full flex-col justify-end">
+              <PreviewDialog form={form} />
+            </div>
+          </div>
+          <TextareaField
+            control={form.control}
+            name="presetInstructions"
+            title="preset Instructions"
+            placeholder="Instructions"
+          />
+          <TextareaField
+            control={form.control}
+            name="userFacingDescription"
+            title="User Facing Description"
+            placeholder="A short description (shown in UI)"
+            previewMardown={true}
+          />
+          <TextareaField
+            control={form.control}
+            name="agentFacingDescription"
+            title="Agent Facing Description"
+            placeholder="Description for agent Sidekick context"
+            previewMardown={true}
+          />
+          <TextareaField
+            control={form.control}
+            name="helpInstructions"
+            title="Help Instructions"
+            placeholder="Instructions help bubble..."
+            previewMardown={true}
+          />
+          <TextareaField
+            control={form.control}
+            name="helpActions"
+            title="Help Tools"
+            placeholder="Tools help bubble..."
+            previewMardown={true}
+          />
+          <TextareaField
+            control={form.control}
+            name="sidekickInstructions"
+            title="Sidekick Instructions"
+            placeholder="Instructions for the Sidekick..."
+            previewMardown={true}
+          />
+          <PresetActionsField
+            control={form.control}
+            name="presetActions"
+            title="Preset Tools"
+          />
+          <div className="space flex gap-2">
+            <Button onClick={form.handleSubmit(onSubmit)} label="Save" />
+            <Button
+              type="button"
+              variant="warning"
+              onClick={onDelete}
+              label="Delete this template"
+            />
+          </div>
+        </form>
+      </AdminForm>
+    </div>
+  );
+}

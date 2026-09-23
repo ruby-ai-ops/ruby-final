@@ -1146,8 +1146,8 @@ impl Embedder for MistralEmbedder {
             ));
         }
 
-        // A BYOK workspace embeds with its own key only: Dust's data-source key and the
-        // environment fallback below are Dust-managed credentials.
+        // A BYOK workspace embeds with its own key only: Ruby's data-source key and the
+        // environment fallback below are Ruby-managed credentials.
         if credentials.contains_key(BYOK_CREDENTIAL_KEY) {
             self.api_key = Some(credential_or_env(&credentials, "MISTRAL_API_KEY").await?);
 
@@ -1314,7 +1314,7 @@ impl Provider for MistralProvider {
         );
         utils::info("Your API key can be found at `https://console.mistral.ai/api-keys/`.");
         utils::info("");
-        utils::info("Once ready you can check your setup with `dust provider test mistral_ai`");
+        utils::info("Once ready you can check your setup with `ruby provider test mistral_ai`");
 
         Ok(())
     }

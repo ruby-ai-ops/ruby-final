@@ -2,7 +2,7 @@ import { getInternalMCPServerNameFromSId } from "@app/lib/actions/mcp_internal_a
 import { AgentMCPServerConfigurationModel } from "@app/lib/models/agent/actions/mcp";
 import { InternalMCPServerCredentialModel } from "@app/lib/models/agent/actions/internal_mcp_server_credentials";
 import { MCPServerViewModel } from "@app/lib/models/agent/actions/mcp_server_view";
-import { DustAppSecretModel } from "@app/lib/models/dust_app_secret";
+import { RubyAppSecretModel } from "@app/lib/models/ruby_app_secret";
 import { WorkspaceModel } from "@app/lib/resources/storage/models/workspace";
 import type { ModelStaticWorkspaceAware } from "@app/lib/resources/storage/wrappers/workspace_models";
 import { makeScript } from "@app/scripts/helpers";
@@ -157,29 +157,29 @@ makeScript({}, async ({ execute }, logger) => {
       }
     }
 
-    // Look up the DustAppSecret.
-    const dustAppSecret = await DustAppSecretModel.findOne({
+    // Look up the RubyAppSecret.
+    const rubyAppSecret = await RubyAppSecretModel.findOne({
       where: {
         name: mostCommonSecretName,
         workspaceId,
       },
     });
 
-    if (!dustAppSecret) {
+    if (!rubyAppSecret) {
       logger.warn(
         {
           workspaceId: workspace.sId,
           serverName,
           secretName: mostCommonSecretName,
         },
-        "DustAppSecret not found, skipping"
+        "RubyAppSecret not found, skipping"
       );
       continue;
     }
 
     // Decrypt the secret using workspace sId as key.
     const decryptedValue = decrypt({
-      encrypted: dustAppSecret.hash,
+      encrypted: rubyAppSecret.hash,
       key: workspace.sId,
       useCase: "developer_secret",
     });

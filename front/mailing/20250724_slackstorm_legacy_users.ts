@@ -17,10 +17,10 @@ function workspaceUrl(auth: Authenticator) {
     return `http://localhost:3000/w/${auth.getNonNullableWorkspace().sId}/`;
   }
   if (REGION === "US") {
-    return `https://dust.tt/w/${auth.getNonNullableWorkspace().sId}/`;
+    return `https://app.ruby.ad/w/${auth.getNonNullableWorkspace().sId}/`;
   }
   if (REGION === "EU") {
-    return `https://eu.dust.tt/w/${auth.getNonNullableWorkspace().sId}/`;
+    return `https://app.ruby.ad/w/${auth.getNonNullableWorkspace().sId}/`;
   }
   assert(false);
 }
@@ -52,33 +52,33 @@ async function contactWorkspace(
 
   const email = `Hi there,
 
-We're writing because your Slack connection on Dust needs attention.
+We're writing because your Slack connection on Ruby needs attention.
 
 What's happening: Slack updated its terms of service, with some changes
 effective September 2nd, 2025 for your Slack connection. Read details on the
 changes by Slack here: [0]. Slack excluded from their terms of service any use
 case involving ingesting Slack data for indexation at a third-party (Slack
-DataSource). Interaction with Dust agents from within Slack (Slack Bot) remains
+DataSource). Interaction with Ruby agents from within Slack (Slack Bot) remains
 a permitted use case but now requires to be done using an app officially
 published on the marketplace.
 
 # What we're doing
 
-We previously had a single unpublished Dust application[1] to manage Slack
+We previously had a single unpublished Ruby application[1] to manage Slack
 (Slack DataSource and Slack Bot). To address Slack's updated API terms of
 service, we are splitting our Slack application into two applications:
 
 - A new one[2] (officially published on the marketplace) that allows you to
-  summon @Dust in Slack (the "Slack Bot" app)
+  summon @Ruby in Slack (the "Slack Bot" app)
 - The existing one[1] that will continue to manage Slack as a data source for
   your workspace (the "DataSource" app)
 
-We will sunset the use of the current app[1] for interacting with Dust on Slack
+We will sunset the use of the current app[1] for interacting with Ruby on Slack
 on August 1st following these steps:
 
-- On July 25th (tomorrow) we will rename the current @Dust app to
-  @Dust-Deprecated, users will still be able to interact with it.
-- On August 1st the @Dust-Deprecated will stop responding to users request on
+- On July 25th (tomorrow) we will rename the current @Ruby app to
+  @Ruby-Deprecated, users will still be able to interact with it.
+- On August 1st the @Ruby-Deprecated will stop responding to users request on
   Slack.
 
 # How this impacts you
@@ -93,15 +93,15 @@ by:
   step is complete):
   ${workspaceUrl(auth)}workspace
 
-You will need to invite the new @Dust app to relevant channels in case your
+You will need to invite the new @Ruby app to relevant channels in case your
 users are not allowed to do so. If you perform this switch before July 25th note
-that you will have two @Dust bots co-existing on your workspace but only the new
+that you will have two @Ruby bots co-existing on your workspace but only the new
 one will be able to respond to user queries. That's why we suggest you perform
-the switch only after we rename the old app to @Dust-Deprecated (tomorrow).
+the switch only after we rename the old app to @Ruby-Deprecated (tomorrow).
 
 # What happens next
 
-Additionally, The "Connection" app (soon to be named @Dust-Deprecated) will be
+Additionally, The "Connection" app (soon to be named @Ruby-Deprecated) will be
 subject to rate limits preventing the maintenance of your Slack Data Source
 starting September 2nd, 2025. To comply with Slack Terms we will have to delete
 your Slack Data Source on that date (we'll communicate again when that
@@ -116,18 +116,18 @@ through this transition.
 
 -stan (co-founder)
 
-[0] https://dust-tt.notion.site/Slack-Terms-of-Service-update-and-API-Changes-21728599d94180f3b2b4e892e6d20af6?pvs=74
-[1] https://slack.com/marketplace/A055TBYBUG1-dust-deprecated
-[2] https://slack.com/marketplace/A09214D6XQT-dust
+[0] https://ruby-ai.notion.site/Slack-Terms-of-Service-update-and-API-Changes-21728599d94180f3b2b4e892e6d20af6?pvs=74
+[1] https://slack.com/marketplace/A055TBYBUG1-ruby-deprecated
+[2] https://slack.com/marketplace/A09214D6XQT-ruby
 `;
 
   const msg = {
     to: admins.members.map((a) => a.email),
-    from: "team@dust.tt",
-    cc: admins.members.map((a) => a.email).includes("spolu@dust.tt")
+    from: "team@ruby.ad",
+    cc: admins.members.map((a) => a.email).includes("spolu@ruby.ad")
       ? undefined
-      : "spolu@dust.tt",
-    subject: "[Dust] Slack terms update - Action required",
+      : "spolu@ruby.ad",
+    subject: "[Ruby] Slack terms update - Action required",
     text: email,
   };
 

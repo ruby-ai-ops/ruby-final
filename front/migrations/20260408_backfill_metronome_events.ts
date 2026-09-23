@@ -207,8 +207,8 @@
 //         const apiKeyName = (userMessage as any).key?.name ?? null;
 
 //         // Get run usages.
-//         const runs = await RunResource.listByDustRunIds(auth, {
-//           dustRunIds: agentMessage.runIds,
+//         const runs = await RunResource.listByRubyRunIds(auth, {
+//           rubyRunIds: agentMessage.runIds,
 //         });
 //         const runUsages = (
 //           await concurrentExecutor(runs, (run) => run.listRunUsages(auth), {

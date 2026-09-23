@@ -45,8 +45,8 @@ makeScript(
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
     const tableRes = await coreAPI.getTable({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       tableId,
     });
 

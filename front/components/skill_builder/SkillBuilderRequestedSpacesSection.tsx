@@ -4,7 +4,7 @@ import type { SkillBuilderFormData } from "@app/components/skill_builder/SkillBu
 import { useSkillSpaceRestrictionsContext } from "@app/components/skill_builder/SkillSpaceRestrictionsContext";
 import { useRemoveSkillSpace } from "@app/components/skill_builder/useRemoveSkillSpace";
 import { removeNulls } from "@app/types/shared/utils/general";
-import { Button, Planet } from "@dust-tt/sparkle";
+import { Button, Planet } from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 import { useController } from "react-hook-form";
 

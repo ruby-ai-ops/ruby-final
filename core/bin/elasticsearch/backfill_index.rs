@@ -1,5 +1,5 @@
 use clap::Parser;
-use dust::{
+use ruby::{
     data_sources::node::Node,
     search_stores::search_store::ElasticsearchSearchStore,
     stores::{postgres::PostgresStore, store::Store},

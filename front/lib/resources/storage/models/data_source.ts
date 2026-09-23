@@ -22,8 +22,8 @@ export class DataSourceModel extends SoftDeletableWorkspaceAwareModel<DataSource
   declare name: string;
   declare description: string | null;
   declare assistantDefaultSelected: boolean;
-  declare dustAPIProjectId: string;
-  declare dustAPIDataSourceId: string;
+  declare rubyAPIProjectId: string;
+  declare rubyAPIDataSourceId: string;
   declare connectorId: string | null;
   declare connectorProvider: ConnectorProvider | null;
   declare vaultId: ForeignKey<SpaceModel["id"]>;
@@ -65,11 +65,11 @@ DataSourceModel.init(
       allowNull: false,
       defaultValue: true,
     },
-    dustAPIProjectId: {
+    rubyAPIProjectId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    dustAPIDataSourceId: {
+    rubyAPIDataSourceId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -88,15 +88,15 @@ DataSourceModel.init(
       { fields: ["workspaceId", "connectorProvider"] },
       { fields: ["workspaceId", "vaultId"] },
       { fields: ["workspaceId", "conversationId"], unique: true },
-      { fields: ["dustAPIProjectId"] },
+      { fields: ["rubyAPIProjectId"] },
       {
         fields: ["conversationId"],
         name: "data_sources_conversation_id",
         concurrently: true,
       },
       {
-        fields: ["dustAPIDataSourceId"],
-        name: "data_sources_dust_api_data_source_id",
+        fields: ["rubyAPIDataSourceId"],
+        name: "data_sources_ruby_api_data_source_id",
         concurrently: true,
       },
     ],

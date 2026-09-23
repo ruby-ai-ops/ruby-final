@@ -46,7 +46,7 @@ describe("GET /api/sse/w/[wId]/assistant/conversations/[cId]/events", () => {
   it("streams allowed events to the client", async () => {
     const { workspace, auth } = await createPrivateApiMockRequest();
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 

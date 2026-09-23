@@ -1,6 +1,6 @@
 import { getRetryPolicyFromToolConfiguration } from "@app/lib/api/mcp";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import type { AgentMCPActionResource } from "@app/lib/resources/agent_mcp_action_resource";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { TriggerResource } from "@app/lib/resources/trigger_resource";
@@ -73,7 +73,7 @@ export async function launchAgentLoopWorkflow({
   startStep: number;
   waitForCompletion?: boolean;
 }): Promise<
-  Result<undefined, Error | DustError<"agent_loop_already_running">>
+  Result<undefined, Error | RubyError<"agent_loop_already_running">>
 > {
   const authType = auth.toJSON();
   const { workspaceId } = authType;
@@ -160,7 +160,7 @@ export async function launchAgentLoopWorkflow({
     );
 
     return new Err(
-      new DustError(
+      new RubyError(
         "agent_loop_already_running",
         "Agent loop already running for this message."
       )
@@ -185,7 +185,7 @@ export async function launchCompactionWorkflow({
   model: SupportedModel;
   sourceConversation?: CompactionSourceConversation;
 }): Promise<
-  Result<undefined, Error | DustError<"compaction_already_running">>
+  Result<undefined, Error | RubyError<"compaction_already_running">>
 > {
   const authType = auth.toJSON();
   const { workspaceId } = authType;
@@ -231,7 +231,7 @@ export async function launchCompactionWorkflow({
     );
 
     return new Err(
-      new DustError(
+      new RubyError(
         "compaction_already_running",
         "Compaction workflow already running for this conversation."
       )

@@ -1,4 +1,4 @@
-# Dust iOS app — common dev tasks.
+# Ruby iOS app — common dev tasks.
 #
 # Quick start:
 #   make run               # build the Dev config and launch it on the simulator
@@ -11,12 +11,12 @@
 #
 # Environments (ENV):
 #   dev      debug build   -> dev API  (http://localhost:3000)   [default]
-#   prod     debug build   -> prod API (https://dust.tt)
-#   release  release build -> prod API (https://dust.tt)
+#   prod     debug build   -> prod API (https://ruby.ad)
+#   release  release build -> prod API (https://ruby.ad)
 
-PROJECT   := Dust.xcodeproj
-SCHEME    := Dust
-BUNDLE_ID := com.dust.mobile
+PROJECT   := Ruby.xcodeproj
+SCHEME    := Ruby
+BUNDLE_ID := com.ruby.mobile
 BUILD_DIR := build
 SIMULATOR ?= iPhone 17 Pro
 ENV       ?= dev
@@ -33,7 +33,7 @@ else
 endif
 
 DESTINATION := platform=iOS Simulator,name=$(SIMULATOR)
-APP_PATH    := $(BUILD_DIR)/Build/Products/$(CONFIG)-iphonesimulator/Dust.app
+APP_PATH    := $(BUILD_DIR)/Build/Products/$(CONFIG)-iphonesimulator/Ruby.app
 
 # Pretty-print xcodebuild output if xcbeautify is installed (`brew install xcbeautify`).
 XCBEAUTIFY := $(shell command -v xcbeautify 2>/dev/null)
@@ -56,7 +56,7 @@ XCODEBUILD := set -o pipefail && xcodebuild \
 ## help: list available targets
 .PHONY: help
 help:
-	@echo "Dust iOS — make targets (ENV=dev|prod|release, default: $(ENV))"
+	@echo "Ruby iOS — make targets (ENV=dev|prod|release, default: $(ENV))"
 	@echo
 	@grep -E '^## ' $(MAKEFILE_LIST) | sed 's/## /  /'
 	@echo
@@ -67,7 +67,7 @@ help:
 	@echo "  make build:release"
 	@echo "  make run SIMULATOR='iPhone 16 Pro'"
 
-## generate: (re)generate Dust.xcodeproj from project.yml via XcodeGen
+## generate: (re)generate Ruby.xcodeproj from project.yml via XcodeGen
 .PHONY: generate
 generate:
 	xcodegen generate
@@ -112,12 +112,12 @@ lint-fix:
 ## format: format sources with SwiftFormat
 .PHONY: format
 format:
-	swiftformat Dust SparkleTokens/Sources
+	swiftformat Ruby RubyUITokens/Sources
 
 ## format-check: check formatting without writing changes
 .PHONY: format-check
 format-check:
-	swiftformat Dust SparkleTokens/Sources --lint
+	swiftformat Ruby RubyUITokens/Sources --lint
 
 ## clean: remove build artifacts
 .PHONY: clean

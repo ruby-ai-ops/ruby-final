@@ -40,7 +40,7 @@ export type CachedAgentStepContent = {
   version: number;
   type: AgentContentItemType["type"];
   value: AgentContentItemType;
-  dustRunId: string | null;
+  rubyRunId: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -52,7 +52,7 @@ type AgentStepContentCacheMetadata = {
   index: number;
   version: number;
   type: AgentContentItemType["type"];
-  dustRunId: string | null;
+  rubyRunId: string | null;
 };
 
 /**
@@ -159,7 +159,7 @@ function isCachedAgentStepContent(
     typeof v.type === "string" &&
     v.value !== null &&
     typeof v.value === "object" &&
-    (v.dustRunId === null || typeof v.dustRunId === "string") &&
+    (v.rubyRunId === null || typeof v.rubyRunId === "string") &&
     typeof v.createdAt === "string" &&
     typeof v.updatedAt === "string"
   );
@@ -168,8 +168,8 @@ function isCachedAgentStepContent(
 /**
  * Given latest-version metadata from PG (no `value` column), try to hydrate
  * full rows from the per-agentMessage Redis Hash. A message is a hit only when
- * every expected `(step, index)` field is present and matches `id`, `version`, and `dustRunId`.
- * Comparing dustRunId makes raw database backfills self-invalidating without coordinating a Redis
+ * every expected `(step, index)` field is present and matches `id`, `version`, and `rubyRunId`.
+ * Comparing rubyRunId makes raw database backfills self-invalidating without coordinating a Redis
  * delete with the Postgres update.
  *
  * Returns null if Redis itself fails — caller should treat all ids as misses.
@@ -248,7 +248,7 @@ export async function tryHydrateAgentStepContentsFromCache({
           !isCachedAgentStepContent(parsed) ||
           parsed.id !== meta.id ||
           parsed.version !== meta.version ||
-          parsed.dustRunId !== meta.dustRunId ||
+          parsed.rubyRunId !== meta.rubyRunId ||
           parsed.agentMessageId !== meta.agentMessageId
         ) {
           complete = false;

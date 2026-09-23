@@ -4,14 +4,14 @@ import { useWorkspace } from "@app/lib/auth/AuthContext";
 import { useAppRouter, useRequiredPathParam } from "@app/lib/platform";
 import { useWorkspacePermissions } from "@app/lib/swr/permissions";
 import { useSpaceInfo } from "@app/lib/swr/spaces";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 export function SpaceAppsListPage() {
   const router = useAppRouter();
   const spaceId = useRequiredPathParam("spaceId");
   const owner = useWorkspace();
   const { hasPermission } = useWorkspacePermissions();
-  const canAdministrateApps = hasPermission("admin", "dust_app");
+  const canAdministrateApps = hasPermission("admin", "ruby_app");
 
   const {
     spaceInfo: space,

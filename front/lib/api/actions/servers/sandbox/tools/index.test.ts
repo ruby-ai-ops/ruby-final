@@ -46,8 +46,8 @@ const {
 
 vi.mock("@app/lib/api/config", () => ({
   default: {
-    getApiBaseUrl: () => "https://dust.tt",
-    getVizPublicUrl: () => "https://viz.dust.tt",
+    getApiBaseUrl: () => "https://ruby.ad",
+    getVizPublicUrl: () => "https://viz.ruby.ad",
     getSandboxDevFrontHostName: () => undefined,
   },
 }));
@@ -219,7 +219,7 @@ describe("createSandboxTools", () => {
 });
 
 describe("buildDescribeToolsetOutput", () => {
-  it("mirrors dsbx manifest filtering", async () => {
+  it("mirrors rbx manifest filtering", async () => {
     const { authenticator: auth } = await createResourceTest({});
 
     const visibleResult = await buildDescribeToolsetOutput(
@@ -233,10 +233,10 @@ describe("buildDescribeToolsetOutput", () => {
       throw visibleResult.error;
     }
 
-    expect(visibleResult.value[0].text).toContain("name: dsbx");
+    expect(visibleResult.value[0].text).toContain("name: rbx");
   });
 
-  it("hides dsbx manifest entry when Computer is disabled", async () => {
+  it("hides rbx manifest entry when Computer is disabled", async () => {
     const { authenticator: auth } = await createResourceTest({});
 
     await FeatureFlagFactory.basic(auth, "disable_computer_feature");
@@ -248,7 +248,7 @@ describe("buildDescribeToolsetOutput", () => {
       throw result.error;
     }
 
-    expect(result.value[0].text).not.toContain("name: dsbx");
+    expect(result.value[0].text).not.toContain("name: rbx");
   });
 });
 
@@ -333,7 +333,7 @@ describe("runSandboxBashTool", () => {
       expect.objectContaining({
         user: "agent-proxied",
         envVars: expect.objectContaining({
-          DUST_VIZ_URL: "https://viz.dust.tt",
+          RUBY_VIZ_URL: "https://viz.ruby.ad",
         }),
       })
     );
@@ -829,11 +829,11 @@ describe("runSandboxBashTool", () => {
       );
 
       expect(result.isOk()).toBe(true);
-      // wait-and-collect uses dust_wac_<execId> as a pid file marker;
+      // wait-and-collect uses ruby_wac_<execId> as a pid file marker;
       // wrapCommandWithCapture would emit `exec > >(tee` instead.
       const [, command] = (sandbox.exec as ReturnType<typeof vi.fn>).mock
         .calls[0];
-      expect(command).toContain("dust_wac_0123456789abcdef");
+      expect(command).toContain("ruby_wac_0123456789abcdef");
       expect(command).not.toContain("exec > >(tee");
       expect(command).not.toContain("echo new");
     });

@@ -2,13 +2,13 @@
   {
     "sId": "ConvBuildingConv01",
     "title": "Improve MeetingNotesFormatter",
-    "agentName": "Dust",
+    "agentName": "Ruby",
     "overwrite": true,
     "exchanges": [
       {
         "user": {
           "sId": "ConvBuildingUMsg01",
-          "content": ":mention[Dust]{sId=dust} Can you review the MeetingNotesFormatter skill? Action items keep coming back without dates, and agents don't pick the skill up when I paste a call transcript."
+          "content": ":mention[Ruby]{sId=ruby} Can you review the MeetingNotesFormatter skill? Action items keep coming back without dates, and agents don't pick the skill up when I paste a call transcript."
         },
         "agent": {
           "sId": "ConvBuildingAMsg01",

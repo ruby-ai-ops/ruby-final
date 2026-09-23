@@ -2,15 +2,15 @@
 # Block until infra.sh finishes (Cursor runs start + terminals in parallel).
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=wait-for-infra
+RUBY_DEV_SCRIPT_NAME=wait-for-infra
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh
 source "$(dirname "$0")/env.sh"
 
-READY_FILE="${DUST_INFRA_LOG_DIR}/infra.ready"
-MAX_WAIT_SECONDS="${DUST_INFRA_WAIT_SECONDS:-900}"
-POLL_INTERVAL="${DUST_INFRA_WAIT_POLL:-2}"
+READY_FILE="${RUBY_INFRA_LOG_DIR}/infra.ready"
+MAX_WAIT_SECONDS="${RUBY_INFRA_WAIT_SECONDS:-900}"
+POLL_INTERVAL="${RUBY_INFRA_WAIT_POLL:-2}"
 
 if [ -f "$READY_FILE" ]; then
   log "Infra already ready"
@@ -31,18 +31,18 @@ while [ "$attempt" -lt "$max_attempts" ]; do
   attempt=$((attempt + 1))
   if [ "$attempt" -eq 1 ] || [ $((attempt % 15)) -eq 0 ]; then
     log "Still waiting for infra (${attempt}/${max_attempts})..."
-    if [ -s "${DUST_INFRA_LOG_DIR}/setup-dev-db.log" ]; then
-      tail -1 "${DUST_INFRA_LOG_DIR}/setup-dev-db.log" 2>/dev/null || true
+    if [ -s "${RUBY_INFRA_LOG_DIR}/setup-dev-db.log" ]; then
+      tail -1 "${RUBY_INFRA_LOG_DIR}/setup-dev-db.log" 2>/dev/null || true
     fi
   fi
   sleep "$POLL_INTERVAL"
 done
 
-log "Timed out waiting for infra. Check the infra output and ${DUST_INFRA_LOG_DIR}/"
-if [ -f "${DUST_INFRA_LOG_DIR}/init-elasticsearch.log" ]; then
-  tail -20 "${DUST_INFRA_LOG_DIR}/init-elasticsearch.log"
+log "Timed out waiting for infra. Check the infra output and ${RUBY_INFRA_LOG_DIR}/"
+if [ -f "${RUBY_INFRA_LOG_DIR}/init-elasticsearch.log" ]; then
+  tail -20 "${RUBY_INFRA_LOG_DIR}/init-elasticsearch.log"
 fi
-if [ -f "${DUST_INFRA_LOG_DIR}/setup-dev-db.log" ]; then
-  tail -20 "${DUST_INFRA_LOG_DIR}/setup-dev-db.log"
+if [ -f "${RUBY_INFRA_LOG_DIR}/setup-dev-db.log" ]; then
+  tail -20 "${RUBY_INFRA_LOG_DIR}/setup-dev-db.log"
 fi
 exit 1

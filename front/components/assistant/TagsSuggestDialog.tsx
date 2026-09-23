@@ -15,7 +15,7 @@ import {
   DialogTitle,
   ScrollArea,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 export const MAX_TAG_LENGTH = 100;

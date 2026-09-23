@@ -1,0 +1,174 @@
+import { createPlugin } from "@app/lib/api/admin/types";
+import { Err } from "@app/types/shared/result";
+
+// The following plugins are no-op plugins for the upgrade and downgrade endpoints.
+// They are used to save a plugin record in the database for the upgrade and downgrade endpoints.
+
+export const upgradeEnterprisePlan = createPlugin({
+  manifest: {
+    id: "upgrade-enterprise-plan",
+    name: "Upgrade Enterprise Plan",
+    description:
+      "Upgrade enterprise plan with programmatic usage configuration",
+    resourceTypes: ["workspaces"],
+    isHidden: true,
+    args: {
+      planCode: {
+        type: "text",
+        label: "Plan Code",
+        description: "The plan code to upgrade to",
+        placeholder: "e.g., FREE_UPGRADED_PLAN",
+        required: true,
+      },
+      stripeSubscriptionId: {
+        type: "text",
+        label: "Stripe Subscription ID",
+        description: "The stripe subscription id to upgrade to",
+        placeholder: "e.g., sub_1234567890",
+        required: true,
+      },
+      freeCreditsOverrideEnabled: {
+        type: "boolean",
+        label: "Negotiated Free Credits",
+        description: "Enable negotiated free monthly credits",
+        required: true,
+      },
+      freeCreditsDollars: {
+        type: "number",
+        label: "Free Credits (USD)",
+        description: "Negotiated monthly free credits amount",
+        required: false,
+      },
+      defaultDiscountPercent: {
+        type: "number",
+        label: "Default Discount (%)",
+        description: "Discount applied to programmatic credit purchases",
+        required: false,
+      },
+      paygEnabled: {
+        type: "boolean",
+        label: "Pay-as-you-go",
+        description: "Enable pay-as-you-go billing",
+        required: true,
+      },
+      paygCapDollars: {
+        type: "number",
+        label: "PAYG Spending Cap (USD)",
+        description: "Maximum monthly PAYG spending",
+        required: false,
+      },
+    },
+    requiredRoles: ["billing"],
+  },
+  execute: async () => {
+    return new Err(new Error("NO_OP"));
+  },
+});
+
+export const upgradeFreePlan = createPlugin({
+  manifest: {
+    id: "upgrade-free-plan",
+    name: "Upgrade Free Plan",
+    description: "Upgrade free plan",
+    resourceTypes: ["workspaces"],
+    isHidden: true,
+    args: {
+      planCode: {
+        type: "text",
+        label: "Plan Code",
+        description: "The plan code to upgrade to",
+        placeholder: "e.g., FREE_UPGRADED_PLAN",
+        required: true,
+      },
+      endDate: {
+        type: "text",
+        label: "End Date",
+        description: "Optional end date for the upgrade",
+        placeholder: "YYYY-MM-DD",
+        required: false,
+      },
+    },
+    requiredRoles: ["billing"],
+  },
+  execute: async () => {
+    return new Err(new Error("NO_OP"));
+  },
+});
+
+export const downgradeNoPlan = createPlugin({
+  manifest: {
+    id: "downgrade-no-plan",
+    name: "Downgrade No Plan",
+    description: "Downgrade no plan",
+    resourceTypes: ["workspaces"],
+    isHidden: true,
+    args: {},
+    requiredRoles: ["billing"],
+  },
+  execute: async () => {
+    return new Err(new Error("NO_OP"));
+  },
+});
+
+export const cancelPendingContract = createPlugin({
+  manifest: {
+    id: "cancel-pending-contract",
+    name: "Cancel Pending Metronome Contract",
+    description:
+      "Cancel a pending contract switch: archive the pending Metronome " +
+      "contract, delete the pending subscription, and restore the current " +
+      "contract/subscription",
+    resourceTypes: ["workspaces"],
+    isHidden: true,
+    args: {},
+    requiredRoles: ["billing"],
+  },
+  execute: async () => {
+    return new Err(new Error("NO_OP"));
+  },
+});
+
+export const switchContract = createPlugin({
+  manifest: {
+    id: "switch-contract",
+    name: "Switch Metronome Contract",
+    description:
+      "Switch a Metronome-billed workspace to a new contract package + plan",
+    resourceTypes: ["workspaces"],
+    isHidden: true,
+    args: {
+      planCode: {
+        type: "text",
+        label: "Plan Code",
+        description: "The plan code to switch to",
+        placeholder: "e.g., PRO_PLAN_SEAT_39 or ENT_*",
+        required: true,
+      },
+      metronomePackageId: {
+        type: "text",
+        label: "Metronome Package ID",
+        description: "The Metronome package to put the customer on",
+        required: true,
+      },
+      startingAt: {
+        type: "text",
+        label: "Starting At",
+        description:
+          "Required for enterprise packages (≥1h future). Omitted for Pro/Business.",
+        placeholder: "ISO timestamp",
+        required: false,
+      },
+      stripeCustomerId: {
+        type: "text",
+        label: "Stripe Customer ID",
+        description: "Stripe customer linked to the Metronome customer",
+        placeholder: "cus_...",
+        required: true,
+      },
+    },
+    requiredRoles: ["billing"],
+  },
+  execute: async () => {
+    return new Err(new Error("NO_OP"));
+  },
+});

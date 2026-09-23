@@ -159,19 +159,19 @@ export function startServer(port: number) {
     getNotionWorkspaceIdHandler
   );
 
-  // (legacy) "Dust Data-sync" for indexing and handling calls to the dust bot.
+  // (legacy) "Ruby Data-sync" for indexing and handling calls to the ruby bot.
   app.post("/webhooks/:webhook_secret/slack", webhookSlackAPIHandler);
 
-  // (legacy) "Dust Data-sync" (legacy) when the user interacts with the dust bot.
+  // (legacy) "Ruby Data-sync" (legacy) when the user interacts with the ruby bot.
   app.post(
     "/webhooks/:webhook_secret/slack_interaction",
     webhookSlackInteractionsAPIHandler
   );
 
-  // "Dust" for handling calls to the dust bot.
+  // "Ruby" for handling calls to the ruby bot.
   app.post("/webhooks/:webhook_secret/slack_bot", webhookSlackBotAPIHandler);
 
-  // "Dust" when the user interacts with the dust bot.
+  // "Ruby" when the user interacts with the ruby bot.
   app.post(
     "/webhooks/:webhook_secret/slack_bot_interaction",
     webhookSlackBotInteractionsAPIHandler

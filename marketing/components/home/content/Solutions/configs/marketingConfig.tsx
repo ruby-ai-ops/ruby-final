@@ -13,7 +13,7 @@ import type {
 } from "@marketing/components/home/content/Solutions/configs/utils";
 import type { DemoVideoProps } from "@marketing/components/home/content/Solutions/DemoVideoSection";
 import type { UseCaseProps } from "@marketing/components/home/content/Solutions/UseCasesSection";
-import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@dust-tt/sparkle";
+import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@ruby-ai/ui";
 
 // Config exports
 export const pageSettings: pageSettingsProps = {
@@ -157,45 +157,45 @@ export const ROI: ROIProps = {
 
 export const Quote: QuoteProps = {
   quote:
-    "Dust is not just a tool - it's like having an extra team member who knows your brand voice, can handle recurring tasks, and helps you tackle new challenges. I couldn't do half of my job without it, especially with tight deadlines and a small team.",
+    "Ruby is not just a tool - it's like having an extra team member who knows your brand voice, can handle recurring tasks, and helps you tackle new challenges. I couldn't do half of my job without it, especially with tight deadlines and a small team.",
   name: "Valentine Chelius",
   title: "Head of Marketing at Fleet",
   logo: "/static/landing/logos/color/fleet.png",
 };
 
 export const DemoVideo: DemoVideoProps = {
-  sectionTitle: "Watch Dust in motion",
-  videoUrl: "https://fast.wistia.net/embed/iframe/z8ky9a7ugn",
+  sectionTitle: "Watch Ruby in motion",
+  videoUrl: "/static/workspace-demo/index.html",
   showCaptions: true,
 };
 
 export const Stories: CustomerStory[] = [
   {
-    title: "How Alan produces customer stories 80% faster with Dust",
+    title: "How Alan produces customer stories 80% faster with Ruby",
     content:
-      "Alan's marketing team uses Dust to create customer stories that resonate with their audience, all while maintaining brand consistency.",
-    href: "/customers/alan-marketing-customer-story-production-dust",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Alan-__-Dust-1.png",
+      "Alan's marketing team uses Ruby to create customer stories that resonate with their audience, all while maintaining brand consistency.",
+    href: "/customers/alan-marketing-customer-story-production-ruby",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Alan-__-Ruby-1.png",
   },
   {
-    title: "How Qonto Achieved 70% Faster Localization with Dust",
+    title: "How Qonto Achieved 70% Faster Localization with Ruby",
     content:
       "Qonto's Tolki assistant serves as a virtual polyglot, helping the content team localize content while maintaining brand voice and regional standards.",
-    href: "/customers/qonto-dust-ai-partnership",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Qonto-__-Dust.jpg",
+    href: "/customers/qonto-ruby-ai-partnership",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Qonto-__-Ruby.jpg",
   },
   {
     title: "Building a Marketing Engine from Scratch at Fleet",
     content:
-      "With just two interns, Valentine created a scalable marketing operation using Dust's AI capabilities for content and brand management.",
-    href: "/customers/how-valentine-head-of-marketing-at-fleet-uses-dust",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/01/dust_fleet.png",
+      "With just two interns, Valentine created a scalable marketing operation using Ruby's AI capabilities for content and brand management.",
+    href: "/customers/how-valentine-head-of-marketing-at-fleet-uses-ruby",
+    src: "https://ruby.ad/content/images/size/w2000/2025/01/ruby_fleet.png",
   },
   // {
-  //   title: "Lifen uses Dust AI agents to boost team productivity", // Soon to be replaced with Clay for RFP?
+  //   title: "Lifen uses Ruby AI agents to boost team productivity", // Soon to be replaced with Clay for RFP?
   //   content:
-  //     "Lifen uses Dust AI agents to boost team productivity and save hours of work each week.",
+  //     "Lifen uses Ruby AI agents to boost team productivity and save hours of work each week.",
   //   href: "/customers/customer-story-lifen",
-  //   src: "https://blog.dust.tt/content/images/size/w2000/2024/11/lifen_dust_customer_story.jpg",
+  //   src: "https://ruby.ad/content/images/size/w2000/2024/11/lifen_ruby_customer_story.jpg",
   // },
 ];

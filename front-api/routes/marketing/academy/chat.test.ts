@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 // by the fetch/cors path that `honoApp.request` runs through, but `Referer`
 // passes through to the handler — so we drive the allowed-origin checks with a
 // Referer. The static website URL resolves to "http://fake-url" (set in
-// front/vite.globalSetup.ts via NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL).
+// front/vite.globalSetup.ts via NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL).
 const ALLOWED_REFERER = "http://fake-url/academy";
 
 // Issue a CSRF token through the GET endpoint (the same secret signs and
@@ -47,7 +47,7 @@ describe("POST /api/marketing/academy/chat", () => {
   const validBody = {
     messages: [],
     contentType: "chapter",
-    title: "Intro to Dust",
+    title: "Intro to Ruby",
     content: "Some chapter content.",
     correctAnswers: 0,
     totalQuestions: 0,
@@ -111,7 +111,7 @@ describe("POST /api/marketing/academy/chat", () => {
 
   it("returns 500 when the chat service is not configured", async () => {
     // The request passes origin + CSRF + rate limit + body validation; it then
-    // fails because DUST_MANAGED_ANTHROPIC_API_KEY is unset in the test env
+    // fails because RUBY_MANAGED_ANTHROPIC_API_KEY is unset in the test env
     // (vite.globalSetup.ts resets process.env to a fixed allowlist).
     const csrfToken = await getCsrfToken();
 

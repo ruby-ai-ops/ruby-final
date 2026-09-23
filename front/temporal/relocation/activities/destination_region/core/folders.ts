@@ -46,19 +46,19 @@ export async function processDataSourceFolders({
   const res = await concurrentExecutor(
     data.blobs.folders,
     async (d) => {
-      // If the source URL starts with the source cell Dust URL, replace it with the destination cell Dust URL.
+      // If the source URL starts with the source cell Ruby URL, replace it with the destination cell Ruby URL.
       const sourceUrl =
         d.source_url && d.source_url.startsWith(sourceApiBaseUrl)
           ? d.source_url.replace(sourceApiBaseUrl, destRegionApiBaseUrl)
           : d.source_url;
 
       return coreAPI.upsertDataSourceFolder({
-        dataSourceId: destIds.dustAPIDataSourceId,
+        dataSourceId: destIds.rubyAPIDataSourceId,
         folderId: d.node_id,
         mimeType: d.mime_type,
         parentId: d.parent_id ?? null,
         parents: d.parents,
-        projectId: destIds.dustAPIProjectId,
+        projectId: destIds.rubyAPIProjectId,
         providerVisibility: d.provider_visibility,
         sourceUrl,
         timestamp: d.timestamp,

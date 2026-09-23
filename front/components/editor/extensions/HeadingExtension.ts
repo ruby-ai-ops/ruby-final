@@ -1,4 +1,4 @@
-import { markdownHeaderClasses } from "@dust-tt/sparkle";
+import { markdownHeaderClasses } from "@ruby-ai/ui";
 import { mergeAttributes } from "@tiptap/core";
 import { Heading } from "@tiptap/extension-heading";
 import type { Node } from "@tiptap/pm/model";

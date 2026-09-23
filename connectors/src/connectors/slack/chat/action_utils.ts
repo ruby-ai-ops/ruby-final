@@ -6,7 +6,7 @@ import {
   NotificationRunAgentContentSchema,
   TOOL_RUNNING_LABEL,
   type ToolNotificationEvent,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { z } from "zod";
 
 // run_agent actions have null displayLabels due to a gap in the server-side

@@ -18,8 +18,8 @@ const BATCH_SIZE = 1000;
 async function checkOrphansDocumentsForConnector(
   coreAPI: CoreAPI,
   connector: ConnectorResource,
-  dustAPIProjectId: string,
-  dustAPIDataSourceId: string,
+  rubyAPIProjectId: string,
+  rubyAPIDataSourceId: string,
   execute = false,
   nodeConcurrency: number,
   parentLogger: typeof Logger
@@ -37,8 +37,8 @@ async function checkOrphansDocumentsForConnector(
   do {
     const coreRes = await coreAPI.getDataSourceDocuments(
       {
-        dataSourceId: dustAPIDataSourceId,
-        projectId: dustAPIProjectId,
+        dataSourceId: rubyAPIDataSourceId,
+        projectId: rubyAPIProjectId,
       },
       {
         limit: BATCH_SIZE,
@@ -57,10 +57,10 @@ async function checkOrphansDocumentsForConnector(
     count = ids.length;
     const files = await GoogleDriveFiles.findAll({
       where: {
-        dustFileId: ids,
+        rubyFileId: ids,
       },
     });
-    const found = files.map((f) => f.dustFileId);
+    const found = files.map((f) => f.rubyFileId);
     const orphans = ids.filter((id) => !found.includes(id));
 
     logger.info({ orphans }, "Found orphan nodes");
@@ -71,9 +71,9 @@ async function checkOrphansDocumentsForConnector(
         async (orphan) => {
           logger.info({ id: orphan }, "Removing orphan nodes");
           await coreAPI.deleteDataSourceDocument({
-            dataSourceId: dustAPIDataSourceId,
+            dataSourceId: rubyAPIDataSourceId,
             documentId: orphan,
-            projectId: dustAPIProjectId,
+            projectId: rubyAPIProjectId,
           });
         },
         { concurrency: nodeConcurrency }
@@ -86,8 +86,8 @@ async function checkOrphansDocumentsForConnector(
 async function checkOrphansFoldersForConnector(
   coreAPI: CoreAPI,
   connector: ConnectorResource,
-  dustAPIProjectId: string,
-  dustAPIDataSourceId: string,
+  rubyAPIProjectId: string,
+  rubyAPIDataSourceId: string,
   execute = false,
   nodeConcurrency: number,
   parentLogger: typeof Logger
@@ -105,8 +105,8 @@ async function checkOrphansFoldersForConnector(
   do {
     const coreRes = await coreAPI.getDataSourceFolders(
       {
-        dataSourceId: dustAPIDataSourceId,
-        projectId: dustAPIProjectId,
+        dataSourceId: rubyAPIDataSourceId,
+        projectId: rubyAPIProjectId,
       },
       {
         limit: BATCH_SIZE,
@@ -128,10 +128,10 @@ async function checkOrphansFoldersForConnector(
     count = ids.length;
     const files = await GoogleDriveFiles.findAll({
       where: {
-        dustFileId: ids,
+        rubyFileId: ids,
       },
     });
-    const found = files.map((f) => f.dustFileId);
+    const found = files.map((f) => f.rubyFileId);
     const orphans = ids.filter((id) => !found.includes(id));
 
     logger.info({ orphans }, "Found orphan nodes");
@@ -142,9 +142,9 @@ async function checkOrphansFoldersForConnector(
         async (orphan) => {
           logger.info({ id: orphan }, "Removing orphan nodes");
           await coreAPI.deleteDataSourceFolder({
-            dataSourceId: dustAPIDataSourceId,
+            dataSourceId: rubyAPIDataSourceId,
             folderId: orphan,
-            projectId: dustAPIProjectId,
+            projectId: rubyAPIProjectId,
           });
         },
         { concurrency: nodeConcurrency }
@@ -183,11 +183,11 @@ makeScript(
     });
 
     const res = await frontSequelize.query(
-      `SELECT "dustAPIDataSourceId", "dustAPIProjectId",  "connectorId" FROM data_sources WHERE "connectorProvider" ='google_drive'`
+      `SELECT "rubyAPIDataSourceId", "rubyAPIProjectId",  "connectorId" FROM data_sources WHERE "connectorProvider" ='google_drive'`
     );
     const dataSources = res[0] as {
-      dustAPIDataSourceId: string;
-      dustAPIProjectId: string;
+      rubyAPIDataSourceId: string;
+      rubyAPIProjectId: string;
       connectorId: string;
     }[];
     logger.info(`Found ${dataSources.length} google_drive datasources`);
@@ -211,8 +211,8 @@ makeScript(
         await checkOrphansDocumentsForConnector(
           coreAPI,
           connector,
-          dataSource.dustAPIProjectId,
-          dataSource.dustAPIDataSourceId,
+          dataSource.rubyAPIProjectId,
+          dataSource.rubyAPIDataSourceId,
           execute,
           nodeConcurrency,
           logger
@@ -220,8 +220,8 @@ makeScript(
         await checkOrphansFoldersForConnector(
           coreAPI,
           connector,
-          dataSource.dustAPIProjectId,
-          dataSource.dustAPIDataSourceId,
+          dataSource.rubyAPIProjectId,
+          dataSource.rubyAPIDataSourceId,
           execute,
           nodeConcurrency,
           logger

@@ -50,7 +50,7 @@ export function mountFloorScene(
 ): () => void {
   const { avatarPool, scenarios } = options;
   // Inject scene CSS once (scoped to host class).
-  const styleId = "dust-floor-scene-style";
+  const styleId = "ruby-floor-scene-style";
   let styleEl = document.getElementById(styleId) as HTMLStyleElement | null;
   let injectedStyle = false;
   if (!styleEl) {
@@ -67,7 +67,7 @@ export function mountFloorScene(
   // absolute-positioned HTML (real CSS px) instead of inside a foreignObject
   // (where the SVG viewBox would scale them down ~0.5x).
   const overlayEl = document.createElement("div");
-  overlayEl.className = "dust-floor-cards";
+  overlayEl.className = "ruby-floor-cards";
   host.appendChild(overlayEl);
 
   // Cleanup tracking
@@ -145,31 +145,18 @@ export function mountFloorScene(
       }
     }
   }
-  // Spread agents that share a starting room so they don't stack. Halo
-  // radius is 44 px, so we want at least ~120 px screen gap. iso compresses
-  // X by cos30·1.05 ≈ 0.91 and Y by sin30·1.05 ≈ 0.525, so anti-symmetric
-  // (+a,-a) plan offsets translate to a pure horizontal screen shift, and
-  // symmetric (+a,+a) offsets shift purely down on screen. Mixing the two
-  // gives a clean grid.
-  const AGENT_SPREAD: Array<[number, number]> = [
-    [0, 0], // center
-    [-120, 120], //   screen-left  (~218 px)
-    [120, -120], //   screen-right (~218 px)
-    [80, 80], //       screen-down  (~84 px)
-    [-40, 200], //    screen-down-left
-    [200, -40], //    screen-down-right
-  ];
+  // Every room supplies baked idle positions that stay on its solid letter
+  // strokes. This prevents agents from landing in the R/B counters or in the
+  // open center of the U when multiple scenarios share a starting room.
   const agentSlotInRoom: Record<string, number> = {};
   const agents = allAgentDefs.map((d: AgentDef) => {
     const el = buildAgent(d.id, d.label, d.iconSvg, d.iconImage);
     agentsLayer.appendChild(el);
     el._tagTxt.textContent = d.label;
-    const rect = rooms[d.startRoom].interior[0];
     const slot = agentSlotInRoom[d.startRoom] ?? 0;
     agentSlotInRoom[d.startRoom] = slot + 1;
-    const [dx, dy] = AGENT_SPREAD[slot % AGENT_SPREAD.length];
-    const planX = rect.x + rect.w / 2 + dx;
-    const planY = rect.y + rect.h / 2 + dy;
+    const homeSpawns = rooms[d.startRoom].agentSpawns;
+    const [planX, planY] = homeSpawns[slot % homeSpawns.length];
     const [sx, sy] = iso(planX, planY, 22);
     el.style.setProperty("--x", sx + "px");
     el.style.setProperty("--y", sy + "px");

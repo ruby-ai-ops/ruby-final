@@ -2,11 +2,11 @@ import { ensureFrameSandboxReady } from "@app/lib/api/sandbox/lifecycle";
 import type {
   LiveDatabaseEntry,
   QueryDatabaseResult,
-} from "@app/lib/api/sandbox_functions/dsbx_db";
+} from "@app/lib/api/sandbox_functions/rbx_db";
 import {
   listDatabasesOnReadySandbox,
   queryDatabaseOnReadySandbox,
-} from "@app/lib/api/sandbox_functions/dsbx_db";
+} from "@app/lib/api/sandbox_functions/rbx_db";
 import { SandboxFunctionError } from "@app/lib/api/sandbox_functions/errors";
 import type { Authenticator } from "@app/lib/auth";
 import type { FileResource } from "@app/lib/resources/file_resource";

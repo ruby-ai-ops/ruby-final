@@ -1,7 +1,7 @@
 import type {
-  PokeFrameFunction,
-  PokeFrameFunctionDetails,
-} from "@app/lib/api/poke/frames";
+  AdminFrameFunction,
+  AdminFrameFunctionDetails,
+} from "@app/lib/api/admin/frames";
 import { SandboxFunctionInvocationError } from "@app/lib/api/sandbox_functions/errors";
 import { authorizeSandboxFunctionInvocation } from "@app/lib/api/sandbox_functions/workspace_user";
 import type { Authenticator } from "@app/lib/auth";
@@ -555,7 +555,7 @@ export class SandboxFunctionResource extends BaseResource<SandboxFunctionModel> 
   }
 
   /**
-   * One grouped count per Frame's *active* publication — the Poke Frames list must not query per
+   * One grouped count per Frame's *active* publication — the Admin Frames list must not query per
    * row, and must not count functions from publications that are no longer served (a frame keeps
    * every past publication's function rows around, so a plain per-file count would grow with
    * every publish instead of matching what `listByFramePublication` actually serves).
@@ -690,11 +690,11 @@ export class SandboxFunctionResource extends BaseResource<SandboxFunctionModel> 
   }
 
   /**
-   * Poke's listing shape for a Frame function. A Frame function's `fileId` is the Frame manifest,
+   * Admin's listing shape for a Frame function. A Frame function's `fileId` is the Frame manifest,
    * so `publicationId` is what identifies its artifact, and `name` is the key its bundle is
    * stored under.
    */
-  toPokeFrameJSON(): PokeFrameFunction {
+  toAdminFrameJSON(): AdminFrameFunction {
     return {
       sId: this.sId,
       slug: this.slug,
@@ -705,11 +705,11 @@ export class SandboxFunctionResource extends BaseResource<SandboxFunctionModel> 
     };
   }
 
-  toPokeFrameDetailsJSON(
+  toAdminFrameDetailsJSON(
     activePublicationId: string | null
-  ): PokeFrameFunctionDetails {
+  ): AdminFrameFunctionDetails {
     return {
-      ...this.toPokeFrameJSON(),
+      ...this.toAdminFrameJSON(),
       userIdentity: this.userIdentity,
       executionMode: this.executionMode,
       defaultStake: this.defaultStake,

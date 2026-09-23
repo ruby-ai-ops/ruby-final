@@ -10,7 +10,7 @@ import type {
 } from "@app/lib/api/pagination";
 import { SortingParamsCodec } from "@app/lib/api/pagination";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
 import { concurrentExecutor } from "@app/lib/utils/async_utils";
 import logger from "@app/logger/logger";
@@ -94,7 +94,7 @@ function makeCoreDataSourceViewFilter(
   dataSourceView: DataSourceViewResource | DataSourceViewType
 ): CoreAPIDatasourceViewFilter {
   return {
-    data_source_id: dataSourceView.dataSource.dustAPIDataSourceId,
+    data_source_id: dataSourceView.dataSource.rubyAPIDataSourceId,
     view_filter: dataSourceView.parentsIn ?? [],
   };
 }
@@ -293,14 +293,14 @@ export async function handlePatchDataSourceView(
 ): Promise<
   Result<
     DataSourceViewResource,
-    Omit<DustError, "code"> & {
+    Omit<RubyError, "code"> & {
       code: "unauthorized" | "internal_error";
     }
   >
 > {
   if (!auth.can("admin", dataSourceView)) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "unauthorized",
       message: "Only admins can update data source views.",
     });
@@ -324,7 +324,7 @@ export async function handlePatchDataSourceView(
 
   if (updateResultRes.isErr()) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: updateResultRes.error.message,
     });
@@ -342,14 +342,14 @@ export async function handleDeleteDataSourceView(
 ): Promise<
   Result<
     void,
-    Omit<DustError, "code"> & {
+    Omit<RubyError, "code"> & {
       code: "unauthorized" | "in_use";
     }
   >
 > {
   if (!auth.can("admin", dataSourceView)) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "unauthorized",
       message: "Only users that are `admins` can administrate spaces.",
     });
@@ -364,7 +364,7 @@ export async function handleDeleteDataSourceView(
           )
         : [];
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "in_use",
         message: usageRes.isOk()
           ? `The data source view is in use by ${names.join(", ")} and cannot be deleted.`
@@ -385,7 +385,7 @@ export type DataSourceViewWithUsage = DataSourceViewType & {
 /**
  * Every data source view in the workspace, each enriched with its agent and
  * skill usage. Usage fetches run concurrently with bounded parallelism. Used
- * by the poke admin UI.
+ * by the admin admin UI.
  */
 export async function listDataSourceViewsWithUsage(
   auth: Authenticator

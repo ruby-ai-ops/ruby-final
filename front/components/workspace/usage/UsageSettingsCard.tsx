@@ -11,7 +11,7 @@ import {
   Page,
   SettingsList,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface UsageSettingsCardProps {
   workspaceId: string;

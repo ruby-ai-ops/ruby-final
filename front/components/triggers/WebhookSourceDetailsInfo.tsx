@@ -27,7 +27,7 @@ import {
   Separator,
   TextArea,
   useCopyToClipboard,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 import { useController, useFormContext } from "react-hook-form";
 

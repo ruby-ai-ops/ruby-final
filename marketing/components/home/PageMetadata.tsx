@@ -1,4 +1,8 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
+import {
+  buildMarketingPageMetadata,
+  RUBY_PUBLIC_ORIGIN,
+} from "@marketing/lib/public_branding";
 import Head from "next/head";
 
 interface PageMetadataProps {
@@ -14,9 +18,16 @@ export function PageMetadata({
   pathname,
   ogImage,
 }: PageMetadataProps) {
-  const fullTitle = title.includes("Dust") ? title : `${title} | Dust`;
-  const canonicalUrl = `https://dust.tt${pathname}`;
-  const defaultOgImage = "https://dust.tt/static/og_image.png";
+  const {
+    fullTitle,
+    canonicalUrl,
+    ogImage: resolvedOgImage,
+  } = buildMarketingPageMetadata({
+    title,
+    pathname,
+    siteOrigin: RUBY_PUBLIC_ORIGIN,
+    ogImage,
+  });
 
   return (
     <Head>
@@ -31,11 +42,7 @@ export function PageMetadata({
       />
       <meta key="og:url" property="og:url" content={canonicalUrl} />
       <meta key="og:type" property="og:type" content="website" />
-      <meta
-        key="og:image"
-        property="og:image"
-        content={ogImage ?? defaultOgImage}
-      />
+      <meta key="og:image" property="og:image" content={resolvedOgImage} />
     </Head>
   );
 }

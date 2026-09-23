@@ -1,7 +1,7 @@
 import { retryAgentMessage } from "@app/lib/api/assistant/conversation";
 import { retryBlockedActions } from "@app/lib/api/assistant/conversation/retry_blocked_actions";
 import { batchRenderMessages } from "@app/lib/api/assistant/messages";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { isAgentMessageType } from "@app/types/assistant/conversation";
 import { ModelSelectionSchema } from "@app/types/assistant/models/types";
@@ -176,7 +176,7 @@ app.post(
         const { error } = retryBlockedActionsRes;
 
         if (
-          error instanceof DustError &&
+          error instanceof RubyError &&
           error.code === "agent_loop_already_running"
         ) {
           return apiError(ctx, {

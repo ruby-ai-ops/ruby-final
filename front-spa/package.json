@@ -1,25 +1,25 @@
 {
-  "name": "@dust-tt/front-spa",
+  "name": "@ruby-ai/front-spa",
   "version": "0.1.0",
   "engines": {
     "node": ">=24.16.0"
   },
   "type": "module",
   "scripts": {
-    "dev:poke": "VITE_APP_NAME=poke VITE_DUST_API_URL=$DUST_INTERNAL_API_URL vite",
-    "dev:app": "VITE_APP_NAME=app VITE_DUST_API_URL=$DUST_INTERNAL_API_URL vite",
-    "build:poke": "VITE_APP_NAME=poke vite build && cp _headers dist/poke/_headers",
+    "dev:admin": "VITE_APP_NAME=admin VITE_RUBY_API_URL=$RUBY_INTERNAL_API_URL vite",
+    "dev:app": "VITE_APP_NAME=app VITE_RUBY_API_URL=$RUBY_INTERNAL_API_URL vite",
+    "build:admin": "VITE_APP_NAME=admin vite build && cp _headers dist/admin/_headers",
     "build:app": "VITE_APP_NAME=app vite build && cp _headers dist/app/_headers",
-    "build": "npm run build:poke && npm run build:app",
-    "analyze:poke": "VITE_APP_NAME=poke ANALYZE=true vite build",
+    "build": "npm run build:admin && npm run build:app",
+    "analyze:admin": "VITE_APP_NAME=admin ANALYZE=true vite build",
     "analyze:app": "VITE_APP_NAME=app ANALYZE=true vite build",
-    "preview:poke": "VITE_APP_NAME=poke vite preview",
+    "preview:admin": "VITE_APP_NAME=admin vite preview",
     "preview:app": "VITE_APP_NAME=app vite preview",
     "tsgo": "tsgo"
   },
   "dependencies": {
-    "@dust-tt/front": "*",
-    "@dust-tt/sparkle": "*",
+    "@ruby-ai/front": "*",
+    "@ruby-ai/ui": "*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.0.0",
@@ -31,12 +31,12 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
-
     "postcss": "^8.5.6",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "^4.3.0",
     "@typescript/native-preview": "^7.0.0-dev.20260224.1",
     "rollup-plugin-visualizer": "^5.14.0",
     "vite": "^7.3.1"
-  }
+  },
+  "private": true
 }

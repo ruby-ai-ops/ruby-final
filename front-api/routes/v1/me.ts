@@ -1,6 +1,6 @@
 import { getUserWithWorkspaces } from "@app/lib/api/user";
 import { UserResource } from "@app/lib/resources/user_resource";
-import type { MeResponseType } from "@dust-tt/client";
+import type { MeResponseType } from "@ruby-ai/client";
 import { sessionApp } from "@front-api/middlewares/ctx";
 import { tokenAuth } from "@front-api/middlewares/token_auth";
 import type { HandlerResult } from "@front-api/middlewares/utils";

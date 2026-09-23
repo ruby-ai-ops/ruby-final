@@ -96,10 +96,10 @@ impl Block for While {
             }
         }
 
-        // replace <DUST_TRIPLE_BACKTICKS> with ```
+        // replace <RUBY_TRIPLE_BACKTICKS> with ```
         let condition_code = self
             .condition_code
-            .replace("<DUST_TRIPLE_BACKTICKS>", "```");
+            .replace("<RUBY_TRIPLE_BACKTICKS>", "```");
 
         let (condition_value, condition_logs): (Value, Vec<Value>) = JSExecutor::client()?
             .exec(

@@ -1,6 +1,6 @@
 import { MCPServerViewResource } from "@app/lib/resources/mcp_server_view_resource";
-import type { GetMCPServerViewsResponseType } from "@dust-tt/client";
-import { GetMCPServerViewsQuerySchema } from "@dust-tt/client";
+import type { GetMCPServerViewsResponseType } from "@ruby-ai/client";
+import { GetMCPServerViewsQuerySchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { validate } from "@front-api/middlewares/validator";

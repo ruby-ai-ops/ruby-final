@@ -44,8 +44,8 @@ import { emitTokenUsageMetrics } from "@app/lib/api/llm/usage_metrics";
 import { isProgrammaticUsageFromContext } from "@app/lib/api/programmatic_usage/common";
 import { usesWorkspaceProvidedCredentials } from "@app/lib/api/provider_credentials";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustBatchEndpointConstructor } from "@app/lib/llms/batch/dust_batch_endpoint";
-import type { DustStreamEndpointConstructor } from "@app/lib/llms/stream/dust_stream_endpoint";
+import type { RubyBatchEndpointConstructor } from "@app/lib/llms/batch/ruby_batch_endpoint";
+import type { RubyStreamEndpointConstructor } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import { USAGE_TYPE_FREE } from "@app/lib/metronome/constants";
 import { getUsageType } from "@app/lib/metronome/events";
 import type { UsageType } from "@app/lib/metronome/types";
@@ -74,10 +74,10 @@ import startCase from "lodash/startCase";
 
 export abstract class LLM<
   TEndpoint extends
-    | DustStreamEndpointConstructor
-    | DustBatchEndpointConstructor =
-    | DustStreamEndpointConstructor
-    | DustBatchEndpointConstructor,
+    | RubyStreamEndpointConstructor
+    | RubyBatchEndpointConstructor =
+    | RubyStreamEndpointConstructor
+    | RubyBatchEndpointConstructor,
   TPayload = unknown,
 > {
   protected modelId: ModelIdType;
@@ -288,7 +288,7 @@ export abstract class LLM<
     this.generation.updateTrace({
       name: startCase(this.context.operationType),
       metadata: {
-        dustTraceId: this.traceId,
+        rubyTraceId: this.traceId,
         // Prompt-cache diagnostics: the previous response id we threaded into this
         // request (the current one is added below from the `interaction_id` event).
         ...(previousMessageId && { previousMessageId }),
@@ -709,7 +709,7 @@ export abstract class LLM<
 
       const run = await RunResource.makeNew({
         appId: null,
-        dustRunId: traceId,
+        rubyRunId: traceId,
         runType: "deploy",
         useWorkspaceCredentials: false,
         workspaceId: this.authenticator.getNonNullableWorkspace().id,
@@ -732,7 +732,7 @@ export abstract class LLM<
         }
       }
 
-      enrichedResults.set(customId, { events, dustRunId: traceId });
+      enrichedResults.set(customId, { events, rubyRunId: traceId });
     }
 
     return enrichedResults;
@@ -765,7 +765,7 @@ export abstract class LLM<
 
       generation.updateTrace({
         metadata: {
-          dustTraceId: traceId,
+          rubyTraceId: traceId,
           batchCustomId: customId,
           ...(this.authenticator.user()?.sId && {
             actualUserId: this.authenticator.user()!.sId,
@@ -919,7 +919,7 @@ export abstract class LLM<
     // attempt therefore starts with a durable run and pending usage row.
     const usageType = this.getUsageType();
     const lifecycle = await LLMRunLifecycle.start(this.authenticator, {
-      dustRunId: this.traceId,
+      rubyRunId: this.traceId,
       inferenceProvider: this.metadata.inferenceProvider,
       inferenceRegion: this.metadata.inferenceRegion,
       modelId: this.modelId,

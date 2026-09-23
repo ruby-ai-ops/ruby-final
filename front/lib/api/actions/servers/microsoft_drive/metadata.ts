@@ -238,7 +238,7 @@ export const MICROSOFT_DRIVE_TOOLS_METADATA = [
   {
     name: "upload_file",
     description:
-      "Upload a file from the Dust conversation to Microsoft OneDrive or SharePoint. Supports files up to 250MB using the simple upload API. Uses driveId if provided, otherwise falls back to siteId.",
+      "Upload a file from the Ruby conversation to Microsoft OneDrive or SharePoint. Supports files up to 250MB using the simple upload API. Uses driveId if provided, otherwise falls back to siteId.",
     schema: {
       fileId: z
         .string()
@@ -399,7 +399,7 @@ export const MICROSOFT_DRIVE_SERVER = {
         },
       ],
     },
-    documentationUrl: "https://docs.dust.tt/docs/microsoft-drive-tool-setup",
+    documentationUrl: "https://docs.ruby.ad/docs/microsoft-drive-tool-setup",
   },
   tools: MICROSOFT_DRIVE_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

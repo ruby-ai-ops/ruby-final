@@ -3,9 +3,9 @@
  *
  * These arrays are intentionally hardcoded as plain strings so that files
  * needing only icon-name validation (e.g. zod schemas used by temporal workers)
- * can import them without pulling in `@dust-tt/sparkle`.
+ * can import them without pulling in `@ruby-ai/ui`.
  *
- * When a new icon is added to `ActionIcons` or `InternalActionIcons` in sparkle
+ * When a new icon is added to `ActionIcons` or `InternalActionIcons` in ui
  * / resources_icons.tsx, it must also be added here. The type assertions in
  * `resources_icons.tsx` will cause a compile error if the lists drift.
  */
@@ -201,7 +201,6 @@ export const INTERNAL_ALLOWED_ICONS = [
   "ConfluenceLogo",
   "ContentsquareLogo",
   "CostoryLogo",
-  "CursorLogo",
   "DriveLogo",
   "FathomLogo",
   "FreshserviceLogo",

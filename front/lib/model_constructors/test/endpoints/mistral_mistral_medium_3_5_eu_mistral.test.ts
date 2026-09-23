@@ -8,7 +8,7 @@ import type { StreamSetup } from "@app/lib/model_constructors/test/setup";
 export const MistralMistralMedium35EuropeMistralStreamSetup: StreamSetup = {
   createInstance: () =>
     new MistralMistralMedium35EuropeMistralStream({
-      MISTRAL_API_KEY: process.env.DUST_MANAGED_MISTRAL_API_KEY ?? "",
+      MISTRAL_API_KEY: process.env.RUBY_MANAGED_MISTRAL_API_KEY ?? "",
     }),
   // Mistral Medium 3.5 is a reasoning model: it accepts `none` and `high`. Other
   // reasoning efforts are rejected by the config schema.

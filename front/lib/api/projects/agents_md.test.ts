@@ -1,4 +1,4 @@
-import { DustFileSystem, DustFileSystemError } from "@app/lib/api/file_system";
+import { RubyFileSystem, RubyFileSystemError } from "@app/lib/api/file_system";
 import {
   formatPodAgentsMdPromptSection,
   readPodAgentsMdContent,
@@ -22,15 +22,15 @@ describe("readPodAgentsMdContent", () => {
     const { authenticator: auth } = await createResourceTest({});
     const podId = "pod_test";
 
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
       new Ok({
         readBuffer: vi.fn().mockResolvedValue(new Ok(null)),
-      } as unknown as DustFileSystem)
+      } as unknown as RubyFileSystem)
     );
 
     const result = await readPodAgentsMdContent(auth, podId);
     expect(result).toBeNull();
-    expect(DustFileSystem.fromScopedPath).toHaveBeenCalledWith(
+    expect(RubyFileSystem.fromScopedPath).toHaveBeenCalledWith(
       auth,
       getPodAgentsMdScopedPath(podId)
     );
@@ -44,10 +44,10 @@ describe("readPodAgentsMdContent", () => {
     const readBuffer = vi
       .fn()
       .mockResolvedValue(new Ok(Buffer.from("  Always cite sources.\n")));
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
       new Ok({
         readBuffer,
-      } as unknown as DustFileSystem)
+      } as unknown as RubyFileSystem)
     );
 
     const result = await readPodAgentsMdContent(auth, podId);
@@ -60,12 +60,12 @@ describe("readPodAgentsMdContent", () => {
     const podId = "pod_test";
     const longContent = "x".repeat(POD_AGENTS_MD_MAX_CHARACTER_COUNT + 100);
 
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
       new Ok({
         readBuffer: vi
           .fn()
           .mockResolvedValue(new Ok(Buffer.from(longContent, "utf8"))),
-      } as unknown as DustFileSystem)
+      } as unknown as RubyFileSystem)
     );
 
     const result = await readPodAgentsMdContent(auth, podId);
@@ -77,14 +77,14 @@ describe("readPodAgentsMdContent", () => {
     const podId = "pod_test";
     const warnSpy = vi.spyOn(logger, "warn").mockImplementation(() => {});
 
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
       new Ok({
         readBuffer: vi
           .fn()
           .mockResolvedValue(
-            new Err(new DustFileSystemError("internal", "stream read failed"))
+            new Err(new RubyFileSystemError("internal", "stream read failed"))
           ),
-      } as unknown as DustFileSystem)
+      } as unknown as RubyFileSystem)
     );
 
     const result = await readPodAgentsMdContent(auth, podId);
@@ -99,8 +99,8 @@ describe("readPodAgentsMdContent", () => {
     const podId = "pod_test";
     const warnSpy = vi.spyOn(logger, "warn").mockImplementation(() => {});
 
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
-      new Err(new DustFileSystemError("not_found", "Space not found"))
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
+      new Err(new RubyFileSystemError("not_found", "Space not found"))
     );
 
     const result = await readPodAgentsMdContent(auth, podId);
@@ -156,14 +156,14 @@ describe("constructProjectContext", () => {
       spaceId: project.id,
     });
 
-    vi.spyOn(DustFileSystem, "fromScopedPath").mockResolvedValue(
+    vi.spyOn(RubyFileSystem, "fromScopedPath").mockResolvedValue(
       new Ok({
         readBuffer: vi
           .fn()
           .mockResolvedValue(
             new Ok(Buffer.from("Prefer concise answers.", "utf8"))
           ),
-      } as unknown as DustFileSystem)
+      } as unknown as RubyFileSystem)
     );
 
     const result = await constructProjectContext(auth, { conversation });

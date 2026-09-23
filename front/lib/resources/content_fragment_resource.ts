@@ -1098,9 +1098,9 @@ export async function getContentFragmentFromAttachmentFile(
     const { dataSource } = dataSourceView;
 
     const documentRes = await coreAPI.getDataSourceDocument({
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       documentId: nodeId,
-      projectId: dataSource.dustAPIProjectId,
+      projectId: dataSource.rubyAPIProjectId,
     });
 
     if (documentRes.isErr()) {

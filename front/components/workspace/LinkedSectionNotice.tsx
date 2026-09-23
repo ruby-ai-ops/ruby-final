@@ -1,4 +1,4 @@
-import { Hoverable, Page } from "@dust-tt/sparkle";
+import { Hoverable, Page } from "@ruby-ai/ui";
 
 interface LinkedSectionNoticeProps {
   description: string;

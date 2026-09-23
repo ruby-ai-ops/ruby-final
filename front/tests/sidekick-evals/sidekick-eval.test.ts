@@ -49,7 +49,7 @@ vi.mock("@anthropic-ai/sdk", async (importOriginal) => {
 
 // Every LLM stream persists a `runs` row plus its usage. The evals stream many
 // times per test from concurrent tests, which conflicts with the per-test CLS
-// transaction and with the unique constraint on `dustRunId`. Usage accounting is
+// transaction and with the unique constraint on `rubyRunId`. Usage accounting is
 // not what these evals measure, so the lifecycle is stubbed out.
 vi.mock("@app/lib/api/llm/run_lifecycle", () => ({
   LLMRunLifecycle: {

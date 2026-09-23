@@ -11,7 +11,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback } from "react";
 
 interface UserAutomationsDialogProps {

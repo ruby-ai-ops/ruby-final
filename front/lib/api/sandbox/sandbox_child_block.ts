@@ -148,7 +148,7 @@ export async function resolveSandboxChildBlock(
 
   // Defer the relaunch if any sibling sandbox-child of the same parent is
   // still blocked. The parent bash issued multiple in-flight tool calls
-  // (e.g. `dust call A & dust call B`); each blocked one paused the
+  // (e.g. `ruby call A & ruby call B`); each blocked one paused the
   // sandbox once, but the bash inside is still waiting on every response.
   // We only resume once they're all resolved so the bash sees all
   // approvals at once. The last resolution flips the parent and relaunches.

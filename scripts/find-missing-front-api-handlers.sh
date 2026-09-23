@@ -2,7 +2,7 @@
 # Outputs the list of API handler files in front/pages/api that do not have a
 # matching file in front-api/routes. Test files (*.test.ts, *.test.tsx) are
 # excluded. Paths are printed relative to front/, e.g.:
-#   pages/api/w/[wId]/dust_app_secrets/index.ts
+#   pages/api/w/[wId]/ruby_app_secrets/index.ts
 
 set -euo pipefail
 

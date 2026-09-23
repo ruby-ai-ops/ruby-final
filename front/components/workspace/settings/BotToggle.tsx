@@ -11,7 +11,7 @@ import type { OAuthProvider, OAuthUseCase } from "@app/types/oauth/lib";
 import { Err, Ok } from "@app/types/shared/result";
 import type { SpaceType } from "@app/types/space";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, RefreshCw02, SliderToggle } from "@dust-tt/sparkle";
+import { Button, RefreshCw02, SliderToggle } from "@ruby-ai/ui";
 import { useState } from "react";
 
 export function BotToggle({
@@ -129,7 +129,7 @@ export function BotToggle({
       sendNotification({
         type: "error",
         title: `Failed to reconnect ${name}.`,
-        description: `Could not reconnect the Dust ${name}.`,
+        description: `Could not reconnect the Ruby ${name}.`,
       });
     } else {
       const updateRes = await updateConnectorConnectionId(

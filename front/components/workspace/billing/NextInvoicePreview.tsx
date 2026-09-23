@@ -21,7 +21,7 @@ import {
   cn,
   DataTable,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { ComponentType } from "react";
 import { useState } from "react";

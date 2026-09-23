@@ -7,7 +7,7 @@ import type { ModelMakerIdType } from "@app/types/assistant/models/types";
 import {
   AnthropicLogo,
   DeepseekLogo,
-  DustLogoSquare,
+  RubyLogoSquare,
   FireworksLogo,
   GeminiLogo,
   GrokLogo,
@@ -17,7 +17,7 @@ import {
   OpenaiLogo,
   ThinkingMachinesLogo,
   ZaiLogo,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
 type ModelProvider = (typeof SUPPORTED_MODEL_CONFIGS)[number]["providerId"];
@@ -53,16 +53,16 @@ const MODEL_PROVIDER_LOGOS: ModelProviderLogos = {
     light: GrokLogo,
   },
   noop: {
-    light: DustLogoSquare,
+    light: RubyLogoSquare,
   },
   auto: {
-    light: DustLogoSquare,
+    light: RubyLogoSquare,
   },
   auto_fast: {
-    light: DustLogoSquare,
+    light: RubyLogoSquare,
   },
   auto_complex: {
-    light: DustLogoSquare,
+    light: RubyLogoSquare,
   },
 };
 

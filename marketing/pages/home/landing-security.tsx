@@ -9,9 +9,13 @@ import type { LandingLayoutProps } from "@marketing/components/home/LandingLayou
 import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
 import { HomeTrustedMarqueeCompact } from "@marketing/components/home/content/Product/HomeTrustedSection";
+import {
+  isMarketingSurfaceVisible,
+  MARKETING_SURFACES,
+} from "@marketing/lib/marketing_visibility";
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
-import { cn } from "@marketing/components/poke/shadcn/lib/utils";
-import { ArrowRight, LegacyButton as Button, Icon } from "@dust-tt/sparkle";
+import { cn } from "@marketing/components/admin/shadcn/lib/utils";
+import { ArrowRight, LegacyButton as Button, Icon } from "@ruby-ai/ui";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ReactElement, ReactNode } from "react";
@@ -21,17 +25,17 @@ export async function getStaticProps() {
     props: {
       shape: 0,
       gtmTrackingId: process.env.NEXT_PUBLIC_GTM_TRACKING_ID ?? null,
-      // Standalone "blank" landing: only the centered Dust logo at the top,
-      // no site navigation or footer (same as the ebook landing pages).
+      // Standalone "blank" landing: only the centered Ruby logo at the top,
+      // no site navigation or footer (same as other focused landing pages).
       hideNavigation: true,
     },
   };
 }
 
 const TALK_TO_SECURITY_HREF = "/home/contact";
-const TRUST_PAGE_HREF = "https://dust.tt/security";
+const TRUST_PAGE_HREF = "https://ruby.ad/security";
 const WEBINAR_HREF =
-  "https://watch.getcontrast.io/register/dust-dust-security-webinar-the-ai-security-gap?utm_source=landing-security";
+  "https://watch.getcontrast.io/register/ruby-ruby-security-webinar-the-ai-security-gap?utm_source=landing-security";
 
 const CONTAINER = "mx-auto w-full max-w-[1180px] px-6";
 const H2_CLASSES =
@@ -221,15 +225,14 @@ function DotList({ items }: { items: DotItem[] }) {
   );
 }
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: matches sibling landing pages
-export default function LandingSecurity() {
+export default function LandingSecurityNextJS() {
   const router = useRouter();
 
   return (
     <>
       <PageMetadata
-        title="Dust for Security: Stay in control of the agentic enterprise"
-        description="AI agents are already inside your organization. Dust gives security teams real attribution, hard knowledge boundaries, admin-owned controls, and an architecture that breaks the Lethal Trifecta apart by design."
+        title="Ruby for Security: Stay in control of the agentic enterprise"
+        description="AI agents are already inside your organization. Ruby gives security teams real attribution, hard knowledge boundaries, admin-owned controls, and an architecture that breaks the Lethal Trifecta apart by design."
         pathname={router.asPath}
       />
       <HomeRevealStyles />
@@ -247,7 +250,7 @@ export default function LandingSecurity() {
           >
             <div className="flex w-full flex-col gap-7 lg:w-[55%]">
               <HomeReveal>
-                <HomeEyebrow label="Dust for Security" />
+                <HomeEyebrow label="Ruby for Security" />
               </HomeReveal>
               <HomeReveal delay={80}>
                 <h1 className="m-0 text-balance font-semibold leading-[1.04] tracking-[-0.035em] text-foreground text-[clamp(2.25rem,6vw,4.25rem)]">
@@ -259,7 +262,7 @@ export default function LandingSecurity() {
                   size="md"
                   className="max-w-[480px] leading-[1.6] text-muted-foreground"
                 >
-                  AI agents are already inside your organization. Dust gives
+                  AI agents are already inside your organization. Ruby gives
                   security teams the levers to pull, and the evidence to show an
                   auditor.
                 </P>
@@ -270,7 +273,7 @@ export default function LandingSecurity() {
               >
                 <Button
                   href={TALK_TO_SECURITY_HREF}
-                  variant="highlight"
+                  variant="primary"
                   size="md"
                   label="Talk to an expert"
                   onClick={withTracking(
@@ -278,7 +281,7 @@ export default function LandingSecurity() {
                     "security_hero_cta_primary"
                   )}
                 />
-                {/* Custom link: Sparkle's Button only renders a leading icon,
+                {/* Custom link: RubyUI's Button only renders a leading icon,
                     so we build the trailing-arrow CTA by hand, matched to the
                     md button height (h-12) sitting next to it. */}
                 <a
@@ -345,22 +348,24 @@ export default function LandingSecurity() {
           </div>
         </section>
 
-        {/* Trusted by — scrolling logo marquee (title kept local to this page) */}
-        <section className="flex w-full items-center justify-center bg-gradient-to-b from-background via-blue-50/40 to-blue-100/60 pb-20 pt-24 lg:pt-32">
-          <div className="mx-auto flex w-full max-w-[1280px] flex-col items-center justify-center gap-12 text-center">
-            <HomeReveal>
-              <h2 className="m-0 text-balance px-6 text-center text-xl font-semibold tracking-[-0.02em] text-foreground md:text-2xl">
-                Trusted among security teams
-                <br />
-                at <span className="text-blue-500">3,000+</span> global
-                organizations
-              </h2>
-            </HomeReveal>
-            <HomeReveal delay={120} className="w-full px-6">
-              <HomeTrustedMarqueeCompact />
-            </HomeReveal>
-          </div>
-        </section>
+        {/* Customer proof is retained for a future verified-customer rollout. */}
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.trustedSection) && (
+          <section className="flex w-full items-center justify-center bg-gradient-to-b from-background via-blue-50/40 to-blue-100/60 pb-20 pt-24 lg:pt-32">
+            <div className="mx-auto flex w-full max-w-[1280px] flex-col items-center justify-center gap-12 text-center">
+              <HomeReveal>
+                <h2 className="m-0 text-balance px-6 text-center text-xl font-semibold tracking-[-0.02em] text-foreground md:text-2xl">
+                  Trusted among security teams
+                  <br />
+                  at <span className="text-blue-500">3,000+</span> global
+                  organizations
+                </h2>
+              </HomeReveal>
+              <HomeReveal delay={120} className="w-full px-6">
+                <HomeTrustedMarqueeCompact />
+              </HomeReveal>
+            </div>
+          </section>
+        )}
 
         {/* The three things security teams care about */}
         <section className="w-full bg-background py-14 lg:py-24">
@@ -380,7 +385,7 @@ export default function LandingSecurity() {
                   className="max-w-[760px] leading-[1.6] text-muted-foreground"
                 >
                   A handful of concerns drive every AI security conversation.
-                  Each has a concrete answer in how Dust is built.
+                  Each has a concrete answer in how Ruby is built.
                 </P>
               </HomeReveal>
             </div>
@@ -455,7 +460,7 @@ export default function LandingSecurity() {
               <HomeReveal delay={220}>
                 <P size="sm" className="max-w-[520px] leading-[1.6]">
                   <span className="font-semibold text-foreground">
-                    Dust is different.
+                    Ruby is different.
                   </span>{" "}
                   <span className="text-muted-foreground">
                     Our logs go beyond observability into real monitoring: the
@@ -519,7 +524,7 @@ export default function LandingSecurity() {
                   className="max-w-[520px] leading-[1.6] text-muted-foreground"
                 >
                   IP, client names, deals in flight, PII. One mishandled record
-                  can become a regulatory filing or a headline. Dust enforces
+                  can become a regulatory filing or a headline. Ruby enforces
                   boundaries, not policies on paper.
                 </P>
               </HomeReveal>
@@ -574,7 +579,7 @@ export default function LandingSecurity() {
               <div className="flex w-full flex-col gap-5 lg:w-1/2">
                 <HomeReveal delay={120}>
                   <p className="m-0 text-sm font-semibold text-foreground">
-                    With Dust, administrators decide:
+                    With Ruby, administrators decide:
                   </p>
                 </HomeReveal>
                 <DotList
@@ -654,7 +659,7 @@ export default function LandingSecurity() {
                 size="sm"
                 className="max-w-[760px] leading-[1.6] text-muted-foreground"
               >
-                Dust pulls the three circles apart by design, with{" "}
+                Ruby pulls the three circles apart by design, with{" "}
                 <span className="font-semibold text-foreground">
                   Structured Output
                 </span>{" "}
@@ -755,7 +760,7 @@ export default function LandingSecurity() {
               >
                 <img
                   src="/static/landing/security/ai-security-gap-webinar.svg"
-                  alt="The AI Security Gap — Dust & Contrast online event"
+                  alt="The AI Security Gap — Ruby & Contrast online event"
                   className="h-auto w-full"
                 />
               </a>
@@ -806,7 +811,7 @@ export default function LandingSecurity() {
                 className="active:scale-[0.97] inline-block transition-transform duration-100"
               >
                 <Button
-                  variant="highlight"
+                  variant="primary"
                   size="md"
                   label="Talk to our security team"
                   onClick={withTracking(
@@ -826,7 +831,7 @@ export default function LandingSecurity() {
                 className="group inline-flex items-center gap-2 text-sm uppercase tracking-[0.1em] text-white/80 transition-colors hover:text-white"
               >
                 <span className="block h-px w-6 bg-white/40 transition-all duration-200 group-hover:w-10 group-hover:bg-white" />
-                dust.tt/security
+                ruby.ad/security
                 <span aria-hidden="true">→</span>
               </a>
             </HomeReveal>
@@ -912,7 +917,7 @@ const TRIFECTA: TrifectaItem[] = [
   { label: "The ability to act or communicate externally", accent: "golden" },
 ];
 
-LandingSecurity.getLayout = (
+LandingSecurityNextJS.getLayout = (
   page: ReactElement,
   pageProps: LandingLayoutProps
 ) => {

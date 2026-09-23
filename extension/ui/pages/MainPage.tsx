@@ -10,7 +10,7 @@ import { useActiveConversationId } from "@app/hooks/useActiveConversationId";
 import { useSetupNotifications } from "@app/hooks/useSetupNotifications";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import { getPodRoute } from "@app/lib/utils/router";
-import { Attachment01, Button, DotsHorizontal } from "@dust-tt/sparkle";
+import { Attachment01, Button, DotsHorizontal } from "@ruby-ai/ui";
 import { ConversationLayout } from "@extension/ui/components/conversation/ConversationLayout";
 import { UserDropdownMenu } from "@extension/ui/components/navigation/UserDropdownMenu";
 import { useMemo } from "react";

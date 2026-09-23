@@ -394,7 +394,7 @@ export const PRODUCTBOARD_SERVER = {
       supported_use_cases: ["platform_actions", "personal_actions"],
     },
     icon: "ProductboardLogo",
-    documentationUrl: "https://docs.dust.tt/docs/productboard",
+    documentationUrl: "https://docs.ruby.ad/docs/productboard",
   },
   tools: PRODUCTBOARD_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

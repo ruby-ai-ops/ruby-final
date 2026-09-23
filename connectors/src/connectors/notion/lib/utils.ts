@@ -5,8 +5,8 @@ import {
   NotionPageModel,
 } from "@connectors/lib/models/notion";
 import type { Logger } from "@connectors/logger/logger";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import { isLeft } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 
@@ -152,7 +152,7 @@ export async function buildNotionBreadcrumbs(
  */
 export function pageOrDbIdFromUrl(url: string): string {
   // If it is already a UUID, return it directly. This allows users to enter
-  // either a full URL or just the ID (e.g. in the Check URL Poke UI).
+  // either a full URL or just the ID (e.g. in the Check URL Admin UI).
   const trimmed = url.trim();
   if (
     /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(

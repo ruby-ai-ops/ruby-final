@@ -32,7 +32,7 @@ export abstract class MistralStream extends WithMistralAIInputConverter(
     this.client = new Mistral({
       apiKey: MISTRAL_API_KEY,
       // Keep the SDK's current single-attempt default explicit: the agent loop
-      // owns retries so every attempt gets its own Dust trace.
+      // owns retries so every attempt gets its own Ruby trace.
       retryConfig: { strategy: "none" },
     });
   }

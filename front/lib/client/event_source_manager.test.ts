@@ -148,7 +148,7 @@ describe("EventSourceManager", () => {
         handshakeLatencyMs: expect.any(Number),
         streamId: "message-msg_debug",
       }),
-      "[Dust SSE]"
+      "[Ruby SSE]"
     );
     sources[0].emitMessage("secret-payload");
     expect(datadogLogger.info).toHaveBeenCalledWith(
@@ -157,7 +157,7 @@ describe("EventSourceManager", () => {
         eventLength: "secret-payload".length,
         streamId: "message-msg_debug",
       }),
-      "[Dust SSE]"
+      "[Ruby SSE]"
     );
     expect(JSON.stringify(datadogLogger.info.mock.calls)).not.toMatch(
       /secret-payload|secret-query|secret-header/

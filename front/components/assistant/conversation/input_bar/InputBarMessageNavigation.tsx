@@ -11,7 +11,7 @@ import {
   IconButton,
   Stop,
   Zap,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface InputBarMessageNavigationProps {
   variant: "floating" | "compact";

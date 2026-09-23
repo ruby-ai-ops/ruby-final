@@ -1167,7 +1167,7 @@ export async function uploadAttachmentsToJira(
   Result<z.infer<typeof JiraAttachmentsResultSchema>, JiraErrorResult>
 > {
   try {
-    const boundary = `----formdata-dust-${Date.now()}-${Math.random().toString(36)}`;
+    const boundary = `----formdata-ruby-${Date.now()}-${Math.random().toString(36)}`;
     const parts: Buffer[] = [];
 
     for (const file of files) {

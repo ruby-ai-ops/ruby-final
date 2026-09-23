@@ -1,5 +1,5 @@
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { INTERNAL_MIME_TYPES_VALUES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES_VALUES } from "@ruby-ai/client";
 import { z } from "zod";
 import { CLIENT_MESSAGE_ORIGINS } from "../assistant/conversation";
 import { ModelSelectionSchema } from "../assistant/models/types";

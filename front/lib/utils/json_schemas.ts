@@ -381,16 +381,16 @@ export function iterateOverSchemaPropertiesRecursive(
   }
 }
 
-const DUST_TOOL_INPUT_MIME_PREFIX = "application/vnd.dust.tool-input.";
+const RUBY_TOOL_INPUT_MIME_PREFIX = "application/vnd.ruby.tool-input.";
 
-/** Hot path: most property schemas are not Dust tool-input mime markers. */
-function mimeSchemaIndicatesDustToolInput(mimeSchema: unknown): boolean {
+/** Hot path: most property schemas are not Ruby tool-input mime markers. */
+function mimeSchemaIndicatesRubyToolInput(mimeSchema: unknown): boolean {
   if (!mimeSchema || typeof mimeSchema !== "object") {
     return false;
   }
   const m = mimeSchema as Record<string, unknown>;
   const c = m.const;
-  if (typeof c === "string" && c.startsWith(DUST_TOOL_INPUT_MIME_PREFIX)) {
+  if (typeof c === "string" && c.startsWith(RUBY_TOOL_INPUT_MIME_PREFIX)) {
     return true;
   }
   const en = m.enum;
@@ -399,7 +399,7 @@ function mimeSchemaIndicatesDustToolInput(mimeSchema: unknown): boolean {
   }
   for (let i = 0; i < en.length; i++) {
     const v = en[i];
-    if (typeof v === "string" && v.startsWith(DUST_TOOL_INPUT_MIME_PREFIX)) {
+    if (typeof v === "string" && v.startsWith(RUBY_TOOL_INPUT_MIME_PREFIX)) {
       return true;
     }
   }
@@ -407,10 +407,10 @@ function mimeSchemaIndicatesDustToolInput(mimeSchema: unknown): boolean {
 }
 
 /**
- * True when this schema describes an object that carries a Dust tool-input mime marker
+ * True when this schema describes an object that carries a Ruby tool-input mime marker
  * (uri + mimeType pattern used for configurable tool inputs).
  */
-function isDustToolInputObjectSchema(schema: unknown): boolean {
+function isRubyToolInputObjectSchema(schema: unknown): boolean {
   if (!schema || typeof schema !== "object") {
     return false;
   }
@@ -420,7 +420,7 @@ function isDustToolInputObjectSchema(schema: unknown): boolean {
     return false;
   }
   if (
-    !mimeSchemaIndicatesDustToolInput(
+    !mimeSchemaIndicatesRubyToolInput(
       (props as Record<string, unknown>).mimeType
     )
   ) {
@@ -434,14 +434,14 @@ function isDustToolInputObjectSchema(schema: unknown): boolean {
 }
 
 /**
- * True if somewhere under this schema a Dust tool-input object is reachable via a path
+ * True if somewhere under this schema a Ruby tool-input object is reachable via a path
  * where every object property on the path is listed in that object's `required` array
  * (starting from the tool root with the same rule).
  *
  * Performance: optional branches (`pathFromRootAllRequired === false`) return immediately — no
  * nested walk, since descendants cannot sit on an all-required path from the tool root.
  */
-export function jsonSchemaHasRequiredDustToolInput(
+export function jsonSchemaHasRequiredRubyToolInput(
   schema: unknown,
   pathFromRootAllRequired: boolean
 ): boolean {
@@ -453,7 +453,7 @@ export function jsonSchemaHasRequiredDustToolInput(
     const subs = schema;
     for (let i = 0; i < subs.length; i++) {
       if (
-        !jsonSchemaHasRequiredDustToolInput(subs[i], pathFromRootAllRequired)
+        !jsonSchemaHasRequiredRubyToolInput(subs[i], pathFromRootAllRequired)
       ) {
         return false;
       }
@@ -465,21 +465,21 @@ export function jsonSchemaHasRequiredDustToolInput(
     return false;
   }
 
-  // Optional JSON subtree: cannot contain a mandatory Dust input from the tool root.
+  // Optional JSON subtree: cannot contain a mandatory Ruby input from the tool root.
   if (!pathFromRootAllRequired) {
     return false;
   }
 
   const s = schema as Record<string, unknown> & JSONSchema;
 
-  if (isDustToolInputObjectSchema(s)) {
+  if (isRubyToolInputObjectSchema(s)) {
     return true;
   }
 
   const allOf = s.allOf;
   if (Array.isArray(allOf)) {
     for (let i = 0; i < allOf.length; i++) {
-      if (jsonSchemaHasRequiredDustToolInput(allOf[i], true)) {
+      if (jsonSchemaHasRequiredRubyToolInput(allOf[i], true)) {
         return true;
       }
     }
@@ -489,7 +489,7 @@ export function jsonSchemaHasRequiredDustToolInput(
   const oneOf = s.oneOf;
   if (Array.isArray(oneOf)) {
     for (let i = 0; i < oneOf.length; i++) {
-      if (!jsonSchemaHasRequiredDustToolInput(oneOf[i], true)) {
+      if (!jsonSchemaHasRequiredRubyToolInput(oneOf[i], true)) {
         return false;
       }
     }
@@ -499,7 +499,7 @@ export function jsonSchemaHasRequiredDustToolInput(
   const anyOf = s.anyOf;
   if (Array.isArray(anyOf)) {
     for (let i = 0; i < anyOf.length; i++) {
-      if (!jsonSchemaHasRequiredDustToolInput(anyOf[i], true)) {
+      if (!jsonSchemaHasRequiredRubyToolInput(anyOf[i], true)) {
         return false;
       }
     }
@@ -538,17 +538,17 @@ export function jsonSchemaHasRequiredDustToolInput(
         const items = ps.items;
         if (Array.isArray(items)) {
           for (let j = 0; j < items.length; j++) {
-            if (jsonSchemaHasRequiredDustToolInput(items[j], true)) {
+            if (jsonSchemaHasRequiredRubyToolInput(items[j], true)) {
               return true;
             }
           }
-        } else if (jsonSchemaHasRequiredDustToolInput(items, true)) {
+        } else if (jsonSchemaHasRequiredRubyToolInput(items, true)) {
           return true;
         }
         continue;
       }
 
-      if (jsonSchemaHasRequiredDustToolInput(propSchema, true)) {
+      if (jsonSchemaHasRequiredRubyToolInput(propSchema, true)) {
         return true;
       }
     }
@@ -560,21 +560,21 @@ export function jsonSchemaHasRequiredDustToolInput(
     const items = s.items;
     if (Array.isArray(items)) {
       for (let i = 0; i < items.length; i++) {
-        if (jsonSchemaHasRequiredDustToolInput(items[i], true)) {
+        if (jsonSchemaHasRequiredRubyToolInput(items[i], true)) {
           return true;
         }
       }
       return false;
     }
-    return jsonSchemaHasRequiredDustToolInput(items, true);
+    return jsonSchemaHasRequiredRubyToolInput(items, true);
   }
 
   return false;
 }
 
 /**
- * True when at least one tool input schema forces a Dust configurable input on an all-required
- * path from the root (see {@link jsonSchemaHasRequiredDustToolInput}). Such tools need an
+ * True when at least one tool input schema forces a Ruby configurable input on an all-required
+ * path from the root (see {@link jsonSchemaHasRequiredRubyToolInput}). Such tools need an
  * agent/skill configuration step and cannot be attached directly in a conversation.
  */
 export function mcpToolsRequireConfiguration(
@@ -583,7 +583,7 @@ export function mcpToolsRequireConfiguration(
   for (let t = 0; t < tools.length; t++) {
     const sch = tools[t].inputSchema;
     if (sch !== undefined && sch !== null) {
-      if (jsonSchemaHasRequiredDustToolInput(sch, true)) {
+      if (jsonSchemaHasRequiredRubyToolInput(sch, true)) {
         return true;
       }
     }
@@ -592,8 +592,8 @@ export function mcpToolsRequireConfiguration(
 }
 
 /**
- * True when no tool input schema forces a Dust configurable input on an all-required path
- * from the root (see {@link jsonSchemaHasRequiredDustToolInput}).
+ * True when no tool input schema forces a Ruby configurable input on an all-required path
+ * from the root (see {@link jsonSchemaHasRequiredRubyToolInput}).
  */
 export function hasNoRequiredProperties(view: MCPServerViewType): boolean {
   return !mcpToolsRequireConfiguration(view.server.tools);

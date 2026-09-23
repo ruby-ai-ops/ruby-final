@@ -5,7 +5,7 @@ import type { ConsumptionScopeFilter } from "@app/lib/api/analytics/consumption/
 import type { ConsumptionTopConversationRow } from "@app/lib/api/analytics/consumption/top_conversations";
 import { useAppRouter } from "@app/lib/platform";
 import { getConversationRoute } from "@app/lib/utils/router";
-import { ArrowRight, Button, DataTable, Spinner } from "@dust-tt/sparkle";
+import { ArrowRight, Button, DataTable, Spinner } from "@ruby-ai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 
 type ConversationAttributionRow = ConsumptionTopConversationRow & {

@@ -7,6 +7,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "noEmit": true,
     "noErrorTruncation": true,
     "esModuleInterop": true,
@@ -33,7 +34,14 @@
     "**/*.jsx",
     "**/*.js",
     "**/*.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next-build/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next", "dist"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".next-build",
+    "dist",
+    "demo-workspace"
+  ]
 }

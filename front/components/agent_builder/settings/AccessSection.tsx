@@ -18,7 +18,7 @@ import {
   EyeOff,
   SlackLogo,
   Users01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useState } from "react";
 import { useController } from "react-hook-form";

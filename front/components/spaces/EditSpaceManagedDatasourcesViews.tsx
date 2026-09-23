@@ -7,7 +7,7 @@ import { useSendNotification } from "@app/hooks/useNotification";
 import { CONNECTOR_UI_CONFIGURATIONS } from "@app/lib/connector_providers_ui";
 import {
   getDisplayNameForDataSource,
-  isDustProjectDataSource,
+  isRubyProjectDataSource,
   isManaged,
 } from "@app/lib/data_sources";
 import { clientFetch } from "@app/lib/egress/client";
@@ -38,7 +38,7 @@ import {
   InfoCircle,
   Plus,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, {
   useCallback,
@@ -124,12 +124,12 @@ export function EditSpaceManagedDataSourcesViews({
     [systemSpaceDataSourceViews, dataSourceView]
   );
 
-  // Exclude dust_project: it is Pod-owned (files/conversations), not selectable in the
+  // Exclude ruby_project: it is Pod-owned (files/conversations), not selectable in the
   // connections modal, and must survive connected-data selection updates.
   const filteredDataSourceViews = spaceDataSourceViews.filter(
     (dsv) =>
       (!dataSourceView || dsv.sId === dataSourceView.sId) &&
-      !isDustProjectDataSource(dsv.dataSource)
+      !isRubyProjectDataSource(dsv.dataSource)
   );
 
   const updateSpaceDataSourceViews = async (
@@ -139,7 +139,7 @@ export function EditSpaceManagedDataSourcesViews({
     // comparing the data source.  If so, delete it.
     const deletedViews = filteredDataSourceViews.filter(
       (dsv) =>
-        !isDustProjectDataSource(dsv.dataSource) &&
+        !isRubyProjectDataSource(dsv.dataSource) &&
         !Object.values(selectionConfigurations).find(
           (sc) => sc.dataSourceView.dataSource.sId === dsv.dataSource.sId
         )

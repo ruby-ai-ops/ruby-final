@@ -10,7 +10,7 @@ export const CONFIG = {
   FETCH_TIMEOUT_MS: 20_000,
 
   // Environment secrets.
-  DUST_CONNECTORS_WEBHOOKS_SECRET: process.env.DUST_CONNECTORS_WEBHOOKS_SECRET,
+  RUBY_CONNECTORS_WEBHOOKS_SECRET: process.env.RUBY_CONNECTORS_WEBHOOKS_SECRET,
 
   // Slack environment secrets.
   SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET,
@@ -26,15 +26,15 @@ export const CONFIG = {
 
   // Endpoints.
   US_CONNECTOR_URL:
-    process.env.US_CONNECTOR_URL ?? "https://connectors.dust.tt",
+    process.env.US_CONNECTOR_URL ?? "https://connectors.ruby.ad",
   EU_CONNECTOR_URL:
-    process.env.EU_CONNECTOR_URL ?? "https://eu.connectors.dust.tt",
+    process.env.EU_CONNECTOR_URL ?? "https://eu.connectors.ruby.ad",
   CELL_00002_CONNECTOR_URL:
     process.env.CELL_00002_CONNECTOR_URL ??
-    "https://cell-00002.cells.dust.tt/connectors",
+    "https://cell-00002.cells.ruby.ad/connectors",
 
   // Secret names.
-  SECRET_NAME: "connectors-DUST_CONNECTORS_WEBHOOKS_SECRET",
+  SECRET_NAME: "connectors-RUBY_CONNECTORS_WEBHOOKS_SECRET",
 
   // Slack related secrets.
   SLACK_SIGNING_SECRET_NAME: "SLACK_SIGNING_SECRET",
@@ -48,7 +48,7 @@ export const CONFIG = {
   // Shopify related secrets.
   OAUTH_SHOPIFY_CLIENT_SECRET_NAME: "OAUTH_SHOPIFY_CLIENT_SECRET",
 
-  DUST_WEBHOOK_ROUTER_CONFIG_FILE_PATH: "webhook-router-config.json",
+  RUBY_WEBHOOK_ROUTER_CONFIG_FILE_PATH: "webhook-router-config.json",
 } as const;
 
 // Runtime getters for Firebase params.

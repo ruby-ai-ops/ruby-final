@@ -14,7 +14,7 @@ import type { ProcessActionOutputsType } from "@app/lib/api/actions/servers/extr
 import {
   generateProcessToolOutput,
   getCoreDataSourceSearchCriterias,
-  getPromptForProcessDustApp,
+  getPromptForProcessRubyApp,
 } from "@app/lib/api/actions/servers/extract_data/helpers";
 import {
   EXTRACT_DATA_MAIN_TOOL_NAME,
@@ -154,7 +154,7 @@ export function createExtractDataTools(
       );
     }
 
-    const prompt = await getPromptForProcessDustApp({
+    const prompt = await getPromptForProcessRubyApp({
       auth,
       agentConfiguration,
       modelInfo,

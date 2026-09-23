@@ -1,6 +1,6 @@
 import { isDatabaseFileSystemPodName } from "@app/lib/api/file_system/storage_mode";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { AgentProjectConfigurationModel } from "@app/lib/models/agent/actions/projects";
 import { MessageModel } from "@app/lib/models/agent/conversation";
 import { BaseResource } from "@app/lib/resources/base_resource";
@@ -1010,7 +1010,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
     await this.update({ name: trimmedName });
     if (this.isRegular() || this.isProject()) {
       // For regular spaces that only have a single group, update
-      // the group's name too (see https://github.com/dust-tt/tasks/issues/1738)
+      // the group's name too (see https://github.com/ruby-ai/tasks/issues/1738)
       const regularGroup = await this.fetchManualMemberGroup(auth);
       const memberRenameRes = await regularGroup.dangerouslyUpdateName(
         `${this.isProject() ? PROJECT_GROUP_PREFIX : SPACE_GROUP_PREFIX} ${this.name}`
@@ -1062,7 +1062,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   ): Promise<
     Result<
       { memberGroups: GroupResource[]; editorGroups: GroupResource[] },
-      DustError<
+      RubyError<
         "unauthorized" | "group_not_found" | "invalid_group_kind" | "invalid_id"
       >
     >
@@ -1095,7 +1095,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
     );
     if (unsupportedGroups.length > 0) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_group_kind",
           "Only provisioned and manual groups can be given access to a space."
         )
@@ -1133,7 +1133,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   ): Promise<
     Result<
       undefined,
-      DustError<
+      RubyError<
         | "unauthorized"
         | "group_not_found"
         | "user_not_found"
@@ -1149,7 +1149,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   > {
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "You do not have permission to update space permissions."
         )
@@ -1158,7 +1158,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
 
     if (!this.isRegular() && !this.isProject() && !this.isGlobal()) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Only projects, regular spaces and the global space can have members."
         )
@@ -1172,7 +1172,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
     // people allowed to write to it, not the people allowed to see it.
     if (this.isGlobal() && isRestricted) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_request_error",
           "The global space cannot be restricted."
         )
@@ -1319,7 +1319,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   ): Promise<
     Result<
       UserResource[],
-      DustError<
+      RubyError<
         | "unauthorized"
         | "user_not_found"
         | "user_already_member"
@@ -1331,7 +1331,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   > {
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "You do not have permission to add members to this space."
         )
@@ -1349,7 +1349,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
 
     if (missingIds.length > 0) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_found",
           `User(s) not found: ${missingIds.join(", ")}`
         )
@@ -1391,7 +1391,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   ): Promise<
     Result<
       UserResource[],
-      DustError<
+      RubyError<
         | "unauthorized"
         | "user_not_found"
         | "user_already_member"
@@ -1404,7 +1404,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   > {
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "You do not have permission to add editors to this space."
         )
@@ -1419,7 +1419,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
 
     if (missingIds.length > 0) {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_found",
           `User(s) not found: ${missingIds.join(", ")}`
         )
@@ -1473,7 +1473,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   ): Promise<
     Result<
       UserResource[],
-      DustError<
+      RubyError<
         | "unauthorized"
         | "user_not_found"
         | "user_not_member"
@@ -1485,7 +1485,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   > {
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "You do not have permission to remove editors from this space."
         )
@@ -1496,7 +1496,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
 
     const users = await UserResource.fetchByIds(userIds);
     if (users.length === 0) {
-      return new Err(new DustError("user_not_found", "User not found"));
+      return new Err(new RubyError("user_not_found", "User not found"));
     }
 
     const editorGroup = await this.fetchManualEditorGroup(auth);
@@ -1513,7 +1513,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
     // outright when a group is attached (see the guard above).
     if (activeEditors.length - usersToRemove.length < 1) {
       return new Err(
-        new DustError(
+        new RubyError(
           "group_requirements_not_met",
           "Pods must have at least one editor."
         )
@@ -1541,7 +1541,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   ): Promise<
     Result<
       UserResource[],
-      DustError<
+      RubyError<
         | "unauthorized"
         | "user_not_found"
         | "user_not_member"
@@ -1552,7 +1552,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   > {
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "You do not have permission to remove members from this space."
         )
@@ -1562,7 +1562,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
     const users = await UserResource.fetchByIds(userIds);
 
     if (!users) {
-      return new Err(new DustError("user_not_found", "User not found"));
+      return new Err(new RubyError("user_not_found", "User not found"));
     }
 
     const memberGroup = await this.fetchManualMemberGroup(auth);
@@ -1590,7 +1590,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   ): Promise<
     Result<
       undefined,
-      DustError<
+      RubyError<
         | "invalid_request_error"
         | "user_not_member"
         | "group_requirements_not_met"
@@ -1602,7 +1602,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   > {
     if (!this.isProject()) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_request_error",
           "You can only leave Pods, not regular spaces."
         )
@@ -1611,7 +1611,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
 
     if (!this.isMember(auth)) {
       return new Err(
-        new DustError("user_not_member", "You are not a member of this Pod.")
+        new RubyError("user_not_member", "You are not a member of this Pod.")
       );
     }
 
@@ -1622,7 +1622,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
       const activeEditors = await editorGroup.getActiveMembers(auth);
       if (activeEditors.length === 1 && activeEditors[0].sId === user.sId) {
         return new Err(
-          new DustError(
+          new RubyError(
             "group_requirements_not_met",
             "You cannot leave this Pod as you are the last editor. Please add another editor first."
           )
@@ -2611,7 +2611,7 @@ export class SpaceResource extends BaseResource<SpaceModel> {
   // and `isRestricted`), loading the grants in a single `group_permissions` query. The grant fields
   // are not carried on `toJSON` (that would force the eager `group_permissions` include on every
   // space load), so this batched method is the sole way to produce the enriched shape — the public
-  // API, the space-management UI and poke go through it instead of wiring the loader + per-space
+  // API, the space-management UI and admin go through it instead of wiring the loader + per-space
   // fallback at each call site. The result preserves the order of `spaces`.
   static async enrichSpacesWithAccess(
     auth: Authenticator,

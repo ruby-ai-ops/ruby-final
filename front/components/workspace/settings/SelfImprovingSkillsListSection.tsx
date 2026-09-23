@@ -13,7 +13,7 @@ import {
   useReinforcementBillingUnit,
   useSkillsSelfImprovingSpend,
 } from "@app/lib/swr/useSelfImprovingSkillsSettings";
-import { DUST_AVATAR_URL } from "@app/types/assistant/avatar";
+import { RUBY_AVATAR_URL } from "@app/types/assistant/avatar";
 import type {
   SkillReinforcementMode,
   SkillWithoutInstructionsAndToolsWithRelationsType,
@@ -26,7 +26,7 @@ import {
   SearchInput,
   SliderToggle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type {
   CellContext,
   ColumnDef,
@@ -116,7 +116,7 @@ function getColumns(
               visual: editor.image,
               isRounded: true,
             }))
-          : [{ name: "Dust", visual: DUST_AVATAR_URL, isRounded: false }];
+          : [{ name: "Ruby", visual: RUBY_AVATAR_URL, isRounded: false }];
         return (
           <DataTable.CellContent avatarStack={{ items, nbVisibleItems: 4 }} />
         );

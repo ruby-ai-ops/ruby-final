@@ -164,7 +164,7 @@ async function setupSettledMessage({
     {
       completedAt,
       costCredits: 5,
-      runIds: [run.dustRunId],
+      runIds: [run.rubyRunId],
       status: "succeeded",
     },
     {
@@ -374,7 +374,7 @@ describe("loadAgentMessageConsumptionAnalyticsInput", () => {
     );
     await AgentMessageModel.update(
       {
-        agentConfigurationId: GLOBAL_AGENTS_SID.DUST_TASK,
+        agentConfigurationId: GLOBAL_AGENTS_SID.RUBY_TASK,
         agentConfigurationVersion: 0,
       },
       {
@@ -391,7 +391,7 @@ describe("loadAgentMessageConsumptionAnalyticsInput", () => {
 
     expect(input?.agent).toEqual({
       attributed_id: parent.agent.sId,
-      id: GLOBAL_AGENTS_SID.DUST_TASK,
+      id: GLOBAL_AGENTS_SID.RUBY_TASK,
       version: "0",
       tag_ids: [],
       parent_ids: [parent.agent.sId],

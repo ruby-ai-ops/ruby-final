@@ -2,7 +2,7 @@ import SpaceWebsiteModal from "@app/components/spaces/websites/SpaceWebsiteModal
 import type { DataSourceViewType } from "@app/types/data_source_view";
 import type { SpaceType } from "@app/types/space";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, Settings01 } from "@dust-tt/sparkle";
+import { Button, Settings01 } from "@ruby-ai/ui";
 import { useState } from "react";
 
 type WebsitesHeaderMenuProps = {

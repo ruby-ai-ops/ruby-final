@@ -1,0 +1,89 @@
+import { getAgentConfiguration } from "@app/lib/api/assistant/configuration/agent";
+import { getConversation } from "@app/lib/api/assistant/conversation/fetch";
+import { getWorkspaceInfos } from "@app/lib/api/workspace";
+import type { Authenticator } from "@app/lib/auth";
+import { AppResource } from "@app/lib/resources/app_resource";
+import { DataSourceResource } from "@app/lib/resources/data_source_resource";
+import { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
+import { FileResource } from "@app/lib/resources/file_resource";
+import { MCPServerViewResource } from "@app/lib/resources/mcp_server_view_resource";
+import { SkillResource } from "@app/lib/resources/skill/skill_resource";
+import { SpaceResource } from "@app/lib/resources/space_resource";
+import { TriggerResource } from "@app/lib/resources/trigger_resource";
+import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
+import type { ConversationType } from "@app/types/assistant/conversation";
+import type { SupportedResourceType } from "@app/types/admin/plugins";
+import { assertNever } from "@app/types/shared/utils/assert_never";
+import type { LightWorkspaceType } from "@app/types/user";
+
+export type ResourceTypeMap = {
+  agents: LightAgentConfigurationType;
+  apps: AppResource;
+  conversations: ConversationType;
+  workspaces: LightWorkspaceType;
+  data_sources: DataSourceResource;
+  files: FileResource;
+  mcp_server_views: MCPServerViewResource;
+  skills: SkillResource;
+  spaces: SpaceResource;
+  data_source_views: DataSourceViewResource;
+  triggers: TriggerResource;
+  global: null;
+};
+
+export async function fetchPluginResource<T extends SupportedResourceType>(
+  auth: Authenticator,
+  resourceType: T,
+  resourceId: string
+): Promise<ResourceTypeMap[T] | null> {
+  let result: unknown = null;
+
+  switch (resourceType) {
+    case "agents":
+      result = await getAgentConfiguration(auth, {
+        agentId: resourceId,
+        variant: "light",
+      });
+      break;
+    case "apps":
+      result = await AppResource.fetchById(auth, resourceId);
+      break;
+    case "conversations": {
+      // biome-ignore lint/plugin/noExpensiveConversationFetch: intentional full conversation load
+      const conversationRes = await getConversation(auth, resourceId);
+      result = conversationRes.isOk() ? conversationRes.value : null;
+      break;
+    }
+    case "workspaces":
+      result = await getWorkspaceInfos(resourceId);
+      break;
+    case "data_sources":
+      result = await DataSourceResource.fetchById(auth, resourceId);
+      break;
+    case "data_source_views":
+      result = await DataSourceViewResource.fetchById(auth, resourceId);
+      break;
+    case "files":
+      result = await FileResource.fetchById(auth, resourceId);
+      break;
+    case "mcp_server_views":
+      result = await MCPServerViewResource.fetchById(auth, resourceId);
+      break;
+    case "skills":
+      result = await SkillResource.fetchById(auth, resourceId);
+      break;
+    case "spaces":
+      result = await SpaceResource.fetchById(auth, resourceId);
+      break;
+    case "triggers":
+      result = await TriggerResource.fetchById(auth, resourceId);
+      break;
+    case "global":
+      result = null;
+      break;
+    default:
+      assertNever(resourceType);
+  }
+
+  return result as ResourceTypeMap[T] | null;
+}

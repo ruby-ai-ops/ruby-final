@@ -1,6 +1,6 @@
 // @vitest-environment node
 
-import { DustThinkingMachinesInklingGlobalFireworksStream } from "@app/lib/llms/stream/endpoints/thinking_machines_inkling_global_fireworks";
+import { RubyThinkingMachinesInklingGlobalFireworksStream } from "@app/lib/llms/stream/endpoints/thinking_machines_inkling_global_fireworks";
 import { MoonshotAiKimiK3GlobalFireworksStream } from "@app/lib/model_constructors/stream/endpoints/moonshot_ai_kimi_k3_global_fireworks";
 import { ThinkingMachinesInklingGlobalFireworksStream } from "@app/lib/model_constructors/stream/endpoints/thinking_machines_inkling_global_fireworks";
 import { APIConnectionError, APIError } from "openai";
@@ -200,13 +200,13 @@ describe("FireworksResponsesStream", () => {
     expect(payload).not.toHaveProperty("max_output_tokens");
   });
 
-  it("keeps Dust's lower Inkling completion limit", () => {
-    const endpoint = new DustThinkingMachinesInklingGlobalFireworksStream({
+  it("keeps Ruby's lower Inkling completion limit", () => {
+    const endpoint = new RubyThinkingMachinesInklingGlobalFireworksStream({
       FIREWORKS_API_KEY: "test",
     });
     const payload = endpoint.buildRequestPayload(
       { conversation: { system: [], messages: [] } },
-      DustThinkingMachinesInklingGlobalFireworksStream.configSchema.parse({})
+      RubyThinkingMachinesInklingGlobalFireworksStream.configSchema.parse({})
     );
 
     expect(payload.max_output_tokens).toBe(64_000);

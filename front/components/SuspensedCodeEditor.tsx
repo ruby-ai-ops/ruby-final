@@ -1,5 +1,5 @@
 import { isNavigationLocked } from "@app/lib/navigation-lock";
-import { LoadingBlock, SafeSuspense, safeLazy } from "@dust-tt/sparkle";
+import { LoadingBlock, SafeSuspense, safeLazy } from "@ruby-ai/ui";
 import type { TextareaCodeEditorProps } from "@uiw/react-textarea-code-editor";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";

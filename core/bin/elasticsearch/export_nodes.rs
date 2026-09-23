@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use dust::search_stores::search_store::ElasticsearchSearchStore;
+use ruby::search_stores::search_store::ElasticsearchSearchStore;
 use elasticsearch::{ClearScrollParts, ScrollParts, SearchParts};
 use serde_json::{json, Value};
 use std::fs::File;

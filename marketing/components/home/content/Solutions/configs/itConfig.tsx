@@ -12,7 +12,7 @@ import type {
 } from "@marketing/components/home/content/Solutions/configs/utils";
 import type { DemoVideoProps } from "@marketing/components/home/content/Solutions/DemoVideoSection";
 import type { UseCaseProps } from "@marketing/components/home/content/Solutions/UseCasesSection";
-import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@dust-tt/sparkle";
+import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@ruby-ai/ui";
 
 // Config exports
 export const pageSettings: pageSettingsProps = {
@@ -162,38 +162,38 @@ export const UseCases: UseCaseProps = {
 
 export const Quote: QuoteProps = {
   quote:
-    "One of the things that impressed me about Dust is that all the use cases around internal and external support for teams who need to maintain processes are impressive. Being able to call an agent that parses all the knowledge is a huge pain reliever.",
+    "One of the things that impressed me about Ruby is that all the use cases around internal and external support for teams who need to maintain processes are impressive. Being able to call an agent that parses all the knowledge is a huge pain reliever.",
   name: "Raphael Brousse ",
   title: "VP Operations at Lifen",
   logo: "/static/landing/logos/color/lifen.png",
 };
 
 export const DemoVideo: DemoVideoProps = {
-  sectionTitle: "Watch Dust in motion",
-  videoUrl: "https://fast.wistia.net/embed/iframe/4a4bjtxdpf",
+  sectionTitle: "Watch Ruby in motion",
+  videoUrl: "/static/workspace-demo/index.html",
   showCaptions: true,
 };
 
 export const Stories: CustomerStory[] = [
   {
-    title: "Lifen Saves Two Hours per Week per Employee with Dust", // Soon to be replaced with Clay for RFP?
+    title: "Lifen Saves Two Hours per Week per Employee with Ruby", // Soon to be replaced with Clay for RFP?
     content:
-      "Lifen uses Dust AI agents to boost team productivity and save hours of work each week.",
+      "Lifen uses Ruby AI agents to boost team productivity and save hours of work each week.",
     href: "/customers/customer-story-lifen",
-    src: "https://blog.dust.tt/content/images/size/w2000/2024/11/lifen_dust_customer_story.jpg",
+    src: "https://ruby.ad/content/images/size/w2000/2024/11/lifen_ruby_customer_story.jpg",
   },
   {
     title: "20%+ productivity gains in Sales: Insights from Alan and Payfit",
     content:
-      "Dust agents significantly lowered their acquisition costs, allowing them to hire more salespeople.",
+      "Ruby agents significantly lowered their acquisition costs, allowing them to hire more salespeople.",
     href: "/customers/generative-ai-insights-alan-payfit-leaders",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/01/Founder.jpg",
+    src: "https://ruby.ad/content/images/size/w2000/2025/01/Founder.jpg",
   },
   {
     title: "Kyriba's RFP Agent for improving pre-sales efficiency",
     content:
-      "43% of Kyriba employees save more than 3 hours weekly leveraging Dust for RFPs.",
-    href: "/customers/kyriba-accelerating-innovation-with-dust",
-    src: "https://blog.dust.tt/content/images/size/w2000/2024/10/kyriba_dust.jpg",
+      "43% of Kyriba employees save more than 3 hours weekly leveraging Ruby for RFPs.",
+    href: "/customers/kyriba-accelerating-innovation-with-ruby",
+    src: "https://ruby.ad/content/images/size/w2000/2024/10/kyriba_ruby.jpg",
   },
 ];

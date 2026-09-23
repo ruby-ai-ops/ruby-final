@@ -36,7 +36,7 @@ function generateIntegrationSchema(integration: IntegrationPageConfig) {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: `${integration.name} Integration for Dust`,
+    name: `${integration.name} Integration for Ruby`,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description:
@@ -45,9 +45,9 @@ function generateIntegrationSchema(integration: IntegrationPageConfig) {
     offers: {
       "@type": "Offer",
       availability: "https://schema.org/InStock",
-      price: "29",
+      price: "55",
       priceCurrency: "USD",
-      description: "Starting from $29/user/month",
+      description: "Lite seat billed annually",
     },
   };
 }
@@ -101,16 +101,16 @@ export default function IntegrationTemplate({
   // Default CTA config
   const finalCTAConfig = {
     title: `Get started with ${integration.name}`,
-    subtitle: `Connect ${integration.name} to Dust and let AI agents handle your workflows.`,
+    subtitle: `Connect ${integration.name} to Ruby and let AI agents handle your workflows.`,
     primaryCTA: {
-      label: "Start free trial",
+      label: "Get started",
       href: "/api/workos/login?screenHint=sign-up",
     },
     secondaryCTA: {
       label: "Talk to sales",
       href: "/home/contact",
     },
-    trustText: "14-day free trial. No credit card required.",
+    trustText: undefined,
   };
 
   return (

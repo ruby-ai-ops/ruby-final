@@ -1,13 +1,13 @@
 import { getModelLogoByModelId } from "@app/components/providers/types";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { formatCredits, formatCreditsCompact } from "@app/lib/client/credits";
 import {
   Avatar,
-  DustLogoSquare,
+  RubyLogoSquare,
   Icon,
   ProgressBar,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentProps, ReactNode } from "react";
 
 function EmptyCell() {
@@ -73,7 +73,7 @@ export function EntityTooltipCard({
         <div className="flex items-center gap-2">
           <span className="flex size-5 shrink-0 items-center justify-center rounded-sm bg-primary-50">
             <Icon
-              visual={ModelLogo ?? DustLogoSquare}
+              visual={ModelLogo ?? RubyLogoSquare}
               size="xs"
               className="text-primary-950"
             />

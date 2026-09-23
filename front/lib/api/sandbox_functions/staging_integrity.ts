@@ -13,7 +13,7 @@ import { Err, Ok } from "@app/types/shared/result";
 // producing exec: a swap before the capture fails the capture itself (`set -e`, sha256sum cannot
 // open the swapped target as agent-proxied), a swap after the capture no longer hashes equal.
 
-const HASH_MARKER = "__DUST_STAGING_SHA256__";
+const HASH_MARKER = "__RUBY_STAGING_SHA256__";
 const SHA256SUM_BIN = "/usr/bin/sha256sum";
 
 export type StagingHashes = Record<string, string>;
@@ -27,20 +27,20 @@ export function stagingHashCaptureLines(paths: string[]): string[] {
 }
 
 /**
- * Split exec stdout at the marker line: everything before it is dsbx output, everything after is
+ * Split exec stdout at the marker line: everything before it is rbx output, everything after is
  * `<sha256>  <path>` lines. Without a marker the input is returned untouched with no hashes.
  * The split anchors on the LAST full-line marker so a model that prints the marker string from
  * its own code cannot shadow the real capture (the sha256 lines are always the last stdout
  * lines) and cannot truncate its own output by emitting a marker mid-stream.
  */
 export function splitStagingStdout(stdout: string): {
-  dsbxStdout: string;
+  rbxStdout: string;
   hashes: StagingHashes;
 } {
   const lines = stdout.split("\n");
   const markerIndex = lines.findLastIndex((line) => line === HASH_MARKER);
   if (markerIndex === -1) {
-    return { dsbxStdout: stdout, hashes: {} };
+    return { rbxStdout: stdout, hashes: {} };
   }
   const hashes: StagingHashes = {};
   for (const line of lines.slice(markerIndex + 1)) {
@@ -49,7 +49,7 @@ export function splitStagingStdout(stdout: string): {
       hashes[match[2]] = match[1];
     }
   }
-  return { dsbxStdout: lines.slice(0, markerIndex).join("\n"), hashes };
+  return { rbxStdout: lines.slice(0, markerIndex).join("\n"), hashes };
 }
 
 function sha256Hex(content: Buffer): string {

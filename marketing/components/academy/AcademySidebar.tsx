@@ -12,7 +12,7 @@ import {
   Sheet,
   SheetContent,
   SheetTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface AcademySidebarProps {

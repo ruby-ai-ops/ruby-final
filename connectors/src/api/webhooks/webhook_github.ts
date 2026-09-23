@@ -24,7 +24,7 @@ import mainLogger from "@connectors/logger/logger";
 import { withLogging } from "@connectors/logger/withlogging";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { ModelId, WithConnectorsAPIErrorReponse } from "@connectors/types";
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 import type { Request, Response } from "express";
 import { isLeft } from "fp-ts/lib/Either";
 import * as reporter from "io-ts-reporters";

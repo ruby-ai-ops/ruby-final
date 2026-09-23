@@ -4,7 +4,7 @@ import { spaceMembershipProperties } from "@app/lib/spaces_utils";
 import { useUpdateSpace } from "@app/lib/swr/spaces";
 import type { RichSpaceType } from "@app/types/api/spaces";
 import type { LightWorkspaceType, SpaceUserType } from "@app/types/user";
-import type { MenuItem } from "@dust-tt/sparkle";
+import type { MenuItem } from "@ruby-ai/ui";
 import {
   Avatar,
   Check,
@@ -12,7 +12,7 @@ import {
   DataTable,
   Trash01,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useCallback, useContext, useMemo } from "react";
 

@@ -17,7 +17,7 @@ const BalanceThresholdReachedPayloadSchema = z.object({
   // The remaining balance reported by Metronome when the alert fired, if known.
   remainingBalanceCredits: z.number().nullable(),
   // Enterprise workspaces can't self-serve credits, so we point them to their
-  // Dust representative instead of the usage page.
+  // Ruby representative instead of the usage page.
   isEnterprise: z.boolean(),
 });
 
@@ -34,7 +34,7 @@ export const balanceThresholdReachedWorkflow = workflow(
   BALANCE_THRESHOLD_REACHED_TRIGGER_ID,
   async ({ step, payload, subscriber }) => {
     await step.email("balance-threshold-reached-email", async () => {
-      const subject = `[Dust] Credit balance alert - your workspace balance dropped below ${formatCredits(
+      const subject = `[Ruby] Credit balance alert - your workspace balance dropped below ${formatCredits(
         payload.balanceThresholdCredits
       )} credits`;
 
@@ -43,7 +43,7 @@ export const balanceThresholdReachedWorkflow = workflow(
           ? `\nRemaining balance: ${formatCredits(payload.remainingBalanceCredits)} credits`
           : "";
       const purchaseLine = payload.isEnterprise
-        ? `To avoid running out of credits, please reach out to your Dust representative.`
+        ? `To avoid running out of credits, please reach out to your Ruby representative.`
         : `To avoid running out of credits, you can purchase more from your workspace usage page.`;
       const content =
         `Your workspace's remaining credit balance has dropped below the threshold you configured.\n` +
@@ -73,7 +73,7 @@ export const balanceThresholdReachedWorkflow = workflow(
 
 /**
  * Email a workspace's admins that their configured credit-balance threshold has
- * been reached. One Novu event is triggered per admin (subscribed by their Dust
+ * been reached. One Novu event is triggered per admin (subscribed by their Ruby
  * user sId), deduped via a `transactionId` keyed on the Metronome event so
  * redeliveries don't re-send. Fire-and-forget — errors are logged but don't
  * block the caller.

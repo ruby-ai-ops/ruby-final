@@ -3,7 +3,7 @@ import type {
   ConnectorsAPIErrorWithStatusCode,
   WithConnectorsAPIErrorReponse,
 } from "@connectors/types";
-import { normalizeError } from "@dust-tt/client";
+import { normalizeError } from "@ruby-ai/client";
 import type { Request, Response } from "express";
 import StatsD from "hot-shots";
 

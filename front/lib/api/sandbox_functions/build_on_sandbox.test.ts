@@ -44,7 +44,7 @@ function mockExecWithHashes(
         .join("\n");
       return new Ok({
         exitCode: 0,
-        stdout: `${okEnvelope}\n__DUST_STAGING_SHA256__\n${hashLines}\n`,
+        stdout: `${okEnvelope}\n__RUBY_STAGING_SHA256__\n${hashLines}\n`,
         stderr: "",
       });
     });
@@ -73,7 +73,7 @@ async function setup(): Promise<{
   const sandbox = await SandboxResource.makeNew(authenticator, {
     providerId: "test-provider-id",
     status: "running",
-    baseImage: "dust-base",
+    baseImage: "ruby-base",
     version: "0.0.0-test",
   });
 
@@ -116,7 +116,7 @@ describe("buildSandboxFunctionOnReadySandbox", () => {
       properties: { greeting: { type: "string" } },
     });
 
-    // Command shape: absolute dsbx, build subcommand, `--` then the escaped source path, and the
+    // Command shape: absolute rbx, build subcommand, `--` then the escaped source path, and the
     // egress-controlled user.
     expect(execSpy).toHaveBeenCalledTimes(1);
     const execCall = execSpy.mock.calls[0];
@@ -127,7 +127,7 @@ describe("buildSandboxFunctionOnReadySandbox", () => {
     const [, command, opts] = execCall;
     expect(command).toContain("set -euo pipefail");
     expect(command).toContain(
-      "/opt/bin/dsbx function build -- '/files/pod-spc123/greet.ts'"
+      "/opt/bin/rbx function build -- '/files/pod-spc123/greet.ts'"
     );
     expect(opts?.user).toBe("agent-proxied");
 
@@ -136,10 +136,10 @@ describe("buildSandboxFunctionOnReadySandbox", () => {
     const bundleReadPath = readSpy.mock.calls[0]?.[1];
     const schemaReadPath = readSpy.mock.calls[1]?.[1];
     expect(bundleReadPath).toMatch(
-      /^\/tmp\/dust-sandbox-function-builds\/.+\/bundle\.js$/
+      /^\/tmp\/ruby-sandbox-function-builds\/.+\/bundle\.js$/
     );
     expect(schemaReadPath).toMatch(
-      /^\/tmp\/dust-sandbox-function-builds\/.+\/schema\.json$/
+      /^\/tmp\/ruby-sandbox-function-builds\/.+\/schema\.json$/
     );
     expect(command).toContain(bundleReadPath);
     expect(command).toContain(schemaReadPath);
@@ -295,7 +295,7 @@ describe("buildSandboxFunctionOnReadySandbox", () => {
     expect(result.error.message).toContain("provider unavailable");
   });
 
-  it("returns an internal error when dsbx produces no output", async () => {
+  it("returns an internal error when rbx produces no output", async () => {
     const { authenticator, sandbox } = await setup();
     vi.spyOn(sandbox, "exec").mockResolvedValue(
       new Ok({ exitCode: 0, stdout: "", stderr: "" })

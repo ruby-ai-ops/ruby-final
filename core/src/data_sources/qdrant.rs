@@ -24,7 +24,7 @@ pub enum QdrantCluster {
     Cluster0,
 }
 
-// See: https://app.notion.com/p/dust-tt/Design-Doc-Qdrant-re-arch-d0ebdd6ae8244ff593cdf10f08988c27
+// See: https://app.notion.com/p/ruby-ai/Design-Doc-Qdrant-re-arch-d0ebdd6ae8244ff593cdf10f08988c27
 // Key count of the collections created before data sources stored their shard key. Only for the
 // fallback route of data sources without a stored key: a collection declares its own key count and
 // new data sources carry their key in `QdrantDataSourceConfig::shard_keys`. Do not use elsewhere.
@@ -72,7 +72,7 @@ pub fn vectors_output_to_vectors(vectors: qdrant::VectorsOutput) -> Result<qdran
 
 #[derive(Clone)]
 pub struct QdrantClients {
-    clients: Arc<Mutex<HashMap<QdrantCluster, DustQdrantClient>>>,
+    clients: Arc<Mutex<HashMap<QdrantCluster, RubyQdrantClient>>>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
@@ -125,7 +125,7 @@ impl QdrantClients {
                 let client = Self::qdrant_client(*cluster).await?;
                 Ok::<_, anyhow::Error>((
                     *cluster,
-                    DustQdrantClient {
+                    RubyQdrantClient {
                         client: Arc::new(client),
                         cluster: *cluster,
                         use_sharding,
@@ -143,7 +143,7 @@ impl QdrantClients {
         })
     }
 
-    pub fn client(&self, cluster: QdrantCluster) -> DustQdrantClient {
+    pub fn client(&self, cluster: QdrantCluster) -> RubyQdrantClient {
         let clients = self.clients.lock();
         match clients.get(&cluster) {
             Some(client) => client.clone(),
@@ -153,7 +153,7 @@ impl QdrantClients {
 }
 
 #[derive(Clone)]
-pub struct DustQdrantClient {
+pub struct RubyQdrantClient {
     client: Arc<Qdrant>,
     pub cluster: QdrantCluster,
     use_sharding: bool,
@@ -161,7 +161,7 @@ pub struct DustQdrantClient {
     shard_key_names: Arc<Mutex<HashMap<String, Vec<String>>>>,
 }
 
-impl DustQdrantClient {
+impl RubyQdrantClient {
     pub fn collection_prefix(&self) -> String {
         return String::from("c");
     }
@@ -532,7 +532,7 @@ mod tests {
         for key_count in [LEGACY_SHARD_KEY_COUNT, 3, 1] {
             let keys = hashed_ids(key_count * 192)
                 .iter()
-                .map(|id| DustQdrantClient::shard_key_id_from_internal_id(id, key_count).unwrap())
+                .map(|id| RubyQdrantClient::shard_key_id_from_internal_id(id, key_count).unwrap())
                 .collect::<Vec<_>>();
             for i in 0..key_count {
                 // We test all keys have at least 128 points.
@@ -563,7 +563,7 @@ mod tests {
             ..Default::default()
         };
         assert_eq!(
-            DustQdrantClient::shard_key_names_from_cluster_info(&info),
+            RubyQdrantClient::shard_key_names_from_cluster_info(&info),
             vec!["key_0", "key_1", "key_2"]
         );
 
@@ -571,7 +571,7 @@ mod tests {
             local_shards: vec![local_shard(0, None)],
             ..Default::default()
         };
-        assert!(DustQdrantClient::shard_key_names_from_cluster_info(&plain).is_empty());
+        assert!(RubyQdrantClient::shard_key_names_from_cluster_info(&plain).is_empty());
     }
 
     #[test]

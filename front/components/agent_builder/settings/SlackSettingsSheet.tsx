@@ -25,7 +25,7 @@ import {
   SlackLogo,
   SliderToggle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { useController } from "react-hook-form";
@@ -372,10 +372,10 @@ export function SlackSettingsSheet({
             <div className="text-sm font-normal text-foreground">
               Set this agent as the default agent on one or several of your
               Slack channels. It will answer by default when the{" "}
-              <span className="font-bold">@Dust</span> Slack bot is mentioned in
+              <span className="font-bold">@Ruby</span> Slack bot is mentioned in
               these channels. Private channels you belong to appear here after
               you add the Slack tool, connect your personal Slack account, and
-              invite <span className="font-bold">@Dust</span> to the channel.
+              invite <span className="font-bold">@Ruby</span> to the channel.
             </div>
             {!isAdmin(owner) && (
               <ContentMessage
@@ -426,7 +426,7 @@ export function SlackSettingsSheet({
                     {hasPrivateSelected
                       ? canAutoRespond
                         ? "Private channels only reply to @mentions. Auto-respond applies to public channels."
-                        : "Auto-respond isn't available in private Slack channels. The agent will only reply when @Dust is mentioned."
+                        : "Auto-respond isn't available in private Slack channels. The agent will only reply when @Ruby is mentioned."
                       : "Agent will automatically respond to messages in selected channels (not just @mentions)"}
                   </span>
                 </div>

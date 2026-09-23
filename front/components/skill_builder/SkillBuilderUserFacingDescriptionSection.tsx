@@ -9,7 +9,7 @@ import { getSkillDescriptionSuggestion } from "@app/components/skill_builder/uti
 import { useAutoGenerateOnBlur } from "@app/hooks/useAutoGenerateOnBlur";
 import { useSendNotification } from "@app/hooks/useNotification";
 import { isEmptyString } from "@app/types/shared/utils/general";
-import { Button, Input, Spinner, Stars02 } from "@dust-tt/sparkle";
+import { Button, Input, Spinner, Stars02 } from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 import { useController, useWatch } from "react-hook-form";
 

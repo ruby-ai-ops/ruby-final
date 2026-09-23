@@ -27,9 +27,9 @@ describe("sheetToFrameSkill", () => {
     // The authoring, linting and publishing mechanics are versioned in the Frames skill. Restating
     // any of them here is how the two drift apart.
     for (const mechanic of [
-      "dsbx frame create",
-      "dsbx frame publish",
-      "dsbx frame validate",
+      "rbx frame create",
+      "rbx frame publish",
+      "rbx frame validate",
       "manifest.json",
       "uiEntryPoint",
       "useFrameFunction",
@@ -60,7 +60,7 @@ describe("sheetToFrameSkill", () => {
 
     expect(instructions).toContain('userIdentity: "frame_author_required"');
     expect(instructions).toContain(
-      "dsbx frame call <frame-id> import-rows --input"
+      "rbx frame call <frame-id> import-rows --input"
     );
     expect(instructions).toContain("sourceRowKey");
     expect(instructions).toContain("**The source sheet is read-only.**");

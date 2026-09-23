@@ -8,7 +8,7 @@ import {
   buildMetricAggregates,
   parseMetricsFromBucket,
 } from "@app/lib/api/assistant/observability/messages_metrics";
-import { DUST_MARKUP_PERCENT } from "@app/lib/api/assistant/token_pricing";
+import { RUBY_MARKUP_PERCENT } from "@app/lib/api/assistant/token_pricing";
 import {
   bucketsToArray,
   ensureAtMostNGroups,
@@ -371,7 +371,7 @@ export async function getProgrammaticCost(
 
   // Apply the same markup to costs that is applied when consuming credits.
   // This ensures the graph shows what users are actually billed.
-  const markupMultiplier = 1 + DUST_MARKUP_PERCENT / 100;
+  const markupMultiplier = 1 + RUBY_MARKUP_PERCENT / 100;
 
   // Add total points to groupValues
   groupValues["total"] = new Map<number, number>();

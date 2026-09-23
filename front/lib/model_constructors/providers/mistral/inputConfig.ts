@@ -28,7 +28,7 @@ export type MistralInputConfig = z.infer<typeof mistralConfigSchema>;
 
 // Schema for the genuinely non-reasoning Mistral models (Large, Codestral): the
 // API rejects `reasoning_effort` outright, so reasoning must be undefined. The
-// Dust layer drops it via `dropReasoning` before validation.
+// Ruby layer drops it via `dropReasoning` before validation.
 export const mistralNonReasoningConfigSchema = inputConfigSchema.extend({
   reasoning: z.undefined(),
   cacheKey: z.undefined(),

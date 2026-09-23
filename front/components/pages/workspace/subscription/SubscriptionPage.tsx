@@ -47,7 +47,7 @@ import {
   DialogTitle,
   Page,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React, { useEffect, useState } from "react";
 import type { z } from "zod";
 
@@ -336,7 +336,7 @@ export function SubscriptionPage() {
                     Connections will be deleted and members will be revoked.
                     Details{" "}
                     <LinkWrapper
-                      href="https://docs.dust.tt/docs/subscriptions#what-happens-when-we-cancel-our-dust-subscription"
+                      href="https://docs.ruby.ad/docs/subscriptions#what-happens-when-we-cancel-our-ruby-subscription"
                       target="_blank"
                       className="underline"
                     >

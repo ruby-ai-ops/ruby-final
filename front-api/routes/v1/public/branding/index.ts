@@ -41,7 +41,7 @@ function redirectToDefaultAsset(ctx: Context, asset: BrandingAssetName) {
  *
  * World-readable endpoint for workspace branding assets. No authentication required.
  * Fetches and returns asset bytes in a 200 response: custom asset from private storage
- * when the workspace is entitled and has one uploaded, Dust default asset otherwise.
+ * when the workspace is entitled and has one uploaded, Ruby default asset otherwise.
  *
  * Caching model: Cache-Control: public, max-age=86400, immutable. Safe because ?v= is
  * a content-addressed cache-buster. The same URL always returns the same bytes.

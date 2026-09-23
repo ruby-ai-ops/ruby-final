@@ -1,4 +1,4 @@
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 import type { Sequelize } from "sequelize";
 import { QueryTypes } from "sequelize";
@@ -35,8 +35,8 @@ async function backfillDataSource(
           LIMIT :batchSize;`,
       {
         replacements: {
-          dataSourceId: frontDataSource.dustAPIDataSourceId,
-          projectId: frontDataSource.dustAPIProjectId,
+          dataSourceId: frontDataSource.rubyAPIDataSourceId,
+          projectId: frontDataSource.rubyAPIProjectId,
           batchSize: BATCH_SIZE,
           nextId,
         },

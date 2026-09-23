@@ -8,7 +8,7 @@ import { DATA_SOURCE_NODE_ID } from "@app/types/core/content_node";
 import type { CoreAPISearchNodesResponse } from "@app/types/core/core_api";
 import type { ConnectorProvider } from "@app/types/data_source";
 import type { TimeFrame } from "@app/types/shared/utils/time_frame";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 function formatTimestamp(timestamp: number): string {
   const date = new Date(timestamp);
@@ -84,9 +84,9 @@ export function renderSearchResults(
     ConnectorProvider | null
   >();
   for (const {
-    dataSource: { dustAPIDataSourceId, connectorProvider },
+    dataSource: { rubyAPIDataSourceId, connectorProvider },
   } of agentDataSourceConfigurations) {
-    dataSourceIdToConnectorMap.set(dustAPIDataSourceId, connectorProvider);
+    dataSourceIdToConnectorMap.set(rubyAPIDataSourceId, connectorProvider);
   }
 
   return {
@@ -103,7 +103,7 @@ export function renderSearchResults(
 
 export function renderMimeType(mimeType: string) {
   return mimeType
-    .replace("application/vnd.dust.", "")
+    .replace("application/vnd.ruby.", "")
     .replace("-", " ")
     .replace(".", " ");
 }

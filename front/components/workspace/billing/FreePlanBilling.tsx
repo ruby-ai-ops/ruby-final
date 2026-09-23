@@ -4,7 +4,7 @@ import { SubscriptionActionButtons } from "@app/components/workspace/billing/Sub
 import { SubscriptionStatusChip } from "@app/components/workspace/billing/SubscriptionStatusChip";
 import type { SubscriptionType } from "@app/types/plan";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 
 interface FreePlanBillingProps {
   owner: LightWorkspaceType;

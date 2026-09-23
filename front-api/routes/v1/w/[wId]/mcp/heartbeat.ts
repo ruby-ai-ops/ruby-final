@@ -1,6 +1,6 @@
 import { updateMCPServerHeartbeat } from "@app/lib/api/actions/mcp/client_side_registry";
-import type { HeartbeatMCPResponseType } from "@dust-tt/client";
-import { PublicHeartbeatMCPRequestBodySchema } from "@dust-tt/client";
+import type { HeartbeatMCPResponseType } from "@ruby-ai/client";
+import { PublicHeartbeatMCPRequestBodySchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";
@@ -15,7 +15,7 @@ const app = publicApiApp();
  *   post:
  *     summary: Update heartbeat for a client-side MCP server
  *     description: |
- *       [Documentation](https://docs.dust.tt/docs/client-side-mcp-server)
+ *       [Documentation](https://docs.ruby.ad/docs/client-side-mcp-server)
  *       Update the heartbeat for a previously registered client-side MCP server.
  *       This extends the TTL for the server registration.
  *     tags:

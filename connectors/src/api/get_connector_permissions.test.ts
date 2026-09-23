@@ -1,7 +1,7 @@
 import type { Server } from "node:http";
 
 import { ConnectorManagerError } from "@connectors/connectors/interface";
-import { Err } from "@dust-tt/client";
+import { Err } from "@ruby-ai/client";
 import express from "express";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 

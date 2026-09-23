@@ -248,7 +248,7 @@ function convertToTypedExpression(
  * Parses a Lisp-inspired matcher expression string into a structured format.
  *
  * @param expression - The Lisp-inspired expression string, e.g.:
- *   '(or (and (eq "pr.author" "adrien@dust.tt") (has "pr.labels" "bug")))'
+ *   '(or (and (eq "pr.author" "adrien@ruby.ad") (has "pr.labels" "bug")))'
  * @returns Result containing parsed matcher expression or Error if the expression is invalid
  */
 export function parseMatcherExpression(

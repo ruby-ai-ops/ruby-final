@@ -29,20 +29,20 @@
 //       where: {
 //         connectorId: c.id,
 //       },
-//       attributes: ["id", "driveFileId", "dustFileId"],
+//       attributes: ["id", "driveFileId", "rubyFileId"],
 //     });
 //
 //     console.log(`Connector ${c.id}: found ${files.length} files`);
 //
 //     const fileHash = files.reduce(
 //       (acc, f) => {
-//         acc[f.dustFileId] = f.id;
+//         acc[f.rubyFileId] = f.id;
 //         return acc;
 //       },
 //       {} as { [key: string]: number }
 //     );
 //
-//     // find dustProjectId from front based on workspaceId and connectorName
+//     // find rubyProjectId from front based on workspaceId and connectorName
 //     const dsData = await front_sequelize.query(
 //       'SELECT * FROM data_sources WHERE "connectorId" = :connectorId',
 //       {
@@ -55,30 +55,30 @@
 //     if (dsData[0].length === 0) {
 //       throw new Error(`No data source found for connector ${c.id}`);
 //     }
-//     const ds = dsData[0][0] as { dustAPIProjectId: string };
-//     const dustAPIProjectId = parseInt(ds.dustAPIProjectId);
+//     const ds = dsData[0][0] as { rubyAPIProjectId: string };
+//     const rubyAPIProjectId = parseInt(ds.rubyAPIProjectId);
 //
-//     console.log(`Found dustAPIProjectId: ${dustAPIProjectId}`);
+//     console.log(`Found rubyAPIProjectId: ${rubyAPIProjectId}`);
 //
 //     const coreDsData = await core_sequelize.query(
-//       `SELECT * FROM data_sources WHERE "project" = :dustAPIProjectId`,
+//       `SELECT * FROM data_sources WHERE "project" = :rubyAPIProjectId`,
 //       {
 //         replacements: {
-//           dustAPIProjectId: dustAPIProjectId,
+//           rubyAPIProjectId: rubyAPIProjectId,
 //         },
 //       }
 //     );
 //
 //     if (coreDsData[0].length === 0) {
 //       throw new Error(
-//         `No core data source found for dustAPIProjectId ${dustAPIProjectId}`
+//         `No core data source found for rubyAPIProjectId ${rubyAPIProjectId}`
 //       );
 //     }
 //     const coreDs = coreDsData[0][0] as { data_source_id: string; id: number };
 //     const coreDsId = coreDs.id;
 //
 //     console.log(
-//       `Found core DustDataSource: ${coreDsId} ${coreDs.data_source_id}`
+//       `Found core RubyDataSource: ${coreDsId} ${coreDs.data_source_id}`
 //     );
 //
 //     const coreDocumentsData = await core_sequelize.query(

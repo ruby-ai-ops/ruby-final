@@ -1,4 +1,4 @@
-import type { LoggerInterface } from "@dust-tt/client";
+import type { LoggerInterface } from "@ruby-ai/client";
 
 export const CUSTOM_TAG_LIMITS = {
   MAX_COUNT: 32,

@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { TrialMessageUsage } from "./TrialMessageUsage";
 
-vi.mock("@dust-tt/sparkle", () => ({
+vi.mock("@ruby-ai/ui", () => ({
   Button: ({ label }: { label: string }) => (
     <button type="button">{label}</button>
   ),

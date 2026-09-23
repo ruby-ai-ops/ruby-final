@@ -1,0 +1,85 @@
+html,
+body,
+#workspace-demo-root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.app-stage,
+.app-stage.theme-dark {
+  background: #fff;
+  padding: clamp(6px, 1vw, 16px);
+}
+
+.workspace-frame,
+.theme-dark .workspace-frame {
+  width: min(97vw, calc(97vh * 16 / 9));
+  max-width: 1760px;
+  aspect-ratio: 16 / 9;
+  box-shadow:
+    0 10px 32px rgb(31 38 35 / 10%),
+    0 2px 6px rgb(31 38 35 / 6%);
+}
+
+@media (min-width: 1024px) {
+  #workspace-demo-root .workspace-frame {
+    grid-template-columns:
+      clamp(52px, 5vw, 78px)
+      clamp(280px, 22vw, 360px)
+      minmax(0, 1fr);
+  }
+
+  #workspace-demo-root .platform-slack .workspace-frame::before {
+    width: calc(clamp(52px, 5vw, 78px) + clamp(280px, 22vw, 360px));
+  }
+}
+
+#workspace-demo-root .theme-light .deliverable-card {
+  background: #f2f4f5;
+}
+
+#workspace-demo-root .theme-light .ruby-tool-card {
+  box-shadow: 0 2px 8px rgb(31 38 35 / 8%);
+}
+
+#workspace-demo-root .theme-dark .ruby-tool-card {
+  box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
+}
+
+#workspace-demo-root .server-logo:hover,
+#workspace-demo-root .server-logo:focus-visible {
+  transform: none;
+}
+
+#workspace-demo-root .ruby-history-item .workspace-chat-indicator {
+  min-height: 14px;
+  line-height: 1;
+  overflow: visible;
+}
+
+#workspace-demo-root .ruby-history-item .workspace-chat-indicator i {
+  display: block;
+  line-height: 1;
+}
+
+.teams-chat-message:not(.teams-ruby-chat-message) .teams-bubble-reactions {
+  display: none;
+}
+
+/* Borderless workspace cards */
+#workspace-demo-root .ruby-tool-card,
+#workspace-demo-root .deliverable-card,
+#workspace-demo-root .slack-tool-receipts > span,
+#workspace-demo-root .teams-tool-receipts > span,
+#workspace-demo-root .scenario-artifact button,
+#workspace-demo-root .scenario-artifact article,
+#workspace-demo-root .scenario-artifact .rw-pick,
+#workspace-demo-root .scenario-artifact .rw-metric,
+#workspace-demo-root .scenario-artifact .artifact-media-card,
+#workspace-demo-root .scenario-artifact [class*="-card"],
+#workspace-demo-root .scenario-artifact [class*="-stat"],
+#workspace-demo-root .scenario-artifact .hv-room,
+#workspace-demo-root .scenario-artifact .shift-row > div {
+  border-color: transparent;
+}

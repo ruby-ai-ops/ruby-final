@@ -50,7 +50,7 @@ vi.mock("@app/types/assistant/models/custom_models.generated", async () => {
     },
   };
 
-  // Mirrors the infra config layout: index 0 is bound to the dust-next agents,
+  // Mirrors the infra config layout: index 0 is bound to the ruby-next agents,
   // index 1 is unbound.
   mockCustomModels.configs = [
     {
@@ -87,12 +87,12 @@ async function createAuthenticatorWithFlags(
 }
 
 describe("getGlobalAgents custom model agents", () => {
-  it("makes the Dust Support skill available", async () => {
+  it("makes the Ruby Support skill available", async () => {
     const auth = await createAuthenticatorWithFlags([]);
 
     const agents = await getGlobalAgents(
       auth,
-      [GLOBAL_AGENTS_SID.DUST],
+      [GLOBAL_AGENTS_SID.RUBY],
       "full"
     );
 
@@ -106,7 +106,7 @@ describe("getGlobalAgents custom model agents", () => {
 
     const agents = await getGlobalAgents(
       auth,
-      [GLOBAL_AGENTS_SID.DUST],
+      [GLOBAL_AGENTS_SID.RUBY],
       "full"
     );
 
@@ -121,32 +121,32 @@ describe("getGlobalAgents custom model agents", () => {
     expect(agents[0].instructions).not.toContain("3+ steps of tool use");
   });
 
-  it("hides custom Dust agents without the custom model feature flag", async () => {
+  it("hides custom Ruby agents without the custom model feature flag", async () => {
     const auth = await createAuthenticatorWithFlags([
-      "dust_internal_global_agents",
+      "ruby_internal_global_agents",
     ]);
 
     const agents = await getGlobalAgents(
       auth,
-      [GLOBAL_AGENTS_SID.DUST_NEXT],
+      [GLOBAL_AGENTS_SID.RUBY_NEXT],
       "light"
     );
 
     expect(agents).toEqual([]);
   });
 
-  it("resolves custom Dust agent variants to the generated custom model", async () => {
+  it("resolves custom Ruby agent variants to the generated custom model", async () => {
     const auth = await createAuthenticatorWithFlags([
-      "dust_internal_global_agents",
+      "ruby_internal_global_agents",
       "custom_model_feature",
     ]);
 
     const agents = await getGlobalAgents(
       auth,
       [
-        GLOBAL_AGENTS_SID.DUST_NEXT,
-        GLOBAL_AGENTS_SID.DUST_NEXT_MEDIUM,
-        GLOBAL_AGENTS_SID.DUST_NEXT_HIGH,
+        GLOBAL_AGENTS_SID.RUBY_NEXT,
+        GLOBAL_AGENTS_SID.RUBY_NEXT_MEDIUM,
+        GLOBAL_AGENTS_SID.RUBY_NEXT_HIGH,
       ],
       "light"
     );
@@ -160,19 +160,19 @@ describe("getGlobalAgents custom model agents", () => {
       }))
     ).toEqual([
       {
-        sId: GLOBAL_AGENTS_SID.DUST_NEXT,
+        sId: GLOBAL_AGENTS_SID.RUBY_NEXT,
         providerId: "openai",
         modelId: CUSTOM_MODEL_ID,
         reasoningEffort: "light",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_NEXT_MEDIUM,
+        sId: GLOBAL_AGENTS_SID.RUBY_NEXT_MEDIUM,
         providerId: "openai",
         modelId: CUSTOM_MODEL_ID,
         reasoningEffort: "medium",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_NEXT_HIGH,
+        sId: GLOBAL_AGENTS_SID.RUBY_NEXT_HIGH,
         providerId: "openai",
         modelId: CUSTOM_MODEL_ID,
         reasoningEffort: "high",
@@ -182,15 +182,15 @@ describe("getGlobalAgents custom model agents", () => {
 
   it("resolves retired chawi agent variants to the GPT-5.5 fallback", async () => {
     const auth = await createAuthenticatorWithFlags([
-      "dust_internal_global_agents",
+      "ruby_internal_global_agents",
     ]);
 
     const agents = await getGlobalAgents(
       auth,
       [
-        GLOBAL_AGENTS_SID.DUST_CHAWI,
-        GLOBAL_AGENTS_SID.DUST_CHAWI_MEDIUM,
-        GLOBAL_AGENTS_SID.DUST_CHAWI_HIGH,
+        GLOBAL_AGENTS_SID.RUBY_CHAWI,
+        GLOBAL_AGENTS_SID.RUBY_CHAWI_MEDIUM,
+        GLOBAL_AGENTS_SID.RUBY_CHAWI_HIGH,
       ],
       "light"
     );
@@ -203,17 +203,17 @@ describe("getGlobalAgents custom model agents", () => {
       }))
     ).toEqual([
       {
-        sId: GLOBAL_AGENTS_SID.DUST_CHAWI,
+        sId: GLOBAL_AGENTS_SID.RUBY_CHAWI,
         modelId: GPT_5_5_MODEL_ID,
         reasoningEffort: "light",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_CHAWI_MEDIUM,
+        sId: GLOBAL_AGENTS_SID.RUBY_CHAWI_MEDIUM,
         modelId: GPT_5_5_MODEL_ID,
         reasoningEffort: "medium",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_CHAWI_HIGH,
+        sId: GLOBAL_AGENTS_SID.RUBY_CHAWI_HIGH,
         modelId: GPT_5_5_MODEL_ID,
         reasoningEffort: "high",
       },
@@ -222,16 +222,16 @@ describe("getGlobalAgents custom model agents", () => {
 
   it("resolves retired soupinou agent variants to the GPT-5.5 fallback", async () => {
     const auth = await createAuthenticatorWithFlags([
-      "dust_internal_global_agents",
+      "ruby_internal_global_agents",
     ]);
 
     const agents = await getGlobalAgents(
       auth,
       [
-        GLOBAL_AGENTS_SID.DUST_SOUPINOU,
-        GLOBAL_AGENTS_SID.DUST_SOUPINOU_MEDIUM,
-        GLOBAL_AGENTS_SID.DUST_SOUPINOU_HIGH,
-        GLOBAL_AGENTS_SID.DUST_SOUPINOU_NONE,
+        GLOBAL_AGENTS_SID.RUBY_SOUPINOU,
+        GLOBAL_AGENTS_SID.RUBY_SOUPINOU_MEDIUM,
+        GLOBAL_AGENTS_SID.RUBY_SOUPINOU_HIGH,
+        GLOBAL_AGENTS_SID.RUBY_SOUPINOU_NONE,
       ],
       "light"
     );
@@ -244,22 +244,22 @@ describe("getGlobalAgents custom model agents", () => {
       }))
     ).toEqual([
       {
-        sId: GLOBAL_AGENTS_SID.DUST_SOUPINOU,
+        sId: GLOBAL_AGENTS_SID.RUBY_SOUPINOU,
         modelId: GPT_5_5_MODEL_ID,
         reasoningEffort: "light",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_SOUPINOU_MEDIUM,
+        sId: GLOBAL_AGENTS_SID.RUBY_SOUPINOU_MEDIUM,
         modelId: GPT_5_5_MODEL_ID,
         reasoningEffort: "medium",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_SOUPINOU_HIGH,
+        sId: GLOBAL_AGENTS_SID.RUBY_SOUPINOU_HIGH,
         modelId: GPT_5_5_MODEL_ID,
         reasoningEffort: "high",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_SOUPINOU_NONE,
+        sId: GLOBAL_AGENTS_SID.RUBY_SOUPINOU_NONE,
         modelId: GPT_5_5_MODEL_ID,
         reasoningEffort: "none",
       },
@@ -268,20 +268,20 @@ describe("getGlobalAgents custom model agents", () => {
 
   it("hides agents whose model index is missing from the generated config", async () => {
     const auth = await createAuthenticatorWithFlags([
-      "dust_internal_global_agents",
+      "ruby_internal_global_agents",
       "custom_model_feature",
     ]);
 
     // The hiding comes from the sId filter in getGlobalAgents, not from the
-    // dust-next getter, which falls back to a concrete model on its own.
+    // ruby-next getter, which falls back to a concrete model on its own.
     const removed = mockCustomModels.configs.splice(0);
     try {
       const agents = await getGlobalAgents(
         auth,
         [
-          GLOBAL_AGENTS_SID.DUST_NEXT,
-          GLOBAL_AGENTS_SID.DUST_NEXT_MEDIUM,
-          GLOBAL_AGENTS_SID.DUST_NEXT_HIGH,
+          GLOBAL_AGENTS_SID.RUBY_NEXT,
+          GLOBAL_AGENTS_SID.RUBY_NEXT_MEDIUM,
+          GLOBAL_AGENTS_SID.RUBY_NEXT_HIGH,
         ],
         "light"
       );
@@ -293,13 +293,13 @@ describe("getGlobalAgents custom model agents", () => {
   });
 });
 
-describe("getGlobalAgents OpenAI Dust agents", () => {
-  it("uses the member's Auto stream as the Dust default", async () => {
+describe("getGlobalAgents OpenAI Ruby agents", () => {
+  it("uses the member's Auto stream as the Ruby default", async () => {
     const auth = await createAuthenticatorWithFlags([]);
 
     const agents = await getGlobalAgents(
       auth,
-      [GLOBAL_AGENTS_SID.DUST],
+      [GLOBAL_AGENTS_SID.RUBY],
       "light"
     );
 
@@ -313,12 +313,12 @@ describe("getGlobalAgents OpenAI Dust agents", () => {
 
   it("keeps the Auto stream default over the Sonnet 5 default flag", async () => {
     const auth = await createAuthenticatorWithFlags([
-      "dust_agent_sonnet_5_default",
+      "ruby_agent_sonnet_5_default",
     ]);
 
     const agents = await getGlobalAgents(
       auth,
-      [GLOBAL_AGENTS_SID.DUST],
+      [GLOBAL_AGENTS_SID.RUBY],
       "light"
     );
 
@@ -336,9 +336,9 @@ describe("getGlobalAgents OpenAI Dust agents", () => {
     const agents = await getGlobalAgents(
       auth,
       [
-        GLOBAL_AGENTS_SID.DUST_OAI_LUNA,
-        GLOBAL_AGENTS_SID.DUST_OAI_LUNA_MEDIUM,
-        GLOBAL_AGENTS_SID.DUST_OAI_LUNA_HIGH,
+        GLOBAL_AGENTS_SID.RUBY_OAI_LUNA,
+        GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_MEDIUM,
+        GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_HIGH,
       ],
       "light"
     );
@@ -348,7 +348,7 @@ describe("getGlobalAgents OpenAI Dust agents", () => {
 
   it("resolves Sol and Luna variants with light, medium, and high reasoning", async () => {
     const auth = await createAuthenticatorWithFlags(
-      ["dust_internal_global_agents"],
+      ["ruby_internal_global_agents"],
       // Sol is premium: entitlement now comes from the plan.
       { plan: "creditPriced" }
     );
@@ -356,12 +356,12 @@ describe("getGlobalAgents OpenAI Dust agents", () => {
     const agents = await getGlobalAgents(
       auth,
       [
-        GLOBAL_AGENTS_SID.DUST_OAI,
-        GLOBAL_AGENTS_SID.DUST_OAI_MEDIUM,
-        GLOBAL_AGENTS_SID.DUST_OAI_HIGH,
-        GLOBAL_AGENTS_SID.DUST_OAI_LUNA,
-        GLOBAL_AGENTS_SID.DUST_OAI_LUNA_MEDIUM,
-        GLOBAL_AGENTS_SID.DUST_OAI_LUNA_HIGH,
+        GLOBAL_AGENTS_SID.RUBY_OAI,
+        GLOBAL_AGENTS_SID.RUBY_OAI_MEDIUM,
+        GLOBAL_AGENTS_SID.RUBY_OAI_HIGH,
+        GLOBAL_AGENTS_SID.RUBY_OAI_LUNA,
+        GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_MEDIUM,
+        GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_HIGH,
       ],
       "light"
     );
@@ -374,32 +374,32 @@ describe("getGlobalAgents OpenAI Dust agents", () => {
       }))
     ).toEqual([
       {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI,
         modelId: GPT_5_6_SOL_MODEL_ID,
         reasoningEffort: "light",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_MEDIUM,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_MEDIUM,
         modelId: GPT_5_6_SOL_MODEL_ID,
         reasoningEffort: "medium",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_HIGH,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_HIGH,
         modelId: GPT_5_6_SOL_MODEL_ID,
         reasoningEffort: "high",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_LUNA,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_LUNA,
         modelId: GPT_5_6_LUNA_MODEL_ID,
         reasoningEffort: "light",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_LUNA_MEDIUM,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_MEDIUM,
         modelId: GPT_5_6_LUNA_MODEL_ID,
         reasoningEffort: "medium",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_OAI_LUNA_HIGH,
+        sId: GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_HIGH,
         modelId: GPT_5_6_LUNA_MODEL_ID,
         reasoningEffort: "high",
       },
@@ -437,8 +437,8 @@ describe("getGlobalAgents Deep Dive model routing", () => {
       auth,
       [
         GLOBAL_AGENTS_SID.DEEP_DIVE,
-        GLOBAL_AGENTS_SID.DUST_TASK,
-        GLOBAL_AGENTS_SID.DUST_PLANNING,
+        GLOBAL_AGENTS_SID.RUBY_TASK,
+        GLOBAL_AGENTS_SID.RUBY_PLANNING,
       ],
       "light"
     );
@@ -456,12 +456,12 @@ describe("getGlobalAgents Deep Dive model routing", () => {
         reasoningEffort: "medium",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_TASK,
+        sId: GLOBAL_AGENTS_SID.RUBY_TASK,
         modelId: GPT_5_6_LUNA_MODEL_ID,
         reasoningEffort: "high",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_PLANNING,
+        sId: GLOBAL_AGENTS_SID.RUBY_PLANNING,
         modelId: GPT_5_6_SOL_MODEL_ID,
         reasoningEffort: "high",
       },
@@ -478,8 +478,8 @@ describe("getGlobalAgents Deep Dive model routing", () => {
       auth,
       [
         GLOBAL_AGENTS_SID.DEEP_DIVE,
-        GLOBAL_AGENTS_SID.DUST_TASK,
-        GLOBAL_AGENTS_SID.DUST_PLANNING,
+        GLOBAL_AGENTS_SID.RUBY_TASK,
+        GLOBAL_AGENTS_SID.RUBY_PLANNING,
       ],
       "light"
     );
@@ -497,12 +497,12 @@ describe("getGlobalAgents Deep Dive model routing", () => {
         reasoningEffort: "light",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_TASK,
+        sId: GLOBAL_AGENTS_SID.RUBY_TASK,
         modelId: CLAUDE_SONNET_5_MODEL_ID,
         reasoningEffort: "light",
       },
       {
-        sId: GLOBAL_AGENTS_SID.DUST_PLANNING,
+        sId: GLOBAL_AGENTS_SID.RUBY_PLANNING,
         modelId: CLAUDE_OPUS_5_MODEL_ID,
         reasoningEffort: "high",
       },
@@ -548,13 +548,13 @@ describe("getGlobalAgents Deep Dive model routing", () => {
   });
 });
 
-// @dust is not editable by members, so a Basic-capped member defaulted to the
+// @ruby is not editable by members, so a Basic-capped member defaulted to the
 // Standard stream would get an agent that only ever fails the tier check.
-describe("getGlobalAgents Dust Auto default", () => {
+describe("getGlobalAgents Ruby Auto default", () => {
   it.each([
     ["premium", AUTO_MODEL_ID],
     ["cost_efficient", AUTO_FAST_MODEL_ID],
-  ] as const)("defaults @dust to %s member's highest allowed stream", async (tierName, expectedModelId) => {
+  ] as const)("defaults @ruby to %s member's highest allowed stream", async (tierName, expectedModelId) => {
     const workspace = await WorkspaceFactory.basic();
     const adminAuth = await Authenticator.internalAdminForWorkspace(
       workspace.sId
@@ -573,7 +573,7 @@ describe("getGlobalAgents Dust Auto default", () => {
     );
     const agents = await getGlobalAgents(
       auth,
-      [GLOBAL_AGENTS_SID.DUST],
+      [GLOBAL_AGENTS_SID.RUBY],
       "light"
     );
 

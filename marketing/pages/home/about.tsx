@@ -10,17 +10,21 @@ import { PEOPLE } from "@marketing/components/home/content/shared/team";
 import type { LandingLayoutProps } from "@marketing/components/home/LandingLayout";
 import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
+import {
+  isMarketingSurfaceVisible,
+  MARKETING_SURFACES,
+} from "@marketing/lib/marketing_visibility";
 import { classNames } from "@marketing/lib/utils";
 import {
   ArrowRight,
   Button,
   Div3D,
-  GithubLogo,
+  GithubMonoLogo,
   Hover3D,
   Icon,
   LinkedinLogo,
   Separator,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ReactElement } from "react";
@@ -61,7 +65,7 @@ const Person = ({ handle }: { handle: string }) => {
             <a href={person.github} target="_blank">
               <Icon
                 size="xs"
-                visual={GithubLogo}
+                visual={GithubMonoLogo}
                 className="text-muted-foreground hover:text-foreground"
               />
             </a>
@@ -104,8 +108,8 @@ const VideoPlayer = () => {
       {" "}
       {/* 16:9 aspect ratio */}
       <iframe
-        src="https://fast.wistia.net/embed/iframe/5rngajfoj9?seo=true&videoFoam=true&autoPlay=true"
-        title="Dust product tour"
+        src="/static/workspace-demo/index.html"
+        title="Ruby product tour"
         allow="autoplay; fullscreen"
         frameBorder="0"
         className="absolute inset-0 h-full w-full overflow-hidden rounded-2xl"
@@ -114,15 +118,14 @@ const VideoPlayer = () => {
   );
 };
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function About() {
+export default function AboutNextJS() {
   const router = useRouter();
 
   return (
     <>
       <PageMetadata
-        title="About Dust: Our Mission to Transform How Work Gets Done"
-        description="Dust is building the AI operating system for the enterprise. Meet our team, learn our operating principles, and discover our vision for AI-driven companies."
+        title="About Ruby: Our Mission to Transform How Work Gets Done"
+        description="Ruby is building the AI operating system for the enterprise. Meet our team, learn our operating principles, and discover our vision for AI-driven companies."
         pathname={router.asPath}
       />
       <div className="container flex w-full flex-col gap-16 px-6 pb-24 md:gap-24">
@@ -131,10 +134,7 @@ export default function About() {
         >
           <H3 className="text-center text-muted-foreground">About us</H3>
           <div className="flex flex-row justify-center">
-            <H1
-              mono
-              className="max-w-2xl text-center text-5xl font-medium md:text-6xl lg:text-7xl"
-            >
+            <H1 className="title-display max-w-2xl text-center text-5xl font-normal tracking-[-0.05em] md:text-6xl lg:text-7xl">
               Our mission is to transform how work gets done
             </H1>
           </div>
@@ -167,7 +167,7 @@ export default function About() {
             </div>
             <div className="flex w-full flex-col gap-2 xl:max-w-xl">
               <P>
-                We're building Dust to serve as the operating system for
+                We're building Ruby to serve as the operating system for
                 AI-driven companies.
               </P>
               <P>
@@ -236,47 +236,22 @@ export default function About() {
               </P>
             </div>
 
-            <div className="pt-4">
-              <Link href="/jobs" shallow={true}>
-                <Button
-                  variant="highlight"
-                  size="md"
-                  label="We're hiring"
-                  icon={ArrowRight}
-                />
-              </Link>
-            </div>
-          </div>
-        </Grid>
-
-        <Grid>
-          <div
-            className={classNames(
-              "flex flex-col items-start gap-6",
-              "col-span-12 col-start-1 md:col-span-10 md:col-start-2"
+            {isMarketingSurfaceVisible(MARKETING_SURFACES.aboutHiringCta) && (
+              <div className="pt-4">
+                <Link href="/jobs" shallow={true}>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    label="We're hiring"
+                    icon={ArrowRight}
+                  />
+                </Link>
+              </div>
             )}
-          >
-            <VideoPlayer />
           </div>
         </Grid>
 
-        <Grid>
-          <div className="col-span-12 col-start-1 md:col-span-10 md:col-start-2">
-            <div className="grid grid-cols-2 justify-items-center gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-              {Object.keys(PEOPLE).map((handle) => (
-                <div key={handle} className="w-full">
-                  <Person handle={handle} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </Grid>
-
-        <Grid>
-          <Separator className="col-span-12 col-start-1 md:col-span-10 md:col-start-2" />
-        </Grid>
-
-        <div className="flex flex-col gap-8">
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.aboutVideo) && (
           <Grid>
             <div
               className={classNames(
@@ -284,38 +259,73 @@ export default function About() {
                 "col-span-12 col-start-1 md:col-span-10 md:col-start-2"
               )}
             >
-              <H2>Built for enterprise, backed by experts</H2>
-              <div className="flex w-full flex-col gap-2">
-                <P>
-                  We're backed by investors who've built and scaled enterprise
-                  infrastructure. Our investors include leading venture firms
-                  and founders who understand what it takes to transform how
-                  companies operate.
-                </P>
+              <VideoPlayer />
+            </div>
+          </Grid>
+        )}
+
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.aboutTeamRoster) && (
+          <Grid>
+            <div className="col-span-12 col-start-1 md:col-span-10 md:col-start-2">
+              <div className="grid grid-cols-2 justify-items-center gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {Object.keys(PEOPLE).map((handle) => (
+                  <div key={handle} className="w-full">
+                    <Person handle={handle} />
+                  </div>
+                ))}
               </div>
             </div>
           </Grid>
+        )}
 
-          <Grid>
-            <div className="col-span-12 col-start-1 grid grid-cols-10 gap-x-2 gap-y-8 md:col-span-10 md:col-start-2">
-              {INVESTORS.map((investor) => (
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.aboutInvestors) && (
+          <>
+            <Grid>
+              <Separator className="col-span-12 col-start-1 md:col-span-10 md:col-start-2" />
+            </Grid>
+
+            <div className="flex flex-col gap-8">
+              <Grid>
                 <div
-                  key={investor.name}
                   className={classNames(
-                    "col-span-5 md:col-span-3 xl:col-span-2"
+                    "flex flex-col items-start gap-6",
+                    "col-span-12 col-start-1 md:col-span-10 md:col-start-2"
                   )}
                 >
-                  <Investor name={investor.name} title={investor.title} />
+                  <H2>Built for enterprise, backed by experts</H2>
+                  <div className="flex w-full flex-col gap-2">
+                    <P>
+                      We're backed by investors who've built and scaled
+                      enterprise infrastructure. Our investors include leading
+                      venture firms and founders who understand what it takes to
+                      transform how companies operate.
+                    </P>
+                  </div>
                 </div>
-              ))}
+              </Grid>
+
+              <Grid>
+                <div className="col-span-12 col-start-1 grid grid-cols-10 gap-x-2 gap-y-8 md:col-span-10 md:col-start-2">
+                  {INVESTORS.map((investor) => (
+                    <div
+                      key={investor.name}
+                      className={classNames(
+                        "col-span-5 md:col-span-3 xl:col-span-2"
+                      )}
+                    >
+                      <Investor name={investor.name} title={investor.title} />
+                    </div>
+                  ))}
+                </div>
+              </Grid>
             </div>
-          </Grid>
-        </div>
+          </>
+        )}
       </div>
     </>
   );
 }
 
-About.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
+AboutNextJS.getLayout = (page: ReactElement, pageProps: LandingLayoutProps) => {
   return <LandingLayout pageProps={pageProps}>{page}</LandingLayout>;
 };

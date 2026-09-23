@@ -6,10 +6,10 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 // export const sendAPIUserEmail = async (user: User) => {
 //   const msg = {
 //     to: user.email,
-//     from: "spolu@dust.tt",
-//     subject: "[DUST] API route updates: breaking change on May 22, 2023",
+//     from: "spolu@ruby.ad",
+//     subject: "[RUBY] API route updates: breaking change on May 22, 2023",
 //     html: `<p>Hi there!</p>
-// <p>Thank you for being among the active users of the Dust platform!</p>
+// <p>Thank you for being among the active users of the Ruby platform!</p>
 // <p><b>## Summary</b></p>
 //
 // <p>Importantly, we're introducing changes to the API route for deployed apps that requires <b>a
@@ -18,23 +18,23 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 //
 // <p><b>## API route changes</b></p>
 //
-// <p>We've rolled out support for Workspaces, a more structured way for teams to collaborate on Dust.
-// This will impact the API routes for deployed Dust applications. <b>We'll maintain the pre-existing
+// <p>We've rolled out support for Workspaces, a more structured way for teams to collaborate on Ruby.
+// This will impact the API routes for deployed Ruby applications. <b>We'll maintain the pre-existing
 // API routes you are currently using for another month, until May 22, 2023. By then, may we please ask
-// you to update your API route to <a href="https://docs.dust.tt/runs#create-a-run">include your
+// you to update your API route to <a href="https://docs.ruby.ad/runs#create-a-run">include your
 // WorkspaceId</a>.</b> If you have any questions or concerns about this update process, please reach
 // out.</p>
 //
-// <p><b>## Thanks for trusting Dust. How are we doing?</b></p>
+// <p><b>## Thanks for trusting Ruby. How are we doing?</b></p>
 //
-// <p>We're thrilled that you've been using Dust and in particular that you decided to host your active
-// Dust app with us. We'd really love to hear more about your experience using the Dust platform and
+// <p>We're thrilled that you've been using Ruby and in particular that you decided to host your active
+// Ruby app with us. We'd really love to hear more about your experience using the Ruby platform and
 // our API. What's been going well? What can we do better? What are you hoping for next? Just hit reply
 // and share your thoughts.</p>
 //
 // <p><b>## Where should we take the platform next?</b></p>
 //
-// <p>Dust's vision is to deliver the platform for modern teams to get more done, faster, so they can
+// <p>Ruby's vision is to deliver the platform for modern teams to get more done, faster, so they can
 // focus on more interesting things. It's still early days. We'll continue to explore and iterate
 // quickly. We may break a few things along the way when it's required, but hopefully with the outcome
 // of always allowing you to build with better tools.</p>

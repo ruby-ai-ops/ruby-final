@@ -31,7 +31,7 @@ import {
   DropdownMenuTrigger,
   LoadingBlock,
   SearchInput,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import keyBy from "lodash/keyBy";
 import { useCallback, useMemo, useState } from "react";

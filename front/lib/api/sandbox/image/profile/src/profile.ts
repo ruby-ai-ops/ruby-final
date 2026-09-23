@@ -7,7 +7,7 @@ function isProfile(value: string | undefined): value is Profile {
 }
 
 export function getProfile(rawProfile?: string): Profile {
-  const candidate = rawProfile ?? process.env.DUST_PROFILE;
+  const candidate = rawProfile ?? process.env.RUBY_PROFILE;
 
   if (isProfile(candidate)) {
     return candidate;

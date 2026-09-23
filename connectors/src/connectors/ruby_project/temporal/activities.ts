@@ -1,0 +1,784 @@
+import type { RubyProjectSyncActivityResult } from "@connectors/connectors/ruby_project/lib/api_errors";
+import {
+  RUBY_PROJECT_SYNC_COMPLETED,
+  parseRubyApiResult,
+} from "@connectors/connectors/ruby_project/lib/api_errors";
+import { sortEntriesByScopedPathDepth } from "@connectors/connectors/ruby_project/lib/mount_path_utils";
+import {
+  deleteConversation,
+  syncConversation,
+} from "@connectors/connectors/ruby_project/lib/sync_conversation";
+import { syncProjectMetadata } from "@connectors/connectors/ruby_project/lib/sync_metadata";
+import {
+  deleteProjectMountFile,
+  syncProjectMountDirectory,
+  syncProjectMountFile,
+} from "@connectors/connectors/ruby_project/lib/sync_project_mount_files";
+import { launchRubyProjectIncrementalSyncWorkflow } from "@connectors/connectors/ruby_project/temporal/client";
+import { dataSourceConfigFromConnector } from "@connectors/lib/api/data_source_config";
+import { getRubyAPI } from "@connectors/lib/api/ruby_api";
+import {
+  syncFailed,
+  syncStarted,
+  syncSucceeded,
+} from "@connectors/lib/sync_status";
+import logger from "@connectors/logger/logger";
+import { ConnectorResource } from "@connectors/resources/connector_resource";
+import { RubyProjectConfigurationResource } from "@connectors/resources/ruby_project_configuration_resource";
+import { RubyProjectConversationResource } from "@connectors/resources/ruby_project_conversation_resource";
+import { RubyProjectMountFileResource } from "@connectors/resources/ruby_project_mount_file_resource";
+import type { ModelId } from "@connectors/types";
+import { concurrentExecutor } from "@connectors/types";
+import type {
+  ProjectMountDirectoryEntryType,
+  ProjectMountFileEntryType,
+  ProjectMountListEntryType,
+} from "@ruby-ai/client";
+
+export type { RubyProjectSyncActivityResult } from "@connectors/connectors/ruby_project/lib/api_errors";
+
+/**
+ * Full sync activity: Syncs all conversations for a project.
+ * This is used for initial syncs or when force resync is requested.
+ */
+export async function rubyProjectConversationsFullSyncActivity({
+  connectorId,
+}: {
+  connectorId: ModelId;
+}): Promise<RubyProjectSyncActivityResult> {
+  const localLogger = logger.child({ connectorId });
+
+  const connector = await ConnectorResource.fetchById(connectorId);
+  if (!connector) {
+    throw new Error(`Connector ${connectorId} not found`);
+  }
+
+  const configuration =
+    await RubyProjectConfigurationResource.fetchByConnectorId(connectorId);
+  if (!configuration) {
+    throw new Error(`Configuration not found for connector ${connectorId}`);
+  }
+
+  await syncStarted(connectorId);
+
+  const dataSourceConfig = dataSourceConfigFromConnector(connector);
+
+  try {
+    localLogger.info(
+      { projectId: configuration.projectId },
+      "Starting full sync for ruby_project connector"
+    );
+
+    // Fetch all conversations for the project from Front API
+    const rubyAPI = getRubyAPI(dataSourceConfig);
+    const conversationsResult =
+      await rubyAPI.getSpaceConversationsForDataSource({
+        spaceId: configuration.projectId,
+      });
+
+    const conversationsParsed = parseRubyApiResult({
+      result: conversationsResult,
+      logger: localLogger,
+      projectId: configuration.projectId,
+      workspaceId: dataSourceConfig.workspaceId,
+      errorPrefix: "Failed to fetch conversations",
+    });
+    if (conversationsParsed.skipped) {
+      return conversationsParsed.skipResult;
+    }
+    const { conversations } = conversationsParsed.value;
+    localLogger.info(
+      { projectId: configuration.projectId, count: conversations.length },
+      "Fetched conversations for full sync (including deleted)"
+    );
+
+    // Get all currently synced conversation IDs
+    const syncedConversations =
+      await RubyProjectConversationResource.fetchByConnectorId(connectorId);
+
+    // Get all conversation IDs from the fetched list (including deleted ones)
+    const fetchedConversationIds = new Set(conversations.map((c) => c.sId));
+
+    // Find conversations that exist in DB but not in fetched list (should be deleted)
+    const conversationsToDelete = syncedConversations.filter(
+      (c) => !fetchedConversationIds.has(c.conversationId)
+    );
+
+    // Delete conversations that no longer exist
+    if (conversationsToDelete.length > 0) {
+      localLogger.info(
+        {
+          projectId: configuration.projectId,
+          count: conversationsToDelete.length,
+        },
+        "Deleting conversations that no longer exist"
+      );
+      await concurrentExecutor(
+        conversationsToDelete,
+        async (conversation) => {
+          await deleteConversation({
+            connectorId,
+            dataSourceConfig,
+            projectId: configuration.projectId,
+            conversationId: conversation.conversationId,
+          });
+        },
+        { concurrency: 5 }
+      );
+    }
+
+    // Sync each conversation (including deleted ones - syncConversation handles deletion)
+    // conversations is an array of ConversationForDataSourceSyncSchema objects
+    await concurrentExecutor(
+      conversations,
+      async (conversation) => {
+        await syncConversation({
+          connectorId,
+          dataSourceConfig,
+          projectId: configuration.projectId,
+          conversation: conversation,
+          syncType: "batch",
+        });
+      },
+      { concurrency: 5 } // Process 5 conversations at a time
+    );
+
+    // Launch incremental sync workflow after successful full sync
+    const incrementalSyncResult =
+      await launchRubyProjectIncrementalSyncWorkflow(connectorId);
+    if (incrementalSyncResult.isErr()) {
+      localLogger.error(
+        {
+          error: incrementalSyncResult.error,
+          projectId: configuration.projectId,
+        },
+        "Failed to launch incremental sync workflow after full sync"
+      );
+      // Don't fail the full sync if incremental sync launch fails
+    } else {
+      localLogger.info(
+        {
+          workflowId: incrementalSyncResult.value,
+          projectId: configuration.projectId,
+        },
+        "Launched incremental sync workflow after successful full sync"
+      );
+    }
+
+    return RUBY_PROJECT_SYNC_COMPLETED;
+  } catch (error) {
+    localLogger.error(
+      { error, projectId: configuration.projectId },
+      "Full sync failed for ruby_project connector"
+    );
+    await syncFailed(connectorId, "third_party_internal_error");
+    throw error;
+  }
+}
+
+/**
+ * Incremental sync activity: Syncs only conversations updated since last sync.
+ */
+export async function rubyProjectConversationsIncrementalSyncActivity({
+  connectorId,
+}: {
+  connectorId: ModelId;
+}): Promise<RubyProjectSyncActivityResult> {
+  const localLogger = logger.child({ connectorId });
+
+  const connector = await ConnectorResource.fetchById(connectorId);
+  if (!connector) {
+    throw new Error(`Connector ${connectorId} not found`);
+  }
+
+  const configuration =
+    await RubyProjectConfigurationResource.fetchByConnectorId(connectorId);
+  if (!configuration) {
+    throw new Error(`Configuration not found for connector ${connectorId}`);
+  }
+
+  await syncStarted(connectorId);
+
+  const dataSourceConfig = dataSourceConfigFromConnector(connector);
+
+  try {
+    localLogger.info(
+      { projectId: configuration.projectId },
+      "Starting incremental sync for ruby_project connector"
+    );
+
+    // Watermark: max source `updatedAt` we have synced. Front's `updatedSince` filter uses
+    // `updatedAt >= updatedSince` (inclusive), so passing the raw max would re-fetch every
+    // conversation at that timestamp every run. Use max+1 so `>=` behaves like strictly after max.
+    const maxSourceUpdatedAt =
+      await RubyProjectConversationResource.getMaxSourceUpdatedAt(connectorId);
+
+    const rubyAPI = getRubyAPI(dataSourceConfig);
+    const conversationsResult =
+      await rubyAPI.getSpaceConversationsForDataSource({
+        spaceId: configuration.projectId,
+        updatedSince:
+          maxSourceUpdatedAt != null
+            ? maxSourceUpdatedAt.getTime() + 1
+            : undefined,
+      });
+
+    const conversationsParsed = parseRubyApiResult({
+      result: conversationsResult,
+      logger: localLogger,
+      projectId: configuration.projectId,
+      workspaceId: dataSourceConfig.workspaceId,
+      errorPrefix: "Failed to fetch conversations",
+    });
+    if (conversationsParsed.skipped) {
+      return conversationsParsed.skipResult;
+    }
+    const { conversations } = conversationsParsed.value;
+    localLogger.info(
+      {
+        projectId: configuration.projectId,
+        count: conversations.length,
+        lastSourceUpdatedAt: maxSourceUpdatedAt,
+      },
+      "Fetched conversations for incremental sync (including deleted)"
+    );
+
+    // Sync each conversation (including deleted ones - syncConversation handles deletion)
+    // conversations is an array of ConversationForDataSourceSyncSchema objects
+    await concurrentExecutor(
+      conversations,
+      async (conversation) => {
+        await syncConversation({
+          connectorId,
+          dataSourceConfig,
+          projectId: configuration.projectId,
+          conversation: conversation,
+          syncType: "incremental",
+        });
+      },
+      { concurrency: 5 } // Process 5 conversations at a time
+    );
+
+    // Run garbage collection to remove hard-deleted conversations
+    // This checks for conversations that were completely removed from the database
+    await rubyProjectConversationsGarbageCollectActivity({ connectorId });
+
+    return RUBY_PROJECT_SYNC_COMPLETED;
+  } catch (error) {
+    localLogger.error(
+      { error, projectId: configuration.projectId },
+      "Incremental sync failed for ruby_project connector"
+    );
+    await syncFailed(connectorId, "third_party_internal_error");
+    throw error;
+  }
+}
+
+/**
+ * Garbage collection activity: Removes conversations that were hard-deleted
+ * (completely removed from the database, not just soft-deleted).
+ * This is called after incremental sync to clean up conversations that no longer exist.
+ */
+async function rubyProjectConversationsGarbageCollectActivity({
+  connectorId,
+}: {
+  connectorId: ModelId;
+}): Promise<void> {
+  const localLogger = logger.child({ connectorId });
+
+  const connector = await ConnectorResource.fetchById(connectorId);
+  if (!connector) {
+    throw new Error(`Connector ${connectorId} not found`);
+  }
+
+  const configuration =
+    await RubyProjectConfigurationResource.fetchByConnectorId(connectorId);
+  if (!configuration) {
+    throw new Error(`Configuration not found for connector ${connectorId}`);
+  }
+
+  const dataSourceConfig = dataSourceConfigFromConnector(connector);
+
+  try {
+    localLogger.info(
+      { projectId: configuration.projectId },
+      "Starting garbage collection for hard-deleted conversations"
+    );
+
+    // Fetch all visible conversation IDs from Front API
+    // This endpoint only returns conversations that still exist (not hard-deleted)
+    const rubyAPI = getRubyAPI(dataSourceConfig);
+    const conversationIdsResult = await rubyAPI.getSpaceConversationIds({
+      spaceId: configuration.projectId,
+    });
+
+    const conversationIdsParsed = parseRubyApiResult({
+      result: conversationIdsResult,
+      logger: localLogger,
+      projectId: configuration.projectId,
+      workspaceId: dataSourceConfig.workspaceId,
+      errorPrefix: "Failed to fetch conversation IDs",
+    });
+    if (conversationIdsParsed.skipped) {
+      return;
+    }
+    const { conversationIds } = conversationIdsParsed.value;
+
+    const currentConversationIds = new Set(conversationIds);
+
+    // Fetch all conversation IDs from ruby_project_conversations table
+    const syncedConversations =
+      await RubyProjectConversationResource.fetchByConnectorId(connectorId);
+
+    // Find conversations that exist in DB but not in the current list (hard-deleted)
+    const conversationsToDelete = syncedConversations.filter(
+      (c) => !currentConversationIds.has(c.conversationId)
+    );
+
+    if (conversationsToDelete.length === 0) {
+      localLogger.info(
+        {
+          projectId: configuration.projectId,
+          currentCount: currentConversationIds.size,
+          syncedCount: syncedConversations.length,
+        },
+        "No hard-deleted conversations found"
+      );
+      return;
+    }
+
+    localLogger.info(
+      {
+        projectId: configuration.projectId,
+        currentCount: currentConversationIds.size,
+        syncedCount: syncedConversations.length,
+        toDeleteCount: conversationsToDelete.length,
+      },
+      "Identified hard-deleted conversations to remove"
+    );
+
+    // Delete conversations from data source and database
+    await concurrentExecutor(
+      conversationsToDelete,
+      async (conversation) => {
+        await deleteConversation({
+          connectorId,
+          dataSourceConfig,
+          projectId: configuration.projectId,
+          conversationId: conversation.conversationId,
+        });
+      },
+      { concurrency: 5 }
+    );
+
+    localLogger.info(
+      {
+        projectId: configuration.projectId,
+        deletedCount: conversationsToDelete.length,
+      },
+      "Garbage collection completed for hard-deleted conversations"
+    );
+  } catch (error) {
+    localLogger.error(
+      { error, projectId: configuration.projectId },
+      "Garbage collection failed for ruby_project connector"
+    );
+    // Don't throw - garbage collection failures shouldn't fail the sync
+    // Log the error and continue
+  }
+}
+
+function isMountDirectoryEntry(
+  e: ProjectMountListEntryType
+): e is ProjectMountDirectoryEntryType {
+  return e.isDirectory;
+}
+
+function isMountFileEntry(
+  e: ProjectMountListEntryType
+): e is ProjectMountFileEntryType {
+  return !e.isDirectory;
+}
+
+/**
+ * Full sync: list all project mount files, remove tracking rows (and Core) for deleted paths, sync each file.
+ */
+export async function rubyProjectMountFilesFullSyncActivity({
+  connectorId,
+}: {
+  connectorId: ModelId;
+}): Promise<RubyProjectSyncActivityResult> {
+  const localLogger = logger.child({ connectorId });
+
+  const connector = await ConnectorResource.fetchById(connectorId);
+  if (!connector) {
+    throw new Error(`Connector ${connectorId} not found`);
+  }
+
+  const configuration =
+    await RubyProjectConfigurationResource.fetchByConnectorId(connectorId);
+  if (!configuration) {
+    throw new Error(`Configuration not found for connector ${connectorId}`);
+  }
+
+  const dataSourceConfig = dataSourceConfigFromConnector(connector);
+
+  localLogger.info(
+    { projectId: configuration.projectId },
+    "Starting full sync for ruby_project mount files"
+  );
+
+  const rubyAPI = getRubyAPI(dataSourceConfig);
+  const listRes = await rubyAPI.getSpaceProjectFiles({
+    spaceId: configuration.projectId,
+  });
+
+  const listResParsed = parseRubyApiResult({
+    result: listRes,
+    logger: localLogger,
+    projectId: configuration.projectId,
+    workspaceId: dataSourceConfig.workspaceId,
+    errorPrefix: "Failed to fetch project mount files",
+  });
+  if (listResParsed.skipped) {
+    return listResParsed.skipResult;
+  }
+  const { files } = listResParsed.value;
+
+  const directoryEntries = sortEntriesByScopedPathDepth(
+    files.filter(isMountDirectoryEntry)
+  );
+  const fileEntries = files.filter(isMountFileEntry);
+  const fetchedPaths = new Set(fileEntries.map((e) => e.path));
+
+  const syncedRows =
+    await RubyProjectMountFileResource.fetchByConnectorId(connectorId);
+  const toRemove = syncedRows.filter((r) => !fetchedPaths.has(r.scopedPath));
+
+  if (toRemove.length > 0) {
+    await concurrentExecutor(
+      toRemove,
+      async (row) => {
+        await deleteProjectMountFile({
+          connectorId,
+          dataSourceConfig,
+          projectId: configuration.projectId,
+          mountRow: row,
+        });
+      },
+      { concurrency: 5 }
+    );
+  }
+
+  await concurrentExecutor(
+    directoryEntries,
+    async (entry) => {
+      await syncProjectMountDirectory({
+        dataSourceConfig,
+        projectId: configuration.projectId,
+        entry,
+      });
+    },
+    { concurrency: 3 }
+  );
+
+  await concurrentExecutor(
+    fileEntries,
+    async (entry) => {
+      await syncProjectMountFile({
+        connectorId,
+        dataSourceConfig,
+        projectId: configuration.projectId,
+        workspaceId: dataSourceConfig.workspaceId,
+        entry,
+        syncType: "batch",
+      });
+    },
+    { concurrency: 3 }
+  );
+
+  localLogger.info(
+    { projectId: configuration.projectId, count: fileEntries.length },
+    "Completed full sync for ruby_project mount files"
+  );
+
+  return RUBY_PROJECT_SYNC_COMPLETED;
+}
+
+/**
+ * Incremental sync: fetch mount files updated since last synced watermark, then GC removed files.
+ */
+export async function rubyProjectMountFilesIncrementalSyncActivity({
+  connectorId,
+}: {
+  connectorId: ModelId;
+}): Promise<RubyProjectSyncActivityResult> {
+  const localLogger = logger.child({ connectorId });
+
+  const connector = await ConnectorResource.fetchById(connectorId);
+  if (!connector) {
+    throw new Error(`Connector ${connectorId} not found`);
+  }
+
+  const configuration =
+    await RubyProjectConfigurationResource.fetchByConnectorId(connectorId);
+  if (!configuration) {
+    throw new Error(`Configuration not found for connector ${connectorId}`);
+  }
+
+  const dataSourceConfig = dataSourceConfigFromConnector(connector);
+
+  const maxSourceUpdatedAt =
+    await RubyProjectMountFileResource.getMaxSourceUpdatedAt(connectorId);
+
+  const rubyAPI = getRubyAPI(dataSourceConfig);
+  const listRes = await rubyAPI.getSpaceProjectFiles({
+    spaceId: configuration.projectId,
+    updatedSince:
+      maxSourceUpdatedAt != null ? maxSourceUpdatedAt.getTime() + 1 : undefined,
+  });
+
+  const listResParsed = parseRubyApiResult({
+    result: listRes,
+    logger: localLogger,
+    projectId: configuration.projectId,
+    workspaceId: dataSourceConfig.workspaceId,
+    errorPrefix: "Failed to fetch project mount files",
+  });
+  if (listResParsed.skipped) {
+    return listResParsed.skipResult;
+  }
+  const { files } = listResParsed.value;
+
+  const directoryEntries = sortEntriesByScopedPathDepth(
+    files.filter(isMountDirectoryEntry)
+  );
+  const fileEntries = files.filter(isMountFileEntry);
+
+  localLogger.info(
+    {
+      projectId: configuration.projectId,
+      directoryCount: directoryEntries.length,
+      count: fileEntries.length,
+      lastSourceUpdatedAt: maxSourceUpdatedAt,
+    },
+    "Fetched project mount files for incremental sync"
+  );
+
+  await concurrentExecutor(
+    directoryEntries,
+    async (entry) => {
+      await syncProjectMountDirectory({
+        dataSourceConfig,
+        projectId: configuration.projectId,
+        entry,
+      });
+    },
+    { concurrency: 3 }
+  );
+
+  await concurrentExecutor(
+    fileEntries,
+    async (entry) => {
+      await syncProjectMountFile({
+        connectorId,
+        dataSourceConfig,
+        projectId: configuration.projectId,
+        workspaceId: dataSourceConfig.workspaceId,
+        entry,
+        syncType: "incremental",
+      });
+    },
+    { concurrency: 3 }
+  );
+
+  await rubyProjectMountFilesGarbageCollectActivity({ connectorId });
+
+  return RUBY_PROJECT_SYNC_COMPLETED;
+}
+
+/**
+ * Remove Core + DB rows for mount files that no longer exist under the project prefix in GCS.
+ */
+export async function rubyProjectMountFilesGarbageCollectActivity({
+  connectorId,
+}: {
+  connectorId: ModelId;
+}): Promise<void> {
+  const localLogger = logger.child({ connectorId });
+
+  const connector = await ConnectorResource.fetchById(connectorId);
+  if (!connector) {
+    throw new Error(`Connector ${connectorId} not found`);
+  }
+
+  const configuration =
+    await RubyProjectConfigurationResource.fetchByConnectorId(connectorId);
+  if (!configuration) {
+    throw new Error(`Configuration not found for connector ${connectorId}`);
+  }
+
+  const dataSourceConfig = dataSourceConfigFromConnector(connector);
+
+  try {
+    const rubyAPI = getRubyAPI(dataSourceConfig);
+    const listRes = await rubyAPI.getSpaceProjectFiles({
+      spaceId: configuration.projectId,
+    });
+
+    const listResParsed = parseRubyApiResult({
+      result: listRes,
+      logger: localLogger,
+      projectId: configuration.projectId,
+      workspaceId: dataSourceConfig.workspaceId,
+      errorPrefix: "Failed to list project mount files for GC",
+    });
+    if (listResParsed.skipped) {
+      return;
+    }
+    const { files } = listResParsed.value;
+
+    const existingPaths = new Set(
+      files.filter(isMountFileEntry).map((e) => e.path)
+    );
+
+    const syncedRows =
+      await RubyProjectMountFileResource.fetchByConnectorId(connectorId);
+    const toDelete = syncedRows.filter((r) => !existingPaths.has(r.scopedPath));
+
+    if (toDelete.length === 0) {
+      localLogger.info(
+        { projectId: configuration.projectId },
+        "No orphaned mount files to garbage-collect"
+      );
+      return;
+    }
+
+    await concurrentExecutor(
+      toDelete,
+      async (row) => {
+        await deleteProjectMountFile({
+          connectorId,
+          dataSourceConfig,
+          projectId: configuration.projectId,
+          mountRow: row,
+        });
+      },
+      { concurrency: 5 }
+    );
+
+    localLogger.info(
+      {
+        projectId: configuration.projectId,
+        deletedCount: toDelete.length,
+      },
+      "Garbage collection completed for project mount files"
+    );
+  } catch (error) {
+    localLogger.error(
+      { error, projectId: configuration.projectId },
+      "Garbage collection failed for project mount files"
+    );
+  }
+}
+
+/**
+ * Sync metadata activity: Fetches and syncs project metadata (description).
+ * On fetch/upsert failure, throws so the Temporal workflow fails.
+ */
+export async function rubyProjectSyncMetadataActivity({
+  connectorId,
+}: {
+  connectorId: ModelId;
+}): Promise<RubyProjectSyncActivityResult> {
+  const localLogger = logger.child({ connectorId });
+
+  const connector = await ConnectorResource.fetchById(connectorId);
+  if (!connector) {
+    throw new Error(`Connector ${connectorId} not found`);
+  }
+
+  const configuration =
+    await RubyProjectConfigurationResource.fetchByConnectorId(connectorId);
+  if (!configuration) {
+    throw new Error(`Configuration not found for connector ${connectorId}`);
+  }
+
+  const dataSourceConfig = dataSourceConfigFromConnector(connector);
+
+  localLogger.info(
+    { projectId: configuration.projectId },
+    "Fetching and syncing project metadata"
+  );
+
+  const rubyAPI = getRubyAPI(dataSourceConfig);
+  const metadataResult = await rubyAPI.getSpaceMetadata({
+    spaceId: configuration.projectId,
+  });
+
+  const metadataParsed = parseRubyApiResult({
+    result: metadataResult,
+    logger: localLogger,
+    projectId: configuration.projectId,
+    workspaceId: dataSourceConfig.workspaceId,
+    errorPrefix: "Failed to fetch project metadata",
+  });
+  if (metadataParsed.skipped) {
+    return metadataParsed.skipResult;
+  }
+  const { metadata } = metadataParsed.value;
+
+  if (!metadata) {
+    localLogger.info(
+      { projectId: configuration.projectId },
+      "No project metadata from API; skipping metadata upsert"
+    );
+    return RUBY_PROJECT_SYNC_COMPLETED;
+  }
+
+  const lastSyncedAtMs = configuration.lastSyncedAt?.getTime();
+  if (lastSyncedAtMs !== undefined && metadata.updatedAt < lastSyncedAtMs) {
+    localLogger.info(
+      {
+        projectId: configuration.projectId,
+        metadataUpdatedAt: metadata.updatedAt,
+        lastSyncedAt: configuration.lastSyncedAt,
+      },
+      "Skipping project metadata upsert (API metadata older than last full sync)"
+    );
+    return RUBY_PROJECT_SYNC_COMPLETED;
+  }
+
+  await syncProjectMetadata({
+    dataSourceConfig,
+    connectorId,
+    projectId: configuration.projectId,
+    metadata,
+  });
+
+  localLogger.info(
+    { projectId: configuration.projectId },
+    "Successfully synced project metadata"
+  );
+
+  return RUBY_PROJECT_SYNC_COMPLETED;
+}
+
+/**
+ * Marks a successful ruby_project sync run (conversations, mount files, metadata).
+ * Updates connector sync status via `syncSucceeded` and sets `lastSyncedAt` on the ruby project configuration.
+ */
+export async function rubyProjectMarkSyncedActivity({
+  connectorId,
+}: {
+  connectorId: ModelId;
+}): Promise<void> {
+  const configuration =
+    await RubyProjectConfigurationResource.fetchByConnectorId(connectorId);
+  if (!configuration) {
+    throw new Error(`Configuration not found for connector ${connectorId}`);
+  }
+
+  await syncSucceeded(connectorId);
+  await configuration.update({ lastSyncedAt: new Date() });
+}

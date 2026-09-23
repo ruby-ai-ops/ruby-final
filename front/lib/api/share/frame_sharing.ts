@@ -2,7 +2,7 @@ import config from "@app/lib/api/config";
 import { sendEmailWithTemplate } from "@app/lib/api/email";
 import { runOnRedis } from "@app/lib/api/redis";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import type { FileResource } from "@app/lib/resources/file_resource";
 import type { FileViewerSummary } from "@app/lib/resources/file_viewer_queries";
 import { MembershipResource } from "@app/lib/resources/membership_resource";
@@ -82,13 +82,13 @@ export async function addFrameSharingGrants(
   auth: Authenticator,
   file: FileResource,
   { emails = [], domains = [] }: { emails?: string[]; domains?: string[] }
-): Promise<Result<FrameSharingState, DustError>> {
+): Promise<Result<FrameSharingState, RubyError>> {
   if (domains.length > 0) {
     const membersOnly = await frameRequiresMembership(auth, file);
     const canGrantDomains = canGrantFrameDomains(auth, { membersOnly });
     if (!canGrantDomains) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "You cannot share this frame with an email domain."
         )
@@ -157,7 +157,7 @@ export async function checkFrameShareScopePermission(
   auth: Authenticator,
   shareScope: FileShareScope,
   frame: FileResource
-): Promise<Result<void, DustError<"unauthorized">>> {
+): Promise<Result<void, RubyError<"unauthorized">>> {
   if (shareScope !== "public") {
     return new Ok(undefined);
   }
@@ -167,7 +167,7 @@ export async function checkFrameShareScopePermission(
   const hasActiveFrameFunctions = await frame.hasActiveFrameFunctions();
   if (hasActiveFrameFunctions) {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         "This Frame has functions, which only workspace members can run. It cannot be shared publicly."
       )
@@ -177,7 +177,7 @@ export async function checkFrameShareScopePermission(
   const workspace = auth.getNonNullableWorkspace();
   if (workspace.sharingPolicy !== "all_scopes") {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         "Public sharing is disabled for this workspace."
       )
@@ -185,7 +185,7 @@ export async function checkFrameShareScopePermission(
   }
   if (!auth.hasWorkspacePermission("publish", "frame")) {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         "You do not have permission to share this frame publicly."
       )
@@ -199,7 +199,7 @@ export async function checkFrameEmailGrantPermission(
   auth: Authenticator,
   rawEmails: string[],
   frame: FileResource
-): Promise<Result<void, DustError<"unauthorized">>> {
+): Promise<Result<void, RubyError<"unauthorized">>> {
   if (rawEmails.length === 0) {
     return new Ok(undefined);
   }
@@ -232,7 +232,7 @@ export async function checkFrameEmailGrantPermission(
 
   if (externalSharingDisabledByFunctions) {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         "This Frame has functions, which only workspace members can run. Only workspace members can be invited."
       )
@@ -243,7 +243,7 @@ export async function checkFrameEmailGrantPermission(
     ? "Only workspace members can be invited when external sharing is disabled."
     : "You do not have permission to invite people outside the workspace. Only workspace members can be invited.";
 
-  return new Err(new DustError("unauthorized", errorMessage));
+  return new Err(new RubyError("unauthorized", errorMessage));
 }
 
 async function getFrameWorkspaceMemberEmails(
@@ -332,8 +332,8 @@ export async function sendFrameOtpEmail({
     to,
     // TODO(2026-03-19 FRAME SHARING): Consider sending from another email address.
     from: config.getSupportEmailAddress(),
-    subject: "Your Dust login code",
-    body: `<p>${escape(sharedByName)} shared a frame with you on Dust.</p>
+    subject: "Your Ruby login code",
+    body: `<p>${escape(sharedByName)} shared a frame with you on Ruby.</p>
       <p>Your login code:</p>
       <p style="font-size: 24px; font-weight: bold; letter-spacing: 4px; margin-block: 20px;">${escape(code)}</p>
       <p>Expires in ${Math.floor(OTP_TTL_SECONDS / 60)} minutes. Didn't request this? Ignore this email.</p>`,
@@ -366,7 +366,7 @@ export async function sendFrameSharedEmail({
     to,
     from: config.getSupportEmailAddress(),
     subject: `${sharedByName} shared a frame with you`,
-    body: `<p>${escape(sharedByName)} is sharing a frame with you on Dust.</p>`,
+    body: `<p>${escape(sharedByName)} is sharing a frame with you on Ruby.</p>`,
     buttonLabel: "View frame",
     buttonUrl: frameUrl,
   });

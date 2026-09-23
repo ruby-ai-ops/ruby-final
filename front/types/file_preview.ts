@@ -23,7 +23,7 @@ const CODE_PREVIEW_CONTENT_TYPES = new Set<string>([
 
 const TEXT_PREVIEW_CONTENT_TYPES = new Set<string>([
   "application/json",
-  "application/vnd.dust.section.json",
+  "application/vnd.ruby.section.json",
   "application/x-ndjson",
   "application/xml",
   "application/yaml",

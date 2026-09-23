@@ -28,7 +28,7 @@
   "domain.verification_failed": 2,
   "domain.verified": 2,
   "dsync.connection_deleted": 3,
-  "dust_mcp_server.settings_updated": 1,
+  "ruby_mcp_server.settings_updated": 1,
   "file.moved": 1,
   "frame.authorized_files_updated": 1,
   "frame.deleted_admin": 1,

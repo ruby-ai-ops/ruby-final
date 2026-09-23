@@ -52,7 +52,7 @@ export function WithOpenAIGptSixSolConfig<
 
     static readonly configSchema: z.ZodType<InputConfig> = configSchema;
 
-    // Widen the literal so the Dust layer can cap the native context.
+    // Widen the literal so the Ruby layer can cap the native context.
     static readonly contextSize: number = CONTEXT_SIZE;
     static readonly maxOutputTokens: number = MAX_OUTPUT_TOKENS;
   }

@@ -23,8 +23,8 @@ import { SANDBOX_EGRESS_CONTROLLED_UIDS } from "@app/lib/api/sandbox/image/types
 import { SANDBOX_TRUST_ENV_VARS } from "@app/lib/api/sandbox/trust_env";
 import { describe, expect, test } from "vitest";
 
-function getDustBaseImage() {
-  const imageResult = getSandboxImageFromRegistry({ name: "dust-base" });
+function getRubyBaseImage() {
+  const imageResult = getSandboxImageFromRegistry({ name: "ruby-base" });
   if (imageResult.isErr()) {
     throw imageResult.error;
   }
@@ -32,8 +32,8 @@ function getDustBaseImage() {
   return imageResult.value;
 }
 
-function getDustBaseImageOperations(): readonly Operation[] {
-  return getDustBaseImage().operations;
+function getRubyBaseImageOperations(): readonly Operation[] {
+  return getRubyBaseImage().operations;
 }
 
 function getRunCommands(operations: readonly Operation[]): string[] {
@@ -91,30 +91,30 @@ function getCommandPath(command: string): string {
 }
 
 describe("sandbox image registry", () => {
-  test("pins the current dust-base and sbx bedrock image tags", () => {
-    expect(getDustBaseImage().imageId).toEqual({
-      imageName: "dust-base",
+  test("pins the current ruby-base and sbx bedrock image tags", () => {
+    expect(getRubyBaseImage().imageId).toEqual({
+      imageName: "ruby-base",
       tag: "0.8.118",
     });
-    expect(getDustBaseImage().baseImage).toEqual({
+    expect(getRubyBaseImage().baseImage).toEqual({
       type: "docker",
-      imageRef: "dust-sbx-bedrock:1.11.0",
+      imageRef: "ruby-sbx-bedrock:1.11.0",
     });
-    expect(getDustBaseImage().hasCapability("dust_filesystem")).toBe(true);
+    expect(getRubyBaseImage().hasCapability("ruby_filesystem")).toBe(true);
   });
 
   test("loads Fluent Bit credentials from a root-only runtime file", () => {
     const serviceUnit = getCopiedContent(
-      getCopyOperations(getDustBaseImageOperations()),
+      getCopyOperations(getRubyBaseImageOperations()),
       "/etc/systemd/system/fluent-bit.service"
     );
 
-    expect(serviceUnit).toContain("EnvironmentFile=/run/dust/fluent-bit.env");
+    expect(serviceUnit).toContain("EnvironmentFile=/run/ruby/fluent-bit.env");
     expect(serviceUnit).not.toContain("Environment=DD_API_KEY");
   });
 
   test("installs the Oxlint allocator without preloading it for other commands", () => {
-    const image = getDustBaseImage();
+    const image = getRubyBaseImage();
     const runCommands = getRunCommands(image.operations);
     const launcher = getCopiedContent(
       getCopyOperations(image.operations),
@@ -143,7 +143,7 @@ describe("sandbox image registry", () => {
   });
 
   test("creates the dormant proxied user and shared-path permissions", () => {
-    const operations = getDustBaseImageOperations();
+    const operations = getRubyBaseImageOperations();
     const runCommands = getRunCommands(operations);
 
     expect(runCommands).toEqual(
@@ -157,7 +157,7 @@ describe("sandbox image registry", () => {
         expect.stringContaining("setfacl -R -d -m g::rwx /files"),
         expect.stringContaining("setfacl -R -m g::rwx /files"),
         expect.stringContaining(
-          "useradd --system --no-create-home --gid dust-egress-resolver --shell /usr/sbin/nologin dust-egress-resolver"
+          "useradd --system --no-create-home --gid ruby-egress-resolver --shell /usr/sbin/nologin ruby-egress-resolver"
         ),
       ])
     );
@@ -169,7 +169,7 @@ describe("sandbox image registry", () => {
   });
 
   test("locks service-owned runtime paths after all package installs", () => {
-    const runCommands = getRunCommands(getDustBaseImageOperations());
+    const runCommands = getRunCommands(getRubyBaseImageOperations());
     const permissionCommand = runCommands.find((command) =>
       command.includes("sandbox service paths must not be group/other writable")
     );
@@ -192,15 +192,15 @@ describe("sandbox image registry", () => {
     );
     expect(permissionCommand).toContain("/bin/chmod -R go-w /opt/venv");
     expect(permissionCommand).toContain(
-      "/usr/bin/chown -R root:root /opt/dust/profile"
+      "/usr/bin/chown -R root:root /opt/ruby/profile"
     );
     expect(permissionCommand).toContain(
-      "/bin/chmod 644 /opt/dust/profile/*.sh"
+      "/bin/chmod 644 /opt/ruby/profile/*.sh"
     );
   });
 
   test("hardens provider-created local accounts and sudo before agent code exists", () => {
-    const runCommands = getRunCommands(getDustBaseImageOperations());
+    const runCommands = getRunCommands(getRubyBaseImageOperations());
     const hardeningCommands = runCommands.filter((command) =>
       command.includes("sudo must not be installed in sandbox images")
     );
@@ -214,7 +214,7 @@ describe("sandbox image registry", () => {
     expect(hardeningCommands.length).toBeGreaterThanOrEqual(2);
     for (const command of hardeningCommands) {
       expect(command).toContain("passwd -l root");
-      expect(command).toContain("zz-dust-root-safe-path.sh");
+      expect(command).toContain("zz-ruby-root-safe-path.sh");
       expect(command).toContain(SANDBOX_ROOT_SAFE_PATH);
       expect(command).toContain("awk -F: '$2 == \"\" {print $1}'");
       expect(command).toContain('passwd -l "$account"');
@@ -225,7 +225,7 @@ describe("sandbox image registry", () => {
       expect(command).toContain("for member in $members");
       expect(command).toContain("NOPASSWD");
       expect(command).toContain("apt-get purge -y sudo");
-      expect(command).toContain("sudo_path.disabled-by-dust");
+      expect(command).toContain("sudo_path.disabled-by-ruby");
       expect(command).toContain("/usr/bin/su");
       expect(command).toContain("/usr/bin/passwd");
       expect(command).toContain("chmod u-s");
@@ -235,7 +235,7 @@ describe("sandbox image registry", () => {
       expect(command).toContain("/usr/bin/systemd-analyze unit-paths");
       expect(command).toContain("systemd unit path must be absolute");
       expect(command).toContain(
-        "for path in /opt/bin/dsbx /usr/local/bin/dust-install-trust-bundle /usr/local/bin/dust-gcs-token-server.py /usr/local/bin/dust-gcs-write-token.sh /usr/local/bin/dust-gcs-token-firewall.sh /opt/bin/litestream"
+        "for path in /opt/bin/rbx /usr/local/bin/ruby-install-trust-bundle /usr/local/bin/ruby-gcs-token-server.py /usr/local/bin/ruby-gcs-write-token.sh /usr/local/bin/ruby-gcs-token-firewall.sh /opt/bin/litestream"
       );
       expect(command).toContain("empty-password local accounts must not exist");
       expect(command).toContain("privileged primary group");
@@ -250,7 +250,7 @@ describe("sandbox image registry", () => {
   });
 
   test("keeps root-consumed lookup directories root-owned", () => {
-    const runCommands = getRunCommands(getDustBaseImageOperations());
+    const runCommands = getRunCommands(getRubyBaseImageOperations());
     const staticRootConsumedDirs = SANDBOX_STATIC_ROOT_CONSUMED_DIRS.join(" ");
 
     expect(SANDBOX_STATIC_ROOT_CONSUMED_DIRS).toContain(
@@ -269,9 +269,9 @@ describe("sandbox image registry", () => {
   });
 
   test("disables and hardens sshd in the base image", () => {
-    const runCommands = getRunCommands(getDustBaseImageOperations());
+    const runCommands = getRunCommands(getRubyBaseImageOperations());
     const hardeningCommand = runCommands.find((command) =>
-      command.includes("00-dust-sandbox-hardening.conf")
+      command.includes("00-ruby-sandbox-hardening.conf")
     );
 
     expect(hardeningCommand).toBeDefined();
@@ -292,39 +292,39 @@ describe("sandbox image registry", () => {
   });
 
   test("copies the egress boot assets and enables the systemd units", () => {
-    const operations = getDustBaseImageOperations();
+    const operations = getRubyBaseImageOperations();
     const runCommands = getRunCommands(operations);
     const copyOperations = getCopyOperations(operations);
     const nftablesScript = getCopiedContent(
       copyOperations,
-      "/etc/dust/egress-nftables.sh"
+      "/etc/ruby/egress-nftables.sh"
     );
     const serviceUnit = getCopiedContent(
       copyOperations,
-      "/etc/systemd/system/dust-egress-nftables.service"
+      "/etc/systemd/system/ruby-egress-nftables.service"
     );
     const resolverUnit = getCopiedContent(
       copyOperations,
-      "/etc/systemd/system/dust-egress-resolver.service"
+      "/etc/systemd/system/ruby-egress-resolver.service"
     );
     const resolve1Policy = getCopiedContent(
       copyOperations,
-      "/etc/dbus-1/system.d/dust-resolve1.conf"
+      "/etc/dbus-1/system.d/ruby-resolve1.conf"
     );
     const systemd1Policy = getCopiedContent(
       copyOperations,
-      "/etc/dbus-1/system.d/dust-systemd1.conf"
+      "/etc/dbus-1/system.d/ruby-systemd1.conf"
     );
     const resolvedIpcDropIn = getCopiedContent(
       copyOperations,
-      "/etc/systemd/system/systemd-resolved.service.d/dust-ipc.conf"
+      "/etc/systemd/system/systemd-resolved.service.d/ruby-ipc.conf"
     );
 
     expect(runCommands).toEqual(
       expect.arrayContaining([
-        "chmod 755 /etc/dust/egress-nftables.sh",
+        "chmod 755 /etc/ruby/egress-nftables.sh",
         "mkdir -p /etc/dbus-1/system.d /etc/systemd/system/systemd-resolved.service.d",
-        "systemctl daemon-reload && systemctl enable systemd-resolved.service dust-egress-resolver.service dust-egress-nftables.service",
+        "systemctl daemon-reload && systemctl enable systemd-resolved.service ruby-egress-resolver.service ruby-egress-nftables.service",
       ])
     );
     expect(runCommands.join("\n")).toContain(
@@ -333,31 +333,31 @@ describe("sandbox image registry", () => {
     expect(runCommands.join("\n")).toContain("DNSStubListener=yes");
 
     expect(runCommands.join("\n")).not.toContain(
-      "chmod 755 /etc/dust/egress-nftables.sh && /etc/dust/egress-nftables.sh"
+      "chmod 755 /etc/ruby/egress-nftables.sh && /etc/ruby/egress-nftables.sh"
     );
     expect(runCommands.join("\n")).not.toContain("iptables");
 
     expect(serviceUnit).toContain(
-      "Description=Dust egress nftables rules for sandbox-controlled accounts"
+      "Description=Ruby egress nftables rules for sandbox-controlled accounts"
     );
     expect(serviceUnit).toContain(
       "After=network.target systemd-resolved.service"
     );
     expect(serviceUnit).toContain("Type=oneshot");
     expect(serviceUnit).toContain("RemainAfterExit=yes");
-    expect(serviceUnit).toContain("ExecStart=/etc/dust/egress-nftables.sh");
+    expect(serviceUnit).toContain("ExecStart=/etc/ruby/egress-nftables.sh");
     expect(serviceUnit).toContain("WantedBy=multi-user.target");
-    expect(serviceUnit).not.toContain("Requires=dust-egress-resolver.service");
+    expect(serviceUnit).not.toContain("Requires=ruby-egress-resolver.service");
 
     expect(resolverUnit).toContain(
-      "Description=Dust synthetic DNS resolver for sandbox-controlled accounts"
+      "Description=Ruby synthetic DNS resolver for sandbox-controlled accounts"
     );
     expect(resolverUnit).toContain("Wants=systemd-resolved.service");
-    expect(resolverUnit).toContain("Before=dust-egress-nftables.service");
-    expect(resolverUnit).toContain("User=dust-egress-resolver");
-    expect(resolverUnit).toContain("Group=dust-egress-resolver");
+    expect(resolverUnit).toContain("Before=ruby-egress-nftables.service");
+    expect(resolverUnit).toContain("User=ruby-egress-resolver");
+    expect(resolverUnit).toContain("Group=ruby-egress-resolver");
     expect(resolverUnit).toContain(
-      "ExecStart=/opt/bin/dsbx resolve --listen 127.0.0.1:1053"
+      "ExecStart=/opt/bin/rbx resolve --listen 127.0.0.1:1053"
     );
     expect(resolverUnit).toContain("Restart=on-failure");
     expect(resolverUnit).toContain("RestartSec=2s");
@@ -388,7 +388,7 @@ describe("sandbox image registry", () => {
       "ExecStartPost=/bin/chmod 0600 /run/systemd/resolve/io.systemd.Resolve"
     );
 
-    expect(nftablesScript).toContain("nft add table ip dust-egress");
+    expect(nftablesScript).toContain("nft add table ip ruby-egress");
     expect(nftablesScript).toContain('CONTROLLED_UIDS="1002 1003"');
     expect(nftablesScript).toContain("DNS_STUB_PORT=1053");
     expect(nftablesScript).toContain("GCS_TOKEN_SERVER_PORT=987");
@@ -399,37 +399,37 @@ describe("sandbox image registry", () => {
       '/bin/ln -sfn "$SYSTEM_RESOLV_CONF" /etc/resolv.conf'
     );
     expect(nftablesScript).toContain(
-      "nft add chain ip dust-egress nat_output '{ type nat hook output priority -100 ; policy accept ; }'"
+      "nft add chain ip ruby-egress nat_output '{ type nat hook output priority -100 ; policy accept ; }'"
     );
     expect(nftablesScript).toContain(
-      "nft add chain ip dust-egress filter_output '{ type filter hook output priority 0 ; policy accept ; }'"
+      "nft add chain ip ruby-egress filter_output '{ type filter hook output priority 0 ; policy accept ; }'"
     );
     expect(nftablesScript).toContain(
-      "nft add rule ip dust-egress nat_output meta skuid $CONTROLLED_UID ip daddr 127.0.0.0/8 return"
+      "nft add rule ip ruby-egress nat_output meta skuid $CONTROLLED_UID ip daddr 127.0.0.0/8 return"
     );
     expect(nftablesScript).toContain(
-      "nft add rule ip dust-egress nat_output meta skuid $CONTROLLED_UID udp dport 53 redirect to :$DNS_STUB_PORT"
+      "nft add rule ip ruby-egress nat_output meta skuid $CONTROLLED_UID udp dport 53 redirect to :$DNS_STUB_PORT"
     );
     expect(nftablesScript).toContain(
-      "nft add rule ip dust-egress nat_output meta skuid $CONTROLLED_UID tcp dport 53 redirect to :$DNS_STUB_PORT"
+      "nft add rule ip ruby-egress nat_output meta skuid $CONTROLLED_UID tcp dport 53 redirect to :$DNS_STUB_PORT"
     );
     expect(nftablesScript).toContain(
-      "nft add rule ip dust-egress nat_output meta skuid $CONTROLLED_UID tcp dport != 0 redirect to :9990"
+      "nft add rule ip ruby-egress nat_output meta skuid $CONTROLLED_UID tcp dport != 0 redirect to :9990"
     );
     expect(nftablesScript).toContain(
-      "nft add rule ip dust-egress filter_output meta skuid $CONTROLLED_UID ip daddr 127.0.0.1 udp dport $DNS_STUB_PORT accept"
+      "nft add rule ip ruby-egress filter_output meta skuid $CONTROLLED_UID ip daddr 127.0.0.1 udp dport $DNS_STUB_PORT accept"
     );
     expect(nftablesScript).toContain(
-      "nft add rule ip dust-egress filter_output meta skuid $CONTROLLED_UID ip daddr 127.0.0.0/8 tcp dport $GCS_TOKEN_SERVER_PORT drop"
+      "nft add rule ip ruby-egress filter_output meta skuid $CONTROLLED_UID ip daddr 127.0.0.0/8 tcp dport $GCS_TOKEN_SERVER_PORT drop"
     );
     expect(nftablesScript).toContain(
-      "nft add rule ip dust-egress filter_output meta skuid $CONTROLLED_UID ip daddr 127.0.0.0/8 tcp dport 22 drop"
+      "nft add rule ip ruby-egress filter_output meta skuid $CONTROLLED_UID ip daddr 127.0.0.0/8 tcp dport 22 drop"
     );
     expect(nftablesScript).toContain(
-      "nft add rule ip dust-egress filter_output meta skuid $CONTROLLED_UID ip daddr 169.254.169.254 drop"
+      "nft add rule ip ruby-egress filter_output meta skuid $CONTROLLED_UID ip daddr 169.254.169.254 drop"
     );
     expect(nftablesScript).toContain(
-      "nft add rule ip6 dust-egress filter_output meta skuid $CONTROLLED_UID drop"
+      "nft add rule ip6 ruby-egress filter_output meta skuid $CONTROLLED_UID drop"
     );
     expect(nftablesScript).not.toContain('ip daddr "$NS"');
 
@@ -461,20 +461,20 @@ describe("sandbox image registry", () => {
   });
 
   test("installs the root-owned GCS token broker without the compatibility broker", () => {
-    const operations = getDustBaseImageOperations();
+    const operations = getRubyBaseImageOperations();
     const runCommands = getRunCommands(operations);
     const copyOperations = getCopyOperations(operations);
     const server = getCopiedContent(
       copyOperations,
-      "/usr/local/bin/dust-gcs-token-server.py"
+      "/usr/local/bin/ruby-gcs-token-server.py"
     );
     const writer = getCopiedContent(
       copyOperations,
-      "/usr/local/bin/dust-gcs-write-token.sh"
+      "/usr/local/bin/ruby-gcs-write-token.sh"
     );
     const firewall = getCopiedContent(
       copyOperations,
-      "/usr/local/bin/dust-gcs-token-firewall.sh"
+      "/usr/local/bin/ruby-gcs-token-firewall.sh"
     );
 
     expect(runCommands).toEqual(
@@ -482,7 +482,7 @@ describe("sandbox image registry", () => {
         "apt-get update && apt-get install -y python3",
         "mkdir -p /usr/local/bin",
         expect.stringContaining(
-          "chown root:root /usr/local/bin/dust-gcs-token-server.py /usr/local/bin/dust-gcs-write-token.sh /usr/local/bin/dust-gcs-token-firewall.sh"
+          "chown root:root /usr/local/bin/ruby-gcs-token-server.py /usr/local/bin/ruby-gcs-write-token.sh /usr/local/bin/ruby-gcs-token-firewall.sh"
         ),
       ])
     );
@@ -494,38 +494,35 @@ describe("sandbox image registry", () => {
     expect(server).toContain('self.path == "/healthz"');
     expect(server).toContain('Server(("127.0.0.1", 987), Handler)');
     expect(server).not.toContain("/tmp/token.json");
-    expect(writer).toContain("^/run/dust-gcs/mount-[0-9]+\\.json$");
+    expect(writer).toContain("^/run/ruby-gcs/mount-[0-9]+\\.json$");
     expect(writer).toContain("chmod 600");
     expect(writer).toContain("mv -f");
-    expect(firewall).toContain("dust-gcs-token");
+    expect(firewall).toContain("ruby-gcs-token");
     expect(firewall).toContain("/usr/bin/flock -x 9");
     expect(firewall).toContain('CONTROLLED_UIDS="1002 1003"');
     expect(firewall).toContain("for CONTROLLED_UID in $CONTROLLED_UIDS");
     expect(firewall).toContain(
       'meta skuid "$CONTROLLED_UID" ip daddr 127.0.0.0/8 tcp dport 987 drop'
     );
-    expect(firewall).not.toContain("delete table ip dust-gcs-token");
+    expect(firewall).not.toContain("delete table ip ruby-gcs-token");
   });
 
-  test("installs the current dsbx CLI release", () => {
-    const runCommands = getRunCommands(getDustBaseImageOperations());
+  test("installs the built rbx CLI with root-owned executable permissions", () => {
+    const runCommands = getRunCommands(getRubyBaseImageOperations());
 
     expect(runCommands).toEqual(
       expect.arrayContaining([
         expect.stringContaining(
-          "https://github.com/dust-tt/dust/releases/download/dsbx-v0.1.63/dsbx-linux-x86_64"
-        ),
-        expect.stringContaining(
-          "chown root:root /opt/bin/dsbx && chmod 755 /opt/bin/dsbx"
+          "chown root:root /opt/bin/rbx && chmod 755 /opt/bin/rbx"
         ),
       ])
     );
   });
 
   test("installs the pinned dbt Cloud CLI release to /opt/bin", () => {
-    const operations = getDustBaseImageOperations();
+    const operations = getRubyBaseImageOperations();
     const runCommands = getRunCommands(operations);
-    const image = getDustBaseImage();
+    const image = getRubyBaseImage();
     const installCommand = runCommands.find((command) =>
       command.includes("dbt-labs/dbt-cli/releases/download")
     );
@@ -545,9 +542,9 @@ describe("sandbox image registry", () => {
   });
 
   test("installs the pinned Snowflake CLI release to /opt/bin", () => {
-    const operations = getDustBaseImageOperations();
+    const operations = getRubyBaseImageOperations();
     const runCommands = getRunCommands(operations);
-    const image = getDustBaseImage();
+    const image = getRubyBaseImage();
     const installCommand = runCommands.find((command) =>
       command.includes("sfc-repo.snowflakecomputing.com/snowflake-cli")
     );
@@ -570,7 +567,7 @@ describe("sandbox image registry", () => {
   });
 
   test("installs the pinned litestream release to /opt/bin", () => {
-    const runCommands = getRunCommands(getDustBaseImageOperations());
+    const runCommands = getRunCommands(getRubyBaseImageOperations());
     const installCommand = runCommands.find((command) =>
       command.includes("benbjohnson/litestream/releases/download")
     );
@@ -584,19 +581,19 @@ describe("sandbox image registry", () => {
     );
   });
 
-  test("creates the dust-state user and the pod-state directory layout", () => {
-    const runCommands = getRunCommands(getDustBaseImageOperations());
+  test("creates the ruby-state user and the pod-state directory layout", () => {
+    const runCommands = getRunCommands(getRubyBaseImageOperations());
 
     expect(runCommands).toEqual(
       expect.arrayContaining([
         expect.stringContaining(
-          "useradd --system --no-create-home --gid dust-state --groups agent --shell /usr/sbin/nologin dust-state"
+          "useradd --system --no-create-home --gid ruby-state --groups agent --shell /usr/sbin/nologin ruby-state"
         ),
         expect.stringContaining(
           "install -d -o root -g root -m 755 /sandbox-state"
         ),
         expect.stringContaining(
-          "install -d -o dust-state -g agent -m 2770 /sandbox-state/databases"
+          "install -d -o ruby-state -g agent -m 2770 /sandbox-state/databases"
         ),
         expect.stringContaining(
           "setfacl -R -d -m g::rwx /sandbox-state/databases"
@@ -605,14 +602,14 @@ describe("sandbox image registry", () => {
           "setfacl -R -m g::rwx /sandbox-state/databases"
         ),
         expect.stringContaining(
-          "install -d -o dust-state -g dust-state -m 700 /sandbox-state/replica"
+          "install -d -o ruby-state -g ruby-state -m 700 /sandbox-state/replica"
         ),
       ])
     );
   });
 
   test("copies the litestream systemd unit for runtime start only", () => {
-    const operations = getDustBaseImageOperations();
+    const operations = getRubyBaseImageOperations();
     const runCommands = getRunCommands(operations);
     const copyOperations = getCopyOperations(operations);
     const litestreamUnit = getCopiedContent(
@@ -621,10 +618,10 @@ describe("sandbox image registry", () => {
     );
 
     expect(litestreamUnit).toContain(
-      "Description=Dust Litestream replication daemon for pod state"
+      "Description=Ruby Litestream replication daemon for pod state"
     );
-    expect(litestreamUnit).toContain("User=dust-state");
-    expect(litestreamUnit).toContain("Group=dust-state");
+    expect(litestreamUnit).toContain("User=ruby-state");
+    expect(litestreamUnit).toContain("Group=ruby-state");
     expect(litestreamUnit).toContain(
       "ExecStart=/opt/bin/litestream replicate -config /etc/litestream.yml"
     );
@@ -652,7 +649,7 @@ describe("sandbox image registry", () => {
   });
 
   test("bakes the static litestream directory-watcher config", () => {
-    const copyOperations = getCopyOperations(getDustBaseImageOperations());
+    const copyOperations = getCopyOperations(getRubyBaseImageOperations());
     const litestreamConfig = getCopiedContent(
       copyOperations,
       "/etc/litestream.yml"
@@ -676,11 +673,11 @@ describe("sandbox image registry", () => {
     expect(litestreamConfig).toContain("path: /sandbox-state/replica");
   });
 
-  test("pins drizzle packages and vendors @dust/pod", () => {
-    const operations = getDustBaseImageOperations();
+  test("pins drizzle packages and vendors @ruby-ai/pod", () => {
+    const operations = getRubyBaseImageOperations();
     const runCommands = getRunCommands(operations);
     const copyOperations = getCopyOperations(operations);
-    const image = getDustBaseImage();
+    const image = getRubyBaseImage();
 
     expect(runCommands).toEqual(
       expect.arrayContaining([
@@ -688,17 +685,17 @@ describe("sandbox image registry", () => {
           "npm install -g typescript tsx pptxgenjs@4.0.1 zod@4.4.3 drizzle-orm@0.45.2 drizzle-kit@0.31.10 @libsql/client@0.17.4"
         ),
         expect.stringContaining(
-          "mkdir -p /opt/npm-global/lib/node_modules/@dust"
+          "mkdir -p /opt/npm-global/lib/node_modules/@ruby"
         ),
       ])
     );
 
-    // Vendored copy of @dust/pod. Do NOT materialize the content here: the
-    // generator bun-builds cli/dust-sandbox/pod, which is written by a
+    // Vendored copy of @ruby-ai/pod. Do NOT materialize the content here: the
+    // generator bun-builds cli/ruby-sandbox/pod, which is written by a
     // parallel track and may be absent in this checkout.
     const podCopy = copyOperations.find(
       (operation) =>
-        operation.dest === "/opt/npm-global/lib/node_modules/@dust/pod"
+        operation.dest === "/opt/npm-global/lib/node_modules/@ruby-ai/pod"
     );
     expect(podCopy).toBeDefined();
     expect(podCopy?.src.type).toBe("content");
@@ -708,13 +705,13 @@ describe("sandbox image registry", () => {
         expect.objectContaining({ name: "drizzle-orm", version: "0.45.2" }),
         expect.objectContaining({ name: "drizzle-kit", version: "0.31.10" }),
         expect.objectContaining({ name: "@libsql/client", version: "0.17.4" }),
-        expect.objectContaining({ name: "@dust/pod", version: "0.5.0" }),
+        expect.objectContaining({ name: "@ruby-ai/pod", version: "0.5.0" }),
       ])
     );
   });
 
   test("runs pod-state install ops before the final hardening re-run", () => {
-    const runCommands = getRunCommands(getDustBaseImageOperations());
+    const runCommands = getRunCommands(getRubyBaseImageOperations());
     const lastHardeningIndex = runCommands.reduce(
       (last, command, index) =>
         command.includes("sudo must not be installed in sandbox images")
@@ -726,13 +723,13 @@ describe("sandbox image registry", () => {
       command.includes("benbjohnson/litestream/releases/download")
     );
     const podStateIndex = runCommands.findIndex((command) =>
-      command.includes("install -d -o dust-state -g agent -m 2770")
+      command.includes("install -d -o ruby-state -g agent -m 2770")
     );
     const drizzleIndex = runCommands.findIndex((command) =>
       command.includes("drizzle-orm@0.45.2")
     );
     const podPackageMkdirIndex = runCommands.findIndex((command) =>
-      command.includes("mkdir -p /opt/npm-global/lib/node_modules/@dust")
+      command.includes("mkdir -p /opt/npm-global/lib/node_modules/@ruby")
     );
 
     expect(lastHardeningIndex).toBeGreaterThanOrEqual(0);
@@ -748,14 +745,14 @@ describe("sandbox image registry", () => {
   });
 
   test("keeps the nftables UID filter aligned with controlled sandbox UIDs", () => {
-    const copyOperations = getCopyOperations(getDustBaseImageOperations());
+    const copyOperations = getCopyOperations(getRubyBaseImageOperations());
     const nftablesScript = getCopiedContent(
       copyOperations,
-      "/etc/dust/egress-nftables.sh"
+      "/etc/ruby/egress-nftables.sh"
     );
     const tokenFirewallScript = getCopiedContent(
       copyOperations,
-      "/usr/local/bin/dust-gcs-token-firewall.sh"
+      "/usr/local/bin/ruby-gcs-token-firewall.sh"
     );
     const controlledUidsMatch = /^CONTROLLED_UIDS="([\d ]+)"$/m.exec(
       nftablesScript
@@ -775,33 +772,33 @@ describe("sandbox image registry", () => {
   });
 
   test("installs trust env defaults and the runtime trust helper", () => {
-    const operations = getDustBaseImageOperations();
+    const operations = getRubyBaseImageOperations();
     const runCommands = getRunCommands(operations);
     const copyOperations = getCopyOperations(operations);
     const environment = getCopiedContent(
       copyOperations,
-      "/etc/dust/dust-trust.environment"
+      "/etc/ruby/ruby-trust.environment"
     );
     const profileScript = getCopiedContent(
       copyOperations,
-      "/etc/profile.d/dust-trust.sh"
+      "/etc/profile.d/ruby-trust.sh"
     );
     const tmpfilesConfig = getCopiedContent(
       copyOperations,
-      "/etc/tmpfiles.d/dust-run-dust.conf"
+      "/etc/tmpfiles.d/ruby-run-ruby.conf"
     );
     const installer = getCopiedContent(
       copyOperations,
-      "/usr/local/bin/dust-install-trust-bundle"
+      "/usr/local/bin/ruby-install-trust-bundle"
     );
 
     expect(runCommands).toEqual(
       expect.arrayContaining([
         expect.stringContaining(
-          "cat /etc/dust/dust-trust.environment >> /etc/environment"
+          "cat /etc/ruby/ruby-trust.environment >> /etc/environment"
         ),
-        "chmod 644 /etc/profile.d/dust-trust.sh",
-        "chown root:root /usr/local/bin/dust-install-trust-bundle && chmod 755 /usr/local/bin/dust-install-trust-bundle",
+        "chmod 644 /etc/profile.d/ruby-trust.sh",
+        "chown root:root /usr/local/bin/ruby-install-trust-bundle && chmod 755 /usr/local/bin/ruby-install-trust-bundle",
       ])
     );
 
@@ -827,7 +824,7 @@ describe("sandbox image registry", () => {
     );
 
     expect(tmpfilesConfig).toBe(
-      "d /run/dust 0755 root root -\nd /run/dust-gcs 0700 root root -\n"
+      "d /run/ruby 0755 root root -\nd /run/ruby-gcs 0700 root root -\n"
     );
     expect(installer).toContain(
       '/usr/bin/openssl x509 -in "$CA_PATH" -out "$normalized_ca_tmp" -outform PEM'
@@ -844,7 +841,7 @@ describe("sandbox image registry", () => {
     );
     expect(installer).not.toContain("/usr/sbin/update-ca-certificates");
     expect(installer).toContain(
-      'PRISTINE_SYSTEM_BUNDLE="/etc/dust/system-ca-certificates.crt.orig"'
+      'PRISTINE_SYSTEM_BUNDLE="/etc/ruby/system-ca-certificates.crt.orig"'
     );
     expect(installer).toContain(
       'system_tmp="$(/usr/bin/mktemp "${SYSTEM_CA_CERTS_DIR}/.ca-certificates.crt.XXXXXX")"'
@@ -869,14 +866,14 @@ describe("sandbox image registry", () => {
   });
 
   test("trust helper drops staged symlinks and normalizes the installed CA", () => {
-    const copyOperations = getCopyOperations(getDustBaseImageOperations());
+    const copyOperations = getCopyOperations(getRubyBaseImageOperations());
     const installer = getCopiedContent(
       copyOperations,
-      "/usr/local/bin/dust-install-trust-bundle"
+      "/usr/local/bin/ruby-install-trust-bundle"
     );
-    const sandboxRoot = mkdtempSync(join(tmpdir(), "dust-trust-helper-"));
-    const runDustDir = join(sandboxRoot, "run", "dust");
-    const etcDustDir = join(sandboxRoot, "etc", "dust");
+    const sandboxRoot = mkdtempSync(join(tmpdir(), "ruby-trust-helper-"));
+    const runRubyDir = join(sandboxRoot, "run", "ruby");
+    const etcRubyDir = join(sandboxRoot, "etc", "ruby");
     const systemSslCertsDir = join(sandboxRoot, "etc", "ssl", "certs");
     const javaCertsDir = join(systemSslCertsDir, "java");
     const stubBinDir = join(sandboxRoot, "bin");
@@ -889,13 +886,13 @@ describe("sandbox image registry", () => {
     );
     const systemCaBundle = join(systemSslCertsDir, "ca-certificates.crt");
     const pristineSystemCaBundle = join(
-      etcDustDir,
+      etcRubyDir,
       "system-ca-certificates.crt.orig"
     );
-    const mergedBundle = join(etcDustDir, "ca-bundle.pem");
-    const caPath = join(runDustDir, "egress-ca.pem");
-    const keyPath = join(runDustDir, "egress-ca.key");
-    const leakedSecretPath = join(runDustDir, "egress-secrets.json");
+    const mergedBundle = join(etcRubyDir, "ca-bundle.pem");
+    const caPath = join(runRubyDir, "egress-ca.pem");
+    const keyPath = join(runRubyDir, "egress-ca.key");
+    const leakedSecretPath = join(runRubyDir, "egress-secrets.json");
     const commandPaths = {
       cat: getCommandPath("cat"),
       chmod: getCommandPath("chmod"),
@@ -912,7 +909,7 @@ describe("sandbox image registry", () => {
     };
 
     try {
-      mkdirSync(runDustDir, { recursive: true });
+      mkdirSync(runRubyDir, { recursive: true });
       mkdirSync(stubBinDir, { recursive: true });
       mkdirSync(systemCaDir, { recursive: true });
       mkdirSync(systemSslCertsDir, { recursive: true });
@@ -947,7 +944,7 @@ describe("sandbox image registry", () => {
           "-out",
           caPath,
           "-subj",
-          "/CN=dust-test",
+          "/CN=ruby-test",
           "-days",
           "1",
         ],
@@ -959,7 +956,7 @@ describe("sandbox image registry", () => {
       });
 
       const rewrittenInstaller = installer
-        .replace('CA_PATH="/run/dust/egress-ca.pem"', `CA_PATH="${caPath}"`)
+        .replace('CA_PATH="/run/ruby/egress-ca.pem"', `CA_PATH="${caPath}"`)
         .replace(
           'SYSTEM_CA_DIR="/usr/local/share/ca-certificates"',
           `SYSTEM_CA_DIR="${systemCaDir}"`
@@ -968,7 +965,7 @@ describe("sandbox image registry", () => {
           'SYSTEM_CA_CERTS_DIR="/etc/ssl/certs"',
           `SYSTEM_CA_CERTS_DIR="${systemSslCertsDir}"`
         )
-        .replaceAll("/etc/dust", etcDustDir)
+        .replaceAll("/etc/ruby", etcRubyDir)
         .replaceAll("/etc/ssl/certs/java", javaCertsDir)
         .replaceAll(
           "/usr/bin/install -d -o root -g root -m 755",
@@ -1019,7 +1016,7 @@ describe("sandbox image registry", () => {
           "-hash",
           "-noout",
           "-in",
-          join(systemCaDir, "dust-egress.crt"),
+          join(systemCaDir, "ruby-egress.crt"),
         ],
         { encoding: "utf8" }
       );
@@ -1031,12 +1028,12 @@ describe("sandbox image registry", () => {
       const mergedBundleContent = readFileSync(mergedBundle, "utf8");
       const systemCaBundleContent = readFileSync(systemCaBundle, "utf8");
       const installedCaContent = readFileSync(
-        join(systemCaDir, "dust-egress.crt"),
+        join(systemCaDir, "ruby-egress.crt"),
         "utf8"
       );
       const hashSymlinkTarget = readlinkSync(hashSymlink);
 
-      expect(readdirSync(systemCaDir)).toEqual(["dust-egress.crt"]);
+      expect(readdirSync(systemCaDir)).toEqual(["ruby-egress.crt"]);
       expect(readFileSync(pristineSystemCaBundle, "utf8")).toBe(
         "system-root\n"
       );
@@ -1051,7 +1048,7 @@ describe("sandbox image registry", () => {
       expect(mergedBundleContent).not.toContain("DSEC_APPENDED");
       expect(installedCaContent).not.toContain("DSEC_APPENDED");
       expect(realpathSync(hashSymlink)).toBe(
-        realpathSync(join(systemCaDir, "dust-egress.crt"))
+        realpathSync(join(systemCaDir, "ruby-egress.crt"))
       );
 
       const secondRunResult = runInstaller();
@@ -1064,11 +1061,11 @@ describe("sandbox image registry", () => {
 
       expect(readFileSync(systemCaBundle, "utf8")).toBe(systemCaBundleContent);
       expect(readFileSync(mergedBundle, "utf8")).toBe(mergedBundleContent);
-      expect(readFileSync(join(systemCaDir, "dust-egress.crt"), "utf8")).toBe(
+      expect(readFileSync(join(systemCaDir, "ruby-egress.crt"), "utf8")).toBe(
         installedCaContent
       );
       expect(readlinkSync(hashSymlink)).toBe(hashSymlinkTarget);
-      expect(readdirSync(systemCaDir)).toEqual(["dust-egress.crt"]);
+      expect(readdirSync(systemCaDir)).toEqual(["ruby-egress.crt"]);
     } finally {
       rmSync(sandboxRoot, { recursive: true, force: true });
     }

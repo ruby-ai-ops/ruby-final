@@ -227,7 +227,7 @@ export async function* rawOutputToEvents(
       }
       case "length":
         yield buildErrorEvent({
-          errorSource: "dust",
+          errorSource: "ruby",
           metadata,
           type: "stop_error",
           message: "The maximum response length was reached.",
@@ -235,7 +235,7 @@ export async function* rawOutputToEvents(
         return;
       case "content_filter":
         yield buildErrorEvent({
-          errorSource: "dust",
+          errorSource: "ruby",
           metadata,
           type: "refusal_error",
           message: "The response was filtered by the content policy.",

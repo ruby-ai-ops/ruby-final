@@ -16,7 +16,7 @@ vi.mock("@app/lib/lock", async (importActual) => ({
   executeWithLockResult: async <T>(_name: string, cb: () => Promise<T>) => cb(),
 }));
 
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import {
   moveCanonicalFile,
   renameCanonicalFile,
@@ -44,7 +44,7 @@ async function renameFolder(
   c: Awaited<ReturnType<typeof setupFrameSourceStorageTest>>,
   newFileName: string
 ) {
-  const fsResult = await DustFileSystem.forAgentLoop(c.auth, {
+  const fsResult = await RubyFileSystem.forAgentLoop(c.auth, {
     conversation: c.conversation,
     scopedPaths: [c.sourceDirectoryPath],
   });
@@ -127,7 +127,7 @@ describe("renameCanonicalFile on a Frames v2 package folder", () => {
     fileStorageMock.setObject(plainObject, "note");
     c.listedObjects.push(plainObject);
 
-    const fsResult = await DustFileSystem.forAgentLoop(c.auth, {
+    const fsResult = await RubyFileSystem.forAgentLoop(c.auth, {
       conversation: c.conversation,
       scopedPaths: [plainFolder],
     });
@@ -150,7 +150,7 @@ describe("moveCanonicalFile on a Frames v2 package folder", () => {
   it("relocates the Frame, keeping its identity and publication", async () => {
     const c = await setupFrameSourceStorageTest();
     mockStorageCopies();
-    const fsResult = await DustFileSystem.forAgentLoop(c.auth, {
+    const fsResult = await RubyFileSystem.forAgentLoop(c.auth, {
       conversation: c.conversation,
       scopedPaths: [c.sourceDirectoryPath],
     });
@@ -177,7 +177,7 @@ describe("moveCanonicalFile on a Frames v2 package folder", () => {
   it("trims the destination folder, so the bound cannot be slipped by whitespace", async () => {
     const c = await setupFrameSourceStorageTest();
     mockStorageCopies();
-    const fsResult = await DustFileSystem.forAgentLoop(c.auth, {
+    const fsResult = await RubyFileSystem.forAgentLoop(c.auth, {
       conversation: c.conversation,
       scopedPaths: [c.sourceDirectoryPath],
     });
@@ -203,7 +203,7 @@ describe("moveCanonicalFile on a Frames v2 package folder", () => {
   it("rejects a destination folder that is not a valid Frame name", async () => {
     const c = await setupFrameSourceStorageTest();
     mockStorageCopies();
-    const fsResult = await DustFileSystem.forAgentLoop(c.auth, {
+    const fsResult = await RubyFileSystem.forAgentLoop(c.auth, {
       conversation: c.conversation,
       scopedPaths: [c.sourceDirectoryPath],
     });

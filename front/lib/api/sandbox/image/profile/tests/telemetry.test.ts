@@ -22,7 +22,7 @@ describe("logToolInvocation", () => {
     vi.mocked(spawnSync).mockReset();
   });
 
-  it("spawns logger with tag dust_tool and a structured JSON payload", () => {
+  it("spawns logger with tag ruby_tool and a structured JSON payload", () => {
     logToolInvocation({
       tool: "read_file",
       profile: "anthropic",
@@ -33,7 +33,7 @@ describe("logToolInvocation", () => {
     expect(spawnSync).toHaveBeenCalledTimes(1);
     const [command, args, options] = vi.mocked(spawnSync).mock.calls[0] ?? [];
     expect(command).toBe("logger");
-    expect(args?.slice(0, 2)).toEqual(["-t", "dust_tool"]);
+    expect(args?.slice(0, 2)).toEqual(["-t", "ruby_tool"]);
     expect(options).toEqual({ stdio: "ignore" });
     expect(JSON.parse(args?.[2] ?? "{}")).toEqual({
       event_type: "tool_invocation",

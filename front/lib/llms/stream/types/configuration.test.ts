@@ -29,7 +29,7 @@ describe("disableReasoningWhenForcingTool", () => {
   });
 });
 
-// Shared by every model whose provider exposes low/high/max rather than Dust's
+// Shared by every model whose provider exposes low/high/max rather than Ruby's
 // light/medium/high ladder (Kimi K3, DeepSeek V4 Flash/Pro, GLM-5.3, GLM-5.3
 // Flash), so it is pinned here once rather than in each model's test.
 describe("mapReasoningEffortToLowHighMax", () => {

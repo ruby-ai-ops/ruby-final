@@ -1,7 +1,7 @@
 import type { MCPServerFormValues } from "@app/components/actions/mcp/forms/mcpServerFormSchema";
 import { getMcpServerViewDescription } from "@app/lib/actions/mcp_helper";
 import type { MCPServerViewType } from "@app/lib/api/mcp";
-import { CheckBoxWithTextAndDescription, Input } from "@dust-tt/sparkle";
+import { CheckBoxWithTextAndDescription, Input } from "@ruby-ai/ui";
 import { useController, useFormContext } from "react-hook-form";
 
 interface MCPServerViewFormProps {

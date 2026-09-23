@@ -11,7 +11,7 @@ import {
 } from "@app/lib/tracking";
 import type { InlineActivityStep } from "@app/types/assistant/conversation";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import { ChevronRight, cn, Icon } from "@dust-tt/sparkle";
+import { ChevronRight, cn, Icon } from "@ruby-ai/ui";
 import React, { useState } from "react";
 
 interface RunningToolRow {

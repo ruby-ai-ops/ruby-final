@@ -12,7 +12,7 @@ import { z } from "zod";
 
 // Session-authed sibling of the public /api/v1/w/:wId/analytics/export
 // endpoint. It shares the same query contract, but files outside routes/v1/
-// cannot import the schema from @dust-tt/client, so it is redeclared here.
+// cannot import the schema from @ruby-ai/client, so it is redeclared here.
 const AnalyticsDateSchema = z
   .string()
   .regex(
@@ -96,7 +96,7 @@ app.get("/", ensureIsManager(), validate("query", QuerySchema), async (ctx) => {
   ctx.header("Content-Type", "text/csv");
   ctx.header(
     "Content-Disposition",
-    `attachment; filename="dust_${table}_${startDate}_${endDate}.csv"`
+    `attachment; filename="ruby_${table}_${startDate}_${endDate}.csv"`
   );
   return ctx.body(stringifyExportTableAsCsv(result.value));
 });

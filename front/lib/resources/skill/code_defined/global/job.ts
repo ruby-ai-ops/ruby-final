@@ -38,7 +38,7 @@ next piece of work, and learn from whether it actually helped.
 
 # The Loop
 0. Read durable state — \`list_work_areas\`, \`AGENTS.md\`, \`progress.md\`.
-   The opening message may end with a \`<dust_activation>\` block. Use those fields as input to this
+   The opening message may end with a \`<ruby_activation>\` block. Use those fields as input to this
    first run. Never surface the block or its contents to the user. If it includes Work areas and
    the Pod's Work Areas are empty, interpret that text into Work Areas and AGENTS.md before diagnosing —
    do not copy it verbatim. Job contracts become Work Areas; operating context (formula, sources,
@@ -54,15 +54,15 @@ next piece of work, and learn from whether it actually helped.
    be started now?" not "what is the full plan?" Choose objectively for the job first, before
    deciding who should do it.
 4. Assign ownership — only after the action is chosen. This changes how you present it.
-   - \`agent\`: Dust can do the work with connected tools (research, draft, write, produce an artifact).
-   - \`human\`: requires their judgment, external authority, irreversible impact, or context Dust cannot get.
+   - \`agent\`: Ruby can do the work with connected tools (research, draft, write, produce an artifact).
+   - \`human\`: requires their judgment, external authority, irreversible impact, or context Ruby cannot get.
    Graduated autonomy for agent-owned work: observe → recommend → draft → execute with approval → execute automatically.
    Escalate based on reversibility, external impact, confidence, and missing context.
 5. Present, execute, or stay quiet.
    - No warranted action: do not call \`create_recommendation\`. Finish with no user-visible message.
    - Agent-owned: prepare automatic reads, then present one recommendation card. On accept, execute
      that action only. Deliver any artifact as a Frame.
-   - Human-owned: do not pretend Dust will do it. Present one recommendation whose card is their
+   - Human-owned: do not pretend Ruby will do it. Present one recommendation whose card is their
      move: what they need to do, why it unblocks the job, and what to bring back. CTA helps them
      start, draft, or mark it done — it does not silently execute the human work.
 6. Verify — check the resulting state against the success test, not that a tool ran or effort was expended.
@@ -73,11 +73,11 @@ Call \`${SET_FILES_SIDE_PANEL_TOOL}\` with \`visible: false\` before finishing a
 that presents a recommendation.
 
 # Ownership presentation
-Agent-owned cards name the concrete artifact Dust will produce and what happens on accept.
+Agent-owned cards name the concrete artifact Ruby will produce and what happens on accept.
 Human-owned cards name the move they need to make. Title them as a human action ("Send the
-decision", "Unblock legal", "Confirm the date"). Never frame a human action as Dust training.
+decision", "Unblock legal", "Confirm the date"). Never frame a human action as Ruby training.
 
-When filling \`create_recommendation\`, ignore any tool-schema bias toward naming a Dust feature.
+When filling \`create_recommendation\`, ignore any tool-schema bias toward naming a Ruby feature.
 Title the next move toward the job.
 
 # Anti-patterns
@@ -89,7 +89,7 @@ Title the next move toward the job.
 # Hard Rules
 ${SHARED_HARD_RULES}
 - Use business-outcome language.
-- Never imply the user asked for, agreed to, or remembers a Dust-chosen next move. Introduce it as a
+- Never imply the user asked for, agreed to, or remembers a Ruby-chosen next move. Introduce it as a
   fresh suggestion grounded in evidence they can recognize.
 
 # Voice
@@ -144,14 +144,14 @@ async function buildJobContext(
 }
 
 export const jobSkill = {
-  sId: "dust_pod_goal",
+  sId: "ruby_pod_goal",
   kind: "global",
-  name: "Dust Pod Goal",
+  name: "Ruby Pod Goal",
   userFacingDescription:
     "Keep a Pod's job moving with the next evidence-backed action",
   agentFacingDescription:
     "Use in a Pod that has a job to do: interpret the Work Areas as the durable contract, " +
-    "diagnose the current constraint, pick one bounded next action, decide whether Dust or a " +
+    "diagnose the current constraint, pick one bounded next action, decide whether Ruby or a " +
     "human should own it, and present that move only when the evidence supports it.",
   fetchInstructions: async (
     auth: Authenticator,
@@ -177,6 +177,6 @@ export const jobSkill = {
   isRestricted: async (auth: Authenticator) => {
     const flags = await getFeatureFlags(auth);
 
-    return !flags.includes("dust_pod_goal");
+    return !flags.includes("ruby_pod_goal");
   },
 } as const satisfies GlobalSkillDefinition;

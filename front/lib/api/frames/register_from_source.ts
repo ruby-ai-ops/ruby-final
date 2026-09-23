@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import { FramePublicationError } from "@app/lib/api/frames/publication_storage";
 import type { Authenticator } from "@app/lib/auth";
 import { FileResource } from "@app/lib/resources/file_resource";
@@ -10,7 +10,7 @@ import {
   parseFrameManifest,
 } from "@app/types/api/frame_manifest";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
-import type { DustFileSystemError } from "@app/types/file_system";
+import type { RubyFileSystemError } from "@app/types/file_system";
 import type { FileUseCase, FileUseCaseMetadata } from "@app/types/files";
 import { frameV2ContentType } from "@app/types/files";
 import type { Result } from "@app/types/shared/result";
@@ -43,17 +43,17 @@ async function existingFrameAtMountPath(
 }
 
 export type RegisterFrameV2FromSourceError =
-  | DustFileSystemError
+  | RubyFileSystemError
   | FramePublicationError;
 
 /** Register a Frames v2 manifest through an already authorized GCS filesystem. */
 export async function registerFrameV2FromSourceUsingFileSystem(
   auth: Authenticator,
   {
-    dustFs,
+    rubyFs,
     manifestPath,
   }: {
-    dustFs: DustFileSystem;
+    rubyFs: RubyFileSystem;
     manifestPath: string;
   }
 ): Promise<
@@ -62,7 +62,7 @@ export async function registerFrameV2FromSourceUsingFileSystem(
     RegisterFrameV2FromSourceError
   >
 > {
-  const normalizedPath = DustFileSystem.normalizeScopedPath(manifestPath);
+  const normalizedPath = RubyFileSystem.normalizeScopedPath(manifestPath);
   if (
     !normalizedPath ||
     path.posix.basename(normalizedPath) !== FRAME_MANIFEST_FILE
@@ -72,18 +72,18 @@ export async function registerFrameV2FromSourceUsingFileSystem(
     );
   }
 
-  if (!dustFs.isGCSBacked()) {
+  if (!rubyFs.isGCSBacked()) {
     return registrationError(
       "Frames v2 registration does not yet support the database-backed filesystem."
     );
   }
 
-  const writeAccess = dustFs.checkWriteAccess(normalizedPath);
+  const writeAccess = rubyFs.checkWriteAccess(normalizedPath);
   if (writeAccess.isErr()) {
     return new Err(writeAccess.error);
   }
 
-  const manifestBufferResult = await dustFs.readBuffer(normalizedPath);
+  const manifestBufferResult = await rubyFs.readBuffer(normalizedPath);
   if (manifestBufferResult.isErr()) {
     return new Err(manifestBufferResult.error);
   }
@@ -99,7 +99,7 @@ export async function registerFrameV2FromSourceUsingFileSystem(
     );
   }
 
-  const mount = dustFs
+  const mount = rubyFs
     .getMounts()
     .find(
       (candidate) =>
@@ -112,7 +112,7 @@ export async function registerFrameV2FromSourceUsingFileSystem(
     );
   }
 
-  const mountFilePath = dustFs.toMountFilePath(normalizedPath);
+  const mountFilePath = rubyFs.toMountFilePath(normalizedPath);
   if (!mountFilePath) {
     return registrationError(`Invalid Frame source path: ${normalizedPath}`);
   }
@@ -180,13 +180,13 @@ export async function registerFrameV2FromSource(
     RegisterFrameV2FromSourceError
   >
 > {
-  const fsResult = await DustFileSystem.forConversation(auth, conversation);
+  const fsResult = await RubyFileSystem.forConversation(auth, conversation);
   if (fsResult.isErr()) {
     return new Err(fsResult.error);
   }
 
   return registerFrameV2FromSourceUsingFileSystem(auth, {
-    dustFs: fsResult.value,
+    rubyFs: fsResult.value,
     manifestPath,
   });
 }

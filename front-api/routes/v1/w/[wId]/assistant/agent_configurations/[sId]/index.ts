@@ -7,8 +7,8 @@ import logger from "@app/logger/logger";
 import type {
   DeleteAgentConfigurationResponseType,
   GetOrPatchAgentConfigurationResponseType,
-} from "@dust-tt/client";
-import { PatchAgentConfigurationRequestSchema } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { PatchAgentConfigurationRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsAdmin } from "@front-api/middlewares/ensure_role";
 import { apiError, type HandlerResult } from "@front-api/middlewares/utils";

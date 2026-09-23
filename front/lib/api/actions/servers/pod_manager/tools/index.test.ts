@@ -15,7 +15,7 @@ import {
   isAgentMessageType,
   isUserMessageType,
 } from "@app/types/assistant/conversation";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
@@ -190,9 +190,9 @@ describe("pod_manager move_conversation", () => {
     const result = await getTool(tools, "move_conversation").handler(
       {
         destination: "pod",
-        dustPod: {
+        rubyPod: {
           uri: makePodConfigurationURI(workspace.sId, targetPod.sId),
-          mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD,
+          mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD,
         },
       },
       extra
@@ -261,9 +261,9 @@ describe("pod_manager move_conversation", () => {
       {
         destination: "pod",
         conversationId: otherConversation.sId,
-        dustPod: {
+        rubyPod: {
           uri: makePodConfigurationURI(workspace.sId, targetPod.sId),
-          mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD,
+          mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD,
         },
       },
       extra

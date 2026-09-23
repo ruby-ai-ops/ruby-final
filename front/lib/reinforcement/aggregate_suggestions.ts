@@ -283,15 +283,15 @@ function buildReinforcedSkillInitialMessage(
   const builderUrl = getSkillBuilderRoute(workspaceId, skillId);
   const variants: Array<{ intro: string; outro: string }> = [
     {
-      intro: `Dust has analyzed conversations in your workspace that use the ${skillName} skill and found suggestions to improve it:`,
+      intro: `Ruby has analyzed conversations in your workspace that use the ${skillName} skill and found suggestions to improve it:`,
       outro: `You can view and apply these suggestions by going to the [skill builder](${builderUrl}).`,
     },
     {
-      intro: `Based on recent conversations, Dust has identified ways to enhance the ${skillName} skill:`,
+      intro: `Based on recent conversations, Ruby has identified ways to enhance the ${skillName} skill:`,
       outro: `Head over to the [skill builder](${builderUrl}) to review and apply these improvements.`,
     },
     {
-      intro: `Dust has reviewed how the ${skillName} skill is being used and has new improvement suggestions:`,
+      intro: `Ruby has reviewed how the ${skillName} skill is being used and has new improvement suggestions:`,
       outro: `Check them out in the [skill builder](${builderUrl}) and apply the ones you like.`,
     },
   ];
@@ -411,7 +411,7 @@ export async function createSkillSuggestionsConversation(
   const messageRes = await postUserMessage(auth, {
     conversationResource,
     content,
-    mentions: [{ configurationId: GLOBAL_AGENTS_SID.DUST }],
+    mentions: [{ configurationId: GLOBAL_AGENTS_SID.RUBY }],
     context: {
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone ?? "UTC",
       username: author.username,
@@ -517,7 +517,7 @@ export async function postSkillSuggestionStatusUpdate(
     const postRes = await postUserMessage(auth, {
       conversationResource,
       content,
-      mentions: [{ configurationId: GLOBAL_AGENTS_SID.DUST }],
+      mentions: [{ configurationId: GLOBAL_AGENTS_SID.RUBY }],
       context: messageContext,
       skipToolsValidation: true,
     });
@@ -533,7 +533,7 @@ export async function postSkillSuggestionStatusUpdate(
       continue;
     }
 
-    // postUserMessage marks the conversation read at T1, but the Dust static
+    // postUserMessage marks the conversation read at T1, but the Ruby static
     // reply will bump `updatedAt` to T2 and make the conversation re-appear
     // as unread for the acting editor. Push `lastReadAt` a minute into the
     // future so the ack holds through the imminent agent completion — the

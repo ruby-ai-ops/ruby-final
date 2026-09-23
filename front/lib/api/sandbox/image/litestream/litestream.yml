@@ -1,4 +1,4 @@
-# Managed by Dust. Static config: every path is a fixed constant of the
+# Managed by Ruby. Static config: every path is a fixed constant of the
 # pod-state layout, so it is baked at image build. The litestream.service unit
 # stays disabled at build and is started by front at runtime AFTER the replica
 # gcsfuse mount and the cold-start restore — starting at boot would let the
@@ -16,7 +16,7 @@ socket:
   path: /run/litestream/litestream.sock
 
 # Directory watcher (verified on v0.5.13): databases created after daemon
-# start — e.g. by a publish-time `dsbx db reconcile` — are discovered and
+# start — e.g. by a publish-time `rbx db reconcile` — are discovered and
 # replicated within seconds. Non-SQLite files matching the pattern are
 # ignored by the watcher (header validation). Replica subdirectories are
 # named by database FILENAME: /sandbox-state/replica/{db}.db/ltx/...

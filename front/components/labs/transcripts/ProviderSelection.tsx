@@ -10,7 +10,7 @@ import type {
 } from "@app/types/labs";
 import { setupOAuthConnection } from "@app/types/oauth/client/setup";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Page } from "@dust-tt/sparkle";
+import { Page } from "@ruby-ai/ui";
 import { useCallback, useState } from "react";
 import type { KeyedMutator } from "swr";
 

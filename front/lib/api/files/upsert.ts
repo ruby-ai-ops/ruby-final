@@ -15,7 +15,7 @@ import { processAndStoreFile } from "@app/lib/api/files/processing";
 import { generateSnippet } from "@app/lib/api/files/snippet";
 import { getFileContent } from "@app/lib/api/files/utils";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import type { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import { FileResource } from "@app/lib/resources/file_resource";
 import logger from "@app/logger/logger";
@@ -40,10 +40,10 @@ import { assertNever } from "@app/types/shared/utils/assert_never";
 import { slugify } from "@app/types/shared/utils/string_utils";
 import {
   DATA_SOURCE_FOLDER_SPREADSHEET_MIME_TYPE,
-  isDustMimeType,
+  isRubyMimeType,
   isSupportedPlainTextContentType,
   // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 
 // User-facing message for CSVs that core cannot decode to UTF-8 (e.g. exotic encodings that
 // charset detection cannot transcode). Surfaced as-is by the file upload endpoints and the
@@ -53,7 +53,7 @@ export const CSV_UNSUPPORTED_ENCODING_ERROR_MESSAGE =
 
 // /!\ Matches on the wording of core's CSV decode errors (`decode_to_utf8` in
 // core/src/databases/csv.rs), which all mention "UTF-8". Keep both sides in sync.
-function isNonUtf8CsvError(error: DustError): boolean {
+function isNonUtf8CsvError(error: RubyError): boolean {
   return error.code === "invalid_csv_content" && /utf-?8/i.test(error.message);
 }
 
@@ -90,8 +90,8 @@ const upsertDocumentToDatasource: ProcessingFunction = async (
   const title = upsertTitle ?? file.fileName;
   const content = await getFileContent(auth, file);
   if (!content) {
-    return new Err<DustError>({
-      name: "dust_error",
+    return new Err<RubyError>({
+      name: "ruby_error",
       code: "internal_error",
       message:
         "There was an error upserting the document: failed to get file content.",
@@ -117,7 +117,7 @@ const upsertDocumentToDatasource: ProcessingFunction = async (
   });
 
   if (upsertDocumentRes.isErr()) {
-    return new Err<DustError>(upsertDocumentRes.error);
+    return new Err<RubyError>(upsertDocumentRes.error);
   }
 
   return new Ok(undefined);
@@ -132,8 +132,8 @@ const upsertSectionDocumentToDatasource: ProcessingFunction = async (
   // Get the content of the file.
   const content = await getFileContent(auth, file);
   if (!content) {
-    return new Err<DustError>({
-      name: "dust_error",
+    return new Err<RubyError>({
+      name: "ruby_error",
       code: "internal_error",
       message:
         "There was an error upserting the document: failed to get file content.",
@@ -147,8 +147,8 @@ const upsertSectionDocumentToDatasource: ProcessingFunction = async (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // biome-ignore lint/correctness/noUnusedVariables: ignored using `--suppress`
   } catch (e) {
-    return new Err<DustError>({
-      name: "dust_error",
+    return new Err<RubyError>({
+      name: "ruby_error",
       code: "internal_error",
       message: "There was an error upserting the document.",
     });
@@ -173,7 +173,7 @@ const upsertSectionDocumentToDatasource: ProcessingFunction = async (
   });
 
   if (upsertDocumentRes.isErr()) {
-    return new Err<DustError>(upsertDocumentRes.error);
+    return new Err<RubyError>(upsertDocumentRes.error);
   }
 
   return new Ok(undefined);
@@ -200,7 +200,7 @@ async function upsertWorkbookToDatasource(
   auth: Authenticator,
   dataSource: DataSourceResource,
   file: FileResource
-): Promise<Result<{ folderId: string }, DustError>> {
+): Promise<Result<{ folderId: string }, RubyError>> {
   const folderId = file.sId;
 
   const folderRes = await createDataSourceFolder(dataSource, {
@@ -210,7 +210,7 @@ async function upsertWorkbookToDatasource(
   });
 
   if (folderRes.isErr()) {
-    return new Err(new DustError("internal_error", folderRes.error.message));
+    return new Err(new RubyError("internal_error", folderRes.error.message));
   }
 
   return new Ok({ folderId: folderRes.value.folder.folder_id });
@@ -225,7 +225,7 @@ const upsertTableToDatasource: ProcessingFunction = async (
 
   if (upsertArgs && !isUpsertTableArgs(upsertArgs)) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message:
         "Only table upsert args are supported for this file type. Please use the table upsert args instead.",
@@ -290,8 +290,8 @@ const upsertExcelToDatasource: ProcessingFunction = async (
   let worksheetContent: string | undefined;
 
   if (upsertArgs && !isUpsertTableArgs(upsertArgs)) {
-    return new Err<DustError>({
-      name: "dust_error",
+    return new Err<RubyError>({
+      name: "ruby_error",
       code: "internal_error",
       message:
         "Excel files can only be processed as tables. " +
@@ -364,8 +364,8 @@ const upsertExcelToDatasource: ProcessingFunction = async (
 
   const content = await getFileContent(auth, file);
   if (!content) {
-    return new Err<DustError>({
-      name: "dust_error",
+    return new Err<RubyError>({
+      name: "ruby_error",
       code: "internal_error",
       message:
         "There was an error upserting the document: failed to get file content.",
@@ -406,16 +406,16 @@ const upsertExcelToDatasource: ProcessingFunction = async (
   }
 
   if (!worksheetName) {
-    return new Err<DustError>({
-      name: "dust_error",
+    return new Err<RubyError>({
+      name: "ruby_error",
       code: "invalid_content_error",
       message:
         "This Excel file doesn't contain any recognizable worksheets. " +
         "Please check that your file has properly named worksheet tabs and try again.",
     });
   } else if (!worksheetContent) {
-    return new Err<DustError>({
-      name: "dust_error",
+    return new Err<RubyError>({
+      name: "ruby_error",
       code: "invalid_content_error",
       message:
         "The worksheets in this Excel file appear to be empty. " +
@@ -445,7 +445,7 @@ type ProcessingFunction = (
     dataSource: DataSourceResource;
     upsertArgs?: UpsertDocumentArgs | UpsertTableArgs;
   }
-) => Promise<Result<undefined, DustError>>;
+) => Promise<Result<undefined, RubyError>>;
 
 const getProcessingFunction = ({
   contentType,
@@ -487,7 +487,7 @@ const getProcessingFunction = ({
       } else {
         return undefined;
       }
-    case "application/vnd.dust.section.json":
+    case "application/vnd.ruby.section.json":
       if (useCase === "tool_output") {
         return upsertSectionDocumentToDatasource;
       } else {
@@ -528,7 +528,7 @@ const getProcessingFunction = ({
   }
 
   // Processing is assumed to be irrelevant for internal mime types.
-  if (isDustMimeType(contentType)) {
+  if (isRubyMimeType(contentType)) {
     return undefined;
   }
 
@@ -612,10 +612,10 @@ export async function processAndUpsertToDataSource(
     file: FileResource;
     upsertArgs?: UpsertDocumentArgs | UpsertTableArgs;
   }
-): Promise<Result<FileResource, DustError>> {
+): Promise<Result<FileResource, RubyError>> {
   if (file.status !== "ready") {
-    return new Err<DustError>({
-      name: "dust_error",
+    return new Err<RubyError>({
+      name: "ruby_error",
       code: "file_not_ready",
       message: "File is not ready for post processing.",
     });
@@ -623,7 +623,7 @@ export async function processAndUpsertToDataSource(
 
   if (!isFileTypeUpsertableForUseCase(file)) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_file",
       message: "File is not supported for upsert.",
     });
@@ -664,19 +664,19 @@ export async function processAndUpsertToDataSource(
         "Rewriting non-UTF-8 CSV error to user-facing message."
       );
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_csv_content",
           CSV_UNSUPPORTED_ENCODING_ERROR_MESSAGE
         )
       );
     }
-    return new Err<DustError>(processingRes.error);
+    return new Err<RubyError>(processingRes.error);
   }
 
   if (snippetRes.isErr()) {
     // TODO: Do the same for snippets?
-    return new Err<DustError>({
-      name: "dust_error",
+    return new Err<RubyError>({
+      name: "ruby_error",
       code: "internal_error",
       message: `Failed to generate snippet: ${snippetRes.error.message}`,
     });

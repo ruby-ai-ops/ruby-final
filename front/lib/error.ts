@@ -1,4 +1,4 @@
-export type DustErrorCode =
+export type RubyErrorCode =
   | "core_api_error"
   | "internal_error"
   | "invalid_id"
@@ -73,7 +73,7 @@ export type DustErrorCode =
   | "metronome_error"
   | "coupon_redemption_error";
 
-export class DustError<T extends DustErrorCode = DustErrorCode> extends Error {
+export class RubyError<T extends RubyErrorCode = RubyErrorCode> extends Error {
   constructor(
     readonly code: T,
     message: string
@@ -82,6 +82,6 @@ export class DustError<T extends DustErrorCode = DustErrorCode> extends Error {
   }
 }
 
-export function isDustError(err: unknown): err is DustError {
-  return err instanceof DustError;
+export function isRubyError(err: unknown): err is RubyError {
+  return err instanceof RubyError;
 }

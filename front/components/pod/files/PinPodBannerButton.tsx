@@ -1,6 +1,6 @@
 import { usePinPodBanner } from "@app/hooks/usePinPodBanner";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, Pin02 } from "@dust-tt/sparkle";
+import { Button, Pin02 } from "@ruby-ai/ui";
 
 interface PinPodBannerButtonProps {
   owner: LightWorkspaceType;

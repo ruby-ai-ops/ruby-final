@@ -1,5 +1,5 @@
 import config from "@app/lib/api/config";
-import { getDustAppSecrets } from "@app/lib/api/dust_app_secrets";
+import { getRubyAppSecrets } from "@app/lib/api/ruby_app_secrets";
 import { Authenticator, getFeatureFlags } from "@app/lib/auth";
 import { AppResource } from "@app/lib/resources/app_resource";
 import { RunResource } from "@app/lib/resources/run_resource";
@@ -87,17 +87,17 @@ app.get(
     const wIdTarget = ctx.req.query("wIdTarget");
     if (wIdTarget && session) {
       // Override `owner` when fetching runs created with an API key from
-      // another workspace. Dust super users only.
+      // another workspace. Ruby super users only.
       const target = await Authenticator.fromSuperUserSession(
         session,
         wIdTarget
       );
-      if (!target.isAdmin() || !auth.isDustSuperUser()) {
+      if (!target.isAdmin() || !auth.isRubySuperUser()) {
         return apiError(ctx, {
           status_code: 404,
           api_error: {
             type: "workspace_auth_error",
-            message: "wIdTarget is only available to Dust super users.",
+            message: "wIdTarget is only available to Ruby super users.",
           },
         });
       }
@@ -142,15 +142,15 @@ app.get(
       appId: appResource.id,
       runType,
     });
-    const userDustRunIds = userRuns.map((r) => r.dustRunId);
+    const userRubyRunIds = userRuns.map((r) => r.rubyRunId);
 
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
-    const dustRuns = await coreAPI.getRunsBatch({
-      projectId: appResource.dustAPIProjectId,
-      dustRunIds: userDustRunIds,
+    const rubyRuns = await coreAPI.getRunsBatch({
+      projectId: appResource.rubyAPIProjectId,
+      rubyRunIds: userRubyRunIds,
     });
 
-    if (dustRuns.isErr()) {
+    if (rubyRuns.isErr()) {
       return apiError(ctx, {
         status_code: 500,
         api_error: {
@@ -161,7 +161,7 @@ app.get(
     }
 
     return ctx.json({
-      runs: userDustRunIds.map((dustRunId) => dustRuns.value.runs[dustRunId]),
+      runs: userRubyRunIds.map((rubyRunId) => rubyRuns.value.runs[rubyRunId]),
       total: totalNumberOfRuns,
     });
   }
@@ -185,7 +185,7 @@ app.post(
           workspaceId: owner.id,
         },
       }),
-      getDustAppSecrets(auth, true),
+      getRubyAppSecrets(auth, true),
     ]);
 
     const body = await ctx.req.json().catch(() => null);
@@ -206,7 +206,7 @@ app.post(
 
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const datasets = await coreAPI.getDatasets({
-      projectId: appResource.dustAPIProjectId,
+      projectId: appResource.rubyAPIProjectId,
     });
     if (datasets.isErr()) {
       return apiError(ctx, {
@@ -232,8 +232,8 @@ app.post(
     const flags = await getFeatureFlags(auth);
     const storeBlocksResults = !flags.includes("disable_run_logs");
 
-    const dustRun = await coreAPI.createRun(owner, flags, {
-      projectId: appResource.dustAPIProjectId,
+    const rubyRun = await coreAPI.createRun(owner, flags, {
+      projectId: appResource.rubyAPIProjectId,
       runType: "local",
       specification: dumpSpecification(
         JSON.parse(body.specification),
@@ -246,7 +246,7 @@ app.post(
       storeBlocksResults,
     });
 
-    if (dustRun.isErr()) {
+    if (rubyRun.isErr()) {
       return apiError(ctx, {
         status_code: 400,
         api_error: {
@@ -258,7 +258,7 @@ app.post(
 
     await Promise.all([
       RunResource.makeNew({
-        dustRunId: dustRun.value.run.run_id,
+        rubyRunId: rubyRun.value.run.run_id,
         appId: appResource.id,
         runType: "local",
         workspaceId: owner.id,
@@ -267,11 +267,11 @@ app.post(
       appResource.updateState(auth, {
         savedSpecification: body.specification,
         savedConfig: body.config,
-        savedRun: dustRun.value.run.run_id,
+        savedRun: rubyRun.value.run.run_id,
       }),
     ]);
 
-    return ctx.json({ run: dustRun.value.run });
+    return ctx.json({ run: rubyRun.value.run });
   }
 );
 

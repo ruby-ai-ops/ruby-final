@@ -9,7 +9,7 @@ import { MembershipFactory } from "@app/tests/utils/MembershipFactory";
 import { SpaceFactory } from "@app/tests/utils/SpaceFactory";
 import { UserFactory } from "@app/tests/utils/UserFactory";
 import { GLOBAL_AGENTS_SID } from "@app/types/assistant/assistant";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { honoApp } from "@front-api/app";
 import { assert, describe, expect, it } from "vitest";
 
@@ -26,7 +26,7 @@ async function setupGetRequest() {
   );
 
   const conversation = await ConversationFactory.create(userAuth, {
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     messagesCreatedAt: [new Date()],
   });
 
@@ -115,7 +115,7 @@ describe("GET /api/v1/w/[wId]/assistant/conversations/[cId]", () => {
       workspace.sId
     );
     const conversation = await ConversationFactory.create(refreshedAdminAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       requestedSpaceIds: [projectSpace.id],
       spaceId: projectSpace.id,
       messagesCreatedAt: [new Date()],
@@ -144,7 +144,7 @@ describe("GET /api/v1/w/[wId]/assistant/conversations/[cId]", () => {
     );
 
     const conversation = await ConversationFactory.create(userAuth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const messageRows = await MessageModel.findAll({

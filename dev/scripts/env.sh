@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
-# Soft defaults + forced in-container overrides for the shared Dust dev environment.
+# Soft defaults + forced in-container overrides for the shared Ruby dev environment.
 # Source this file for defaults; call apply_local_overrides after loading 1Password
 # so cloud URIs lose to local Postgres/Temporal/APIs.
 #
 # Runtime secrets (OP_SERVICE_ACCOUNT_TOKEN, DEV_WORKOS_*, …)
 # are expected to already be in the process environment — do not re-export them here.
 
-export DUST_REPO_ROOT="${DUST_REPO_ROOT:-/workspace}"
-export DUST_IN_CONTAINER="${DUST_IN_CONTAINER:-1}"
-export DUST_APPS_PROMPT_FILE="${DUST_APPS_PROMPT_FILE:-/tmp/dust-infra/start-apps.prompt}"
+export RUBY_REPO_ROOT="${RUBY_REPO_ROOT:-/workspace}"
+export RUBY_IN_CONTAINER="${RUBY_IN_CONTAINER:-1}"
+export RUBY_APPS_PROMPT_FILE="${RUBY_APPS_PROMPT_FILE:-/tmp/ruby-infra/start-apps.prompt}"
 # Persistent core/target volume: keep recent artifacts, drop the rest.
-export DUST_CARGO_SWEEP_DAYS="${DUST_CARGO_SWEEP_DAYS:-14}"
-export DUST_CARGO_SWEEP_MAXSIZE="${DUST_CARGO_SWEEP_MAXSIZE:-12GiB}"
+export RUBY_CARGO_SWEEP_DAYS="${RUBY_CARGO_SWEEP_DAYS:-14}"
+export RUBY_CARGO_SWEEP_MAXSIZE="${RUBY_CARGO_SWEEP_MAXSIZE:-12GiB}"
 # ES cold start on Codespace first boot often exceeds 90s under contention.
-export DUST_ES_WAIT_SECONDS="${DUST_ES_WAIT_SECONDS:-240}"
+export RUBY_ES_WAIT_SECONDS="${RUBY_ES_WAIT_SECONDS:-240}"
 
 # 1Password Environment id for shared cloud-agent / container secrets (not a credential).
 # Cloud agents get it injected as a runtime secret; this default serves local docker runs.
@@ -22,14 +22,14 @@ export OP_ENVIRONMENT_ID="${OP_ENVIRONMENT_ID:-r6iqd3y67zqlbsxnotrj6bm25q}"  # p
 # Every stateful service writes under this single root so one Docker volume
 # survives image rebuilds and container re-creation. Paths are wired up by
 # init-data-dirs.sh; keep in sync with .devcontainer/devcontainer.json.
-export DUST_DATA_ROOT="${DUST_DATA_ROOT:-/var/lib/dust-dev}"
-export DUST_POSTGRES_DATA_ROOT="${DUST_POSTGRES_DATA_ROOT:-${DUST_DATA_ROOT}/postgres}"
-export DUST_REDIS_DATA_DIR="${DUST_REDIS_DATA_DIR:-${DUST_DATA_ROOT}/redis}"
-export DUST_ELASTICSEARCH_DATA_DIR="${DUST_ELASTICSEARCH_DATA_DIR:-${DUST_DATA_ROOT}/elasticsearch/data}"
-export DUST_TEMPORAL_DB_FILE="${DUST_TEMPORAL_DB_FILE:-${DUST_DATA_ROOT}/temporal/dev.db}"
+export RUBY_DATA_ROOT="${RUBY_DATA_ROOT:-/var/lib/ruby-dev}"
+export RUBY_POSTGRES_DATA_ROOT="${RUBY_POSTGRES_DATA_ROOT:-${RUBY_DATA_ROOT}/postgres}"
+export RUBY_REDIS_DATA_DIR="${RUBY_REDIS_DATA_DIR:-${RUBY_DATA_ROOT}/redis}"
+export RUBY_ELASTICSEARCH_DATA_DIR="${RUBY_ELASTICSEARCH_DATA_DIR:-${RUBY_DATA_ROOT}/elasticsearch/data}"
+export RUBY_TEMPORAL_DB_FILE="${RUBY_TEMPORAL_DB_FILE:-${RUBY_DATA_ROOT}/temporal/dev.db}"
 # Qdrant has no CLI flags for these; it reads QDRANT__* overrides from the env.
-export QDRANT__STORAGE__STORAGE_PATH="${QDRANT__STORAGE__STORAGE_PATH:-${DUST_DATA_ROOT}/qdrant/storage}"
-export QDRANT__STORAGE__SNAPSHOTS_PATH="${QDRANT__STORAGE__SNAPSHOTS_PATH:-${DUST_DATA_ROOT}/qdrant/snapshots}"
+export QDRANT__STORAGE__STORAGE_PATH="${QDRANT__STORAGE__STORAGE_PATH:-${RUBY_DATA_ROOT}/qdrant/storage}"
+export QDRANT__STORAGE__SNAPSHOTS_PATH="${QDRANT__STORAGE__SNAPSHOTS_PATH:-${RUBY_DATA_ROOT}/qdrant/snapshots}"
 
 export POSTGRES_HOST="${POSTGRES_HOST:-localhost}"
 export POSTGRES_PORT="${POSTGRES_PORT:-5432}"
@@ -43,7 +43,7 @@ export QDRANT_GRPC_PORT="${QDRANT_GRPC_PORT:-6334}"
 export TEMPORAL_ADDRESS="${TEMPORAL_ADDRESS:-127.0.0.1:7233}"
 # In-container Temporal (gRPC 7233). Cloud TEMPORAL_ADDRESS from 1Password must not
 # drive local lifecycle checks — workers connect to 127.0.0.1:7233 in development.
-export DUST_LOCAL_TEMPORAL_ADDRESS="${DUST_LOCAL_TEMPORAL_ADDRESS:-127.0.0.1:7233}"
+export RUBY_LOCAL_TEMPORAL_ADDRESS="${RUBY_LOCAL_TEMPORAL_ADDRESS:-127.0.0.1:7233}"
 
 # Temporal CLI is installed to /usr/local/bin in the dev image; also check the installer path.
 # Cursor cloud-agent terminals replace image PATH — prepend other dev tool dirs when missing.
@@ -57,13 +57,13 @@ for _dev_bin_dir in /usr/local/bin /usr/local/cargo/bin /opt/qdrant /root/.tempo
 done
 unset _dev_bin_dir
 
-export FRONT_DATABASE_URI="${FRONT_DATABASE_URI:-postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/dust_front}"
+export FRONT_DATABASE_URI="${FRONT_DATABASE_URI:-postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/ruby_front}"
 export FRONT_DATABASE_READ_REPLICA_URI="${FRONT_DATABASE_READ_REPLICA_URI:-$FRONT_DATABASE_URI}"
-export CORE_DATABASE_URI="${CORE_DATABASE_URI:-postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/dust_api}"
+export CORE_DATABASE_URI="${CORE_DATABASE_URI:-postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/ruby_api}"
 export CORE_DATABASE_READ_REPLICA_URI="${CORE_DATABASE_READ_REPLICA_URI:-$CORE_DATABASE_URI}"
-export CONNECTORS_DATABASE_URI="${CONNECTORS_DATABASE_URI:-postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/dust_connectors}"
+export CONNECTORS_DATABASE_URI="${CONNECTORS_DATABASE_URI:-postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/ruby_connectors}"
 export CONNECTORS_DATABASE_READ_REPLICA_URI="${CONNECTORS_DATABASE_READ_REPLICA_URI:-$CONNECTORS_DATABASE_URI}"
-export OAUTH_DATABASE_URI="${OAUTH_DATABASE_URI:-postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/dust_oauth}"
+export OAUTH_DATABASE_URI="${OAUTH_DATABASE_URI:-postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/ruby_oauth}"
 
 export REDIS_URI="${REDIS_URI:-redis://${REDIS_HOST}:${REDIS_PORT}}"
 export REDIS_CACHE_URI="${REDIS_CACHE_URI:-$REDIS_URI}"
@@ -71,28 +71,28 @@ export ELASTICSEARCH_URL="${ELASTICSEARCH_URL:-http://${ELASTICSEARCH_HOST}:${EL
 export QDRANT_CLUSTER_0_URL="${QDRANT_CLUSTER_0_URL:-http://${QDRANT_HTTP_HOST}:${QDRANT_GRPC_PORT}}"
 # QdrantClients::build() errors out when the key is unset, even though the local
 # single-node Qdrant runs without authentication.
-export QDRANT_CLUSTER_0_API_KEY="${QDRANT_CLUSTER_0_API_KEY:-dust-dev-local}"
+export QDRANT_CLUSTER_0_API_KEY="${QDRANT_CLUSTER_0_API_KEY:-ruby-dev-local}"
 export QDRANT_USE_SHARDING="${QDRANT_USE_SHARDING:-false}"
 
 export CORE_API="${CORE_API:-http://localhost:3001}"
 export CORE_PORT="${CORE_PORT:-3001}"
-export DUST_FRONT_API="${DUST_FRONT_API:-http://localhost:3000}"
-export DUST_FRONT_INTERNAL_API="${DUST_FRONT_INTERNAL_API:-http://localhost:3000}"
-export DUST_INTERNAL_API_URL="${DUST_INTERNAL_API_URL:-http://localhost:3000}"
-export DUST_CLIENT_FACING_URL="${DUST_CLIENT_FACING_URL:-http://localhost:3000}"
-export DUST_PUBLIC_URL="${DUST_PUBLIC_URL:-http://localhost:3000}"
-export DUST_AUTH_REDIRECT_BASE_URL="${DUST_AUTH_REDIRECT_BASE_URL:-http://localhost:3000}"
-export NEXT_PUBLIC_DUST_API_URL="${NEXT_PUBLIC_DUST_API_URL:-http://localhost:3000}"
-export NEXT_PUBLIC_DUST_APP_URL="${NEXT_PUBLIC_DUST_APP_URL:-http://localhost:3011}"
-export NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL="${NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL:-http://localhost:3000}"
+export RUBY_FRONT_API="${RUBY_FRONT_API:-http://localhost:3000}"
+export RUBY_FRONT_INTERNAL_API="${RUBY_FRONT_INTERNAL_API:-http://localhost:3000}"
+export RUBY_INTERNAL_API_URL="${RUBY_INTERNAL_API_URL:-http://localhost:3000}"
+export RUBY_CLIENT_FACING_URL="${RUBY_CLIENT_FACING_URL:-http://localhost:3000}"
+export RUBY_PUBLIC_URL="${RUBY_PUBLIC_URL:-http://localhost:3000}"
+export RUBY_AUTH_REDIRECT_BASE_URL="${RUBY_AUTH_REDIRECT_BASE_URL:-http://localhost:3000}"
+export NEXT_PUBLIC_RUBY_API_URL="${NEXT_PUBLIC_RUBY_API_URL:-http://localhost:3000}"
+export NEXT_PUBLIC_RUBY_APP_URL="${NEXT_PUBLIC_RUBY_APP_URL:-http://localhost:3011}"
+export NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL="${NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL:-http://localhost:3000}"
 
 export NODE_ENV="${NODE_ENV:-development}"
-export SERVICE_ACCOUNT="${SERVICE_ACCOUNT:-/tmp/dust-dev-sa.json}"
-export BASH_ENV="${BASH_ENV:-/tmp/dust-shell-env.sh}"
+export SERVICE_ACCOUNT="${SERVICE_ACCOUNT:-/tmp/ruby-dev-sa.json}"
+export BASH_ENV="${BASH_ENV:-/tmp/ruby-shell-env.sh}"
 
 # front-api/esbuild.dev.ts binds the dev proxy to $HOSTNAME. Docker sets HOSTNAME to the
 # container id, so health checks against localhost:3000 never reach front-api.
-export HOSTNAME="${DUST_DEV_BIND_HOST:-0.0.0.0}"
+export HOSTNAME="${RUBY_DEV_BIND_HOST:-0.0.0.0}"
 
 export SHELL="${SHELL:-/bin/zsh}"
 export LANG="${LANG:-C.UTF-8}"
@@ -106,34 +106,34 @@ export CARGO_TERM_COLOR="${CARGO_TERM_COLOR:-always}"
 
 # Force local infra after a 1Password Environment is sourced (cloud URIs must lose).
 apply_local_overrides() {
-  export DUST_REPO_ROOT="${DUST_REPO_ROOT:-/workspace}"
+  export RUBY_REPO_ROOT="${RUBY_REPO_ROOT:-/workspace}"
   export NODE_ENV="development"
-  export SERVICE_ACCOUNT="${SERVICE_ACCOUNT:-/tmp/dust-dev-sa.json}"
+  export SERVICE_ACCOUNT="${SERVICE_ACCOUNT:-/tmp/ruby-dev-sa.json}"
 
   export POSTGRES_HOST="${POSTGRES_HOST:-localhost}"
   export POSTGRES_PORT="${POSTGRES_PORT:-5432}"
   export REDIS_HOST="${REDIS_HOST:-localhost}"
   export REDIS_PORT="${REDIS_PORT:-6379}"
 
-  export FRONT_DATABASE_URI="postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/dust_front"
+  export FRONT_DATABASE_URI="postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/ruby_front"
   export FRONT_DATABASE_READ_REPLICA_URI="$FRONT_DATABASE_URI"
-  export CORE_DATABASE_URI="postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/dust_api"
+  export CORE_DATABASE_URI="postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/ruby_api"
   export CORE_DATABASE_READ_REPLICA_URI="$CORE_DATABASE_URI"
-  export CONNECTORS_DATABASE_URI="postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/dust_connectors"
+  export CONNECTORS_DATABASE_URI="postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/ruby_connectors"
   export CONNECTORS_DATABASE_READ_REPLICA_URI="$CONNECTORS_DATABASE_URI"
-  export OAUTH_DATABASE_URI="postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/dust_oauth"
+  export OAUTH_DATABASE_URI="postgres://dev:dev@${POSTGRES_HOST}:${POSTGRES_PORT}/ruby_oauth"
 
   export REDIS_URI="redis://${REDIS_HOST}:${REDIS_PORT}"
   export REDIS_CACHE_URI="$REDIS_URI"
   export ELASTICSEARCH_URL="http://${ELASTICSEARCH_HOST:-localhost}:${ELASTICSEARCH_PORT:-9200}"
   export ELASTICSEARCH_USERNAME="${ELASTICSEARCH_USERNAME:-elastic}"
   export ELASTICSEARCH_PASSWORD="${ELASTICSEARCH_PASSWORD:-}"
-  export TEMPORAL_ADDRESS="${DUST_LOCAL_TEMPORAL_ADDRESS:-127.0.0.1:7233}"
+  export TEMPORAL_ADDRESS="${RUBY_LOCAL_TEMPORAL_ADDRESS:-127.0.0.1:7233}"
 
   export CORE_API="http://localhost:3001"
-  export DUST_FRONT_API="http://localhost:3000"
-  export DUST_FRONT_INTERNAL_API="http://localhost:3000"
-  export NEXT_PUBLIC_DUST_STATIC_WEBSITE_URL="http://localhost:3000"
+  export RUBY_FRONT_API="http://localhost:3000"
+  export RUBY_FRONT_INTERNAL_API="http://localhost:3000"
+  export NEXT_PUBLIC_RUBY_STATIC_WEBSITE_URL="http://localhost:3000"
 
   if [[ -n "${CODESPACE_NAME:-}" ]]; then
     BASE_API_URL="https://${CODESPACE_NAME}-3000.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
@@ -143,28 +143,28 @@ apply_local_overrides() {
     BASE_SPA_URL="http://localhost:3011"
   fi
   
-  export DUST_INTERNAL_API_URL=${BASE_API_URL}
-  export DUST_CLIENT_FACING_URL=${BASE_SPA_URL}
-  export DUST_PUBLIC_URL=${BASE_SPA_URL}
-  export DUST_AUTH_REDIRECT_BASE_URL=${BASE_API_URL}
-  export NEXT_PUBLIC_DUST_API_URL=${BASE_API_URL}
-  export NEXT_PUBLIC_DUST_APP_URL=${BASE_SPA_URL}
+  export RUBY_INTERNAL_API_URL=${BASE_API_URL}
+  export RUBY_CLIENT_FACING_URL=${BASE_SPA_URL}
+  export RUBY_PUBLIC_URL=${BASE_SPA_URL}
+  export RUBY_AUTH_REDIRECT_BASE_URL=${BASE_API_URL}
+  export NEXT_PUBLIC_RUBY_API_URL=${BASE_API_URL}
+  export NEXT_PUBLIC_RUBY_APP_URL=${BASE_SPA_URL}
 
   # Written by ensure-ngrok.sh once the local agent has a public URL. Read the
   # file only — do not query the agent here (env.sh is sourced via BASH_ENV often).
-  SBX_DEV_FRONT_URL_FILE="${SBX_DEV_FRONT_URL_FILE:-${DUST_INFRA_LOG_DIR:-/tmp/dust-infra}/sbx-dev-front-url}"
+  SBX_DEV_FRONT_URL_FILE="${SBX_DEV_FRONT_URL_FILE:-${RUBY_INFRA_LOG_DIR:-/tmp/ruby-infra}/sbx-dev-front-url}"
   if [ -f "${SBX_DEV_FRONT_URL_FILE}" ]; then
     export SBX_DEV_FRONT_URL="$(tr -d '\n' <"${SBX_DEV_FRONT_URL_FILE}")"
     # Agent-proxied sandbox traffic is redirected through the cloud egress
-    # proxy, whose default allowlist is dust.tt only. Adding the tunnel host to
+    # proxy, whose default allowlist is ruby.ad only. Adding the tunnel host to
     # the E2B allowlist is not enough — tear down in-sandbox nftables and use
-    # direct E2B egress so dsbx can reach the ngrok URL.
+    # direct E2B egress so rbx can reach the ngrok URL.
     export SBX_DEV_UNRESTRICTED_EGRESS="${SBX_DEV_UNRESTRICTED_EGRESS:-true}"
   fi
 
   # Viz tunnel so sandboxes can fetch frame-runtime from local viz (:3007).
   # Overrides VIZ_PUBLIC_URL only; NEXT_PUBLIC_VIZ_URL stays localhost for the SPA.
-  SBX_DEV_VIZ_URL_FILE="${SBX_DEV_VIZ_URL_FILE:-${DUST_INFRA_LOG_DIR:-/tmp/dust-infra}/sbx-dev-viz-url}"
+  SBX_DEV_VIZ_URL_FILE="${SBX_DEV_VIZ_URL_FILE:-${RUBY_INFRA_LOG_DIR:-/tmp/ruby-infra}/sbx-dev-viz-url}"
   if [ -f "${SBX_DEV_VIZ_URL_FILE}" ]; then
     export VIZ_PUBLIC_URL="$(tr -d '\n' <"${SBX_DEV_VIZ_URL_FILE}")"
     export SBX_DEV_UNRESTRICTED_EGRESS="${SBX_DEV_UNRESTRICTED_EGRESS:-true}"

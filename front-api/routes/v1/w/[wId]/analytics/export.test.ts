@@ -148,7 +148,7 @@ vi.mock("@app/lib/api/analytics/feedback_export", async () => ({
           createdAt: "2024-06-01 10:00:00",
           assistantId: "agent-1",
           assistantName: "TestAgent",
-          conversationUrl: "https://dust.tt/w/ws-1/conversation/conv-1",
+          conversationUrl: "https://app.ruby.ad/w/ws-1/conversation/conv-1",
           userId: "user-1",
           userEmail: "alice@example.com",
           thumb: "up",
@@ -295,7 +295,7 @@ describe("GET /api/v1/w/[wId]/analytics/export", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("text/csv");
     expect(response.headers.get("Content-Disposition")).toContain(
-      "dust_usage_metrics_2024-06-01_2024-06-30.csv"
+      "ruby_usage_metrics_2024-06-01_2024-06-30.csv"
     );
     const csv = await response.text();
     expect(csv).toContain("date,messages,conversations,activeUsers");
@@ -399,7 +399,7 @@ describe("GET /api/v1/w/[wId]/analytics/export", () => {
       createdAt: "2024-06-01 10:00:00",
       assistantId: "agent-1",
       assistantName: "TestAgent",
-      conversationUrl: "https://dust.tt/w/ws-1/conversation/conv-1",
+      conversationUrl: "https://app.ruby.ad/w/ws-1/conversation/conv-1",
       userId: "user-1",
       userEmail: "alice@example.com",
       thumb: "up",

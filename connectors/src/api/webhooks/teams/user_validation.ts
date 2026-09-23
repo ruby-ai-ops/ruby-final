@@ -75,7 +75,7 @@ export async function validateTeamsUser(
 
     await sendTextMessage(
       context,
-      "❌ You are not a member of this Dust workspace. Please contact your workspace administrator to get access."
+      "❌ You are not a member of this Ruby workspace. Please contact your workspace administrator to get access."
     );
     return null;
   }

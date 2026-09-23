@@ -49,9 +49,9 @@ import type { APIError } from "@app/types/error";
 import type { EnrichedSpaceType, SpaceType } from "@app/types/space";
 import type { LightWorkspaceType } from "@app/types/user";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { DATA_SOURCE_MIME_TYPE } from "@dust-tt/client";
-import type { MenuItem } from "@dust-tt/sparkle";
-import { cn, ScrollableDataTable, SearchInput } from "@dust-tt/sparkle";
+import { DATA_SOURCE_MIME_TYPE } from "@ruby-ai/client";
+import type { MenuItem } from "@ruby-ai/ui";
+import { cn, ScrollableDataTable, SearchInput } from "@ruby-ai/ui";
 import type { SortingState } from "@tanstack/table-core";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 

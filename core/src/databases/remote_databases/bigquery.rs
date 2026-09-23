@@ -700,7 +700,7 @@ impl RemoteDatabase for BigQueryRemoteDatabase {
 
         let allowed_tables: HashSet<String> = tables
             .iter()
-            .map(|table| table.name().replace("__DUST_DOT__", "."))
+            .map(|table| table.name().replace("__RUBY_DOT__", "."))
             .collect();
 
         let used_forbidden_tables: Vec<String> = plan
@@ -737,9 +737,9 @@ impl RemoteDatabase for BigQueryRemoteDatabase {
                     Err(anyhow!("Invalid opaque ID: {}", opaque_id))?
                 }
                 let (project_id, dataset_id, table_id) = (
-                    parts[0].replace("__DUST_DOT__", "."),
-                    parts[1].replace("__DUST_DOT__", "."),
-                    parts[2].replace("__DUST_DOT__", "."),
+                    parts[0].replace("__RUBY_DOT__", "."),
+                    parts[1].replace("__RUBY_DOT__", "."),
+                    parts[2].replace("__RUBY_DOT__", "."),
                 );
 
                 self.client

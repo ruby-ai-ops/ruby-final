@@ -41,7 +41,7 @@ async function createPatchableAgent({
     description: "Initial description",
     instructions: "Initial instructions",
     instructionsHtml: "<p>Initial instructions</p>",
-    pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+    pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
     status: "active",
     scope: "hidden",
     model: {
@@ -362,7 +362,7 @@ describe("patchAgentConfigurationFromJSON", () => {
       description: "Initial description",
       instructions: "Initial instructions",
       instructionsHtml: "<p>Initial instructions</p>",
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "active",
       scope: "hidden",
       model: {

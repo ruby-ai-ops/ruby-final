@@ -44,8 +44,8 @@ const SUPPORTED_CONTENT_TYPES: Set<AllSupportedFileContentType> = new Set([
   "text/x-perl-script",
   "message/rfc822",
 
-  // Dust-specific content types.
-  "application/vnd.dust.section.json",
+  // Ruby-specific content types.
+  "application/vnd.ruby.section.json",
 ]);
 
 export function isSupportedForToolOutput(

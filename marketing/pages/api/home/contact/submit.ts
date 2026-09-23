@@ -33,7 +33,7 @@ function sendQualifiedLeadSlackNotification(
     `*Language:* ${formData.language}`,
     `*Headquarters Region:* ${formData.headquarters_region ?? "Not provided"}`,
     `*Company Headcount:* ${formData.company_headcount_form}`,
-    `*How they want to use Dust:* ${formData.landing_use_cases ?? "Not provided"}`,
+    `*How they want to use Ruby:* ${formData.landing_use_cases ?? "Not provided"}`,
     `*UTM Source:* ${tracking.utm_source ?? "Not tracked"}`,
     `*GCLID:* ${tracking.gclid ?? "Not tracked"}`,
     `*LinkedIn Click ID:* ${tracking.li_fat_id ?? "Not tracked"}`,
@@ -73,7 +73,7 @@ export default async function handler(
   const tracking = TrackingParamsSchema.parse(req.body.tracking ?? {});
   const { pageUri: rawPageUri, pageName: rawPageName } = req.body;
   const pageUri = isString(rawPageUri) ? rawPageUri : "";
-  const pageName = isString(rawPageName) ? rawPageName : "Contact Dust";
+  const pageName = isString(rawPageName) ? rawPageName : "Contact Ruby";
 
   // Extract and validate domain
   const domain = extractDomain(formData.email);
@@ -93,7 +93,7 @@ export default async function handler(
       success: false,
       isQualified: false,
       error:
-        "Please use a work email address. To try Dust for free, visit dust.tt/sign-up.",
+        "Please use a work email address. To try Ruby for free, visit ruby.ad/sign-up.",
     });
   }
 

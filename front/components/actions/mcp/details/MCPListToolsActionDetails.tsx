@@ -5,7 +5,7 @@ import { getMcpServerViewDisplayName } from "@app/lib/actions/mcp_helper";
 import { isToolsetsResultResourceType } from "@app/lib/actions/mcp_internal_actions/output_schemas";
 import { useMCPServerViews } from "@app/lib/swr/mcp_servers";
 import { useSpaces } from "@app/lib/swr/spaces";
-import { Chip, Zap } from "@dust-tt/sparkle";
+import { Chip, Zap } from "@ruby-ai/ui";
 
 export function MCPListToolsActionDetails({
   owner,

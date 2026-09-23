@@ -1,7 +1,7 @@
 /**
  * Enqueue the consumption attribution + Elasticsearch indexing workflow for historical agent
  * messages. Run once in each region after the consumption analytics index and V3 analytics worker
- * have been deployed, and after agent step content dustRunIds have been backfilled.
+ * have been deployed, and after agent step content rubyRunIds have been backfilled.
  *
  * Before enqueueing each batch, the script classifies any run usages whose usageType is still null.
  * It reconstructs the same billing classification as the live path from the triggering user
@@ -61,7 +61,7 @@ const TimestampSchema = z.string().datetime({ offset: true });
 
 type AgentMessageBackfillCandidate = {
   agentMessageModelId: ModelId;
-  dustRunIds: string[];
+  rubyRunIds: string[];
   message: AgentMessageRef;
   usageType: UsageType;
 };
@@ -171,12 +171,12 @@ async function listAgentMessageRefs({
       message.parentId
     )?.userMessage;
     assert(triggeringUserMessage, "Triggering user message was not joined");
-    const dustRunIds = [...new Set(agentMessage.runIds ?? [])];
+    const rubyRunIds = [...new Set(agentMessage.runIds ?? [])];
     const origin = triggeringUserMessage.userContextOrigin;
 
     return {
       agentMessageModelId: agentMessage.id,
-      dustRunIds,
+      rubyRunIds,
       message: {
         agentMessageId: message.sId,
         conversationId: conversation.sId,
@@ -201,31 +201,31 @@ async function backfillMissingRunUsageTypes({
   candidates: AgentMessageBackfillCandidate[];
   workspace: LightWorkspaceType;
 }): Promise<number> {
-  const usageTypeByDustRunId = new Map<string, UsageType>();
+  const usageTypeByRubyRunId = new Map<string, UsageType>();
   for (const candidate of candidates) {
-    for (const dustRunId of candidate.dustRunIds) {
-      const existingUsageType = usageTypeByDustRunId.get(dustRunId);
+    for (const rubyRunId of candidate.rubyRunIds) {
+      const existingUsageType = usageTypeByRubyRunId.get(rubyRunId);
       assert(
         !existingUsageType || existingUsageType === candidate.usageType,
-        `Run ${dustRunId} has conflicting usage classifications`
+        `Run ${rubyRunId} has conflicting usage classifications`
       );
-      usageTypeByDustRunId.set(dustRunId, candidate.usageType);
+      usageTypeByRubyRunId.set(rubyRunId, candidate.usageType);
     }
   }
-  if (usageTypeByDustRunId.size === 0) {
+  if (usageTypeByRubyRunId.size === 0) {
     return 0;
   }
 
   const runs = await RunModel.findAll({
-    attributes: ["id", "dustRunId"],
+    attributes: ["id", "rubyRunId"],
     where: {
-      dustRunId: { [Op.in]: [...usageTypeByDustRunId.keys()] },
+      rubyRunId: { [Op.in]: [...usageTypeByRubyRunId.keys()] },
       workspaceId: workspace.id,
     },
   });
   const runModelIdsByUsageType = new Map<UsageType, ModelId[]>();
   for (const run of runs) {
-    const usageType = usageTypeByDustRunId.get(run.dustRunId);
+    const usageType = usageTypeByRubyRunId.get(run.rubyRunId);
     assert(usageType, "Fetched run has no usage classification");
     const runModelIds = runModelIdsByUsageType.get(usageType) ?? [];
     runModelIds.push(run.id);

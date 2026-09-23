@@ -27,8 +27,8 @@ import {
   INTERNAL_MIME_TYPES,
   slugify,
 } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import type { Client } from "@microsoft/microsoft-graph-client";
 import type {
   ColumnDefinition,
@@ -397,7 +397,7 @@ async function upsertListInDb(
 }
 
 /**
- * Syncs a single SharePoint list into a Dust table.
+ * Syncs a single SharePoint list into a Ruby table.
  *
  * When `skipIfUnchanged` is set (incremental sync), the list is only re-synced
  * if its `lastModifiedDateTime` is newer than the last time we upserted it.

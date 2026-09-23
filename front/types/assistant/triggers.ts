@@ -135,7 +135,7 @@ export function isValidTriggerStatus(status: string): status is TriggerStatus {
 }
 
 // Who may set or clear a status: the trigger's editor, only an admin, or only
-// Dust's bulk jobs (workspace relocation, plan downgrade).
+// Ruby's bulk jobs (workspace relocation, plan downgrade).
 export type TriggerStatusOwner = "editor" | "admin" | "system";
 
 export function getTriggerStatusOwner(
@@ -170,7 +170,7 @@ export type WebhookRequestTriggerStatus =
   (typeof WEBHOOK_REQUEST_TRIGGER_STATUSES)[number];
 
 // Who created the trigger: the user themselves, an agent through the schedule
-// management tool, or Dust provisioning it on the user's behalf.
+// management tool, or Ruby provisioning it on the user's behalf.
 export type TriggerOrigin = "user" | "agent" | "system";
 
 const TriggerStatusSchema = z.enum(TRIGGER_STATUSES);

@@ -1,12 +1,12 @@
 export {
-  DustFileSystem,
-  DustFileSystemError,
+  RubyFileSystem,
+  RubyFileSystemError,
   parseScopedPrefix,
   sanitizeFileSystemName,
-} from "@app/lib/api/file_system/dust_file_system";
+} from "@app/lib/api/file_system/ruby_file_system";
 export type { FileSystemEntry } from "@app/types/api/file_system/types";
 export type {
-  DustFileSystemErrorCode,
+  RubyFileSystemErrorCode,
   FileSystemMount,
 } from "@app/types/file_system";
 export {

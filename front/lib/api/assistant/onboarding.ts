@@ -213,8 +213,8 @@ function buildOnboardingPrompt(options: {
     ? `\n## LANGUAGE\n\nYou MUST respond in ${options.language}. All your messages, including greetings, instructions, and button labels, must be in ${options.language}.\n`
     : "";
 
-  return `<dust_system>
-You are onboarding a brand-new user to Dust.
+  return `<ruby_system>
+You are onboarding a brand-new user to Ruby.
 ${languageInstruction}${userContext}
 
 ## CRITICAL RULES
@@ -288,7 +288,7 @@ ${firstMessageSection}
 ## HANDLING SUBSEQUENT MESSAGES
 
 ### When user already has something in mind
-If the user says they already have an idea of what they want to do with Dust (e.g., "I already have an idea", "I know what I want to do"):
+If the user says they already have an idea of what they want to do with Ruby (e.g., "I already have an idea", "I know what I want to do"):
 1. Acknowledge enthusiastically (one line)
 2. Ask them what they'd like to accomplish - be genuinely curious and helpful
 3. End with a quick reply to go back to tool setup if they change their mind
@@ -314,7 +314,7 @@ Example ending:
 
 ### When user skips ALL tools
 1. Acknowledge (one line)
-2. Mention Dust can still help with: web search, creating charts, answering questions
+2. Mention Ruby can still help with: web search, creating charts, answering questions
 3. End with quick replies
 
 Example ending:
@@ -338,7 +338,7 @@ If the user says they already connected a tool (e.g., "I already connected Gmail
 
 **Important:** Don't assume which specific tool they connected - use toolset_listConfiguredTools to discover it from the suggested list.
 
-</dust_system>`;
+</ruby_system>`;
 }
 
 function buildFirstMessageWithToolSetup(
@@ -354,17 +354,17 @@ Recommended tools to setup for this user:
 ${toolsWithDescriptions}
 
 Write a SHORT welcome message (3-4 lines max):
-1. "# Welcome to Dust 👋" (or similar short greeting)
+1. "# Welcome to Ruby 👋" (or similar short greeting)
 2. One sentence offering to help - either by connecting tools OR by helping with whatever they want to achieve
 3. Briefly mention the recommended tool(s) as a suggestion, not a requirement
 4. End with the tool setup cards AND an option for users who already know what they want to do
 
 You MUST end your message EXACTLY like this:
 ${toolSetupDirectives}
-:quickReply[I have something in mind]{message="I already have an idea of what I want to do with Dust"} :quickReply[Skip for now]{message="I'd like to skip connecting tools for now"}
+:quickReply[I have something in mind]{message="I already have an idea of what I want to do with Ruby"} :quickReply[Skip for now]{message="I'd like to skip connecting tools for now"}
 
 **DO NOT:**
-- Explain what Dust is at length
+- Explain what Ruby is at length
 - List features or capabilities beyond the tools
 - Invent use cases or scenarios specific to their role
 - Promise cross-tool functionality
@@ -385,8 +385,8 @@ The user already has ${toolName} connected. **Immediately use the ${toolId} tool
 
 Query guidance: ${queryGuidance}
 
-1. Welcome the user to Dust and mention you noticed ${toolName} was already connected, so you went ahead and checked it
-   (e.g., "Welcome to Dust! 👋 I noticed you already have ${toolName} connected, so I took a look...")
+1. Welcome the user to Ruby and mention you noticed ${toolName} was already connected, so you went ahead and checked it
+   (e.g., "Welcome to Ruby! 👋 I noticed you already have ${toolName} connected, so I took a look...")
 2. Share what you found in a conversational way (e.g., "I see you have an email from Roger 2 days ago...")
 3. End with **actionable quick replies based on the actual data found** (e.g., "Draft a reply to Roger", "Summarize this email")
 4. Include "Automate this" as one option among the quick replies
@@ -444,7 +444,7 @@ export function buildOnboardingFollowUpPrompt(
     ? `\n**IMPORTANT:** You MUST respond in ${language}. All your messages must be in ${language}.\n`
     : "";
 
-  return `<dust_system>
+  return `<ruby_system>
 The user just connected ${toolName}.
 ${languageInstruction}
 **Immediately use the ${toolId} tool** to fetch real data and show personalized suggestions.
@@ -452,7 +452,7 @@ ${languageInstruction}
 Query guidance: ${queryGuidance}
 
 Briefly confirm the connection (one line + emoji), share what you found, end with **actionable quick replies based on the data** (include automation as one option).
-</dust_system>`;
+</ruby_system>`;
 }
 
 export async function createOnboardingConversationIfNeeded(
@@ -557,7 +557,7 @@ export async function createOnboardingConversationIfNeeded(
     .filter((name): name is InternalMCPServerNameType => name !== null);
 
   const conversationResource = await createConversation(auth, {
-    title: "Welcome to Dust",
+    title: "Welcome to Ruby",
     visibility: "unlisted",
     spaceId: null,
   });
@@ -586,7 +586,7 @@ export async function createOnboardingConversationIfNeeded(
     content: onboardingSystemMessage,
     mentions: [
       {
-        configurationId: GLOBAL_AGENTS_SID.DUST,
+        configurationId: GLOBAL_AGENTS_SID.RUBY,
       },
     ],
     context,

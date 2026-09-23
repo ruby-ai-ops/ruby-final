@@ -1,5 +1,5 @@
 use anyhow::Result;
-use dust::{oauth::store::PostgresOAuthStore, stores::postgres::PostgresStore};
+use ruby::{oauth::store::PostgresOAuthStore, stores::postgres::PostgresStore};
 use tokio;
 
 #[tokio::main]

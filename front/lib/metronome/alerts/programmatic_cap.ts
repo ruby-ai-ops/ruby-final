@@ -84,7 +84,7 @@ type ProgrammaticCapAlertState = {
  * warning at 80%, low at cap-100, critical at cap-10). Returns `null` for any
  * alert that isn't configured. Used by debug tooling to recompute the
  * programmatic credit state (see `expectedProgrammaticCreditStateFromAlerts`,
- * which ignores `warning` since it's notification-only) and by Poke to
+ * which ignores `warning` since it's notification-only) and by Admin to
  * deep-link each alert.
  */
 export async function getMetronomeProgrammaticCapAlertStates({

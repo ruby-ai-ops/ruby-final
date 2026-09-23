@@ -4,7 +4,7 @@ import { RecommendationItem } from "@app/components/activation/RecommendationIte
 import { usePodConversations } from "@app/hooks/conversations";
 import { useActivationRecommendations } from "@app/lib/swr/activation";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, Spinner } from "@dust-tt/sparkle";
+import { Button, Spinner } from "@ruby-ai/ui";
 import { useState } from "react";
 
 export interface RecommendationSectionCopy {

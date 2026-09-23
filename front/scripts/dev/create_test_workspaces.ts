@@ -37,7 +37,7 @@ async function createTestWorkspaces(
     throw new Error(`User with ID ${userId} not found.`);
   }
 
-  if (!user.isDustSuperUser) {
+  if (!user.isRubySuperUser) {
     throw new Error(`User with ID ${userId} is not a super user.`);
   }
 

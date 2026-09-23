@@ -1,49 +1,49 @@
-import { DustAppRouterLayout } from "@spa/app/layouts/DustAppRouterLayout";
+import { RubyAppRouterLayout } from "@spa/app/layouts/RubyAppRouterLayout";
 import { RequireFeatureFlagLayout } from "@spa/app/layouts/RequireFeatureFlagLayout";
 import { withSuspense } from "@spa/app/routes/withSuspense";
 import type { RouteObject } from "react-router-dom";
 
 const AppSettingsPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/apps/AppSettingsPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/apps/AppSettingsPage"),
   "AppSettingsPage"
 );
 const AppSpecificationPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/spaces/apps/AppSpecificationPage"),
+    import("@ruby-ai/front/components/pages/spaces/apps/AppSpecificationPage"),
   "AppSpecificationPage"
 );
 const AppViewPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/apps/AppViewPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/apps/AppViewPage"),
   "AppViewPage"
 );
 const DatasetPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/apps/DatasetPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/apps/DatasetPage"),
   "DatasetPage"
 );
 const DatasetsPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/apps/DatasetsPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/apps/DatasetsPage"),
   "DatasetsPage"
 );
 const NewDatasetPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/apps/NewDatasetPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/apps/NewDatasetPage"),
   "NewDatasetPage"
 );
 const RunPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/apps/RunPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/apps/RunPage"),
   "RunPage"
 );
 const RunsPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/spaces/apps/RunsPage"),
+  () => import("@ruby-ai/front/components/pages/spaces/apps/RunsPage"),
   "RunsPage"
 );
 
 export const appsRoutes: RouteObject[] = [
   {
-    element: <RequireFeatureFlagLayout flag="legacy_dust_apps" />,
+    element: <RequireFeatureFlagLayout flag="legacy_ruby_apps" />,
     children: [
       {
         path: "spaces/:spaceId/apps/:aId",
-        element: <DustAppRouterLayout />,
+        element: <RubyAppRouterLayout />,
         children: [
           { index: true, element: <AppViewPage /> },
           { path: "settings", element: <AppSettingsPage /> },

@@ -135,7 +135,7 @@ export class WebhookForwarder {
       method,
       headers: {
         "Content-Type": headers["content-type"] || "application/json",
-        "x-dust-clientid": "webhook-router",
+        "x-ruby-clientid": "webhook-router",
         authorization: headers["authorization"] || "",
       },
       body: typeof body === "string" ? body : JSON.stringify(body),

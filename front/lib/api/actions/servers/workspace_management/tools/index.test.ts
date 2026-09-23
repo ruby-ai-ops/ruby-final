@@ -240,7 +240,7 @@ describe("workspace_management tools", () => {
         removed.sId
       ))!.archive(authenticator);
 
-      // The default view also carries Dust's global agents, so assert on membership.
+      // The default view also carries Ruby's global agents, so assert on membership.
       const active = await callTool("list_agents", {}, authenticator);
       expect(active).toContain(kept.name);
       expect(active).not.toContain("Removed Agent");

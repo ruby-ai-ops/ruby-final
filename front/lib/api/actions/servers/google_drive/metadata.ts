@@ -572,7 +572,7 @@ export const GOOGLE_DRIVE_WRITE_TOOLS_METADATA = [
         .string()
         .optional()
         .describe(
-          'The Google Workspace domain to share with (e.g. "dust.tt"). Required when type is "domain".'
+          'The Google Workspace domain to share with (e.g. "ruby.ad"). Required when type is "domain".'
         ),
       allowFileDiscovery: z
         .boolean()
@@ -650,7 +650,7 @@ export const GOOGLE_DRIVE_WRITE_TOOLS_METADATA = [
   {
     name: "upload_file",
     description:
-      "Upload a file from the Dust conversation to Google Drive. Optionally specify a folder to upload into.",
+      "Upload a file from the Ruby conversation to Google Drive. Optionally specify a folder to upload into.",
     schema: {
       fileId: z
         .string()
@@ -701,7 +701,7 @@ function getGoogleDriveServerMetadata() {
         scope: GOOGLE_DRIVE_SCOPES,
       },
       icon: "DriveLogo",
-      documentationUrl: "https://docs.dust.tt/docs/google-drive",
+      documentationUrl: "https://docs.ruby.ad/docs/google-drive",
     },
     tools: ALL_TOOLS_METADATA,
   } as const satisfies ServerMetadata;

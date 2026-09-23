@@ -1,8 +1,8 @@
 import { honoApp } from "@front-api/app";
 import { describe, expect, it } from "vitest";
 
-// `config.getAppUrl()` / `config.getPokeAppUrl()` are mocked in vite.setup.ts to
-// "http://localhost:3000" and "http://localhost:3000/poke" respectively.
+// `config.getAppUrl()` / `config.getAdminAppUrl()` are mocked in vite.setup.ts to
+// "http://localhost:3000" and "http://localhost:3000/admin" respectively.
 
 describe("spaRedirect middleware", () => {
   it("redirects SPA paths to the main SPA app", async () => {
@@ -23,20 +23,20 @@ describe("spaRedirect middleware", () => {
     );
   });
 
-  it("redirects /poke/* to the poke SPA app", async () => {
-    const response = await honoApp.request("/poke/admin");
+  it("redirects /admin/* to the admin SPA app", async () => {
+    const response = await honoApp.request("/admin/admin");
 
     expect(response.status).toBe(302);
     expect(response.headers.get("location")).toBe(
-      "http://localhost:3000/poke/admin"
+      "http://localhost:3000/admin/admin"
     );
   });
 
-  it("redirects the bare /poke path to the poke SPA app", async () => {
-    const response = await honoApp.request("/poke");
+  it("redirects the bare /admin path to the admin SPA app", async () => {
+    const response = await honoApp.request("/admin");
 
     expect(response.status).toBe(302);
-    expect(response.headers.get("location")).toBe("http://localhost:3000/poke");
+    expect(response.headers.get("location")).toBe("http://localhost:3000/admin");
   });
 
   it("does not redirect non-SPA paths", async () => {

@@ -1,8 +1,8 @@
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import type { APIErrorWithContentfulStatusCode } from "@app/types/error";
 
 export function modelTierErrorToApiError(
-  error: DustError
+  error: RubyError
 ): APIErrorWithContentfulStatusCode {
   switch (error.code) {
     case "invalid_request_error":

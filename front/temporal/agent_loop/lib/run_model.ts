@@ -18,7 +18,7 @@ import {
   constructPromptMultiActions,
   renderToolUseDisabledUserMessage,
 } from "@app/lib/api/assistant/generation";
-import { buildToolsetsContext } from "@app/lib/api/assistant/global_agents/configurations/dust/dust";
+import { buildToolsetsContext } from "@app/lib/api/assistant/global_agents/configurations/ruby/ruby";
 import {
   globalAgentInjectsToolsets,
   globalAgentInjectsUserContext,
@@ -401,7 +401,7 @@ export async function runModel(
       message: string;
       metadata: Record<string, string | number | boolean> | null;
     },
-    dustRunId?: string
+    rubyRunId?: string
   ): Promise<void> {
     // Check if this is a multi_actions_error that hit max retries
     const logMessage = `Agent error: ${error.message}`;
@@ -420,7 +420,7 @@ export async function runModel(
         configurationId: agentConfiguration.sId,
         messageId: agentMessage.sId,
         error,
-        runIds: dustRunId ? [...runIds, dustRunId] : runIds,
+        runIds: rubyRunId ? [...runIds, rubyRunId] : runIds,
       },
       agentMessage,
       conversation,
@@ -892,7 +892,7 @@ export async function runModel(
     switch (error.type) {
       case "shouldRetryMessage": {
         const { type, isRetryable } = error.content;
-        const errorDustRunId = llm?.getTraceId();
+        const errorRubyRunId = llm?.getTraceId();
         const currentAttempt = Context.current().info.attempt;
         const plan = auth.getNonNullablePlan();
 
@@ -948,7 +948,7 @@ export async function runModel(
                 category: LLM_ERROR_TYPE_TO_CATEGORY[type],
               },
             },
-            errorDustRunId
+            errorRubyRunId
           );
           return null;
         }
@@ -966,7 +966,7 @@ export async function runModel(
     }
   }
 
-  const { dustRunId, nativeChainOfThought, output, stopReason } =
+  const { rubyRunId, nativeChainOfThought, output, stopReason } =
     getOutputFromActionResponse.value;
 
   // Create a new object to avoid mutation
@@ -1010,8 +1010,8 @@ export async function runModel(
       type: content.type,
       value: content,
       // Same run id appended to AgentMessage.runIds below. Lets consumption attribution join a
-      // RunUsage (RunModel.dustRunId) to the contents this run emitted.
-      dustRunId,
+      // RunUsage (RunModel.rubyRunId) to the contents this run emitted.
+      rubyRunId,
     }))
   );
 
@@ -1073,7 +1073,7 @@ export async function runModel(
 
         return {
           actions: [],
-          runId: dustRunId,
+          runId: rubyRunId,
           functionCallStepContentIds: updatedFunctionCallStepContentIds,
           stepContexts: [],
           retryWithoutTools: true,
@@ -1111,7 +1111,7 @@ export async function runModel(
                 errorTitle: "No answer generated",
               },
             },
-        dustRunId
+        rubyRunId
       );
       return null;
     }
@@ -1143,7 +1143,7 @@ export async function runModel(
         messageId: agentMessage.sId,
         message: updatedAgentMessage,
         // TODO(OBSERVABILITY 2025-11-04): Create a row in run with the associated usage.
-        runIds: [...runIds, dustRunId],
+        runIds: [...runIds, rubyRunId],
       },
       agentMessage,
       conversation,
@@ -1155,7 +1155,7 @@ export async function runModel(
 
     return {
       actions: [],
-      runId: dustRunId,
+      runId: rubyRunId,
       functionCallStepContentIds: updatedFunctionCallStepContentIds,
       stepContexts: [],
     };
@@ -1278,10 +1278,10 @@ export async function runModel(
         timeFrame: null,
         jsonSchema: null,
         secretName: null,
-        dustProject: null,
+        rubyProject: null,
         additionalConfiguration: {},
         mcpServerViewId: mcpServerView.sId,
-        dustAppConfiguration: null,
+        rubyAppConfiguration: null,
         internalMCPServerId: mcpServerView.internalMCPServerId,
         inputSchema: {},
         availability: "auto_hidden_builder",
@@ -1331,7 +1331,7 @@ export async function runModel(
 
   return {
     actions,
-    runId: dustRunId,
+    runId: rubyRunId,
     functionCallStepContentIds: updatedFunctionCallStepContentIds,
     stepContexts,
   };

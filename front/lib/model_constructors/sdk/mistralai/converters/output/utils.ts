@@ -277,7 +277,7 @@ export async function* rawOutputToEvents(
     switch (finishReason) {
       case CompletionResponseStreamChoiceFinishReason.Length:
         yield buildErrorEvent({
-          errorSource: "dust",
+          errorSource: "ruby",
           metadata,
           type: "stop_error",
           message: "The maximum response length was reached.",
@@ -328,7 +328,7 @@ function finishReasonToErrorEvent(
     case ChatCompletionChoiceFinishReason.Length:
     case ChatCompletionChoiceFinishReason.ModelLength:
       return buildErrorEvent({
-        errorSource: "dust",
+        errorSource: "ruby",
         metadata,
         type: "stop_error",
         message: "The maximum response length was reached.",

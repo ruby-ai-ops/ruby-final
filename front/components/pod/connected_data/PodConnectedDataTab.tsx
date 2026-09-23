@@ -16,9 +16,9 @@ import type {
 } from "@app/types/data_source_view";
 import type { WorkspaceType } from "@app/types/user";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { DATA_SOURCE_MIME_TYPE } from "@dust-tt/client";
-import type { BreadcrumbsItem } from "@dust-tt/sparkle";
-import { Breadcrumbs, CloudArrowLeftRight, Spinner } from "@dust-tt/sparkle";
+import { DATA_SOURCE_MIME_TYPE } from "@ruby-ai/client";
+import type { BreadcrumbsItem } from "@ruby-ai/ui";
+import { Breadcrumbs, CloudArrowLeftRight, Spinner } from "@ruby-ai/ui";
 import { useCallback, useMemo } from "react";
 
 // Module-level so the reference passed to `useQueryParams` stays stable.

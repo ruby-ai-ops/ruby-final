@@ -5,7 +5,7 @@ import { SkillInfoTab } from "@app/components/skills/SkillInfoTab";
 import {
   getSkillAvatarIcon,
   hasRelations,
-  isDustProvidedSkill,
+  isRubyProvidedSkill,
 } from "@app/lib/skill";
 import { SKILL_AVAILABILITY_DISPLAY } from "@app/lib/skills/labels";
 import type { GetSkillsWithRelationsResponseBody } from "@app/types/api/skills";
@@ -26,7 +26,7 @@ import {
   TabsList,
   TabsTrigger,
   Users01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 // Skill details rendering shared by the surfaces that display a skill: the
@@ -107,7 +107,7 @@ export function SkillDetailsContent({
   // SkillEditorsTab hides the remove column for them), except for global
   // skills which have no editor group.
   const showEditorsTabs =
-    skill.status !== "suggested" && !isDustProvidedSkill(skill);
+    skill.status !== "suggested" && !isRubyProvidedSkill(skill);
 
   if (showEditorsTabs) {
     return (

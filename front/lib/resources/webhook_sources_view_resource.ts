@@ -1,5 +1,5 @@
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { WebhookSourcesViewModel } from "@app/lib/models/agent/triggers/webhook_sources_view";
 import { ResourceWithSpace } from "@app/lib/resources/resource_with_space";
 import { SpaceResource } from "@app/lib/resources/space_resource";
@@ -78,7 +78,7 @@ export class WebhookSourcesViewResource extends ResourceWithSpace<WebhookSources
       blob.webhookSourceId
     );
     if (!webhookSource) {
-      throw new DustError(
+      throw new RubyError(
         "webhook_source_not_found",
         "Webhook source not found for the new view."
       );
@@ -360,10 +360,10 @@ export class WebhookSourcesViewResource extends ResourceWithSpace<WebhookSources
   public async updateName(
     auth: Authenticator,
     name: string
-  ): Promise<Result<number, DustError<"unauthorized">>> {
+  ): Promise<Result<number, RubyError<"unauthorized">>> {
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError("unauthorized", "Not allowed to update name.")
+        new RubyError("unauthorized", "Not allowed to update name.")
       );
     }
 
@@ -437,10 +437,10 @@ export class WebhookSourcesViewResource extends ResourceWithSpace<WebhookSources
     auth: Authenticator,
     description?: string,
     icon?: string
-  ): Promise<Result<number, DustError<"unauthorized">>> {
+  ): Promise<Result<number, RubyError<"unauthorized">>> {
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Not allowed to update description and icon."
         )

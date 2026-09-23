@@ -12,7 +12,7 @@ import {
 } from "@app/components/data_source_view/context/utils";
 import { useInfiniteDataSourceViewContentNodes } from "@app/lib/swr/data_source_views";
 import type { ContentNodesViewType } from "@app/types/connectors/content_nodes";
-import { ArrowLeft, EmptyCTA, EmptyCTAButton, Spinner } from "@dust-tt/sparkle";
+import { ArrowLeft, EmptyCTA, EmptyCTAButton, Spinner } from "@ruby-ai/ui";
 import { useCallback, useMemo } from "react";
 
 const PAGE_SIZE = 50;

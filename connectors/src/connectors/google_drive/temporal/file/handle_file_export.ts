@@ -25,7 +25,7 @@ import type {
   GoogleDriveObjectType,
   ModelId,
 } from "@connectors/types";
-import { Ok } from "@dust-tt/client";
+import { Ok } from "@ruby-ai/client";
 import type { OAuth2Client } from "googleapis-common";
 import { GaxiosError } from "googleapis-common";
 

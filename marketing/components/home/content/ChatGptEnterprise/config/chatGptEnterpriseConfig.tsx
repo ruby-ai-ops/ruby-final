@@ -35,14 +35,14 @@ interface WhyReason {
 
 interface ComparisonTableRow {
   name: string;
-  dust: string;
+  ruby: string;
   ms: string;
   google: string;
   claude: string;
   perplexity: string;
 }
 
-interface DustProConfig {
+interface RubyProConfig {
   pros: string[];
   testimonials: HeroTestimonial[];
 }
@@ -72,7 +72,7 @@ export interface ChatGptEnterpriseConfig {
     title: string;
     rows: ComparisonTableRow[];
   };
-  dustDeepDive: DustProConfig;
+  rubyDeepDive: RubyProConfig;
   cta: CTAConfig;
 }
 
@@ -88,22 +88,22 @@ export const chatGptEnterpriseConfig: ChatGptEnterpriseConfig = {
       </>
     ),
     subtitle:
-      "See why fast moving companies picked Dust to scale AI at their company.",
+      "See how Ruby connects team agents to company knowledge and tools.",
     ctaButtonText: "See the Comparison",
-    ctaButtonLink: "#dust-deep-dive",
+    ctaButtonLink: "#ruby-deep-dive",
     secondaryButtonText: "Talk to an Expert",
     secondaryButtonLink: "/home/contact",
     testimonials: [
       {
         quote:
-          "Dust is the most impactful software we've adopted since building Clay.",
+          "Ruby is the most impactful software we've adopted since building Clay.",
         company: "Clay",
         author: "Everett Berry, Head of GTM Engineering",
         image: "/static/landing/chatgpt-enterprise/everett.png",
       },
       {
         quote:
-          "We use Dust to query our internal API documentation instantly. It's magic.",
+          "We use Ruby to query our internal API documentation instantly. It's magic.",
         company: "Vanta",
         author: "Daniel Baralt, Head of AI Solutions",
         image: "/static/landing/chatgpt-enterprise/martin.png",
@@ -118,12 +118,12 @@ export const chatGptEnterpriseConfig: ChatGptEnterpriseConfig = {
     ],
   },
 
-  logoBarTitle: "2,000+ teams already building with Dust",
+  logoBarTitle: "2,000+ teams already building with Ruby",
 
   whatIs: {
     title: "What is ChatGPT Enterprise?",
     description:
-      "ChatGPT Enterprise is OpenAI's business version of ChatGPT, designed to deploy AI without compromising security. It gives you access to their most capable models with enterprise-grade admin tools.",
+      "ChatGPT Enterprise is a business AI workspace designed for organizations that need centralized administration and access controls.",
     catchLine: (
       <>
         But there&apos;s a catch: It&apos;s fundamentally a{" "}
@@ -136,20 +136,20 @@ export const chatGptEnterpriseConfig: ChatGptEnterpriseConfig = {
         variant: "warning",
         items: [
           { text: "Isolated chat threads for each employee" },
-          { text: "Locked into a single AI model (OpenAI only)" },
+          { text: "Limited flexibility across team workflows" },
           {
             text: "Limited, read-only connections to your data (no fully open MCP integrations)",
           },
         ],
       },
       {
-        title: "The Dust Approach",
+        title: "The Ruby Approach",
         variant: "positive",
         items: [
           { text: "Shared AI agents acting as team infrastructure" },
-          { text: "Model-agnostic (GPT-5, Claude, Gemini)" },
+          { text: "Team agents connected to company knowledge and tools" },
           {
-            text: "Deep, continuous sync with 50+ data sources via MCP",
+            text: "Connect approved company knowledge and tools to shared agents",
           },
         ],
       },
@@ -162,27 +162,27 @@ export const chatGptEnterpriseConfig: ChatGptEnterpriseConfig = {
       "ChatGPT Enterprise is fundamentally a single-player tool. It's great for individual productivity, but it doesn't create the compounding effect teams need at scale.",
     reasons: [
       {
-        title: "Single-model dependency creates risk",
+        title: "Limited flexibility across team workflows",
         description:
-          "OpenAI-only access means no Claude for coding, no Gemini for Google integration, and vulnerability to one vendor's roadmap.",
+          "Teams need workflows that can be configured around their company knowledge, tools, and operating practices.",
         iconColor: "amber",
       },
       {
         title: "Limited company data integration",
         description:
-          "ChatGPT Enterprise lacks deep connectors for critical systems like Salesforce, Zendesk, and Snowflake. Teams often manually upload context instead of working with live, synced knowledge.",
+          "Teams need a practical way to connect approved company knowledge and tools instead of manually moving context between systems.",
         iconColor: "red",
       },
       {
         title: "No specialized agents or workflows",
         description:
-          "While basic GPTs exist, teams can't build multi-step workflows, trigger automations, or create department-specific agents that execute actions across systems.",
+          "Basic assistants are not always enough for multi-step workflows or department-specific agents that support work across systems.",
         iconColor: "purple",
       },
       {
         title: "Generic capabilities for all teams",
         description:
-          "Marketing, sales, engineering, and support need different tools. ChatGPT's general-purpose design doesn't optimize for your team's specific needs, Dust gives teams AI Domain experts trained on your companies data/work.",
+          "Marketing, sales, engineering, and support need different workflows. Ruby lets teams configure agents around their company knowledge and ways of working.",
         iconColor: "blue",
       },
     ],
@@ -193,7 +193,7 @@ export const chatGptEnterpriseConfig: ChatGptEnterpriseConfig = {
     rows: [
       {
         name: "Starting price",
-        dust: "$29/user/month",
+        ruby: "Lite from $55/year",
         ms: "$21/user/month",
         google: "$14/user/month",
         claude: "Custom",
@@ -201,7 +201,7 @@ export const chatGptEnterpriseConfig: ChatGptEnterpriseConfig = {
       },
       {
         name: "Best for",
-        dust: "Specialized agents + company data",
+        ruby: "Specialized agents + company data",
         ms: "Microsoft ecosystem",
         google: "Google Workspace teams",
         claude: "Coding & long documents",
@@ -209,7 +209,7 @@ export const chatGptEnterpriseConfig: ChatGptEnterpriseConfig = {
       },
       {
         name: "Key differentiator",
-        dust: "Multi-model, 50+ integrations, workflow automation",
+        ruby: "Shared agents connected to company knowledge and tools",
         ms: "Native Office/Teams integration",
         google: "1M token context, Google app integration",
         claude: "Superior coding, 1M token context",
@@ -218,26 +218,26 @@ export const chatGptEnterpriseConfig: ChatGptEnterpriseConfig = {
     ],
   },
 
-  dustDeepDive: {
+  rubyDeepDive: {
     pros: [
-      "Model-agnostic prevents vendor lock-in (GPT-5, Sonnet 4.6, Gemini)",
+      "Team agents configured around company knowledge and workflows",
       "Build domain expert AI agents in minutes without an engineer",
       "Team collaboration that scales with shared agent instructions",
       "Agents execute actions across systems via MCP protocol",
-      "50+ native integrations (Slack, Notion, Salesforce, Zendesk)",
+      "Connect approved company tools and knowledge to shared team agents",
       "Interactive visualizations—Frames create live dashboards and data views",
     ],
     testimonials: [
       {
         quote:
-          "Dust is the most impactful software we've adopted since building Clay.",
+          "Ruby is the most impactful software we've adopted since building Clay.",
         company: "Clay",
         author: "Everett Berry, Head of GTM Engineering",
         image: "/static/landing/chatgpt-enterprise/everett.png",
       },
       {
         quote:
-          "We use Dust to query our internal API documentation instantly. It's magic.",
+          "We use Ruby to query our internal API documentation instantly. It's magic.",
         company: "Vanta",
         author: "Daniel Baralt, Head of AI Solutions",
         image: "/static/landing/chatgpt-enterprise/martin.png",
@@ -254,8 +254,7 @@ export const chatGptEnterpriseConfig: ChatGptEnterpriseConfig = {
 
   cta: {
     title: "Want AI that actually knows your company?",
-    subtitle:
-      "Join fast-moving builders like Clay, Vanta, and WhatNot who have already scaled their impact with Dust's connected AI agents.",
+    subtitle: "Build team agents around your company knowledge and workflows.",
     buttonText: "Schedule a Demo",
     buttonLink: "/home/contact",
   },

@@ -197,7 +197,7 @@ import { assertNever } from "@app/types/shared/utils/assert_never";
 //             return AgentProcessConfiguration;
 //           case "websearch_configuration":
 //             return AgentWebsearchConfiguration;
-//           case "dust_app_run_configuration":
+//           case "ruby_app_run_configuration":
 //             throw new Error("Unreachable");
 //           case "conversation_include_file_configuration":
 //             throw new Error("Unreachable");

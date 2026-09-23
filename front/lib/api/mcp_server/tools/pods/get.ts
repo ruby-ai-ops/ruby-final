@@ -1,7 +1,7 @@
 import { isContentNodeAttachmentType } from "@app/lib/api/assistant/conversation/attachments";
 import config from "@app/lib/api/config";
-import { DustFileSystem, SCOPED_PREFIX_POD } from "@app/lib/api/file_system";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { RubyFileSystem, SCOPED_PREFIX_POD } from "@app/lib/api/file_system";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { listProjectContextAttachments } from "@app/lib/api/projects/context";
 import { listNonArchivedMemberSpacesWithMetadata } from "@app/lib/api/projects/list";
 import { ProjectMetadataResource } from "@app/lib/resources/project_metadata_resource";
@@ -15,7 +15,7 @@ const inputSchema = {
 };
 
 export function registerPodsGetTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "get_pod",
     {
@@ -45,7 +45,7 @@ export function registerPodsGetTool(server: McpServer) {
           dataSourceViewId: node.nodeDataSourceViewId,
         }));
 
-      const fsResult = await DustFileSystem.forPod(auth, pod);
+      const fsResult = await RubyFileSystem.forPod(auth, pod);
       if (fsResult.isErr()) {
         return mcpError("Failed to initialise file system for this Pod.");
       }

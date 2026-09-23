@@ -13,8 +13,8 @@ import type { LightWorkspaceType } from "@app/types/user";
 // `setGrantedRole` is idempotent and re-syncs member roles (a no-op when they
 // already match).
 const LEGACY_ROLE_GROUP_NAMES: Record<string, GroupGrantableRole> = {
-  "dust-admins": "admin",
-  "dust-managers": "manager",
+  "ruby-admins": "admin",
+  "ruby-managers": "manager",
 };
 
 async function backfillWorkspaceGrantedRoles(

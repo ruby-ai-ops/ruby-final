@@ -20,7 +20,7 @@ import {
   Spinner,
   Stars02,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface PersonalUsageCardProps {
   owner: WorkspaceType;

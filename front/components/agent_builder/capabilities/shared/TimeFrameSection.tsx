@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Input,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useController, useFormContext } from "react-hook-form";
 
 const TIME_FRAME_UNITS = ["hour", "day", "week", "month", "year"] as const;

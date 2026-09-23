@@ -8,7 +8,7 @@ import { ExtensionMcpToolsSection } from "@app/components/workspace/ExtensionMcp
 import { LinkedSectionNotice } from "@app/components/workspace/LinkedSectionNotice";
 import { AuditLogsGovernanceSection } from "@app/components/workspace/settings/AuditLogsToggle";
 import { ConversationExternalNotificationsToggle } from "@app/components/workspace/settings/ConversationExternalNotificationsToggle";
-import { DustMcpServerSettingsItem } from "@app/components/workspace/settings/DustMcpServerSettingsItem";
+import { RubyMcpServerSettingsItem } from "@app/components/workspace/settings/RubyMcpServerSettingsItem";
 import { EmailAgentsToggle } from "@app/components/workspace/settings/EmailAgentsToggle";
 import { InactiveAgentArchival } from "@app/components/workspace/settings/InactiveAgentArchival";
 import { InteractiveContentSharing } from "@app/components/workspace/settings/InteractiveContentSharingToggle";
@@ -53,7 +53,7 @@ import {
   PuzzlePiece01,
   Robot,
   ShapesPlus,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
 // Frame governance permissions are only relevant when the workspace sharing policy actually
@@ -266,7 +266,7 @@ export const GovernancePage = () => {
               <EmailAgentsToggle owner={owner} />
               <ConversationExternalNotificationsToggle owner={owner} />
               <PrivateConversationUrlsToggle owner={owner} />
-              <DustMcpServerSettingsItem owner={owner} />
+              <RubyMcpServerSettingsItem owner={owner} />
               <ExtensionMcpToolsSection owner={owner} />
               <SlackPersonalFooterRemovalToggle owner={owner} />
               <WorkspaceAnalyticsToggle owner={owner} />

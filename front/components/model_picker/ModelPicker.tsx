@@ -32,7 +32,7 @@ import {
 import { useModelPickerMenuState } from "@app/components/model_picker/useModelPickerMenuState";
 import { useModelPickerModels } from "@app/components/model_picker/useModelPickerModels";
 import { getModelMakerLogo } from "@app/components/providers/types";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useClientType } from "@app/lib/context/clientType";
 import type { AgentModelConfigurationType } from "@app/types/assistant/agent";
 import { getTierForModel } from "@app/types/assistant/models/model_tiers";
@@ -48,7 +48,7 @@ import {
   Chip,
   DropdownMenu,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { MutableRefObject } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 

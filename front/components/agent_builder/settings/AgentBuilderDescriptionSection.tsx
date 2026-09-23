@@ -4,7 +4,7 @@ import { BLUR_EVENT_NAME } from "@app/components/agent_builder/instructions/cons
 import { getDescriptionSuggestion } from "@app/components/agent_builder/settings/utils";
 import { BaseFormFieldSection } from "@app/components/shared/BaseFormFieldSection";
 import { useSendNotification } from "@app/hooks/useNotification";
-import { Button, Input, Spinner, Stars02 } from "@dust-tt/sparkle";
+import { Button, Input, Spinner, Stars02 } from "@ruby-ai/ui";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 

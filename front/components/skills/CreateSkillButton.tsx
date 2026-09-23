@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
   FolderOpen,
   Plus,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface CreateSkillButtonProps {
   owner: LightWorkspaceType;

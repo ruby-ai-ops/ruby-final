@@ -16,7 +16,7 @@ import {
   SheetHeader,
   SheetTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useEffect, useState } from "react";
 
 interface GlobalSpaceSettingsModalProps {

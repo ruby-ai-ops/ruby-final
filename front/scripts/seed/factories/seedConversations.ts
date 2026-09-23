@@ -176,7 +176,7 @@ export async function seedConversations(
           userContextUsername: conversationUser.username ?? "dev-user",
           userContextTimezone: "UTC",
           userContextFullName: conversationUser.fullName() ?? "Dev User",
-          userContextEmail: conversationUser.email ?? "dev@dust.tt",
+          userContextEmail: conversationUser.email ?? "dev@ruby.ad",
           userContextProfilePictureUrl: null,
           userContextOrigin: "web",
           clientSideMCPServerIds: [],

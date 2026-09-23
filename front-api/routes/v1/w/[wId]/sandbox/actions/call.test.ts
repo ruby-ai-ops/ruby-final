@@ -239,7 +239,7 @@ describe("POST /api/v1/w/[wId]/sandbox/actions/call (function invocation)", () =
     await context.auth.getNonNullableUser().createToolApproval(context.auth, {
       mcpServerId: view.mcpServerId,
       toolName: "create_draft",
-      argsAndValues: { to: "approved@dust.tt" },
+      argsAndValues: { to: "approved@ruby.ad" },
     });
 
     const approvedResponse = await callSandboxTool(
@@ -249,7 +249,7 @@ describe("POST /api/v1/w/[wId]/sandbox/actions/call (function invocation)", () =
         serverViewId: view.sId,
         toolName: "create_draft",
         arguments: {
-          to: ["approved@dust.tt"],
+          to: ["approved@ruby.ad"],
           subject: "Approved recipient",
           contentType: "text/plain",
           body: "Hello",
@@ -276,7 +276,7 @@ describe("POST /api/v1/w/[wId]/sandbox/actions/call (function invocation)", () =
         serverViewId: view.sId,
         toolName: "create_draft",
         arguments: {
-          to: ["unapproved@dust.tt"],
+          to: ["unapproved@ruby.ad"],
           subject: "Unapproved recipient",
           contentType: "text/plain",
           body: "Hello",

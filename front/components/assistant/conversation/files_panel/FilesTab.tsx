@@ -19,7 +19,7 @@ import {
   SpaceClosed,
   Spinner,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 interface FilesTabProps {

@@ -10,17 +10,17 @@ export class DataSourceViewFactory {
     workspace: WorkspaceType,
     space: SpaceResource,
     editedByUser?: UserResource | null,
-    overrides?: { dustAPIProjectId?: string }
+    overrides?: { rubyAPIProjectId?: string }
   ) {
     return DataSourceViewResource.createDataSourceAndDefaultView(
       {
         name: "datasource " + faker.string.alphanumeric(8),
         assistantDefaultSelected: false,
-        dustAPIProjectId:
-          overrides?.dustAPIProjectId ??
-          "dust-project-id" + faker.string.alphanumeric(8),
-        dustAPIDataSourceId:
-          "dust-datasource-id" + faker.string.alphanumeric(8),
+        rubyAPIProjectId:
+          overrides?.rubyAPIProjectId ??
+          "ruby-project-id" + faker.string.alphanumeric(8),
+        rubyAPIDataSourceId:
+          "ruby-datasource-id" + faker.string.alphanumeric(8),
         workspaceId: workspace.id,
       },
       space,
@@ -38,9 +38,9 @@ export class DataSourceViewFactory {
       {
         name: "datasource " + faker.string.alphanumeric(8),
         assistantDefaultSelected: false,
-        dustAPIProjectId: "dust-project-id" + faker.string.alphanumeric(8),
-        dustAPIDataSourceId:
-          "dust-datasource-id" + faker.string.alphanumeric(8),
+        rubyAPIProjectId: "ruby-project-id" + faker.string.alphanumeric(8),
+        rubyAPIDataSourceId:
+          "ruby-datasource-id" + faker.string.alphanumeric(8),
         workspaceId: workspace.id,
         connectorProvider: connectorProvider,
       },

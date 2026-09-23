@@ -1,12 +1,12 @@
 @CODE-CONTRACTS.md
 
-# Storybook MCP (Sparkle design system)
+# Storybook MCP (RubyUI design system)
 
-When working on UI components, always use the `sparkle-storybook` MCP tools to access
+When working on UI components, always use the `ui-storybook` MCP tools to access
 Storybook's component and documentation knowledge before answering or taking any action.
-(The server is served by the Sparkle Storybook dev server — `cd sparkle && npm run storybook`
-— and registered in `.mcp.json` at the repo root. If you use dust-hive locally, start it with
-`dust-hive restart <env> storybook` instead: the hive forwarder owns port 6006 and routes it to
+(The server is served by the RubyUI Storybook dev server — `cd ui && npm run storybook`
+— and registered in `.mcp.json` at the repo root. If you use ruby-hive locally, start it with
+`ruby-hive restart <env> storybook` instead: the hive forwarder owns port 6006 and routes it to
 the forwarded env.)
 
 - **CRITICAL: Never hallucinate component properties!** Before using ANY property on a

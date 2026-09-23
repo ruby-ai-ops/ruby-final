@@ -22,9 +22,9 @@ import { Sequelize } from "sequelize";
 const logger = parentLogger.child({ provider: "notion" });
 
 /** Compute the parents field for a notion pageOrDb See the [Design
- * Doc](https://app.notion.com/p/dust-tt/Engineering-e0f834b5be5a43569baaf76e9c41adf2?p=3d26536a4e0a464eae0c3f8f27a7af97&pm=s)
+ * Doc](https://app.notion.com/p/ruby-ai/Engineering-e0f834b5be5a43569baaf76e9c41adf2?p=3d26536a4e0a464eae0c3f8f27a7af97&pm=s)
  * and the field documentation [in
- * core](https://github.com/dust-tt/dust/blob/main/core/src/data_sources/data_source.rs)
+ * core](https://github.com/ruby-ai-ops/ruby-final/blob/main/core/src/data_sources/data_source.rs)
  * for relevant details
  *
  * @param memoizationKey optional key to control memoization of this function (not effectively used by the function)
@@ -44,7 +44,7 @@ async function _getParents(
     (await getNotionDatabaseFromConnectorsDb(connectorId, pageOrDbId));
 
   if (!pageOrDb) {
-    // pageOrDb is either 1. not synced yet (not an issue, see design doc) or 2. is not in Dust's scope.
+    // pageOrDb is either 1. not synced yet (not an issue, see design doc) or 2. is not in Ruby's scope.
     // If called during the sync (with syncing: true) we assume 1 and add a special parent "syncing".
     // Otherwise, we assume 2. and return the page in the Orphaned Resources.
     // This indicates that the page's parents are not yet known.
@@ -63,7 +63,7 @@ async function _getParents(
     //    known => "unknown" is stored (see getParsedPage again)
     // 3. block - since we don't store blocks, parentType block is skipped in
     //    the code; should mostly not happen, but can happen in isolated cases
-    //    (see https://dust4ai.slack.com/archives/C050SM8NSPK/p1693241129921369)
+    //    (see https://ruby4ai.slack.com/archives/C050SM8NSPK/p1693241129921369)
     case null:
     case "unknown":
       // If parentType is unknown, consider it as the parent page id.

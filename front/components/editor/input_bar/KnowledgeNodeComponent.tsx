@@ -1,5 +1,5 @@
 import type { KnowledgeItem } from "@app/components/editor/extensions/skill_builder/KnowledgeNodeTypes";
-import { AttachmentChip } from "@dust-tt/sparkle";
+import { AttachmentChip } from "@ruby-ai/ui";
 import { NodeViewWrapper } from "@tiptap/react";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";

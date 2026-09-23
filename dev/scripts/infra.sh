@@ -3,7 +3,7 @@
 # App processes (mprocs) are started separately via apps.sh or up.sh.
 set +e
 
-DUST_DEV_SCRIPT_NAME=infra
+RUBY_DEV_SCRIPT_NAME=infra
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=dev/scripts/common.sh
 source "${SCRIPT_DIR}/common.sh"
@@ -12,16 +12,16 @@ source "${SCRIPT_DIR}/env.sh"
 
 install_mprocs_config
 install_chrome_policies
-rm -f "${DUST_INFRA_LOG_DIR}/infra.ready"
-rm -f "${DUST_APPS_PROMPT_FILE}"
-rmdir "${DUST_APPS_PROMPT_FILE}.claimed" 2>/dev/null || true
+rm -f "${RUBY_INFRA_LOG_DIR}/infra.ready"
+rm -f "${RUBY_APPS_PROMPT_FILE}"
+rmdir "${RUBY_APPS_PROMPT_FILE}.claimed" 2>/dev/null || true
 
 ensure_node_path
 
 log "Sweeping stale Cargo target artifacts..."
 bash "${SCRIPT_DIR}/sweep-cargo-target.sh" \
-  >"${DUST_INFRA_LOG_DIR}/sweep-cargo-target.log" 2>&1 || {
-  log "Cargo target sweep failed (non-fatal); see ${DUST_INFRA_LOG_DIR}/sweep-cargo-target.log"
+  >"${RUBY_INFRA_LOG_DIR}/sweep-cargo-target.log" 2>&1 || {
+  log "Cargo target sweep failed (non-fatal); see ${RUBY_INFRA_LOG_DIR}/sweep-cargo-target.log"
 }
 
 ensure_client_built || {
@@ -34,7 +34,7 @@ start_bg() {
   local name="$1"
   shift
   log "Starting $name..."
-  "$@" >"${DUST_INFRA_LOG_DIR}/${name}.log" 2>&1 &
+  "$@" >"${RUBY_INFRA_LOG_DIR}/${name}.log" 2>&1 &
 }
 
 # Qdrant binds its ports a moment after launch. Without this gate infra.ready
@@ -48,7 +48,7 @@ wait_for_qdrant() {
     attempt=$((attempt + 1))
     if [ "$attempt" -gt "$max_attempts" ]; then
       log "Qdrant did not become ready on ${QDRANT_HTTP_HOST}:${QDRANT_HTTP_PORT}"
-      tail -30 "${DUST_INFRA_LOG_DIR}/qdrant.log" 2>/dev/null
+      tail -30 "${RUBY_INFRA_LOG_DIR}/qdrant.log" 2>/dev/null
       return 1
     fi
     if [ "$attempt" -eq 1 ] || [ $((attempt % 15)) -eq 0 ]; then
@@ -59,7 +59,7 @@ wait_for_qdrant() {
   log "Qdrant is ready on ${QDRANT_HTTP_HOST}:${QDRANT_HTTP_PORT}"
 }
 
-log "Preparing data directories under ${DUST_DATA_ROOT}..."
+log "Preparing data directories under ${RUBY_DATA_ROOT}..."
 bash "${SCRIPT_DIR}/init-data-dirs.sh" || exit 1
 
 # --- Elasticsearch ---
@@ -71,11 +71,11 @@ if ! curl -sf "http://${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}" >/dev/null 2>
     groupadd -r elasticsearch 2>/dev/null || true
     useradd -r -g elasticsearch -d /opt/es -s /usr/sbin/nologin elasticsearch 2>/dev/null || true
   fi
-  mkdir -p "$DUST_ELASTICSEARCH_DATA_DIR" /opt/es/logs
-  chown -R elasticsearch:elasticsearch /opt/es "$DUST_ELASTICSEARCH_DATA_DIR"
+  mkdir -p "$RUBY_ELASTICSEARCH_DATA_DIR" /opt/es/logs
+  chown -R elasticsearch:elasticsearch /opt/es "$RUBY_ELASTICSEARCH_DATA_DIR"
   # sudo drops the env, so path.data has to be interpolated into the command.
   start_bg elasticsearch sudo -u elasticsearch bash -lc \
-    "ES_JAVA_OPTS=\"-Xms512m -Xmx512m\" /opt/es/bin/elasticsearch -d -p /tmp/es.pid -E discovery.type=single-node -E xpack.security.enabled=false -E xpack.security.http.ssl.enabled=false -E xpack.ml.enabled=false -E ingest.geoip.downloader.enabled=false -E xpack.monitoring.collection.enabled=false -E bootstrap.memory_lock=false -E path.data=${DUST_ELASTICSEARCH_DATA_DIR} -E path.logs=/opt/es/logs"
+    "ES_JAVA_OPTS=\"-Xms512m -Xmx512m\" /opt/es/bin/elasticsearch -d -p /tmp/es.pid -E discovery.type=single-node -E xpack.security.enabled=false -E xpack.security.http.ssl.enabled=false -E xpack.ml.enabled=false -E ingest.geoip.downloader.enabled=false -E xpack.monitoring.collection.enabled=false -E bootstrap.memory_lock=false -E path.data=${RUBY_ELASTICSEARCH_DATA_DIR} -E path.logs=/opt/es/logs"
 fi
 
 # --- Postgres ---
@@ -92,7 +92,7 @@ fi
 # --- Redis ---
 if ! redis-cli ping >/dev/null 2>&1; then
   log "Starting redis..."
-  sudo redis-server /etc/redis/redis.conf --daemonize yes --dir "$DUST_REDIS_DATA_DIR"
+  sudo redis-server /etc/redis/redis.conf --daemonize yes --dir "$RUBY_REDIS_DATA_DIR"
 fi
 
 # --- Qdrant ---
@@ -102,14 +102,14 @@ fi
 if ! pgrep -x qdrant >/dev/null 2>&1; then
   log "Starting qdrant..."
   setsid nohup bash -lc "cd /opt/qdrant && exec ./qdrant" \
-    </dev/null >"${DUST_INFRA_LOG_DIR}/qdrant.log" 2>&1 &
+    </dev/null >"${RUBY_INFRA_LOG_DIR}/qdrant.log" 2>&1 &
 fi
 
 # --- Temporal (start + namespaces + search attributes; single call) ---
 bash "${SCRIPT_DIR}/ensure-temporal.sh" \
-  >"${DUST_INFRA_LOG_DIR}/ensure-temporal.log" 2>&1 || {
-  log "Temporal setup failed; see ${DUST_INFRA_LOG_DIR}/ensure-temporal.log"
-  tail -30 "${DUST_INFRA_LOG_DIR}/ensure-temporal.log"
+  >"${RUBY_INFRA_LOG_DIR}/ensure-temporal.log" 2>&1 || {
+  log "Temporal setup failed; see ${RUBY_INFRA_LOG_DIR}/ensure-temporal.log"
+  tail -30 "${RUBY_INFRA_LOG_DIR}/ensure-temporal.log"
   exit 1
 }
 
@@ -117,10 +117,10 @@ log "Initializing databases..."
 bash "${SCRIPT_DIR}/init-databases.sh" || exit 1
 
 log "Ensuring Elasticsearch indices..."
-bash "${SCRIPT_DIR}/init-elasticsearch-indices.sh" 2>&1 | tee "${DUST_INFRA_LOG_DIR}/init-elasticsearch.log"
+bash "${SCRIPT_DIR}/init-elasticsearch-indices.sh" 2>&1 | tee "${RUBY_INFRA_LOG_DIR}/init-elasticsearch.log"
 es_init_status=${PIPESTATUS[0]}
 if [ "$es_init_status" -ne 0 ]; then
-  log "Elasticsearch index init failed; see ${DUST_INFRA_LOG_DIR}/init-elasticsearch.log"
+  log "Elasticsearch index init failed; see ${RUBY_INFRA_LOG_DIR}/init-elasticsearch.log"
   exit 1
 fi
 
@@ -129,25 +129,25 @@ materialize_dev_environment || log "Continuing without a full 1Password env"
 
 log "Running DB migrations..."
 bash "${SCRIPT_DIR}/setup-dev-db.sh" \
-  >"${DUST_INFRA_LOG_DIR}/setup-dev-db.log" 2>&1 || {
-  log "setup-dev-db failed; see ${DUST_INFRA_LOG_DIR}/setup-dev-db.log"
-  tail -30 "${DUST_INFRA_LOG_DIR}/setup-dev-db.log"
+  >"${RUBY_INFRA_LOG_DIR}/setup-dev-db.log" 2>&1 || {
+  log "setup-dev-db failed; see ${RUBY_INFRA_LOG_DIR}/setup-dev-db.log"
+  tail -30 "${RUBY_INFRA_LOG_DIR}/setup-dev-db.log"
   exit 1
 }
 
 wait_for_qdrant || exit 1
 
 log "Ensuring Qdrant collections..."
-bash "${SCRIPT_DIR}/init-qdrant-collections.sh" 2>&1 | tee "${DUST_INFRA_LOG_DIR}/init-qdrant.log"
+bash "${SCRIPT_DIR}/init-qdrant-collections.sh" 2>&1 | tee "${RUBY_INFRA_LOG_DIR}/init-qdrant.log"
 qdrant_init_status=${PIPESTATUS[0]}
 if [ "$qdrant_init_status" -ne 0 ]; then
-  log "Qdrant collection init failed; see ${DUST_INFRA_LOG_DIR}/init-qdrant.log"
+  log "Qdrant collection init failed; see ${RUBY_INFRA_LOG_DIR}/init-qdrant.log"
   exit 1
 fi
 
 log "Infra ready. App services: bash dev/scripts/apps.sh (or up.sh)."
-log "Infra logs: ${DUST_INFRA_LOG_DIR}/"
-date -u +%Y-%m-%dT%H:%M:%SZ >"${DUST_INFRA_LOG_DIR}/infra.ready"
-if [ "${DUST_OFFER_START_APPS:-0}" = "1" ]; then
-  touch "${DUST_APPS_PROMPT_FILE}"
+log "Infra logs: ${RUBY_INFRA_LOG_DIR}/"
+date -u +%Y-%m-%dT%H:%M:%SZ >"${RUBY_INFRA_LOG_DIR}/infra.ready"
+if [ "${RUBY_OFFER_START_APPS:-0}" = "1" ]; then
+  touch "${RUBY_APPS_PROMPT_FILE}"
 fi

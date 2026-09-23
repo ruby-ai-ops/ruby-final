@@ -25,7 +25,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { FormProvider, useController, useForm } from "react-hook-form";

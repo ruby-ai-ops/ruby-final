@@ -199,7 +199,7 @@ export async function createUserMessage(
   }
 
   // An agent posts this message to answer the origin message, so it inherits the authorship of the
-  // message the origin answers: nothing Dust posted on someone's behalf turns into a message of
+  // message the origin answers: nothing Ruby posted on someone's behalf turns into a message of
   // theirs one run down. Keeps the whole tree off their personal credentials and out of approval
   // prompts nobody would answer.
   if (originMessage?.parentId) {

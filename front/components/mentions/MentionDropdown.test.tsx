@@ -7,8 +7,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { MentionDropdown } from "./MentionDropdown";
 
-// Mock Sparkle dropdown primitives to render content directly without portals.
-vi.mock("@dust-tt/sparkle", () => {
+// Mock RubyUI dropdown primitives to render content directly without portals.
+vi.mock("@ruby-ai/ui", () => {
   const DropdownMenu: React.FC<{ children: React.ReactNode }> = ({
     children,
   }) => <div data-testid="dropdown-menu">{children}</div>;

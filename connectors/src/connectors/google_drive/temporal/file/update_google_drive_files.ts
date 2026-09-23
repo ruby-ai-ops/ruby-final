@@ -11,7 +11,7 @@ export async function updateGoogleDriveFiles(
 ): Promise<void> {
   const params: CreationAttributes<GoogleDriveFilesModel> = {
     connectorId,
-    dustFileId: documentId,
+    rubyFileId: documentId,
     driveFileId: file.id,
     name: file.name,
     mimeType: file.mimeType,

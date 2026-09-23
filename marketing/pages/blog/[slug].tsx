@@ -23,7 +23,7 @@ import {
 } from "@marketing/lib/utils";
 import logger from "@marketing/logger/logger";
 import { isString } from "@marketing/types/shared/utils/general";
-import { Chip } from "@dust-tt/sparkle";
+import { Chip } from "@ruby-ai/ui";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -101,8 +101,8 @@ export default function BlogPost({
   relatedPosts,
   preview,
 }: BlogPostPageProps) {
-  const ogImageUrl = post.image?.url ?? "https://dust.tt/static/og_image.png";
-  const canonicalUrl = `https://dust.tt/blog/${post.slug}`;
+  const ogImageUrl = post.image?.url ?? "https://ruby.ad/static/og_image.png";
+  const canonicalUrl = `https://ruby.ad/blog/${post.slug}`;
   const tocItems = extractTableOfContents(post.body);
   const ctaContent = useMemo(
     () => renderCtaFromContentful(post.cta),
@@ -125,7 +125,7 @@ export default function BlogPost({
         </div>
       )}
       <Head>
-        <title>{`${post.title} | Dust Blog`}</title>
+        <title>{`${post.title} | Ruby Blog`}</title>
         {preview && <meta name="robots" content="noindex, nofollow" />}
         {post.description && (
           <meta name="description" content={post.description} />
@@ -139,7 +139,7 @@ export default function BlogPost({
         <meta property="og:type" content="article" />
         <meta property="og:image" content={ogImageUrl} />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:site_name" content="Dust" />
+        <meta property="og:site_name" content="Ruby" />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
@@ -153,10 +153,10 @@ export default function BlogPost({
         {post.tags.map((tag) => (
           <meta key={tag} property="article:tag" content={tag} />
         ))}
-        <meta name="dust:is_seo_article" content={String(post.isSeoArticle)} />
-        <meta name="dust:is_geo_article" content={String(post.isGeoArticle)} />
+        <meta name="ruby:is_seo_article" content={String(post.isSeoArticle)} />
+        <meta name="ruby:is_geo_article" content={String(post.isGeoArticle)} />
         <meta
-          name="dust:is_thought_leadership"
+          name="ruby:is_thought_leadership"
           content={String(post.isThoughtLeadership)}
         />
 
@@ -174,14 +174,14 @@ export default function BlogPost({
               dateModified: post.updatedAt,
               author: {
                 "@type": "Organization",
-                name: "Dust Team",
+                name: "Ruby Team",
               },
               publisher: {
                 "@type": "Organization",
-                name: "Dust",
+                name: "Ruby",
                 logo: {
                   "@type": "ImageObject",
-                  url: "https://dust.tt/static/og_image.png",
+                  url: "https://ruby.ad/static/og_image.png",
                 },
               },
               mainEntityOfPage: {

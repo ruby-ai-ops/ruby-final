@@ -9,7 +9,7 @@ import { Op } from "sequelize";
 // Prunes space ids from `requestedSpaceIds` that no longer point at a live space of the workspace.
 // A skill keeping a dangling id is dropped by `SkillResource.baseFetch` (which requires every
 // requested space to resolve), so it becomes invisible everywhere: unreadable in the product,
-// unrestorable, and unreachable through Poke. Spaces can be hard-deleted, and the cleanup on
+// unrestorable, and unreachable through Admin. Spaces can be hard-deleted, and the cleanup on
 // soft-delete only covers active skills, so archived ones strand their references.
 //
 // Reads the models directly for that reason: the resource cannot fetch the very rows this repairs.

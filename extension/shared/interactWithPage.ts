@@ -1,6 +1,6 @@
 import { Err, Ok, type Result } from "@app/types/shared/result";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import { ensureDustPageUtils } from "@extension/shared/pageUtils";
+import { ensureRubyPageUtils } from "@extension/shared/pageUtils";
 
 type ElementSnapshot = {
   elementId: string;
@@ -14,8 +14,8 @@ type ElementSnapshot = {
   coords: { x: number; y: number };
 };
 
-type DustWindow = {
-  __dustUtils: {
+type RubyWindow = {
+  __rubyUtils: {
     selector: string;
     CONTENT: string[];
     getElementName: (el: HTMLElement) => string;
@@ -23,9 +23,9 @@ type DustWindow = {
     getElementCheckedStatus: (el: HTMLElement) => boolean | null;
     getElementValue: (el: HTMLElement) => string | null;
   };
-  __dustElementMap: Record<string, WeakRef<HTMLElement>>;
-  __dustElementSnapshots: Record<string, ElementSnapshot>;
-  __dustElementIdCounter: number;
+  __rubyElementMap: Record<string, WeakRef<HTMLElement>>;
+  __rubyElementSnapshots: Record<string, ElementSnapshot>;
+  __rubyElementIdCounter: number;
 };
 
 const HAS_FORM_THRESHOLD = 5;
@@ -69,7 +69,7 @@ export async function getPageElements(
     return new Err(new Error("Tab not found."));
   }
 
-  const utilsResult = await ensureDustPageUtils(tab);
+  const utilsResult = await ensureRubyPageUtils(tab);
   if (utilsResult.isErr()) {
     return utilsResult;
   }
@@ -78,38 +78,38 @@ export async function getPageElements(
     target: { tabId: tab.id },
     args: [tab.id],
     func: (tabId: number) => {
-      const w = window as unknown as DustWindow;
+      const w = window as unknown as RubyWindow;
       const {
         selector,
         CONTENT,
         getElementName,
         getElementCheckedStatus,
         getElementValue,
-      } = w.__dustUtils;
+      } = w.__rubyUtils;
 
       // Initialize maps only if they don't exist yet — preserve existing IDs
-      if (!w.__dustElementMap) {
-        w.__dustElementMap = {};
+      if (!w.__rubyElementMap) {
+        w.__rubyElementMap = {};
       }
-      if (!w.__dustElementSnapshots) {
-        w.__dustElementSnapshots = {};
+      if (!w.__rubyElementSnapshots) {
+        w.__rubyElementSnapshots = {};
       }
-      if (!w.__dustElementIdCounter) {
-        w.__dustElementIdCounter = 0;
+      if (!w.__rubyElementIdCounter) {
+        w.__rubyElementIdCounter = 0;
       }
 
       const elementPrefix = `el_${tabId.toString(36)}_`;
 
       // Build reverse map: DOM node → existing elementId
       const domNodeToId = new Map<HTMLElement, string>();
-      for (const [elementId, weakRef] of Object.entries(w.__dustElementMap)) {
+      for (const [elementId, weakRef] of Object.entries(w.__rubyElementMap)) {
         const el = weakRef.deref();
         if (el) {
           domNodeToId.set(el, elementId);
         }
       }
 
-      let counter = w.__dustElementIdCounter;
+      let counter = w.__rubyElementIdCounter;
       const elements: ElementSnapshot[] = [];
       const seenIds = new Set<string>();
 
@@ -142,8 +142,8 @@ export async function getPageElements(
         } else {
           do {
             elementId = `${elementPrefix}${counter++}`;
-          } while (w.__dustElementMap[elementId] !== undefined);
-          w.__dustElementMap[elementId] = new WeakRef<HTMLElement>(el);
+          } while (w.__rubyElementMap[elementId] !== undefined);
+          w.__rubyElementMap[elementId] = new WeakRef<HTMLElement>(el);
         }
 
         seenIds.add(elementId);
@@ -163,17 +163,17 @@ export async function getPageElements(
           },
         };
 
-        w.__dustElementSnapshots[elementId] = snapshot;
+        w.__rubyElementSnapshots[elementId] = snapshot;
         elements.push(snapshot);
       });
 
-      w.__dustElementIdCounter = counter;
+      w.__rubyElementIdCounter = counter;
 
       // Clean up entries for elements no longer in the DOM
-      for (const elementId of Object.keys(w.__dustElementMap)) {
+      for (const elementId of Object.keys(w.__rubyElementMap)) {
         if (!seenIds.has(elementId)) {
-          delete w.__dustElementMap[elementId];
-          delete w.__dustElementSnapshots[elementId];
+          delete w.__rubyElementMap[elementId];
+          delete w.__rubyElementSnapshots[elementId];
         }
       }
 
@@ -197,7 +197,7 @@ export async function clickPageElement(
     return new Err(new Error("No active tab found."));
   }
 
-  const utilsResult = await ensureDustPageUtils(tab);
+  const utilsResult = await ensureRubyPageUtils(tab);
   if (utilsResult.isErr()) {
     return utilsResult;
   }
@@ -206,9 +206,9 @@ export async function clickPageElement(
     target: { tabId: tab.id },
     args: [elementId],
     func: (elementId: string) => {
-      const w = window as unknown as DustWindow;
+      const w = window as unknown as RubyWindow;
 
-      const element = w.__dustElementMap?.[elementId].deref();
+      const element = w.__rubyElementMap?.[elementId].deref();
       if (!element) {
         return "NOT_FOUND";
       }
@@ -220,7 +220,7 @@ export async function clickPageElement(
         buttons: 1,
       };
 
-      const { highlightElement } = w.__dustUtils;
+      const { highlightElement } = w.__rubyUtils;
 
       highlightElement(element);
 
@@ -255,7 +255,7 @@ export async function typeText(
     return new Err(new Error("Tab not found."));
   }
 
-  const utilsResult = await ensureDustPageUtils(tab);
+  const utilsResult = await ensureRubyPageUtils(tab);
   if (utilsResult.isErr()) {
     return utilsResult;
   }
@@ -274,14 +274,14 @@ export async function typeText(
       | "SELECTION_UNAVAILABLE"
       | "OPTION_NOT_FOUND"
       | "UNSUPPORTED_ELEMENT" => {
-      const w = window as unknown as DustWindow;
+      const w = window as unknown as RubyWindow;
 
-      const element = w.__dustElementMap?.[elementId].deref();
+      const element = w.__rubyElementMap?.[elementId].deref();
       if (!element) {
         return "NOT_FOUND";
       }
 
-      const { highlightElement } = w.__dustUtils;
+      const { highlightElement } = w.__rubyUtils;
 
       highlightElement(element);
 
@@ -512,7 +512,7 @@ export async function getPageElementsDiff(
     return new Err(new Error("Tab not found."));
   }
 
-  const utilsResult = await ensureDustPageUtils(tab);
+  const utilsResult = await ensureRubyPageUtils(tab);
   if (utilsResult.isErr()) {
     return utilsResult;
   }
@@ -521,9 +521,9 @@ export async function getPageElementsDiff(
     target: { tabId: tab.id },
     args: [tab.id],
     func: (tabId: number) => {
-      const w = window as unknown as DustWindow;
+      const w = window as unknown as RubyWindow;
 
-      if (!w.__dustElementMap || !w.__dustElementSnapshots) {
+      if (!w.__rubyElementMap || !w.__rubyElementSnapshots) {
         return JSON.stringify({ added: [], edited: [], deleted: [] });
       }
 
@@ -533,10 +533,10 @@ export async function getPageElementsDiff(
         getElementName,
         getElementCheckedStatus,
         getElementValue,
-      } = w.__dustUtils;
+      } = w.__rubyUtils;
       const {
-        __dustElementMap: elementMap,
-        __dustElementSnapshots: snapshots,
+        __rubyElementMap: elementMap,
+        __rubyElementSnapshots: snapshots,
       } = w;
 
       const elementPrefix = `el_${tabId.toString(36)}_`;
@@ -553,7 +553,7 @@ export async function getPageElementsDiff(
       const added: ElementSnapshot[] = [];
       const edited: ElementSnapshot[] = [];
       const seenIds = new Set<string>();
-      let counter = w.__dustElementIdCounter ?? 0;
+      let counter = w.__rubyElementIdCounter ?? 0;
 
       const nodes = document.querySelectorAll<HTMLElement>(selector);
 
@@ -624,7 +624,7 @@ export async function getPageElementsDiff(
         }
       });
 
-      w.__dustElementIdCounter = counter;
+      w.__rubyElementIdCounter = counter;
 
       // ── Deleted: tracked entries not seen in current DOM walk ─────────────
       const deleted: ElementSnapshot[] = [];

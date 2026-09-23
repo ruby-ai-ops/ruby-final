@@ -8,7 +8,7 @@ import type {
   SnowflakeFetchTableResponseType,
 } from "@connectors/types";
 import { isSnowflakeCredentials } from "@connectors/types";
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 
 import { fetchDatabases, fetchSchemas, fetchTables } from "./snowflake_api";
 

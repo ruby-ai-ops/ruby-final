@@ -13,9 +13,9 @@ import type { SandboxResource } from "@app/lib/resources/sandbox_resource";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 
-export const SANDBOX_ENV_MANIFEST_PATH = "/run/dust/sandbox-env-manifest.json";
+export const SANDBOX_ENV_MANIFEST_PATH = "/run/ruby/sandbox-env-manifest.json";
 
-const SANDBOX_ENV_MANIFEST_DIR = "/run/dust";
+const SANDBOX_ENV_MANIFEST_DIR = "/run/ruby";
 
 // /!\ This manifest is written mode 644 and is readable by the non-root
 // agent-proxied user inside the sandbox. NEVER add a value, encryptedValue,

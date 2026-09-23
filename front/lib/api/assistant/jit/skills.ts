@@ -37,10 +37,10 @@ export function getSkillManagementServer(
     timeFrame: null,
     jsonSchema: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     additionalConfiguration: {},
     mcpServerViewId: skillManagementView.sId,
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: skillManagementView.mcpServerId,
   };
 }

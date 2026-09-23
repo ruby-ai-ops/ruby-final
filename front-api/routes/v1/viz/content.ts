@@ -1,7 +1,7 @@
 import { extractAndVerifyVizAccessTokenFromHeader } from "@app/lib/api/viz/access_tokens";
 import { FileResource } from "@app/lib/resources/file_resource";
 import { WorkspaceResource } from "@app/lib/resources/workspace_resource";
-import type { PublicVizContentResponseBodyType } from "@dust-tt/client";
+import type { PublicVizContentResponseBodyType } from "@ruby-ai/client";
 import { unauthedApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";

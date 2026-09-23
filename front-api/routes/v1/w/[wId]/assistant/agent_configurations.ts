@@ -2,7 +2,7 @@ import { toAgentConfigurationsWithSkills } from "@app/lib/api/assistant/configur
 import { getAgentConfigurationsForView } from "@app/lib/api/assistant/configuration/views";
 import { getAgentsRecentAuthors } from "@app/lib/api/assistant/recent_authors";
 import { normalizeAgentView } from "@app/lib/api/v1/backward_compatibility";
-import type { GetAgentConfigurationsResponseType } from "@dust-tt/client";
+import type { GetAgentConfigurationsResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { apiError, type HandlerResult } from "@front-api/middlewares/utils";
 import { validate } from "@front-api/middlewares/validator";

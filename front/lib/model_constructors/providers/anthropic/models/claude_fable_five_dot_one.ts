@@ -5,7 +5,7 @@ import { CLAUDE_FABLE_5_1 } from "@app/lib/model_constructors/types/models";
 
 import { z } from "zod";
 
-// Real model spec. The Dust product cap (250k) is applied in the llms layer.
+// Real model spec. The Ruby product cap (250k) is applied in the llms layer.
 // https://platform.claude.com/docs/en/models/fable-5-1/overview (2026-09-22).
 const CONTEXT_SIZE = 1_000_000;
 const DEFAULT_REASONING_EFFORT = "high";
@@ -30,7 +30,7 @@ const MAX_OUTPUT_TOKENS = 128_000;
 //     rather than fall through to disabled.
 //   - Non-default `temperature`, `top_p` or `top_k` return a 400, unchanged
 //     from Fable 5. Hence `z.literal(1)`, defaulted so callers can omit it. The
-//     Dust layer strips it anyway via the `dropTemperature` config parser, but
+//     Ruby layer strips it anyway via the `dropTemperature` config parser, but
 //     the endpoint schema mirrors the API rather than that policy.
 //
 // All five effort levels (low/medium/high/xhigh/max) are supported, with `high`
@@ -68,9 +68,9 @@ export function WithAnthropicClaudeFableFiveDotOneConfig<
       unknown
     > = configSchema;
 
-    // Typed as `number` (not the literal) so the Dust layer can cap it.
+    // Typed as `number` (not the literal) so the Ruby layer can cap it.
     static readonly contextSize: number = CONTEXT_SIZE;
-    // Typed as `number` (not the literal) so the Dust layer can cap it.
+    // Typed as `number` (not the literal) so the Ruby layer can cap it.
     static readonly maxOutputTokens: number = MAX_OUTPUT_TOKENS;
   }
 

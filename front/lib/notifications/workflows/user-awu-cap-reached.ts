@@ -44,11 +44,11 @@ export const userAwuCapReachedWorkflow = workflow(
 
     await step.email("user-awu-cap-reached-email", async () => {
       const subject = payload.isBlocked
-        ? `[Dust] You've reached your usage limit in ${payload.workspaceName}`
-        : `[Dust] You've used 80% of your usage limit in ${payload.workspaceName}`;
+        ? `[Ruby] You've reached your usage limit in ${payload.workspaceName}`
+        : `[Ruby] You've used 80% of your usage limit in ${payload.workspaceName}`;
       const content = payload.isBlocked
-        ? `You have reached your ${payload.capAwuCredits} credits usage limit in the Dust workspace ${payload.workspaceName} and can no longer run agents.\nPlease contact your workspace admin to increase your limit.`
-        : `You have used 80% of your ${payload.capAwuCredits} credits usage limit in the Dust workspace ${payload.workspaceName}.\nOnce you reach 100%, you won't be able to run agents until your limit is increased. Please contact your workspace admin.`;
+        ? `You have reached your ${payload.capAwuCredits} credits usage limit in the Ruby workspace ${payload.workspaceName} and can no longer run agents.\nPlease contact your workspace admin to increase your limit.`
+        : `You have used 80% of your ${payload.capAwuCredits} credits usage limit in the Ruby workspace ${payload.workspaceName}.\nOnce you reach 100%, you won't be able to run agents until your limit is increased. Please contact your workspace admin.`;
       const body = await renderEmail({
         name: subscriber.firstName ?? "there",
         workspace: {

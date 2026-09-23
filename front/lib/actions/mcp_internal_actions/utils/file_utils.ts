@@ -7,7 +7,7 @@ import {
   isFileAttachmentType,
   makeFileAttachment,
 } from "@app/lib/api/assistant/conversation/attachments";
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import type { Authenticator } from "@app/lib/auth";
 import { getPrivateUploadBucket } from "@app/lib/file_storage";
 import { FileResource } from "@app/lib/resources/file_resource";
@@ -19,8 +19,8 @@ import {
   isCanonicalScopedPath,
   parseScopedFilePath,
 } from "@app/types/mount_path";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import { PassThrough } from "stream";
 
 export function sanitizeFilename(filename: string): string {
@@ -53,9 +53,9 @@ export async function resolveConversationFileRef(
   runContext: AgentLoopRunContext
 ): Promise<Result<ConversationFileRef, string>> {
   // Canonical scoped paths (conversation-{id}/..., pod-{id}/...) produced by the new
-  // DustFileSystem layer are resolved directly.
+  // RubyFileSystem layer are resolved directly.
   if (isCanonicalScopedPath(fileId)) {
-    const fsResult = await DustFileSystem.fromScopedPath(auth, fileId);
+    const fsResult = await RubyFileSystem.fromScopedPath(auth, fileId);
     if (fsResult.isErr()) {
       return new Err(fsResult.error.message);
     }
@@ -164,9 +164,9 @@ export async function getFileFromConversationAttachment(
     string
   >
 > {
-  // Canonical scoped paths (conversation-{id}/..., pod-{id}/...) — resolve via DustFileSystem.
+  // Canonical scoped paths (conversation-{id}/..., pod-{id}/...) — resolve via RubyFileSystem.
   if (isCanonicalScopedPath(fileId)) {
-    const fsResult = await DustFileSystem.fromScopedPath(auth, fileId);
+    const fsResult = await RubyFileSystem.fromScopedPath(auth, fileId);
     if (fsResult.isErr()) {
       return new Err(fsResult.error.message);
     }

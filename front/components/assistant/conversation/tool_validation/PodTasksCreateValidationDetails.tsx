@@ -18,7 +18,7 @@ import {
   MicrosoftLogo,
   NotionLogo,
   SlackLogo,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 import { useMemo } from "react";
 
@@ -78,7 +78,7 @@ export function PodTasksCreateValidationDetails({
 }: PodTasksCreateValidationDetailsProps) {
   const { podLabel, isPodLabelLoading } = usePodLabel({
     owner,
-    dustPodUri: input.dustPod?.uri,
+    rubyPodUri: input.rubyPod?.uri,
     conversationId,
   });
 

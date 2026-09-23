@@ -8,8 +8,8 @@ import type {
 } from "@app/types/api/spaces";
 import type { GroupKind } from "@app/types/groups";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { MenuItem } from "@dust-tt/sparkle";
-import { Chip, DataTable, Trash01, Users01 } from "@dust-tt/sparkle";
+import type { MenuItem } from "@ruby-ai/ui";
+import { Chip, DataTable, Trash01, Users01 } from "@ruby-ai/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useCallback, useContext, useMemo } from "react";
 

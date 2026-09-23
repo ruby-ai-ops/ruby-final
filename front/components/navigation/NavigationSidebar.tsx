@@ -4,7 +4,7 @@ import type { SidebarNavigation } from "@app/components/navigation/config";
 import { getTopNavigationTabs } from "@app/components/navigation/config";
 import { useDesktopNavigation } from "@app/components/navigation/DesktopNavigationContext";
 import { SidebarUserMenu } from "@app/components/navigation/SidebarUserMenu";
-import { SidebarContext } from "@app/components/sparkle/SidebarContext";
+import { SidebarContext } from "@app/components/ui/SidebarContext";
 import { useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { FREE_TRIAL_PHONE_PLAN_CODE } from "@app/lib/plans/plan_codes";
 import { useAppRouter } from "@app/lib/platform";
@@ -28,7 +28,7 @@ import {
   NavTabPillList,
   NavTabPillTrigger,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React, { useCallback, useContext, useMemo } from "react";
 
 function getAdminSectionHref(

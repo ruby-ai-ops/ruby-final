@@ -9,7 +9,7 @@ import type { RichSpaceType } from "@app/types/api/spaces";
 import { isFrameContentType, stripMimeParameters } from "@app/types/files";
 import type { PodFileTab } from "@app/types/pod_file_tab";
 import type { WorkspaceType } from "@app/types/user";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 interface PodFileTabContentProps {
   owner: WorkspaceType;

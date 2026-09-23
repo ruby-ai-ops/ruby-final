@@ -47,7 +47,7 @@
 // }
 
 // function getRedirectUri(provider: OAuthProvider): string {
-//   return `${apiConfig.getDustAPIConfig().url}/oauth/${provider}/finalize`;
+//   return `${apiConfig.getRubyAPIConfig().url}/oauth/${provider}/finalize`;
 // }
 
 // async function migrateConnectionId(

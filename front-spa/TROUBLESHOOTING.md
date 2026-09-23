@@ -12,8 +12,8 @@ Vite's dependency optimizer cache has gone stale (after a restart, dependency ch
 
 **Fix:**
 1. Restart the SPA Vite dev server (not the `front-api` service):
-   - With dust-hive: `dust-hive restart <env-name> front-spa-app`
-   - Without dust-hive: kill and re-run the Vite dev server process for front-spa
+   - With ruby-hive: `ruby-hive restart <env-name> front-spa-app`
+   - Without ruby-hive: kill and re-run the Vite dev server process for front-spa
 2. Hard refresh the browser: **Cmd+Shift+R**
 
 **Note:** This is a dev-only issue. Production builds use static assets with stable hashes.

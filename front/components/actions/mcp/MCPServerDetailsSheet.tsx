@@ -27,7 +27,7 @@ import {
   TabsList,
   TabsTrigger,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 

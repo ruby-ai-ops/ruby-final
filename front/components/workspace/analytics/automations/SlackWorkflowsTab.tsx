@@ -12,7 +12,7 @@ import { timeAgoFrom } from "@app/lib/utils";
 import type { SlackWorkflowType } from "@app/types/api/slack/workflows";
 import { GLOBAL_SPACE_NAME } from "@app/types/groups";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { DataTableSkeletonCellProps } from "@dust-tt/sparkle";
+import type { DataTableSkeletonCellProps } from "@ruby-ai/ui";
 import {
   Button,
   cn,
@@ -23,7 +23,7 @@ import {
   SearchInput,
   Tooltip,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useCallback, useContext, useMemo, useState } from "react";
 
@@ -336,7 +336,7 @@ function SlackWorkflowsTableBody({
   if (!isSlackBotConnected) {
     return (
       <div className="text-sm text-muted-foreground">
-        Connect the Dust Slack bot to let Slack workflows summon agents.
+        Connect the Ruby Slack bot to let Slack workflows summon agents.
       </div>
     );
   }

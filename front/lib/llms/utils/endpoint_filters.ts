@@ -2,7 +2,7 @@ import type { Where, WorkspaceConfig } from "@app/lib/llms/types/filter";
 
 /**
  * @cc [owner:pmilliotte,label:product] eu-agent-platform-endpoints-share-one-filter
- * Every `*_eu_agent_platform` endpoint — Dust-managed regional hosting, whatever
+ * Every `*_eu_agent_platform` endpoint — Ruby-managed regional hosting, whatever
  * the lab — declares this filter as its hosting term. The client mirrors it in
  * `useRunsOnRegionalHosting` to decide whether to show a workspace its hosting
  * region, so an endpoint opting out of it silently makes that indicator lie. An

@@ -64,7 +64,7 @@ async function setupFrame({
 }> {
   const { authenticator, workspace } = await createResourceTest({});
   const conversation = await ConversationFactory.create(authenticator, {
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     messagesCreatedAt: [new Date()],
   });
   const frame = await FileFactory.create(authenticator, null, {

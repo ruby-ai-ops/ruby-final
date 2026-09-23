@@ -39,7 +39,7 @@ describe("GET /api/w/:wId/assistant/conversations/:cId/feedbacks", () => {
       method: "GET",
     });
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 

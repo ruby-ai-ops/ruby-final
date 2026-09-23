@@ -21,7 +21,7 @@ function nextExecId(): string {
 }
 
 function stripProfileSource(wrapped: string): string {
-  const stripped = wrapped.replace(/^DUST_PROFILE=\S+ source \S+ && /m, "");
+  const stripped = wrapped.replace(/^RUBY_PROFILE=\S+ source \S+ && /m, "");
 
   if (stripped === wrapped) {
     throw new Error("Expected wrapped command to contain a source prefix.");
@@ -70,8 +70,8 @@ function execWrapCommandWithCapture(cmd: string): ExecResult {
   try {
     return execWrapped(wrapCommandWithCapture(cmd, execId, "anthropic"));
   } finally {
-    fs.rmSync(`/tmp/dust_exec_${execId}.out`, { force: true });
-    fs.rmSync(`/tmp/dust_exec_${execId}.exit`, { force: true });
+    fs.rmSync(`/tmp/ruby_exec_${execId}.out`, { force: true });
+    fs.rmSync(`/tmp/ruby_exec_${execId}.exit`, { force: true });
   }
 }
 
@@ -131,21 +131,21 @@ describe.each([
 describe("reserved heredoc delimiter", () => {
   it("throws when wrapCommand receives the delimiter on its own line", () => {
     expect(() =>
-      wrapCommand("echo before\nDUST_CMD_EOF\necho after", "anthropic")
+      wrapCommand("echo before\nRUBY_CMD_EOF\necho after", "anthropic")
     ).toThrow(
-      "Command contains the reserved heredoc delimiter 'DUST_CMD_EOF'."
+      "Command contains the reserved heredoc delimiter 'RUBY_CMD_EOF'."
     );
   });
 
   it("throws when wrapCommandWithCapture receives the delimiter on its own line", () => {
     expect(() =>
       wrapCommandWithCapture(
-        "echo before\nDUST_CMD_EOF\necho after",
+        "echo before\nRUBY_CMD_EOF\necho after",
         "exec-id",
         "anthropic"
       )
     ).toThrow(
-      "Command contains the reserved heredoc delimiter 'DUST_CMD_EOF'."
+      "Command contains the reserved heredoc delimiter 'RUBY_CMD_EOF'."
     );
   });
 });

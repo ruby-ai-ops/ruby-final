@@ -1,4 +1,4 @@
-import type { DustBatchEndpointConstructor } from "@app/lib/llms/batch/dust_batch_endpoint";
+import type { RubyBatchEndpointConstructor } from "@app/lib/llms/batch/ruby_batch_endpoint";
 import type {
   EndpointConfig,
   Where,
@@ -7,7 +7,7 @@ import type {
 import { matchesWhere } from "@app/lib/llms/utils/matches_where";
 
 export function isEndpointAvailable(
-  endpointConstructor: DustBatchEndpointConstructor,
+  endpointConstructor: RubyBatchEndpointConstructor,
   workspaceConfiguration: WorkspaceConfig,
   inputCondition: Where<EndpointConfig>
 ) {

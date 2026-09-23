@@ -131,9 +131,9 @@ impl Block for Curl {
 
         let url = replace_variables_in_string(&self.url, "url", &e)?;
 
-        if url.contains("https://dust.tt") || url.contains("https://www.dust.tt") {
+        if url.contains("https://ruby.ad") || url.contains("https://www.ruby.ad") {
             Err(anyhow!(
-                "Curl block cannot be used for reentrant calls to Dust"
+                "Curl block cannot be used for reentrant calls to Ruby"
             ))?;
         }
 

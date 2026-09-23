@@ -2,7 +2,7 @@ import type { Transport } from "@modelcontextprotocol/sdk/shared/transport";
 import type { JSONRPCMessage } from "@modelcontextprotocol/sdk/types";
 import { EventSourcePolyfill } from "event-source-polyfill";
 
-import type { DustAPI } from ".";
+import type { RubyAPI } from ".";
 import { normalizeError } from "./error_utils";
 
 const logger = console;
@@ -12,11 +12,11 @@ const RECONNECT_DELAY_MS = 5 * 1000; // 5 seconds.
 
 /**
  * Custom transport implementation for MCP
- * - Uses EventSource (SSE) to receive requests from Dust
- * - Uses fetch (HTTP POST) to send results back to Dust
+ * - Uses EventSource (SSE) to receive requests from Ruby
+ * - Uses fetch (HTTP POST) to send results back to Ruby
  * - Supports workspace-scoped MCP registration only
  */
-export class DustMcpServerTransport implements Transport {
+export class RubyMcpServerTransport implements Transport {
   private eventSource: EventSourcePolyfill | null = null;
   private lastEventId: string | null = null;
   private heartbeatTimer: NodeJS.Timeout | null = null;
@@ -29,18 +29,18 @@ export class DustMcpServerTransport implements Transport {
   public sessionId?: string;
 
   constructor(
-    private readonly dustAPI: DustAPI,
+    private readonly rubyAPI: RubyAPI,
     private readonly onServerIdReceived: (serverId: string) => void,
-    private readonly serverName: string = "Dust Extension",
+    private readonly serverName: string = "Ruby Extension",
     private readonly verbose: boolean = false,
     private readonly eventSourceHeartbeat = 45000
   ) {}
 
   /**
-   * Register the MCP server with the Dust backend
+   * Register the MCP server with the Ruby backend
    */
   private async registerServer(): Promise<boolean> {
-    const registerRes = await this.dustAPI.registerMCPServer({
+    const registerRes = await this.rubyAPI.registerMCPServer({
       serverName: this.serverName,
     });
     if (registerRes.isErr()) {
@@ -78,7 +78,7 @@ export class DustMcpServerTransport implements Transport {
 
     // Set up a new heartbeat timer (every HEARTBEAT_INTERVAL_MS).
     this.heartbeatTimer = setInterval(async () => {
-      const heartbeatRes = await this.dustAPI.heartbeatMCPServer({
+      const heartbeatRes = await this.rubyAPI.heartbeatMCPServer({
         serverId,
       });
 
@@ -131,7 +131,7 @@ export class DustMcpServerTransport implements Transport {
       this.eventSource = null;
     }
 
-    const connectionResult = await this.dustAPI.getMCPRequestsConnectionDetails(
+    const connectionResult = await this.rubyAPI.getMCPRequestsConnectionDetails(
       {
         serverId: this.serverId,
         lastEventId: this.lastEventId,
@@ -225,8 +225,8 @@ export class DustMcpServerTransport implements Transport {
       return;
     }
 
-    // Send tool results back to Dust via HTTP POST.
-    const postResultsRes = await this.dustAPI.postMCPResults({
+    // Send tool results back to Ruby via HTTP POST.
+    const postResultsRes = await this.rubyAPI.postMCPResults({
       serverId: this.serverId,
       result: message,
     });

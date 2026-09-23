@@ -8,8 +8,8 @@ import type {
   CellValueType,
   ListTableRowsResponseType,
   UpsertTableRowsResponseType,
-} from "@dust-tt/client";
-import { UpsertTableRowsRequestSchema } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { UpsertTableRowsRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";
@@ -229,8 +229,8 @@ app.get(
 
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const listRes = await coreAPI.getTableRows({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       tableId: tId,
       offset,
       limit,
@@ -347,8 +347,8 @@ app.post(
 
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const upsertRes = await coreAPI.upsertTableRows({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       tableId: tId,
       rows: rowsToUpsert,
       truncate,
@@ -388,8 +388,8 @@ app.post(
 
     // Upsert is succesful, retrieve the updated table.
     const tableRes = await coreAPI.getTable({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       tableId: tId,
     });
     if (tableRes.isErr()) {

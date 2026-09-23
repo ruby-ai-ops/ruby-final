@@ -1,5 +1,5 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
-import type { SparkleLinkProps } from "@dust-tt/sparkle";
+import type { RubyUILinkProps } from "@ruby-ai/ui";
 import Link from "next/link";
 
 export function NextLinkWrapper({
@@ -9,7 +9,7 @@ export function NextLinkWrapper({
   shallow = false,
   target = "_self",
   ...props
-}: SparkleLinkProps) {
+}: RubyUILinkProps) {
   return (
     <Link
       href={href}

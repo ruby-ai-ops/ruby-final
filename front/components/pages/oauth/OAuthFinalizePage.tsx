@@ -2,7 +2,7 @@ import { useAppRouter, usePathParam } from "@app/lib/platform";
 import { useFinalize } from "@app/lib/swr/oauth";
 import logger from "@app/logger/logger";
 import { isOAuthProvider } from "@app/types/oauth/lib";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useEffect, useMemo } from "react";
 
 export function OAuthFinalizePage() {
@@ -39,7 +39,7 @@ export function OAuthFinalizePage() {
 
     async function finalizeOAuth() {
       // You can end up here when you directly edit the configuration
-      // (e.g. go to GitHub and configure repositories from Dust App in Settings, hence no opener).
+      // (e.g. go to GitHub and configure repositories from Ruby App in Settings, hence no opener).
       const res = await doFinalize(validProvider, queryParams);
 
       // Prepare message data

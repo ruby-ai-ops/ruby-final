@@ -34,7 +34,7 @@ import type {
 import type { SpaceType } from "@app/types/space";
 import type { LightWorkspaceType, UserType } from "@app/types/user";
 import { ANONYMOUS_USER_IMAGE_URL } from "@app/types/user";
-import type { DataTableSkeletonCellProps } from "@dust-tt/sparkle";
+import type { DataTableSkeletonCellProps } from "@ruby-ai/ui";
 import {
   AvatarCellSkeleton,
   Chip,
@@ -44,7 +44,7 @@ import {
   EmptyCTA,
   LoadingBlock,
   TextCellSkeleton,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 

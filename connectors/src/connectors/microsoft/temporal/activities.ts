@@ -84,8 +84,8 @@ import {
   isDevelopment,
   normalizeError,
 } from "@connectors/types";
-import type { LoggerInterface, Result } from "@dust-tt/client";
-import { Err, Ok, removeNulls } from "@dust-tt/client";
+import type { LoggerInterface, Result } from "@ruby-ai/client";
+import { Err, Ok, removeNulls } from "@ruby-ai/client";
 import type { Bucket } from "@google-cloud/storage";
 import { Storage } from "@google-cloud/storage";
 import type { Client } from "@microsoft/microsoft-graph-client";
@@ -117,7 +117,7 @@ function getDeltaSyncBucket(): Bucket {
         : undefined,
     });
     _deltaSyncBucket = storage.bucket(
-      connectorsConfig.getDustTmpSyncBucketName()
+      connectorsConfig.getRubyTmpSyncBucketName()
     );
   }
   return _deltaSyncBucket;

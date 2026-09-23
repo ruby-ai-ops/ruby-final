@@ -16,7 +16,7 @@ import {
   isFrameContentType,
   isWorkspaceVisibleShareScope,
 } from "@app/types/files";
-import type { PublicFrameResponseBodyType } from "@dust-tt/client";
+import type { PublicFrameResponseBodyType } from "@ruby-ai/client";
 import { unauthedApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";
@@ -161,7 +161,7 @@ app.get(
         isWorkspaceVisibleShareScope(shareScope) && auth;
 
       if (!isFileOwner && !isWorkspaceMemberWithAccess) {
-        // Resolve the verified email: prefer Dust session, fall back to external viewer cookie.
+        // Resolve the verified email: prefer Ruby session, fall back to external viewer cookie.
         let verifiedEmail: string | null = auth?.user()?.email ?? null;
         if (!verifiedEmail) {
           const sessionToken = getCookie(ctx, FRAME_SESSION_COOKIE_NAME);

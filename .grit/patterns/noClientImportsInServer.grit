@@ -16,8 +16,8 @@ pattern client_module_source() {
         `"@app/lib/tracking"`,
         `"@app/lib/utils/utm_client"`,
         `"@app/logger/datadogLogger"`,
-        `"@dust-tt/sparkle"`,
-        `"@dust-tt/sparkle/$_"`
+        `"@ruby-ai/ui"`,
+        `"@ruby-ai/ui/$_"`
     }
 }
 

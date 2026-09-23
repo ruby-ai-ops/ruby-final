@@ -20,7 +20,7 @@ async function backfillDataSource(
   logger: typeof Logger
 ) {
   const pattern = `^slack-[A-Z0-9]+-${nodeType}-[0-9.\\-]+$`;
-  const mimeType = `application/vnd.dust.slack.${nodeType}`;
+  const mimeType = `application/vnd.ruby.slack.${nodeType}`;
 
   logger.info({ pattern, mimeType }, "Processing data source");
 
@@ -40,8 +40,8 @@ async function backfillDataSource(
           LIMIT :batchSize;`,
       {
         replacements: {
-          dataSourceId: frontDataSource.dustAPIDataSourceId,
-          projectId: frontDataSource.dustAPIProjectId,
+          dataSourceId: frontDataSource.rubyAPIDataSourceId,
+          projectId: frontDataSource.rubyAPIProjectId,
           batchSize: SELECT_BATCH_SIZE,
           nextId,
           pattern,

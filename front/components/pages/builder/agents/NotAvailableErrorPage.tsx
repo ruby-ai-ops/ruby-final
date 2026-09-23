@@ -1,6 +1,6 @@
 import CustomErrorPage from "@app/components/pages/CustomErrorPage";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Brain, LogIn01 } from "@dust-tt/sparkle";
+import { Brain, LogIn01 } from "@ruby-ai/ui";
 
 interface NotAvailableErrorPageProps {
   isAdmin: boolean;

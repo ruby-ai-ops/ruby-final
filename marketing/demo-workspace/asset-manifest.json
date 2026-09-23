@@ -1,0 +1,1043 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "kind": "fontawesome-css",
+      "source": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css",
+      "localPath": "embed/bundled-assets/fontawesome/css/all.min.css",
+      "publicPath": "/static/workspace-demo/bundled/fontawesome/css/all.min.css",
+      "mimeType": "text/css",
+      "bytes": 73898,
+      "sha256": "06bbd1412252d31baf51bd54768d177c60997e45974b1d5bfb723f2b4e0d021c"
+    },
+    {
+      "kind": "license",
+      "source": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.7.2/LICENSE.txt",
+      "localPath": "embed/bundled-assets/fontawesome/LICENSE.txt",
+      "publicPath": "/static/workspace-demo/bundled/fontawesome/LICENSE.txt",
+      "mimeType": "text/plain",
+      "bytes": 7592,
+      "sha256": "92671da52bc1d6ec6f131ba8bd4094e99fec6c8a76a7ada857f95f5b0a8f2053"
+    },
+    {
+      "kind": "fontawesome-font",
+      "source": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-brands-400.ttf",
+      "localPath": "embed/bundled-assets/fontawesome/webfonts/fa-brands-400.ttf",
+      "publicPath": "/static/workspace-demo/bundled/fontawesome/webfonts/fa-brands-400.ttf",
+      "mimeType": "application/octet-stream",
+      "bytes": 210792,
+      "sha256": "808443ae6c8204395add8543da8a90a60b9376fb0f87ed8e8ea37d109596d805"
+    },
+    {
+      "kind": "fontawesome-font",
+      "source": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-brands-400.woff2",
+      "localPath": "embed/bundled-assets/fontawesome/webfonts/fa-brands-400.woff2",
+      "publicPath": "/static/workspace-demo/bundled/fontawesome/webfonts/fa-brands-400.woff2",
+      "mimeType": "application/octet-stream",
+      "bytes": 118684,
+      "sha256": "d7236a19bf23cbb2027280e8f51dc99d6c45976a2ed60de73382b034b18a2b68"
+    },
+    {
+      "kind": "fontawesome-font",
+      "source": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-regular-400.ttf",
+      "localPath": "embed/bundled-assets/fontawesome/webfonts/fa-regular-400.ttf",
+      "publicPath": "/static/workspace-demo/bundled/fontawesome/webfonts/fa-regular-400.ttf",
+      "mimeType": "application/octet-stream",
+      "bytes": 68064,
+      "sha256": "54cf6086f7bb21f9d072ad494a19b4681fa516dd0a14cee52da01d3651a913a3"
+    },
+    {
+      "kind": "fontawesome-font",
+      "source": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-regular-400.woff2",
+      "localPath": "embed/bundled-assets/fontawesome/webfonts/fa-regular-400.woff2",
+      "publicPath": "/static/workspace-demo/bundled/fontawesome/webfonts/fa-regular-400.woff2",
+      "mimeType": "application/octet-stream",
+      "bytes": 25472,
+      "sha256": "e3456d1283b9d75337a773dfd147bf908fd02c01b4bf48576d8603a69b13cbe5"
+    },
+    {
+      "kind": "fontawesome-font",
+      "source": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-solid-900.ttf",
+      "localPath": "embed/bundled-assets/fontawesome/webfonts/fa-solid-900.ttf",
+      "publicPath": "/static/workspace-demo/bundled/fontawesome/webfonts/fa-solid-900.ttf",
+      "mimeType": "application/octet-stream",
+      "bytes": 426112,
+      "sha256": "d2f0593540b0e33ba6de255a54f272d466e31144806956bea8cfdbf7edffc9bd"
+    },
+    {
+      "kind": "fontawesome-font",
+      "source": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-solid-900.woff2",
+      "localPath": "embed/bundled-assets/fontawesome/webfonts/fa-solid-900.woff2",
+      "publicPath": "/static/workspace-demo/bundled/fontawesome/webfonts/fa-solid-900.woff2",
+      "mimeType": "application/octet-stream",
+      "bytes": 158220,
+      "sha256": "aa75998623a391e61c6901794ace832e3ecdd288b56d608f21bea0411acc0b8e"
+    },
+    {
+      "kind": "fontawesome-font",
+      "source": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-v4compatibility.ttf",
+      "localPath": "embed/bundled-assets/fontawesome/webfonts/fa-v4compatibility.ttf",
+      "publicPath": "/static/workspace-demo/bundled/fontawesome/webfonts/fa-v4compatibility.ttf",
+      "mimeType": "application/octet-stream",
+      "bytes": 10836,
+      "sha256": "30f6abf6baa425825828793d6dfad1fb63765d0e5abaa7af6feafb9bfcece5a0"
+    },
+    {
+      "kind": "fontawesome-font",
+      "source": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-v4compatibility.woff2",
+      "localPath": "embed/bundled-assets/fontawesome/webfonts/fa-v4compatibility.woff2",
+      "publicPath": "/static/workspace-demo/bundled/fontawesome/webfonts/fa-v4compatibility.woff2",
+      "mimeType": "application/octet-stream",
+      "bytes": 4796,
+      "sha256": "0ce9033c69dc714f5f45ef9bf17d55e4c46bcdfad6799a4e92b38e7781bf86bd"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Adomik",
+      "source": "https://www.google.com/s2/favicons?domain=adomik.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/adomik-f5b5906d.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/adomik-f5b5906d.png",
+      "mimeType": "image/png",
+      "bytes": 781,
+      "sha256": "ec82e45e0b58a7d8cd9bc8a33e1472f1ce16f160fb9cc809fc7c6f394c952d7f"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Amplitude",
+      "source": "https://www.google.com/s2/favicons?domain=amplitude.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/amplitude-2c513696.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/amplitude-2c513696.png",
+      "mimeType": "image/png",
+      "bytes": 854,
+      "sha256": "c2237afcf1d8f4b3d2ccb219af56b054738898ba7d9df02d6bc156154d995103"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Amplitude Europe",
+      "source": "https://www.google.com/s2/favicons?domain=amplitude.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/amplitude-europe-2c513696.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/amplitude-europe-2c513696.png",
+      "mimeType": "image/png",
+      "bytes": 854,
+      "sha256": "c2237afcf1d8f4b3d2ccb219af56b054738898ba7d9df02d6bc156154d995103"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Apify",
+      "source": "https://www.google.com/s2/favicons?domain=apify.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/apify-26178695.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/apify-26178695.png",
+      "mimeType": "image/png",
+      "bytes": 1029,
+      "sha256": "1183d219cf26767b3df481ac4c83c213300ea46f29257c66799c69885354079c"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Asana",
+      "source": "https://www.google.com/s2/favicons?domain=asana.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/asana-a7903a53.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/asana-a7903a53.png",
+      "mimeType": "image/png",
+      "bytes": 1950,
+      "sha256": "5c497974a90abb1cd3eaf92812a635043a2a26b9d2d36a8fc508673b98cea519"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Ashby",
+      "source": "https://www.google.com/s2/favicons?domain=ashbyhq.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/ashby-6c9067fd.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/ashby-6c9067fd.png",
+      "mimeType": "image/png",
+      "bytes": 661,
+      "sha256": "9c21c2b4a5ce14c277d4eb918cfdcb19892edb1486d8edfed36c4dd94171f52f"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Attio",
+      "source": "https://www.google.com/s2/favicons?domain=attio.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/attio-5f9df5b2.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/attio-5f9df5b2.png",
+      "mimeType": "image/png",
+      "bytes": 1386,
+      "sha256": "11a3bc5090d7451bc5fd78c2feee97ba052cfe1867ac8f2baf353b2ee633c390"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "BigQuery",
+      "source": "https://www.google.com/s2/favicons?domain=cloud.google.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/bigquery-01be8e04.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/bigquery-01be8e04.png",
+      "mimeType": "image/png",
+      "bytes": 2693,
+      "sha256": "7bbbcd2d81d3d0c64787ceedc35512930c7e88577033cd8a3e29ea7cc444987e"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Canva",
+      "source": "https://www.google.com/s2/favicons?domain=canva.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/canva-40577121.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/canva-40577121.png",
+      "mimeType": "image/png",
+      "bytes": 1138,
+      "sha256": "febbaba34208b2d44407f77d064717b5b40b6663b212197ede299bd1cf84f55b"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Clari Copilot",
+      "source": "https://www.google.com/s2/favicons?domain=clari.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/clari-copilot-619d3bb8.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/clari-copilot-619d3bb8.png",
+      "mimeType": "image/png",
+      "bytes": 803,
+      "sha256": "4d5e82d3e8e75f0743fb0f70f266221b2413bfd156ee4e556c4a64159f565a22"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Confluence",
+      "source": "https://www.google.com/s2/favicons?domain=atlassian.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/confluence-a92a0cb0.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/confluence-a92a0cb0.png",
+      "mimeType": "image/png",
+      "bytes": 988,
+      "sha256": "9f049b383d89575326e520ca432814561417fe7fecc196f2d15ff4acf2fb3857"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Contentsquare",
+      "source": "https://www.google.com/s2/favicons?domain=contentsquare.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/contentsquare-55f2f39c.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/contentsquare-55f2f39c.png",
+      "mimeType": "image/png",
+      "bytes": 703,
+      "sha256": "49f825823c8369be6dd1d8f18a54cc9d0cfa5cbabd5c1358bb67b4b059c6021f"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Costory",
+      "source": "https://www.google.com/s2/favicons?domain=costory.io&sz=64",
+      "localPath": "embed/bundled-assets/integrations/costory-9b852406.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/costory-9b852406.png",
+      "mimeType": "image/png",
+      "bytes": 656,
+      "sha256": "bdec01885f186c3e076363508a4020df767280c7612002780b081cda3e8978c0"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Databricks",
+      "source": "https://www.google.com/s2/favicons?domain=databricks.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/databricks-d3fd1e16.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/databricks-d3fd1e16.png",
+      "mimeType": "image/png",
+      "bytes": 991,
+      "sha256": "366913e62530f467d21bcd55cda952d5f03389c46b80c82c8474563b8d0a78b9"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Fathom",
+      "source": "https://www.google.com/s2/favicons?domain=fathom.video&sz=64",
+      "localPath": "embed/bundled-assets/integrations/fathom-02464d4e.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/fathom-02464d4e.png",
+      "mimeType": "image/png",
+      "bytes": 422,
+      "sha256": "c2818be0373874803c8f748ba32daab38b7d82a02be1584fa0ce59ec05aa298a"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Freshservice",
+      "source": "https://www.google.com/s2/favicons?domain=freshservice.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/freshservice-a33fdee5.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/freshservice-a33fdee5.png",
+      "mimeType": "image/png",
+      "bytes": 1797,
+      "sha256": "4c705f4e069fa6b1f07b22d6af6e0a72b702605db96d909a5b793ea1586ee9b5"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Front",
+      "source": "https://www.google.com/s2/favicons?domain=front.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/front-c9486daf.jpg",
+      "publicPath": "/static/workspace-demo/bundled/integrations/front-c9486daf.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1144,
+      "sha256": "44d65c5b6cdb610cd90b2642fe4969fc9ab205d5c7bf54e141b921484680e214"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Gamma",
+      "source": "https://www.google.com/s2/favicons?domain=gamma.app&sz=64",
+      "localPath": "embed/bundled-assets/integrations/gamma-b6d8ae82.jpg",
+      "publicPath": "/static/workspace-demo/bundled/integrations/gamma-b6d8ae82.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1010,
+      "sha256": "b4169db40373a329c1fd2a65c6c14e745c22aac432b8a8aa87b9d1d7fa2a3419"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "GitHub",
+      "source": "https://www.google.com/s2/favicons?domain=github.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/github-1427ce21.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/github-1427ce21.png",
+      "mimeType": "image/png",
+      "bytes": 519,
+      "sha256": "1a81fbfbf0a8efe0a8a9a16f0951e679dbbda131fe014a150176056199968e06"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Gmail",
+      "source": "https://www.google.com/s2/favicons?domain=mail.google.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/gmail-3f1c8a48.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/gmail-3f1c8a48.png",
+      "mimeType": "image/png",
+      "bytes": 1339,
+      "sha256": "63efcfe9eeda4cc58965c7587a485886612cbf878ecd8fc3e4dd594db31a67fd"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Gong",
+      "source": "https://www.google.com/s2/favicons?domain=gong.io&sz=64",
+      "localPath": "embed/bundled-assets/integrations/gong-5cdc0a7f.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/gong-5cdc0a7f.png",
+      "mimeType": "image/png",
+      "bytes": 776,
+      "sha256": "49d262a27eff147fe517d88013435dec0bfb2199b5f1cc0b817a62b5d02df96d"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Google Calendar",
+      "source": "https://www.google.com/s2/favicons?domain=calendar.google.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/google-calendar-641d9f2e.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/google-calendar-641d9f2e.png",
+      "mimeType": "image/png",
+      "bytes": 1339,
+      "sha256": "63efcfe9eeda4cc58965c7587a485886612cbf878ecd8fc3e4dd594db31a67fd"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Google Drive",
+      "source": "https://www.google.com/s2/favicons?domain=drive.google.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/google-drive-f21d7863.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/google-drive-f21d7863.png",
+      "mimeType": "image/png",
+      "bytes": 880,
+      "sha256": "7ee03af4254d9f856b08f73e34f8b3526babb1ed7954b5557b1167c3238a919c"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Google Meet",
+      "source": "https://www.google.com/s2/favicons?domain=meet.google.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/google-meet-584dbac7.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/google-meet-584dbac7.png",
+      "mimeType": "image/png",
+      "bytes": 3201,
+      "sha256": "c7b3fa6a21f2e0a5238a54bfc38a9ff1358c2b15818654f9bab8bd81803f0f99"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Google Sheets",
+      "source": "https://www.google.com/s2/favicons?domain=docs.google.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/google-sheets-938a845d.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/google-sheets-938a845d.png",
+      "mimeType": "image/png",
+      "bytes": 1339,
+      "sha256": "63efcfe9eeda4cc58965c7587a485886612cbf878ecd8fc3e4dd594db31a67fd"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Granola",
+      "source": "https://www.google.com/s2/favicons?domain=granola.ai&sz=64",
+      "localPath": "embed/bundled-assets/integrations/granola-3e66ccf9.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/granola-3e66ccf9.png",
+      "mimeType": "image/png",
+      "bytes": 1182,
+      "sha256": "e7ff2b3375cad26aa1d4cd06e8f09b56800ba63891f8a9653e6a49283f4e265a"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Guru",
+      "source": "https://www.google.com/s2/favicons?domain=getguru.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/guru-9b5474c2.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/guru-9b5474c2.png",
+      "mimeType": "image/png",
+      "bytes": 793,
+      "sha256": "61071e97b898cb482dbbf5b142355ca52d28b115b30c0a966c16d5e5433c097b"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Hex",
+      "source": "https://www.google.com/s2/favicons?domain=hex.tech&sz=64",
+      "localPath": "embed/bundled-assets/integrations/hex-050f0df5.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/hex-050f0df5.png",
+      "mimeType": "image/png",
+      "bytes": 533,
+      "sha256": "6840083575836fba596042fd36fdb321b0bfc997d25e843cf3fcb6aaf92e1d89"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "HubSpot",
+      "source": "https://www.google.com/s2/favicons?domain=hubspot.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/hubspot-42912a46.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/hubspot-42912a46.png",
+      "mimeType": "image/png",
+      "bytes": 806,
+      "sha256": "265ff6c08d44723363cd26a504679227b71e3d14da567139e201c87ca2beefb9"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Intercom",
+      "source": "https://www.google.com/s2/favicons?domain=intercom.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/intercom-92d74d99.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/intercom-92d74d99.png",
+      "mimeType": "image/png",
+      "bytes": 2329,
+      "sha256": "3a929e73b0be20a45cf3f522bf51b9339170ae6c02b4825eee683b34898715c7"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Jira",
+      "source": "https://www.google.com/s2/favicons?domain=atlassian.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/jira-a92a0cb0.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/jira-a92a0cb0.png",
+      "mimeType": "image/png",
+      "bytes": 988,
+      "sha256": "9f049b383d89575326e520ca432814561417fe7fecc196f2d15ff4acf2fb3857"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Lemlist",
+      "source": "https://www.google.com/s2/favicons?domain=lemlist.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/lemlist-47b0c752.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/lemlist-47b0c752.png",
+      "mimeType": "image/png",
+      "bytes": 498,
+      "sha256": "30fdc9c75b7371bde98e6d8824d650ecc0d26a76ab0a76db1de6aa9f3ec4fd8c"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Linear",
+      "source": "https://www.google.com/s2/favicons?domain=linear.app&sz=64",
+      "localPath": "embed/bundled-assets/integrations/linear-92dcbfdb.jpg",
+      "publicPath": "/static/workspace-demo/bundled/integrations/linear-92dcbfdb.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1179,
+      "sha256": "6a1ec9e3194250e009d46cf06ff2f038f8c8bd1335c999164192d7315926779f"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Luma",
+      "source": "https://www.google.com/s2/favicons?domain=lu.ma&sz=64",
+      "localPath": "embed/bundled-assets/integrations/luma-a30e01ab.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/luma-a30e01ab.png",
+      "mimeType": "image/png",
+      "bytes": 880,
+      "sha256": "89b539f7883eb9523d1cf462c77993dc056fed9b90a92f310c47a83c528a09e6"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Microsoft",
+      "source": "https://www.google.com/s2/favicons?domain=microsoft.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/microsoft-9e4c9060.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/microsoft-9e4c9060.png",
+      "mimeType": "image/png",
+      "bytes": 177,
+      "sha256": "33a03200b71055b3eafcd46496b977612b1e28f828bdc2eaf1f8c78035ccc6ab"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Microsoft Excel",
+      "source": "https://www.google.com/s2/favicons?domain=microsoft.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/microsoft-excel-9e4c9060.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/microsoft-excel-9e4c9060.png",
+      "mimeType": "image/png",
+      "bytes": 177,
+      "sha256": "33a03200b71055b3eafcd46496b977612b1e28f828bdc2eaf1f8c78035ccc6ab"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Microsoft OneDrive",
+      "source": "https://www.google.com/s2/favicons?domain=onedrive.live.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/microsoft-onedrive-54825e16.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/microsoft-onedrive-54825e16.png",
+      "mimeType": "image/png",
+      "bytes": 177,
+      "sha256": "33a03200b71055b3eafcd46496b977612b1e28f828bdc2eaf1f8c78035ccc6ab"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Microsoft Teams",
+      "source": "https://www.google.com/s2/favicons?domain=teams.microsoft.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/microsoft-teams-4a8a1599.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/microsoft-teams-4a8a1599.png",
+      "mimeType": "image/png",
+      "bytes": 1726,
+      "sha256": "e7d37565bdf1497f4f48ea2b9c05d6cbf4dcfe727361ad7ecc48c3615d278ae7"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Miro",
+      "source": "https://www.google.com/s2/favicons?domain=miro.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/miro-bcef1267.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/miro-bcef1267.png",
+      "mimeType": "image/png",
+      "bytes": 783,
+      "sha256": "98e3f7fe3a372cfa4d101a9db23b5d1c717b55e78f1b2ac1e9711738850b6ee2"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Modjo",
+      "source": "https://www.google.com/s2/favicons?domain=modjo.ai&sz=64",
+      "localPath": "embed/bundled-assets/integrations/modjo-71c962b2.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/modjo-71c962b2.png",
+      "mimeType": "image/png",
+      "bytes": 738,
+      "sha256": "dc99587284ef73e3c347c16caef533836d08e2b21a12b1f6637517e071704376"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Monday.com",
+      "source": "https://www.google.com/s2/favicons?domain=monday.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/monday-com-626afcfc.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/monday-com-626afcfc.png",
+      "mimeType": "image/png",
+      "bytes": 753,
+      "sha256": "ffea1ca20aaa12696861af0ab6253b669a37fef0b93ef1d3a16d8aefcc5e8b7a"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Napta",
+      "source": "https://www.google.com/s2/favicons?domain=napta.io&sz=64",
+      "localPath": "embed/bundled-assets/integrations/napta-22006434.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/napta-22006434.png",
+      "mimeType": "image/png",
+      "bytes": 403,
+      "sha256": "e723d1bda687fbd9aa149b8aabe45d21558362e5950a205ae79cdbdce383d6c6"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "NetSuite",
+      "source": "https://www.google.com/s2/favicons?domain=netsuite.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/netsuite-9b186c2e.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/netsuite-9b186c2e.png",
+      "mimeType": "image/png",
+      "bytes": 2862,
+      "sha256": "ede459f7b7ea42e04df21674a8348b11cadc911589f8f730e1356e7e3b32c96c"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Notion",
+      "source": "https://www.google.com/s2/favicons?domain=notion.so&sz=64",
+      "localPath": "embed/bundled-assets/integrations/notion-4beedb18.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/notion-4beedb18.png",
+      "mimeType": "image/png",
+      "bytes": 1511,
+      "sha256": "88b730df0cab66ffecc4df1227cb70855db1a7a3fdaf0d066c64fbce104d5457"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Outlook",
+      "source": "https://www.google.com/s2/favicons?domain=outlook.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/outlook-3fd2ca7e.jpg",
+      "publicPath": "/static/workspace-demo/bundled/integrations/outlook-3fd2ca7e.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1420,
+      "sha256": "9b980370696acfad558391628a5c0896a1b7ca0f3e9c92357f8ce62b6ed585fa"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Outlook Calendar",
+      "source": "https://www.google.com/s2/favicons?domain=outlook.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/outlook-calendar-3fd2ca7e.jpg",
+      "publicPath": "/static/workspace-demo/bundled/integrations/outlook-calendar-3fd2ca7e.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1420,
+      "sha256": "9b980370696acfad558391628a5c0896a1b7ca0f3e9c92357f8ce62b6ed585fa"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Power BI",
+      "source": "https://www.google.com/s2/favicons?domain=powerbi.microsoft.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/power-bi-5babee8d.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/power-bi-5babee8d.png",
+      "mimeType": "image/png",
+      "bytes": 177,
+      "sha256": "33a03200b71055b3eafcd46496b977612b1e28f828bdc2eaf1f8c78035ccc6ab"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Praiz",
+      "source": "https://www.google.com/s2/favicons?domain=praiz.io&sz=64",
+      "localPath": "embed/bundled-assets/integrations/praiz-d5e9648a.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/praiz-d5e9648a.png",
+      "mimeType": "image/png",
+      "bytes": 306,
+      "sha256": "126e486a756a8f29a54aeeb5d20bd8565f44669f0239ba8eb3aa739f27661238"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Productboard",
+      "source": "https://www.google.com/s2/favicons?domain=productboard.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/productboard-99d281a2.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/productboard-99d281a2.png",
+      "mimeType": "image/png",
+      "bytes": 334,
+      "sha256": "db2890d5d902fd8b63f1b9188b99922331b47831d2f7745f9dc501d2365c670f"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Salesforce",
+      "source": "https://www.google.com/s2/favicons?domain=salesforce.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/salesforce-a658dea5.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/salesforce-a658dea5.png",
+      "mimeType": "image/png",
+      "bytes": 652,
+      "sha256": "abcc0840c906aef643ba63da8d2d3f1487a8324ccc6ea7f122dd06168099e586"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Salesloft",
+      "source": "https://www.google.com/s2/favicons?domain=salesloft.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/salesloft-d7a0697f.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/salesloft-d7a0697f.png",
+      "mimeType": "image/png",
+      "bytes": 1064,
+      "sha256": "308b8bbde375d15c97c28ed86dbec46dfd2469403cfb7e77e4d7fc7c55183c6e"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Semrush",
+      "source": "https://www.google.com/s2/favicons?domain=semrush.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/semrush-4344720f.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/semrush-4344720f.png",
+      "mimeType": "image/png",
+      "bytes": 504,
+      "sha256": "6d3e3f774a999136d7d69a1773ee2bba0b555269f5efb7165213f1419f4ae526"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "ServiceNow",
+      "source": "https://www.google.com/s2/favicons?domain=servicenow.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/servicenow-cd1f3469.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/servicenow-cd1f3469.png",
+      "mimeType": "image/png",
+      "bytes": 1181,
+      "sha256": "e547091b5ce91e6f8f0937196df1e180b218f2f767e180b791e2084039008262"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Shopify",
+      "source": "https://www.google.com/s2/favicons?domain=shopify.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/shopify-874ebb85.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/shopify-874ebb85.png",
+      "mimeType": "image/png",
+      "bytes": 1439,
+      "sha256": "ed0b9463cc12b3e07264e4737e4e252a344ee6e0bb6e401978cb186c680ad5e1"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Slab",
+      "source": "https://www.google.com/s2/favicons?domain=slab.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/slab-245f1c9d.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/slab-245f1c9d.png",
+      "mimeType": "image/png",
+      "bytes": 827,
+      "sha256": "bea0b655db655c52bfda454d182a808fd8ec4db0e992581e74c4b3a6441effb9"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Slack",
+      "source": "https://www.google.com/s2/favicons?domain=slack.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/slack-1e53452e.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/slack-1e53452e.png",
+      "mimeType": "image/png",
+      "bytes": 927,
+      "sha256": "def38d7f0e932055048816828194d5eafa0ebf388e4f362cff09c9d7ee9c9a8b"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Snowflake",
+      "source": "https://www.google.com/s2/favicons?domain=snowflake.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/snowflake-f82c591b.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/snowflake-f82c591b.png",
+      "mimeType": "image/png",
+      "bytes": 621,
+      "sha256": "914b7c28d3e2d49ba6054351c06927135ac120316fa9d1baa872fcb894f82e62"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Statuspage",
+      "source": "https://www.google.com/s2/favicons?domain=statuspage.io&sz=64",
+      "localPath": "embed/bundled-assets/integrations/statuspage-94700261.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/statuspage-94700261.png",
+      "mimeType": "image/png",
+      "bytes": 495,
+      "sha256": "bab02c083bb7ea6ae8fa4f38d0c7cba8e7485ce2a6b55d91ed8b5c5db07204b2"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Stripe",
+      "source": "https://www.google.com/s2/favicons?domain=stripe.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/stripe-1cfbd22d.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/stripe-1cfbd22d.png",
+      "mimeType": "image/png",
+      "bytes": 433,
+      "sha256": "e022d3e700696cbd214f08b1128964c8cee32c0aa3f76210ee32a57f2b7dc109"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Supabase",
+      "source": "https://www.google.com/s2/favicons?domain=supabase.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/supabase-2893b03b.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/supabase-2893b03b.png",
+      "mimeType": "image/png",
+      "bytes": 504,
+      "sha256": "c01200c7a31952ed648e372304056f02a03ded503d23a9cd1832fd4185a5b734"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Ukg Ready",
+      "source": "https://www.google.com/s2/favicons?domain=ukg.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/ukg-ready-21d6e973.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/ukg-ready-21d6e973.png",
+      "mimeType": "image/png",
+      "bytes": 511,
+      "sha256": "fcfd8a97fd04b404261d61975a4953510fa1c361a45498108f79fbe8e7364907"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Val Town",
+      "source": "https://www.google.com/s2/favicons?domain=val.town&sz=64",
+      "localPath": "embed/bundled-assets/integrations/val-town-55c52471.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/val-town-55c52471.png",
+      "mimeType": "image/png",
+      "bytes": 1020,
+      "sha256": "2b32f8d1c2eff404f4fa9419eed1e2b18c8708f1e43b7b4a2f464673ce352800"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Vanta",
+      "source": "https://www.google.com/s2/favicons?domain=vanta.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/vanta-dea038f3.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/vanta-dea038f3.png",
+      "mimeType": "image/png",
+      "bytes": 1465,
+      "sha256": "0e69a6d8528337ee801720b0f828750e4798b8bfb0371025fd7a82df5749a4e2"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Web Crawler",
+      "source": "https://www.google.com/s2/favicons?domain=firecrawl.dev&sz=64",
+      "localPath": "embed/bundled-assets/integrations/web-crawler-0b327287.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/web-crawler-0b327287.png",
+      "mimeType": "image/png",
+      "bytes": 547,
+      "sha256": "f959dabe576a814a4ac9ced4eeba2f320b10111041e6b75cd18058ce3568b9ba"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Youtrust",
+      "source": "https://www.google.com/s2/favicons?domain=youtrust.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/youtrust-edf98bce.png",
+      "publicPath": "/static/workspace-demo/bundled/integrations/youtrust-edf98bce.png",
+      "mimeType": "image/png",
+      "bytes": 1118,
+      "sha256": "24dcd54ce78f6e7ce4b061e47bc4a3940a1ebf88bd32037e5ccc2fe6d579c963"
+    },
+    {
+      "kind": "integration-icon",
+      "label": "Zendesk",
+      "source": "https://www.google.com/s2/favicons?domain=zendesk.com&sz=64",
+      "localPath": "embed/bundled-assets/integrations/zendesk-b5dc31a7.jpg",
+      "publicPath": "/static/workspace-demo/bundled/integrations/zendesk-b5dc31a7.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 852,
+      "sha256": "783521813711f0d7d6d3650c8b58f575146dd24af829005b0ca502174a7c21c1"
+    },
+    {
+      "kind": "literal",
+      "source": "https://img.icons8.com/color/48/microsoft-teams.png",
+      "localPath": "embed/bundled-assets/remote/19697404d55377b7.png",
+      "publicPath": "/static/workspace-demo/bundled/remote/19697404d55377b7.png",
+      "mimeType": "image/png",
+      "bytes": 650,
+      "sha256": "0ab4041e3403ae5005e9d4ddbfde99ced47bc8da3fcdf63da8ca1b7381ed1b56"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=45",
+      "localPath": "embed/bundled-assets/remote/27d57da2aac02036.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/27d57da2aac02036.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 6764,
+      "sha256": "1cc4f53688039234428a33358576bbc5ad4c1a6a5bc67becfdc5d6a309d19453"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/48?img=33",
+      "localPath": "embed/bundled-assets/remote/362ac13da04fd8e3.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/362ac13da04fd8e3.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1414,
+      "sha256": "68b31cf9b0b73998c13f593f4c200347e15fb9a1c420b6d5489a04e2c593a82b"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=1",
+      "localPath": "embed/bundled-assets/remote/3631538d9de0b97a.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/3631538d9de0b97a.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 6678,
+      "sha256": "eb283ad853b9eb48e8ccc26e4e49c14fd48af353ad6af475ccf78e89b69a174a"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=10",
+      "localPath": "embed/bundled-assets/remote/423cb3d19d1ee307.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/423cb3d19d1ee307.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 7338,
+      "sha256": "51a4fa7f3d13e8e70ca90fb5618010aa26a89eb4122220c12449dc9717506ef8"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=14",
+      "localPath": "embed/bundled-assets/remote/4627d2ff01eefd23.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/4627d2ff01eefd23.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 5133,
+      "sha256": "771b195f2873361f11a444f3217e495fa7607baa7acf4960a258d58355ced2ee"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=32",
+      "localPath": "embed/bundled-assets/remote/4bb5758cf44d5b27.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/4bb5758cf44d5b27.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 5159,
+      "sha256": "ced2938345fb56221558392139eb89abf1ed5c713c7c44e71673394451be9db7"
+    },
+    {
+      "kind": "literal",
+      "source": "https://img.icons8.com/color/48/slack-new.png",
+      "localPath": "embed/bundled-assets/remote/4dd6010ebd2da045.png",
+      "publicPath": "/static/workspace-demo/bundled/remote/4dd6010ebd2da045.png",
+      "mimeType": "image/png",
+      "bytes": 729,
+      "sha256": "74372ba3a933706ec3877a2f8c94c1ba569327f06d389678185c5b7bab1a8282"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=44",
+      "localPath": "embed/bundled-assets/remote/59f623730104a7d4.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/59f623730104a7d4.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 4995,
+      "sha256": "46cdf34a5f11fafe9e9543c7faad9b3f73caa77056bf8b27d7b24c73c2bbfa7e"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=68",
+      "localPath": "embed/bundled-assets/remote/5edec38670ee4c26.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/5edec38670ee4c26.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 3591,
+      "sha256": "61bddb6553a6d59dea01d3020ae15e00cb9344f71506cdfd5c6a02b51993586a"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=53",
+      "localPath": "embed/bundled-assets/remote/61a560b0fb405f96.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/61a560b0fb405f96.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 4740,
+      "sha256": "5e5e19c808ed2b8bf26f396914d25a6b7899a8712ff7e6648584c134e2bf3490"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=69",
+      "localPath": "embed/bundled-assets/remote/65ca084ff66c88e9.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/65ca084ff66c88e9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 6745,
+      "sha256": "02ec6e6e557ecb73261a97bc84ca73a6b2bb0292502e9166a50310f786359326"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=25",
+      "localPath": "embed/bundled-assets/remote/6ec0b07427413480.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/6ec0b07427413480.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 5954,
+      "sha256": "77f594aee2408ed2481193277126ddd2d0df28e70a8f64ece3320bba0ccb455b"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=37",
+      "localPath": "embed/bundled-assets/remote/739d3240b09d2935.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/739d3240b09d2935.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 5969,
+      "sha256": "9f87588a923414108b9840a900cd812b5bec2f4bba60b834c990ddd60a16598c"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=42",
+      "localPath": "embed/bundled-assets/remote/7b0e126ff7e5700f.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/7b0e126ff7e5700f.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 7265,
+      "sha256": "91c71ed01bd08bd73fe6a8c79dd07a10cf9d9e22e37b0575bac057b1f0982bf5"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=49",
+      "localPath": "embed/bundled-assets/remote/89a61064e04234d6.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/89a61064e04234d6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 6025,
+      "sha256": "00cff78174701065ff9d8afe3d4a4e9bea46a21e3742ecf11e03d4950924878e"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=48",
+      "localPath": "embed/bundled-assets/remote/89a6b1c10f932cc9.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/89a6b1c10f932cc9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 4056,
+      "sha256": "c21c9264f60379949990946bcd50371a6bce916edfb68aab570d1d5fb522aa86"
+    },
+    {
+      "kind": "literal",
+      "source": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&h=160&q=85",
+      "localPath": "embed/bundled-assets/remote/944b9397394c65f1.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/944b9397394c65f1.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 9175,
+      "sha256": "3987f374818566b54f31d396160b59b0195bb78a5b31cce83aac5e4e9553a855"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=43",
+      "localPath": "embed/bundled-assets/remote/9c75d8f85614b249.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/9c75d8f85614b249.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 7607,
+      "sha256": "a730ee27087167d66ec92881e6657b3ab7b0c87d38d83388840afd5f8155b0bc"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=31",
+      "localPath": "embed/bundled-assets/remote/a39522126680233b.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/a39522126680233b.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 6545,
+      "sha256": "131a343b32b39ac25d43b9cc3bbd704bacc830fee7c7f6df3910f7df90bfc4e7"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=11",
+      "localPath": "embed/bundled-assets/remote/a548aea922c7dce9.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/a548aea922c7dce9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 7177,
+      "sha256": "719c4f9548dd0f3a24f3a1b7ab9da73056ca7b545440a30b6261046f2760f89b"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=41",
+      "localPath": "embed/bundled-assets/remote/ad912d68d943ca0a.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/ad912d68d943ca0a.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 4860,
+      "sha256": "ec15c3d866e3d667d72433d6b6ede8630a769721bc95cbdf232b7965f5b9db35"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=33",
+      "localPath": "embed/bundled-assets/remote/aef45733ff885cb0.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/aef45733ff885cb0.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 5722,
+      "sha256": "1eef894d8f41dce023fb752a3627fb86d42a769a23a1610adb2ada556229d9b2"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=12",
+      "localPath": "embed/bundled-assets/remote/b0fe2c3a48a32c66.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/b0fe2c3a48a32c66.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 5517,
+      "sha256": "f50d91f3ac1e3dfbb58f8078b461b61af0644a710fa33456732e97616952afe3"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=47",
+      "localPath": "embed/bundled-assets/remote/c2630aa1f74e8fe5.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/c2630aa1f74e8fe5.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 6446,
+      "sha256": "6667f7705813bdf92a3047b2ade4b44a0292c7b9629ca2855d18cb04c42c407e"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=46",
+      "localPath": "embed/bundled-assets/remote/c96a4368c6617f70.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/c96a4368c6617f70.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 7457,
+      "sha256": "f5d4911f54fd61db7b66d6a49df0f9ebc996dad6368aa87ab9f288aaebed3681"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=9",
+      "localPath": "embed/bundled-assets/remote/d11e9aeead6c3230.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/d11e9aeead6c3230.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 7728,
+      "sha256": "3c189781769d57392bbbae8b3aca489696d745e420c988395830c0a783ea786e"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/48?img=14",
+      "localPath": "embed/bundled-assets/remote/dcfe02dd871e6ace.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/dcfe02dd871e6ace.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 1379,
+      "sha256": "56a4de223d8d4eee1bc4dd61cbe0eb97f8ca3837f09142ffbbfae16b1bfb26e9"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=52",
+      "localPath": "embed/bundled-assets/remote/ee64a153d98bab95.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/ee64a153d98bab95.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 6287,
+      "sha256": "dbf9902d7fb94c87b65f15584add6ecf70c7bbd3818578d295d9d90ebef60617"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=5",
+      "localPath": "embed/bundled-assets/remote/f10fc20a34f83d90.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/f10fc20a34f83d90.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 5847,
+      "sha256": "96ee30c10e2346af3e956f7d98871e88d2fe42605736d71886b201d319d9ab3c"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=15",
+      "localPath": "embed/bundled-assets/remote/f456d1a3d4d9cc6a.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/f456d1a3d4d9cc6a.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 5356,
+      "sha256": "8a7781f0e43d3b3ff80e2c47ce44089c0bce1907e9707e7bf21a7d559cc5ed8f"
+    },
+    {
+      "kind": "literal",
+      "source": "https://i.pravatar.cc/160?img=13",
+      "localPath": "embed/bundled-assets/remote/f4bd8a6025cb7b62.jpg",
+      "publicPath": "/static/workspace-demo/bundled/remote/f4bd8a6025cb7b62.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 6212,
+      "sha256": "b7572d5e9543d7d1a741643c9900f56b2464ec48293f5f33cbe99ee938d5308c"
+    }
+  ]
+}

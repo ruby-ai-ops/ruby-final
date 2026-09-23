@@ -1,4 +1,4 @@
-export const DUST_SQLITE_INSTRUCTIONS = `Provide a valid SQLite query to answer the user's question. Only provide that. Never add anything beyond that. Your whole output should be one single valid SQL SELECT query to fetch data.
+export const RUBY_SQLITE_INSTRUCTIONS = `Provide a valid SQLite query to answer the user's question. Only provide that. Never add anything beyond that. Your whole output should be one single valid SQL SELECT query to fetch data.
 
 For string matching within the queries, do not use strict equality (=) checks. Instead, use \`LIKE '%pattern%'\` for a flexible approach to match patterns within the data. Ensure all string comparisons are case-insensitive by applying the \`LOWER()\` function, as in \`LOWER("column_name") LIKE LOWER('%pattern%')\`. When filtering text columns that may contain keywords or enum-like values, use OR conditions to test for multiple keyword variations, like \`LOWER("column_name") LIKE '%keyword1%' OR LOWER("column_name") LIKE '%keyword2%'\`, to comprehensively capture the intended data.
 

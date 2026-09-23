@@ -14,7 +14,7 @@ import {
   ContentMessage,
   Icon,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
 interface MentionInvalidProps {

@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use bb8::Pool;
 use bb8_postgres::PostgresConnectionManager;
-use dust::oauth::connection::{Connection, ConnectionProvider, ConnectionStatus};
+use ruby::oauth::connection::{Connection, ConnectionProvider, ConnectionStatus};
 use std::env;
 use tokio_postgres::NoTls;
 

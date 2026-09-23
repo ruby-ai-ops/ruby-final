@@ -2,7 +2,7 @@ import "@uiw/react-textarea-code-editor/dist.css";
 
 import DataSourcePicker from "@app/components/data_source/DataSourcePicker";
 import { SuspensedCodeEditor } from "@app/components/SuspensedCodeEditor";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import TablePicker from "@app/components/tables/TablePicker";
 import { classNames, shallowBlockClone } from "@app/lib/utils";
 import type {
@@ -12,7 +12,7 @@ import type {
 } from "@app/types/app";
 import type { BlockType, RunType } from "@app/types/run";
 import type { WorkspaceType } from "@app/types/user";
-import { Button, Label, Plus, XClose } from "@dust-tt/sparkle";
+import { Button, Label, Plus, XClose } from "@ruby-ai/ui";
 import last from "lodash/last";
 import { useCallback, useEffect } from "react";
 import Block from "./Block";

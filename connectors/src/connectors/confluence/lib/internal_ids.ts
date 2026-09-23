@@ -8,7 +8,7 @@
  * `confluence-folder-`.
  */
 
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 
 enum ConfluenceInternalIdPrefix {
   Folder = "confluence-folder-",

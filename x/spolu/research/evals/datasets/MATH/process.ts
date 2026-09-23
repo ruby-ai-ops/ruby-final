@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import seedrandom from "seedrandom";
 
-const { DUST_API_KEY } = process.env;
+const { RUBY_API_KEY } = process.env;
 
 const TYPES = [
   "algebra",
@@ -110,12 +110,12 @@ async function processSplit(split: "train" | "test", size_per_level: number) {
       chunk.map((p: Problem) => {
         return (async () => {
           const res = await fetch(
-            "https://dust.tt/api/v1/w/3e26b0e764/apps/032e2a47a5/runs",
+            "https://app.ruby.ad/api/v1/w/3e26b0e764/apps/032e2a47a5/runs",
             {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${DUST_API_KEY}`,
+                Authorization: `Bearer ${RUBY_API_KEY}`,
               },
               body: JSON.stringify({
                 specification_hash:

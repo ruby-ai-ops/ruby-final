@@ -1,7 +1,7 @@
 import type { AuditLogsPortal } from "@app/lib/api/audit/workos_audit";
 import { useOpenAuditLogsPortal } from "@app/lib/swr/workos";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, File04, Page } from "@dust-tt/sparkle";
+import { Button, File04, Page } from "@ruby-ai/ui";
 import { useState } from "react";
 
 import { WorkspaceSection } from "./WorkspaceSection";

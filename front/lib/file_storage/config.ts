@@ -6,32 +6,32 @@ const config = {
     return EnvironmentConfig.getOptionalEnvVariable("SERVICE_ACCOUNT");
   },
   getGcsPublicUploadBucket: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_UPLOAD_BUCKET");
+    return EnvironmentConfig.getEnvVariable("RUBY_UPLOAD_BUCKET");
   },
   getGcsPrivateUploadsBucket: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_PRIVATE_UPLOADS_BUCKET");
+    return EnvironmentConfig.getEnvVariable("RUBY_PRIVATE_UPLOADS_BUCKET");
   },
   getGcsUpsertQueueBucket: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_UPSERT_QUEUE_BUCKET");
+    return EnvironmentConfig.getEnvVariable("RUBY_UPSERT_QUEUE_BUCKET");
   },
   getGcsTmpWorkloadsBucket: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_TMP_WORKLOADS_BUCKET");
+    return EnvironmentConfig.getEnvVariable("RUBY_TMP_WORKLOADS_BUCKET");
   },
-  getDustDataSourcesBucket: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_DATA_SOURCES_BUCKET");
+  getRubyDataSourcesBucket: (): string => {
+    return EnvironmentConfig.getEnvVariable("RUBY_DATA_SOURCES_BUCKET");
   },
   getWebhookRequestsBucket: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_WEBHOOK_REQUESTS_BUCKET");
+    return EnvironmentConfig.getEnvVariable("RUBY_WEBHOOK_REQUESTS_BUCKET");
   },
   getLLMTracesBucket: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_LLM_TRACES_BUCKET");
+    return EnvironmentConfig.getEnvVariable("RUBY_LLM_TRACES_BUCKET");
   },
-  getPokeUserConfigBucket: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_POKE_USER_CONFIG_BUCKET");
+  getAdminUserConfigBucket: (): string => {
+    return EnvironmentConfig.getEnvVariable("RUBY_ADMIN_USER_CONFIG_BUCKET");
   },
-  getDustTablesBucket: (): string => {
+  getRubyTablesBucket: (): string => {
     // TODO: we need to make sure this is set on front-reloc deployments
-    return EnvironmentConfig.getEnvVariable("DUST_TABLES_BUCKET");
+    return EnvironmentConfig.getEnvVariable("RUBY_TABLES_BUCKET");
   },
 };
 

@@ -4,7 +4,7 @@
 -- opposed to the Slack Bot MCP which uses 'bot' use_case, or data source connections which use
 -- 'connection' use_case).
 --
--- See: https://github.com/dust-tt/tasks/issues/5397
+-- See: https://github.com/ruby-ai/tasks/issues/5397
 --
 -- This migration is idempotent - it will skip any rows that have already been migrated.
 

@@ -15,7 +15,7 @@ export type PostNotionUrlStatusResponseBody = {
     exists: boolean;
     type?: "page" | "database";
   };
-  dust: {
+  ruby: {
     synced: boolean;
     lastSync?: string;
     breadcrumbs?: Array<{

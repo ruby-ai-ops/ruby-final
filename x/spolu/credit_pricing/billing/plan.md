@@ -23,7 +23,7 @@ working state for both gate-true and gate-false workspaces.
   `lib/api/billing/*` returning domain types — never `APIErrorWithStatusCode`.
 - **Don't introduce a feature flag for the page** — the gate is contract-based per the Slack
   decision. Local dev only requires the workspace to lack the `legacy_billing` feature flag
-  plus the Poke flip as documented in `overview.md`.
+  plus the Admin flip as documented in `overview.md`.
 - **Every PR is reviewable in isolation**: include a 1-2 line `## Tests` section in the PR
   body matching the template in `AGENTS.local.md`. Use
   `[functional-endpoint-tests]/[test-setup-through-factories]` factory-based
@@ -239,7 +239,7 @@ endpoint at `front/pages/api/stripe/portal.ts`).
 - New `front/components/pages/workspace/billing/BillingInfoBlock.tsx` — renders the address
   card and the card-on-file row with two "Change" buttons. Loading state per
   `[async-network-loading-state]`.
-- Card brand → icon: small map (visa, mastercard, amex, …) or use Sparkle's existing card
+- Card brand → icon: small map (visa, mastercard, amex, …) or use RubyUI's existing card
   icons if available. If not, fall back to a text label and add icons in a follow-up.
 
 **Tests**

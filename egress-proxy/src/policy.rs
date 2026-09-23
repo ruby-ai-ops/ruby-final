@@ -25,7 +25,7 @@ impl Policy {
 
 /// Global default allowlist parsed from `EGRESS_PROXY_ALLOWED_DOMAINS`. Domains in this list are
 /// allowed for every sandbox regardless of GCS policy. Intended for infrastructure domains like
-/// `dust.tt` that all sandboxes need.
+/// `ruby.ad` that all sandboxes need.
 #[derive(Debug, Clone)]
 pub struct DefaultAllowlist {
     patterns: Vec<DomainPattern>,
@@ -150,17 +150,17 @@ mod tests {
 
         assert!(policy.allows("api.example.com"));
         assert!(policy.allows("other.example.com"));
-        assert!(!policy.allows("dust.tt"));
+        assert!(!policy.allows("ruby.ad"));
     }
 
     #[test]
     fn default_allowlist_matches_exact_and_wildcard_domains() {
         let allowlist =
-            DefaultAllowlist::parse("dust.tt, *.dust.tt").expect("valid entries should parse");
+            DefaultAllowlist::parse("ruby.ad, *.ruby.ad").expect("valid entries should parse");
 
-        assert!(allowlist.allows("dust.tt"));
-        assert!(allowlist.allows("eu.dust.tt"));
-        assert!(allowlist.allows("app.eu.dust.tt"));
+        assert!(allowlist.allows("ruby.ad"));
+        assert!(allowlist.allows("app.ruby.ad"));
+        assert!(allowlist.allows("app.app.ruby.ad"));
         assert!(!allowlist.allows("example.com"));
     }
 
@@ -168,7 +168,7 @@ mod tests {
     fn default_allowlist_rejects_ip_literals() {
         assert!(DefaultAllowlist::parse("127.0.0.1").is_err());
         assert!(DefaultAllowlist::parse("::1").is_err());
-        assert!(DefaultAllowlist::parse("dust.tt, 10.0.0.1").is_err());
+        assert!(DefaultAllowlist::parse("ruby.ad, 10.0.0.1").is_err());
     }
 
     #[test]

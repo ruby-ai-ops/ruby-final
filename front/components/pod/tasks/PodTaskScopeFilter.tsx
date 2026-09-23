@@ -20,7 +20,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
   Eye,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 export function PodTaskScopeFilter() {
   const { taskOwnerFilter, onTaskOwnerFilterChange } = usePodTasksPanel();

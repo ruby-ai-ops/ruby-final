@@ -31,7 +31,7 @@ pub enum QueryDatabaseError {
 #[derive(Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum SqlDialect {
-    DustSqlite,
+    RubySqlite,
     Snowflake,
     Bigquery,
 }
@@ -130,7 +130,7 @@ pub async fn get_tables_schema(
                 .iter()
                 .zip(schemas.iter())
                 .map(|(table, remote_schema)| {
-                    let table_id = table.table_id_for_dbml().replace("__DUST_DOT__", ".");
+                    let table_id = table.table_id_for_dbml().replace("__RUBY_DOT__", ".");
                     remote_schema.as_ref().map(|s| {
                         s.schema.render_dbml(
                             &table_id,
@@ -180,7 +180,7 @@ pub async fn get_tables_schema(
                 get_transient_database_tables_info(&local_tables, store.clone()).await?;
 
             Ok((
-                SqlDialect::DustSqlite,
+                SqlDialect::RubySqlite,
                 local_tables
                     .into_iter()
                     .zip(tables_info.into_iter())

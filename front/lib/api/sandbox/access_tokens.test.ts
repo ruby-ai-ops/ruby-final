@@ -50,7 +50,7 @@ async function setupTest() {
   const sandbox = await SandboxResource.makeNew(auth, {
     providerId: "test-provider-id",
     status: "running",
-    baseImage: "dust-base",
+    baseImage: "ruby-base",
     version: "0.0.0-test",
   });
 

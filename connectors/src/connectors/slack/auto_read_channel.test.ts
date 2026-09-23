@@ -1,7 +1,7 @@
 import mainLogger from "@connectors/logger/logger";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { SlackAutoReadPattern } from "@connectors/types";
-import { DustAPI, Err } from "@dust-tt/client";
+import { RubyAPI, Err } from "@ruby-ai/client";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock(import("@connectors/connectors/slack/temporal/client"), () => ({
@@ -14,7 +14,7 @@ vi.mock(import("@connectors/lib/api/config"), async (importOriginal) => {
     ...original,
     apiConfig: {
       ...original.apiConfig,
-      getDustFrontAPIUrl: () => "https://dust.test",
+      getRubyFrontAPIUrl: () => "https://ruby.test",
     },
   };
 });
@@ -81,7 +81,7 @@ describe("autoReadChannel", () => {
     await makeSlackConnector("T_UNAVAILABLE_WS", [
       { pattern: "C.*", spaceId: "space-id" },
     ]);
-    const existsSpy = vi.spyOn(DustAPI.prototype, "exists").mockResolvedValue(
+    const existsSpy = vi.spyOn(RubyAPI.prototype, "exists").mockResolvedValue(
       new Err({
         type: "plan_limit_error",
         message:

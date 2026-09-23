@@ -28,7 +28,7 @@ async function buildWorker() {
     fs.writeFileSync("dist/meta.json", JSON.stringify(result.metafile));
 
     // Check for forbidden imports in worker bundle
-    const forbiddenPackages = ["@dust-tt/sparkle"];
+    const forbiddenPackages = ["@ruby-ai/ui"];
     const violations: string[] = [];
     for (const [file, info] of Object.entries(result.metafile.inputs)) {
       for (const imp of info.imports) {

@@ -1,7 +1,7 @@
 // import { removeNulls } from "@app/types";
 // import * as _ from "lodash";
 
-// import { AgentDustAppRunConfiguration } from "@app/lib/models/assistant/actions/dust_app_run";
+// import { AgentRubyAppRunConfiguration } from "@app/lib/models/assistant/actions/ruby_app_run";
 // import { AgentRetrievalConfiguration } from "@app/lib/models/assistant/actions/retrieval";
 // import { AgentTablesQueryConfiguration } from "@app/lib/models/assistant/actions/tables_query";
 // import {
@@ -26,17 +26,17 @@ import { assertNever } from "@app/types/shared/utils/assert_never";
 
 //   const retrievalConfigs = await AgentRetrievalConfiguration.findAll();
 //   const tablesQueryConfigs = await AgentTablesQueryConfiguration.findAll();
-//   const dustAppRunConfigs = await AgentDustAppRunConfiguration.findAll();
+//   const rubyAppRunConfigs = await AgentRubyAppRunConfiguration.findAll();
 
 //   const actionsByAgentId: Record<
 //     number,
 //     (
 //       | AgentRetrievalConfiguration
-//       | AgentDustAppRunConfiguration
+//       | AgentRubyAppRunConfiguration
 //       | AgentTablesQueryConfiguration
 //     )[]
 //   > = _.groupBy(
-//     [...retrievalConfigs, ...dustAppRunConfigs, ...tablesQueryConfigs],
+//     [...retrievalConfigs, ...rubyAppRunConfigs, ...tablesQueryConfigs],
 //     (action) => action.agentConfigurationId
 //   );
 
@@ -99,12 +99,12 @@ import { assertNever } from "@app/types/shared/utils/assert_never";
 //               }
 //             );
 //           }
-//         } else if (action instanceof AgentDustAppRunConfiguration) {
+//         } else if (action instanceof AgentRubyAppRunConfiguration) {
 //           logger.info(
-//             `Backfilling dust app run action ${action.id} for agent ${aId} with forceUseAtIteration... [execute: ${execute}]`
+//             `Backfilling ruby app run action ${action.id} for agent ${aId} with forceUseAtIteration... [execute: ${execute}]`
 //           );
 //           if (execute) {
-//             await AgentDustAppRunConfiguration.update(
+//             await AgentRubyAppRunConfiguration.update(
 //               { forceUseAtIteration },
 //               {
 //                 where: {

@@ -8,7 +8,7 @@ import {
   ScrollArea,
   SearchInput,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";

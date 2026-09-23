@@ -8,7 +8,7 @@ import { SlashCommandDropdown } from "@app/components/editor/extensions/shared/s
 import type { SlashMenuStackFrame } from "@app/components/editor/extensions/shared/slash_suggestion/slashMenuNavigation";
 import type { Selection } from "@app/components/model_picker/modelPickerUtils";
 import { getModelMakerLogo } from "@app/components/providers/types";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import { useModels } from "@app/lib/swr/models";
 import type { EnabledModelConfigurationType } from "@app/types/api/assistant/models";

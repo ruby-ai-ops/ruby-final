@@ -22,7 +22,7 @@ import {
   DropdownMenuTrigger,
   Trash01,
   User01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
 const NO_ASSIGNEE_LABEL_NEEDLE = normalizePodTaskSearchNeedle(

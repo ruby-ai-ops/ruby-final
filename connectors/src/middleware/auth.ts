@@ -5,17 +5,17 @@ import crypto from "crypto";
 import type { NextFunction, Request, Response } from "express";
 
 const {
-  DUST_CONNECTORS_SECRET,
-  DUST_CONNECTORS_WEBHOOKS_SECRET,
+  RUBY_CONNECTORS_SECRET,
+  RUBY_CONNECTORS_WEBHOOKS_SECRET,
   GITHUB_WEBHOOK_SECRET,
   INTERCOM_CLIENT_SECRET,
 } = process.env;
 
-if (!DUST_CONNECTORS_SECRET) {
-  throw new Error("DUST_CONNECTORS_SECRET is not defined");
+if (!RUBY_CONNECTORS_SECRET) {
+  throw new Error("RUBY_CONNECTORS_SECRET is not defined");
 }
-if (!DUST_CONNECTORS_WEBHOOKS_SECRET) {
-  throw new Error("DUST_CONNECTORS_WEBHOOKS_SECRET is not defined");
+if (!RUBY_CONNECTORS_WEBHOOKS_SECRET) {
+  throw new Error("RUBY_CONNECTORS_WEBHOOKS_SECRET is not defined");
 }
 
 export const authMiddleware = (
@@ -82,7 +82,7 @@ const _authMiddlewareAPI = (
       status_code: 401,
     });
   }
-  if (secret !== DUST_CONNECTORS_SECRET) {
+  if (secret !== RUBY_CONNECTORS_SECRET) {
     return apiError(req, res, {
       api_error: {
         type: "authorization_error",
@@ -102,7 +102,7 @@ const _authMiddlewareWebhooks = (
   if (req.path.startsWith("/webhooks")) {
     const parts = req.path.split("/");
 
-    if (parts.includes(DUST_CONNECTORS_WEBHOOKS_SECRET) === false) {
+    if (parts.includes(RUBY_CONNECTORS_WEBHOOKS_SECRET) === false) {
       return apiError(req, res, {
         api_error: {
           type: "authorization_error",
@@ -120,7 +120,7 @@ const _authMiddlewareWebhooksGithub = (
   res: Response<ConnectorsAPIErrorResponse>,
   next: NextFunction
 ) => {
-  if (!req.path.split("/").includes(DUST_CONNECTORS_WEBHOOKS_SECRET)) {
+  if (!req.path.split("/").includes(RUBY_CONNECTORS_WEBHOOKS_SECRET)) {
     logger.error({ path: req.path }, `Invalid webhook secret`);
     return apiError(req, res, {
       api_error: {
@@ -205,7 +205,7 @@ const _authMiddlewareWebhooksIntercom = (
   res: Response<ConnectorsAPIErrorResponse>,
   next: NextFunction
 ) => {
-  if (!req.path.split("/").includes(DUST_CONNECTORS_WEBHOOKS_SECRET)) {
+  if (!req.path.split("/").includes(RUBY_CONNECTORS_WEBHOOKS_SECRET)) {
     logger.error({ path: req.path }, `Invalid webhook secret`);
     return apiError(req, res, {
       api_error: {
@@ -229,7 +229,7 @@ const _authMiddlewareWebhooksIntercom = (
 
   if (
     req.path ===
-    `/webhooks/${DUST_CONNECTORS_WEBHOOKS_SECRET}/intercom/uninstall`
+    `/webhooks/${RUBY_CONNECTORS_WEBHOOKS_SECRET}/intercom/uninstall`
   ) {
     // This is a special case for the uninstall webhook whose signature is not documented on
     // Interom. We solely rely on the webhook secret to authenticate the request.

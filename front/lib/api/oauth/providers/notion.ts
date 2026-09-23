@@ -110,7 +110,7 @@ export class NotionOAuthProvider implements BaseOAuthStrategyProvider {
           );
         }
 
-        // The workspace_id in metadata is the Dust workspace ID, not the Notion workspace ID.
+        // The workspace_id in metadata is the Ruby workspace ID, not the Notion workspace ID.
         // We need to get the Notion workspace info from the raw OAuth response
         const oauthRes = await oauthApi.getAccessToken({
           connectionId: oauthConnectionIdRes.value,

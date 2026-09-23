@@ -10,10 +10,10 @@ import {
   findCategoryFromNavigationHistory,
   findSpaceFromNavigationHistory,
 } from "@app/components/data_source_view/context/utils";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useSpaceDataSourceViews } from "@app/lib/swr/spaces";
 import type { ContentNodesViewType } from "@app/types/connectors/content_nodes";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 export function DataSourceViewTable({

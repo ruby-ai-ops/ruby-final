@@ -46,7 +46,7 @@ async function ensureLangfuseDatasetExists(
 
 interface AddTraceToDatasetParams {
   datasetName: string;
-  dustTraceId: string;
+  rubyTraceId: string;
   feedbackId: number;
   workspaceId: string;
   feedbackContent: string | null;
@@ -60,23 +60,23 @@ type LangfuseTraceSummary = {
 };
 
 /**
- * Fetches a trace from Langfuse by searching for its dustTraceId in metadata.
+ * Fetches a trace from Langfuse by searching for its rubyTraceId in metadata.
  *
- * Since traces are stored in Langfuse with our dustTraceId in their metadata,
- * we can find them by filtering on the metadata.dustTraceId field.
+ * Since traces are stored in Langfuse with our rubyTraceId in their metadata,
+ * we can find them by filtering on the metadata.rubyTraceId field.
  */
-async function fetchTraceByDustTraceId(
+async function fetchTraceByRubyTraceId(
   client: LangfuseClient,
-  dustTraceId: string
+  rubyTraceId: string
 ): Promise<Result<LangfuseTraceSummary | null, Error>> {
-  // Use Langfuse's advanced filtering to find trace by metadata.dustTraceId
+  // Use Langfuse's advanced filtering to find trace by metadata.rubyTraceId
   const filter = JSON.stringify([
     {
       type: "stringObject",
       column: "metadata",
-      key: "dustTraceId",
+      key: "rubyTraceId",
       operator: "=",
-      value: dustTraceId,
+      value: rubyTraceId,
     },
   ]);
 
@@ -104,7 +104,7 @@ async function fetchTraceByDustTraceId(
 
 /**
  * Adds a trace to a Langfuse dataset by fetching the trace from Langfuse
- * (searching by dustTraceId metadata) and creating a dataset item with its input/output data.
+ * (searching by rubyTraceId metadata) and creating a dataset item with its input/output data.
  *
  * @param params - The parameters for adding the trace
  * @returns true if the trace was added, false if it was skipped (disabled or error)
@@ -114,7 +114,7 @@ export async function addTraceToLangfuseDataset(
 ): Promise<boolean> {
   const {
     datasetName,
-    dustTraceId,
+    rubyTraceId,
     feedbackId,
     workspaceId,
     feedbackContent,
@@ -126,7 +126,7 @@ export async function addTraceToLangfuseDataset(
     return false;
   }
 
-  const itemId = `feedback_${feedbackId}_${dustTraceId}`;
+  const itemId = `feedback_${feedbackId}_${rubyTraceId}`;
 
   // Ensure dataset exists
   const datasetResult = await ensureLangfuseDatasetExists(client, datasetName);
@@ -135,7 +135,7 @@ export async function addTraceToLangfuseDataset(
       {
         datasetName,
         feedbackId,
-        dustTraceId,
+        rubyTraceId,
         workspaceId,
         error: datasetResult.error,
       },
@@ -144,18 +144,18 @@ export async function addTraceToLangfuseDataset(
     return false;
   }
 
-  // Fetch the trace from Langfuse by searching for dustTraceId in metadata
-  const traceResult = await fetchTraceByDustTraceId(client, dustTraceId);
+  // Fetch the trace from Langfuse by searching for rubyTraceId in metadata
+  const traceResult = await fetchTraceByRubyTraceId(client, rubyTraceId);
   if (traceResult.isErr()) {
     logger.error(
       {
         datasetName,
         feedbackId,
-        dustTraceId,
+        rubyTraceId,
         workspaceId,
         error: traceResult.error,
       },
-      "[Langfuse] Failed to fetch trace by dustTraceId"
+      "[Langfuse] Failed to fetch trace by rubyTraceId"
     );
     return false;
   }
@@ -166,10 +166,10 @@ export async function addTraceToLangfuseDataset(
       {
         datasetName,
         feedbackId,
-        dustTraceId,
+        rubyTraceId,
         workspaceId,
       },
-      "[Langfuse] Trace not found by dustTraceId metadata"
+      "[Langfuse] Trace not found by rubyTraceId metadata"
     );
     return false;
   }
@@ -185,7 +185,7 @@ export async function addTraceToLangfuseDataset(
       sourceTraceId: trace.id,
       metadata: {
         feedbackId,
-        dustTraceId,
+        rubyTraceId,
         workspaceId,
         feedbackContent,
         thumbDirection,
@@ -198,7 +198,7 @@ export async function addTraceToLangfuseDataset(
       {
         datasetName,
         feedbackId,
-        dustTraceId,
+        rubyTraceId,
         itemId,
         error: normalizeError(error),
       },
@@ -211,7 +211,7 @@ export async function addTraceToLangfuseDataset(
     {
       datasetName,
       feedbackId,
-      dustTraceId,
+      rubyTraceId,
       langfuseTraceId: trace.id,
       workspaceId,
       itemId,

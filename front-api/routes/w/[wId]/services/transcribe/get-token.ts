@@ -3,7 +3,7 @@ import {
   getElevenLabs,
   REGION_TO_ELEVENLABS_ENVIRONMENT,
 } from "@app/lib/utils/transcribe_service";
-import { dustManagedServiceCredentials } from "@app/types/api/credentials";
+import { rubyManagedServiceCredentials } from "@app/types/api/credentials";
 import type { GetTranscribeTokenResponseBody } from "@app/types/api/transcribe";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
 import { createHono } from "@front-api/lib/hono";
@@ -28,7 +28,7 @@ app.get("/", async (ctx): HandlerResult<GetTranscribeTokenResponseBody> => {
     });
   }
 
-  const { ELEVENLABS_API_KEY: apiKey } = dustManagedServiceCredentials();
+  const { ELEVENLABS_API_KEY: apiKey } = rubyManagedServiceCredentials();
 
   if (!apiKey) {
     return apiError(ctx, {

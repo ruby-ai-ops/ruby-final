@@ -8,13 +8,13 @@ import { runOnAllWorkspaces } from "@app/scripts/workspace_helpers";
 import { MAX_USER_MEMORY_CHARS } from "@app/types/api/me/memory";
 import type { ModelId } from "@app/types/shared/model_id";
 
-// We retrieve the memories for the dust global agent.
-const AGENT_ID = "dust";
+// We retrieve the memories for the ruby global agent.
+const AGENT_ID = "ruby";
 
-// We use this marker to indicate to the user that the memory was imported from Dust agent memory
-const IMPORT_MARKER = "## Imported from Dust agent memory";
+// We use this marker to indicate to the user that the memory was imported from Ruby agent memory
+const IMPORT_MARKER = "## Imported from Ruby agent memory";
 
-async function retrieveAllMemoriesDustMemories(
+async function retrieveAllMemoriesRubyMemories(
   auth: Authenticator
 ): Promise<AgentMemoryModel[]> {
   return AgentMemoryModel.findAll({
@@ -116,11 +116,11 @@ makeScript(
           workspace.sId
         );
 
-        const allWorkspaceDustMemories =
-          await retrieveAllMemoriesDustMemories(workspaceAuth);
+        const allWorkspaceRubyMemories =
+          await retrieveAllMemoriesRubyMemories(workspaceAuth);
 
         const memoriesByUserModelId = new Map<ModelId, AgentMemoryModel[]>();
-        for (const memory of allWorkspaceDustMemories) {
+        for (const memory of allWorkspaceRubyMemories) {
           if (!memory.userId) {
             continue;
           }
@@ -144,12 +144,12 @@ makeScript(
             workspace.sId
           );
 
-          const userDustMemories = memoriesByUserModelId.get(user.id) ?? [];
-          if (userDustMemories.length === 0) {
+          const userRubyMemories = memoriesByUserModelId.get(user.id) ?? [];
+          if (userRubyMemories.length === 0) {
             continue;
           }
 
-          const userMemory = formatMemories(userDustMemories);
+          const userMemory = formatMemories(userRubyMemories);
           await createUserMemory(userAuth, {
             userMemory,
             execute,

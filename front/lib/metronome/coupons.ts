@@ -149,7 +149,7 @@ export async function createSeatCouponCredit({
   if (metronomeContractId) {
     // Seat-subscription discount, denominated in fiat (`creditTypeId` is a
     // currency credit type, never AWU) — not part of the AWU pool balance,
-    // so it must not carry the DUST_CONTRACT_CREDIT_TYPE=pool stamp.
+    // so it must not carry the RUBY_CONTRACT_CREDIT_TYPE=pool stamp.
     const result = await addCreditToContract({
       ...sharedParams,
       metronomeContractId,
@@ -179,7 +179,7 @@ const CREDITS_COUPON_DEFAULT_DURATION_MONTHS = 12;
 
 // Grant the bonus AWU credits of a "credit_pool_top_up" coupon as a free credit
 // on the workspace's Metronome customer. Mirrors the free-credit grant path of
-// the `grant-awu-credits` poke plugin: AWU credit type, "usage" tag,
+// the `grant-awu-credits` admin plugin: AWU credit type, "usage" tag,
 // purchased-commit priority. For "credit_pool_top_up" coupons, `coupon.amount`
 // is the number of AWU credits to grant directly (AWU is currency-independent).
 async function createPoolTopupCouponCredit({

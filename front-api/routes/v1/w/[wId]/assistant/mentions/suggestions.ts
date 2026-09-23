@@ -2,8 +2,8 @@ import {
   parseMentionSelectParam,
   suggestionsOfMentions,
 } from "@app/lib/api/assistant/conversation/mention_suggestions";
-import type { GetMentionSuggestionsResponseBodyType } from "@dust-tt/client";
-import { GetMentionSuggestionsRequestQuerySchema } from "@dust-tt/client";
+import type { GetMentionSuggestionsResponseBodyType } from "@ruby-ai/client";
+import { GetMentionSuggestionsRequestQuerySchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { validate } from "@front-api/middlewares/validator";

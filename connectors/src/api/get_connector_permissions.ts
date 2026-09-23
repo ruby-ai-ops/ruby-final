@@ -13,8 +13,8 @@ import {
   concurrentExecutor,
   isValidContentNodesViewType,
 } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { assertNever, Err, Ok, removeNulls } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { assertNever, Err, Ok, removeNulls } from "@ruby-ai/client";
 import type { Request, Response } from "express";
 
 type GetConnectorPermissionsRes<

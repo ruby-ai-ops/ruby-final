@@ -20,7 +20,7 @@ export function getBrowserMCPServerInstructions({
   serverName: string;
 }) {
   return (
-    `You are running inside a Dust ${platformName} extension. ` +
+    `You are running inside a Ruby ${platformName} extension. ` +
     "The user is actively browsing the web, so their questions often relate to content on their current browser tab. " +
     "When the user's message implicitly or explicitly refers to a page, article, document, email, thread, or 'this' / 'it' / 'the page' without further specification, retrieve the relevant context with the least intrusive tool that can answer accurately. " +
     `Use \`${getPrefixedToolName(

@@ -1,5 +1,5 @@
 import { useCreateConversationWithMessage } from "@app/hooks/useCreateConversationWithMessage";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { usePlatform } from "@extension/shared/context/PlatformContext";
 import { useExtensionAuth } from "@extension/ui/components/auth/AuthProvider";
 import { useFileUploaderService } from "@extension/ui/hooks/useFileUploaderService";

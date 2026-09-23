@@ -22,7 +22,7 @@ import {
   LoadingBlock,
   Lock01,
   Page,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { Organization } from "@workos-inc/node";
 import React from "react";
 
@@ -210,7 +210,7 @@ function DisableWorkOSSSOConnectionModal({
         </DialogHeader>
         <DialogContainer>
           Anyone with an {ssoStatus.connection.type} account won't be able to
-          access your Dust workspace anymore.
+          access your Ruby workspace anymore.
         </DialogContainer>
         <DialogFooter
           leftButtonProps={{

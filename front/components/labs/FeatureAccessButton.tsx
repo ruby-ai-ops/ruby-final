@@ -1,7 +1,7 @@
 import type { DataSourceViewType } from "@app/types/data_source_view";
 import type { SpaceType } from "@app/types/space";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, Lock01, Settings01 } from "@dust-tt/sparkle";
+import { Button, Lock01, Settings01 } from "@ruby-ai/ui";
 
 import { RequestFeatureAccessModal } from "./modals/RequestFeatureAccessModal";
 

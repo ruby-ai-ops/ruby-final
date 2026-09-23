@@ -25,8 +25,8 @@ import { ConnectorResource } from "@connectors/resources/connector_resource";
 import { SalesforceSyncedQueryResource } from "@connectors/resources/salesforce_resources";
 import type { ContentNode, DataSourceConfig } from "@connectors/types";
 import { INTERNAL_MIME_TYPES } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 
 const logger = mainLogger.child({
   connector: "salesforce",
@@ -221,7 +221,7 @@ export class SalesforceConnectorManager extends BaseConnectorManager<null> {
   }
 
   /**
-   * Salesforce only exposes one flat level of folders: one per synced query, managed by Dust.
+   * Salesforce only exposes one flat level of folders: one per synced query, managed by Ruby.
    */
   async retrievePermissions(): Promise<
     Result<ContentNode[], ConnectorManagerError<RetrievePermissionsErrorCode>>
@@ -293,7 +293,7 @@ export class SalesforceConnectorManager extends BaseConnectorManager<null> {
   }
 
   async setPermissions(): Promise<Result<void, Error>> {
-    return new Err(new Error("Synced Queries are managed by Dust"));
+    return new Err(new Error("Synced Queries are managed by Ruby"));
   }
 
   async setConfigurationKey(): Promise<Result<void, Error>> {

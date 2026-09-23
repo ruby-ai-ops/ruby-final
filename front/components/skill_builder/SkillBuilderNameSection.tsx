@@ -1,5 +1,5 @@
 import { BaseFormFieldSection } from "@app/components/shared/BaseFormFieldSection";
-import { Input } from "@dust-tt/sparkle";
+import { Input } from "@ruby-ai/ui";
 
 const NAME_FIELD_NAME = "name";
 

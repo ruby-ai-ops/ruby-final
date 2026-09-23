@@ -1,8 +1,8 @@
-export const DUST_AVATAR_URL =
-  "https://dust.tt/static/systemavatar/dust_avatar_full.png";
+export const RUBY_AVATAR_URL =
+  "https://ruby.ad/static/systemavatar/ruby_avatar_full.png";
 
 // If you update these colors or shades, also update the safelist pattern
-// in front & sparkle tailwind.config.js to keep avatar backgrounds in the CSS output.
+// in front & ui tailwind.config.js to keep avatar backgrounds in the CSS output.
 const TAILWIND_COLOR_NAMES = [
   "gray",
   "blue",

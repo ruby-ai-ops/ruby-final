@@ -1,6 +1,6 @@
 import { clientFetch } from "@app/lib/egress/client";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import { Button, Spinner } from "@dust-tt/sparkle";
+import { Button, Spinner } from "@ruby-ai/ui";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";

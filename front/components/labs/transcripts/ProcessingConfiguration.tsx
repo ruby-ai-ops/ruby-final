@@ -5,7 +5,7 @@ import { useUpdateTranscriptsConfiguration } from "@app/lib/swr/labs";
 import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
 import type { LabsTranscriptsConfigurationType } from "@app/types/labs";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Page, SliderToggle } from "@dust-tt/sparkle";
+import { Page, SliderToggle } from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 import type { KeyedMutator } from "swr";
 
@@ -93,7 +93,7 @@ export function ProcessingConfiguration({
     <Page.Layout direction="vertical">
       <Page.SectionHeader
         title="Process transcripts automatically"
-        description="After each transcribed meeting, Dust will run the agent you selected and send you the result by email."
+        description="After each transcribed meeting, Ruby will run the agent you selected and send you the result by email."
       />
       <Page.Layout direction="vertical">
         <Page.Layout direction="vertical">

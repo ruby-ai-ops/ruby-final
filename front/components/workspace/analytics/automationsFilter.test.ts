@@ -9,7 +9,7 @@ import { describe, expect, it } from "vitest";
 
 const agentOption = {
   id: "agent-1",
-  name: "@dust",
+  name: "@ruby",
   category: "agent" as const,
   disabled: false,
   image: null,
@@ -214,7 +214,7 @@ describe("getAutomationsFilterSummaries", () => {
       {
         category: "agent",
         categoryLabel: "Agent",
-        options: [{ id: "agent-1", name: "@dust" }],
+        options: [{ id: "agent-1", name: "@ruby" }],
       },
       {
         category: "member",

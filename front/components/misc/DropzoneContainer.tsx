@@ -1,7 +1,7 @@
 import { useFileDrop } from "@app/components/assistant/conversation/FileUploaderContext";
 import { MOBILE_DOCUMENT_SCROLL_CLASSES } from "@app/lib/documentScrollLayoutClasses";
 import { useIsMobile } from "@app/lib/swr/useIsMobile";
-import { cn, DropzoneOverlay } from "@dust-tt/sparkle";
+import { cn, DropzoneOverlay } from "@ruby-ai/ui";
 import { useDropzone } from "react-dropzone";
 
 interface DropzoneContainerProps {

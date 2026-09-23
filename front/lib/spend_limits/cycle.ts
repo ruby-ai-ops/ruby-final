@@ -29,7 +29,7 @@ export function currentCalendarMonthCycleUtc(
 
 /**
  * The "cycle" the free-seat lifetime spend limiter sums over: from well before
- * any Dust usage existed to the far future. It anchors the ES seed window for
+ * any Ruby usage existed to the far future. It anchors the ES seed window for
  * the lifetime counter — combined with the `is_free_seat` filter it yields a
  * seat's all-time consumption. Not a real billing cycle; a fixed, never-rolling
  * window that pairs with `makeSpendLimitLifetimeWindowBounds`.

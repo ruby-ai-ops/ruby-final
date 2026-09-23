@@ -72,7 +72,7 @@ export const AUDIT_ACTIONS = [
   "credentials.revoked",
   "credentials.invalidated",
   // MCP Connections.
-  "dust_mcp_server.settings_updated",
+  "ruby_mcp_server.settings_updated",
   "mcp_connection.created",
   "mcp_connection.deleted",
   // Skill import GitHub connection.
@@ -249,7 +249,7 @@ function serializeMetadata(
  * Enabled when the `audit_logs` feature flag is set or the plan allows it,
  * unless the workspace kill switch (`metadata.disableAuditLogs`) is on.
  * The kill switch suppresses both the audit logs UI and event emission, and
- * can be flipped by workspace admins or by Dust admins via poke.
+ * can be flipped by workspace admins or by Ruby admins via admin.
  */
 export async function isAuditLogsEnabled(
   auth: Authenticator
@@ -390,11 +390,11 @@ export async function emitAuditLogEventDirect({
  * Uses the authenticated user when available, falls back to the API key.
  */
 export function buildAuditActor(auth: Authenticator): AuditLogActor {
-  if (auth.isDustSuperUser()) {
+  if (auth.isRubySuperUser()) {
     return {
-      type: "dust_super_user",
-      id: auth.getPokePrincipal().email,
-      name: auth.getPokePrincipal().name ?? undefined,
+      type: "ruby_super_user",
+      id: auth.getAdminPrincipal().email,
+      name: auth.getAdminPrincipal().name ?? undefined,
     };
   }
 

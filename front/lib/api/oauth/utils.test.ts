@@ -26,8 +26,8 @@ function connection(
 
 describe("finalizeUriForProvider", () => {
   beforeEach(() => {
-    config.getAppUrl.mockReturnValue("https://app.dust.tt");
-    config.getLegacyOAuthRedirectBaseUrl.mockReturnValue("https://eu.dust.tt");
+    config.getAppUrl.mockReturnValue("https://app.ruby.ad");
+    config.getLegacyOAuthRedirectBaseUrl.mockReturnValue("https://app.ruby.ad");
     config.getDevOAuthRedirectBaseUrl.mockReturnValue(undefined);
   });
 
@@ -39,12 +39,12 @@ describe("finalizeUriForProvider", () => {
   it("keeps the app URL when no use case is supplied", () => {
     expect(
       finalizeUriForProvider({ provider: "google_drive", connection: null })
-    ).toBe("https://app.dust.tt/oauth/google_drive/finalize");
+    ).toBe("https://app.ruby.ad/oauth/google_drive/finalize");
   });
 
   it.each([
-    "https://dust.tt",
-    "https://eu.dust.tt",
+    "https://ruby.ad",
+    "https://app.ruby.ad",
   ])("uses %s for a new data connector", (legacyBaseUrl) => {
     config.getLegacyOAuthRedirectBaseUrl.mockReturnValue(legacyBaseUrl);
     expect(
@@ -66,7 +66,7 @@ describe("finalizeUriForProvider", () => {
           metadata: { use_case: "connection" },
         },
       })
-    ).toBe("https://eu.dust.tt/oauth/notion/finalize");
+    ).toBe("https://app.ruby.ad/oauth/notion/finalize");
   });
 
   it("prefers the explicit use case over connection metadata", () => {
@@ -80,7 +80,7 @@ describe("finalizeUriForProvider", () => {
           metadata: { use_case: "connection" },
         },
       })
-    ).toBe("https://app.dust.tt/oauth/notion/finalize");
+    ).toBe("https://app.ruby.ad/oauth/notion/finalize");
   });
 
   it.each([
@@ -88,7 +88,7 @@ describe("finalizeUriForProvider", () => {
     "mcp_static",
   ] as const)("uses the legacy base for a new %s client", (provider) => {
     expect(finalizeUriForProvider({ provider, connection: null })).toBe(
-      `https://eu.dust.tt/oauth/${provider}/finalize`
+      `https://app.ruby.ad/oauth/${provider}/finalize`
     );
   });
 
@@ -100,7 +100,7 @@ describe("finalizeUriForProvider", () => {
   ] as const)("uses the legacy base for a new gong client with use case %s", (useCase) => {
     expect(
       finalizeUriForProvider({ provider: "gong", connection: null, useCase })
-    ).toBe("https://eu.dust.tt/oauth/gong/finalize");
+    ).toBe("https://app.ruby.ad/oauth/gong/finalize");
   });
 
   it.each([
@@ -108,7 +108,7 @@ describe("finalizeUriForProvider", () => {
     "mcp_static",
     "gong",
   ] as const)("preserves an app callback already registered for %s", (provider) => {
-    const redirectUri = `https://app.dust.tt/oauth/${provider}/finalize`;
+    const redirectUri = `https://app.ruby.ad/oauth/${provider}/finalize`;
     expect(
       finalizeUriForProvider({
         provider,
@@ -124,14 +124,14 @@ describe("finalizeUriForProvider", () => {
         useCase: "connection",
         connection: connection(
           new Date("2026-01-01").getTime(),
-          "https://us-api.dust.tt/oauth/github/finalize"
+          "https://us-api.ruby.ad/oauth/github/finalize"
         ),
       })
-    ).toBe("https://us-api.dust.tt/oauth/github/finalize");
+    ).toBe("https://us-api.ruby.ad/oauth/github/finalize");
   });
 
   it("keeps an app callback already saved for a connector", () => {
-    const redirectUri = "https://app.dust.tt/oauth/notion/finalize";
+    const redirectUri = "https://app.ruby.ad/oauth/notion/finalize";
     expect(
       finalizeUriForProvider({
         provider: "notion",
@@ -150,7 +150,7 @@ describe("finalizeUriForProvider", () => {
         provider: "github",
         connection: connection(new Date("2026-01-01").getTime(), null),
       })
-    ).toBe("https://app.dust.tt/oauth/github/finalize");
+    ).toBe("https://app.ruby.ad/oauth/github/finalize");
   });
 
   it.each([
@@ -174,6 +174,6 @@ describe("finalizeUriForProvider", () => {
     config.getDevOAuthRedirectBaseUrl.mockReturnValue("https://dev.example");
     expect(
       finalizeUriForProvider({ provider: "notion", connection: null })
-    ).toBe("https://app.dust.tt/oauth/notion/finalize");
+    ).toBe("https://app.ruby.ad/oauth/notion/finalize");
   });
 });

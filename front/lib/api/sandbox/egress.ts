@@ -30,32 +30,32 @@ import { fromError } from "zod-validation-error";
 
 const EGRESS_FORWARDER_LISTEN_ADDR = "127.0.0.1:9990";
 const EGRESS_RESOLVER_LISTEN_ADDR = "127.0.0.1:1053";
-const EGRESS_TOKEN_DIR = "/etc/dust";
-const EGRESS_TOKEN_PATH = "/etc/dust/egress-token";
-const EGRESS_DENY_LOG_PATH = "/tmp/dust-egress-denied.log";
-const EGRESS_DENY_LOG_OFFSET_PATH = "/tmp/.dust-egress-deny-offset";
-const EGRESS_FORWARDER_LOG_PATH = "/tmp/dust-forwarder.log";
+const EGRESS_TOKEN_DIR = "/etc/ruby";
+const EGRESS_TOKEN_PATH = "/etc/ruby/egress-token";
+const EGRESS_DENY_LOG_PATH = "/tmp/ruby-egress-denied.log";
+const EGRESS_DENY_LOG_OFFSET_PATH = "/tmp/.ruby-egress-deny-offset";
+const EGRESS_FORWARDER_LOG_PATH = "/tmp/ruby-forwarder.log";
 const EGRESS_SETUP_WAIT_RETRIES = 6;
 const EGRESS_SETUP_WAIT_MS = 500;
 const EGRESS_JWT_TTL_SECONDS = 24 * 60 * 60;
 const MAX_DENY_LOG_LINES_PER_EXEC = 20;
 
-// dsbx owns /run/dust/egress-ca.pem and reuses the file across restarts when
+// rbx owns /run/ruby/egress-ca.pem and reuses the file across restarts when
 // it's present; load_or_generate handles a missing file by minting a new CA.
-const MITM_CA_PATH = "/run/dust/egress-ca.pem";
-const MITM_CA_BUNDLE_PATH = "/etc/dust/ca-bundle.pem";
+const MITM_CA_PATH = "/run/ruby/egress-ca.pem";
+const MITM_CA_BUNDLE_PATH = "/etc/ruby/ca-bundle.pem";
 const MITM_TRUST_BUNDLE_INSTALLER_PATH =
-  "/usr/local/bin/dust-install-trust-bundle";
+  "/usr/local/bin/ruby-install-trust-bundle";
 // Constants used by the pre-0.8.8 fallback path. Remove with the fallback
-// once all dust-base:0.8.7 sandboxes have aged out.
+// once all ruby-base:0.8.7 sandboxes have aged out.
 const MITM_SYSTEM_CA_DIR = "/usr/local/share/ca-certificates";
-const MITM_SYSTEM_CA_DEST = "/usr/local/share/ca-certificates/dust-egress.crt";
+const MITM_SYSTEM_CA_DEST = "/usr/local/share/ca-certificates/ruby-egress.crt";
 const MITM_SYSTEM_CA_BUNDLE = "/etc/ssl/certs/ca-certificates.crt";
 // Sentinel written atomically alongside the merged bundle so the health probe
 // can distinguish "installMitmTrustBundle ran successfully" from "image-seeded
 // system-only placeholder". Without it, [ -s ca-bundle.pem ] is true the
 // moment the sandbox boots and the bundle self-heal never fires.
-const MITM_CA_BUNDLE_MARKER_PATH = "/etc/dust/.ca-bundle.merged";
+const MITM_CA_BUNDLE_MARKER_PATH = "/etc/ruby/.ca-bundle.merged";
 
 const REGION_PROXY_PREFIX = {
   "europe-west1": "eu",
@@ -64,7 +64,7 @@ const REGION_PROXY_PREFIX = {
 
 function getDefaultProxyHost(): string {
   const region = regionConfig.getCurrentRegion();
-  return `${REGION_PROXY_PREFIX[region]}.sandbox-egress.dust.tt`;
+  return `${REGION_PROXY_PREFIX[region]}.sandbox-egress.ruby.ad`;
 }
 
 function getProxyHost(): string {
@@ -128,8 +128,8 @@ export function mintEgressJwt({
 }): string {
   return jwt.sign(
     {
-      iss: "dust-front",
-      aud: "dust-egress-proxy",
+      iss: "ruby-front",
+      aud: "ruby-egress-proxy",
       sbId: providerId,
       wId: workspaceId,
       ownerId,
@@ -158,8 +158,8 @@ export function mintEgressInvalidationJwt({
 }): string {
   return jwt.sign(
     {
-      iss: "dust-front",
-      aud: "dust-egress-proxy",
+      iss: "ruby-front",
+      aud: "ruby-egress-proxy",
       action: "invalidate-policy",
       wId: workspaceId,
       ...(ownerId ? { ownerId } : {}),
@@ -203,7 +203,7 @@ const FAILED_EGRESS_HEALTH_STATE: EgressHealthState = {
 
 function buildEgressHealthcheckCommand(): RootCommand {
   const commands = SANDBOX_EGRESS_CONTROLLED_UIDS.map((uid) =>
-    rootCommand.exec("/opt/bin/dsbx", [
+    rootCommand.exec("/opt/bin/rbx", [
       "healthcheck",
       "--forwarder-listen",
       EGRESS_FORWARDER_LISTEN_ADDR,
@@ -246,7 +246,7 @@ function buildEgressHealthcheckCommand(): RootCommand {
     ])
   );
   const prerequisiteChecks = commands.slice(0, -1).map((command, index) => {
-    const resultVariable = `_dust_egress_health_${index}`;
+    const resultVariable = `_ruby_egress_health_${index}`;
     return [
       `${resultVariable}=$(${renderRootCommand(command)}) || exit $?;`,
       `if ! /usr/bin/printf %s "$${resultVariable}" | ${jqEgressBoundaryOkCommand} >/dev/null; then`,
@@ -319,7 +319,7 @@ async function checkEgressForwarderHealth(
   auth: Authenticator,
   sandbox: SandboxResource
 ): Promise<Result<EgressHealthState, Error>> {
-  // dsbx healthcheck reads kernel state directly (proc/net + nft list) so we
+  // rbx healthcheck reads kernel state directly (proc/net + nft list) so we
   // avoid the noisy <unknown> deny log entry that a real connect-through-the-
   // forwarder probe would generate. The bundle signal looks for the merge
   // sentinel, not just the bundle file: the image seeds a system-only
@@ -363,7 +363,7 @@ async function checkEgressForwarderHealth(
     logContext
   );
 
-  // dsbx healthcheck exits 0 with `nft_*_ok: false` when it could read JSON
+  // rbx healthcheck exits 0 with `nft_*_ok: false` when it could read JSON
   // but the underlying probe (missing nft binary, EPERM, non-UTF8 output)
   // logged a diagnostic to stderr. Surface that stderr here so the reason
   // is not lost just because the JSON parse succeeded.
@@ -490,7 +490,7 @@ export async function ensureSandboxEgressOnExec(
   }
 
   if (!bundleOk) {
-    // dsbx is fine but the trust bundle was never installed (or was lost).
+    // rbx is fine but the trust bundle was never installed (or was lost).
     // Reinstall idempotently without disrupting the running forwarder.
     logger.warn(
       { ...baseLogContext, event: "egress.bundle_missing" },
@@ -525,17 +525,17 @@ export async function teardownInSandboxEgressRedirect(
   }
 
   const command = rootCommand.unsafeShell(
-    "/usr/bin/systemctl disable --now dust-egress-resolver.service dust-egress-nftables.service >/dev/null 2>&1 || true; " +
-      "/usr/sbin/nft delete table ip dust-egress >/dev/null 2>&1 || true; " +
-      "/usr/sbin/nft delete table ip6 dust-egress >/dev/null 2>&1 || true; " +
-      "/usr/local/bin/dust-gcs-token-firewall.sh",
+    "/usr/bin/systemctl disable --now ruby-egress-resolver.service ruby-egress-nftables.service >/dev/null 2>&1 || true; " +
+      "/usr/sbin/nft delete table ip ruby-egress >/dev/null 2>&1 || true; " +
+      "/usr/sbin/nft delete table ip6 ruby-egress >/dev/null 2>&1 || true; " +
+      "/usr/local/bin/ruby-gcs-token-firewall.sh",
     "dev-only teardown needs best-effort shell fallbacks and must retain the GCS broker UID drop"
   );
 
   return runSuccessfulRootCommand(auth, sandbox, command);
 }
 
-// Writes the egress JWT to /etc/dust/egress-token as root, mode 600, in a
+// Writes the egress JWT to /etc/ruby/egress-token as root, mode 600, in a
 // single round-trip (was a writeFile followed by a separate chmod). The token
 // is fed through stdin so it never lands in argv/journald, and goes via a tmp
 // file + mv so a reader (an old forwarder mid-restart) never sees a partial
@@ -671,7 +671,7 @@ export async function setupEgressForwarder(
   }
 
   // Strip every trust-bundle env var we set on the sandbox process from
-  // dsbx's own environment. dsbx talks to the central proxy with a vendored
+  // rbx's own environment. rbx talks to the central proxy with a vendored
   // TLS root and must NOT be reconfigured to trust the merged ca-bundle.pem
   // (which contains its own CA, opening a forge-and-tunnel loop). The strip
   // list is derived from SANDBOX_TRUST_ENV_VARS so adding a new trust env
@@ -680,7 +680,7 @@ export async function setupEgressForwarder(
     rootCommand.redirectStdout(
       rootCommand.nohup(
         rootCommand.env(
-          rootCommand.exec("/opt/bin/dsbx", [
+          rootCommand.exec("/opt/bin/rbx", [
             "forward",
             "--token-file",
             EGRESS_TOKEN_PATH,
@@ -755,25 +755,25 @@ async function killEgressForwarder(
   auth: Authenticator,
   sandbox: SandboxResource
 ): Promise<Result<void, Error>> {
-  // Restarts only happen when no client is using dsbx (after wake, before the
+  // Restarts only happen when no client is using rbx (after wake, before the
   // agent loop runs; or after a failed health check, when the listener isn't
   // serving anyway). SIGKILL is fine, no graceful shutdown needed.
   //
-  // The regex is anchored to `/opt/bin/dsbx forward` to avoid killing the
-  // co-resident `dsbx resolve` subcommand that runs the DNS stub.
+  // The regex is anchored to `/opt/bin/rbx forward` to avoid killing the
+  // co-resident `rbx resolve` subcommand that runs the DNS stub.
   return runSuccessfulRootCommand(
     auth,
     sandbox,
     rootCommand.unsafeShell(
-      "/usr/bin/pkill -KILL -f '^/opt/bin/dsbx forward( |$)' >/dev/null 2>&1 || true",
-      "best-effort process cleanup intentionally ignores missing dsbx"
+      "/usr/bin/pkill -KILL -f '^/opt/bin/rbx forward( |$)' >/dev/null 2>&1 || true",
+      "best-effort process cleanup intentionally ignores missing rbx"
     )
   );
 }
 
-// Produces a merged bundle (system roots + dsbx persistent CA) and installs
+// Produces a merged bundle (system roots + rbx persistent CA) and installs
 // runtime-specific trust hooks such as the Java keystore import. Callers must
-// only invoke this once dsbx is up; if the CA file is missing we fail rather
+// only invoke this once rbx is up; if the CA file is missing we fail rather
 // than silently leaving the sandbox with system-roots-only trust. The marker
 // file is written last so the bundle and its "merged" status flip atomically
 // from the health-probe's point of view. The marker write lives here (outside
@@ -792,8 +792,8 @@ async function installMitmTrustBundle(
   // TODO(2026-08-01 SANDBOX): remove the fallback once all pre-0.8.8
   // sandboxes have aged out.
   const inlineFallback =
-    `/usr/bin/mkdir -p ${shellEscape("/etc/dust")} && ` +
-    `_ca_tmp=$(/usr/bin/mktemp ${shellEscape("/etc/dust/.egress-ca.pem.XXXXXX")}) && ` +
+    `/usr/bin/mkdir -p ${shellEscape("/etc/ruby")} && ` +
+    `_ca_tmp=$(/usr/bin/mktemp ${shellEscape("/etc/ruby/.egress-ca.pem.XXXXXX")}) && ` +
     `([ ! -L ${shellEscape(MITM_SYSTEM_CA_DIR)} ] && { [ ! -e ${shellEscape(MITM_SYSTEM_CA_DIR)} ] || [ -d ${shellEscape(MITM_SYSTEM_CA_DIR)} ]; } || /bin/rm -f ${shellEscape(MITM_SYSTEM_CA_DIR)}) && ` +
     `/usr/bin/install -d -o root -g root -m 755 ${shellEscape(MITM_SYSTEM_CA_DIR)} && ` +
     `/usr/bin/chown root:root ${shellEscape(MITM_SYSTEM_CA_DIR)} && ` +
@@ -803,7 +803,7 @@ async function installMitmTrustBundle(
     `/usr/bin/openssl x509 -in ${shellEscape(MITM_CA_PATH)} -out "$_ca_tmp" -outform PEM >/dev/null 2>&1 && ` +
     `/usr/bin/install -o root -g root -m 644 "$_ca_tmp" ${shellEscape(MITM_SYSTEM_CA_DEST)} && ` +
     `(/usr/sbin/update-ca-certificates >/dev/null 2>&1 || true) && ` +
-    `_bundle_tmp=$(/usr/bin/mktemp ${shellEscape("/etc/dust/.ca-bundle.pem.XXXXXX")}) && ` +
+    `_bundle_tmp=$(/usr/bin/mktemp ${shellEscape("/etc/ruby/.ca-bundle.pem.XXXXXX")}) && ` +
     `{ /bin/cat ${shellEscape(MITM_SYSTEM_CA_BUNDLE)}; printf '\\n'; /bin/cat "$_ca_tmp"; } > "$_bundle_tmp" && ` +
     `/usr/bin/chmod 644 "$_bundle_tmp" && ` +
     `/usr/bin/mv "$_bundle_tmp" ${shellEscape(MITM_CA_BUNDLE_PATH)} && ` +
@@ -811,7 +811,7 @@ async function installMitmTrustBundle(
 
   const command = rootCommand.unsafeShell(
     `[ -s ${shellEscape(MITM_CA_PATH)} ] || ` +
-      `{ echo "dsbx CA file ${MITM_CA_PATH} missing or empty" >&2; exit 1; }; ` +
+      `{ echo "rbx CA file ${MITM_CA_PATH} missing or empty" >&2; exit 1; }; ` +
       `if [ -x ${shellEscape(MITM_TRUST_BUNDLE_INSTALLER_PATH)} ]; then ` +
       `${shellEscape(MITM_TRUST_BUNDLE_INSTALLER_PATH)}; ` +
       `else ` +

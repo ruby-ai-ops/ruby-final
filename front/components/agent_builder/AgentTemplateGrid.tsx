@@ -4,7 +4,7 @@ import type {
   TemplateTagCodeType,
   TemplateTagsType,
 } from "@app/types/assistant/templates";
-import { CardGrid, CompactAssistantCard, ContextItem } from "@dust-tt/sparkle";
+import { CardGrid, CompactAssistantCard, ContextItem } from "@ruby-ai/ui";
 
 interface AgentTemplateGridProps {
   templates: AssistantTemplateListType[];

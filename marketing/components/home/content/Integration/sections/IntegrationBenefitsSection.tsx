@@ -3,13 +3,13 @@ import {
   getIcon,
   ResourceAvatar,
 } from "@marketing/components/resources/resources_icons";
-import { Chip, cn } from "@dust-tt/sparkle";
+import { Chip, cn } from "@ruby-ai/ui";
 
 import type { BenefitCard, BenefitCardColor } from "../types";
 
 // `iconColor` + `backgroundColor` token pairs passed to ResourceAvatar so the
 // benefit card icons share the same visual language as the tool-call chips
-// and any other place Dust renders an Action icon. Each pair includes the
+// and any other place Ruby renders an Action icon. Each pair includes the
 // `dark:` variant so the marketing page stays consistent in dark mode.
 const COLOR_TOKENS: Record<
   BenefitCardColor,
@@ -90,7 +90,7 @@ function BenefitCardView({ benefit }: BenefitCardViewProps) {
     <div className="flex flex-col rounded-2xl border border-border bg-white p-6 transition-all hover:border-foreground/20">
       <div className="mb-4">
         {/* ResourceAvatar's iconColor + backgroundColor props are the canonical
-            way to render a colored Action icon in Dust — keeps us in sync
+            way to render a colored Action icon in Ruby — keeps us in sync
             with how the same icons render in the in-app chat and elsewhere. */}
         <ResourceAvatar
           icon={IconComponent}

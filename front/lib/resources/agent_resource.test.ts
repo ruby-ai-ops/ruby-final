@@ -46,7 +46,7 @@ function makeAgentConfiguration(
     userFavorite: false,
     name: "Custom agent",
     description: "Custom agent description",
-    pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+    pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
     maxStepsPerRun: 8,
     tags: [],
     templateId: null,

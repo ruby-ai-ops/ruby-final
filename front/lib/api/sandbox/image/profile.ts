@@ -2,8 +2,8 @@ import type { ToolProfile } from "@app/lib/api/sandbox/image/types";
 import type { ModelProviderIdType } from "@app/types/assistant/models/types";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 
-export const PROFILE_DIR = "/opt/dust/profile";
-const COMMAND_HEREDOC_DELIMITER = "DUST_CMD_EOF";
+export const PROFILE_DIR = "/opt/ruby/profile";
+const COMMAND_HEREDOC_DELIMITER = "RUBY_CMD_EOF";
 
 interface WrapCommandOptions {
   timeoutSec?: number;
@@ -47,7 +47,7 @@ export function wrapCommand(
   }
 
   return [
-    `DUST_PROFILE=${profile} source ${PROFILE_DIR}/common.sh && shell "$(cat <<'${COMMAND_HEREDOC_DELIMITER}'`,
+    `RUBY_PROFILE=${profile} source ${PROFILE_DIR}/common.sh && shell "$(cat <<'${COMMAND_HEREDOC_DELIMITER}'`,
     cmd,
     COMMAND_HEREDOC_DELIMITER,
     `)" ${timeoutSec}`,
@@ -61,8 +61,8 @@ export function wrapCommandWithCapture(
   opts?: WrapCommandOptions
 ): string {
   const baseCommand = wrapCommand(cmd, providerId, opts);
-  const outFile = `/tmp/dust_exec_${execId}.out`;
-  const exitFile = `/tmp/dust_exec_${execId}.exit`;
+  const outFile = `/tmp/ruby_exec_${execId}.out`;
+  const exitFile = `/tmp/ruby_exec_${execId}.exit`;
 
   return [
     `exec > >(tee ${outFile}) 2>&1`,
@@ -74,9 +74,9 @@ export function wrapCommandWithCapture(
 }
 
 export function buildWaitAndCollectCommand(execId: string): string {
-  const pidFile = `/tmp/dust_wac_${execId}.pid`;
-  const outFile = `/tmp/dust_exec_${execId}.out`;
-  const exitFile = `/tmp/dust_exec_${execId}.exit`;
+  const pidFile = `/tmp/ruby_wac_${execId}.pid`;
+  const outFile = `/tmp/ruby_exec_${execId}.out`;
+  const exitFile = `/tmp/ruby_exec_${execId}.exit`;
 
   return [
     `if [ -f ${pidFile} ]; then`,

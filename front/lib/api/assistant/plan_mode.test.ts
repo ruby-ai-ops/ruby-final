@@ -5,8 +5,8 @@ import {
   getActivePlanContent,
   writePlanContent,
 } from "@app/lib/api/assistant/plan_mode";
-import type { FileSystemEntry } from "@app/lib/api/file_system/dust_file_system";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import type { FileSystemEntry } from "@app/lib/api/file_system/ruby_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import type { Authenticator } from "@app/lib/auth";
 import { createResourceTest } from "@app/tests/utils/generic_resource_tests";
 import { fileStorageMock } from "@app/tests/utils/mocks/file_storage";
@@ -63,11 +63,11 @@ function fileEntry(fileName: string): FileSystemEntry {
 // closePlan lists the archive folder then moves plan.md to the next index. The storage mock can't
 // list/move, so spy on the file system methods to assert the index computation and destination path.
 function stubFsForClose(archivedEntries: FileSystemEntry[]) {
-  vi.spyOn(DustFileSystem.prototype, "list").mockResolvedValue(
+  vi.spyOn(RubyFileSystem.prototype, "list").mockResolvedValue(
     new Ok(archivedEntries)
   );
   const move = vi
-    .spyOn(DustFileSystem.prototype, "move")
+    .spyOn(RubyFileSystem.prototype, "move")
     .mockResolvedValue(new Ok({ sourceDeletionFailed: false }));
   return { move };
 }
@@ -134,7 +134,7 @@ describe("plan_mode", () => {
 
   it("closeActivePlan reports closed=false (idempotent) when there is no active plan", async () => {
     const { auth, conversation } = await setup();
-    vi.spyOn(DustFileSystem.prototype, "readBuffer").mockResolvedValue(
+    vi.spyOn(RubyFileSystem.prototype, "readBuffer").mockResolvedValue(
       new Ok(null)
     );
 

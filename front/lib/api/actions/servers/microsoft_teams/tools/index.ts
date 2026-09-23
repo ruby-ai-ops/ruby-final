@@ -528,7 +528,7 @@ const handlers: ToolHandlers<typeof MICROSOFT_TEAMS_TOOLS_METADATA> = {
         );
       }
 
-      // Add footer with link to Dust conversation if agent context is available
+      // Add footer with link to Ruby conversation if agent context is available
       let finalContent = messageContent;
 
       if (isAgentLoopRunContext(runContext)) {
@@ -539,7 +539,7 @@ const handlers: ToolHandlers<typeof MICROSOFT_TEAMS_TOOLS_METADATA> = {
           config.getAppUrl()
         );
         const agentName = runContext.agentConfiguration.name;
-        const footerMessage = `<em>Sent via <a href="${agentUrl}">${agentName} Agent</a> on Dust</em>`;
+        const footerMessage = `<em>Sent via <a href="${agentUrl}">${agentName} Agent</a> on Ruby</em>`;
         finalContent = `${messageContent}<br/><br/>${footerMessage}`;
       }
 

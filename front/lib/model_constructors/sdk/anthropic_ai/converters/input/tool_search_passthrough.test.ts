@@ -151,7 +151,7 @@ describe("stripUnreplayableToolSearchBlocks", () => {
       assistant(thinking(), search("srv_1"), toolUse("tool_1")),
       user(
         toolResult("tool_1"),
-        text("<dust_system>skill instructions</dust_system>")
+        text("<ruby_system>skill instructions</ruby_system>")
       ),
     ];
 

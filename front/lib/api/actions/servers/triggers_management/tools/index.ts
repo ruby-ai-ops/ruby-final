@@ -403,7 +403,7 @@ export function createTriggersManagementTools(
       if (trigger.isSystemStatusTransitionTo("disabled")) {
         return new Err(
           new MCPError(
-            "This trigger's status is managed by Dust and cannot be changed."
+            "This trigger's status is managed by Ruby and cannot be changed."
           )
         );
       }

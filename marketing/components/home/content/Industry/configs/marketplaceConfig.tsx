@@ -1,10 +1,10 @@
 import type { IndustryPageConfig } from "@marketing/components/home/content/Industry/configs/utils";
 import { createLayoutConfig } from "@marketing/components/home/content/Industry/configs/utils";
-import { ShoppingBag01 } from "@dust-tt/sparkle";
+import { ShoppingBag01 } from "@ruby-ai/ui";
 
 export const marketplaceConfig: IndustryPageConfig = {
   seo: {
-    title: "Dust for Marketplaces",
+    title: "Ruby for Marketplaces",
     description:
       "The AI solution powering Marketplace success. Streamline supplier acquisition, eliminate content bottlenecks, and scale support effortlessly.",
   },
@@ -13,12 +13,12 @@ export const marketplaceConfig: IndustryPageConfig = {
     "aiAgents",
     "trustedBy",
     "painPoints",
-    "dustInAction",
+    "rubyInAction",
     "impactMetrics",
     "demoVideo",
     "testimonial",
     "customerStories",
-    "justUseDust",
+    "justUseRuby",
   ]),
   hero: {
     chip: {
@@ -28,7 +28,7 @@ export const marketplaceConfig: IndustryPageConfig = {
     },
     title: (
       <>
-        Dust for
+        Ruby for
         <br /> Marketplaces
       </>
     ),
@@ -46,7 +46,7 @@ export const marketplaceConfig: IndustryPageConfig = {
     },
     testimonialCard: {
       quote:
-        "Dust has empowered our employees to work smarter, innovate, and push boundaries.",
+        "Ruby has empowered our employees to work smarter, innovate, and push boundaries.",
       author: {
         name: "Matthieu Birach",
         title: "Chief People Officer at Doctolib",
@@ -66,7 +66,7 @@ export const marketplaceConfig: IndustryPageConfig = {
   aiAgents: {
     title: "Empower your marketplace teams to focus on growth, not grunt work",
     description:
-      "Dust connects your teams, automates operational complexity, and unlocks critical insights from your data—across supply acquisition, community engagement, support operations, and market intelligence.",
+      "Ruby connects your teams, automates operational complexity, and unlocks critical insights from your data—across supply acquisition, community engagement, support operations, and market intelligence.",
     bgColor: "bg-gray-50",
   },
   trustedBy: {
@@ -99,8 +99,8 @@ export const marketplaceConfig: IndustryPageConfig = {
       },
     ],
   },
-  dustInAction: {
-    title: "Dust in action",
+  rubyInAction: {
+    title: "Ruby in action",
     useCases: [
       {
         title: "Supply growth & provider acquisition",
@@ -251,12 +251,12 @@ export const marketplaceConfig: IndustryPageConfig = {
     ],
   },
   demoVideo: {
-    sectionTitle: "See Dust in motion",
-    videoUrl: "https://fast.wistia.net/embed/iframe/r0dwaexoez",
+    sectionTitle: "See Ruby in motion",
+    videoUrl: "/static/workspace-demo/index.html",
   },
   testimonial: {
     quote:
-      "Dust has empowered our employees to work smarter, innovate, and push boundaries.",
+      "Ruby has empowered our employees to work smarter, innovate, and push boundaries.",
     author: {
       name: "Matthieu Birach",
       title: "Chief People Officer at Doctolib",
@@ -268,12 +268,12 @@ export const marketplaceConfig: IndustryPageConfig = {
     bgColor: "bg-blue-800",
     textColor: "text-white",
   },
-  justUseDust: {
-    title: "Just use Dust",
+  justUseRuby: {
+    title: "Just use Ruby",
     titleColor: "text-blue-600",
     ctaButtons: {
       primary: {
-        label: "Start Free Trial",
+        label: "Get started",
         href: "/api/workos/login",
       },
       secondary: {

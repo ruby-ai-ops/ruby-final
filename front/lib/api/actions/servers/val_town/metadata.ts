@@ -298,7 +298,7 @@ export const VAL_TOWN_SERVER = {
       "Create and manage Val Town vals: serverless TypeScript/JavaScript functions, HTTP endpoints, email handlers, and scheduled scripts.",
     authorization: null,
     icon: "ValTownLogo",
-    documentationUrl: "https://docs.dust.tt/docs/val-town",
+    documentationUrl: "https://docs.ruby.ad/docs/val-town",
     developerSecretSelection: "required",
   },
   tools: VAL_TOWN_TOOLS_METADATA,

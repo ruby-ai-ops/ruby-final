@@ -1,7 +1,7 @@
 //import { PassThrough, Transform } from "node:stream";
 
-import type { LoggerInterface, Result } from "@dust-tt/client";
-import { assertNever, Err, Ok } from "@dust-tt/client";
+import type { LoggerInterface, Result } from "@ruby-ai/client";
+import { assertNever, Err, Ok } from "@ruby-ai/client";
 import { isLeft } from "fp-ts/Either";
 import { Parser } from "htmlparser2";
 import * as t from "io-ts";

@@ -4,7 +4,7 @@ import type { Fetcher } from "swr";
 
 import { useFetcher, useSWRWithDefaults } from "@marketing/lib/swr/swr";
 
-const GEO_CACHE_KEY = "dust-geo-location";
+const GEO_CACHE_KEY = "ruby-geo-location";
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
 interface CachedGeoData {

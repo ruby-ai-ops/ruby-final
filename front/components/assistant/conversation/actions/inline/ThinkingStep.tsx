@@ -1,5 +1,5 @@
 import { TimelineRow } from "@app/components/assistant/conversation/actions/inline/TimelineRow";
-import { cn, Markdown } from "@dust-tt/sparkle";
+import { cn, Markdown } from "@ruby-ai/ui";
 import { memo, useEffect, useRef, useState } from "react";
 
 import styles from "./ThinkingStep.module.css";

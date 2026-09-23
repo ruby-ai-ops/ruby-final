@@ -88,7 +88,7 @@ app.post("/", validate("json", PostRequestAccessBodySchema), async (ctx) => {
     to: dataSource.editedByUser.email,
     from: config.getSupportEmailAddress(),
     replyTo: emailRequester,
-    subject: `[Dust] Request Data source from ${emailRequester}`,
+    subject: `[Ruby] Request Data source from ${emailRequester}`,
     body,
   });
 

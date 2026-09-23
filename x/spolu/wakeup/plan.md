@@ -29,7 +29,7 @@ Add `wakeUpWorkflow`, `runWakeUpActivity`, and `expireWakeUpActivity` to the sha
 one-shot path with `startDelay` on `client.workflow.start()`. The activity resolves the wake-up
 and acting user via `WakeUpResource.fetchWakeUpAndAuthenticatorById(...)`, fetches the
 conversation with `getConversation(...)`, posts a user message with `origin: "wakeup"`,
-`doNotAssociateUser: true`, `username: "Dust"`, and a `<dust_system>` context block, then marks
+`doNotAssociateUser: true`, `username: "Ruby"`, and a `<ruby_system>` context block, then marks
 the wake-up as fired.
 
 Current terminal / retry behavior:
@@ -63,7 +63,7 @@ Done:
   `front/temporal/triggers/wakeup_client.ts`.
 - `WakeUpResource.maxFires()` (backed by `MAX_WAKE_UP_FIRES = 32`) is exposed on `WakeUpType`, and
   `markFired(...)` transitions a cron wake-up to `expired` once `fireCount >= maxFires`.
-- The wake-up `<dust_system>` message includes `fireCount / maxFires` and an expiration warning
+- The wake-up `<ruby_system>` message includes `fireCount / maxFires` and an expiration warning
   when the wake-up is about to expire.
 - `cleanupTemporalAfterFire(...)` deletes the Temporal schedule after the final fire.
 - `WakeUpResource.validateCron({ cron, timezone })` enforces a well-formed 5-field cron
@@ -80,7 +80,7 @@ deterministically (relative duration, ISO 8601, 5-field cron); cron timezone fal
 last user message's timezone.
 Guardrails enforced at tool-call time: max 1 active wake-up per conversation, max 256 per
 workspace, max 31-day one-shot delay. Also updates `runWakeUpActivity` to post the
-wake-up message with `username: "dust_system"` / `fullName: "Dust System"` instead of
+wake-up message with `username: "ruby_system"` / `fullName: "Ruby System"` instead of
 `doNotAssociateUser: true`.
 
 ## Milestone 5: Security

@@ -12,7 +12,7 @@ describe("RunResource reasoning token usage", () => {
     const { authenticator: auth, workspace } = await createResourceTest({});
     const run = await RunResource.makeNew({
       appId: null,
-      dustRunId: generateRandomModelSId(),
+      rubyRunId: generateRandomModelSId(),
       runType: "deploy",
       useWorkspaceCredentials: false,
       workspaceId: workspace.id,
@@ -43,7 +43,7 @@ describe("RunResource reasoning token usage", () => {
     const { authenticator: auth, workspace } = await createResourceTest({});
     const run = await RunResource.makeNew({
       appId: null,
-      dustRunId: generateRandomModelSId(),
+      rubyRunId: generateRandomModelSId(),
       runType: "deploy",
       useWorkspaceCredentials: false,
       workspaceId: workspace.id,
@@ -72,7 +72,7 @@ describe("RunResource service tier usage", () => {
     const { run, runUsageModelId } = await RunResource.makeNewWithPendingUsage(
       {
         appId: null,
-        dustRunId: generateRandomModelSId(),
+        rubyRunId: generateRandomModelSId(),
         runType: "deploy",
         useWorkspaceCredentials: false,
         workspaceId: workspace.id,
@@ -128,7 +128,7 @@ describe("RunResource service tier usage", () => {
     const { authenticator: auth, workspace } = await createResourceTest({});
     const run = await RunResource.makeNew({
       appId: null,
-      dustRunId: generateRandomModelSId(),
+      rubyRunId: generateRandomModelSId(),
       runType: "deploy",
       useWorkspaceCredentials: false,
       workspaceId: workspace.id,
@@ -186,7 +186,7 @@ describe("RunResource usage type immutability", () => {
     const { run, runUsageModelId } = await RunResource.makeNewWithPendingUsage(
       {
         appId: null,
-        dustRunId: generateRandomModelSId(),
+        rubyRunId: generateRandomModelSId(),
         runType: "deploy",
         useWorkspaceCredentials: false,
         workspaceId: workspace.id,
@@ -225,7 +225,7 @@ describe("RunResource credential owner", () => {
     const { authenticator: auth, workspace } = await createResourceTest({});
     const run = await RunResource.makeNew({
       appId: null,
-      dustRunId: generateRandomModelSId(),
+      rubyRunId: generateRandomModelSId(),
       runType: "deploy",
       useWorkspaceCredentials: false,
       workspaceId: workspace.id,
@@ -252,7 +252,7 @@ describe("RunResource credential owner", () => {
     const { run, runUsageModelId } = await RunResource.makeNewWithPendingUsage(
       {
         appId: null,
-        dustRunId: generateRandomModelSId(),
+        rubyRunId: generateRandomModelSId(),
         runType: "deploy",
         useWorkspaceCredentials: false,
         workspaceId: workspace.id,
@@ -286,40 +286,40 @@ describe("RunResource credential owner", () => {
   });
 });
 
-describe("RunResource.setRunKeyForDustRunIds", () => {
+describe("RunResource.setRunKeyForRubyRunIds", () => {
   it("tags untagged runs, skips already-tagged rows, and overwrites a different key", async () => {
     const { authenticator: auth, workspace } = await createResourceTest({});
-    const dustRunId = generateRandomModelSId();
+    const rubyRunId = generateRandomModelSId();
     await RunResource.makeNew({
       appId: null,
-      dustRunId,
+      rubyRunId,
       runType: "agent_loop",
       useWorkspaceCredentials: false,
       workspaceId: workspace.id,
     });
 
-    await RunResource.setRunKeyForDustRunIds(auth, {
-      dustRunIds: [dustRunId],
+    await RunResource.setRunKeyForRubyRunIds(auth, {
+      rubyRunIds: [rubyRunId],
       runKey: "key-a",
     });
-    const tagged = await RunResource.fetchByDustRunId(auth, { dustRunId });
+    const tagged = await RunResource.fetchByRubyRunId(auth, { rubyRunId });
     expect(tagged?.runKey).toBe("key-a");
 
     // Re-tagging with the same key must not rewrite the row. The sleep keeps
     // millisecond-precision updatedAt from masking a rewrite.
     await new Promise((resolve) => setTimeout(resolve, 5));
-    await RunResource.setRunKeyForDustRunIds(auth, {
-      dustRunIds: [dustRunId],
+    await RunResource.setRunKeyForRubyRunIds(auth, {
+      rubyRunIds: [rubyRunId],
       runKey: "key-a",
     });
-    const retagged = await RunResource.fetchByDustRunId(auth, { dustRunId });
+    const retagged = await RunResource.fetchByRubyRunId(auth, { rubyRunId });
     expect(retagged?.updatedAt.getTime()).toBe(tagged?.updatedAt.getTime());
 
-    await RunResource.setRunKeyForDustRunIds(auth, {
-      dustRunIds: [dustRunId],
+    await RunResource.setRunKeyForRubyRunIds(auth, {
+      rubyRunIds: [rubyRunId],
       runKey: "key-b",
     });
-    const overwritten = await RunResource.fetchByDustRunId(auth, { dustRunId });
+    const overwritten = await RunResource.fetchByRubyRunId(auth, { rubyRunId });
     expect(overwritten?.runKey).toBe("key-b");
   });
 });

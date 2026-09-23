@@ -1,5 +1,5 @@
 {
-  "name": "@dust-experiments/skill-embeddings",
+  "name": "@ruby-experiments/skill-embeddings",
   "private": true,
   "scripts": {
     "start": "node --import tsx cli.ts",

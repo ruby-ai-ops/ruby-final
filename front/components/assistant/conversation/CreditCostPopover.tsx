@@ -20,7 +20,7 @@ import {
   PopoverRoot,
   PopoverTrigger,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentType, ReactElement } from "react";
 import { useEffect, useId, useRef, useState } from "react";
 

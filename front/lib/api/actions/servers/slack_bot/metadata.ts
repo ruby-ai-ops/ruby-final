@@ -57,7 +57,7 @@ export const SLACK_BOT_TOOLS_METADATA = [
         .optional()
         .default(true)
         .describe(
-          "Include the 'Sent via [AgentName] on Dust' footer. Set false only when explicitly asked to remove the footer, never for formatting or brevity."
+          "Include the 'Sent via [AgentName] on Ruby' footer. Set false only when explicitly asked to remove the footer, never for formatting or brevity."
         ),
     },
     stake: "low",

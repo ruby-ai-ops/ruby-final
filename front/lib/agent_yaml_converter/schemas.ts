@@ -53,8 +53,8 @@ export const agentYAMLTableConfigurationSchema = z.object({
   table_id: z.string().min(1, "Table ID is required"),
 });
 
-const agentYAMLDustAppConfigurationSchema = z.object({
-  type: z.literal("dust_app_run_configuration"),
+const agentYAMLRubyAppConfigurationSchema = z.object({
+  type: z.literal("ruby_app_run_configuration"),
   app_workspace_id: z.string(),
   app_id: z.string(),
 });
@@ -78,11 +78,11 @@ const agentYAMLMCPActionSchema = z.object({
     time_frame: agentYAMLTimeFrameSchema.optional(),
     json_schema: z.object({}).nullish(),
     additional_configuration: additionalConfigurationSchema.optional(),
-    dust_app_configuration: agentYAMLDustAppConfigurationSchema
+    ruby_app_configuration: agentYAMLRubyAppConfigurationSchema
       .nullable()
       .optional(),
     secret_name: z.string().nullish(),
-    dust_project: agentYAMLProjectConfigurationSchema.nullish(),
+    ruby_project: agentYAMLProjectConfigurationSchema.nullish(),
   }),
 });
 

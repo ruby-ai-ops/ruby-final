@@ -1,5 +1,5 @@
 /**
- * Legacy Poke cache descriptors awaiting migration to owner-defined cache
+ * Legacy Admin cache descriptors awaiting migration to owner-defined cache
  * handles. Do not add entries here: new caches should expose operations from
  * their owning Resource or query module.
  */
@@ -18,7 +18,7 @@ export interface CacheResourceDefinition {
   params: CacheResourceParam[];
   buildResolverKey: (params: Record<string, string>) => string;
   // Redis glob pattern matching the resolver keys of all entries of this resource type. Used by
-  // poke to bulk-delete every cache entry for the resource. Omit when the full key (fnName +
+  // admin to bulk-delete every cache entry for the resource. Omit when the full key (fnName +
   // resolver key) is too generic to match safely (e.g. an anonymous fnName with an unprefixed
   // resolver key).
   resolverKeyPattern?: string;
@@ -144,9 +144,9 @@ export const CACHE_RESOURCE_REGISTRY: CacheResourceDefinition[] = [
     resolverKeyPattern: "provider-status-*",
   },
   {
-    id: "dust_status",
-    label: "Dust status",
-    fnName: "getDustStatus",
+    id: "ruby_status",
+    label: "Ruby status",
+    fnName: "getRubyStatus",
     params: [
       {
         key: "region",
@@ -155,8 +155,8 @@ export const CACHE_RESOURCE_REGISTRY: CacheResourceDefinition[] = [
         placeholder: "e.g. us-east-1",
       },
     ],
-    buildResolverKey: (p) => `dust-status-${p.region}`,
-    resolverKeyPattern: "dust-status-*",
+    buildResolverKey: (p) => `ruby-status-${p.region}`,
+    resolverKeyPattern: "ruby-status-*",
   },
   {
     id: "key_monthly_cap",

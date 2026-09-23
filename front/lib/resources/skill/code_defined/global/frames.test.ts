@@ -51,7 +51,7 @@ function agentLoopDataInPod(spaceId: string | null): AgentLoopExecutionData {
 }
 
 describe("framesSkill.fetchInstructions", () => {
-  it("uses the dsbx lifecycle and keeps MCP export under Frames v2", async () => {
+  it("uses the rbx lifecycle and keeps MCP export under Frames v2", async () => {
     const { authenticator: auth } = await createResourceTest({});
     await FeatureFlagFactory.basic(auth, "frames_v2");
 
@@ -59,20 +59,20 @@ describe("framesSkill.fetchInstructions", () => {
       spaceIds: [],
     });
 
-    expect(instructions).toContain("dsbx frame publish");
+    expect(instructions).toContain("rbx frame publish");
     expect(instructions).toContain('mkdir -p "$FRAME"');
     expect(instructions).toContain(
       "write the real source\nand publish a new Frame in one Computer command"
     );
     expect(instructions).toContain("There is no scaffold step");
-    expect(instructions).not.toContain("dsbx frame create");
-    expect(instructions).not.toContain("dsbx frame register");
-    expect(instructions).toContain("dsbx frame share-link");
-    expect(instructions).toContain("dsbx frame call");
+    expect(instructions).not.toContain("rbx frame create");
+    expect(instructions).not.toContain("rbx frame register");
+    expect(instructions).toContain("rbx frame share-link");
+    expect(instructions).toContain("rbx frame call");
     expect(instructions).toContain("stable Frame ID");
     expect(instructions).toContain("additionally requires read access");
     expect(instructions).toContain("does not test the Frame");
-    expect(instructions).not.toContain("dsbx frame validate");
+    expect(instructions).not.toContain("rbx frame validate");
     expect(instructions).toContain(
       'bash "/files/conversation-<conversationId>/skills/Create Frames/lint.sh" "$FRAME"'
     );
@@ -82,7 +82,7 @@ describe("framesSkill.fetchInstructions", () => {
     );
     expect(instructions).toContain("configs untouched");
     expect(instructions).toContain(
-      "Frame sharing and use rights are configured by the user in the Dust UI"
+      "Frame sharing and use rights are configured by the user in the Ruby UI"
     );
     expect(instructions).toContain("This command is read-only");
     expect(instructions).not.toContain("--scope");
@@ -96,7 +96,7 @@ describe("framesSkill.fetchInstructions", () => {
     expect(instructions).toContain('userIdentity: "workspace_user_required"');
     expect(instructions).toContain("### Fast and durable functions");
     expect(instructions).toContain("tools.call");
-    expect(instructions).toContain('import { tools } from "@dust/pod"');
+    expect(instructions).toContain('import { tools } from "@ruby-ai/pod"');
     expect(instructions).toContain(
       "Computer vs Frame function — do not mix the two call styles"
     );

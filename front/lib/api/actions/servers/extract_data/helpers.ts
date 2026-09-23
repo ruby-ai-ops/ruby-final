@@ -14,7 +14,7 @@ import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import type { TimeFrame } from "@app/types/shared/utils/time_frame";
 import { timeFrameFromNow } from "@app/types/shared/utils/time_frame";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 
@@ -80,7 +80,7 @@ export async function getCoreDataSourceSearchCriterias(
   return new Ok(coreDataSourceSearchCriterias);
 }
 
-export async function getPromptForProcessDustApp({
+export async function getPromptForProcessRubyApp({
   auth,
   agentConfiguration,
   modelInfo,

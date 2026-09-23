@@ -598,8 +598,8 @@ makeScript(
       conversation
     );
 
-    const dustRunIds = [...new Set(creditContext.runIds ?? [])];
-    const runs = await RunResource.listByDustRunIds(auth, { dustRunIds });
+    const rubyRunIds = [...new Set(creditContext.runIds ?? [])];
+    const runs = await RunResource.listByRubyRunIds(auth, { rubyRunIds });
     const usages = await RunResource.listRunUsagesForRuns(auth, { runs });
     const [actions, items] = await Promise.all([
       AgentMCPActionResource.listByAgentMessageIds(auth, [
@@ -642,7 +642,7 @@ makeScript(
         });
         runUsageAttemptRows.push({
           runOrder: runUsageAttemptRows.length + 1,
-          dustRunId: run.dustRunId,
+          rubyRunId: run.rubyRunId,
           runModelId: run.id,
           runKey: run.runKey,
           runCreatedAt: run.createdAt.toISOString(),
@@ -701,7 +701,7 @@ makeScript(
       actions.map((action) => [action.id, action])
     );
     const actionById = new Map(actions.map((action) => [action.sId, action]));
-    const runByDustRunId = new Map(runs.map((run) => [run.dustRunId, run]));
+    const runByRubyRunId = new Map(runs.map((run) => [run.rubyRunId, run]));
     const runByModelId = new Map(runs.map((run) => [run.id, run]));
     const usageByModelId = new Map(
       usages.map((usage) => [usage.runUsageModelId, usage])
@@ -855,8 +855,8 @@ makeScript(
         : billedCreditAmountMicro - diagnosticFixedCreditAmountMicro;
 
     const actionCoverage = actions.map((action) => {
-      const dustRunId = action.stepContent.dustRunId;
-      const run = dustRunId ? runByDustRunId.get(dustRunId) : undefined;
+      const rubyRunId = action.stepContent.rubyRunId;
+      const run = rubyRunId ? runByRubyRunId.get(rubyRunId) : undefined;
       const runUsages = run ? (usagesByRunModelId.get(run.id) ?? []) : [];
       const currentToolItem = currentToolItemByActionModelId.get(action.id);
       const diagnosticToolItem = toolItemByActionModelId.get(action.id);
@@ -872,13 +872,13 @@ makeScript(
         parentAction !== undefined &&
         parentToolItem?.runUsageId === runUsages[0]?.runUsageModelId &&
         parentAction.stepContent.id === action.stepContent.id &&
-        parentAction.stepContent.dustRunId === dustRunId;
+        parentAction.stepContent.rubyRunId === rubyRunId;
       const flags: string[] = [];
 
-      if (!dustRunId) {
-        flags.push("missing_step_dust_run_id");
+      if (!rubyRunId) {
+        flags.push("missing_step_ruby_run_id");
       } else if (!run) {
-        flags.push("step_dust_run_not_found_on_message");
+        flags.push("step_ruby_run_not_found_on_message");
       } else if (runUsages.length === 0) {
         flags.push("action_run_has_no_usage");
       }
@@ -904,7 +904,7 @@ makeScript(
             : "complete"
           : undefined,
         isToleratedLateChild,
-        dustRunId,
+        rubyRunId,
         runModelId: run?.id,
         runUsageModelIds: runUsages.map((usage) => usage.runUsageModelId),
         currentToolItemRunUsageModelId: currentToolItem?.runUsageId,
@@ -981,7 +981,7 @@ makeScript(
     console.table([
       {
         status: creditContext.status,
-        messageRunIds: dustRunIds.length,
+        messageRunIds: rubyRunIds.length,
         firstRunAt: sortedRunCreatedAts[0]?.toISOString() ?? "none",
         lastRunAt: sortedRunCreatedAts.at(-1)?.toISOString() ?? "none",
         firstActionCreatedAt:

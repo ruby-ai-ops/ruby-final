@@ -4,7 +4,7 @@ import {
   isCustomResourceIconType,
   isInternalAllowedIcon,
 } from "@app/components/resources/resources_icons";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { ConsumptionConversationAttribution } from "@app/components/workspace/analytics/consumption/ConsumptionConversationAttribution";
 import { ConsumptionExportPanel } from "@app/components/workspace/analytics/consumption/ConsumptionExportPanel";
 import {
@@ -41,7 +41,7 @@ import {
   ChevronUp,
   cn,
   DataTable,
-  DustLogoSquare,
+  RubyLogoSquare,
   FilterFunnel01,
   Icon,
   MOTION_EASINGS,
@@ -52,7 +52,7 @@ import {
   TabsTrigger,
   Tooltip,
   XCircle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type {
   ColumnDef,
   OnChangeFn,
@@ -299,7 +299,7 @@ function buildColumns({
               <span className="flex size-7 shrink-0 items-center justify-center">
                 <Icon
                   visual={
-                    getModelLogoByModelId(row.id, isDark) ?? DustLogoSquare
+                    getModelLogoByModelId(row.id, isDark) ?? RubyLogoSquare
                   }
                   size="sm"
                 />

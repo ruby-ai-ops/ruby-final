@@ -94,7 +94,7 @@ export abstract class ResourceWithSpace<
     }
 
     // Scope on the fetched blobs' workspaces rather than the authenticated one: some lookups
-    // are intentionally cross-workspace (e.g. unsafeFetchByDustAPIProjectId) and a blob always
+    // are intentionally cross-workspace (e.g. unsafeFetchByRubyAPIProjectId) and a blob always
     // lives in the same workspace as its space.
     const blobWorkspaceIds = [...new Set(blobs.map((b) => b.workspaceId))];
 
@@ -107,7 +107,7 @@ export abstract class ResourceWithSpace<
       transaction,
       // WORKSPACE_ISOLATION_BYPASS: The where clause is scoped to the blobs' workspaces, which
       // may span multiple workspaces when the blob query ran with the bypass (e.g.
-      // unsafeFetchByDustAPIProjectId); the static check only accepts a single workspaceId.
+      // unsafeFetchByRubyAPIProjectId); the static check only accepts a single workspaceId.
       // Permissions are enforced by canFetch below.
       // biome-ignore lint/plugin/noUnverifiedWorkspaceBypass: WORKSPACE_ISOLATION_BYPASS verified
       dangerouslyBypassWorkspaceIsolationSecurity: true,
@@ -210,7 +210,7 @@ export abstract class ResourceWithSpace<
    */
   canFetch(auth: Authenticator) {
     return (
-      auth.isDustSuperUser() ||
+      auth.isRubySuperUser() ||
       this.workspaceId === auth.getNonNullableWorkspace().id
     );
   }

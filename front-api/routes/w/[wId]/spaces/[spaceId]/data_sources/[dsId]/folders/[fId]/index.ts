@@ -38,8 +38,8 @@ app.delete(
 
     const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
     const delRes = await coreAPI.deleteDataSourceFolder({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       folderId: fId,
       caller: "private-api",
     });

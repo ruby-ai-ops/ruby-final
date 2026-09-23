@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
-# Shared helpers for the Dust in-container / cloud-agent dev environment.
+# Shared helpers for the Ruby in-container / cloud-agent dev environment.
 
-DUST_REPO_ROOT="${DUST_REPO_ROOT:-$(
+RUBY_REPO_ROOT="${RUBY_REPO_ROOT:-$(
   cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd
 )}"
-export DUST_REPO_ROOT
+export RUBY_REPO_ROOT
 
-DUST_INFRA_LOG_DIR="${DUST_INFRA_LOG_DIR:-/tmp/dust-infra}"
-mkdir -p "$DUST_INFRA_LOG_DIR"
+RUBY_INFRA_LOG_DIR="${RUBY_INFRA_LOG_DIR:-/tmp/ruby-infra}"
+mkdir -p "$RUBY_INFRA_LOG_DIR"
 
 log() {
-  echo "[${DUST_DEV_SCRIPT_NAME:-dust-dev}] $*"
+  echo "[${RUBY_DEV_SCRIPT_NAME:-ruby-dev}] $*"
 }
 
 install_mprocs_config() {
-  if [ -f "${DUST_REPO_ROOT}/dev/config/mprocs.yaml" ]; then
+  if [ -f "${RUBY_REPO_ROOT}/dev/config/mprocs.yaml" ]; then
     mkdir -p "${HOME}/.config/mprocs"
-    cp "${DUST_REPO_ROOT}/dev/config/mprocs.yaml" "${HOME}/.config/mprocs/mprocs.yaml"
+    cp "${RUBY_REPO_ROOT}/dev/config/mprocs.yaml" "${HOME}/.config/mprocs/mprocs.yaml"
   fi
 }
 
@@ -24,14 +24,14 @@ install_mprocs_config() {
 # Managed policies are the supported Linux way to disable the password manager
 # and history-based omnibox suggestions (see AGENTS.md).
 install_chrome_policies() {
-  local src="${DUST_REPO_ROOT}/dev/config/chrome-policies.json"
+  local src="${RUBY_REPO_ROOT}/dev/config/chrome-policies.json"
   local dest_dir="/etc/opt/chrome/policies/managed"
   if [ ! -f "$src" ]; then
     return 0
   fi
   mkdir -p "$dest_dir"
-  cp "$src" "${dest_dir}/dust-cloud.json"
-  chmod 644 "${dest_dir}/dust-cloud.json"
+  cp "$src" "${dest_dir}/ruby-cloud.json"
+  chmod 644 "${dest_dir}/ruby-cloud.json"
 }
 
 ensure_node_path() {
@@ -57,19 +57,19 @@ resolve_temporal_bin() {
   return 1
 }
 
-# Migrations import @dust-tt/client (main: sdks/js/dist/index.js). npm install is owned by install.sh.
+# Migrations import @ruby-ai/client (main: sdks/js/dist/index.js). npm install is owned by install.sh.
 ensure_client_built() {
   ensure_node_path
-  cd "$DUST_REPO_ROOT"
+  cd "$RUBY_REPO_ROOT"
 
-  if [ ! -f node_modules/@dust-tt/client/package.json ]; then
+  if [ ! -f node_modules/@ruby-ai/client/package.json ]; then
     log "node_modules missing; run: bash dev/scripts/install.sh"
     return 1
   fi
 
   if [ ! -f sdks/js/dist/index.js ]; then
-    log "Building @dust-tt/client (sdks/js)..."
-    npm -w @dust-tt/client run build
+    log "Building @ruby-ai/client (sdks/js)..."
+    npm -w @ruby-ai/client run build
   fi
 }
 
@@ -77,7 +77,7 @@ wait_for_elasticsearch() {
   local host="${ELASTICSEARCH_HOST:-localhost}"
   local port="${ELASTICSEARCH_PORT:-9200}"
   local url="${ELASTICSEARCH_URL:-http://${host}:${port}}"
-  local max_attempts="${DUST_ES_WAIT_SECONDS:-240}"
+  local max_attempts="${RUBY_ES_WAIT_SECONDS:-240}"
   local attempt=0
 
   log "Waiting for Elasticsearch at ${url} (up to ${max_attempts}s)..."
@@ -96,7 +96,7 @@ wait_for_elasticsearch() {
 }
 
 elasticsearch_create_index_bin() {
-  echo "${DUST_REPO_ROOT}/core/target/debug/elasticsearch_create_index"
+  echo "${RUBY_REPO_ROOT}/core/target/debug/elasticsearch_create_index"
 }
 
 ensure_elasticsearch_create_index_built() {
@@ -111,7 +111,7 @@ ensure_elasticsearch_create_index_built() {
   fi
   log "Building elasticsearch_create_index (core)..."
   (
-    cd "${DUST_REPO_ROOT}/core"
+    cd "${RUBY_REPO_ROOT}/core"
     cargo build --bin elasticsearch_create_index
   )
   if [ ! -x "$bin" ]; then
@@ -121,7 +121,7 @@ ensure_elasticsearch_create_index_built() {
 }
 
 qdrant_create_collection_bin() {
-  echo "${DUST_REPO_ROOT}/core/target/debug/qdrant_create_collection"
+  echo "${RUBY_REPO_ROOT}/core/target/debug/qdrant_create_collection"
 }
 
 ensure_qdrant_create_collection_built() {
@@ -136,7 +136,7 @@ ensure_qdrant_create_collection_built() {
   fi
   log "Building qdrant_create_collection (core)..."
   (
-    cd "${DUST_REPO_ROOT}/core"
+    cd "${RUBY_REPO_ROOT}/core"
     cargo build --bin qdrant_create_collection
   )
   if [ ! -x "$bin" ]; then
@@ -151,7 +151,7 @@ write_gcp_service_account_file() {
   if [ -z "${GCP_SERVICE_ACCOUNT_B64:-}" ]; then
     return 0
   fi
-  local path="${SERVICE_ACCOUNT:-/tmp/dust-dev-sa.json}"
+  local path="${SERVICE_ACCOUNT:-/tmp/ruby-dev-sa.json}"
   if ! printf '%s' "$GCP_SERVICE_ACCOUNT_B64" | base64 -d >"$path" 2>/dev/null; then
     log "GCP_SERVICE_ACCOUNT_B64 is not valid base64 (expected base64-encoded service account JSON)"
     rm -f "$path"
@@ -162,9 +162,9 @@ write_gcp_service_account_file() {
 }
 
 # Materialized 1Password env for every shell (see BASH_ENV / dev/bashrc).
-DUST_OP_ENV_FILE="${DUST_OP_ENV_FILE:-/tmp/dust-op-environment.env}"
-DUST_SHELL_ENV_FILE="${DUST_SHELL_ENV_FILE:-/tmp/dust-shell-env.sh}"
-DUST_ENV_SCRIPT="${DUST_ENV_SCRIPT:-${DUST_REPO_ROOT}/dev/scripts/env.sh}"
+RUBY_OP_ENV_FILE="${RUBY_OP_ENV_FILE:-/tmp/ruby-op-environment.env}"
+RUBY_SHELL_ENV_FILE="${RUBY_SHELL_ENV_FILE:-/tmp/ruby-shell-env.sh}"
+RUBY_ENV_SCRIPT="${RUBY_ENV_SCRIPT:-${RUBY_REPO_ROOT}/dev/scripts/env.sh}"
 
 # `op environment read` requires 1Password CLI >= 2.33.0-beta.02 (Environments feature).
 op_cli_supports_environments() {
@@ -196,40 +196,40 @@ require_op_credentials() {
 }
 
 write_shell_env_loader() {
-  cat >"$DUST_SHELL_ENV_FILE" <<EOF
-# Auto-generated by Dust dev start scripts. Sourced via BASH_ENV and dev/bashrc.
+  cat >"$RUBY_SHELL_ENV_FILE" <<EOF
+# Auto-generated by Ruby dev start scripts. Sourced via BASH_ENV and dev/bashrc.
 # Loads the full 1Password Environment, then soft defaults + apply_local_overrides.
-if [ -n "\${DUST_SHELL_ENV_LOADING:-}" ]; then
+if [ -n "\${RUBY_SHELL_ENV_LOADING:-}" ]; then
   return 0 2>/dev/null || true
 fi
-DUST_SHELL_ENV_LOADING=1
-_dust_bash_env_saved="\${BASH_ENV-}"
+RUBY_SHELL_ENV_LOADING=1
+_ruby_bash_env_saved="\${BASH_ENV-}"
 unset BASH_ENV
 
-if [ -f "${DUST_OP_ENV_FILE}" ]; then
+if [ -f "${RUBY_OP_ENV_FILE}" ]; then
   set -a
   # shellcheck disable=SC1091
-  . "${DUST_OP_ENV_FILE}"
+  . "${RUBY_OP_ENV_FILE}"
   set +a
 fi
-if [ -f "${DUST_ENV_SCRIPT}" ]; then
+if [ -f "${RUBY_ENV_SCRIPT}" ]; then
   # shellcheck disable=SC1091
-  . "${DUST_ENV_SCRIPT}"
+  . "${RUBY_ENV_SCRIPT}"
   apply_local_overrides
 fi
 
-if [ -n "\${_dust_bash_env_saved}" ]; then
-  export BASH_ENV="\${_dust_bash_env_saved}"
+if [ -n "\${_ruby_bash_env_saved}" ]; then
+  export BASH_ENV="\${_ruby_bash_env_saved}"
 fi
-unset _dust_bash_env_saved DUST_SHELL_ENV_LOADING
+unset _ruby_bash_env_saved RUBY_SHELL_ENV_LOADING
 EOF
-  chmod 644 "$DUST_SHELL_ENV_FILE"
+  chmod 644 "$RUBY_SHELL_ENV_FILE"
 }
 
 # Back-compat name used by seed / ES init scripts.
 export_local_dev_infra() {
   # shellcheck disable=SC1091
-  source "${DUST_ENV_SCRIPT}"
+  source "${RUBY_ENV_SCRIPT}"
   apply_local_overrides
 }
 
@@ -239,13 +239,13 @@ export_local_dev_infra() {
 # Infra scripts stay bash; only interactive terminals are zsh.
 write_root_shell_rc() {
   cat >/root/.bashrc <<EOF
-# Dust shared dev container — kept in sync by materialize_dev_environment.
-export BASH_ENV=${DUST_SHELL_ENV_FILE}
+# Ruby shared dev container — kept in sync by materialize_dev_environment.
+export BASH_ENV=${RUBY_SHELL_ENV_FILE}
 
 # Interactive bash skips BASH_ENV; load materialized 1Password + local overrides here.
-if [ -f ${DUST_SHELL_ENV_FILE} ]; then
+if [ -f ${RUBY_SHELL_ENV_FILE} ]; then
   # shellcheck disable=SC1091
-  . ${DUST_SHELL_ENV_FILE}
+  . ${RUBY_SHELL_ENV_FILE}
 fi
 
 if [ -f /workspace/dev/bashrc ]; then
@@ -256,7 +256,7 @@ EOF
 
   # Prefer bash_profile for login shells that skip .profile.
   cat >/root/.bash_profile <<'EOF'
-# Dust shared dev container login shell (bash).
+# Ruby shared dev container login shell (bash).
 if [ -f ~/.bashrc ]; then
   # shellcheck disable=SC1091
   . ~/.bashrc
@@ -264,12 +264,12 @@ fi
 EOF
 
   cat >/root/.zshrc <<EOF
-# Dust shared dev container — kept in sync by materialize_dev_environment.
+# Ruby shared dev container — kept in sync by materialize_dev_environment.
 export SHELL=/bin/zsh
 
-if [ -f ${DUST_SHELL_ENV_FILE} ]; then
+if [ -f ${RUBY_SHELL_ENV_FILE} ]; then
   # shellcheck disable=SC1091
-  . ${DUST_SHELL_ENV_FILE}
+  . ${RUBY_SHELL_ENV_FILE}
 fi
 
 if [ -f /workspace/dev/zshrc ]; then
@@ -282,12 +282,12 @@ EOF
 # Ensure BASH_ENV is set for child bash processes even on images built before the
 # Dockerfile ENV landed.
 ensure_bash_env_global() {
-  export BASH_ENV="${DUST_SHELL_ENV_FILE}"
+  export BASH_ENV="${RUBY_SHELL_ENV_FILE}"
   write_root_shell_rc
 
-  if [ -f /root/.profile ] && ! grep -qF "BASH_ENV=${DUST_SHELL_ENV_FILE}" /root/.profile 2>/dev/null; then
-    printf '\n# Dust materialized secrets for non-interactive bash\nexport BASH_ENV=%s\n' \
-      "$DUST_SHELL_ENV_FILE" >>/root/.profile
+  if [ -f /root/.profile ] && ! grep -qF "BASH_ENV=${RUBY_SHELL_ENV_FILE}" /root/.profile 2>/dev/null; then
+    printf '\n# Ruby materialized secrets for non-interactive bash\nexport BASH_ENV=%s\n' \
+      "$RUBY_SHELL_ENV_FILE" >>/root/.profile
   fi
 }
 
@@ -298,7 +298,7 @@ materialize_dev_environment() {
 
   if require_op_credentials; then
     local tmp
-    tmp="$(mktemp /tmp/dust-op-env.XXXXXX)"
+    tmp="$(mktemp /tmp/ruby-op-env.XXXXXX)"
     if ! op environment read "$OP_ENVIRONMENT_ID" >"$tmp"; then
       rm -f "$tmp"
       log "Failed to read 1Password environment $OP_ENVIRONMENT_ID"
@@ -306,15 +306,15 @@ materialize_dev_environment() {
       return 1
     fi
     chmod 600 "$tmp"
-    mv "$tmp" "$DUST_OP_ENV_FILE"
-    log "Materialized 1Password env ($(grep -cE '^[A-Za-z_][A-Za-z0-9_]*=' "$DUST_OP_ENV_FILE" | tr -d ' ') vars) -> ${DUST_OP_ENV_FILE}"
+    mv "$tmp" "$RUBY_OP_ENV_FILE"
+    log "Materialized 1Password env ($(grep -cE '^[A-Za-z_][A-Za-z0-9_]*=' "$RUBY_OP_ENV_FILE" | tr -d ' ') vars) -> ${RUBY_OP_ENV_FILE}"
     set -a
     # shellcheck disable=SC1090
-    . "$DUST_OP_ENV_FILE"
+    . "$RUBY_OP_ENV_FILE"
     set +a
   else
     log "Skipping 1Password materialize (credentials missing); local overrides only"
-    rm -f "$DUST_OP_ENV_FILE"
+    rm -f "$RUBY_OP_ENV_FILE"
   fi
 
   # Base64 GCP key from 1Password → JSON path Google clients actually read.
@@ -324,16 +324,16 @@ materialize_dev_environment() {
 }
 
 load_op_environment() {
-  if [ ! -f "$DUST_SHELL_ENV_FILE" ]; then
+  if [ ! -f "$RUBY_SHELL_ENV_FILE" ]; then
     materialize_dev_environment || return 1
   fi
   # shellcheck disable=SC1090
-  source "$DUST_SHELL_ENV_FILE"
+  source "$RUBY_SHELL_ENV_FILE"
   return 0
 }
 
 # If env was already materialized, pull it into any script that sources common.sh.
-if [ -f "${DUST_SHELL_ENV_FILE:-/tmp/dust-shell-env.sh}" ] && [ -z "${DUST_SHELL_ENV_LOADING:-}" ] && [ -z "${DUST_COMMON_SKIP_SHELL_ENV:-}" ]; then
+if [ -f "${RUBY_SHELL_ENV_FILE:-/tmp/ruby-shell-env.sh}" ] && [ -z "${RUBY_SHELL_ENV_LOADING:-}" ] && [ -z "${RUBY_COMMON_SKIP_SHELL_ENV:-}" ]; then
   # shellcheck disable=SC1090
-  source "${DUST_SHELL_ENV_FILE:-/tmp/dust-shell-env.sh}"
+  source "${RUBY_SHELL_ENV_FILE:-/tmp/ruby-shell-env.sh}"
 fi

@@ -8,7 +8,7 @@ This doc maps the existing Metronome + credit-pricing code paths so the UI work 
 data already in place, lists the gates to enable in dev, and flags the small backend gaps that
 need filling before the design can be shipped end-to-end.
 
-All paths below are relative to the hive worktree `~/code/dust/.hives/<hive-name>/`.
+All paths below are relative to the hive worktree `~/code/ruby/.hives/<hive-name>/`.
 
 ---
 
@@ -38,7 +38,7 @@ on legacy plans*; they must continue to see the current page until they're migra
 
 ### Feature flags (separate from the gate, but needed for dev)
 
-Two flags declared in `front/types/shared/feature_flags.ts:267-325`, both `dust_only`. Neither
+Two flags declared in `front/types/shared/feature_flags.ts:267-325`, both `ruby_only`. Neither
 flag is the source of truth for the Billing-page gate above; Metronome billing is default-on
 unless the `legacy_billing` flag is set on the workspace, and the Usage-page flag is temporary.
 
@@ -73,7 +73,7 @@ The full setup to get a Metronome-backed subscription on a dev workspace:
    the checkout collector even on the Metronome path, so this is how a Metronome customer +
    contract get provisioned for the workspace.
 
-3. **Switch the workspace to its Metronome contract in Poke** — flip `metronomeContractId` on
+3. **Switch the workspace to its Metronome contract in Admin** — flip `metronomeContractId` on
    the workspace so reads pick the Metronome path (`isSubscriptionMetronomeBilled` flips to
    true). After this step `useMetronomeContract`/`useMetronomeInvoice`/`useSeatPlan` return
    data and the new Billing page has something to render.
@@ -164,7 +164,7 @@ Static block. Existing `MetronomeSubscriptionPanel.tsx:44`:
 
 ### 3.4 "Billing information" (address + card)
 
-There is **no first-party Dust endpoint** exposing the Metronome customer's billing address or
+There is **no first-party Ruby endpoint** exposing the Metronome customer's billing address or
 payment method today. The status quo for any "change billing" affordance is to bounce the user
 through the Stripe Customer Portal.
 
@@ -300,7 +300,7 @@ keep business logic in `lib/api/*` and HTTP shaping in handlers.
      not necessary for first cut.
 
 4. **Annual price for seat cards**: `front/lib/api/credits/seat_plan.ts:116` carries a TODO for
-   annual seat pricing (https://github.com/dust-tt/tasks/issues/8072). Until that's resolved the
+   annual seat pricing (https://github.com/ruby-ai/tasks/issues/8072). Until that's resolved the
    "Switch to yearly" CTA can rely on `useMetronomeInvoice().invoice.billingPeriod` for the
    *current* cadence and a coarse annual estimate, but per-seat annual prices in the cards will
    need the rate-card extension.
@@ -310,7 +310,7 @@ keep business logic in `lib/api/*` and HTTP shaping in handlers.
 ## 6. Suggested implementation order
 
 1. Verify the workspace lacks the `legacy_billing` flag, create/upgrade a workspace,
-   and flip `metronomeContractId` in Poke so `useMetronomeContract`, `useMetronomeInvoice`, and
+   and flip `metronomeContractId` in Admin so `useMetronomeContract`, `useMetronomeInvoice`, and
    `useSeatPlan` return the expected data.
 2. Add the billing-eligibility endpoint + SWR hook over the existing
    `front/lib/metronome/plan_type.ts` `isLegacyPlan(workspace.sId)` helper.

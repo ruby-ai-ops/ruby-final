@@ -3,9 +3,9 @@ import {
   useCallback,
   useContext,
   useMemo,
-  useState,
 } from "react";
 import type { ReactNode } from "react";
+import { appendUTMParams } from "@marketing/lib/utils/utm";
 
 interface SignUpModalContextType {
   isOpen: boolean;
@@ -20,10 +20,11 @@ interface SignUpModalProviderProps {
 }
 
 export function SignUpModalProvider({ children }: SignUpModalProviderProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const openSignUpModal = useCallback(() => setIsOpen(true), []);
-  const closeSignUpModal = useCallback(() => setIsOpen(false), []);
+  const isOpen = false;
+  const openSignUpModal = useCallback(() => {
+    window.location.assign(appendUTMParams("https://app.ruby.ad/api/workos/login?screenHint=sign-up"));
+  }, []);
+  const closeSignUpModal = useCallback(() => {}, []);
 
   const value = useMemo(
     () => ({ isOpen, openSignUpModal, closeSignUpModal }),

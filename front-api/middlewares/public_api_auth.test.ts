@@ -33,12 +33,12 @@ function get(
   return app.request(`/${wId}`, {
     headers: {
       authorization: `Bearer ${secret}`,
-      ...(keyName ? { "x-dust-api-key-name": keyName } : {}),
+      ...(keyName ? { "x-ruby-api-key-name": keyName } : {}),
     },
   });
 }
 
-describe("publicApiAuth — x-dust-api-key-name attribution", () => {
+describe("publicApiAuth — x-ruby-api-key-name attribution", () => {
   it("attributes a system-key request to the forwarded key without touching auth.key()", async () => {
     const {
       workspace,

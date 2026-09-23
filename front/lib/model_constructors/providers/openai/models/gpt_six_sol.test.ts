@@ -1,6 +1,6 @@
 import { getModelConfigByModelId } from "@app/lib/llms/model_configurations";
-import { DustOpenAIGptSixSolEuropeOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_six_sol_eu_openai_responses";
-import { DustOpenAIGptSixSolGlobalOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_six_sol_global_openai_responses";
+import { RubyOpenAIGptSixSolEuropeOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_six_sol_eu_openai_responses";
+import { RubyOpenAIGptSixSolGlobalOpenAIResponsesStream } from "@app/lib/llms/stream/endpoints/openai_gpt_six_sol_global_openai_responses";
 import { OpenAIGptSixSolGlobalOpenAIResponsesStream } from "@app/lib/model_constructors/stream/endpoints/openai_gpt_six_sol_global_openai_responses";
 import type { InputConfig } from "@app/lib/model_constructors/types/input/configuration";
 import {
@@ -9,8 +9,8 @@ import {
 } from "@app/types/assistant/models/openai";
 import { describe, expect, it } from "vitest";
 
-function parseThroughDustConfigParsers(
-  endpoint: typeof DustOpenAIGptSixSolGlobalOpenAIResponsesStream,
+function parseThroughRubyConfigParsers(
+  endpoint: typeof RubyOpenAIGptSixSolGlobalOpenAIResponsesStream,
   config: InputConfig
 ) {
   return endpoint.configSchema.parse(
@@ -22,11 +22,11 @@ function parseThroughDustConfigParsers(
 }
 
 describe("GPT 6 Sol", () => {
-  it("exposes GPT-5.6's context and input budget on both Dust endpoints", () => {
+  it("exposes GPT-5.6's context and input budget on both Ruby endpoints", () => {
     const reference = GPT_5_6_SOL_MODEL_CONFIG;
     for (const endpoint of [
-      DustOpenAIGptSixSolGlobalOpenAIResponsesStream,
-      DustOpenAIGptSixSolEuropeOpenAIResponsesStream,
+      RubyOpenAIGptSixSolGlobalOpenAIResponsesStream,
+      RubyOpenAIGptSixSolEuropeOpenAIResponsesStream,
     ]) {
       expect(endpoint.contextSize).toBe(reference.contextSize);
       expect(endpoint.maxOutputTokens).toBe(reference.generationTokensCount);
@@ -47,9 +47,9 @@ describe("GPT 6 Sol", () => {
   });
 
   it("pins temperature to 1 and serializes the supported reasoning effort while reasoning", () => {
-    const endpoint = DustOpenAIGptSixSolGlobalOpenAIResponsesStream;
+    const endpoint = RubyOpenAIGptSixSolGlobalOpenAIResponsesStream;
     const instance = new endpoint({ OPENAI_API_KEY: "test" });
-    const config = parseThroughDustConfigParsers(endpoint, {
+    const config = parseThroughRubyConfigParsers(endpoint, {
       temperature: 0.7,
       reasoning: { effort: "maximal" },
       conciseReasoningSummary: true,
@@ -61,16 +61,16 @@ describe("GPT 6 Sol", () => {
 
     expect(request.model).toBe("gpt-6-sol");
     expect(request.reasoning).toEqual({ effort: "max", summary: "concise" });
-    // `dropTemperatureWhenReasoning` strips Dust's 0.7, and the schema defaults
+    // `dropTemperatureWhenReasoning` strips Ruby's 0.7, and the schema defaults
     // it back to the only value the Responses API takes alongside reasoning.
     expect(request.temperature).toBe(1);
     expect(request.max_output_tokens).toBe(64_000);
   });
 
-  it("keeps Dust's temperature when reasoning is off", () => {
-    const endpoint = DustOpenAIGptSixSolGlobalOpenAIResponsesStream;
+  it("keeps Ruby's temperature when reasoning is off", () => {
+    const endpoint = RubyOpenAIGptSixSolGlobalOpenAIResponsesStream;
     const instance = new endpoint({ OPENAI_API_KEY: "test" });
-    const config = parseThroughDustConfigParsers(endpoint, {
+    const config = parseThroughRubyConfigParsers(endpoint, {
       temperature: 0.7,
       reasoning: { effort: "none" },
     });

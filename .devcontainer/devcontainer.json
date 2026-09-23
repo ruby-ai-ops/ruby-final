@@ -1,5 +1,5 @@
 {
-  "name": "dust-dev",
+  "name": "ruby-dev",
   "build": {
     "dockerfile": "../dev/Dockerfile",
     "context": ".."
@@ -21,7 +21,7 @@
     "onAutoForward": "ignore"
   },
   "remoteEnv": {
-    "DUST_IN_CONTAINER": "1",
+    "RUBY_IN_CONTAINER": "1",
     "OP_SERVICE_ACCOUNT_TOKEN": "${localEnv:OP_SERVICE_ACCOUNT_TOKEN}",
     "OP_ENVIRONMENT_ID": "${localEnv:OP_ENVIRONMENT_ID}",
     "DEV_WORKOS_USER_EMAIL": "${localEnv:DEV_WORKOS_USER_EMAIL}",
@@ -31,21 +31,21 @@
     "SSH_AUTH_SOCK": "/ssh-agent"
   },
   "mounts": [
-    "source=dust-dev-node-modules,target=/workspace/node_modules,type=volume",
-    "source=dust-dev-cargo-target,target=/workspace/core/target,type=volume",
-    "source=dust-dev-cargo-registry,target=/usr/local/cargo/registry,type=volume",
-    "source=dust-dev-cargo-git,target=/usr/local/cargo/git,type=volume",
-    "source=dust-dev-front-spa-vite,target=/workspace/front-spa/.vite,type=volume",
-    "source=dust-dev-front-api-cache,target=/workspace/front-api/.cache,type=volume",
-    "source=dust-dev-front-api-dist,target=/workspace/front-api/dist,type=volume",
-    "source=dust-dev-sparkle-dist,target=/workspace/sparkle/dist,type=volume",
-    "source=dust-dev-data,target=/var/lib/dust-dev,type=volume",
-    "source=dust-dev-gcloud-config,target=/root/.config/gcloud,type=volume",
-    "source=dust-dev-git-spice-config,target=/root/.config/git-spice,type=volume",
+    "source=ruby-dev-node-modules,target=/workspace/node_modules,type=volume",
+    "source=ruby-dev-cargo-target,target=/workspace/core/target,type=volume",
+    "source=ruby-dev-cargo-registry,target=/usr/local/cargo/registry,type=volume",
+    "source=ruby-dev-cargo-git,target=/usr/local/cargo/git,type=volume",
+    "source=ruby-dev-front-spa-vite,target=/workspace/front-spa/.vite,type=volume",
+    "source=ruby-dev-front-api-cache,target=/workspace/front-api/.cache,type=volume",
+    "source=ruby-dev-front-api-dist,target=/workspace/front-api/dist,type=volume",
+    "source=ruby-dev-ui-dist,target=/workspace/ui/dist,type=volume",
+    "source=ruby-dev-data,target=/var/lib/ruby-dev,type=volume",
+    "source=ruby-dev-gcloud-config,target=/root/.config/gcloud,type=volume",
+    "source=ruby-dev-git-spice-config,target=/root/.config/git-spice,type=volume",
     "source=/run/host-services/ssh-auth.sock,target=/ssh-agent,type=bind"
   ],
   "postCreateCommand": "bash dev/scripts/install.sh",
-  "postStartCommand": "DUST_OFFER_START_APPS=1 bash dev/scripts/infra.sh",
+  "postStartCommand": "RUBY_OFFER_START_APPS=1 bash dev/scripts/infra.sh",
   "shutdownAction": "none",
   "customizations": {
     "vscode": {
@@ -79,7 +79,7 @@
       "label": "Viz"
     },
     "3010": {
-      "label": "Poke"
+      "label": "Admin"
     },
     "3011": {
       "label": "App"

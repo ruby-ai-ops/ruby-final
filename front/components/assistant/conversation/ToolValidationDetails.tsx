@@ -45,7 +45,7 @@ import {
   removeNulls,
 } from "@app/types/shared/utils/general";
 import type { LightWorkspaceType, UserType } from "@app/types/user";
-import { Markdown } from "@dust-tt/sparkle";
+import { Markdown } from "@ruby-ai/ui";
 
 function humanizeFieldName(name: string): string {
   return name

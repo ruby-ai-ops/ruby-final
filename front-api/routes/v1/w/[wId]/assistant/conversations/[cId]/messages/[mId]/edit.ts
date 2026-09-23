@@ -6,7 +6,7 @@ import { isUserMessageType } from "@app/types/assistant/conversation";
 import {
   type PostMessagesResponseBody,
   PublicPostEditMessagesRequestBodySchema,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";

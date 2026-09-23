@@ -7,7 +7,7 @@ import { useMembersSeats, useSeatPlan } from "@app/lib/swr/credits";
 import type { MembershipSeatType } from "@app/types/memberships";
 import { isMembershipSeatType, SEAT_TYPE_ORDER } from "@app/types/memberships";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Avatar, Chip, Cube01, Icon, Spinner, User01 } from "@dust-tt/sparkle";
+import { Avatar, Chip, Cube01, Icon, Spinner, User01 } from "@ruby-ai/ui";
 
 function formatAwuCreditsPeriod(period: SeatTypeInfo["awuCreditsPeriod"]) {
   switch (period) {

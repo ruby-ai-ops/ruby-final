@@ -2,21 +2,21 @@ import { runCachedBunBuild } from "@app/lib/api/sandbox/image/bun_build";
 import fs from "fs";
 import path from "path";
 
-// @dust/pod is the sandbox-state runtime package exposed to sandbox function
+// @ruby-ai/pod is the sandbox-state runtime package exposed to sandbox function
 // code: db(name) returns a handle on one of the owner's SQLite databases
-// (bun:sqlite). The @dust scope is never published to npm, so the package is
+// (bun:sqlite). The @ruby scope is never published to npm, so the package is
 // vendored at image build time: bun-bundle the entrypoint (dependencies stay
 // external and resolve through NODE_PATH, like zod) and copy a flat
 // {package.json, index.js} into the image's global node_modules.
-export const POD_PACKAGE_NAME = "@dust/pod";
+export const POD_PACKAGE_NAME = "@ruby-ai/pod";
 export const POD_PACKAGE_VERSION = "0.5.0";
 export const POD_PACKAGE_IMAGE_DIR = `/opt/npm-global/lib/node_modules/${POD_PACKAGE_NAME}`;
 
 let podPackageSrcDir: string | undefined;
 
 /**
- * The @dust/pod source lives at cli/dust-sandbox/pod, resolved by walking up
- * from this file to the first ancestor containing cli/dust-sandbox instead of
+ * The @ruby-ai/pod source lives at cli/ruby-sandbox/pod, resolved by walking up
+ * from this file to the first ancestor containing cli/ruby-sandbox instead of
  * counting `..` segments. Lazy on purpose: the repo layout exists where
  * images are built, not necessarily where front is deployed.
  */
@@ -26,17 +26,17 @@ export function getPodPackageSrcDir(): string {
   }
 
   let dir = __dirname;
-  while (!fs.existsSync(path.join(dir, "cli", "dust-sandbox"))) {
+  while (!fs.existsSync(path.join(dir, "cli", "ruby-sandbox"))) {
     const parent = path.dirname(dir);
     if (parent === dir) {
       throw new Error(
-        `Could not resolve the repo root: no ancestor of ${__dirname} contains cli/dust-sandbox`
+        `Could not resolve the repo root: no ancestor of ${__dirname} contains cli/ruby-sandbox`
       );
     }
     dir = parent;
   }
 
-  podPackageSrcDir = path.join(dir, "cli", "dust-sandbox", "pod");
+  podPackageSrcDir = path.join(dir, "cli", "ruby-sandbox", "pod");
   return podPackageSrcDir;
 }
 
@@ -62,7 +62,7 @@ export function buildPodPackage(): Map<string, Buffer | string> {
   // build time (content generators are lazy), so a missing dir must fail the
   // build loudly rather than ship an image without the package.
   if (!fs.existsSync(entrypoint)) {
-    throw new Error(`@dust/pod source not found at ${entrypoint}`);
+    throw new Error(`@ruby-ai/pod source not found at ${entrypoint}`);
   }
 
   return new Map<string, Buffer | string>([
@@ -70,7 +70,7 @@ export function buildPodPackage(): Map<string, Buffer | string> {
     [
       "index.js",
       runCachedBunBuild({
-        name: "the sandbox @dust/pod package",
+        name: "the sandbox @ruby-ai/pod package",
         entrypoint,
         srcDir,
         cwd: srcDir,

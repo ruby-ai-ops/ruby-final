@@ -9,7 +9,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const shutdownMock = vi.hoisted(() => ({ controller: new AbortController() }));
 
 vi.mock("@app/lib/shutdown_signal", () => ({
-  DUST_WORKER_SHUTDOWN_ABORT_REASON: "DUST_WORKER_SHUTDOWN_ABORT",
+  RUBY_WORKER_SHUTDOWN_ABORT_REASON: "RUBY_WORKER_SHUTDOWN_ABORT",
   getShutdownSignal: () => shutdownMock.controller.signal,
   markShuttingDownWithDelayedAbort: vi.fn(),
 }));
@@ -127,7 +127,7 @@ describe("withPeriodicHeartbeat", () => {
       "Model activity interrupted by worker shutdown"
     );
 
-    shutdownMock.controller.abort("DUST_WORKER_SHUTDOWN_ABORT");
+    shutdownMock.controller.abort("RUBY_WORKER_SHUTDOWN_ABORT");
 
     // The bounded cleanup (2s) is the only wait: well within the 10s shutdown buffer.
     await vi.advanceTimersByTimeAsync(3_000);

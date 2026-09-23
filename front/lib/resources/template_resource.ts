@@ -42,7 +42,7 @@ export class TemplateResource extends BaseResource<TemplateModel> {
     const [id, unified] = this.emoji ? this.emoji.split("/") : [];
     const backgroundColor = this.backgroundColor as `bg-${string}`;
 
-    return `https://dust.tt/static/emojis/${backgroundColor}/${id}/${unified}`;
+    return `https://ruby.ad/static/emojis/${backgroundColor}/${id}/${unified}`;
   }
 
   get sId(): string {

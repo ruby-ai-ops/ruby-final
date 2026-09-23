@@ -1,4 +1,4 @@
-# Interactive-only aliases for the Dust shared dev container.
+# Interactive-only aliases for the Ruby shared dev container.
 # Sourced from dev/bashrc and dev/zshrc — not from BASH_ENV.
 
 alias gs='git-spice'

@@ -1,4 +1,4 @@
-import { useAuthContext } from "@dust-tt/front/lib/swr/workspaces";
+import { useAuthContext } from "@ruby-ai/front/lib/swr/workspaces";
 import { AuthErrorPage } from "@spa/app/components/AuthErrorPage";
 import { useAppReadyContext } from "@spa/app/contexts/AppReadyContext";
 import { useEffect } from "react";

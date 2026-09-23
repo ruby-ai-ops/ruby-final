@@ -8,7 +8,7 @@ import {
   rawMarkdownBlockParsers,
 } from "@app/components/editor/extensions/skill_builder/RawMarkdownBlock";
 import { BlockquoteExtension } from "@app/components/editor/input_bar/BlockquoteExtension";
-import { markdownStyles } from "@dust-tt/sparkle";
+import { markdownStyles } from "@ruby-ai/ui";
 import type { Extensions } from "@tiptap/core";
 import { CharacterCount, Placeholder } from "@tiptap/extensions";
 import { Markdown } from "@tiptap/markdown";

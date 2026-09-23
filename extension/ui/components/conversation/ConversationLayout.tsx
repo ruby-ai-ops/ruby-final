@@ -2,7 +2,7 @@ import { FilePreviewProvider } from "@app/components/assistant/conversation/File
 import { FileDropProvider } from "@app/components/assistant/conversation/FileUploaderContext";
 import { AgentSidebarMenu } from "@app/components/assistant/conversation/SidebarMenu";
 import { StatusBanners } from "@app/components/navigation/AppStatusBanner";
-import { SidebarContext } from "@app/components/sparkle/SidebarContext";
+import { SidebarContext } from "@app/components/ui/SidebarContext";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import {
   ArrowLeft,
@@ -13,7 +13,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";

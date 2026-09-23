@@ -41,7 +41,7 @@ interface ResolvedFile {
 /**
  * Resolve a GCS file from a scoped path.
  *
- * @deprecated Callers should migrate to DustFileSystem.forConversation(auth, conversation)
+ * @deprecated Callers should migrate to RubyFileSystem.forConversation(auth, conversation)
  * followed by fs.stat() and fs.read().
  */
 export async function resolveFile(

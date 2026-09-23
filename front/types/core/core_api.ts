@@ -16,7 +16,7 @@ import type {
 } from "@app/types/core/data_source";
 import { formatDataSourceDisplayName } from "@app/types/core/utils";
 import type { DataSourceViewType } from "@app/types/data_source_view";
-import type { DustAppSecretType } from "@app/types/dust_app_secret";
+import type { RubyAppSecretType } from "@app/types/ruby_app_secret";
 import type { Project } from "@app/types/project";
 import type { CredentialsType } from "@app/types/provider";
 import type { LLMCredentialsType } from "@app/types/provider_credential";
@@ -112,7 +112,7 @@ type CoreAPICreateRunParams = {
   inputs?: any[] | null;
   config: RunConfig;
   credentials: CredentialsType;
-  secrets: DustAppSecretType[];
+  secrets: RubyAppSecretType[];
   isSystemKey?: boolean;
   storeBlocksResults?: boolean;
 };
@@ -165,7 +165,7 @@ type CoreAPIQueryResult = {
 };
 
 /**
- * Opaque Dust identity attached to remote warehouse query jobs for cost attribution.
+ * Opaque Ruby identity attached to remote warehouse query jobs for cost attribution.
  * Written into the customer's own warehouse logs (BigQuery labels / Snowflake QUERY_TAG).
  */
 export type CoreAPIQueryIdentity = {
@@ -407,7 +407,7 @@ export class CoreAPI {
       `${this._url}/projects/${encodeURIComponent(projectId)}`,
       {
         method: "DELETE",
-        headers: caller ? { "X-Dust-Caller": caller } : undefined,
+        headers: caller ? { "X-Ruby-Caller": caller } : undefined,
       }
     );
 
@@ -522,8 +522,8 @@ export class CoreAPI {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Dust-Feature-Flags": featureFlags.join(","),
-          "X-Dust-Workspace-Id": workspace.sId,
+          "X-Ruby-Feature-Flags": featureFlags.join(","),
+          "X-Ruby-Workspace-Id": workspace.sId,
         },
         body: JSON.stringify({
           run_type: runType,
@@ -560,7 +560,7 @@ export class CoreAPI {
   ): Promise<
     CoreAPIResponse<{
       chunkStream: AsyncGenerator<Uint8Array, void, unknown>;
-      dustRunId: Promise<string>;
+      rubyRunId: Promise<string>;
     }>
   > {
     const res = await this._fetchWithError(
@@ -569,8 +569,8 @@ export class CoreAPI {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Dust-Feature-Flags": featureFlags.join(","),
-          "X-Dust-Workspace-Id": workspace.sId,
+          "X-Ruby-Feature-Flags": featureFlags.join(","),
+          "X-Ruby-Workspace-Id": workspace.sId,
         },
         body: JSON.stringify({
           run_type: runType,
@@ -597,11 +597,11 @@ export class CoreAPI {
     }
 
     let hasRunId = false;
-    let rejectDustRunIdPromise: (err: Error) => void;
-    let resolveDustRunIdPromise: (runId: string) => void;
-    const dustRunIdPromise = new Promise<string>((resolve, reject) => {
-      rejectDustRunIdPromise = reject;
-      resolveDustRunIdPromise = resolve;
+    let rejectRubyRunIdPromise: (err: Error) => void;
+    let resolveRubyRunIdPromise: (runId: string) => void;
+    const rubyRunIdPromise = new Promise<string>((resolve, reject) => {
+      rejectRubyRunIdPromise = reject;
+      resolveRubyRunIdPromise = resolve;
     });
 
     const parser = createParser((event) => {
@@ -611,7 +611,7 @@ export class CoreAPI {
             const data = JSON.parse(event.data);
             if (data.content?.run_id && !hasRunId) {
               hasRunId = true;
-              resolveDustRunIdPromise(data.content.run_id);
+              resolveRubyRunIdPromise(data.content.run_id);
             }
           } catch (err) {
             this._logger.error(
@@ -653,14 +653,14 @@ export class CoreAPI {
               { projectId, runType, specificationHash },
               "No run id received"
             );
-            rejectDustRunIdPromise(new Error("No run id received"));
+            rejectRubyRunIdPromise(new Error("No run id received"));
           });
         }
         reader.releaseLock();
       }
     };
 
-    return new Ok({ chunkStream: streamChunks(), dustRunId: dustRunIdPromise });
+    return new Ok({ chunkStream: streamChunks(), rubyRunId: rubyRunIdPromise });
   }
 
   async deleteRun({
@@ -684,10 +684,10 @@ export class CoreAPI {
 
   async getRunsBatch({
     projectId,
-    dustRunIds,
+    rubyRunIds,
   }: {
     projectId: string;
-    dustRunIds: string[];
+    rubyRunIds: string[];
   }): Promise<CoreAPIResponse<{ runs: { [key: string]: CoreAPIRun } }>> {
     const response = await this._fetchWithError(
       `${this._url}/projects/${encodeURIComponent(projectId)}/runs/batch`,
@@ -697,7 +697,7 @@ export class CoreAPI {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          run_ids: dustRunIds,
+          run_ids: rubyRunIds,
         }),
       }
     );
@@ -941,7 +941,7 @@ export class CoreAPI {
       )}/data_sources/${encodeURIComponent(dataSourceId)}`,
       {
         method: "DELETE",
-        headers: caller ? { "X-Dust-Caller": caller } : undefined,
+        headers: caller ? { "X-Ruby-Caller": caller } : undefined,
       }
     );
 
@@ -1464,7 +1464,7 @@ export class CoreAPI {
       )}/documents/${encodeURIComponent(documentId)}`,
       {
         method: "DELETE",
-        headers: caller ? { "X-Dust-Caller": caller } : undefined,
+        headers: caller ? { "X-Ruby-Caller": caller } : undefined,
       }
     );
 
@@ -1813,7 +1813,7 @@ export class CoreAPI {
       )}/tables/${encodeURIComponent(tableId)}`,
       {
         method: "DELETE",
-        headers: caller ? { "X-Dust-Caller": caller } : undefined,
+        headers: caller ? { "X-Ruby-Caller": caller } : undefined,
       }
     );
 
@@ -2049,7 +2049,7 @@ export class CoreAPI {
       )}`,
       {
         method: "DELETE",
-        headers: caller ? { "X-Dust-Caller": caller } : undefined,
+        headers: caller ? { "X-Ruby-Caller": caller } : undefined,
       }
     );
 
@@ -2228,7 +2228,7 @@ export class CoreAPI {
   }): Promise<CoreAPIResponse<CoreAPISearchTagsResponse>> {
     const dataSourceViewsFilter: CoreAPIDatasourceViewFilter[] =
       dataSourceViews.map((dsv) => ({
-        data_source_id: dsv.dataSource.dustAPIDataSourceId,
+        data_source_id: dsv.dataSource.rubyAPIDataSourceId,
         view_filter: dsv.parentsIn ?? [],
       }));
 
@@ -2339,7 +2339,7 @@ export class CoreAPI {
       )}/folders/${encodeURIComponent(folderId)}`,
       {
         method: "DELETE",
-        headers: caller ? { "X-Dust-Caller": caller } : undefined,
+        headers: caller ? { "X-Ruby-Caller": caller } : undefined,
       }
     );
 

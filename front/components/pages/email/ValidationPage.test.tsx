@@ -11,13 +11,13 @@ vi.mock("@app/lib/platform", () => ({
   },
 }));
 
-vi.mock("@dust-tt/sparkle", () => ({
+vi.mock("@ruby-ai/ui", () => ({
   Button: ({ label, onClick }: { label: string; onClick?: () => void }) => (
     <button type="button" onClick={onClick}>
       {label}
     </button>
   ),
-  DustLogoSquare: () => null,
+  RubyLogoSquare: () => null,
   Icon: () => null,
   Page: {
     Header: ({ title }: { title: React.ReactNode }) => <h1>{title}</h1>,
@@ -51,9 +51,9 @@ describe("ValidationPage", () => {
   let submitSpy: MockInstance;
 
   beforeEach(() => {
-    vi.stubEnv("VITE_DUST_API_URL_EU", "https://eu.dust.tt");
-    vi.stubEnv("VITE_DUST_API_URL_US", "https://dust.tt");
-    vi.stubEnv("VITE_DUST_API_URL_CELL_00002", "https://eu2.dust.tt");
+    vi.stubEnv("VITE_RUBY_API_URL_EU", "https://app.ruby.ad");
+    vi.stubEnv("VITE_RUBY_API_URL_US", "https://ruby.ad");
+    vi.stubEnv("VITE_RUBY_API_URL_CELL_00002", "https://eu2.ruby.ad");
     window.localStorage.clear();
     window.history.replaceState(
       null,
@@ -77,7 +77,7 @@ describe("ValidationPage", () => {
     const form = await getValidationForm();
 
     expect(form.getAttribute("action")).toBe(
-      "https://eu.dust.tt/api/email/validate-action"
+      "https://app.ruby.ad/api/email/validate-action"
     );
     expect(submitSpy).toHaveBeenCalledOnce();
     expect(window.location.search).toBe("?token=approval-token");

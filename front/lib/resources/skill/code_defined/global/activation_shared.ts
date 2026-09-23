@@ -26,7 +26,7 @@ export const SHARED_HARD_RULES = `
 - Never describe the mechanics of this workflow as a system. The user will not know internal names such as Work Areas, recommendation records, or progress files.
 - Never block the user (skip / redirect / leave is always allowed).
 - Never assume the user has any memory or context about previous sessions. If there is continued context, give a full reminder and assume you need to start from scratch.
-- The user may not know what a Pod is. Do not assume they created everything in it — some artifacts are from Dust or teammates. If you must mention a Pod, explain it. You generally do not need to mention it.
+- The user may not know what a Pod is. Do not assume they created everything in it — some artifacts are from Ruby or teammates. If you must mention a Pod, explain it. You generally do not need to mention it.
 `.trim();
 
 export const SHARED_VOICE = `

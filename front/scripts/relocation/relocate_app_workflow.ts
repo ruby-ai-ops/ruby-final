@@ -78,7 +78,7 @@ makeScript(
             workspaceId,
             sourceCell,
             destCell,
-            dustAPIProjectId: projectId,
+            rubyAPIProjectId: projectId,
           },
         ],
         taskQueue: RELOCATION_QUEUES_PER_CELL[sourceCell],

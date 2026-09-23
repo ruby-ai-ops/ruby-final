@@ -1,4 +1,4 @@
-import { userIdentityMergePlugin } from "@app/lib/api/poke/plugins/workspaces/user_identity_merge";
+import { userIdentityMergePlugin } from "@app/lib/api/admin/plugins/workspaces/user_identity_merge";
 import { getMembers } from "@app/lib/api/workspace";
 import { Authenticator } from "@app/lib/auth";
 import { MembershipResource } from "@app/lib/resources/membership_resource";

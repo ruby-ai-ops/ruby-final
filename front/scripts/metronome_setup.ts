@@ -1556,7 +1556,7 @@ const CUSTOM_FIELD_KEYS: Array<{
     entity: "commit",
     key: AWU_PURCHASE_ORDER_ID_CUSTOM_FIELD_KEY,
   },
-  // Also stamped directly on the contract (e.g. from the poke switch-contract
+  // Also stamped directly on the contract (e.g. from the admin switch-contract
   // dialog) so a PO covering the whole contract doesn't require a commit.
   {
     entity: "contract",
@@ -1571,7 +1571,7 @@ const CUSTOM_FIELD_KEYS: Array<{
     key: AWU_DISCOUNT_PERCENT_CUSTOM_FIELD_KEY,
   },
   // Stamped on each seat-style product (Workspace / Pro / Max / Free).
-  // Runtime code reads `product.custom_fields.DUST_SEAT_TYPE` (cached in
+  // Runtime code reads `product.custom_fields.RUBY_SEAT_TYPE` (cached in
   // Redis) instead of comparing product names/IDs, which change on every
   // redeploy. Setting it on the product (vs. on every subscription
   // instance) means existing contracts pick up new tags for free, with no

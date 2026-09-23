@@ -71,7 +71,7 @@ export const skipConfig: SkipConfig = {
     chip: "",
     headline: "Welcome, Skip listeners 👋",
     subheadline:
-      "You just heard about Dust on Nikhyl's show. Here's how ambitious tech professionals are using AI agents to level up their impact, and their careers.",
+      "Build team agents around company knowledge and tools to increase your impact.",
     ctaButtonText: "Get started",
     testimonials: [
       TESTIMONIALS.danielBaralt,
@@ -80,13 +80,13 @@ export const skipConfig: SkipConfig = {
     ],
     videos: [
       {
-        id: "dust-in-action",
-        title: "Dust in Action",
+        id: "ruby-in-action",
+        title: "Ruby in Action",
         embedUrl: "https://www.youtube.com/embed/UNrGsKCtAV0",
       },
       {
-        id: "clay-dust-gtm",
-        title: "Clay x Dust - GTM AI",
+        id: "clay-ruby-gtm",
+        title: "Clay x Ruby - GTM AI",
         embedUrl: "https://www.youtube.com/embed/kZ-Zyjjd7ns",
       },
       {
@@ -95,7 +95,7 @@ export const skipConfig: SkipConfig = {
         embedUrl: "https://www.youtube.com/embed/38vCIR2yHoA",
       },
     ],
-    usersCount: "3,000+ teams already using Dust",
+    usersCount: "3,000+ teams already using Ruby",
   },
 
   trustedByTitle: "TRUSTED BY AMBITIOUS TEAMS AT:",
@@ -121,7 +121,7 @@ export const skipConfig: SkipConfig = {
       title: "Build custom AI agents",
       titleHighlight: "in minutes",
       description:
-        "No coding required. Dust Agents connect to all your tools (Slack, Notion, Drive, Salesforce, GitHub), understand your company's knowledge, and take action across your entire workflow.",
+        "No coding required. Ruby agents connect to approved company knowledge and tools, then support the workflows your team chooses.",
       features: [
         "A support agent that resolves tickets using your help docs and past conversations",
         "An ops agent that updates your CRM, tracks deals, and flags risks automatically",
@@ -139,7 +139,7 @@ export const skipConfig: SkipConfig = {
 
   bottomTestimonials: {
     title: "Loved by ambitious teams",
-    subtitle: "See why leading companies trust Dust to power their operations.",
+    subtitle: "See why leading companies trust Ruby to power their operations.",
     testimonials: [
       TESTIMONIALS.danielBaralt,
       TESTIMONIALS.ryanWang,
@@ -148,8 +148,8 @@ export const skipConfig: SkipConfig = {
   },
 
   cta: {
-    title: "See how Dust can accelerate your impact",
-    subtitle: "Model-agnostic • Enterprise-ready • Deploy in minutes",
+    title: "See how Ruby can accelerate your impact",
+    subtitle: "Team agents • Company knowledge • Practical workflows",
     ctaText: "Get started",
     ctaLink: "/api/workos/login?screenHint=sign-up",
   },

@@ -1,0 +1,16 @@
+import { adminProjectApp } from "@front-api/middlewares/ctx";
+import { withProject } from "@front-api/middlewares/with_projects";
+
+import connectorKnowledge from "./connector-knowledge";
+import conversations from "./conversations";
+import tasks from "./tasks";
+
+const app = adminProjectApp();
+
+app.use("*", withProject());
+
+app.route("/connector-knowledge", connectorKnowledge);
+app.route("/conversations", conversations);
+app.route("/tasks", tasks);
+
+export default app;

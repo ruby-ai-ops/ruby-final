@@ -48,7 +48,7 @@ import {
   DialogHeader,
   DialogTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useRef, useState } from "react";
 
 function toCheckoutParams(

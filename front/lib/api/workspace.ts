@@ -22,7 +22,7 @@ import { concurrentExecutor } from "@app/lib/utils/async_utils";
 import type { EmailProviderType } from "@app/lib/utils/email_provider_detection";
 import { renderLightWorkspaceType } from "@app/lib/workspace";
 import logger from "@app/logger/logger";
-import { launchDeleteWorkspaceWorkflow } from "@app/poke/temporal/client";
+import { launchDeleteWorkspaceWorkflow } from "@app/admin-app/temporal/client";
 import type {
   GroupGrantableRole,
   GroupGrantableSeatType,
@@ -135,7 +135,7 @@ export async function setInternalWorkspaceSegmentation(
   const owner = auth.workspace();
   const user = auth.user();
 
-  if (!owner || !user || !auth.isDustSuperUser()) {
+  if (!owner || !user || !auth.isRubySuperUser()) {
     throw new Error("Forbidden update to workspace segmentation.");
   }
 
@@ -583,9 +583,9 @@ export interface WorkspaceMetadata {
   autoCreateSpaceForProvisionedGroups?: boolean;
   disableManualInvitations?: boolean;
   disableExtensionMcpTools?: boolean;
-  dustMcpServerDisabled?: boolean;
-  dustMcpServerAcceptAllRedirectUris?: boolean;
-  dustMcpServerAllowedRedirectUris?: string[];
+  rubyMcpServerDisabled?: boolean;
+  rubyMcpServerAcceptAllRedirectUris?: boolean;
+  rubyMcpServerAllowedRedirectUris?: string[];
   disableAuditLogs?: boolean;
   disableWorkspaceAnalytics?: boolean;
   // Absent means automatic archival is off.
@@ -655,7 +655,7 @@ export async function setWorkspaceBusinessPlanWhitelist(
   workspace: LightWorkspaceType,
   shouldWhitelist: boolean
 ): Promise<Result<void, Error>> {
-  if (!auth.isDustSuperUser()) {
+  if (!auth.isRubySuperUser()) {
     throw new Error(
       "Cannot update workspace business plan whitelist: not allowed."
     );

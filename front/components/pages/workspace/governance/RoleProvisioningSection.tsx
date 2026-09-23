@@ -9,7 +9,7 @@ import { useUpdateGroupGrantedRole } from "@app/lib/swr/groups";
 import type { GroupGrantableRole, GroupType } from "@app/types/groups";
 import { GROUP_GRANTABLE_ROLES } from "@app/types/groups";
 import type { LightWorkspaceType } from "@app/types/user";
-import { ShieldTick } from "@dust-tt/sparkle";
+import { ShieldTick } from "@ruby-ai/ui";
 
 // One row per grantable role (admin, manager). Each row maps groups to that
 // role: adding a group to it grants the role to the group's members; removing

@@ -1,5 +1,5 @@
 import logger from "@app/logger/logger";
-import { dustManagedServiceCredentials } from "@app/types/api/credentials";
+import { rubyManagedServiceCredentials } from "@app/types/api/credentials";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import { assertNever } from "@app/types/shared/utils/assert_never";
@@ -10,7 +10,7 @@ import Exa from "exa-js";
 import isNil from "lodash/isNil";
 import omitBy from "lodash/omitBy";
 
-const credentials = dustManagedServiceCredentials();
+const credentials = rubyManagedServiceCredentials();
 
 const SERPAPI_BASE_URL = "https://serpapi.com";
 const SERPER_BASE_URL = "https://google.serper.dev";
@@ -67,7 +67,7 @@ const serpapiSearch = async (
 ): Promise<Result<SearchResponse, Error>> => {
   if (options.api_key == null) {
     return new Err(
-      new Error("utils/websearch: a DUST_MANAGED_SERP_API_KEY is required")
+      new Error("utils/websearch: a RUBY_MANAGED_SERP_API_KEY is required")
     );
   }
 
@@ -136,7 +136,7 @@ const serperSearch = async (
   options: BaseWebSearchParams & SerperParams
 ): Promise<Result<SearchResponse, Error>> => {
   if (options.api_key == null) {
-    return new Err(new Error("DUST_MANAGED_SERP_API_KEY is missing"));
+    return new Err(new Error("RUBY_MANAGED_SERP_API_KEY is missing"));
   }
 
   // eslint-disable-next-line no-restricted-globals
@@ -174,7 +174,7 @@ const firecrawlSearch = async ({
 
   if (!firecrawlApiKey) {
     return new Err(
-      new Error("utils/websearch: a DUST_MANAGED_FIRECRAWL_API_KEY is required")
+      new Error("utils/websearch: a RUBY_MANAGED_FIRECRAWL_API_KEY is required")
     );
   }
 
@@ -234,7 +234,7 @@ const exaSearch = async ({
 
   if (!exaApiKey) {
     return new Err(
-      new Error("utils/websearch: a DUST_MANAGED_EXA_API_KEY is required")
+      new Error("utils/websearch: a RUBY_MANAGED_EXA_API_KEY is required")
     );
   }
   const exa = new Exa(exaApiKey);

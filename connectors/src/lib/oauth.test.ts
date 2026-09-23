@@ -3,7 +3,7 @@ import { ExternalOAuthTokenError } from "@connectors/lib/error";
 import logger from "@connectors/logger/logger";
 import type { OAuthProvider } from "@connectors/types";
 import { OAuthAPI } from "@connectors/types";
-import { Err } from "@dust-tt/client";
+import { Err } from "@ruby-ai/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getOAuthConnectionAccessTokenWithThrow } from "./oauth";

@@ -733,7 +733,7 @@ describe("convertToOldEvent — errors", () => {
     });
   });
 
-  it("preserves a dust source when mapping input_configuration_error", () => {
+  it("preserves a ruby source when mapping input_configuration_error", () => {
     expect(
       convertToOldEvent(
         {
@@ -741,7 +741,7 @@ describe("convertToOldEvent — errors", () => {
           content: {
             type: "input_configuration_error",
             message: "bad config",
-            errorSource: "dust",
+            errorSource: "ruby",
           },
           metadata: endpointMetadata,
         },
@@ -751,7 +751,7 @@ describe("convertToOldEvent — errors", () => {
       type: "error",
       content: {
         type: "invalid_request_error",
-        errorSource: "dust",
+        errorSource: "ruby",
         isRetryable: false,
       },
     });

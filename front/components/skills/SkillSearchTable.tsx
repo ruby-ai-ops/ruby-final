@@ -5,10 +5,10 @@ import {
   SkillLastEditedCell,
   SkillNameCell,
 } from "@app/components/skills/SkillTableCells";
-import { isDustProvidedSkill } from "@app/lib/skill";
+import { isRubyProvidedSkill } from "@app/lib/skill";
 import type { SkillListItemType } from "@app/types/assistant/skill_configuration";
 import type { LightWorkspaceType } from "@app/types/user";
-import { DataTable } from "@dust-tt/sparkle";
+import { DataTable } from "@ruby-ai/ui";
 import type {
   ColumnDef,
   PaginationState,
@@ -98,7 +98,7 @@ export function SkillSearchTable({
         header: "Editors",
         cell: ({ row: { original: skill } }) => (
           <SkillEditorsCell
-            editors={isDustProvidedSkill(skill) ? null : skill.editors}
+            editors={isRubyProvidedSkill(skill) ? null : skill.editors}
           />
         ),
         meta: { className: "w-32" },

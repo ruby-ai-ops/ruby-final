@@ -17,7 +17,7 @@ import {
   Page,
   Spinner,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 type DeleteMemoryDialogProps = {

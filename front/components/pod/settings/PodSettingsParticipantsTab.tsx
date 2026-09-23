@@ -16,7 +16,7 @@ import {
   SliderToggle,
   Tooltip,
   Users01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useContext, useState } from "react";
 
 const OPEN_POD_DISABLED_TOOLTIP =

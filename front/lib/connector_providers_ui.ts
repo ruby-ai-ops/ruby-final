@@ -20,7 +20,7 @@ import {
   ConfluenceLogo,
   DiscordLogo,
   DriveLogo,
-  DustLogoSquare,
+  RubyLogoSquare,
   Folder,
   GithubLogo,
   Globe01,
@@ -32,7 +32,7 @@ import {
   SlackLogo,
   SnowflakeLogo,
   ZendeskLogo,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import type { ComponentType } from "react";
 
@@ -137,8 +137,8 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     ...CONNECTOR_METADATA.confluence,
     hide: false,
     limitations:
-      "Dust indexes pages in selected global spaces without any view restrictions. If a page, or its parent pages, have view restrictions, it won't be indexed.",
-    mismatchError: `You cannot select another Confluence Domain.\nPlease contact us at support@dust.tt if you initially selected the wrong Domain.`,
+      "Ruby indexes pages in selected global spaces without any view restrictions. If a page, or its parent pages, have view restrictions, it won't be indexed.",
+    mismatchError: `You cannot select another Confluence Domain.\nPlease contact us at support@ruby.ad if you initially selected the wrong Domain.`,
     selectLabel: "Select pages",
     getLogoComponent: () => {
       return ConfluenceLogo;
@@ -153,7 +153,7 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     ...CONNECTOR_METADATA.notion,
     hide: false,
     limitations: "External files and content behind links are not indexed.",
-    mismatchError: `You cannot select another Notion Workspace.\nPlease contact us at support@dust.tt if you initially selected a wrong Workspace.`,
+    mismatchError: `You cannot select another Notion Workspace.\nPlease contact us at support@ruby.ad if you initially selected a wrong Workspace.`,
     selectLabel: "Synchronized content",
     getLogoComponent: () => {
       return NotionLogo;
@@ -168,14 +168,14 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     ...CONNECTOR_METADATA.google_drive,
     hide: false,
     limitations:
-      "Files with empty text content or with more than 750KB of extracted text are ignored. By default, PDF files are not indexed. Email us at support@dust.tt to enable PDF indexing.",
-    mismatchError: `You cannot select another Google Drive Domain.\nPlease contact us at support@dust.tt if you initially selected a wrong shared Drive.`,
+      "Files with empty text content or with more than 750KB of extracted text are ignored. By default, PDF files are not indexed. Email us at support@ruby.ad to enable PDF indexing.",
+    mismatchError: `You cannot select another Google Drive Domain.\nPlease contact us at support@ruby.ad if you initially selected a wrong shared Drive.`,
     selectLabel: "Select folders and files",
     getLogoComponent: () => {
       return DriveLogo;
     },
     optionsComponent: createConnectorOptionsPdfEnabled(
-      "When enabled, PDF documents from your Google Drive will be synced and processed by Dust."
+      "When enabled, PDF documents from your Google Drive will be synced and processed by Ruby."
     ),
     isNested: true,
     permissions: {
@@ -188,7 +188,7 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     // TODO(slack 2025-06-19): Hide the Slack connector until we publish the new app.
     hide: true,
     limitations: "External files and content behind links are not indexed.",
-    mismatchError: `You cannot select another Slack Team.\nPlease contact us at support@dust.tt if you initially selected the wrong Team.`,
+    mismatchError: `You cannot select another Slack Team.\nPlease contact us at support@ruby.ad if you initially selected the wrong Team.`,
     selectLabel: "Select channels",
     getLogoComponent: () => {
       return SlackLogo;
@@ -209,8 +209,8 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     permissionsDisabledPlaceholder: "N/A",
     description: "N/A",
     limitations: "N/A",
-    mismatchError: `You cannot select another Slack Team.\nPlease contact us at support@dust.tt if you initially selected the wrong Team.`,
-    guideLink: "https://docs.dust.tt/docs/slack-connection",
+    mismatchError: `You cannot select another Slack Team.\nPlease contact us at support@ruby.ad if you initially selected the wrong Team.`,
+    guideLink: "https://docs.ruby.ad/docs/slack-connection",
     selectLabel: "N/A",
     getLogoComponent: () => {
       return SlackLogo;
@@ -230,7 +230,7 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     description: "N/A",
     limitations: "N/A",
     mismatchError: "N/A",
-    guideLink: "https://docs.dust.tt/docs/discord-bot",
+    guideLink: "https://docs.ruby.ad/docs/discord-bot",
     selectLabel: "N/A",
     getLogoComponent: () => {
       return DiscordLogo;
@@ -247,8 +247,8 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     ...CONNECTOR_METADATA.github,
     hide: false,
     limitations:
-      "Dust gathers data from issues, discussions, and pull-requests (top-level discussion, but not in-code comments). It synchronizes your code only if enabled. At this time, Dust cannot sync code repositories over 10GB, or individual files over 4MB. Please contact support@dust.tt if you need to sync larger repositories.",
-    mismatchError: `You cannot select another GitHub Organization.\nPlease contact us at support@dust.tt if you initially selected a wrong Organization or if you completely uninstalled the GitHub app.`,
+      "Ruby gathers data from issues, discussions, and pull-requests (top-level discussion, but not in-code comments). It synchronizes your code only if enabled. At this time, Ruby cannot sync code repositories over 10GB, or individual files over 4MB. Please contact support@ruby.ad if you need to sync larger repositories.",
+    mismatchError: `You cannot select another GitHub Organization.\nPlease contact us at support@ruby.ad if you initially selected a wrong Organization or if you completely uninstalled the GitHub app.`,
     selectLabel: "Authorized content",
     getLogoComponent: () => {
       return GithubLogo;
@@ -264,8 +264,8 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     ...CONNECTOR_METADATA.intercom,
     hide: false,
     limitations:
-      "Dust will index only the conversations from the selected Teams that were initiated within the past 90 days and concluded (marked as closed). For the Help Center data, Dust will index every Article published within a selected Collection.",
-    mismatchError: `You cannot select another Intercom Workspace.\nPlease contact us at support@dust.tt if you initially selected a wrong Workspace.`,
+      "Ruby will index only the conversations from the selected Teams that were initiated within the past 90 days and concluded (marked as closed). For the Help Center data, Ruby will index every Article published within a selected Collection.",
+    mismatchError: `You cannot select another Intercom Workspace.\nPlease contact us at support@ruby.ad if you initially selected a wrong Workspace.`,
     selectLabel: "Select pages",
     getLogoComponent: () => {
       return IntercomLogo;
@@ -281,15 +281,15 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     ...CONNECTOR_METADATA.microsoft,
     hide: false,
     limitations:
-      "Dust will only index documents accessible to the account used when making the connection. Only organizational accounts are supported (Sharepoint). At the time, OneDrive cannot be synced.",
-    mismatchError: `You cannot select another Microsoft account.\nPlease contact us at support@dust.tt if you initially selected a wrong account.`,
+      "Ruby will only index documents accessible to the account used when making the connection. Only organizational accounts are supported (Sharepoint). At the time, OneDrive cannot be synced.",
+    mismatchError: `You cannot select another Microsoft account.\nPlease contact us at support@ruby.ad if you initially selected a wrong account.`,
     selectLabel: "Select folders and files",
     emptyNodeLabel: "Select the folder to enable file synchronization.",
     getLogoComponent: () => {
       return MicrosoftLogo;
     },
     optionsComponent: createConnectorOptionsPdfEnabled(
-      "When enabled, PDF documents from your Microsoft OneDrive and SharePoint will be synced and processed by Dust."
+      "When enabled, PDF documents from your Microsoft OneDrive and SharePoint will be synced and processed by Ruby."
     ),
     advancedOptionsComponent: SensitivityLabelsConfig,
     isNested: true,
@@ -303,10 +303,10 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
   microsoft_bot: {
     hide: true,
     description:
-      "Enable your Microsoft Teams bot integration to interact with Dust directly from Teams.",
+      "Enable your Microsoft Teams bot integration to interact with Ruby directly from Teams.",
     limitations: "Bot must be enabled in organization settings.",
-    mismatchError: `You cannot select another Microsoft tenant.\nPlease contact us at support@dust.tt if you initially selected a wrong tenant.`,
-    guideLink: "https://docs.dust.tt/docs/dust-in-teams",
+    mismatchError: `You cannot select another Microsoft tenant.\nPlease contact us at support@ruby.ad if you initially selected a wrong tenant.`,
+    guideLink: "https://docs.ruby.ad/docs/ruby-in-teams",
     selectLabel: "Bot configuration",
     getLogoComponent: () => {
       return MicrosoftLogo;
@@ -352,8 +352,8 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
     ...CONNECTOR_METADATA.zendesk,
     hide: false,
     limitations:
-      "Dust will index the content accessible to the authorized account only. Attachments are not indexed.",
-    mismatchError: `You cannot select another Zendesk Workspace.\nPlease contact us at support@dust.tt if you initially selected a wrong Workspace.`,
+      "Ruby will index the content accessible to the authorized account only. Attachments are not indexed.",
+    mismatchError: `You cannot select another Zendesk Workspace.\nPlease contact us at support@ruby.ad if you initially selected a wrong Workspace.`,
     getLogoComponent: () => {
       return ZendeskLogo;
     },
@@ -410,19 +410,19 @@ export const CONNECTOR_UI_CONFIGURATIONS: Record<
       unselected: "none",
     },
     limitations:
-      "OAuth requires Gong administrator access. All transcripts from the workspace will be synchronized with Dust, " +
+      "OAuth requires Gong administrator access. All transcripts from the workspace will be synchronized with Ruby, " +
       "except those marked as private in Gong. A Permission Profile can be selected to restrict synced calls to " +
       "participants from that profile.",
     mismatchError: `You cannot change the Gong account. Please add a new Gong connection instead.`,
   },
-  dust_project: {
+  ruby_project: {
     hide: true,
-    description: "Use Dust Pod as a data source.",
+    description: "Use Ruby Pod as a data source.",
     limitations: null,
-    mismatchError: `You cannot change the Dust Pod. Please add a new Dust Pod connection instead.`,
+    mismatchError: `You cannot change the Ruby Pod. Please add a new Ruby Pod connection instead.`,
     guideLink: null,
     getLogoComponent: () => {
-      return DustLogoSquare;
+      return RubyLogoSquare;
     },
     isNested: false,
     permissions: {

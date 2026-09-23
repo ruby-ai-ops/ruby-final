@@ -8,13 +8,13 @@ import type { CellType } from "@app/types/cell";
 import { CoreAPI } from "@app/types/core/core_api";
 
 export async function processApp({
-  dustAPIProjectId,
+  rubyAPIProjectId,
   dataPath,
   destCell,
   sourceCell,
   workspaceId,
 }: {
-  dustAPIProjectId: string;
+  rubyAPIProjectId: string;
   dataPath: string;
   destCell: CellType;
   sourceCell: CellType;
@@ -24,7 +24,7 @@ export async function processApp({
     destCell,
     sourceCell,
     workspaceId,
-    dustAPIProjectId,
+    rubyAPIProjectId,
   });
 
   localLogger.info("[Core] Processing app");
@@ -41,14 +41,14 @@ export async function processApp({
     throw new Error(`Failed to create project: ${projectRes.error}`);
   }
 
-  const newDustAPIProjectId = projectRes.value.project.project_id.toString();
+  const newRubyAPIProjectId = projectRes.value.project.project_id.toString();
 
   for (const app of data.blobs.apps) {
     await concurrentExecutor(
       app.datasets,
       async (dataset) => {
         const res = await coreAPI.createDataset({
-          projectId: newDustAPIProjectId,
+          projectId: newRubyAPIProjectId,
           datasetId: dataset.dataset_id,
           data: dataset.data,
         });
@@ -64,7 +64,7 @@ export async function processApp({
       Object.values(app.coreSpecifications),
       async (specification) => {
         const res = await coreAPI.saveSpecification({
-          projectId: newDustAPIProjectId,
+          projectId: newRubyAPIProjectId,
           specification: specification,
         });
 
@@ -79,11 +79,11 @@ export async function processApp({
   // Update app with new project id.
   await AppModel.update(
     {
-      dustAPIProjectId: newDustAPIProjectId,
+      rubyAPIProjectId: newRubyAPIProjectId,
     },
     {
       where: {
-        dustAPIProjectId: dustAPIProjectId,
+        rubyAPIProjectId: rubyAPIProjectId,
       },
     }
   );

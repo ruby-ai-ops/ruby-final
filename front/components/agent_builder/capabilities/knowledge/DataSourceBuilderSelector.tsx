@@ -29,7 +29,7 @@ import {
 } from "@app/lib/swr/spaces";
 import type { ContentNodesViewType } from "@app/types/connectors/content_nodes";
 import { MIN_SEARCH_QUERY_SIZE } from "@app/types/core/utils";
-import type { BreadcrumbsItem } from "@dust-tt/sparkle";
+import type { BreadcrumbsItem } from "@ruby-ai/ui";
 import {
   Breadcrumbs,
   Button,
@@ -37,7 +37,7 @@ import {
   cn,
   SearchInput,
   Separator,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useEffect, useMemo, useState } from "react";
 

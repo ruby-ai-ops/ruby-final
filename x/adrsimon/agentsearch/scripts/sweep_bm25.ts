@@ -14,7 +14,7 @@ const { values } = parseArgs({
     similarity: { type: "string", default: "name_bm25" },
     param: { type: "string", default: "b" },
     values: { type: "string", default: "0,0.25,0.5,0.75,1" },
-    queries: { type: "string", default: "assets/eval_queries_dust.json" },
+    queries: { type: "string", default: "assets/eval_queries_ruby.json" },
     profile: { type: "string" },
     "exclude-global": { type: "boolean", default: false },
     "eval-args": { type: "string", default: "" },

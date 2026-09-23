@@ -20,7 +20,7 @@ import { WebClient } from "@slack/web-api";
 import { createHmac } from "crypto";
 import config from "../api/config";
 import { Authenticator, getFeatureFlags } from "../auth";
-import { DustError } from "../error";
+import { RubyError } from "../error";
 import { DataSourceResource } from "../resources/data_source_resource";
 
 export type NotificationAllowedTags = Array<"conversations" | "admin">;
@@ -128,7 +128,7 @@ const isNovuSlackChannelConfigured = async (
 const getSlackToken = async (
   auth: Authenticator
 ): Promise<
-  Result<string, DustError<"connection_not_found" | "internal_error">>
+  Result<string, RubyError<"connection_not_found" | "internal_error">>
 > => {
   const slackBotConnections = await DataSourceResource.listByConnectorProvider(
     auth,
@@ -137,7 +137,7 @@ const getSlackToken = async (
 
   if (slackBotConnections.length === 0) {
     return new Err(
-      new DustError(
+      new RubyError(
         "connection_not_found",
         "Slack Bot is not configured for this workspace."
       )
@@ -148,7 +148,7 @@ const getSlackToken = async (
 
   if (!slackConnection.connectorId) {
     return new Err(
-      new DustError(
+      new RubyError(
         "connection_not_found",
         "Slack Bot is not configured for this workspace."
       )
@@ -166,7 +166,7 @@ const getSlackToken = async (
 
   if (connectorRes.isErr()) {
     return new Err(
-      new DustError("connection_not_found", connectorRes.error.message)
+      new RubyError("connection_not_found", connectorRes.error.message)
     );
   }
 
@@ -177,7 +177,7 @@ const getSlackToken = async (
   });
 
   if (tokenResult.isErr()) {
-    return new Err(new DustError("internal_error", tokenResult.error.message));
+    return new Err(new RubyError("internal_error", tokenResult.error.message));
   }
 
   return new Ok(tokenResult.value.access_token);
@@ -277,7 +277,7 @@ export const ensureSlackNotificationsReady = async (
   const isChannelConfigured = await isNovuSlackChannelConfigured(subscriberId);
 
   // If the slack channel is not configured, we attempt to configure it automatically.
-  // This will fail if the Dust Slack Bot is not configured for the workspace.
+  // This will fail if the Ruby Slack Bot is not configured for the workspace.
   if (!isChannelConfigured) {
     const { success } = await configureNovuSlackChannelForUser(
       subscriberId,

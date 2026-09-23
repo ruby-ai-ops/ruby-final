@@ -4,7 +4,7 @@
 # Soft-fails when auth is missing.
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=ensure-ngrok
+RUBY_DEV_SCRIPT_NAME=ensure-ngrok
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh
@@ -13,12 +13,12 @@ source "$(dirname "$0")/env.sh"
 NGROK_API_URL="${NGROK_API_URL:-http://127.0.0.1:4040}"
 NGROK_FRONT_ADDR="${NGROK_FRONT_ADDR:-http://localhost:3000}"
 NGROK_VIZ_ADDR="${NGROK_VIZ_ADDR:-http://localhost:3007}"
-SBX_DEV_FRONT_URL_FILE="${SBX_DEV_FRONT_URL_FILE:-${DUST_INFRA_LOG_DIR}/sbx-dev-front-url}"
-SBX_DEV_VIZ_URL_FILE="${SBX_DEV_VIZ_URL_FILE:-${DUST_INFRA_LOG_DIR}/sbx-dev-viz-url}"
-NGROK_LOG_FILE="${DUST_INFRA_LOG_DIR}/ngrok.log"
-NGROK_PID_FILE="${DUST_INFRA_LOG_DIR}/ngrok.pid"
+SBX_DEV_FRONT_URL_FILE="${SBX_DEV_FRONT_URL_FILE:-${RUBY_INFRA_LOG_DIR}/sbx-dev-front-url}"
+SBX_DEV_VIZ_URL_FILE="${SBX_DEV_VIZ_URL_FILE:-${RUBY_INFRA_LOG_DIR}/sbx-dev-viz-url}"
+NGROK_LOG_FILE="${RUBY_INFRA_LOG_DIR}/ngrok.log"
+NGROK_PID_FILE="${RUBY_INFRA_LOG_DIR}/ngrok.pid"
 
-mkdir -p "${DUST_INFRA_LOG_DIR}"
+mkdir -p "${RUBY_INFRA_LOG_DIR}"
 
 ngrok_agent_up() {
   curl -sf "${NGROK_API_URL}/api/tunnels" >/dev/null 2>&1
@@ -96,7 +96,7 @@ wait_for_url() {
   local label="$3"
   local tunnel_name="$4"
   local attempt=0
-  local max_attempts="${DUST_NGROK_WAIT_SECONDS:-30}"
+  local max_attempts="${RUBY_NGROK_WAIT_SECONDS:-30}"
   local url=""
 
   until url="$(ngrok_public_url_for_addr "${addr}")" && [ -n "${url}" ]; do

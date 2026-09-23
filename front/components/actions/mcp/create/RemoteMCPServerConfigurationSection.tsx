@@ -14,7 +14,7 @@ import {
   Input,
   Label,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useController, useFormContext } from "react-hook-form";
 
 function getAuthMethodLabel(
@@ -215,9 +215,9 @@ export function RemoteMCPServerConfigurationSection({
           {(authMethod === "oauth-dynamic" ||
             defaultServerConfig?.authMethod === "oauth-dynamic") && (
             <div className="text-xs text-muted-foreground">
-              Dust will automatically discover if OAuth authentication is
+              Ruby will automatically discover if OAuth authentication is
               required. If OAuth is not needed, the server will be accessed
-              without authentication. Otherwise, Dust will try to use dynamic
+              without authentication. Otherwise, Ruby will try to use dynamic
               client registration to get the OAuth credentials.
             </div>
           )}

@@ -45,13 +45,13 @@ async function main() {
     console.log(`deleting data source ${d.name} from core`);
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     await coreAPI.deleteDataSource({
-      projectId: d.dustAPIProjectId,
-      dataSourceId: d.dustAPIDataSourceId,
+      projectId: d.rubyAPIProjectId,
+      dataSourceId: d.rubyAPIDataSourceId,
     });
     console.log(`creating data source ${d.name} in core`);
     const credentials = await getLlmCredentials(auth);
     await coreAPI.createDataSource({
-      projectId: d.dustAPIProjectId,
+      projectId: d.rubyAPIProjectId,
       config: {
         embedder_config: {
           embedder: {

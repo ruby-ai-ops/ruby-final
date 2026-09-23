@@ -1,7 +1,7 @@
 import { GovernanceSettingRowLayout } from "@app/components/pages/workspace/governance/GovernanceSettingRowLayout";
 import { useSlackPersonalFooterRemovalToggle } from "@app/hooks/useSlackPersonalFooterRemovalToggle";
 import type { WorkspaceType } from "@app/types/user";
-import { SliderToggle } from "@dust-tt/sparkle";
+import { SliderToggle } from "@ruby-ai/ui";
 
 export const SLACK_PERSONAL_FOOTER_REMOVAL_LABEL =
   '"Sent via Agent" Slack footer';

@@ -17,7 +17,7 @@ export const FRAME_SKILL_FILES: readonly CodeDefinedSkillFile[] = [
   // Package resolution works in both source and bundled server entry points.
   content: readFileSync(
     require.resolve(
-      `@dust-tt/front/lib/resources/skill/code_defined/global/frames/assets/${fileName}`
+      `@ruby-ai/front/lib/resources/skill/code_defined/global/frames/assets/${fileName}`
     ),
     "utf8"
   ),

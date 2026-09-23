@@ -4,7 +4,7 @@ import {
   isCustomResourceIconType,
 } from "@app/components/resources/resources_icons";
 import { getMcpServerViewDisplayName } from "@app/lib/actions/mcp_helper";
-import { ActionIcons, BookOpen01 } from "@dust-tt/sparkle";
+import { ActionIcons, BookOpen01 } from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
 export function getSelectedToolIcon(tool: SelectedTool): ComponentType {

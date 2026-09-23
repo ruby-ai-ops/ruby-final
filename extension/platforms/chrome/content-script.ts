@@ -1,17 +1,17 @@
-// Content script that injects a sidebar with iframe containing the Dust extension
+// Content script that injects a sidebar with iframe containing the Ruby extension
 
 const DEFAULT_SIDEBAR_WIDTH = 450;
 const MIN_SIDEBAR_WIDTH = 300;
 const MAX_SIDEBAR_WIDTH = 1200;
-const SIDEBAR_ID = "dust-extension-sidebar";
-const IFRAME_ID = "dust-extension-iframe";
-const RESIZE_HANDLE_ID = "dust-extension-resize-handle";
-const HEADER_ID = "dust-extension-header";
-const CLOSE_BUTTON_ID = "dust-extension-close-button";
+const SIDEBAR_ID = "ruby-extension-sidebar";
+const IFRAME_ID = "ruby-extension-iframe";
+const RESIZE_HANDLE_ID = "ruby-extension-resize-handle";
+const HEADER_ID = "ruby-extension-header";
+const CLOSE_BUTTON_ID = "ruby-extension-close-button";
 const HEADER_HEIGHT = 40;
 const SIDEBAR_MARGIN = 8;
-const STORAGE_KEY_VISIBLE = "dustSidebarVisible";
-const STORAGE_KEY_WIDTH = "dustSidebarWidth";
+const STORAGE_KEY_VISIBLE = "rubySidebarVisible";
+const STORAGE_KEY_WIDTH = "rubySidebarWidth";
 
 // Must exceed SIDEBAR_MARGIN so the rounded edge is fully out of view.
 const SIDEBAR_SLIDE_OUT = `translateX(calc(100% + ${SIDEBAR_MARGIN * 2}px))`;
@@ -325,7 +325,7 @@ function showSidebar(): void {
     if (iframeElement) {
       iframeElement.contentWindow?.focus();
       iframeElement.contentWindow?.postMessage(
-        { type: "DUST_SIDEBAR_SHOWN" },
+        { type: "RUBY_SIDEBAR_SHOWN" },
         "*"
       );
     }
@@ -395,7 +395,7 @@ async function init(): Promise<void> {
       sidebarWidth = result[STORAGE_KEY_WIDTH] as number;
     }
   } catch (error) {
-    console.error("[Dust Content Script] Error initializing:", error);
+    console.error("[Ruby Content Script] Error initializing:", error);
   }
 }
 

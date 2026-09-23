@@ -1,8 +1,8 @@
 import { FileResource } from "@app/lib/resources/file_resource";
 import { SandboxFunctionResource } from "@app/lib/resources/sandbox_function_resource";
 import type {
-  PokeFrameCtx,
-  PokeFrameFunctionCtx,
+  AdminFrameCtx,
+  AdminFrameFunctionCtx,
   SandboxFrameCtx,
 } from "@front-api/middlewares/ctx";
 import { apiError } from "@front-api/middlewares/utils";
@@ -13,10 +13,10 @@ import { createMiddleware } from "hono/factory";
  * any other kind of file, and stashes it on the context under `frame`. Apply at the `[frameId]`
  * level so sub-routes read `ctx.get("frame")` instead of each re-fetching and re-validating it.
  *
- * Apply after the auth middleware (poke or sandbox) so `ctx.get("auth")` is available.
+ * Apply after the auth middleware (admin or sandbox) so `ctx.get("auth")` is available.
  */
 export function withFrame() {
-  return createMiddleware<PokeFrameCtx | SandboxFrameCtx>(async (ctx, next) => {
+  return createMiddleware<AdminFrameCtx | SandboxFrameCtx>(async (ctx, next) => {
     const auth = ctx.get("auth");
     const frameId = ctx.req.param("frameId");
 
@@ -43,7 +43,7 @@ export function withFrame() {
  * Apply after `withFrame()` so `ctx.get("frame")` is available.
  */
 export function withFrameFunction() {
-  return createMiddleware<PokeFrameFunctionCtx>(async (ctx, next) => {
+  return createMiddleware<AdminFrameFunctionCtx>(async (ctx, next) => {
     const auth = ctx.get("auth");
     const frame = ctx.get("frame");
     const functionId = ctx.req.param("functionId");

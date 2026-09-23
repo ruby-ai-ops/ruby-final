@@ -334,7 +334,7 @@ export const slack = async ({
       if (whitelistType === "summon_agent") {
         if (!spaceIdsArg) {
           throw new Error(
-            "Missing --spaceIds argument (required for summon_agent). Pass the Company Space too, which the automations page and the Poke plugin always include"
+            "Missing --spaceIds argument (required for summon_agent). Pass the Company Space too, which the automations page and the Admin plugin always include"
           );
         }
         spaceIds = spaceIdsArg.split(",").map((spaceId) => spaceId.trim());

@@ -29,7 +29,7 @@ import {
 import { createMentionSuggestion } from "@app/components/editor/input_bar/mentionSuggestion";
 import { preprocessMarkdownForEditor } from "@app/components/editor/lib/preprocessMarkdownForEditor";
 import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
-import { ContainerWithTopBar, cn, markdownStyles } from "@dust-tt/sparkle";
+import { ContainerWithTopBar, cn, markdownStyles } from "@ruby-ai/ui";
 import type { Editor as CoreEditor, Extensions } from "@tiptap/core";
 import { CharacterCount, Placeholder } from "@tiptap/extensions";
 import { Markdown } from "@tiptap/markdown";
@@ -47,7 +47,7 @@ export const INSTRUCTIONS_MAXIMUM_CHARACTER_COUNT = 120_000;
 
 /**
  * Base rendering extensions for the agent instructions editor.
- * Used by the full editor and by read-only preview pages (e.g. poke).
+ * Used by the full editor and by read-only preview pages (e.g. admin).
  */
 export function buildAgentInstructionsReadOnlyExtensions(): Extensions {
   return [

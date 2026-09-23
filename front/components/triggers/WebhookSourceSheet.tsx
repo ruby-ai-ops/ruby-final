@@ -36,7 +36,7 @@ import type {
 import { WEBHOOK_PRESETS } from "@app/types/triggers/webhooks";
 import { CLIENT_SIDE_WEBHOOK_PRESETS } from "@app/types/triggers/webhooks_client_side";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { MultiPageSheetPage, RegularButtonProps } from "@dust-tt/sparkle";
+import type { MultiPageSheetPage, RegularButtonProps } from "@ruby-ai/ui";
 import {
   Button,
   Dialog,
@@ -53,7 +53,7 @@ import {
   TabsList,
   TabsTrigger,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import uniq from "lodash/uniq";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";

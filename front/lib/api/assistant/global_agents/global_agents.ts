@@ -13,69 +13,69 @@ import {
 import {
   _getArchivedBrowserSummaryAgent,
   _getDeepDiveGlobalAgent,
-  _getDustTaskGlobalAgent,
+  _getRubyTaskGlobalAgent,
   _getPlanningAgent,
-} from "@app/lib/api/assistant/global_agents/configurations/dust/deep-dive";
+} from "@app/lib/api/assistant/global_agents/configurations/ruby/deep-dive";
 import {
-  _getDustAntGlobalAgent,
-  _getDustAntHighGlobalAgent,
-  _getDustAntHighOmittedGlobalAgent,
-  _getDustAntMediumGlobalAgent,
-  _getDustAntMediumOmittedGlobalAgent,
-  _getDustAntSonnetEdgeGlobalAgent,
-  _getDustAntSonnetEdgeLightGlobalAgent,
-  _getDustDeepseekGlobalAgent,
-  _getDustEdgeGlobalAgent,
-  _getDustGlmGlobalAgent,
-  _getDustGlmHighGlobalAgent,
-  _getDustGlmMediumGlobalAgent,
-  _getDustGlobalAgent,
-  _getDustGoogGlobalAgent,
-  _getDustGoogHighGlobalAgent,
-  _getDustGoogLiteGlobalAgent,
-  _getDustGoogMediumGlobalAgent,
-  _getDustGoogProGlobalAgent,
-  _getDustGoogProHighGlobalAgent,
-  _getDustGoogProMediumGlobalAgent,
-  _getDustHaikuGlobalAgent,
-  _getDustHighGlobalAgent,
-  _getDustHighOmittedGlobalAgent,
-  _getDustKimiGlobalAgent,
-  _getDustKimiHighGlobalAgent,
-  _getDustKimiMediumGlobalAgent,
-  _getDustLeanGlobalAgent,
-  _getDustLightGlobalAgent,
-  _getDustLionelGlobalAgent,
-  _getDustLionelHighGlobalAgent,
-  _getDustLionelMediumGlobalAgent,
-  _getDustMinimaxGlobalAgent,
-  _getDustMinimaxHighGlobalAgent,
-  _getDustMinimaxMediumGlobalAgent,
-  _getDustMistralMediumHighGlobalAgent,
-  _getDustMistralMediumNoneGlobalAgent,
-  _getDustNextGlobalAgent,
-  _getDustNextHighGlobalAgent,
-  _getDustNextMediumGlobalAgent,
-  _getDustOaiGlobalAgent,
-  _getDustOaiHighGlobalAgent,
-  _getDustOaiLunaGlobalAgent,
-  _getDustOaiLunaHighGlobalAgent,
-  _getDustOaiLunaMediumGlobalAgent,
-  _getDustOaiMediumGlobalAgent,
-  _getDustOaiNanoHighGlobalAgent,
-  _getDustOmittedGlobalAgent,
-  _getDustPistacheGlobalAgent,
-  _getDustPistacheHighGlobalAgent,
-  _getDustPistacheMediumGlobalAgent,
-  _getDustQuickGlobalAgent,
-  _getDustQuickMediumGlobalAgent,
-  _getRetiredDustLikeGlobalAgent,
-  getCustomModelDustGlobalAgentIndex,
-} from "@app/lib/api/assistant/global_agents/configurations/dust/dust";
-import { _getNoopAgent } from "@app/lib/api/assistant/global_agents/configurations/dust/noop";
-import { _getReinforcementGlobalAgent } from "@app/lib/api/assistant/global_agents/configurations/dust/reinforcement";
-import { _getSidekickGlobalAgent } from "@app/lib/api/assistant/global_agents/configurations/dust/sidekick";
-import { isDeepDiveDisabledByAdmin } from "@app/lib/api/assistant/global_agents/configurations/dust/utils";
+  _getRubyAntGlobalAgent,
+  _getRubyAntHighGlobalAgent,
+  _getRubyAntHighOmittedGlobalAgent,
+  _getRubyAntMediumGlobalAgent,
+  _getRubyAntMediumOmittedGlobalAgent,
+  _getRubyAntSonnetEdgeGlobalAgent,
+  _getRubyAntSonnetEdgeLightGlobalAgent,
+  _getRubyDeepseekGlobalAgent,
+  _getRubyEdgeGlobalAgent,
+  _getRubyGlmGlobalAgent,
+  _getRubyGlmHighGlobalAgent,
+  _getRubyGlmMediumGlobalAgent,
+  _getRubyGlobalAgent,
+  _getRubyGoogGlobalAgent,
+  _getRubyGoogHighGlobalAgent,
+  _getRubyGoogLiteGlobalAgent,
+  _getRubyGoogMediumGlobalAgent,
+  _getRubyGoogProGlobalAgent,
+  _getRubyGoogProHighGlobalAgent,
+  _getRubyGoogProMediumGlobalAgent,
+  _getRubyHaikuGlobalAgent,
+  _getRubyHighGlobalAgent,
+  _getRubyHighOmittedGlobalAgent,
+  _getRubyKimiGlobalAgent,
+  _getRubyKimiHighGlobalAgent,
+  _getRubyKimiMediumGlobalAgent,
+  _getRubyLeanGlobalAgent,
+  _getRubyLightGlobalAgent,
+  _getRubyLionelGlobalAgent,
+  _getRubyLionelHighGlobalAgent,
+  _getRubyLionelMediumGlobalAgent,
+  _getRubyMinimaxGlobalAgent,
+  _getRubyMinimaxHighGlobalAgent,
+  _getRubyMinimaxMediumGlobalAgent,
+  _getRubyMistralMediumHighGlobalAgent,
+  _getRubyMistralMediumNoneGlobalAgent,
+  _getRubyNextGlobalAgent,
+  _getRubyNextHighGlobalAgent,
+  _getRubyNextMediumGlobalAgent,
+  _getRubyOaiGlobalAgent,
+  _getRubyOaiHighGlobalAgent,
+  _getRubyOaiLunaGlobalAgent,
+  _getRubyOaiLunaHighGlobalAgent,
+  _getRubyOaiLunaMediumGlobalAgent,
+  _getRubyOaiMediumGlobalAgent,
+  _getRubyOaiNanoHighGlobalAgent,
+  _getRubyOmittedGlobalAgent,
+  _getRubyPistacheGlobalAgent,
+  _getRubyPistacheHighGlobalAgent,
+  _getRubyPistacheMediumGlobalAgent,
+  _getRubyQuickGlobalAgent,
+  _getRubyQuickMediumGlobalAgent,
+  _getRetiredRubyLikeGlobalAgent,
+  getCustomModelRubyGlobalAgentIndex,
+} from "@app/lib/api/assistant/global_agents/configurations/ruby/ruby";
+import { _getNoopAgent } from "@app/lib/api/assistant/global_agents/configurations/ruby/noop";
+import { _getReinforcementGlobalAgent } from "@app/lib/api/assistant/global_agents/configurations/ruby/reinforcement";
+import { _getSidekickGlobalAgent } from "@app/lib/api/assistant/global_agents/configurations/ruby/sidekick";
+import { isDeepDiveDisabledByAdmin } from "@app/lib/api/assistant/global_agents/configurations/ruby/utils";
 import { _getGeminiProGlobalAgent } from "@app/lib/api/assistant/global_agents/configurations/google";
 import { _getHelperGlobalAgent } from "@app/lib/api/assistant/global_agents/configurations/helper";
 import {
@@ -370,8 +370,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST:
-      agentConfiguration = _getDustGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY:
+      agentConfiguration = _getRubyGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -382,8 +382,8 @@ function getGlobalAgent({
         preferSonnet5DefaultModel,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_LEAN:
-      agentConfiguration = _getDustLeanGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_LEAN:
+      agentConfiguration = _getRubyLeanGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -393,8 +393,8 @@ function getGlobalAgent({
         preferSonnet5DefaultModel,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_HIGH:
-      agentConfiguration = _getDustHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_HIGH:
+      agentConfiguration = _getRubyHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -403,8 +403,8 @@ function getGlobalAgent({
         globalAgentContext,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_OMITTED:
-      agentConfiguration = _getDustOmittedGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_OMITTED:
+      agentConfiguration = _getRubyOmittedGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -413,8 +413,8 @@ function getGlobalAgent({
         globalAgentContext,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_HIGH_OMITTED:
-      agentConfiguration = _getDustHighOmittedGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_HIGH_OMITTED:
+      agentConfiguration = _getRubyHighOmittedGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -423,8 +423,8 @@ function getGlobalAgent({
         globalAgentContext,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_EDGE:
-      agentConfiguration = _getDustEdgeGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_EDGE:
+      agentConfiguration = _getRubyEdgeGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -432,8 +432,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_ANT:
-      agentConfiguration = _getDustAntGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_ANT:
+      agentConfiguration = _getRubyAntGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -441,8 +441,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM:
-      agentConfiguration = _getDustAntMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM:
+      agentConfiguration = _getRubyAntMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -450,8 +450,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_ANT_HIGH:
-      agentConfiguration = _getDustAntHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_ANT_HIGH:
+      agentConfiguration = _getRubyAntHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -459,8 +459,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM_OMITTED:
-      agentConfiguration = _getDustAntMediumOmittedGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM_OMITTED:
+      agentConfiguration = _getRubyAntMediumOmittedGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -468,8 +468,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_ANT_HIGH_OMITTED:
-      agentConfiguration = _getDustAntHighOmittedGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_ANT_HIGH_OMITTED:
+      agentConfiguration = _getRubyAntHighOmittedGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -477,8 +477,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_ANT_SONNET_EDGE:
-      agentConfiguration = _getDustAntSonnetEdgeGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_ANT_SONNET_EDGE:
+      agentConfiguration = _getRubyAntSonnetEdgeGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -486,8 +486,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_ANT_SONNET_EDGE_LIGHT:
-      agentConfiguration = _getDustAntSonnetEdgeLightGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_ANT_SONNET_EDGE_LIGHT:
+      agentConfiguration = _getRubyAntSonnetEdgeLightGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -495,8 +495,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_HAIKU:
-      agentConfiguration = _getDustHaikuGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_HAIKU:
+      agentConfiguration = _getRubyHaikuGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -504,8 +504,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_LIGHT:
-      agentConfiguration = _getDustLightGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_LIGHT:
+      agentConfiguration = _getRubyLightGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -513,8 +513,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_KIMI:
-      agentConfiguration = _getDustKimiGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_KIMI:
+      agentConfiguration = _getRubyKimiGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -522,8 +522,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_KIMI_MEDIUM:
-      agentConfiguration = _getDustKimiMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_KIMI_MEDIUM:
+      agentConfiguration = _getRubyKimiMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -531,8 +531,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_KIMI_HIGH:
-      agentConfiguration = _getDustKimiHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_KIMI_HIGH:
+      agentConfiguration = _getRubyKimiHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -540,8 +540,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_GLM:
-      agentConfiguration = _getDustGlmGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_GLM:
+      agentConfiguration = _getRubyGlmGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -549,8 +549,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_GLM_MEDIUM:
-      agentConfiguration = _getDustGlmMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_GLM_MEDIUM:
+      agentConfiguration = _getRubyGlmMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -558,8 +558,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_GLM_HIGH:
-      agentConfiguration = _getDustGlmHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_GLM_HIGH:
+      agentConfiguration = _getRubyGlmHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -567,8 +567,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_PISTACHE:
-      agentConfiguration = _getDustPistacheGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_PISTACHE:
+      agentConfiguration = _getRubyPistacheGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -576,8 +576,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_PISTACHE_MEDIUM:
-      agentConfiguration = _getDustPistacheMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_PISTACHE_MEDIUM:
+      agentConfiguration = _getRubyPistacheMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -585,8 +585,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_PISTACHE_HIGH:
-      agentConfiguration = _getDustPistacheHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_PISTACHE_HIGH:
+      agentConfiguration = _getRubyPistacheHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -594,8 +594,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_MINIMAX:
-      agentConfiguration = _getDustMinimaxGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_MINIMAX:
+      agentConfiguration = _getRubyMinimaxGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -603,8 +603,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_MINIMAX_MEDIUM:
-      agentConfiguration = _getDustMinimaxMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_MINIMAX_MEDIUM:
+      agentConfiguration = _getRubyMinimaxMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -612,8 +612,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_MINIMAX_HIGH:
-      agentConfiguration = _getDustMinimaxHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_MINIMAX_HIGH:
+      agentConfiguration = _getRubyMinimaxHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -621,8 +621,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_DEEPSEEK:
-      agentConfiguration = _getDustDeepseekGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_DEEPSEEK:
+      agentConfiguration = _getRubyDeepseekGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -630,8 +630,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_MISTRAL_MEDIUM_NONE:
-      agentConfiguration = _getDustMistralMediumNoneGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_MISTRAL_MEDIUM_NONE:
+      agentConfiguration = _getRubyMistralMediumNoneGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -639,8 +639,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_MISTRAL_MEDIUM_HIGH:
-      agentConfiguration = _getDustMistralMediumHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_MISTRAL_MEDIUM_HIGH:
+      agentConfiguration = _getRubyMistralMediumHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -648,8 +648,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_QUICK:
-      agentConfiguration = _getDustQuickGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_QUICK:
+      agentConfiguration = _getRubyQuickGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -657,8 +657,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_OAI:
-      agentConfiguration = _getDustOaiGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_OAI:
+      agentConfiguration = _getRubyOaiGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -666,8 +666,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_OAI_MEDIUM:
-      agentConfiguration = _getDustOaiMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_OAI_MEDIUM:
+      agentConfiguration = _getRubyOaiMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -675,8 +675,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_OAI_HIGH:
-      agentConfiguration = _getDustOaiHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_OAI_HIGH:
+      agentConfiguration = _getRubyOaiHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -684,8 +684,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_OAI_LUNA:
-      agentConfiguration = _getDustOaiLunaGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_OAI_LUNA:
+      agentConfiguration = _getRubyOaiLunaGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -693,8 +693,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_OAI_LUNA_MEDIUM:
-      agentConfiguration = _getDustOaiLunaMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_MEDIUM:
+      agentConfiguration = _getRubyOaiLunaMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -702,8 +702,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_OAI_LUNA_HIGH:
-      agentConfiguration = _getDustOaiLunaHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_HIGH:
+      agentConfiguration = _getRubyOaiLunaHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -711,8 +711,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_OAI_NANO_HIGH:
-      agentConfiguration = _getDustOaiNanoHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_OAI_NANO_HIGH:
+      agentConfiguration = _getRubyOaiNanoHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -720,8 +720,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_GOOG:
-      agentConfiguration = _getDustGoogGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_GOOG:
+      agentConfiguration = _getRubyGoogGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -729,8 +729,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_GOOG_MEDIUM:
-      agentConfiguration = _getDustGoogMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_MEDIUM:
+      agentConfiguration = _getRubyGoogMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -738,8 +738,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_GOOG_HIGH:
-      agentConfiguration = _getDustGoogHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_HIGH:
+      agentConfiguration = _getRubyGoogHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -747,8 +747,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_GOOG_LITE:
-      agentConfiguration = _getDustGoogLiteGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_LITE:
+      agentConfiguration = _getRubyGoogLiteGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -756,8 +756,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_GOOG_PRO:
-      agentConfiguration = _getDustGoogProGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_PRO:
+      agentConfiguration = _getRubyGoogProGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -765,8 +765,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_GOOG_PRO_MEDIUM:
-      agentConfiguration = _getDustGoogProMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_PRO_MEDIUM:
+      agentConfiguration = _getRubyGoogProMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -774,8 +774,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_GOOG_PRO_HIGH:
-      agentConfiguration = _getDustGoogProHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_GOOG_PRO_HIGH:
+      agentConfiguration = _getRubyGoogProHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -783,8 +783,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_QUICK_MEDIUM:
-      agentConfiguration = _getDustQuickMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_QUICK_MEDIUM:
+      agentConfiguration = _getRubyQuickMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -792,8 +792,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_NEXT:
-      agentConfiguration = _getDustNextGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_NEXT:
+      agentConfiguration = _getRubyNextGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -801,8 +801,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_NEXT_MEDIUM:
-      agentConfiguration = _getDustNextMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_NEXT_MEDIUM:
+      agentConfiguration = _getRubyNextMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -810,8 +810,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_NEXT_HIGH:
-      agentConfiguration = _getDustNextHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_NEXT_HIGH:
+      agentConfiguration = _getRubyNextHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -819,8 +819,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_LIONEL:
-      agentConfiguration = _getDustLionelGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_LIONEL:
+      agentConfiguration = _getRubyLionelGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -828,8 +828,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_LIONEL_MEDIUM:
-      agentConfiguration = _getDustLionelMediumGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_LIONEL_MEDIUM:
+      agentConfiguration = _getRubyLionelMediumGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -837,8 +837,8 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_LIONEL_HIGH:
-      agentConfiguration = _getDustLionelHighGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_LIONEL_HIGH:
+      agentConfiguration = _getRubyLionelHighGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
@@ -846,23 +846,23 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    // Retired custom-model dust-* agents: their eval models were removed from
+    // Retired custom-model ruby-* agents: their eval models were removed from
     // the infra config, so they resolve to a fallback model for past
     // conversations only (see RETIRED_GLOBAL_AGENTS_SID).
-    case GLOBAL_AGENTS_SID.DUST_SUNDAE:
-    case GLOBAL_AGENTS_SID.DUST_SUNDAE_MEDIUM:
-    case GLOBAL_AGENTS_SID.DUST_SUNDAE_HIGH:
-    case GLOBAL_AGENTS_SID.DUST_CHALOM:
-    case GLOBAL_AGENTS_SID.DUST_CHALOM_MEDIUM:
-    case GLOBAL_AGENTS_SID.DUST_CHALOM_HIGH:
-    case GLOBAL_AGENTS_SID.DUST_SOUPINOU:
-    case GLOBAL_AGENTS_SID.DUST_SOUPINOU_MEDIUM:
-    case GLOBAL_AGENTS_SID.DUST_SOUPINOU_HIGH:
-    case GLOBAL_AGENTS_SID.DUST_SOUPINOU_NONE:
-    case GLOBAL_AGENTS_SID.DUST_CHAWI:
-    case GLOBAL_AGENTS_SID.DUST_CHAWI_MEDIUM:
-    case GLOBAL_AGENTS_SID.DUST_CHAWI_HIGH:
-      agentConfiguration = _getRetiredDustLikeGlobalAgent(
+    case GLOBAL_AGENTS_SID.RUBY_SUNDAE:
+    case GLOBAL_AGENTS_SID.RUBY_SUNDAE_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_SUNDAE_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_CHALOM:
+    case GLOBAL_AGENTS_SID.RUBY_CHALOM_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_CHALOM_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_SOUPINOU:
+    case GLOBAL_AGENTS_SID.RUBY_SOUPINOU_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_SOUPINOU_HIGH:
+    case GLOBAL_AGENTS_SID.RUBY_SOUPINOU_NONE:
+    case GLOBAL_AGENTS_SID.RUBY_CHAWI:
+    case GLOBAL_AGENTS_SID.RUBY_CHAWI_MEDIUM:
+    case GLOBAL_AGENTS_SID.RUBY_CHAWI_HIGH:
+      agentConfiguration = _getRetiredRubyLikeGlobalAgent(
         auth,
         {
           settings,
@@ -883,18 +883,18 @@ function getGlobalAgent({
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_TASK:
-      agentConfiguration = _getDustTaskGlobalAgent(auth, {
+    case GLOBAL_AGENTS_SID.RUBY_TASK:
+      agentConfiguration = _getRubyTaskGlobalAgent(auth, {
         settings,
         preFetchedDataSources,
         mcpServerViews,
         featureFlags,
       });
       break;
-    case GLOBAL_AGENTS_SID.DUST_BROWSER_SUMMARY:
+    case GLOBAL_AGENTS_SID.RUBY_BROWSER_SUMMARY:
       agentConfiguration = _getArchivedBrowserSummaryAgent();
       break;
-    case GLOBAL_AGENTS_SID.DUST_PLANNING:
+    case GLOBAL_AGENTS_SID.RUBY_PLANNING:
       agentConfiguration = _getPlanningAgent(auth, {
         settings,
         featureFlags,
@@ -954,31 +954,31 @@ const RETIRED_GLOBAL_AGENTS_SID = [
   GLOBAL_AGENTS_SID.GPT4,
   GLOBAL_AGENTS_SID.SLACK,
   // Hidden helper sub-agent, only invoked via run_agent by deep-dive
-  GLOBAL_AGENTS_SID.DUST_TASK,
-  GLOBAL_AGENTS_SID.DUST_BROWSER_SUMMARY,
-  GLOBAL_AGENTS_SID.DUST_PLANNING,
-  GLOBAL_AGENTS_SID.DUST_NEXT,
-  GLOBAL_AGENTS_SID.DUST_NEXT_MEDIUM,
-  GLOBAL_AGENTS_SID.DUST_NEXT_HIGH,
-  GLOBAL_AGENTS_SID.DUST_QUICK,
-  GLOBAL_AGENTS_SID.DUST_QUICK_MEDIUM,
-  GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM_OMITTED,
-  GLOBAL_AGENTS_SID.DUST_ANT_HIGH_OMITTED,
-  // Custom-model dust-* agents whose eval models were removed from the infra
+  GLOBAL_AGENTS_SID.RUBY_TASK,
+  GLOBAL_AGENTS_SID.RUBY_BROWSER_SUMMARY,
+  GLOBAL_AGENTS_SID.RUBY_PLANNING,
+  GLOBAL_AGENTS_SID.RUBY_NEXT,
+  GLOBAL_AGENTS_SID.RUBY_NEXT_MEDIUM,
+  GLOBAL_AGENTS_SID.RUBY_NEXT_HIGH,
+  GLOBAL_AGENTS_SID.RUBY_QUICK,
+  GLOBAL_AGENTS_SID.RUBY_QUICK_MEDIUM,
+  GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM_OMITTED,
+  GLOBAL_AGENTS_SID.RUBY_ANT_HIGH_OMITTED,
+  // Custom-model ruby-* agents whose eval models were removed from the infra
   // config. Kept callable for past conversations; may be revived in the future.
-  GLOBAL_AGENTS_SID.DUST_SUNDAE,
-  GLOBAL_AGENTS_SID.DUST_SUNDAE_MEDIUM,
-  GLOBAL_AGENTS_SID.DUST_SUNDAE_HIGH,
-  GLOBAL_AGENTS_SID.DUST_CHALOM,
-  GLOBAL_AGENTS_SID.DUST_CHALOM_MEDIUM,
-  GLOBAL_AGENTS_SID.DUST_CHALOM_HIGH,
-  GLOBAL_AGENTS_SID.DUST_SOUPINOU,
-  GLOBAL_AGENTS_SID.DUST_SOUPINOU_MEDIUM,
-  GLOBAL_AGENTS_SID.DUST_SOUPINOU_HIGH,
-  GLOBAL_AGENTS_SID.DUST_SOUPINOU_NONE,
-  GLOBAL_AGENTS_SID.DUST_CHAWI,
-  GLOBAL_AGENTS_SID.DUST_CHAWI_MEDIUM,
-  GLOBAL_AGENTS_SID.DUST_CHAWI_HIGH,
+  GLOBAL_AGENTS_SID.RUBY_SUNDAE,
+  GLOBAL_AGENTS_SID.RUBY_SUNDAE_MEDIUM,
+  GLOBAL_AGENTS_SID.RUBY_SUNDAE_HIGH,
+  GLOBAL_AGENTS_SID.RUBY_CHALOM,
+  GLOBAL_AGENTS_SID.RUBY_CHALOM_MEDIUM,
+  GLOBAL_AGENTS_SID.RUBY_CHALOM_HIGH,
+  GLOBAL_AGENTS_SID.RUBY_SOUPINOU,
+  GLOBAL_AGENTS_SID.RUBY_SOUPINOU_MEDIUM,
+  GLOBAL_AGENTS_SID.RUBY_SOUPINOU_HIGH,
+  GLOBAL_AGENTS_SID.RUBY_SOUPINOU_NONE,
+  GLOBAL_AGENTS_SID.RUBY_CHAWI,
+  GLOBAL_AGENTS_SID.RUBY_CHAWI_MEDIUM,
+  GLOBAL_AGENTS_SID.RUBY_CHAWI_HIGH,
 ];
 
 // Retired global agents remain resolvable internally (to keep past conversations running) but
@@ -1019,7 +1019,7 @@ function getCustomModelIndexForGlobalAgent(sId: string): number | null {
     return null;
   }
 
-  return getCustomModelDustGlobalAgentIndex(sId);
+  return getCustomModelRubyGlobalAgentIndex(sId);
 }
 
 export async function getGlobalAgents(
@@ -1074,9 +1074,9 @@ export async function getGlobalAgents(
 
   const flags = await getFeatureFlags(auth);
 
-  if (!flags.includes("dust_lean_agent")) {
+  if (!flags.includes("ruby_lean_agent")) {
     agentsIdsToFetch = agentsIdsToFetch.filter(
-      (sId) => sId !== GLOBAL_AGENTS_SID.DUST_LEAN
+      (sId) => sId !== GLOBAL_AGENTS_SID.RUBY_LEAN
     );
   }
 
@@ -1092,75 +1092,75 @@ export async function getGlobalAgents(
         !isGlobalAgentId(sId) || !MODEL_ONLY_GLOBAL_AGENTS_SID.includes(sId)
     );
   }
-  const DUST_INTERNAL_AGENTS: readonly GLOBAL_AGENTS_SID[] = [
-    GLOBAL_AGENTS_SID.DUST_HIGH,
-    GLOBAL_AGENTS_SID.DUST_OMITTED,
-    GLOBAL_AGENTS_SID.DUST_HIGH_OMITTED,
-    GLOBAL_AGENTS_SID.DUST_ANT,
-    GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_ANT_HIGH,
-    GLOBAL_AGENTS_SID.DUST_ANT_MEDIUM_OMITTED,
-    GLOBAL_AGENTS_SID.DUST_ANT_HIGH_OMITTED,
-    GLOBAL_AGENTS_SID.DUST_ANT_SONNET_EDGE,
-    GLOBAL_AGENTS_SID.DUST_ANT_SONNET_EDGE_LIGHT,
-    GLOBAL_AGENTS_SID.DUST_HAIKU,
-    GLOBAL_AGENTS_SID.DUST_LIGHT,
-    GLOBAL_AGENTS_SID.DUST_EDGE,
-    GLOBAL_AGENTS_SID.DUST_KIMI,
-    GLOBAL_AGENTS_SID.DUST_KIMI_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_KIMI_HIGH,
-    GLOBAL_AGENTS_SID.DUST_GLM,
-    GLOBAL_AGENTS_SID.DUST_GLM_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_GLM_HIGH,
-    GLOBAL_AGENTS_SID.DUST_MINIMAX,
-    GLOBAL_AGENTS_SID.DUST_MINIMAX_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_MINIMAX_HIGH,
-    GLOBAL_AGENTS_SID.DUST_DEEPSEEK,
-    GLOBAL_AGENTS_SID.DUST_MISTRAL_MEDIUM_NONE,
-    GLOBAL_AGENTS_SID.DUST_MISTRAL_MEDIUM_HIGH,
-    GLOBAL_AGENTS_SID.DUST_QUICK,
-    GLOBAL_AGENTS_SID.DUST_QUICK_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_OAI,
-    GLOBAL_AGENTS_SID.DUST_OAI_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_OAI_HIGH,
-    GLOBAL_AGENTS_SID.DUST_OAI_LUNA,
-    GLOBAL_AGENTS_SID.DUST_OAI_LUNA_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_OAI_LUNA_HIGH,
-    GLOBAL_AGENTS_SID.DUST_OAI_NANO_HIGH,
-    GLOBAL_AGENTS_SID.DUST_GOOG,
-    GLOBAL_AGENTS_SID.DUST_GOOG_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_GOOG_HIGH,
-    GLOBAL_AGENTS_SID.DUST_GOOG_LITE,
-    GLOBAL_AGENTS_SID.DUST_GOOG_PRO,
-    GLOBAL_AGENTS_SID.DUST_GOOG_PRO_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_GOOG_PRO_HIGH,
-    GLOBAL_AGENTS_SID.DUST_NEXT,
-    GLOBAL_AGENTS_SID.DUST_NEXT_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_NEXT_HIGH,
-    GLOBAL_AGENTS_SID.DUST_CHAWI,
-    GLOBAL_AGENTS_SID.DUST_CHAWI_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_CHAWI_HIGH,
-    GLOBAL_AGENTS_SID.DUST_SOUPINOU,
-    GLOBAL_AGENTS_SID.DUST_SOUPINOU_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_SOUPINOU_HIGH,
-    GLOBAL_AGENTS_SID.DUST_SOUPINOU_NONE,
-    GLOBAL_AGENTS_SID.DUST_SUNDAE,
-    GLOBAL_AGENTS_SID.DUST_SUNDAE_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_SUNDAE_HIGH,
-    GLOBAL_AGENTS_SID.DUST_PISTACHE,
-    GLOBAL_AGENTS_SID.DUST_PISTACHE_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_PISTACHE_HIGH,
-    GLOBAL_AGENTS_SID.DUST_CHALOM,
-    GLOBAL_AGENTS_SID.DUST_CHALOM_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_CHALOM_HIGH,
-    GLOBAL_AGENTS_SID.DUST_LIONEL,
-    GLOBAL_AGENTS_SID.DUST_LIONEL_MEDIUM,
-    GLOBAL_AGENTS_SID.DUST_LIONEL_HIGH,
+  const RUBY_INTERNAL_AGENTS: readonly GLOBAL_AGENTS_SID[] = [
+    GLOBAL_AGENTS_SID.RUBY_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_OMITTED,
+    GLOBAL_AGENTS_SID.RUBY_HIGH_OMITTED,
+    GLOBAL_AGENTS_SID.RUBY_ANT,
+    GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_ANT_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_ANT_MEDIUM_OMITTED,
+    GLOBAL_AGENTS_SID.RUBY_ANT_HIGH_OMITTED,
+    GLOBAL_AGENTS_SID.RUBY_ANT_SONNET_EDGE,
+    GLOBAL_AGENTS_SID.RUBY_ANT_SONNET_EDGE_LIGHT,
+    GLOBAL_AGENTS_SID.RUBY_HAIKU,
+    GLOBAL_AGENTS_SID.RUBY_LIGHT,
+    GLOBAL_AGENTS_SID.RUBY_EDGE,
+    GLOBAL_AGENTS_SID.RUBY_KIMI,
+    GLOBAL_AGENTS_SID.RUBY_KIMI_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_KIMI_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_GLM,
+    GLOBAL_AGENTS_SID.RUBY_GLM_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_GLM_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_MINIMAX,
+    GLOBAL_AGENTS_SID.RUBY_MINIMAX_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_MINIMAX_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_DEEPSEEK,
+    GLOBAL_AGENTS_SID.RUBY_MISTRAL_MEDIUM_NONE,
+    GLOBAL_AGENTS_SID.RUBY_MISTRAL_MEDIUM_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_QUICK,
+    GLOBAL_AGENTS_SID.RUBY_QUICK_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_OAI,
+    GLOBAL_AGENTS_SID.RUBY_OAI_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_OAI_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_OAI_LUNA,
+    GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_OAI_LUNA_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_OAI_NANO_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_GOOG,
+    GLOBAL_AGENTS_SID.RUBY_GOOG_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_GOOG_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_GOOG_LITE,
+    GLOBAL_AGENTS_SID.RUBY_GOOG_PRO,
+    GLOBAL_AGENTS_SID.RUBY_GOOG_PRO_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_GOOG_PRO_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_NEXT,
+    GLOBAL_AGENTS_SID.RUBY_NEXT_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_NEXT_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_CHAWI,
+    GLOBAL_AGENTS_SID.RUBY_CHAWI_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_CHAWI_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_SOUPINOU,
+    GLOBAL_AGENTS_SID.RUBY_SOUPINOU_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_SOUPINOU_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_SOUPINOU_NONE,
+    GLOBAL_AGENTS_SID.RUBY_SUNDAE,
+    GLOBAL_AGENTS_SID.RUBY_SUNDAE_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_SUNDAE_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_PISTACHE,
+    GLOBAL_AGENTS_SID.RUBY_PISTACHE_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_PISTACHE_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_CHALOM,
+    GLOBAL_AGENTS_SID.RUBY_CHALOM_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_CHALOM_HIGH,
+    GLOBAL_AGENTS_SID.RUBY_LIONEL,
+    GLOBAL_AGENTS_SID.RUBY_LIONEL_MEDIUM,
+    GLOBAL_AGENTS_SID.RUBY_LIONEL_HIGH,
     GLOBAL_AGENTS_SID.NOOP,
   ];
-  if (!flags.includes("dust_internal_global_agents")) {
+  if (!flags.includes("ruby_internal_global_agents")) {
     agentsIdsToFetch = agentsIdsToFetch.filter(
-      (sId) => !isGlobalAgentId(sId) || !DUST_INTERNAL_AGENTS.includes(sId)
+      (sId) => !isGlobalAgentId(sId) || !RUBY_INTERNAL_AGENTS.includes(sId)
     );
   }
 
@@ -1211,7 +1211,7 @@ export async function getGlobalAgents(
       hasSandbox: isComputerFeatureEnabled(flags),
       globalAgentContext: options?.globalAgentContext,
       autoDefaultModelConfig,
-      preferSonnet5DefaultModel: flags.includes("dust_agent_sonnet_5_default"),
+      preferSonnet5DefaultModel: flags.includes("ruby_agent_sonnet_5_default"),
       featureFlags: flags,
     })
   );

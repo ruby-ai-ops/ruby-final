@@ -60,7 +60,7 @@ export type GetConversationResponseBody = {
 
 // Response body for the internal PATCH conversation endpoint. The public v1
 // endpoint uses the SDK's PatchConversationResponseSchema instead (the internal
-// API surface cannot import from @dust-tt/client).
+// API surface cannot import from @ruby-ai/client).
 export type PatchConversationResponseBody = {
   success: boolean;
 };

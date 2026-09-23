@@ -3,7 +3,7 @@ import type { CreditDisplayData, CreditType } from "@app/types/credits";
 import { CREDIT_TYPE_SORT_ORDER } from "@app/types/credits";
 import type { EditedByUser } from "@app/types/user";
 import { ANONYMOUS_USER_IMAGE_URL } from "@app/types/user";
-import { Chip, DataTable, LoadingBlock, Page } from "@dust-tt/sparkle";
+import { Chip, DataTable, LoadingBlock, Page } from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import type React from "react";
 import { useMemo } from "react";

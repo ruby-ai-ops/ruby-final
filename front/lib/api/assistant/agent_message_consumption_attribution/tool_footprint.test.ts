@@ -88,7 +88,7 @@ describe("toolCallFootprintTexts", () => {
       footprintInput(
         makeAction({
           functionCallName: "search",
-          // params also carries a Dust-injected input that must not be counted.
+          // params also carries a Ruby-injected input that must not be counted.
           params: { query: "hello", injectedSecret: "x".repeat(500) },
         }),
         '{"query":"hello"}'

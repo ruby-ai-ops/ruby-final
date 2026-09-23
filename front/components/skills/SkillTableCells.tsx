@@ -1,14 +1,14 @@
 import { getSkillAvatarIcon } from "@app/lib/skill";
 import { SKILL_AVAILABILITY_DISPLAY } from "@app/lib/skills/labels";
 import { formatTimestampToFriendlyDate } from "@app/lib/utils";
-import { DUST_AVATAR_URL } from "@app/types/assistant/avatar";
+import { RUBY_AVATAR_URL } from "@app/types/assistant/avatar";
 import type {
   SkillAvailability,
   SkillListItemType,
   SkillWithoutInstructionsAndToolsType,
 } from "@app/types/assistant/skill_configuration";
 import type { UserType } from "@app/types/user";
-import { Chip, DataTable, Tooltip } from "@dust-tt/sparkle";
+import { Chip, DataTable, Tooltip } from "@ruby-ai/ui";
 
 interface SkillNameCellProps {
   skill: Pick<
@@ -68,8 +68,8 @@ export function SkillEditorsCell({ editors }: SkillEditorsCellProps) {
         visual: editor.image,
         isRounded: true,
       }))
-    : // Only Dust-managed skills should have no editors.
-      [{ name: "Dust", visual: DUST_AVATAR_URL, isRounded: false }];
+    : // Only Ruby-managed skills should have no editors.
+      [{ name: "Ruby", visual: RUBY_AVATAR_URL, isRounded: false }];
 
   return <DataTable.CellContent avatarStack={{ items, nbVisibleItems: 4 }} />;
 }

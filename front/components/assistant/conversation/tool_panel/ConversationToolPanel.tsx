@@ -9,7 +9,7 @@ import { getAvatar } from "@app/lib/actions/mcp_icons";
 import type { MCPServerViewType } from "@app/lib/api/mcp";
 import { useMCPServerView } from "@app/lib/swr/mcp_servers";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 interface ConversationToolPanelProps {
   owner: LightWorkspaceType;

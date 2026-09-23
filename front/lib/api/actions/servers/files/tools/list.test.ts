@@ -22,7 +22,7 @@ vi.mock("@app/lib/file_storage/config", () => ({
   default: { getGcsPrivateUploadsBucket: vi.fn(() => "test-bucket") },
 }));
 vi.mock("@app/lib/api/config", () => ({
-  default: { getApiBaseUrl: vi.fn(() => "https://dust.tt") },
+  default: { getApiBaseUrl: vi.fn(() => "https://ruby.ad") },
 }));
 
 async function sessionAuthForUser(
@@ -40,7 +40,7 @@ async function sessionAuthForUser(
       sessionId: `test-session-${user.sId}`,
       user: {
         workOSUserId: user.workOSUserId,
-        email: user.email ?? "user@dust.tt",
+        email: user.email ?? "user@ruby.ad",
         email_verified: true,
         name: user.username ?? "user",
         nickname: user.username ?? "user",

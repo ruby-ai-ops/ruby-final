@@ -28,11 +28,11 @@ export function buildBrandingAssetStoragePath({
 
 /**
  * Default public-asset paths (served from /public/static/branding/).
- * These are the Dust defaults returned when a workspace has no custom branding, is not entitled,
+ * These are the Ruby defaults returned when a workspace has no custom branding, is not entitled,
  * or has not uploaded a specific asset yet.
  */
 export const BRANDING_DEFAULT_ASSET_PATHS: Record<BrandingAssetName, string> = {
-  logo: "/static/DustHorizontalIcon.png",
+  logo: "/static/RubyHorizontalIcon.png",
   favicon: "/static/favicon.png",
   og: "/static/og/ic.png",
 };

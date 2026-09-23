@@ -20,7 +20,7 @@ import {
 } from "@connectors/connectors/google_drive/temporal/mime_types";
 import type { Sheet } from "@connectors/connectors/google_drive/temporal/spreadsheets";
 import {
-  driveObjectToDustType,
+  driveObjectToRubyType,
   folderHasChildren,
   getAuthObject,
   getDriveClient,
@@ -72,8 +72,8 @@ import {
   isGoogleSheetContentNodeInternalId,
   normalizeError,
 } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { Err, Ok, removeNulls } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { Err, Ok, removeNulls } from "@ruby-ai/client";
 import type { drive_v3 } from "googleapis";
 import type { GaxiosResponse, OAuth2Client } from "googleapis-common";
 import { GaxiosError } from "googleapis-common";
@@ -490,7 +490,7 @@ export class GoogleDriveConnectorManager extends BaseConnectorManager<null> {
 
           const nodes: ContentNode[] = await Promise.all(
             remoteFolders.map(async (rf): Promise<ContentNode> => {
-              const driveObject = await driveObjectToDustType(
+              const driveObject = await driveObjectToRubyType(
                 this.connectorId,
                 rf,
                 authCredentials

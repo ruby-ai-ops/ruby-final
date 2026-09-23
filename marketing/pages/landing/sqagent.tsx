@@ -23,8 +23,8 @@ export default function SqAgentLandingPage() {
   return (
     <>
       <PageMetadata
-        title="Squarespace for AI Agents | Dust"
-        description="Build AI agents in minutes, not months. Dust lets you create custom AI teammates that work across all your tools—no code required."
+        title="Squarespace for AI Agents | Ruby"
+        description="Build AI agents in minutes, not months. Ruby lets you create custom AI teammates that work across all your tools—no code required."
         pathname="/landing/sqagent"
       />
 

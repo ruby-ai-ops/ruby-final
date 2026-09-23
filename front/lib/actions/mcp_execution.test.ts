@@ -38,7 +38,7 @@ import { UserFactory } from "@app/tests/utils/UserFactory";
 import { WorkspaceFactory } from "@app/tests/utils/WorkspaceFactory";
 import { frameV2ContentType } from "@app/types/files";
 import { TOOL_OUTPUTS_FOLDER_NAME } from "@app/types/mount_path";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 import { assert, describe, expect, it, vi } from "vitest";
@@ -104,10 +104,10 @@ async function setupTest({
     jsonSchema: null,
     additionalConfiguration: {},
     mcpServerViewId: generateRandomModelSId(),
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     availability: "auto",
     permission: "never_ask",
     toolServerId: generateRandomModelSId(),
@@ -184,10 +184,10 @@ function createServerSideToolConfiguration(
     jsonSchema: null,
     additionalConfiguration: {},
     mcpServerViewId: generateRandomModelSId(),
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     availability: "manual",
     permission: "never_ask",
     toolServerId: generateRandomModelSId(),
@@ -298,7 +298,7 @@ describe("processToolResults", () => {
       snippet: null,
       text: "Opened Frame.",
       title: "Hello Frame",
-      uri: "https://dust.tt/frame",
+      uri: "https://ruby.ad/frame",
     };
 
     const { generatedFiles } = await processToolResults(auth, {
@@ -354,7 +354,7 @@ describe("processToolResults", () => {
       });
     }
 
-    // Offloaded to DustFileSystem, so generatedFiles is empty.
+    // Offloaded to RubyFileSystem, so generatedFiles is empty.
     expect(generatedFiles).toHaveLength(0);
   });
 
@@ -391,7 +391,7 @@ describe("processToolResults", () => {
       );
     }
 
-    // Offloaded to DustFileSystem, so generatedFiles is empty.
+    // Offloaded to RubyFileSystem, so generatedFiles is empty.
     expect(generatedFiles).toHaveLength(0);
   });
 
@@ -768,7 +768,7 @@ describe("processToolResults", () => {
     const persistResult = await awaitDurablePersist();
     expect(persistResult.isOk()).toBe(true);
 
-    // Frame sandboxes do not mount /files/pod-*, so offloading would leave dsbx unable to
+    // Frame sandboxes do not mount /files/pod-*, so offloading would leave rbx unable to
     // rehydrate. Keep the full resource inline on the action output / poll path.
     const toolOutputWrite = fileStorageMock.saveFileCalls.find((call) =>
       call.filePath.includes(`${TOOL_OUTPUTS_FOLDER_NAME}/`)
@@ -910,7 +910,7 @@ describe("processToolResults", () => {
         largeJson.substring(0, FILE_OFFLOAD_SNIPPET_LENGTH)
       )
     ).toBe(true);
-    expect(stored.resource.text).not.toContain("__dust_offloaded__");
+    expect(stored.resource.text).not.toContain("__ruby_offloaded__");
     expect(stored.resource.text).toContain(
       `[Full content archived at ${stored.resource.uri}]`
     );

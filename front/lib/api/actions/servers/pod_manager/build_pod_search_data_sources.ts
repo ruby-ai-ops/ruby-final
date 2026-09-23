@@ -17,7 +17,7 @@ import type { Authenticator } from "@app/lib/auth";
 import { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
 import type { SpaceResource } from "@app/lib/resources/space_resource";
 import type { ContentNodeAttachmentType } from "@app/types/api/assistant/conversation/attachments";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 type PodSemanticSearchScope = "files" | "conversations" | "all";
 
@@ -55,7 +55,7 @@ function podDataSourceFilter(
 
 /**
  * Data sources for semantic search over a Pod, scoped to files (Pod files, metadata,
- * searchable content nodes), conversations (transcripts in the dust_project connector), or
+ * searchable content nodes), conversations (transcripts in the ruby_project connector), or
  * both. The Pod data source view mixes files and conversations; scope selects via parents
  * filters on that view.
  */
@@ -95,7 +95,7 @@ export async function buildPodSearchDataSources(
   for (const dsView of dataSourceViews) {
     if (
       dsView.dataSource.connectorProvider &&
-      dsView.dataSource.connectorProvider !== "dust_project"
+      dsView.dataSource.connectorProvider !== "ruby_project"
     ) {
       dataSources.push({
         uri: getDataSourceURI({

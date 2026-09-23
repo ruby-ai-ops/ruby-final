@@ -5,7 +5,7 @@ import type {
   ToolHandlerResult,
 } from "@app/lib/actions/mcp_internal_actions/tool_definition";
 import {
-  getDustFileSystemForAgentLoop,
+  getRubyFileSystemForAgentLoop,
   requireAgentLoopConversation,
   scopedPathsFromArgs,
 } from "@app/lib/api/actions/servers/files/tools/agent_loop_fs";
@@ -13,7 +13,7 @@ import { uploadFileFromUrlToFileSystem } from "@app/lib/api/file_system/upload_f
 import { getFilePreviewDirectiveInstruction } from "@app/lib/markdown/file_preview";
 import { isAllSupportedFileContentType } from "@app/types/files";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 
 export async function uploadFromUrlHandler(
   {
@@ -28,7 +28,7 @@ export async function uploadFromUrlHandler(
     return conversationRes;
   }
 
-  const fsResult = await getDustFileSystemForAgentLoop(
+  const fsResult = await getRubyFileSystemForAgentLoop(
     auth,
     conversationRes.value,
     scopedPathsFromArgs(path)

@@ -29,7 +29,7 @@ import {
   LinkWrapper,
   Separator,
   TextArea,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useMemo } from "react";
 import { useController, useFormContext } from "react-hook-form";
@@ -121,7 +121,7 @@ function WebhookEditionExecutionLimit({
         })}{" "}
         (
         <LinkWrapper
-          href="https://docs.dust.tt/docs/user-documentation/agents/triggers/credits-usage"
+          href="https://docs.ruby.ad/docs/user-documentation/agents/triggers/credits-usage"
           target="_blank"
           rel="noreferrer"
           className="underline"

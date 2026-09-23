@@ -14,11 +14,11 @@ export const sendAPIUserEmail = async ({
 }) => {
   const msg = {
     to: user_email,
-    from: "team@dust.tt",
-    subject: "[Dust] Product Update 1",
+    from: "team@ruby.ad",
+    subject: "[Ruby] Product Update 1",
     html: `<p>Hi!</p>
     <p style="max-width: 500px;">
-      <a href="https://dust.tt/w/${workspace_id}">Dust</a> makes work work better with custom AI agents.
+      <a href="https://app.ruby.ad/w/${workspace_id}">Ruby</a> makes work work better with custom AI agents.
     </p>
     <p style="max-width: 500px;">
       The past month has been packed with powerful new features and upgrades.
@@ -44,18 +44,18 @@ export const sendAPIUserEmail = async ({
       • Create custom agents to perform quantitative queries on Notion databases, Google Sheets, and CSV.<br/>
       • Ask questions like "Show me top customers by revenue" and get back instant insights.<br/>
       • Enable everyone to make data-informed decisions without needing SQL or analytics expertise.<br/>
-      🔗 <a href="https://blog.dust.tt/dusts-for-quantitative-analysis-with-llms/">https://blog.dust.tt/dusts-for-quantitative-analysis-with-llms/</a>
+      🔗 <a href="https://blog.ruby.ad/rubys-for-quantitative-analysis-with-llms/">https://blog.ruby.ad/rubys-for-quantitative-analysis-with-llms/</a>
     </p>
 
     <p style="max-width: 500px; padding-top: 20px;">
       <b>📘 Confluence Connection</b><br/>
-      • Connect your Confluence instance to Dust to sync global spaces and pages.<br/>
+      • Connect your Confluence instance to Ruby to sync global spaces and pages.<br/>
       • Simply add Confluence as a data source and let your agents tap into that collective wisdom.<br/>
     </p>
 
     <p style="max-width: 500px; padding-top: 20px;">
       <b>💬 Intercom Connection</b><br/>
-      • Connect Intercom to sync Help Center articles and customer conversations to Dust.<br/>
+      • Connect Intercom to sync Help Center articles and customer conversations to Ruby.<br/>
       • Choose which Teams to sync conversations from and control access to customer data.<br/>
     </p>
 
@@ -66,32 +66,32 @@ export const sendAPIUserEmail = async ({
 
     <p style="max-width: 500px; padding-top: 20px;">
       <b>🤖 Summon Agents in Slack</b><br/>
-      • Interact with any Dust agent right from Slack using the @dust ~agentname or @dust +agentname syntax. Bring the power of Dust to the tools you use every day.<br/>
+      • Interact with any Ruby agent right from Slack using the @ruby ~agentname or @ruby +agentname syntax. Bring the power of Ruby to the tools you use every day.<br/>
     </p>
 
     <p style="max-width: 500px; padding-top: 20px;">
       <b>📘 Quick Start Guide</b><br/>
-      • We've added a handy walkthrough on first login to explain Dust fundamentals and help new users get oriented. Be sure to check it out!<br/>
+      • We've added a handy walkthrough on first login to explain Ruby fundamentals and help new users get oriented. Be sure to check it out!<br/>
     </p>
 
     <p style="max-width: 500px; padding-top: 20px;">
-      <b>🏗️ Dust Builders Sessions #1</b><br/>
-      • Tune in on March 14th for our first Dust Sessions for Builders webinar! Folks from Alan, Pennylane, and Payfit will be demoing their innovative support and sales agents.<br/>
-      • Admin and Builders, save your spot now! Send an email to <a href="mailto:pauline@dust.tt">pauline@dust.tt</a>.
+      <b>🏗️ Ruby Builders Sessions #1</b><br/>
+      • Tune in on March 14th for our first Ruby Sessions for Builders webinar! Folks from Alan, Pennylane, and Payfit will be demoing their innovative support and sales agents.<br/>
+      • Admin and Builders, save your spot now! Send an email to <a href="mailto:pauline@ruby.ad">pauline@ruby.ad</a>.
     </p>
 
     <p style="max-width: 500px; padding-top: 20px;">
       <b>➕ And more...</b><br/>
       • Refreshed agent details page and builder UX.<br/>
       • Experimental instruction suggestions and website crawling settings.<br/>
-      • New blog posts: <a href="https://blog.dust.tt/pennylane-dust-customer-support-journey/">How Eléonore improved the efficiency of Pennylane’s Care team thanks to Dust</a> and <a href="https://blog.dust.tt/why-dust/">Why Dust</a>.<br/>
+      • New blog posts: <a href="https://blog.ruby.ad/pennylane-ruby-customer-support-journey/">How Eléonore improved the efficiency of Pennylane’s Care team thanks to Ruby</a> and <a href="https://blog.ruby.ad/why-ruby/">Why Ruby</a>.<br/>
     </p>
 
     <p style="max-width: 500px; padding-top: 20px;">
       Happy building,
     </p>
     <p>
-      The Dust Team
+      The Ruby Team
     </p>
     <p style="max-width: 500px; padding-top: 20px; color: #888;">
       PS: Simply reply to this email with any questions (or if you wish to unsubscribe from these updates). We're here to help!
@@ -133,7 +133,7 @@ AND ("m"."startAt" <= NOW()) AND ("m"."endAt" IS NULL OR "m"."endAt" >= NOW());
     chunks.push(chunk);
   }
 
-  //const chunks: { user_email: string }[][] = [[{ user_email: "team@dust.tt" }]];
+  //const chunks: { user_email: string }[][] = [[{ user_email: "team@ruby.ad" }]];
 
   for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i];

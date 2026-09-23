@@ -6,7 +6,7 @@ import { z } from "zod";
 // https://docs.x.ai/developers/models/grok-4.6 and
 // https://docs.x.ai/developers/release-notes. Grok 4.6 has a 500k context
 // window and no separate text output limit, so the context window is the
-// effective native output ceiling. Dust applies 256k/64k product caps in the
+// effective native output ceiling. Ruby applies 256k/64k product caps in the
 // llms layer.
 const CONTEXT_SIZE = 500_000;
 const MAX_OUTPUT_TOKENS = CONTEXT_SIZE;

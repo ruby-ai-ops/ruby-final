@@ -6,11 +6,11 @@ import type { ConnectorResource } from "@connectors/resources/connector_resource
 import type {
   APIError,
   ConversationPublicType,
-  DustAPI,
+  RubyAPI,
   Result,
   UserMessageType,
-} from "@dust-tt/client";
-import { Err, normalizeError, Ok } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { Err, normalizeError, Ok } from "@ruby-ai/client";
 import type { WebClient } from "@slack/web-api";
 
 const SLACK_PENDING_PROMOTION_RECONNECT_DELAY_MS = 1_000;
@@ -24,9 +24,9 @@ type SlackPendingConversation = {
   }[][];
 };
 
-type SlackPendingUserMessageDustAPI<
+type SlackPendingUserMessageRubyAPI<
   TConversation extends SlackPendingConversation,
-> = Pick<DustAPI, "streamConversationEvents"> & {
+> = Pick<RubyAPI, "streamConversationEvents"> & {
   getConversation: (params: {
     conversationId: string;
   }) => Promise<Result<TConversation, APIError>>;
@@ -46,12 +46,12 @@ function hasAgentMessageForUserMessage(
 }
 
 async function waitForSlackUserMessagePromotion({
-  dustAPI,
+  rubyAPI,
   conversationId,
   timeoutMs,
   userMessageId,
 }: {
-  dustAPI: Pick<DustAPI, "streamConversationEvents">;
+  rubyAPI: Pick<RubyAPI, "streamConversationEvents">;
   conversationId: string;
   timeoutMs: number;
   userMessageId: string;
@@ -66,7 +66,7 @@ async function waitForSlackUserMessagePromotion({
       : new Err(normalizeError(error));
 
   try {
-    const streamRes = await dustAPI.streamConversationEvents({
+    const streamRes = await rubyAPI.streamConversationEvents({
       conversationId,
       signal: abortController.signal,
       options: {
@@ -130,7 +130,7 @@ export async function resolveSlackPendingUserMessage<
 >({
   connector,
   conversation,
-  dustAPI,
+  rubyAPI,
   slack,
   streamHandler,
   timeoutMs,
@@ -138,7 +138,7 @@ export async function resolveSlackPendingUserMessage<
 }: {
   connector: Pick<ConnectorResource, "id" | "workspaceId">;
   conversation: TConversation;
-  dustAPI: SlackPendingUserMessageDustAPI<TConversation>;
+  rubyAPI: SlackPendingUserMessageRubyAPI<TConversation>;
   slack: {
     slackChannelId: string;
     slackClient: { chat: Pick<WebClient["chat"], "postMessage"> };
@@ -165,7 +165,7 @@ export async function resolveSlackPendingUserMessage<
   );
 
   const waitRes = await waitForSlackUserMessagePromotion({
-    dustAPI,
+    rubyAPI,
     conversationId: conversation.sId,
     timeoutMs,
     userMessageId: userMessage.sId,
@@ -177,7 +177,7 @@ export async function resolveSlackPendingUserMessage<
   // The promotion event only carries the user message id. Refetch once to get the
   // new agent message id before streaming; otherwise the SDK opens a second
   // conversation-events stream and refetches internally.
-  const conversationRes = await dustAPI.getConversation({
+  const conversationRes = await rubyAPI.getConversation({
     conversationId: conversation.sId,
   });
 
@@ -211,8 +211,8 @@ export async function resolveSlackPendingUserMessage<
     connector.workspaceId,
     conversation.sId
   );
-  const fallbackText = `:hourglass_flowing_sand: _Dust is still finishing the previous request.${
-    conversationUrl ? ` <${conversationUrl}|Continue on Dust>.` : ""
+  const fallbackText = `:hourglass_flowing_sand: _Ruby is still finishing the previous request.${
+    conversationUrl ? ` <${conversationUrl}|Continue on Ruby>.` : ""
   }_`;
 
   try {

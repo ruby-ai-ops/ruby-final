@@ -42,7 +42,7 @@ import {
   Hoverable,
   ShapesPlus,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useContext, useRef, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
@@ -311,7 +311,7 @@ export function AgentBuilderCapabilitiesBlock({
           Need help? Check our{" "}
           <Hoverable
             variant="primary"
-            href="https://docs.dust.tt/docs/skills"
+            href="https://docs.ruby.ad/docs/skills"
             target="_blank"
           >
             guide

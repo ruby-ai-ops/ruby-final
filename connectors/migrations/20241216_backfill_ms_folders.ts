@@ -110,7 +110,7 @@
 //               parents,
 //               parentId: file.parentInternalId,
 //               title: file.name || "",
-//               mimeType: "application/vnd.dust.microsoft.folder",
+//               mimeType: "application/vnd.ruby.microsoft.folder",
 //             });
 //           }
 //         }

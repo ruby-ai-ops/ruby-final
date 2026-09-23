@@ -25,7 +25,7 @@ export class RemoteMCPServerModel extends WorkspaceAwareModel<RemoteMCPServerMod
   declare cachedDescription: string | null;
   declare cachedTools: MCPToolType[];
   // Derived from cachedTools at write time: true when at least one tool input schema forces a
-  // Dust configurable input, i.e. the server cannot be attached directly in a conversation.
+  // Ruby configurable input, i.e. the server cannot be attached directly in a conversation.
   declare cachedToolsRequireConfiguration: CreationOptional<boolean>;
 
   declare lastSyncAt: Date | null;

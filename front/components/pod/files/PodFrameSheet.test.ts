@@ -6,7 +6,7 @@ import { createElement } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const frameV2Metadata = {
-  contentType: "application/vnd.dust.frame.v2+json",
+  contentType: "application/vnd.ruby.frame.v2+json",
   fileName: "manifest.json",
   useCaseMetadata: { spaceId: "vlt_project" },
 };
@@ -62,7 +62,7 @@ vi.mock("@app/components/pod/files/PodFileTabButton", () => ({
 }));
 
 vi.mock("@app/lib/auth/AuthContext", () => ({
-  useAuth: () => ({ vizUrl: "https://viz.dust.tt" }),
+  useAuth: () => ({ vizUrl: "https://viz.ruby.ad" }),
   useFeatureFlags: () => ({ hasFeature: () => false }),
 }));
 
@@ -85,7 +85,7 @@ vi.mock("@app/lib/swr/frames", () => ({
   },
 }));
 
-vi.mock("@dust-tt/sparkle", async () => {
+vi.mock("@ruby-ai/ui", async () => {
   const { createElement } = await import("react");
   const Container = ({ children }: PropsWithChildren) =>
     createElement("div", null, children);
@@ -150,7 +150,7 @@ describe("PodFrameSheet", () => {
 
   it("names a legacy Frame, which has no manifest, after its file", () => {
     mocks.fileMetadata = {
-      contentType: "text/vnd.dust.attachment.slack.thread",
+      contentType: "text/vnd.ruby.attachment.slack.thread",
       fileName: "Legacy.tsx",
       useCaseMetadata: { spaceId: "vlt_project" },
     };
@@ -194,7 +194,7 @@ describe("PodFrameSheet", () => {
     });
 
     mocks.fileMetadata = {
-      contentType: "text/vnd.dust.attachment.slack.thread",
+      contentType: "text/vnd.ruby.attachment.slack.thread",
       fileName: "Legacy.tsx",
       useCaseMetadata: { spaceId: "vlt_project" },
     };

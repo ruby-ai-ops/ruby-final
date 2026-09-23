@@ -32,15 +32,15 @@ vi.mock("@app/hooks/useConsumptionExports", () => ({
   useStartConsumptionExport: mockUseStartConsumptionExport,
 }));
 
-vi.mock("@app/components/sparkle/ThemeContext", () => ({
+vi.mock("@app/components/ui/ThemeContext", () => ({
   useTheme: () => ({ isDark: false }),
 }));
 
-vi.mock("@dust-tt/sparkle", async (importOriginal) => {
-  const sparkle = await importOriginal<typeof import("@dust-tt/sparkle")>();
+vi.mock("@ruby-ai/ui", async (importOriginal) => {
+  const ui = await importOriginal<typeof import("@ruby-ai/ui")>();
 
   return {
-    ...sparkle,
+    ...ui,
     Tooltip: ({ label, trigger }: { label: ReactNode; trigger: ReactNode }) => (
       <>
         {trigger}

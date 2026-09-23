@@ -1,4 +1,4 @@
-import { Minimize01, UploadCloud02 } from "@dust-tt/sparkle";
+import { Minimize01, UploadCloud02 } from "@ruby-ai/ui";
 import type React from "react";
 
 export type InputBarSlashCommandId =

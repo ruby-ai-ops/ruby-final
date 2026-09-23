@@ -6,20 +6,20 @@ import { GLOBAL_AGENTS_SID } from "@app/types/assistant/assistant";
 
 // Resolves the agent a conversation started in this pod should kick off with
 // when the caller didn't pick one explicitly: the pod's configured default
-// agent, else @dust.
+// agent, else @ruby.
 export async function resolvePodDefaultAgentId(
   auth: Authenticator,
   space: SpaceResource
 ): Promise<string> {
   const metadata = await ProjectMetadataResource.fetchBySpace(auth, space);
   const candidateId = metadata?.defaultAgentId ?? null;
-  if (!candidateId || candidateId === GLOBAL_AGENTS_SID.DUST) {
-    return GLOBAL_AGENTS_SID.DUST;
+  if (!candidateId || candidateId === GLOBAL_AGENTS_SID.RUBY) {
+    return GLOBAL_AGENTS_SID.RUBY;
   }
 
   const agent = await AgentResource.fetchById(auth, candidateId);
   if (!agent || !auth.can("read", agent) || agent.status !== "active") {
-    return GLOBAL_AGENTS_SID.DUST;
+    return GLOBAL_AGENTS_SID.RUBY;
   }
   return candidateId;
 }

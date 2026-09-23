@@ -20,7 +20,7 @@ import {
   Scan,
   SearchMd,
   Table,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import isEmpty from "lodash/isEmpty";
 import type { ComponentType } from "react";
 

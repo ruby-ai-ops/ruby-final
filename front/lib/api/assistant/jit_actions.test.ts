@@ -503,7 +503,7 @@ describe("getJITServers", () => {
       await DataSourceViewFactory.fromConnector(
         workspace,
         conversationsSpace,
-        "dust_project",
+        "ruby_project",
         auth.user()
       );
 
@@ -1314,7 +1314,7 @@ describe("getJITServers", () => {
         expect(server.timeFrame).toBeNull();
         expect(server.jsonSchema).toBeNull();
         expect(server.secretName).toBeNull();
-        expect(server.dustAppConfiguration).toBeNull();
+        expect(server.rubyAppConfiguration).toBeNull();
       }
     });
 

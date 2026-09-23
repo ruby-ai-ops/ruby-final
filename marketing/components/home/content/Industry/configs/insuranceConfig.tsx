@@ -1,10 +1,10 @@
 import type { IndustryPageConfig } from "@marketing/components/home/content/Industry/configs/utils";
 import { createLayoutConfig } from "@marketing/components/home/content/Industry/configs/utils";
-import { MedicalCross } from "@dust-tt/sparkle";
+import { MedicalCross } from "@ruby-ai/ui";
 
 export const insuranceConfig: IndustryPageConfig = {
   seo: {
-    title: "Dust for Insurance",
+    title: "Ruby for Insurance",
     description:
       "The AI Solution to streamline operations & enhance member experience. Transform insurance workflows with intelligent automation while ensuring compliance and improving customer satisfaction.",
   },
@@ -13,12 +13,12 @@ export const insuranceConfig: IndustryPageConfig = {
     "aiAgents",
     "trustedBy",
     "painPoints",
-    "dustInAction",
+    "rubyInAction",
     "impactMetrics",
     "demoVideo",
     "testimonial",
     "customerStories",
-    "justUseDust",
+    "justUseRuby",
   ]),
   hero: {
     chip: {
@@ -28,7 +28,7 @@ export const insuranceConfig: IndustryPageConfig = {
     },
     title: (
       <>
-        Dust for
+        Ruby for
         <br /> Insurance
       </>
     ),
@@ -46,7 +46,7 @@ export const insuranceConfig: IndustryPageConfig = {
     },
     testimonialCard: {
       quote:
-        "Dust isn't just about saving time—it's about making better, more informed decisions.",
+        "Ruby isn't just about saving time—it's about making better, more informed decisions.",
       author: {
         name: "Etienne Debost",
         title: "Head of Architecture",
@@ -100,8 +100,8 @@ export const insuranceConfig: IndustryPageConfig = {
       },
     ],
   },
-  dustInAction: {
-    title: "Dust in action",
+  rubyInAction: {
+    title: "Ruby in action",
     useCases: [
       {
         title: "Customer service",
@@ -247,12 +247,12 @@ export const insuranceConfig: IndustryPageConfig = {
     ],
   },
   demoVideo: {
-    sectionTitle: "See Dust in motion",
-    videoUrl: "https://fast.wistia.net/embed/iframe/zzbhe95pvz",
+    sectionTitle: "See Ruby in motion",
+    videoUrl: "/static/workspace-demo/index.html",
   },
   testimonial: {
     quote:
-      "Dust isn't just about saving time—it's about making better, more informed decisions.",
+      "Ruby isn't just about saving time—it's about making better, more informed decisions.",
     author: {
       name: "Etienne Debost",
       title: "Head of Architecture",
@@ -264,12 +264,12 @@ export const insuranceConfig: IndustryPageConfig = {
     bgColor: "bg-blue-600",
     textColor: "text-white",
   },
-  justUseDust: {
-    title: "Just use Dust",
+  justUseRuby: {
+    title: "Just use Ruby",
     titleColor: "text-blue-600",
     ctaButtons: {
       primary: {
-        label: "Start Free Trial",
+        label: "Get started",
         href: "/api/workos/login",
       },
       secondary: {

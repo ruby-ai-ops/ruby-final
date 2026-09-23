@@ -8,7 +8,7 @@ import {
 } from "@app/lib/swr/files";
 import { isSupportedImageContentType } from "@app/types/files";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Citation, CitationImage } from "@dust-tt/sparkle";
+import { Citation, CitationImage } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 import { visit } from "unist-util-visit";
@@ -74,7 +74,7 @@ export function imgDirective() {
     visit(tree, ["image"], (node) => {
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       const data = node.data || (node.data = {});
-      data.hName = "dustimg";
+      data.hName = "rubyimg";
       data.hProperties = {
         src: node.url,
         alt: node.alt,

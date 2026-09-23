@@ -1,8 +1,8 @@
 # Local dev environment, managed by process-compose. Replaces tools/mprocs.yaml.
 #
-# Run it via tools/dev.sh (sets DUST_DEV_ROOT, selects the Node version, clears
+# Run it via tools/dev.sh (sets RUBY_DEV_ROOT, selects the Node version, clears
 # stale build artifacts, runs `npm install`, then launches process-compose).
-# Do not run process-compose directly: the config relies on ${DUST_DEV_ROOT}
+# Do not run process-compose directly: the config relies on ${RUBY_DEV_ROOT}
 # being exported and on the Node version being on PATH (the _check-start-script
 # process enforces this).
 #
@@ -13,7 +13,7 @@
 # Namespace ordering (lower = more visible in TUI):
 #   00-front    — main app: API, workers, connectors, SPAs
 #   20-core     — Rust services (core-api, sqlite-workers, oauth)
-#   40-sdk      — build watchers (sparkle, sdks-js) — readiness gates for 00-front
+#   40-sdk      — build watchers (ui, sdks-js) — readiness gates for 00-front
 #   90-optional — disabled-by-default extras
 #   99-infra    — Docker infrastructure (postgres, redis, elasticsearch, qdrant, temporal)
 
@@ -26,11 +26,11 @@ shell:
 processes:
   # Guard: fail loudly if process-compose was launched directly instead of via
   # tools/dev.sh (which sets up nvm, clears stale build artifacts and installs
-  # dependencies). dev.sh exports DUST_USE_DEV_SH=1. The `$$` escapes
+  # dependencies). dev.sh exports RUBY_USE_DEV_SH=1. The `$$` escapes
   # process-compose's variable expansion so the check runs at runtime.
   _check-start-script:
     command: |
-      if [ -z "$$DUST_USE_DEV_SH" ]; then
+      if [ -z "$$RUBY_USE_DEV_SH" ]; then
         echo ""
         echo "ERROR: Run tools/dev.sh instead of invoking process-compose directly."
         echo "       It sets up nvm, clears stale build artifacts, and installs dependencies."
@@ -48,7 +48,7 @@ processes:
     command: |
       docker compose up -d db
       docker compose logs -f db
-    working_dir: "${DUST_DEV_ROOT}"
+    working_dir: "${RUBY_DEV_ROOT}"
     namespace: 99-infra
     readiness_probe:
       exec:
@@ -60,7 +60,7 @@ processes:
     command: |
       docker compose up -d redis
       docker compose logs -f redis
-    working_dir: "${DUST_DEV_ROOT}"
+    working_dir: "${RUBY_DEV_ROOT}"
     namespace: 99-infra
     readiness_probe:
       exec:
@@ -72,7 +72,7 @@ processes:
     command: |
       docker compose up -d elasticsearch
       docker compose logs -f elasticsearch
-    working_dir: "${DUST_DEV_ROOT}"
+    working_dir: "${RUBY_DEV_ROOT}"
     namespace: 99-infra
     readiness_probe:
       exec:
@@ -84,7 +84,7 @@ processes:
     command: |
       docker compose up -d qdrant_primary qdrant_secondary
       docker compose logs -f qdrant_primary qdrant_secondary
-    working_dir: "${DUST_DEV_ROOT}"
+    working_dir: "${RUBY_DEV_ROOT}"
     namespace: 99-infra
     readiness_probe:
       exec:
@@ -105,11 +105,11 @@ processes:
         --name conversationId --type Text \
         --name workspaceId --type Text 2>/dev/null || true
       docker compose logs -f
-    working_dir: "${DUST_DEV_ROOT}/temporal"
+    working_dir: "${RUBY_DEV_ROOT}/temporal"
     namespace: 99-infra
     readiness_probe:
       exec:
-        command: "docker compose -f ${DUST_DEV_ROOT}/temporal/docker-compose.yml exec -T temporal-admin-tools temporal operator search-attribute list 2>/dev/null | grep -q connectorId"
+        command: "docker compose -f ${RUBY_DEV_ROOT}/temporal/docker-compose.yml exec -T temporal-admin-tools temporal operator search-attribute list 2>/dev/null | grep -q connectorId"
       period_seconds: 3
       failure_threshold: 120
 
@@ -117,23 +117,23 @@ processes:
   # 40-sdk: Build watchers — readiness gates for 00-front services
   # ---------------------------------------------------------------------------
 
-  sparkle:
+  ui:
     command: "npm run watch"
-    working_dir: "${DUST_DEV_ROOT}/sparkle"
+    working_dir: "${RUBY_DEV_ROOT}/ui"
     namespace: 40-sdk
     readiness_probe:
       exec:
-        command: "test -f ${DUST_DEV_ROOT}/sparkle/dist/cjs/index.js"
+        command: "test -f ${RUBY_DEV_ROOT}/ui/dist/cjs/index.js"
       period_seconds: 1
       failure_threshold: 600
 
   sdks-js:
     command: "./admin/dev.sh"
-    working_dir: "${DUST_DEV_ROOT}/sdks/js"
+    working_dir: "${RUBY_DEV_ROOT}/sdks/js"
     namespace: 40-sdk
     readiness_probe:
       exec:
-        command: "test -f ${DUST_DEV_ROOT}/sdks/js/dist/client.esm.js.map"
+        command: "test -f ${RUBY_DEV_ROOT}/sdks/js/dist/client.esm.js.map"
       period_seconds: 1
       failure_threshold: 600
 
@@ -143,7 +143,7 @@ processes:
 
   core:
     command: "cargo watch -x 'run --bin core-api'"
-    working_dir: "${DUST_DEV_ROOT}/core"
+    working_dir: "${RUBY_DEV_ROOT}/core"
     namespace: 20-core
     environment:
       - "CARGO_TERM_COLOR=always"
@@ -162,13 +162,13 @@ processes:
 
   sqlite-workers:
     command: "cargo watch -x 'run --bin sqlite-worker'"
-    working_dir: "${DUST_DEV_ROOT}/core"
+    working_dir: "${RUBY_DEV_ROOT}/core"
     namespace: 20-core
     environment:
       - "CARGO_TERM_COLOR=always"
       - "CORE_API=http://localhost:3001"
       - "IS_LOCAL_DEV=1"
-      - "DATABASES_STORE_DATABASE_URI=postgresql://dev:dev@localhost:5432/dust_databases_store"
+      - "DATABASES_STORE_DATABASE_URI=postgresql://dev:dev@localhost:5432/ruby_databases_store"
       - "CORE_API_KEY=soupinou"
     availability:
       restart: on_failure
@@ -179,7 +179,7 @@ processes:
 
   oauth:
     command: "cargo watch -x 'run --bin oauth'"
-    working_dir: "${DUST_DEV_ROOT}/core"
+    working_dir: "${RUBY_DEV_ROOT}/core"
     namespace: 20-core
     environment:
       - "CARGO_TERM_COLOR=always"
@@ -197,7 +197,7 @@ processes:
 
   migrations:
     command: "npm -w front run migration:apply && npm -w connectors run migration:apply"
-    working_dir: "${DUST_DEV_ROOT}"
+    working_dir: "${RUBY_DEV_ROOT}"
     namespace: 00-front
     depends_on:
       sdks-js:
@@ -207,7 +207,7 @@ processes:
 
   front-api:
     command: "npm run dev"
-    working_dir: "${DUST_DEV_ROOT}/front-api"
+    working_dir: "${RUBY_DEV_ROOT}/front-api"
     namespace: 00-front
     environment:
       - "NODE_ENV=development"
@@ -239,7 +239,7 @@ processes:
 
   front-workers:
     command: "./admin/dev_worker.sh"
-    working_dir: "${DUST_DEV_ROOT}/front"
+    working_dir: "${RUBY_DEV_ROOT}/front"
     namespace: 00-front
     availability:
       restart: on_failure
@@ -252,7 +252,7 @@ processes:
 
   connectors:
     command: "./admin/dev.sh"
-    working_dir: "${DUST_DEV_ROOT}/connectors"
+    working_dir: "${RUBY_DEV_ROOT}/connectors"
     namespace: 00-front
     availability:
       restart: on_failure
@@ -269,20 +269,20 @@ processes:
 
   front-spa:
     command: "npm run dev:app"
-    working_dir: "${DUST_DEV_ROOT}/front-spa"
+    working_dir: "${RUBY_DEV_ROOT}/front-spa"
     namespace: 00-front
     depends_on:
-      sparkle:
+      ui:
         condition: process_healthy
       sdks-js:
         condition: process_healthy
 
-  front-poke:
-    command: "npm run dev:poke"
-    working_dir: "${DUST_DEV_ROOT}/front-spa"
+  front-admin:
+    command: "npm run dev:admin"
+    working_dir: "${RUBY_DEV_ROOT}/front-spa"
     namespace: 00-front
     depends_on:
-      sparkle:
+      ui:
         condition: process_healthy
       sdks-js:
         condition: process_healthy
@@ -293,52 +293,52 @@ processes:
 
   marketing-site:
     command: "npm run dev -- -p 3009"
-    working_dir: "${DUST_DEV_ROOT}/marketing"
+    working_dir: "${RUBY_DEV_ROOT}/marketing"
     namespace: 90-optional
     disabled: true
     depends_on:
-      sparkle:
+      ui:
         condition: process_healthy
 
-  sparkle-storybook:
+  ui-storybook:
     command: "npm run storybook"
-    working_dir: "${DUST_DEV_ROOT}/sparkle"
+    working_dir: "${RUBY_DEV_ROOT}/ui"
     namespace: 90-optional
     disabled: true
 
-  sparkle-playground:
+  ui-playground:
     command: "npm install && npm run dev"
-    working_dir: "${DUST_DEV_ROOT}/sparkle/playground"
+    working_dir: "${RUBY_DEV_ROOT}/ui/playground"
     namespace: 90-optional
     disabled: true
 
   viz:
     command: "npm run dev"
-    working_dir: "${DUST_DEV_ROOT}/viz"
+    working_dir: "${RUBY_DEV_ROOT}/viz"
     namespace: 90-optional
     disabled: true
 
   extension-chrome:
     command: "npm run dev:chrome"
-    working_dir: "${DUST_DEV_ROOT}/extension"
+    working_dir: "${RUBY_DEV_ROOT}/extension"
     namespace: 90-optional
     disabled: true
 
   extension-firefox:
     command: "npm run dev:firefox"
-    working_dir: "${DUST_DEV_ROOT}/extension"
+    working_dir: "${RUBY_DEV_ROOT}/extension"
     namespace: 90-optional
     disabled: true
 
   ngrok:
-    # Doc: https://app.notion.com/p/dust-tt/Runbook-Local-Setup-Slack-2ad003fc529d4144bb0ee61b7fd797c9?source=copy_link#2a728599d941807fb71dccb4addc0234
+    # Doc: https://app.notion.com/p/ruby-ai/Runbook-Local-Setup-Slack-2ad003fc529d4144bb0ee61b7fd797c9?source=copy_link#2a728599d941807fb71dccb4addc0234
     command: "ngrok start localhost-via-https"
     namespace: 90-optional
     disabled: true
 
   firebase-webhook-router:
     command: "docker-compose up --build"
-    working_dir: "${DUST_DEV_ROOT}/firebase-functions/webhook-router"
+    working_dir: "${RUBY_DEV_ROOT}/firebase-functions/webhook-router"
     namespace: 90-optional
     disabled: true
 
@@ -346,7 +346,7 @@ processes:
   # front-api reads its URL from TIKA_URL (set to http://localhost:9998).
   apache-tika:
     command: "docker compose up apache-tika"
-    working_dir: "${DUST_DEV_ROOT}"
+    working_dir: "${RUBY_DEV_ROOT}"
     namespace: 90-optional
     disabled: true
 
@@ -355,7 +355,7 @@ processes:
   # Requires infra-elasticsearch to be running first.
   kibana:
     command: "docker compose up kibana_settings kibana"
-    working_dir: "${DUST_DEV_ROOT}"
+    working_dir: "${RUBY_DEV_ROOT}"
     namespace: 90-optional
     disabled: true
     depends_on:
@@ -366,7 +366,7 @@ processes:
   # front-api reads its URL from DOCUMENT_RENDERER_URL (set to http://localhost:3100).
   gotenberg:
     command: "docker compose --profile gotenberg up gotenberg"
-    working_dir: "${DUST_DEV_ROOT}"
+    working_dir: "${RUBY_DEV_ROOT}"
     namespace: 90-optional
     disabled: true
 
@@ -377,7 +377,7 @@ processes:
     disabled: true
 
   stripe:
-    # Doc: https://app.notion.com/p/dust-tt/Runbook-Local-Dev-setup-720bffc7d67a447184cb957e9471380c?source=copy_link#5814f227351d4d258422e21e8de39c82/
+    # Doc: https://app.notion.com/p/ruby-ai/Runbook-Local-Dev-setup-720bffc7d67a447184cb957e9471380c?source=copy_link#5814f227351d4d258422e21e8de39c82/
     command: "stripe listen --forward-to localhost:3000/api/stripe/webhook"
     namespace: 90-optional
     disabled: true

@@ -1,4 +1,4 @@
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import type { Editor } from "@tiptap/react";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";

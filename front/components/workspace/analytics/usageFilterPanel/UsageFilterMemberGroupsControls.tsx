@@ -6,7 +6,7 @@ import {
   NavigationList,
   NavigationListItem,
   Plus,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface UsageFilterMemberGroupsControlsProps {

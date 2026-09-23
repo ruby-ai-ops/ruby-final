@@ -13,8 +13,8 @@ import { createHono } from "@front-api/lib/hono";
 import type { Context } from "hono";
 
 const WORKOS_AUTHKIT_DOMAIN = getWorkOSAuthKitDomain();
-const DUST_MCP_SERVER_URL = getMcpResourceServerUrl();
-const protectedResourcePath = getMcpProtectedResourcePath(DUST_MCP_SERVER_URL);
+const RUBY_MCP_SERVER_URL = getMcpResourceServerUrl();
+const protectedResourcePath = getMcpProtectedResourcePath(RUBY_MCP_SERVER_URL);
 const authorizationServerMetadataUrl = new URL(
   "/.well-known/oauth-authorization-server",
   WORKOS_AUTHKIT_DOMAIN
@@ -22,7 +22,7 @@ const authorizationServerMetadataUrl = new URL(
 
 function getProtectedResourceMetadata() {
   return {
-    resource: DUST_MCP_SERVER_URL,
+    resource: RUBY_MCP_SERVER_URL,
     authorization_servers: getMcpAuthorizationServers(),
     bearer_methods_supported: ["header"],
   } as const;
@@ -126,7 +126,7 @@ mcpWellKnownApp.get(
 );
 
 // Browser MCP clients in local dev exchange authorization codes via fetch;
-// proxy token/registration endpoints so CORS is handled by Dust instead of AuthKit.
+// proxy token/registration endpoints so CORS is handled by Ruby instead of AuthKit.
 if (shouldUseProxy()) {
   mcpWellKnownApp.post("/oauth2/token", async (c) =>
     proxyOAuthPostRequest(c, getWorkOSAuthKitOAuthTokenUrl())

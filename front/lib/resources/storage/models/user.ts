@@ -28,7 +28,7 @@ export class UserModel extends BaseModel<UserModel> {
   declare lastName: string | null;
   declare imageUrl: string | null;
 
-  declare isDustSuperUser: CreationOptional<boolean>;
+  declare isRubySuperUser: CreationOptional<boolean>;
 }
 UserModel.init(
   {
@@ -87,7 +87,7 @@ UserModel.init(
       type: DataTypes.STRING(2048),
       allowNull: true,
     },
-    isDustSuperUser: {
+    isRubySuperUser: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
       allowNull: false,

@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import {
   getPodAgentsMdScopedPath,
   POD_AGENTS_MD_MAX_CHARACTER_COUNT,
@@ -11,7 +11,7 @@ export async function readPodAgentsMdContent(
   podId: string
 ): Promise<string | null> {
   const scopedPath = getPodAgentsMdScopedPath(podId);
-  const fsResult = await DustFileSystem.fromScopedPath(auth, scopedPath);
+  const fsResult = await RubyFileSystem.fromScopedPath(auth, scopedPath);
   if (fsResult.isErr()) {
     if (fsResult.error.code !== "not_found") {
       logger.warn(

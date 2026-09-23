@@ -239,13 +239,13 @@ export class RunResource extends BaseResource<RunModel> {
     return runs.map((r) => new this(this.model, r.get()));
   }
 
-  static async listByDustRunIds(
+  static async listByRubyRunIds(
     auth: Authenticator,
-    { dustRunIds }: { dustRunIds: string[] }
+    { rubyRunIds }: { rubyRunIds: string[] }
   ) {
     const runs = await this.model.findAll({
       where: {
-        dustRunId: { [Op.in]: dustRunIds },
+        rubyRunId: { [Op.in]: rubyRunIds },
         workspaceId: auth.getNonNullableWorkspace().id,
       },
     });
@@ -256,18 +256,18 @@ export class RunResource extends BaseResource<RunModel> {
   // Tag an agent-loop execution's runs with their runKey so credit cost can be
   // ceiled per execution group (matching the Metronome billing partition).
   // Idempotent: a finalize retry recomputes the same key for the same runIds.
-  static async setRunKeyForDustRunIds(
+  static async setRunKeyForRubyRunIds(
     auth: Authenticator,
-    { dustRunIds, runKey }: { dustRunIds: string[]; runKey: string }
+    { rubyRunIds, runKey }: { rubyRunIds: string[]; runKey: string }
   ): Promise<void> {
-    if (dustRunIds.length === 0) {
+    if (rubyRunIds.length === 0) {
       return;
     }
     await this.model.update(
       { runKey },
       {
         where: {
-          dustRunId: { [Op.in]: dustRunIds },
+          rubyRunId: { [Op.in]: rubyRunIds },
           workspaceId: auth.getNonNullableWorkspace().id,
           // The finalize and analytics paths both tag with the same deterministic key:
           // skip rows already tagged so repeat tagging does not rewrite identical rows.
@@ -348,13 +348,13 @@ export class RunResource extends BaseResource<RunModel> {
     }));
   }
 
-  static async fetchByDustRunId(
+  static async fetchByRubyRunId(
     auth: Authenticator,
-    { dustRunId }: { dustRunId: string }
+    { rubyRunId }: { rubyRunId: string }
   ): Promise<RunResource | null> {
     const run = await this.model.findOne({
       where: {
-        dustRunId,
+        rubyRunId,
         workspaceId: auth.getNonNullableWorkspace().id,
       },
     });

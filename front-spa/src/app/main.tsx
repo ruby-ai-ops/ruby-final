@@ -1,6 +1,6 @@
 // Tailwind base globals
-import "@dust-tt/front/styles/global.css";
-// Unified Tailwind build (sparkle + front + front-spa sources in one pass)
+import "@ruby-ai/front/styles/global.css";
+// Unified Tailwind build (ui + front + front-spa sources in one pass)
 import "@spa/index.css";
 
 import App from "@spa/app/App";

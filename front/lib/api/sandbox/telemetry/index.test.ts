@@ -53,9 +53,9 @@ describe("startTelemetry", () => {
     expect(renderedCommand).not.toContain("systemctl unset-environment");
     expect(renderedCommand).toContain("umask 077");
     expect(renderedCommand).toContain("/bin/chmod 600");
-    expect(renderedCommand).toContain("/bin/mv -f /run/dust/fluent-bit.env.");
+    expect(renderedCommand).toContain("/bin/mv -f /run/ruby/fluent-bit.env.");
     expect(renderedCommand).toContain(
-      "/run/dust/fluent-bit.env && /usr/bin/systemctl restart fluent-bit"
+      "/run/ruby/fluent-bit.env && /usr/bin/systemctl restart fluent-bit"
     );
     expect(renderedCommand).not.toContain(datadogApiKey);
     expect(options).not.toHaveProperty("stdin");

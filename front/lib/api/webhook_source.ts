@@ -8,7 +8,7 @@ import {
 } from "@app/lib/api/audit/workos_audit";
 import { WEBHOOK_SERVICES } from "@app/lib/api/triggers/built-in-webhooks/services";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import fileStorageConfig from "@app/lib/file_storage/config";
 import { SpaceResource } from "@app/lib/resources/space_resource";
 import { TriggerResource } from "@app/lib/resources/trigger_resource";
@@ -134,7 +134,7 @@ export type WebhookSourceWithCounts = WebhookSourceType & {
 
 /**
  * Every webhook source in the workspace, with the number of views and the
- * total number of triggers across those views. Used by the poke admin UI.
+ * total number of triggers across those views. Used by the admin admin UI.
  */
 export async function listWebhookSourcesWithCounts(
   auth: Authenticator
@@ -142,7 +142,7 @@ export async function listWebhookSourcesWithCounts(
   const sources = await WebhookSourceResource.listByWorkspace(auth);
   const results: WebhookSourceWithCounts[] = [];
 
-  // O(sources × views) sequential DB round-trips. Acceptable for the poke
+  // O(sources × views) sequential DB round-trips. Acceptable for the admin
   // admin UI: webhook sources and views per workspace are small (< 20 each
   // in practice), and this endpoint is not on a user hot path. If counts
   // grow, batch the view + trigger fetches into one query each.
@@ -196,7 +196,7 @@ export function makeWebhookRequestsGcsUrl({
 /**
  * For a given webhook source, return its admin-only JSON, all of its views,
  * every trigger across those views (enriched with the editor user record), and
- * request-volume counts over recent periods. Used by the poke admin UI.
+ * request-volume counts over recent periods. Used by the admin admin UI.
  */
 export async function getWebhookSourceAdminDetails(
   auth: Authenticator,
@@ -251,7 +251,7 @@ export async function propagateWebhookSourceViewName(
   auth: Authenticator,
   webhookSourceView: WebhookSourcesViewResource,
   newName: string
-): Promise<Result<undefined, DustError<"unauthorized">>> {
+): Promise<Result<undefined, RubyError<"unauthorized">>> {
   const systemView =
     await WebhookSourcesViewResource.getWebhookSourceViewForSystemSpace(
       auth,
@@ -260,7 +260,7 @@ export async function propagateWebhookSourceViewName(
 
   if (!systemView) {
     // This should never happen as we already validated that the view is a system view
-    return new Err(new DustError("unauthorized", "Only system views allowed"));
+    return new Err(new RubyError("unauthorized", "Only system views allowed"));
   }
 
   // Get all views with the same webhook source (excluding the system view already updated)
@@ -273,7 +273,7 @@ export async function propagateWebhookSourceViewName(
   for (const view of allViews) {
     if (view.sId !== webhookSourceView.sId && !auth.can("admin", view)) {
       return new Err(
-        new DustError("unauthorized", "Not allowed to update all views.")
+        new RubyError("unauthorized", "Not allowed to update all views.")
       );
     }
   }
@@ -302,7 +302,7 @@ export async function propagateWebhookSourceViewDescriptionAndIcon(
   webhookSourceView: WebhookSourcesViewResource,
   description?: string,
   icon?: InternalAllowedIconType | CustomResourceIconType
-): Promise<Result<undefined, DustError<"unauthorized">>> {
+): Promise<Result<undefined, RubyError<"unauthorized">>> {
   const systemView =
     await WebhookSourcesViewResource.getWebhookSourceViewForSystemSpace(
       auth,
@@ -311,7 +311,7 @@ export async function propagateWebhookSourceViewDescriptionAndIcon(
 
   if (!systemView) {
     // This should never happen as we already validated that the view is a system view
-    return new Err(new DustError("unauthorized", "Only system views allowed"));
+    return new Err(new RubyError("unauthorized", "Only system views allowed"));
   }
 
   // Get all views with the same webhook source (excluding the system view already updated)
@@ -324,7 +324,7 @@ export async function propagateWebhookSourceViewDescriptionAndIcon(
   for (const view of allViews) {
     if (view.sId !== webhookSourceView.sId && !auth.can("admin", view)) {
       return new Err(
-        new DustError("unauthorized", "Not allowed to update all views.")
+        new RubyError("unauthorized", "Not allowed to update all views.")
       );
     }
   }

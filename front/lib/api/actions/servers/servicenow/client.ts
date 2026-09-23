@@ -26,7 +26,7 @@ function isValidSysId(value: string): boolean {
 
 // The generic table tools (list_records/get_record/create_record/update_record) accept any
 // table name rather than a fixed allowlist: access is enforced by ServiceNow itself (the
-// connected account's own ACLs/roles), not by Dust. `FIELD_NAME_REGEX` still gates what reaches
+// connected account's own ACLs/roles), not by Ruby. `FIELD_NAME_REGEX` still gates what reaches
 // the request, though — `table` is interpolated directly into the request path unencoded, so it
 // must be validated as a plain identifier to rule out path/query injection (e.g.
 // "incident/../sys_user").

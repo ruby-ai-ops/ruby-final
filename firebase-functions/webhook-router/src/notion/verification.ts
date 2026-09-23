@@ -84,7 +84,7 @@ export function createNotionVerificationMiddleware(
 
       // Skip signature verification for the initial verification_token request, since
       // that is what gives us the signing secret in the first place. This applies to
-      // both private client integrations and standard Dust integrations.
+      // both private client integrations and standard Ruby integrations.
       if (req.body.verification_token) {
         return next();
       }

@@ -252,7 +252,7 @@ describe("PATCH /api/w/:wId/assistant/agent_configurations/:aId - pending agent"
         name: "My New Agent",
         description: "A test agent converted from pending",
         instructions: "Test instructions",
-        pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+        pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
         status: "active",
         scope: "hidden",
         model: {

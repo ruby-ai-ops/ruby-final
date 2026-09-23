@@ -12,12 +12,12 @@ import type {
   SkillWithoutInstructionsAndToolsType,
   SkillWithRelationsType,
 } from "@app/types/assistant/skill_configuration";
-import { cn, DustLogoSquare, PuzzlePiece01 } from "@dust-tt/sparkle";
-import type { AvatarSizeType } from "@dust-tt/sparkle/dist/esm/components/Avatar";
+import { cn, RubyLogoSquare, PuzzlePiece01 } from "@ruby-ai/ui";
+import type { AvatarSizeType } from "@ruby-ai/ui/dist/esm/components/Avatar";
 import React from "react";
 
 export const SKILL_ICON = PuzzlePiece01;
-export const DUST_PROVIDED_SKILL_LABEL = "Dust-provided skill";
+export const RUBY_PROVIDED_SKILL_LABEL = "Ruby-provided skill";
 
 export const SKILL_AVATAR_BACKGROUND_COLOR = "bg-highlight-50";
 export const SKILL_AVATAR_ICON_COLOR = "text-highlight";
@@ -36,7 +36,7 @@ type SkillAvatarIconInput =
       "editedBy" | "icon"
     >;
 
-export function isDustProvidedSkill(
+export function isRubyProvidedSkill(
   skill: Pick<
     SkillListItemType | SkillWithoutInstructionsAndToolsType,
     "editedBy"
@@ -58,11 +58,11 @@ export function getSkillAvatarIcon(
   input: SkillAvatarIconInput
 ): React.ComponentType<SkillAvatarIconProps> {
   let iconString: string | null;
-  let isDustProvided = false;
+  let isRubyProvided = false;
 
   if (isSkillAvatarIconSkill(input)) {
     iconString = input.icon;
-    isDustProvided = isDustProvidedSkill(input);
+    isRubyProvided = isRubyProvidedSkill(input);
   } else {
     iconString = input;
   }
@@ -95,7 +95,7 @@ export function getSkillAvatarIcon(
       });
   }
 
-  if (!isDustProvided) {
+  if (!isRubyProvided) {
     return SkillAvatar;
   }
 
@@ -105,7 +105,7 @@ export function getSkillAvatarIcon(
     const relativeBadgeSize = size ?? "sm";
 
     return React.createElement(ResourceAvatarWithBadge, {
-      badgeIcon: DustLogoSquare,
+      badgeIcon: RubyLogoSquare,
       badgeSize: relativeBadgeSize,
       className: size ? className : undefined,
       icon: skillIcon,

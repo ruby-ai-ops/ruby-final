@@ -24,7 +24,7 @@ import {
   RadioGroup,
   RadioGroupItem,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback } from "react";
 
 type SpaceWebsiteFormProps = {

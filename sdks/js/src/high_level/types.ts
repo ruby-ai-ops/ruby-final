@@ -1,9 +1,9 @@
-import type { DustError } from "../errors/errors";
+import type { RubyError } from "../errors/errors";
 import type { LoggerInterface } from "../types";
 import type { PartialMessageContext } from "./context";
 import type { RetryOptions } from "./retry";
 
-export interface DustAPIOptions {
+export interface RubyAPIOptions {
   workspaceId: string;
   apiKey: string | (() => string | null | Promise<string | null>);
   baseUrl?: string;
@@ -93,7 +93,7 @@ export type StreamEvent =
   | { type: "action"; action: AgentAction }
   | { type: "toolApprovalRequired"; approval: ToolApproval }
   | { type: "uploadProgress"; progress: UploadProgress }
-  | { type: "error"; error: DustError }
+  | { type: "error"; error: RubyError }
   | { type: "done"; response: AgentResponse };
 
 interface StreamEventHandlerMap {
@@ -102,7 +102,7 @@ interface StreamEventHandlerMap {
   action: (action: AgentAction) => void;
   toolApprovalRequired: (approval: ToolApproval) => Promise<boolean> | boolean;
   uploadProgress: (progress: UploadProgress) => void;
-  error: (error: DustError) => void;
+  error: (error: RubyError) => void;
   done: (response: AgentResponse) => void;
 }
 

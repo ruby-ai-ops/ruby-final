@@ -24,7 +24,7 @@ import {
   Plus,
   Separator,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext } from "@tanstack/react-table";
 import type { Organization } from "@workos-inc/node";
 import React from "react";

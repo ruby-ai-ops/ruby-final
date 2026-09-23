@@ -4,7 +4,7 @@ import { submitAgentBuilderForm } from "@app/components/agent_builder/submitAgen
 import { useCreateConversationWithMessage } from "@app/hooks/useCreateConversationWithMessage";
 import { useSendNotification } from "@app/hooks/useNotification";
 import { useAuth } from "@app/lib/auth/AuthContext";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { useFetcher } from "@app/lib/swr/swr";
 import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
 import type { ConversationType } from "@app/types/assistant/conversation";
@@ -127,7 +127,7 @@ export function useDraftConversation({
       input: string,
       mentions: RichMention[],
       contentFragments: ContentFragmentsType
-    ): Promise<Result<undefined, DustError>> => {
+    ): Promise<Result<undefined, RubyError>> => {
       try {
         // Ensure we have a current draft agent before submitting
         const currentAgent = await getDraftAgent();

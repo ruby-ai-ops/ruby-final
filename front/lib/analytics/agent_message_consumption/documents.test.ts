@@ -108,7 +108,7 @@ async function setupSettledMessage({
     {
       completedAt,
       costCredits: 5,
-      runIds: [run.dustRunId],
+      runIds: [run.rubyRunId],
       status: "succeeded",
     },
     {
@@ -149,7 +149,7 @@ async function setupLlmAndToolConsumptionScenario(
     workspace: context.workspace,
     conversationModelId: context.conversation.id,
     agentMessageModelId: context.agentMessageModelId,
-    dustRunId: context.run.dustRunId,
+    rubyRunId: context.run.rubyRunId,
     status: "succeeded",
   });
 
@@ -357,7 +357,7 @@ describe("buildAgentMessageConsumptionAnalyticsDocuments", () => {
         workspace: context.workspace,
         conversationModelId: context.conversation.id,
         agentMessageModelId: context.agentMessageModelId,
-        dustRunId: context.run.dustRunId,
+        rubyRunId: context.run.rubyRunId,
         status: "succeeded",
         mcpServerName: "sandbox",
         toolName: "bash",
@@ -369,7 +369,7 @@ describe("buildAgentMessageConsumptionAnalyticsDocuments", () => {
         workspace: context.workspace,
         conversationModelId: context.conversation.id,
         agentMessageModelId: context.agentMessageModelId,
-        dustRunId: context.run.dustRunId,
+        rubyRunId: context.run.rubyRunId,
         status: "succeeded",
         mcpServerName: "interactive_content",
         toolName: "create_interactive_content_file",
@@ -465,7 +465,7 @@ describe("buildAgentMessageConsumptionAnalyticsDocuments", () => {
         workspace: context.workspace,
         conversationModelId: context.conversation.id,
         agentMessageModelId: context.agentMessage.agentMessageId!,
-        dustRunId: context.run.dustRunId,
+        rubyRunId: context.run.rubyRunId,
         status: "succeeded",
       }
     );
@@ -475,7 +475,7 @@ describe("buildAgentMessageConsumptionAnalyticsDocuments", () => {
         workspace: context.workspace,
         conversationModelId: context.conversation.id,
         agentMessageModelId: context.agentMessage.agentMessageId!,
-        dustRunId: context.run.dustRunId,
+        rubyRunId: context.run.rubyRunId,
         status: "succeeded",
       }
     );
@@ -623,7 +623,7 @@ describe("buildAgentMessageConsumptionAnalyticsDocuments", () => {
       workspace: context.workspace,
       conversationModelId: context.conversation.id,
       agentMessageModelId: context.agentMessage.agentMessageId!,
-      dustRunId: context.run.dustRunId,
+      rubyRunId: context.run.rubyRunId,
       status: "succeeded",
       toolServerId: server.sId,
     });
@@ -739,7 +739,7 @@ describe("buildAgentMessageConsumptionAnalyticsDocuments", () => {
       workspace: context.workspace,
       conversationModelId: context.conversation.id,
       agentMessageModelId: context.agentMessageModelId,
-      dustRunId: context.run.dustRunId,
+      rubyRunId: context.run.rubyRunId,
       status: "succeeded",
       toolName: "disabled_tool",
       toolServerId: server.sId,
@@ -801,7 +801,7 @@ describe("buildAgentMessageConsumptionAnalyticsDocuments", () => {
       workspace: context.workspace,
       conversationModelId: context.conversation.id,
       agentMessageModelId: context.agentMessageModelId,
-      dustRunId: context.run.dustRunId,
+      rubyRunId: context.run.rubyRunId,
       status: "succeeded",
       functionCallName: "skill_management__enable_skill",
       toolName: "enable_skill",

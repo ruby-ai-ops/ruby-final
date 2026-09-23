@@ -29,9 +29,9 @@ export async function sendGitHubDeletionEmail(email: string): Promise<void> {
   await sendEmailWithTemplate({
     to: email,
     from: config.getSupportEmailAddress(),
-    subject: "[Dust] GitHub connection deleted - important information",
-    body: `<p>Your Dust connection to GitHub was deleted, along with all the related data on Dust servers.</p>
-    <p>You can now uninstall the Dust app from your GitHub account to revoke authorizations initially granted to Dust when you connected the GitHub account.</p>
+    subject: "[Ruby] GitHub connection deleted - important information",
+    body: `<p>Your Ruby connection to GitHub was deleted, along with all the related data on Ruby servers.</p>
+    <p>You can now uninstall the Ruby app from your GitHub account to revoke authorizations initially granted to Ruby when you connected the GitHub account.</p>
     <p>Please reply to this email if you have any questions.</p>`,
   });
 }
@@ -53,17 +53,17 @@ export async function sendCancelSubscriptionEmail(
   await sendEmailWithTemplate({
     to: email,
     from: config.getSupportEmailAddress(),
-    subject: `[Dust] Subscription canceled - important information`,
+    subject: `[Ruby] Subscription canceled - important information`,
     body: `
       <p>You just canceled your subscription. It will be terminated at the end of your current billing period (${formattedDate}). You can reactivate your subscription at any time before then. If you do not reactivate your subscription, you will then be switched back to our free plan:</p>
       <ul>
-      <li>all users will be removed from the workspace except for the most tenured admin (more about this <a href="https://docs.dust.tt/docs/subscriptions#what-happens-when-we-cancel-our-dust-subscription">here</a>);</li>
-      <li>connections will be removed and data safety deleted from Dust;</li>
+      <li>all users will be removed from the workspace except for the most tenured admin (more about this <a href="https://docs.ruby.ad/docs/subscriptions#what-happens-when-we-cancel-our-ruby-subscription">here</a>);</li>
+      <li>connections will be removed and data safety deleted from Ruby;</li>
       <li>conversations, custom agents, and data sources will still be accessible with limitations;</li>
-      <li>your usage of Dust will have the <a href="https://dust.tt/w/${workspaceId}/subscription">restrictions of the free plan</a>.</li>
+      <li>your usage of Ruby will have the <a href="https://app.ruby.ad/w/${workspaceId}/subscription">restrictions of the free plan</a>.</li>
       </ul>
       <p>Also note that if you have a data source (folder) with more than 50 MB of data, it will be deleted after the end of your billing period. </p>
-      <p>More details are available on <a href="https://docs.dust.tt/docs/subscriptions#what-happens-when-we-cancel-our-dust-subscription">our subscription cancelling FAQ</a>.</p>
+      <p>More details are available on <a href="https://docs.ruby.ad/docs/subscriptions#what-happens-when-we-cancel-our-ruby-subscription">our subscription cancelling FAQ</a>.</p>
       <p>Please reply to this email if you have any questions.`,
   });
 }
@@ -74,11 +74,11 @@ export async function sendReactivateSubscriptionEmail(
   await sendEmailWithTemplate({
     to: email,
     from: config.getSupportEmailAddress(),
-    subject: `[Dust] Your subscription has been reactivated`,
+    subject: `[Ruby] Your subscription has been reactivated`,
     body: `<p>You have requested to reactivate your subscription.</p>
-      <p>Therefore, your subscription will not be canceled at the end of the billing period, no downgrade actions will take place, and you can continue using Dust as usual.</p>
+      <p>Therefore, your subscription will not be canceled at the end of the billing period, no downgrade actions will take place, and you can continue using Ruby as usual.</p>
       <p>We really appreciate you renewing your trust in us.</p>
-      <p>If you have any questions, we'll gladly answer at support@dust.tt.</p>`,
+      <p>If you have any questions, we'll gladly answer at support@ruby.ad.</p>`,
   });
 }
 
@@ -89,7 +89,7 @@ export async function sendAdminSubscriptionPaymentFailedEmail(
   await sendEmailWithTemplate({
     to: email,
     from: config.getSupportEmailAddress(),
-    subject: `[Dust] Your payment has failed`,
+    subject: `[Ruby] Your payment has failed`,
     body: `
       <p>Your payment has failed. Please visit ${customerPortailUrl} to edit your payment information.</p>
       <p>
@@ -117,20 +117,20 @@ export async function sendAdminDataDeletionEmail({
     from: config.getSupportEmailAddress(),
     subject: `${
       isLast ? "Last Reminder: " : ""
-    }Your Dust data will be deleted in ${remainingDays} days`,
+    }Your Ruby data will be deleted in ${remainingDays} days`,
     body:
       planCode === FREE_TRIAL_PHONE_PLAN_CODE
         ? `
-      <p>You're receiving this as Admin of the Dust workspace ${workspaceName}. Your trial period has ended.</p>
-      <p>To continue using Dust and avoid losing your data, please subscribe within the next ${remainingDays} days. After this period, your data will be permanently deleted and you will no longer be able to access your workspace.</p>
-      <p>Subscribe now to keep all your conversations, custom agents, data sources, and continue using Dust without interruption.</p>
-      <p>If you have any questions about Dust, simply reply to this email.</p>
+      <p>You're receiving this as Admin of the Ruby workspace ${workspaceName}. Your trial period has ended.</p>
+      <p>To continue using Ruby and avoid losing your data, please subscribe within the next ${remainingDays} days. After this period, your data will be permanently deleted and you will no longer be able to access your workspace.</p>
+      <p>Subscribe now to keep all your conversations, custom agents, data sources, and continue using Ruby without interruption.</p>
+      <p>If you have any questions about Ruby, simply reply to this email.</p>
       ${isLast ? "<p>This is our last message before data deletion.</p>" : ""}`
         : `
-      <p>You're receiving this as Admin of the Dust workspace ${workspaceName}. You recently canceled your Dust subscription.</p>
+      <p>You're receiving this as Admin of the Ruby workspace ${workspaceName}. You recently canceled your Ruby subscription.</p>
       <p>To protect your privacy and maintain the highest security standards, your data will be permanently deleted in ${remainingDays} days.</p>
       <p>To keep your data, please resubscribe within the next ${remainingDays} days to recover your account. After this period, data recovery will not be possible.</p>
-      <p>If you have any questions about Dust, simply reply to this email.</p>
+      <p>If you have any questions about Ruby, simply reply to this email.</p>
       ${isLast ? "<p>This is our last message before data deletion.</p>" : ""}`,
   });
 }
@@ -155,9 +155,9 @@ export async function sendCreditUsageAlertEmail({
   await sendEmailWithTemplate({
     to: email,
     from: config.getSupportEmailAddress(),
-    subject: `[Dust] Credit usage alert - ${percentUsed}% of your credits consumed`,
+    subject: `[Ruby] Credit usage alert - ${percentUsed}% of your credits consumed`,
     body: `
-      <p>You're receiving this as Admin of the Dust workspace <strong>${workspace.name}</strong>.</p>
+      <p>You're receiving this as Admin of the Ruby workspace <strong>${workspace.name}</strong>.</p>
       <p>Your workspace has consumed <strong>${percentUsed}%</strong> of its available programmatic usage credits.</p>
       <ul>
         <li>Total credits: ${formatCents(totalInitialMicroUsd)}</li>
@@ -166,8 +166,8 @@ export async function sendCreditUsageAlertEmail({
       </ul>
       <p>To avoid service interruption:</p>
       <ul>
-        <li><strong><a href="https://dust.tt/w/${workspace.sId}/developers/credits-usage">Purchase additional credits</a></strong> in the Developers > Credits section</li>
-        <li>Learn more about <a href="https://dust-tt.notion.site/Programmatic-usage-at-Dust-2b728599d94181ceb124d8585f794e2e">programmatic usage at Dust</a></li>
+        <li><strong><a href="https://app.ruby.ad/w/${workspace.sId}/developers/credits-usage">Purchase additional credits</a></strong> in the Developers > Credits section</li>
+        <li>Learn more about <a href="https://ruby-ai.notion.site/Programmatic-usage-at-Ruby-2b728599d94181ceb124d8585f794e2e">programmatic usage at Ruby</a></li>
       </ul>
       <p>Please reply to this email if you have any questions.</p>`,
   });
@@ -191,9 +191,9 @@ export async function sendMCPGlobalSharingReconfigurationEmail({
   return sendEmailWithTemplate({
     to: email,
     from: config.getSupportEmailAddress(),
-    subject: `[Dust] Agents to reconfigure after sharing ${toolName}`,
+    subject: `[Ruby] Agents to reconfigure after sharing ${toolName}`,
     body: `
-      <p>You're receiving this as Admin of the Dust workspace <strong>${escape(workspaceName)}</strong>.</p>
+      <p>You're receiving this as Admin of the Ruby workspace <strong>${escape(workspaceName)}</strong>.</p>
       <p>The tool <strong>${escape(toolName)}</strong> was just made available to all workspace members.</p>
       <p>This removes older space-specific versions of the same tool. The following agents may need to be reconfigured:</p>
       <ul>${agentsList}</ul>
@@ -214,7 +214,7 @@ export async function sendEmailToRecipients({
   let filteredTo = to;
   let filteredCc = cc;
   if (isDevelopment()) {
-    const isInternal = (r: string) => r.endsWith("@dust.tt");
+    const isInternal = (r: string) => r.endsWith("@ruby.ad");
     filteredTo = to.filter(isInternal);
     filteredCc = cc?.filter(isInternal);
     const externalRecipients = [...to, ...(cc ?? [])].filter(

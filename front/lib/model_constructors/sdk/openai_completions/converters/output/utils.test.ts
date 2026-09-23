@@ -30,12 +30,12 @@ const llmMetadata: LLMClientMetadata = {
 
 describe("streamErrorToErrorEvent", () => {
   it.each([
-    [400, "invalid_request_error", "dust"],
-    [422, "invalid_request_error", "dust"],
-    [401, "authentication_error", "dust"],
-    [403, "permission_error", "dust"],
-    [404, "not_found_error", "dust"],
-    [429, "rate_limit_error", "dust"],
+    [400, "invalid_request_error", "ruby"],
+    [422, "invalid_request_error", "ruby"],
+    [401, "authentication_error", "ruby"],
+    [403, "permission_error", "ruby"],
+    [404, "not_found_error", "ruby"],
+    [429, "rate_limit_error", "ruby"],
     [503, "overloaded_error", "provider"],
   ] as const)("maps HTTP %i to %s from %s", (status, expectedType, errorSource) => {
     const err = new APIError(status, {}, "http failure", undefined);
@@ -97,11 +97,11 @@ describe("streamErrorToErrorEvent", () => {
     });
   });
 
-  it("maps an unrecognized 4xx status to a Dust invalid_request_error", () => {
+  it("maps an unrecognized 4xx status to a Ruby invalid_request_error", () => {
     const err = new APIError(418, {}, "teapot", undefined);
     const result = streamErrorToErrorEvent(metadata, err);
     expect(result.content.type).toBe("invalid_request_error");
-    expect(result.content.errorSource).toBe("dust");
+    expect(result.content.errorSource).toBe("ruby");
   });
 
   it("maps APIConnectionError to a network_error without blaming the provider", () => {

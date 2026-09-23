@@ -399,14 +399,14 @@ export const JIRA_TOOLS_METADATA = [
   {
     name: "upload_attachment",
     description:
-      "Attach a file to a Jira issue (upload). The file can come from the current Dust conversation or be provided as base64 data.",
+      "Attach a file to a Jira issue (upload). The file can come from the current Ruby conversation or be provided as base64 data.",
     schema: {
       issueKey: z.string().describe("The Jira issue key (e.g., 'PROJ-123')"),
       attachment: z.union([
         z.object({
           type: z
             .literal("conversation_file")
-            .describe("Use this for files already in the Dust conversation"),
+            .describe("Use this for files already in the Ruby conversation"),
           fileId: z
             .string()
             .describe(
@@ -451,7 +451,7 @@ export const JIRA_SERVER = {
       supported_use_cases: ["platform_actions", "personal_actions"] as const,
     },
     icon: "JiraLogo",
-    documentationUrl: "https://docs.dust.tt/docs/jira",
+    documentationUrl: "https://docs.ruby.ad/docs/jira",
   },
   tools: JIRA_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

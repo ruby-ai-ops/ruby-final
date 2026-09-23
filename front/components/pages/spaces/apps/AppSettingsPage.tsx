@@ -3,14 +3,14 @@ import Custom404 from "@app/components/pages/Custom404";
 import { useWorkspace } from "@app/lib/auth/AuthContext";
 import { clientFetch } from "@app/lib/egress/client";
 import { useAppRouter, useRequiredPathParam } from "@app/lib/platform";
-import { dustAppsListUrl } from "@app/lib/spaces";
+import { rubyAppsListUrl } from "@app/lib/spaces";
 import { useApp } from "@app/lib/swr/apps";
 import { useWorkspacePermissions } from "@app/lib/swr/permissions";
 import { useSpaceInfo } from "@app/lib/swr/spaces";
 import { MODELS_STRING_MAX_LENGTH } from "@app/lib/utils";
 import { APP_NAME_REGEXP } from "@app/types/app";
 import type { APIError } from "@app/types/error";
-import { Button, Input, Label, Spinner } from "@dust-tt/sparkle";
+import { Button, Input, Label, Spinner } from "@ruby-ai/ui";
 import { useContext, useEffect, useState } from "react";
 
 export function AppSettingsPage() {
@@ -19,7 +19,7 @@ export function AppSettingsPage() {
   const aId = useRequiredPathParam("aId");
   const owner = useWorkspace();
   const { hasPermission } = useWorkspacePermissions();
-  const canAdministrateApps = hasPermission("admin", "dust_app");
+  const canAdministrateApps = hasPermission("admin", "ruby_app");
 
   const { spaceInfo: space, isSpaceInfoLoading } = useSpaceInfo({
     workspaceId: owner.sId,
@@ -84,12 +84,12 @@ export function AppSettingsPage() {
         }
       );
       if (res.ok) {
-        await router.push(dustAppsListUrl(owner, app.space));
+        await router.push(rubyAppsListUrl(owner, app.space));
       } else {
         setIsDeleting(false);
         const err = (await res.json()) as { error: APIError };
         window.alert(
-          `Failed to delete the app (contact support@dust.tt for assistance) (internal error: type=${err.error.type} message=${err.error.message})`
+          `Failed to delete the app (contact support@ruby.ad for assistance) (internal error: type=${err.error.type} message=${err.error.message})`
         );
       }
       return true;
@@ -125,7 +125,7 @@ export function AppSettingsPage() {
       setIsUpdating(false);
       const err = (await res.json()) as { error: APIError };
       window.alert(
-        `Failed to update the app (contact support@dust.tt for assistance) (internal error: type=${err.error.type} message=${err.error.message})`
+        `Failed to update the app (contact support@ruby.ad for assistance) (internal error: type=${err.error.type} message=${err.error.message})`
       );
     }
   };

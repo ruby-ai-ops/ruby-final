@@ -247,7 +247,7 @@ export async function handleSearch(
     searchRes.value.nodes.map((node) => {
       const matchingViews = allDatasourceViews.filter(
         (dsv) =>
-          dsv.dataSource.dustAPIDataSourceId === node.data_source_id &&
+          dsv.dataSource.rubyAPIDataSourceId === node.data_source_id &&
           (node.node_id === DATA_SOURCE_NODE_ID ||
             !dsv.parentsIn ||
             node.parents?.some(

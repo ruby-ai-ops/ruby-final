@@ -1,5 +1,5 @@
 import { ContactFormThankYou } from "@marketing/components/home/ContactFormThankYou";
-import { FormProvider } from "@marketing/components/sparkle/FormProvider";
+import { FormProvider } from "@marketing/components/ui/FormProvider";
 import type {
   ContactFormData,
   ContactSubmitResponse,
@@ -27,7 +27,7 @@ import {
   Label,
   Spinner,
   TextArea,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useController, useForm } from "react-hook-form";
@@ -36,9 +36,10 @@ interface ContactFormProps {
   prefillEmail?: string;
   prefillHeadcount?: string;
   prefillRegion?: string;
+  showHeadquartersRegion?: boolean;
 }
 
-function useContactFormSubmit() {
+function useContactFormSubmit(showHeadquartersRegion: boolean) {
   const [submitResult, setSubmitResult] =
     useState<ContactSubmitResponse | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -59,6 +60,11 @@ function useContactFormSubmit() {
       msclkid: storedParams.msclkid,
       li_fat_id: storedParams.li_fat_id,
     };
+    const formData = showHeadquartersRegion
+      ? data
+      : Object.fromEntries(
+          Object.entries(data).filter(([key]) => key !== "headquarters_region")
+        );
 
     // Track form submission attempt
     trackEvent({
@@ -74,7 +80,7 @@ function useContactFormSubmit() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          formData: data,
+          formData,
           tracking,
           pageUri: window.location.href,
           pageName: document.title,
@@ -110,7 +116,9 @@ function useContactFormSubmit() {
           user_first_name: consentMarketing ? data.firstname : undefined,
           user_last_name: consentMarketing ? data.lastname : undefined,
           user_language: data.language,
-          user_headquarters_region: data.headquarters_region,
+          user_headquarters_region: showHeadquartersRegion
+            ? data.headquarters_region
+            : undefined,
           user_company_headcount: data.company_headcount_form,
           consent_marketing: consentMarketing,
           gclid: tracking.gclid,
@@ -208,7 +216,7 @@ function MarketingConsentCheckbox() {
         htmlFor="consent_marketing"
         className="cursor-pointer text-sm font-normal leading-tight"
       >
-        I consent to receive marketing communications from Dust about products,
+        I consent to receive marketing communications from Ruby about products,
         services, and events.
       </Label>
     </div>
@@ -219,8 +227,11 @@ export function ContactForm({
   prefillEmail,
   prefillHeadcount,
   prefillRegion,
+  showHeadquartersRegion = true,
 }: ContactFormProps) {
-  const { submitResult, submitError, handleSubmit } = useContactFormSubmit();
+  const { submitResult, submitError, handleSubmit } = useContactFormSubmit(
+    showHeadquartersRegion
+  );
   const { geoData, isGeoDataLoading } = useGeolocation();
 
   const form = useForm<ContactFormData>({
@@ -231,7 +242,7 @@ export function ContactForm({
       email: prefillEmail ?? "",
       mobilephone: "",
       language: "",
-      headquarters_region: prefillRegion ?? "",
+      headquarters_region: showHeadquartersRegion ? (prefillRegion ?? "") : "",
       company_headcount_form: prefillHeadcount ?? "",
       landing_use_cases: "",
       consent_marketing: false,
@@ -253,10 +264,20 @@ export function ContactForm({
     if (prefillHeadcount && !dirtyFields.company_headcount_form) {
       form.setValue("company_headcount_form", prefillHeadcount);
     }
-    if (prefillRegion && !dirtyFields.headquarters_region) {
+    if (
+      showHeadquartersRegion &&
+      prefillRegion &&
+      !dirtyFields.headquarters_region
+    ) {
       form.setValue("headquarters_region", prefillRegion);
     }
-  }, [prefillEmail, prefillHeadcount, prefillRegion, form]);
+  }, [
+    prefillEmail,
+    prefillHeadcount,
+    prefillRegion,
+    showHeadquartersRegion,
+    form,
+  ]);
 
   useEffect(() => {
     if (!isGeoDataLoading && geoData) {
@@ -275,7 +296,7 @@ export function ContactForm({
       {submitResult ? (
         <ContactFormThankYou isQualified={submitResult.isQualified} />
       ) : (
-        <div id="dust-contact-form" className="flex flex-col gap-6">
+        <div id="ruby-contact-form" className="flex flex-col gap-6">
           {/* First Name / Last Name */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <Input
@@ -334,12 +355,14 @@ export function ContactForm({
           />
 
           {/* Headquarters Region */}
-          <DropdownField
-            name="headquarters_region"
-            label="Headquarters Region"
-            options={HEADQUARTERS_REGION_OPTIONS}
-            placeholder="Select region"
-          />
+          {showHeadquartersRegion && (
+            <DropdownField
+              name="headquarters_region"
+              label="Headquarters Region"
+              options={HEADQUARTERS_REGION_OPTIONS}
+              placeholder="Select region"
+            />
+          )}
 
           {/* Company Headcount */}
           <DropdownField
@@ -350,9 +373,9 @@ export function ContactForm({
             required
           />
 
-          {/* How do you want to use Dust? */}
+          {/* How do you want to use Ruby? */}
           <div className="flex flex-col gap-2">
-            <Label>How do you want to use Dust?</Label>
+            <Label>How do you want to use Ruby?</Label>
             <TextArea
               {...form.register("landing_use_cases")}
               rows={4}
@@ -366,12 +389,12 @@ export function ContactForm({
           {/* Disclaimer */}
           <div className="text-xs text-muted-foreground">
             <p className="mb-2">
-              By submitting this form, you consent to Dust processing your
-              personal data to respond to your contact request. Dust uses your
+              By submitting this form, you consent to Ruby processing your
+              personal data to respond to your contact request. Ruby uses your
               contact information to communicate with you about our products and
               services. You may unsubscribe at any time. Please review our{" "}
               <a
-                href="https://dust.tt/home/platform-privacy"
+                href="https://ruby.ad/home/platform-privacy"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline hover:text-foreground"
@@ -382,7 +405,7 @@ export function ContactForm({
               and unsubscribe procedures.
             </p>
             <p>
-              Dust serves certain geographic regions and customer segments
+              Ruby serves certain geographic regions and customer segments
               exclusively through our certified partner network. When you submit
               an inquiry from these regions, your contact information will be
               directed to the appropriate authorized partner who will handle

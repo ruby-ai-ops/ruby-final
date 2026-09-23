@@ -2,7 +2,7 @@ import {
   useProgrammaticUsageLimit,
   useUpdateProgrammaticUsageLimit,
 } from "@app/lib/swr/usage_settings";
-import { InputWithSave, Page, SettingsList } from "@dust-tt/sparkle";
+import { InputWithSave, Page, SettingsList } from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface UsageProgrammaticLimitCardProps {

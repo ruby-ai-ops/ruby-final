@@ -53,7 +53,7 @@ export interface SeatTypeInfo {
 }
 
 // Dynamic seat-type → info map. The list of seat types is driven by the
-// contract's subscriptions (each tagged with the `DUST_SEAT_TYPE` custom
+// contract's subscriptions (each tagged with the `RUBY_SEAT_TYPE` custom
 // field) — not a hardcoded "pro" / "max" enum.
 export type SeatPlanResponseBody = Partial<
   Record<MembershipSeatType, SeatTypeInfo>

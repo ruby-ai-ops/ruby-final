@@ -16,7 +16,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
   Pagination,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -333,18 +333,18 @@ export default function CustomerStoriesListing({
   return (
     <>
       <Head>
-        <title>Customer Stories | Dust</title>
+        <title>Customer Stories | Ruby</title>
         <meta
           name="description"
-          content="Discover how leading companies use Dust to transform their workflows with AI agents. Read customer success stories from Sales, Marketing, Customer Support, and more."
+          content="Discover how leading companies use Ruby to transform their workflows with AI agents. Read customer success stories from Sales, Marketing, Customer Support, and more."
         />
-        <meta property="og:title" content="Customer Stories | Dust" />
+        <meta property="og:title" content="Customer Stories | Ruby" />
         <meta
           property="og:description"
-          content="Discover how leading companies use Dust to transform their workflows with AI agents."
+          content="Discover how leading companies use Ruby to transform their workflows with AI agents."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://dust.tt/customers" />
+        <meta property="og:url" content="https://ruby.ad/customers" />
         <meta property="og:image" content="/static/og_image.png" />
       </Head>
 
@@ -353,7 +353,7 @@ export default function CustomerStoriesListing({
           <H1 className="text-5xl">Customer Stories</H1>
           <P size="lg" className="mt-4 text-muted-foreground">
             See how teams across industries are transforming their work with
-            Dust
+            Ruby
           </P>
         </div>
 

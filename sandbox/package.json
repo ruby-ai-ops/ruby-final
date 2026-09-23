@@ -1,12 +1,12 @@
 {
-  "name": "dust-sandbox",
+  "name": "ruby-sandbox",
   "version": "1.0.0",
   "engines": {
     "node": ">=22.22.0"
   },
   "private": true,
   "dependencies": {
-    "@dust-tt/client": "^1.0.0",
+    "@ruby-ai/client": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zod": "^3.22.0",

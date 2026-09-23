@@ -27,7 +27,7 @@ import {
   PlusCircle,
   Upload01,
   XCircle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
@@ -588,7 +588,7 @@ export default function DatasetView({
                   generate the inputs to your app when run from an Agent.
                   <span className="font-medium text-warning-500">
                     {" "}
-                    (JSON inputs are only supported when using Dust Apps through
+                    (JSON inputs are only supported when using Ruby Apps through
                     the API and not through agent actions)
                   </span>
                 </p>

@@ -16,8 +16,8 @@ oauth-api-keys.json
 **/.claude/*
 !**/.claude/skills/
 **/.claude/skills/*
-!**/.claude/skills/dust-*/
-**/.claude/skills/dust-hive/
+!**/.claude/skills/ruby-*/
+**/.claude/skills/ruby-hive/
 **/.codex
 **/.yalc
 yalc.lock
@@ -35,7 +35,7 @@ node_modules
 thoughts/*
 .superpowers/
 
-# dust-hive worktrees
+# ruby-hive worktrees
 .hives/
 
 # Direnv
@@ -52,3 +52,6 @@ thoughts/*
 # Sandbox provider build scratch dirs
 /front/lib/api/sandbox/providers/sandbox-build-*/
 
+
+# Authenticated CI artifacts, injected during image assembly.
+/.artifacts/

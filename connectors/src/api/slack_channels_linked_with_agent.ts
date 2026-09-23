@@ -7,7 +7,7 @@ import { apiError, withLogging } from "@connectors/logger/withlogging";
 import type { WithConnectorsAPIErrorReponse } from "@connectors/types";
 import { normalizeError } from "@connectors/types";
 import { withTransaction } from "@connectors/types/shared/utils/sql_utils";
-import type { Err } from "@dust-tt/client";
+import type { Err } from "@ruby-ai/client";
 import { WorkflowExecutionAlreadyStartedError } from "@temporalio/common";
 import type { Request, Response } from "express";
 import { isLeft } from "fp-ts/lib/Either";

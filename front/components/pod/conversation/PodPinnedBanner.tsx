@@ -14,7 +14,7 @@ import {
   Maximize01,
   Minimize01,
   Pin02,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 

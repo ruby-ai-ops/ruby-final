@@ -1,12 +1,12 @@
-# Interactive zsh defaults for the Dust shared dev container.
+# Interactive zsh defaults for the Ruby shared dev container.
 # Secret env is loaded by /root/.zshrc (zsh does not use BASH_ENV).
 
 [[ -o interactive ]] || return
 
 # Belt-and-suspenders if this file is sourced without going through /root/.zshrc.
-if [[ -f /tmp/dust-shell-env.sh ]]; then
+if [[ -f /tmp/ruby-shell-env.sh ]]; then
   # shellcheck disable=SC1091
-  source /tmp/dust-shell-env.sh
+  source /tmp/ruby-shell-env.sh
 fi
 
 export SHELL=/bin/zsh
@@ -56,7 +56,7 @@ alias la='ls -A'
 alias l='ls -CF'
 
 if [[ -d /workspace/.git ]]; then
-  alias cdust='cd /workspace'
+  alias cruby='cd /workspace'
 fi
 
 if [[ -f /workspace/dev/interactive-aliases.sh ]]; then
@@ -83,8 +83,8 @@ fi
 # Dev Container lifecycle commands do not have an interactive stdin. infra.sh
 # leaves this one-shot marker after postStartCommand completes, and the next
 # interactive prompt offers to launch mprocs.
-_dust_offer_start_apps() {
-  local marker="${DUST_APPS_PROMPT_FILE:-/tmp/dust-infra/start-apps.prompt}"
+_ruby_offer_start_apps() {
+  local marker="${RUBY_APPS_PROMPT_FILE:-/tmp/ruby-infra/start-apps.prompt}"
   local claim="${marker}.claimed"
   local reply=""
 
@@ -97,7 +97,7 @@ _dust_offer_start_apps() {
     return
   fi
 
-  if ! read "reply?Would you like to start the Dust apps? [Y/n] "; then
+  if ! read "reply?Would you like to start the Ruby apps? [Y/n] "; then
     echo
     rmdir "$claim" 2>/dev/null
     return
@@ -112,4 +112,4 @@ _dust_offer_start_apps() {
 }
 
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd _dust_offer_start_apps
+add-zsh-hook precmd _ruby_offer_start_apps

@@ -37,7 +37,7 @@ import {
   responseStyleSection,
   SKILLS_TOOLS_GUIDANCE_SECTION,
   workflowVisualizationSection,
-} from "@app/lib/api/assistant/global_agents/configurations/dust/agent_suggestions_shared";
+} from "@app/lib/api/assistant/global_agents/configurations/ruby/agent_suggestions_shared";
 import type { Authenticator } from "@app/lib/auth";
 import { getFeatureFlags } from "@app/lib/auth";
 import {

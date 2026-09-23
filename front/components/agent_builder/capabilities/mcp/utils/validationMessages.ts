@@ -7,9 +7,9 @@ export const VALIDATION_MESSAGES = {
     required: "Child agent selection is required",
     invalid: "Please select a valid child agent",
   },
-  dustApp: {
-    required: "Please select a Dust app",
-    invalid: "Selected Dust app is not valid",
+  rubyApp: {
+    required: "Please select a Ruby app",
+    invalid: "Selected Ruby app is not valid",
   },
   name: {
     empty: "The name cannot be empty.",
@@ -24,7 +24,7 @@ export const VALIDATION_MESSAGES = {
     required: "Secret selection is required",
     invalid: "Please select a valid secret",
   },
-  dustProject: {
+  rubyProject: {
     required: "Please select one Pod",
     invalid: "Selected Pod is not valid",
   },

@@ -23,7 +23,7 @@ import {
   SheetTrigger,
   Spinner,
   TextArea,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import capitalize from "lodash/capitalize";
 import { useState } from "react";
 
@@ -169,7 +169,7 @@ export function RequestActionsModal({ owner, space }: RequestActionsModal) {
                     {selectedMcpServer
                       ? getMcpServerViewDisplayName(selectedMcpServer)
                       : ""}{" "}
-                    tool within Dust. Send an email to Dust. Send an email to{" "}
+                    tool within Ruby. Send an email to Ruby. Send an email to{" "}
                     {capitalize(selectedMcpServer.editedByUser?.fullName ?? "")}
                     , explaining your request.
                   </p>

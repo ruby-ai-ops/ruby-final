@@ -12,7 +12,7 @@ export function getWorkOS() {
   if (!workos) {
     workos = new WorkOS(config.getWorkOSApiKey(), {
       clientId: config.getWorkOSClientId(),
-      apiHostname: "auth-api.dust.tt",
+      apiHostname: "auth-api.ruby.ad",
       timeout: WORKOS_API_TIMEOUT_MS,
     });
   }
@@ -32,7 +32,7 @@ export function getWorkOSForSessionAuth() {
   if (!workosForSessionAuth) {
     workosForSessionAuth = new WorkOS(config.getWorkOSApiKey(), {
       clientId: config.getWorkOSClientId(),
-      apiHostname: "auth-api.dust.tt",
+      apiHostname: "auth-api.ruby.ad",
       timeout: SESSION_AUTH_TIMEOUT_MS,
     });
   }

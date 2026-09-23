@@ -26,7 +26,7 @@ import {
   isSupportedFileContentType,
 } from "@app/types/files";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 const ZENDESK_TAG_MAX_LENGTH = 255;

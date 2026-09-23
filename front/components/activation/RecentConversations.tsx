@@ -6,7 +6,7 @@ import { getConversationRoute } from "@app/lib/utils/router";
 import type { PodConversationListItemType } from "@app/types/api/assistant/conversation/spaces";
 import { stripMarkdown } from "@app/types/shared/utils/markdown";
 import type { WorkspaceType } from "@app/types/user";
-import { ConversationListItem, cn } from "@dust-tt/sparkle";
+import { ConversationListItem, cn } from "@ruby-ai/ui";
 import { format } from "date-fns";
 import { useMemo } from "react";
 

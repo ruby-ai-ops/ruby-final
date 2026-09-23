@@ -955,7 +955,7 @@ export class AgentMCPActionResource extends BaseResource<AgentMCPActionModel> {
    * A message should never have blocked actions from more than one step, and resume paths rely
    * on that to resume the agent loop from a single, unambiguous step. By default this enforces the
    * invariant and throws on a violation, surfacing the bug. `dangerouslyBypassSameStepCheck` (used
-   * by the unstick-conversation poke plugin) skips the check so a genuinely stuck conversation can
+   * by the unstick-conversation admin plugin) skips the check so a genuinely stuck conversation can
    * still be finalized.
    */
   static async listBlockedActionsForAgentMessage(
@@ -1024,7 +1024,7 @@ export class AgentMCPActionResource extends BaseResource<AgentMCPActionModel> {
    * actually denied, with their pre-deny resources.
    *
    * `dangerouslyBypassSameStepCheck` is forwarded to listBlockedActionsForAgentMessage: leave it
-   * false to enforce the single-step invariant; the unstick-conversation poke plugin passes true to
+   * false to enforce the single-step invariant; the unstick-conversation admin plugin passes true to
    * finalize an anomalous, genuinely stuck conversation instead of throwing.
    */
   static async denyBlockedActionsForAgentMessage(
@@ -1906,7 +1906,7 @@ export class AgentMCPActionResource extends BaseResource<AgentMCPActionModel> {
     return this.stepContent.value.value.name;
   }
 
-  // The raw arguments string the model emitted, before Dust augments it with preconfigured values
+  // The raw arguments string the model emitted, before Ruby augments it with preconfigured values
   // and secrets (those land in the serialized `params`). Kept off the serialized type so it stays
   // server-side, where consumption attribution reads it.
   get functionCallArguments(): string {

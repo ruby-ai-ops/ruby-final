@@ -87,13 +87,13 @@ import type { Transaction } from "sequelize";
 
 const { ACTIVATE_ALL_FEATURES_DEV = false } = process.env;
 
-const DUST_INTERNAL_EMAIL_REGEXP = /^[^@]+@dust\.tt$/;
+const RUBY_INTERNAL_EMAIL_REGEXP = /^[^@]+@ruby\.ad$/;
 
-export function isDustInternalEmail(email: string): boolean {
-  return isDevelopment() || DUST_INTERNAL_EMAIL_REGEXP.test(email);
+export function isRubyInternalEmail(email: string): boolean {
+  return isDevelopment() || RUBY_INTERNAL_EMAIL_REGEXP.test(email);
 }
 
-const DustApiKeyNameHeader = "x-dust-api-key-name";
+const RubyApiKeyNameHeader = "x-ruby-api-key-name";
 
 export type AuthMethodType =
   | "system_api_key"
@@ -103,8 +103,8 @@ export type AuthMethodType =
   | "sandbox_token"
   | "internal";
 
-/** Principal used by poke when there is no provisioned Dust user (e.g. Cloudflare Access). */
-export type PokePrincipal = {
+/** Principal used by admin when there is no provisioned Ruby user (e.g. Cloudflare Access). */
+export type AdminPrincipal = {
   email: string;
   name: string | null;
 };
@@ -141,7 +141,7 @@ export interface AuthenticatorType {
 
 /**
  * This is a class that will be used to check if a user can perform an action on a resource.
- * It acts as a central place to enforce permissioning across all of Dust.
+ * It acts as a central place to enforce permissioning across all of Ruby.
  *
  * It explicitly does not store a reference to the current user to make sure our permissions are
  * workspace oriented. Use `getUserFromSession` if needed.
@@ -164,11 +164,11 @@ export class Authenticator {
   _permissions: GroupPermissions;
   // The workspace global group's model id. `undefined` = not resolved yet (resolved lazily on first use)
   _globalGroupModelId: ModelId | null | undefined;
-  // Set only by poke factory methods (`fromDustSuperUser` / `fromSuperUserSession`).
+  // Set only by admin factory methods (`fromRubySuperUser` / `fromSuperUserSession`).
   // Regular session/API auths keep this false even if the user has the DB flag.
-  _isDustSuperUser: boolean;
-  // Poke operator principal when no provisioned Dust user is attached (CF Access).
-  _pokePrincipal: PokePrincipal | null;
+  _isRubySuperUser: boolean;
+  // Admin operator principal when no provisioned Ruby user is attached (CF Access).
+  _adminPrincipal: AdminPrincipal | null;
 
   // Should only be called from the static methods below.
   constructor({
@@ -184,8 +184,8 @@ export class Authenticator {
     clientIp,
     permissions,
     globalGroupModelId,
-    isDustSuperUser = false,
-    pokePrincipal = null,
+    isRubySuperUser = false,
+    adminPrincipal = null,
   }: {
     workspace?: WorkspaceResource | null;
     user?: UserResource | null;
@@ -199,8 +199,8 @@ export class Authenticator {
     clientIp?: string;
     permissions: GroupPermissions;
     globalGroupModelId?: ModelId | null;
-    isDustSuperUser?: boolean;
-    pokePrincipal?: PokePrincipal | null;
+    isRubySuperUser?: boolean;
+    adminPrincipal?: AdminPrincipal | null;
   }) {
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     this._workspace = workspace || null;
@@ -217,8 +217,8 @@ export class Authenticator {
     this._clientIp = clientIp;
     this._permissions = permissions;
     this._globalGroupModelId = globalGroupModelId;
-    this._isDustSuperUser = isDustSuperUser;
-    this._pokePrincipal = pokePrincipal;
+    this._isRubySuperUser = isRubySuperUser;
+    this._adminPrincipal = adminPrincipal;
 
     if (user) {
       tracer.setUser({
@@ -408,8 +408,8 @@ export class Authenticator {
    * workos session.
    * Super User will have `role` set to `admin` regardless of their actual role in the workspace.
    *
-   * Only elevates (and sets the poke `_isDustSuperUser` flag) when the session
-   * user has the DB super-user flag and a Dust-internal email. Otherwise
+   * Only elevates (and sets the admin `_isRubySuperUser` flag) when the session
+   * user has the DB super-user flag and a Ruby-internal email. Otherwise
    * returns a non-privileged authenticator (legacy behavior for callers like
    * app runs `wIdTarget`).
    *
@@ -422,8 +422,8 @@ export class Authenticator {
     wId: string | null
   ): Promise<Authenticator> {
     const user = await this.userFromSession(session);
-    if (user && user.isDustSuperUser && isDustInternalEmail(user.email)) {
-      return this.fromDustSuperUser({ user, wId });
+    if (user && user.isRubySuperUser && isRubyInternalEmail(user.email)) {
+      return this.fromRubySuperUser({ user, wId });
     }
 
     const workspace = wId ? await WorkspaceResource.fetchById(wId) : null;
@@ -447,33 +447,33 @@ export class Authenticator {
         workspace,
         groupModelIds: [],
       }),
-      isDustSuperUser: false,
+      isRubySuperUser: false,
     });
   }
 
   /**
-   * Build a poke super-user Authenticator. Only poke entrypoints should call
+   * Build a admin super-user Authenticator. Only admin entrypoints should call
    * this (or `fromSuperUserSession`). The resulting auth has
-   * `_isDustSuperUser` set; regular session/API factories leave it false.
+   * `_isRubySuperUser` set; regular session/API factories leave it false.
    *
    * Super users get `role` admin and all workspace groups when `wId` is set.
-   * `pokePrincipal` is required when `user` is null (Cloudflare Access path).
+   * `adminPrincipal` is required when `user` is null (Cloudflare Access path).
    */
-  static async fromDustSuperUser({
+  static async fromRubySuperUser({
     user = null,
     wId = null,
-    pokePrincipal = null,
+    adminPrincipal = null,
   }: {
     user?: UserResource | null;
     wId?: string | null;
-    pokePrincipal?: PokePrincipal | null;
+    adminPrincipal?: AdminPrincipal | null;
   }): Promise<Authenticator> {
     const workspace = wId ? await WorkspaceResource.fetchById(wId) : null;
 
-    const resolvedPokePrincipal: PokePrincipal | null = pokePrincipal
+    const resolvedAdminPrincipal: AdminPrincipal | null = adminPrincipal
       ? {
-          email: pokePrincipal.email.toLowerCase(),
-          name: pokePrincipal.name,
+          email: adminPrincipal.email.toLowerCase(),
+          name: adminPrincipal.name,
         }
       : user
         ? { email: user.email, name: user.fullName() }
@@ -509,8 +509,8 @@ export class Authenticator {
         workspace,
         groupModelIds,
       }),
-      isDustSuperUser: true,
-      pokePrincipal: resolvedPokePrincipal,
+      isRubySuperUser: true,
+      adminPrincipal: resolvedAdminPrincipal,
     });
   }
   /**
@@ -1035,7 +1035,7 @@ export class Authenticator {
 
   /**
    * Creates an Authenticator for a given workspace (with role `user`). Used for internal calls
-   * to the Dust API or other functions, when the system is calling something for the workspace.
+   * to the Ruby API or other functions, when the system is calling something for the workspace.
    * Only the workspace global group is granted; use `internalAdminForWorkspace` when broader
    * access is required.
    * @param workspaceId string
@@ -1148,7 +1148,7 @@ export class Authenticator {
    * The exchanged authenticator is scoped down to a plain `user` role by default. An internal
    * system-key caller that needs the impersonated user to keep their own role (e.g. the
    * `run_agent` tool, so a sub-agent gated on `managers`/`admins` stays reachable) asks for it
-   * with the `X-Dust-Role` header; we then cap the requested role by the user's verified active
+   * with the `X-Ruby-Role` header; we then cap the requested role by the user's verified active
    * membership, so the exchange can never grant more than the user actually has.
    *
    * @param auth
@@ -1249,8 +1249,8 @@ export class Authenticator {
       providersHealth: this._providersHealth,
       // Role and groups are unchanged, so capabilities carry over unchanged.
       permissions: this._permissions,
-      isDustSuperUser: this._isDustSuperUser,
-      pokePrincipal: this._pokePrincipal,
+      isRubySuperUser: this._isRubySuperUser,
+      adminPrincipal: this._adminPrincipal,
     });
   }
 
@@ -1498,46 +1498,46 @@ export class Authenticator {
     return user;
   }
 
-  isDustSuperUser(): boolean {
-    return this._isDustSuperUser;
+  isRubySuperUser(): boolean {
+    return this._isRubySuperUser;
   }
 
   /**
-   * Poke operator principal (email/name). Prefers the attached Dust user when
+   * Admin operator principal (email/name). Prefers the attached Ruby user when
    * present; otherwise the Cloudflare Access principal stashed at auth time.
    */
-  getPokePrincipal(): PokePrincipal {
-    if (this._pokePrincipal) {
-      return this._pokePrincipal;
+  getAdminPrincipal(): AdminPrincipal {
+    if (this._adminPrincipal) {
+      return this._adminPrincipal;
     }
     if (this._user) {
       return { email: this._user.email, name: this._user.fullName() };
     }
-    throw new Error("Unexpected poke authenticator without principal.");
+    throw new Error("Unexpected admin authenticator without principal.");
   }
 
   /**
-   * User payload for poke UI / audit. Uses the real user when available;
+   * User payload for admin UI / audit. Uses the real user when available;
    * otherwise a non-persisted shape derived from Cloudflare Access claims.
    */
-  toPokeUserJSON(): UserType {
+  toAdminUserJSON(): UserType {
     if (this._user) {
       return this._user.toJSON();
     }
 
-    const principal = this.getPokePrincipal();
+    const principal = this.getAdminPrincipal();
     const displayName =
-      principal.name?.trim() || principal.email.split("@")[0] || "poke";
+      principal.name?.trim() || principal.email.split("@")[0] || "admin";
     const [firstName, ...rest] = displayName.split(/\s+/);
 
     return {
-      sId: `poke_${principal.email}`,
+      sId: `admin_${principal.email}`,
       id: 0,
       createdAt: 0,
       provider: null,
-      username: principal.email.split("@")[0] || "poke",
+      username: principal.email.split("@")[0] || "admin",
       email: principal.email,
-      firstName: firstName || "poke",
+      firstName: firstName || "admin",
       lastName: rest.length > 0 ? rest.join(" ") : null,
       fullName: displayName,
       image: null,
@@ -1676,7 +1676,7 @@ export class Authenticator {
 
   // The key that usage is charged to: the attribution key when an internal
   // system-key flow forwarded one (run_agent sub-agents, agent_router,
-  // run_dust_app), the request's own key otherwise. Distinct from
+  // run_ruby_app), the request's own key otherwise. Distinct from
   // `attributionKey()`, which exposes only the forwarded reference and is null
   // on a direct call.
   /**
@@ -1714,8 +1714,8 @@ export class Authenticator {
       providersHealth: this._providersHealth,
       // Attribution-only copy: role and groups are unchanged, so capabilities carry over unchanged.
       permissions: this._permissions,
-      isDustSuperUser: this._isDustSuperUser,
-      pokePrincipal: this._pokePrincipal,
+      isRubySuperUser: this._isRubySuperUser,
+      adminPrincipal: this._adminPrincipal,
     });
   }
 
@@ -1999,12 +1999,12 @@ export async function getOrCreateSystemApiKey(
  * Retrieves a system API key for the given owner, creating one if needed.
  *
  * In development mode, we retrieve the system API key from the environment variable
- * `DUST_DEVELOPMENT_SYSTEM_API_KEY`, so that we always use our own `dust` workspace in production
+ * `RUBY_DEVELOPMENT_SYSTEM_API_KEY`, so that we always use our own `ruby` workspace in production
  * to iterate on the design of the packaged apps. When that's the case, the `owner` paramater (which
  * is local) is ignored.
  *
  * @param owner WorkspaceType
- * @returns DustAPICredentials
+ * @returns RubyAPICredentials
  */
 export async function prodAPICredentialsForOwner(
   owner: LightWorkspaceType,
@@ -2019,12 +2019,12 @@ export async function prodAPICredentialsForOwner(
 }> {
   if (
     isDevelopment() &&
-    !config.getDustAPIConfig().url.startsWith("http://localhost") &&
+    !config.getRubyAPIConfig().url.startsWith("http://localhost") &&
     !useLocalInDev
   ) {
     return {
-      apiKey: config.getDustDevelopmentSystemAPIKey(),
-      workspaceId: config.getDustDevelopmentWorkspaceId(),
+      apiKey: config.getRubyDevelopmentSystemAPIKey(),
+      workspaceId: config.getRubyDevelopmentWorkspaceId(),
     };
   }
 
@@ -2100,7 +2100,7 @@ export async function hasFeatureFlag(
 export function getApiKeyNameFromHeaders(headers: {
   [key: string]: string | string[] | undefined;
 }) {
-  const apiKeyName = headers[DustApiKeyNameHeader];
+  const apiKeyName = headers[RubyApiKeyNameHeader];
   if (isString(apiKeyName)) {
     return decodeUtf8HeaderValue(apiKeyName);
   }
@@ -2109,7 +2109,7 @@ export function getApiKeyNameFromHeaders(headers: {
 
 /**
  * @cc [owner:fabiencelier,label:product] forwarded-key-name-prefers-attribution
- * When `auth` carries an attribution key, the forwarded `x-dust-api-key-name` MUST be that key's
+ * When `auth` carries an attribution key, the forwarded `x-ruby-api-key-name` MUST be that key's
  * name rather than `auth.key()`'s, so the originating key's name survives nested internal
  * system-key calls. With neither an attribution key nor a request key, no header is returned.
  */
@@ -2117,15 +2117,15 @@ export function getApiKeyNameHeader(auth: Authenticator) {
   // Prefer the attribution key name over the request's own key so the original
   // caller's key name propagates transitively through nested internal system-key
   // calls (e.g. a sub-agent that itself spawns sub-agents). Without this, a nested
-  // call would forward the system key name ("DustSystemKey") and lose attribution.
+  // call would forward the system key name ("RubySystemKey") and lose attribution.
   const name = auth.attributionKey()?.name ?? auth.key()?.name;
   if (!name) {
     return undefined;
   }
 
-  // The name may exceed Latin-1 (emoji, non-Latin scripts); DustAPI encodes
-  // extra header values on the wire (see @dust-tt/client baseHeaders).
+  // The name may exceed Latin-1 (emoji, non-Latin scripts); RubyAPI encodes
+  // extra header values on the wire (see @ruby-ai/client baseHeaders).
   return {
-    [DustApiKeyNameHeader]: name,
+    [RubyApiKeyNameHeader]: name,
   };
 }

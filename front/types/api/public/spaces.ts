@@ -98,6 +98,6 @@ export function isSpreadsheetFolderContentNode(
 ): boolean {
   return (
     contentNode.type === "folder" &&
-    contentNode.mimeType === "application/vnd.dust.folder.spreadsheet"
+    contentNode.mimeType === "application/vnd.ruby.folder.spreadsheet"
   );
 }

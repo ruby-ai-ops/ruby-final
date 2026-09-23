@@ -13,7 +13,7 @@ import {
   CheckDouble,
   Paperclip,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";

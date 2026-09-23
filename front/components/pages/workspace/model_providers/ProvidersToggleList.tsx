@@ -2,7 +2,7 @@ import { DisableProviderDialog } from "@app/components/pages/workspace/model_pro
 import { ProviderToggleContextItem } from "@app/components/pages/workspace/model_providers/ProviderToggleContextItem";
 import type { ModelProviderIdType } from "@app/types/assistant/models/types";
 import type { ProvidersSelection } from "@app/types/provider_selection";
-import { ContextItem } from "@dust-tt/sparkle";
+import { ContextItem } from "@ruby-ai/ui";
 import { useCallback, useState } from "react";
 
 interface ProvidersToggleListProps {

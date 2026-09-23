@@ -125,7 +125,7 @@ function isCreditPricedWorkspace(auth: Authenticator): boolean {
 // Whether this pod can be nudged right now.
 // Always applied: archived pod; owner is not an active, non-revoked member;
 // credit/seat (or the legacy spend cap). Skipped when overrideChecks is set
-// (poke one-off): BYOK, frequency cap, unanswered-nudge limit.
+// (admin one-off): BYOK, frequency cap, unanswered-nudge limit.
 export async function isEligibleForNudge(
   auth: Authenticator,
   {
@@ -173,7 +173,7 @@ export async function isEligibleForNudge(
 
   const maxUnansweredCount = getActivationNudgeMaxUnansweredCount(auth);
 
-  // The pod's own nudge conversations are the nudge history: Dust opened them,
+  // The pod's own nudge conversations are the nudge history: Ruby opened them,
   // so their opening message carries the nudge origin.
   const nudgedAts = await ConversationResource.listNudgeConversationTimestamps(
     auth,
@@ -234,12 +234,12 @@ function buildActivationNudgeContent(
 
   return (
     content +
-    `\n\n<dust_activation>\n${contextLines.join("\n")}\n</dust_activation>`
+    `\n\n<ruby_activation>\n${contextLines.join("\n")}\n</ruby_activation>`
   );
 }
 
 /**
- * Posts a nudge to a Pod: Dust opening a conversation in the pod, on behalf of
+ * Posts a nudge to a Pod: Ruby opening a conversation in the pod, on behalf of
  * the pod's user, so they have somewhere to start.
  *
  * The message is authored by the system, not by them: the agent's identity in
@@ -284,12 +284,12 @@ export async function postActivationNudge(
   }
 
   const agentConfiguration = await getAgentConfiguration(userAuth, {
-    agentId: GLOBAL_AGENTS_SID.DUST,
+    agentId: GLOBAL_AGENTS_SID.RUBY,
     variant: "extra_light",
   });
   if (!agentConfiguration) {
     return new Err(
-      new Error("The Dust agent is not available to the Pod's user.")
+      new Error("The Ruby agent is not available to the Pod's user.")
     );
   }
 

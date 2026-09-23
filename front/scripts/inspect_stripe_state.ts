@@ -48,10 +48,10 @@ async function inspectFromEvent(eventId: string, logger: any) {
   const workspaceId = stripeSubscription.metadata?.workspaceId;
   logger.info(`Workspace ID from Stripe metadata: ${workspaceId}`);
 
-  const dustSubscription =
+  const rubySubscription =
     await SubscriptionResource.fetchByStripeId(stripeSubscriptionId);
-  if (!dustSubscription) {
-    logger.warn("Dust Subscription not found");
+  if (!rubySubscription) {
+    logger.warn("Ruby Subscription not found");
     return;
   }
 
@@ -62,7 +62,7 @@ async function inspectFromEvent(eventId: string, logger: any) {
   }
 
   logger.info(`Workspace sId: ${workspace.sId}, name: ${workspace.name}`);
-  logger.info(`Dust Subscription status: ${dustSubscription.status}`);
+  logger.info(`Ruby Subscription status: ${rubySubscription.status}`);
   logger.info(
     `Customer status: ${await getCustomerPaymentStatus(stripeSubscription)}`
   );

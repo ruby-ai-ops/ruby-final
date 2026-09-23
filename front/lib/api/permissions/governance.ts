@@ -4,7 +4,7 @@ import {
   getAuditLogContext,
 } from "@app/lib/api/audit/workos_audit";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import type { CapabilityState } from "@app/lib/resources/group_permission_resource";
 import { GroupPermissionResource } from "@app/lib/resources/group_permission_resource";
 import { GroupResource } from "@app/lib/resources/group_resource";
@@ -106,7 +106,7 @@ export async function setWorkspaceGovernancePermission(
 ): Promise<
   Result<
     GovernancePermission,
-    DustError<"group_not_found" | "invalid_id" | "unauthorized">
+    RubyError<"group_not_found" | "invalid_id" | "unauthorized">
   >
 > {
   const capability: CapabilitySpec = { grantType, resourceType };
@@ -116,7 +116,7 @@ export async function setWorkspaceGovernancePermission(
   );
   if (!canManage) {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         "You cannot manage this governance permission."
       )
@@ -152,7 +152,7 @@ export async function setWorkspaceGovernancePermission(
         !groupsRes.value.every((group) => isManageableGroupKind(group.kind))
       ) {
         return new Err(
-          new DustError(
+          new RubyError(
             "invalid_id",
             "The groups configuration references groups that cannot be managed."
           )

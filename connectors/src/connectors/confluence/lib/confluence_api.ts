@@ -11,8 +11,8 @@ import { getOAuthConnectionAccessTokenWithThrow } from "@connectors/lib/oauth";
 import logger from "@connectors/logger/logger";
 import type { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { ModelId } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, normalizeError, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, normalizeError, Ok } from "@ruby-ai/client";
 
 const PAGE_FETCH_LIMIT = 100;
 

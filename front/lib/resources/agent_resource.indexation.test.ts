@@ -179,7 +179,7 @@ describe("resource-owned agent search indexation", () => {
       description: "Draft agent description",
       instructions: "Draft instructions",
       instructionsHtml: null,
-      pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+      pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
       status: "draft",
       scope: "hidden",
       model: {

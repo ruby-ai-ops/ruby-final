@@ -9,7 +9,7 @@ import {
   setApiKeySpendLimit,
 } from "@app/lib/api/keys/spend_limit";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { GroupResource } from "@app/lib/resources/group_resource";
 import { KeyResource } from "@app/lib/resources/key_resource";
 import { SpaceResource } from "@app/lib/resources/space_resource";
@@ -50,10 +50,10 @@ type CreateApiKeyErrorCode =
 async function resolveApiKeyGroups(
   auth: Authenticator,
   { spaceIds, role }: { spaceIds: string[]; role: "user" | "admin" }
-): Promise<Result<GroupResource[], DustError<CreateApiKeyErrorCode>>> {
+): Promise<Result<GroupResource[], RubyError<CreateApiKeyErrorCode>>> {
   const globalGroupRes = await GroupResource.fetchWorkspaceGlobalGroup(auth);
   if (globalGroupRes.isErr()) {
-    return new Err(new DustError("group_not_found", "Global group not found"));
+    return new Err(new RubyError("group_not_found", "Global group not found"));
   }
   const globalGroup = globalGroupRes.value;
 
@@ -68,7 +68,7 @@ async function resolveApiKeyGroups(
 
     if (scopableSpaces.length !== requestedSpaceIds.length) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "An API key can only be scoped to spaces, pods or the global space."
         )
@@ -89,7 +89,7 @@ async function resolveApiKeyGroups(
     // `20260908_backfill_global_space_member_group` migration.
     if (spaceGroups.length < scopableSpaces.length) {
       return new Err(
-        new DustError(
+        new RubyError(
           "group_not_found",
           "A requested space has no member group to scope the key to."
         )
@@ -123,20 +123,20 @@ export async function createApiKey(
     monthlyCapAwuCredits: number | null;
     role: "user" | "admin";
   }
-): Promise<Result<KeyResource, DustError<CreateApiKeyErrorCode>>> {
+): Promise<Result<KeyResource, RubyError<CreateApiKeyErrorCode>>> {
   const user = auth.getNonNullableUser();
   const owner = auth.getNonNullableWorkspace();
 
   const trimmedName = name.trim();
   if (trimmedName.length === 0) {
     return new Err(
-      new DustError("invalid_request_error", "API key name cannot be empty.")
+      new RubyError("invalid_request_error", "API key name cannot be empty.")
     );
   }
 
   if (monthlyCapMicroUsd !== null && monthlyCapMicroUsd < 0) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "monthly_cap_micro_usd must be greater than or equal to 0"
       )
@@ -149,7 +149,7 @@ export async function createApiKey(
     const plan = auth.subscription()?.plan;
     if (!plan || !isCreditPricedPlan(plan)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_request_error",
           "Per-key credit spend limits are only available on credit-priced plans."
         )
@@ -160,7 +160,7 @@ export async function createApiKey(
       monthlyCapAwuCredits > MAX_API_KEY_SPEND_LIMIT_AWU_CREDITS
     ) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_request_error",
           `monthly_cap_awu_credits must be between ` +
             `${MIN_API_KEY_SPEND_LIMIT_AWU_CREDITS} and ` +
@@ -176,7 +176,7 @@ export async function createApiKey(
   });
   if (existingKey) {
     return new Err(
-      new DustError(
+      new RubyError(
         "name_conflict",
         "An API key with this name already exists in this workspace."
       )
@@ -200,7 +200,7 @@ export async function createApiKey(
   });
   if (remaining === 0) {
     return new Err(
-      new DustError(
+      new RubyError(
         "limit_reached",
         `You have reached the limit of ${MAX_API_KEY_CREATION_PER_DAY} API keys ` +
           "creations per day. Please try again later."
@@ -255,7 +255,7 @@ export async function createApiKey(
         "[Keys] Failed to apply credit cap on newly created key"
       );
       return new Err(
-        new DustError(
+        new RubyError(
           "metronome_error",
           `Key created but failed to set credit cap: ${limitResult.error.message}`
         )

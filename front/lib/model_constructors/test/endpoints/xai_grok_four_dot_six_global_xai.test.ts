@@ -8,7 +8,7 @@ import type { StreamSetup } from "@app/lib/model_constructors/test/setup";
 export const XaiGrokFourDotSixGlobalXaiStreamSetup: StreamSetup = {
   createInstance: () =>
     new XaiGrokFourDotSixGlobalXaiStream({
-      XAI_API_KEY: process.env.DUST_MANAGED_XAI_API_KEY ?? "",
+      XAI_API_KEY: process.env.RUBY_MANAGED_XAI_API_KEY ?? "",
     }),
   // Verified against the live xAI API on 2026-08-12 with the widest
   // `inputConfigSchema`. `none` and `maximal` are rejected. `minimal` is

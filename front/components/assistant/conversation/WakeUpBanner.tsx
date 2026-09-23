@@ -8,7 +8,7 @@ import {
   ContentMessageInline,
   Tooltip,
   Trash04,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface WakeUpBannerProps {
   wakeUp: WakeUpType;

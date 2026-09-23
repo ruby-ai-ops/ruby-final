@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Open a shell (or run a one-off command) in the prodbox pod of a Dust
-# production cell. Switches gcloud and kubectl via dust-cell (leaves that
+# Open a shell (or run a one-off command) in the prodbox pod of a Ruby
+# production cell. Switches gcloud and kubectl via ruby-cell (leaves that
 # cell selected). Requires setup_infra.sh.
 #
 # Usage:
@@ -21,10 +21,10 @@ if [[ "${1:-}" == "--" ]]; then
   shift
 fi
 
-require_dust_cell
+require_ruby_cell
 
 CELL="$(cell_for_alias "$ALIAS")"
-dust-cell "$CELL"
+ruby-cell "$CELL"
 
 POD_NAME="$(get_prodbox_pod)"
 echo "   Pod: ${POD_NAME}" >&2

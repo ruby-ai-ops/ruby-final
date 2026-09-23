@@ -1,5 +1,5 @@
 import { TAG_NAME_PATTERN } from "@app/components/editor/extensions/agent_builder/instructionBlockUtils";
-import { ChevronDown, Chip, cn } from "@dust-tt/sparkle";
+import { ChevronDown, Chip, cn } from "@ruby-ai/ui";
 import type React from "react";
 import { visit } from "unist-util-visit";
 

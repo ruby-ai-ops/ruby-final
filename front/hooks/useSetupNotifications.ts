@@ -27,7 +27,7 @@ export const useSetupNotifications = () => {
 
   useEffect(() => {
     const setupNotifications = async (novuClient: Novu) => {
-      const dustFacingUrl = config.getApiBaseUrl();
+      const rubyFacingUrl = config.getApiBaseUrl();
 
       const unsubscribe = novuClient.on(
         "notifications.notification_received",
@@ -103,15 +103,15 @@ export const useSetupNotifications = () => {
               tag: notification.result.id,
               icon:
                 notification.result.avatar ??
-                `${dustFacingUrl}/static/landing/logos/dust/Dust_LogoSquare.svg`,
+                `${rubyFacingUrl}/static/landing/logos/ruby/Ruby_LogoSquare.svg`,
               onClick: async () => {
                 if (notification.result.primaryAction?.redirect) {
                   const url = notification.result.primaryAction.redirect.url;
-                  const startWithDustDomain = url.startsWith(dustFacingUrl);
+                  const startWithRubyDomain = url.startsWith(rubyFacingUrl);
                   const isRelativeUrl =
                     url.startsWith("/") && !url.startsWith("//");
 
-                  if (startWithDustDomain || isRelativeUrl) {
+                  if (startWithRubyDomain || isRelativeUrl) {
                     await push(url);
                   }
                 }

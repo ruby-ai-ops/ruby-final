@@ -31,7 +31,7 @@ function resolveNoopResponse({
   }
 
   const command = lastUserMessageContent
-    .replace(/<dust_system>[\s\S]*?<\/dust_system>/g, "")
+    .replace(/<ruby_system>[\s\S]*?<\/ruby_system>/g, "")
     .trim();
 
   if (command === "long message") {

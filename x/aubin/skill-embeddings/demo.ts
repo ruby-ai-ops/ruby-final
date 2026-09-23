@@ -86,7 +86,7 @@ export function demoData(): EmbeddingData {
   return {
     version: 1,
     workspace: "synthetic-demo",
-    dustUrl: "https://dust.tt",
+    rubyUrl: "https://ruby.ad",
     status: "active",
     includeUnpublished: false,
     model: "synthetic-demo",

@@ -1,6 +1,6 @@
 // Okay to use public API types because it's front/connectors communication.
 
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import type { ConnectorProviderConfiguration } from "@app/lib/connector_providers";
 import { CONNECTOR_UI_CONFIGURATIONS } from "@app/lib/connector_providers_ui";
 import { clientFetch } from "@app/lib/egress/client";
@@ -18,7 +18,7 @@ import type {
 import { CheckBigQueryCredentialsSchema } from "@app/types/oauth/lib";
 import type { WorkspaceType } from "@app/types/user";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { isConnectorsAPIError } from "@dust-tt/client";
+import { isConnectorsAPIError } from "@ruby-ai/client";
 import {
   BookOpen01,
   Button,
@@ -37,7 +37,7 @@ import {
   SheetTitle,
   TextArea,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useMemo, useState } from "react";
 import { fromError } from "zod-validation-error";
 

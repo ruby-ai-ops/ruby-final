@@ -7,7 +7,7 @@ import {
 } from "@app/lib/api/frames/source_staging";
 import { ensureFrameSandboxReady } from "@app/lib/api/sandbox/lifecycle";
 import { renderRootCommand } from "@app/lib/api/sandbox/root_command";
-import { reconcileDatabaseOnReadySandbox } from "@app/lib/api/sandbox_functions/dsbx_db";
+import { reconcileDatabaseOnReadySandbox } from "@app/lib/api/sandbox_functions/rbx_db";
 import { SandboxFunctionError } from "@app/lib/api/sandbox_functions/errors";
 import { SandboxResource } from "@app/lib/resources/sandbox_resource";
 import { FileFactory } from "@app/tests/utils/FileFactory";
@@ -23,10 +23,10 @@ vi.mock("@app/lib/api/sandbox/lifecycle", async (importOriginal) => {
   return { ...actual, ensureFrameSandboxReady: vi.fn() };
 });
 
-vi.mock("@app/lib/api/sandbox_functions/dsbx_db", async (importOriginal) => {
+vi.mock("@app/lib/api/sandbox_functions/rbx_db", async (importOriginal) => {
   const actual =
     await importOriginal<
-      typeof import("@app/lib/api/sandbox_functions/dsbx_db")
+      typeof import("@app/lib/api/sandbox_functions/rbx_db")
     >();
   return { ...actual, reconcileDatabaseOnReadySandbox: vi.fn() };
 });
@@ -72,7 +72,7 @@ async function setup() {
   const sandbox = await SandboxResource.makeNew(authenticator, {
     providerId: "test-provider-id",
     status: "running",
-    baseImage: "dust-base",
+    baseImage: "ruby-base",
     version: "0.0.0-test",
   });
   vi.spyOn(sandbox, "writeFile").mockResolvedValue(new Ok(undefined));

@@ -285,7 +285,7 @@ export const confluence = async ({
       return {
         exists: true,
         ancestors,
-        existsInDust: !!confluencePage,
+        existsInRuby: !!confluencePage,
         hasChildren,
         hasReadRestrictions: hasReadRestrictions ?? true,
         status: page.status,

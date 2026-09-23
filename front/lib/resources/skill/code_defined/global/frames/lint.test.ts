@@ -64,7 +64,7 @@ async function fixture(frameRoot = "conversation-conv_123/My Frame") {
   const manifest = {
     version: 1,
     id: "a".repeat(64),
-    modules: ["react", "@dust/react-hooks"],
+    modules: ["react", "@ruby-ai/react-hooks"],
     tarballSha256: checksum,
     sizeBytes: archive.length,
     path: `/frame-runtime/${checksum}.tgz`,
@@ -102,11 +102,11 @@ async function fixture(frameRoot = "conversation-conv_123/My Frame") {
 }
 
 async function lint(context: Awaited<ReturnType<typeof fixture>>) {
-  vi.stubEnv("DUST_VIZ_URL", context.url);
-  vi.stubEnv("DUST_FRAME_ROOT", context.frameRoot);
-  vi.stubEnv("DUST_FRAME_TYPES_CACHE", path.join(context.root, "cache"));
+  vi.stubEnv("RUBY_VIZ_URL", context.url);
+  vi.stubEnv("RUBY_FRAME_ROOT", context.frameRoot);
+  vi.stubEnv("RUBY_FRAME_TYPES_CACHE", path.join(context.root, "cache"));
   vi.stubEnv(
-    "DUST_FRAME_CHECKER_CACHE",
+    "RUBY_FRAME_CHECKER_CACHE",
     path.join(context.root, "checker-cache")
   );
   const child = spawn(
@@ -134,7 +134,7 @@ async function lint(context: Awaited<ReturnType<typeof fixture>>) {
 async function addFunctionHooks(context: Awaited<ReturnType<typeof fixture>>) {
   await writeFile(
     path.join(context.project, "hooks.d.ts"),
-    `declare module "@dust/react-hooks" {
+    `declare module "@ruby-ai/react-hooks" {
   export function useFrameFunction(name: string, args: object): unknown
   export function useFrameFunctionMutation(name: string): unknown
   export { useFrameFunction as usePodFunction, useFrameFunctionMutation as usePodFunctionMutation }
@@ -169,7 +169,7 @@ test("checks function names across UI files and reads manifest edits on each run
   await writeFile(
     path.join(context.project, "index.tsx"),
     [
-      'import { useFrameFunction, useFrameFunctionMutation as useMutation } from "@dust/react-hooks"',
+      'import { useFrameFunction, useFrameFunctionMutation as useMutation } from "@ruby-ai/react-hooks"',
       'import TaskList from "./components/TaskList"',
       'import Other from "./other"',
       "export default function App() {",
@@ -183,7 +183,7 @@ test("checks function names across UI files and reads manifest edits on each run
   await writeFile(
     path.join(context.project, "components/TaskList.tsx"),
     [
-      'import * as hooks from "@dust/react-hooks"',
+      'import * as hooks from "@ruby-ai/react-hooks"',
       "export default function TaskList() {",
       '  hooks.usePodFunction("missing-legacy", {})',
       "  hooks.usePodFunctionMutation(`missing-legacy-mutation`)",
@@ -193,7 +193,7 @@ test("checks function names across UI files and reads manifest edits on each run
   );
   await writeFile(
     path.join(context.project, "other.jsx"),
-    'import { useFrameFunction as useFunction } from "@dust/react-hooks"\n' +
+    'import { useFrameFunction as useFunction } from "@ruby-ai/react-hooks"\n' +
       'export default function Other() { useFunction("missing-alias", {}); return null }\n'
   );
 
@@ -202,7 +202,7 @@ test("checks function names across UI files and reads manifest edits on each run
   expect(broken.stdout, broken.stderr).toContain("index.tsx:5:20:");
   expect(broken.stdout).toContain("components/TaskList.tsx:3:24:");
   expect(broken.stdout).toContain("other.jsx:2:47:");
-  expect(broken.stdout).toContain("dust(declared-frame-functions)");
+  expect(broken.stdout).toContain("ruby(declared-frame-functions)");
   expect(broken.stdout).toContain(
     "Declared functions: 'add-task', 'list-tasks'."
   );
@@ -233,8 +233,8 @@ test("ignores computed names, unrelated hooks, shadowed imports and backend code
   await writeManifest(context, ["list-tasks"]);
   await writeFile(
     path.join(context.project, "index.tsx"),
-    `import { useFrameFunction, callFunction } from "@dust/react-hooks"
-import * as hooks from "@dust/react-hooks"
+    `import { useFrameFunction, callFunction } from "@ruby-ai/react-hooks"
+import * as hooks from "@ruby-ai/react-hooks"
 import { useFrameFunction as useLocalFunction } from "./local-hooks"
 export default function App({ name }: { name: string }) {
   useFrameFunction("list-tasks", {})
@@ -261,7 +261,7 @@ export function NamespaceShadow({ hooks }: { hooks: { useFrameFunction: (name: s
   await mkdir(path.join(context.project, "functions"));
   await writeFile(
     path.join(context.project, "functions/backend.ts"),
-    'import { useFrameFunction } from "@dust/react-hooks"\n' +
+    'import { useFrameFunction } from "@ruby-ai/react-hooks"\n' +
       'export const run = () => useFrameFunction("backend-only", {})\n'
   );
   const result = await lint(context);
@@ -273,7 +273,7 @@ test("skips legacy Frames without a manifest but rejects missing declarations in
   await addFunctionHooks(context);
   await writeFile(
     path.join(context.project, "index.tsx"),
-    'import { useFrameFunction } from "@dust/react-hooks"\n' +
+    'import { useFrameFunction } from "@ruby-ai/react-hooks"\n' +
       'export default function App() { useFrameFunction("list-tasks", {}); return null }\n'
   );
   const legacy = await lint(context);
@@ -382,7 +382,7 @@ test.each([
   expect(broken.stdout).toContain("index.tsx:2:25:");
   expect(broken.stdout).toContain("index.tsx:3:31:");
   expect(broken.stdout).toContain("functions/read.ts:2:21:");
-  expect(broken.stdout).toContain("dust(relative-package-files)");
+  expect(broken.stdout).toContain("ruby(relative-package-files)");
   expect(broken.stdout).toContain('Use "./data.csv"');
   expect(broken.stdout).not.toContain("TS2307");
   expect(await readFile(path.join(context.project, "index.tsx"), "utf8")).toBe(
@@ -417,7 +417,7 @@ test("requires the original scoped root when linting a local copy", async () => 
   const context = await fixture("");
   const result = await lint(context);
   expect(result.exitCode).toBe(1);
-  expect(result.stderr).toContain("Set DUST_FRAME_ROOT");
+  expect(result.stderr).toContain("Set RUBY_FRAME_ROOT");
   expect(context.requests).toEqual([]);
 });
 

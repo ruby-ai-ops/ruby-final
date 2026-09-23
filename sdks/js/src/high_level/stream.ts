@@ -1,12 +1,12 @@
 import {
-  apiErrorToDustError,
-  DustAgentError,
-  DustCancelledError,
-  DustError,
-  DustUnknownError,
-  DustValidationError,
+  apiErrorToRubyError,
+  RubyAgentError,
+  RubyCancelledError,
+  RubyError,
+  RubyUnknownError,
+  RubyValidationError,
 } from "../errors/errors";
-import type { DustAPI } from "../index";
+import type { RubyAPI } from "../index";
 import { buildContext } from "./context";
 import type { AgentMessage } from "./guards";
 import {
@@ -37,14 +37,14 @@ function findFirstAgentMessage(
     .find((m) => isAgentMessage(m) && m.parentMessageId === parentMessageId);
 
   if (!agentMessage || !isAgentMessage(agentMessage)) {
-    throw new DustAgentError("No agent message found in response");
+    throw new RubyAgentError("No agent message found in response");
   }
 
   return agentMessage;
 }
 
 export class MessageStreamImpl implements MessageStream {
-  private _client: DustAPI;
+  private _client: RubyAPI;
   private _params: StreamMessageParams;
   private _autoApproveTools: boolean;
   private _abortController: AbortController;
@@ -60,11 +60,11 @@ export class MessageStreamImpl implements MessageStream {
   private _started = false;
   private _finished = false;
   private _response: AgentResponse | null = null;
-  private _error: DustError | null = null;
+  private _error: RubyError | null = null;
   private _uploadedFileIds: string[] = [];
 
   constructor(
-    client: DustAPI,
+    client: RubyAPI,
     params: StreamMessageParams,
     autoApproveTools = false
   ) {
@@ -159,7 +159,7 @@ export class MessageStreamImpl implements MessageStream {
       throw this._error;
     }
     if (!this._response) {
-      throw new DustAgentError("Stream ended without a response");
+      throw new RubyAgentError("Stream ended without a response");
     }
 
     return this._response;
@@ -189,15 +189,15 @@ export class MessageStreamImpl implements MessageStream {
 
       yield* this._streamResponse(conversation, userMessageId);
     } catch (error) {
-      const dustError = this._abortController.signal.aborted
-        ? new DustCancelledError("Stream cancelled")
-        : this._toDustError(error);
+      const rubyError = this._abortController.signal.aborted
+        ? new RubyCancelledError("Stream cancelled")
+        : this._toRubyError(error);
 
-      this._error = dustError;
+      this._error = rubyError;
       this._finished = true;
-      yield { type: "error", error: dustError };
-      this._emitToHandlers("error", dustError);
-      throw dustError;
+      yield { type: "error", error: rubyError };
+      this._emitToHandlers("error", rubyError);
+      throw rubyError;
     }
   }
 
@@ -207,18 +207,18 @@ export class MessageStreamImpl implements MessageStream {
 
   private _checkCancelled(): void {
     if (this._signal.aborted) {
-      throw new DustCancelledError("Operation cancelled");
+      throw new RubyCancelledError("Operation cancelled");
     }
   }
 
-  private _toDustError(error: unknown): DustError {
-    if (error instanceof DustError) {
+  private _toRubyError(error: unknown): RubyError {
+    if (error instanceof RubyError) {
       return error;
     }
     if (error instanceof Error) {
-      return new DustUnknownError(error.message, { cause: error });
+      return new RubyUnknownError(error.message, { cause: error });
     }
-    return new DustUnknownError(String(error));
+    return new RubyUnknownError(String(error));
   }
 
   private _emitToHandlers<T extends StreamEvent["type"]>(
@@ -237,9 +237,9 @@ export class MessageStreamImpl implements MessageStream {
     return hasStringProperty(obj, key) ? obj[key] : defaultValue;
   }
 
-  private _setErrorAndFinish(error: DustError): {
+  private _setErrorAndFinish(error: RubyError): {
     type: "error";
-    error: DustError;
+    error: RubyError;
   } {
     this._error = error;
     this._finished = true;
@@ -294,7 +294,7 @@ export class MessageStreamImpl implements MessageStream {
           if (uploadResult.error instanceof Error) {
             throw uploadResult.error;
           }
-          throw apiErrorToDustError(uploadResult.error);
+          throw apiErrorToRubyError(uploadResult.error);
         }
 
         fileId = uploadResult.value.sId;
@@ -342,7 +342,7 @@ export class MessageStreamImpl implements MessageStream {
           signal: this._signal,
         });
         if (fragmentResult.isErr()) {
-          throw apiErrorToDustError(fragmentResult.error);
+          throw apiErrorToRubyError(fragmentResult.error);
         }
       }
 
@@ -357,7 +357,7 @@ export class MessageStreamImpl implements MessageStream {
       });
 
       if (messageResult.isErr()) {
-        throw apiErrorToDustError(messageResult.error);
+        throw apiErrorToRubyError(messageResult.error);
       }
 
       const convResult = await this._client.getConversation({
@@ -366,7 +366,7 @@ export class MessageStreamImpl implements MessageStream {
       });
 
       if (convResult.isErr()) {
-        throw apiErrorToDustError(convResult.error);
+        throw apiErrorToRubyError(convResult.error);
       }
 
       const userMessage = messageResult.value;
@@ -397,13 +397,13 @@ export class MessageStreamImpl implements MessageStream {
       });
 
       if (result.isErr()) {
-        throw apiErrorToDustError(result.error);
+        throw apiErrorToRubyError(result.error);
       }
 
       const { conversation, message: userMessage } = result.value;
 
       if (!userMessage) {
-        throw new DustAgentError("No user message returned in response");
+        throw new RubyAgentError("No user message returned in response");
       }
 
       const firstAgentMessage = findFirstAgentMessage(
@@ -434,14 +434,14 @@ export class MessageStreamImpl implements MessageStream {
 
     if (streamResult.isErr()) {
       if (streamResult.error instanceof Error) {
-        throw new DustUnknownError(streamResult.error.message, {
+        throw new RubyUnknownError(streamResult.error.message, {
           cause: streamResult.error,
         });
       }
       if (isAPIError(streamResult.error)) {
-        throw apiErrorToDustError(streamResult.error);
+        throw apiErrorToRubyError(streamResult.error);
       }
-      throw new DustUnknownError("Unknown stream error");
+      throw new RubyUnknownError("Unknown stream error");
     }
 
     for await (const event of streamResult.value.eventStream) {
@@ -513,7 +513,7 @@ export class MessageStreamImpl implements MessageStream {
           description,
           approve: async () => {
             if (!this._conversationId) {
-              throw new DustAgentError("No conversation ID available");
+              throw new RubyAgentError("No conversation ID available");
             }
             await this._client.validateAction({
               conversationId: this._conversationId,
@@ -525,7 +525,7 @@ export class MessageStreamImpl implements MessageStream {
           },
           reject: async () => {
             if (!this._conversationId) {
-              throw new DustAgentError("No conversation ID available");
+              throw new RubyAgentError("No conversation ID available");
             }
             await this._client.validateAction({
               conversationId: this._conversationId,
@@ -555,7 +555,7 @@ export class MessageStreamImpl implements MessageStream {
 
       case "agent_error": {
         const message = this._getString(event.error, "message", "Agent error");
-        return this._setErrorAndFinish(new DustAgentError(message));
+        return this._setErrorAndFinish(new RubyAgentError(message));
       }
 
       case "user_message_error": {
@@ -564,12 +564,12 @@ export class MessageStreamImpl implements MessageStream {
           "message",
           "Message error"
         );
-        return this._setErrorAndFinish(new DustValidationError(message));
+        return this._setErrorAndFinish(new RubyValidationError(message));
       }
 
       case "agent_generation_cancelled":
         return this._setErrorAndFinish(
-          new DustCancelledError("Generation cancelled")
+          new RubyCancelledError("Generation cancelled")
         );
 
       case "tool_error": {

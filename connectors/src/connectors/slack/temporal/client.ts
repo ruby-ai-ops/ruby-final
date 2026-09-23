@@ -7,7 +7,7 @@ import mainLogger from "@connectors/logger/logger";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { ModelId } from "@connectors/types";
 import { normalizeError } from "@connectors/types";
-import { Err, Ok, removeNulls } from "@dust-tt/client";
+import { Err, Ok, removeNulls } from "@ruby-ai/client";
 import { WorkflowExecutionAlreadyStartedError } from "@temporalio/common";
 
 import { getWeekStart } from "../lib/utils";

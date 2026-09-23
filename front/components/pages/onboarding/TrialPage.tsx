@@ -1,6 +1,6 @@
 import { useAuth, useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useAppRouter } from "@app/lib/platform";
-import { Button, Check, DustLogoSquare, Icon, Page } from "@dust-tt/sparkle";
+import { Button, Check, RubyLogoSquare, Icon, Page } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 
@@ -44,7 +44,7 @@ export function TrialPage() {
         <div className="flex h-full flex-col justify-center">
           <Page.Horizontal>
             <Page.Vertical sizing="grow" gap="lg">
-              <DustLogoSquare className="-ml-11 h-10 w-32" />
+              <RubyLogoSquare className="-ml-11 h-10 w-32" />
               <Page.Header title="Get started for free" />
               <p className="-mt-4 text-muted-foreground">
                 No credit card required · No time limit
@@ -87,7 +87,7 @@ export function TrialPage() {
       <div className="flex h-full flex-col justify-center">
         <Page.Horizontal>
           <Page.Vertical sizing="grow" gap="lg">
-            <DustLogoSquare className="-ml-11 h-10 w-32" />
+            <RubyLogoSquare className="-ml-11 h-10 w-32" />
             <Page.Header title="Start your free trial" />
             <p className="-mt-4 text-muted-foreground">
               No credit card required

@@ -68,9 +68,9 @@ import { getHeaderFromUserEmail } from "@app/types/user";
 import type {
   AgentMessagePublicType,
   ConversationPublicType,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 
-import { DustAPI, INTERNAL_MIME_TYPES, isAgentMessage } from "@dust-tt/client";
+import { RubyAPI, INTERNAL_MIME_TYPES, isAgentMessage } from "@ruby-ai/client";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { RequestMeta } from "@modelcontextprotocol/sdk/types.js";
 import assert from "assert";
@@ -247,8 +247,8 @@ export const runAgent = async (
   const prodCredentials = await prodAPICredentialsForOwner(
     auth.getNonNullableWorkspace()
   );
-  const api = new DustAPI(
-    config.getDustAPIConfig(),
+  const api = new RubyAPI(
+    config.getRubyAPIConfig(),
     {
       ...prodCredentials,
       extraHeaders: subAgentApiHeaders(auth),

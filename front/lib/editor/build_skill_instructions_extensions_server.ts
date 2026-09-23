@@ -1,8 +1,8 @@
 // Server-side variant of buildSkillInstructionsExtensions. Mirrors the editor
-// builder but uses schema-only TipTap extensions and avoids React/sparkle
+// builder but uses schema-only TipTap extensions and avoids React/ui
 // imports, so it can be loaded by server and worker code (e.g.
 // skill_instructions_html) without dragging the editor's React NodeView chain
-// or @dust-tt/sparkle into the import graph (the worker bundle forbids sparkle).
+// or @ruby-ai/ui into the import graph (the worker bundle forbids ui).
 import { InstructionSuggestionExtension } from "@app/components/editor/extensions/agent_builder/InstructionSuggestionExtension";
 import { CodeExtension } from "@app/components/editor/extensions/CodeExtension";
 import { BlockIdExtension } from "@app/components/editor/extensions/instructions/BlockIdExtension";
@@ -25,7 +25,7 @@ import { StarterKit } from "@tiptap/starter-kit";
 // Server-side rendering strips presentation attributes from the output HTML
 // (see stripPresentationAttributes in skill_instructions_html.ts), so the
 // editor's markdownStyles classes would be removed anyway. Omit them here
-// to avoid importing @dust-tt/sparkle.
+// to avoid importing @ruby-ai/ui.
 export function buildSkillInstructionsExtensionsForServer(): Extensions {
   return [
     InstructionsDocumentExtension,
@@ -50,10 +50,10 @@ export function buildSkillInstructionsExtensionsForServer(): Extensions {
       openOnClick: false,
     }),
     // Use the plain TipTap Heading (not HeadingExtension) here: HeadingExtension
-    // imports markdownHeaderClasses from @dust-tt/sparkle, which is forbidden in
+    // imports markdownHeaderClasses from @ruby-ai/ui, which is forbidden in
     // the worker bundle. Server-side rendering strips presentation attributes
     // anyway (see stripPresentationAttributes in skill_instructions_html.ts), so
-    // the sparkle-derived classes would be removed regardless.
+    // the ui-derived classes would be removed regardless.
     Heading.configure({
       levels: [1, 2, 3, 4, 5, 6],
     }),

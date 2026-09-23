@@ -391,7 +391,7 @@ export async function connectToMCPServer(
   // This is where we route the MCP client to the right server.
   const mcpClient = new Client(
     {
-      name: "dust-mcp-client",
+      name: "ruby-mcp-client",
       version: "1.0.0",
     },
     { jsonSchemaValidator: NO_OP_MCP_JSON_SCHEMA_VALIDATOR }
@@ -827,7 +827,7 @@ async function connectToRemoteMCPServer(
   }
 }
 
-type DustToolMeta = {
+type RubyToolMeta = {
   stake?: MCPToolStakeLevelType;
   displayLabels?: ToolDisplayLabels;
   editableArguments?: readonly string[];
@@ -862,33 +862,33 @@ function isValidTimeout(value: unknown): value is number {
   return typeof value === "number" && value > 0;
 }
 
-export function getDustToolMeta(
+export function getRubyToolMeta(
   _meta: Record<string, unknown> | undefined
-): DustToolMeta | undefined {
-  if (!_meta || typeof _meta.dust !== "object" || _meta.dust === null) {
+): RubyToolMeta | undefined {
+  if (!_meta || typeof _meta.ruby !== "object" || _meta.ruby === null) {
     return undefined;
   }
 
-  const dust = _meta.dust as Record<string, unknown>;
-  const result: DustToolMeta = {};
+  const ruby = _meta.ruby as Record<string, unknown>;
+  const result: RubyToolMeta = {};
 
-  if (isValidStake(dust.stake)) {
-    result.stake = dust.stake;
+  if (isValidStake(ruby.stake)) {
+    result.stake = ruby.stake;
   }
-  if (isValidDisplayLabels(dust.displayLabels)) {
-    result.displayLabels = dust.displayLabels;
+  if (isValidDisplayLabels(ruby.displayLabels)) {
+    result.displayLabels = ruby.displayLabels;
   }
-  if (isStringArray(dust.editableArguments)) {
-    result.editableArguments = dust.editableArguments;
+  if (isStringArray(ruby.editableArguments)) {
+    result.editableArguments = ruby.editableArguments;
   }
-  if (isStringArray(dust.argumentsRequiringApproval)) {
-    result.argumentsRequiringApproval = dust.argumentsRequiringApproval;
+  if (isStringArray(ruby.argumentsRequiringApproval)) {
+    result.argumentsRequiringApproval = ruby.argumentsRequiringApproval;
   }
-  if (isValidTimeout(dust.timeoutMs)) {
-    result.timeoutMs = dust.timeoutMs;
+  if (isValidTimeout(ruby.timeoutMs)) {
+    result.timeoutMs = ruby.timeoutMs;
   }
-  if (typeof dust.eager === "boolean") {
-    result.eager = dust.eager;
+  if (typeof ruby.eager === "boolean") {
+    result.eager = ruby.eager;
   }
 
   return Object.keys(result).length > 0 ? result : undefined;
@@ -896,19 +896,19 @@ export function getDustToolMeta(
 
 export function extractMetadataFromTools(tools: Tool[]): MCPToolType[] {
   return tools.map(({ name, description, inputSchema, _meta }) => {
-    const dustMeta = getDustToolMeta(_meta);
+    const rubyMeta = getRubyToolMeta(_meta);
     return {
       name,
       description: description ?? "",
       // TODO: the types are slightly incompatible: we have an unknown as the values of `properties`
       //  whereas JSONSchema expects a JSONSchema7Definition.
       inputSchema: inputSchema as JSONSchema,
-      ...(dustMeta?.displayLabels
-        ? { displayLabels: dustMeta.displayLabels }
+      ...(rubyMeta?.displayLabels
+        ? { displayLabels: rubyMeta.displayLabels }
         : {}),
-      ...(dustMeta?.eager ? { eager: true } : {}),
-      ...(dustMeta?.editableArguments
-        ? { editableArguments: dustMeta.editableArguments }
+      ...(rubyMeta?.eager ? { eager: true } : {}),
+      ...(rubyMeta?.editableArguments
+        ? { editableArguments: rubyMeta.editableArguments }
         : {}),
     };
   });

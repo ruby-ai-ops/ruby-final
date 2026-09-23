@@ -21,12 +21,12 @@
  * 4. Fall back to the main index.html for all other paths (SPA routing).
  */
 
-import type { GetShareFrameMetadataResponseBody } from "@dust-tt/front/lib/api/files/share";
+import type { GetShareFrameMetadataResponseBody } from "@ruby-ai/front/lib/api/files/share";
 import { z } from "zod";
 
 interface Env {
   ASSETS: Fetcher;
-  DUST_API_URL: string;
+  RUBY_API_URL: string;
 }
 
 // z.ZodType<Pick<...>> makes TS flag any drift with GetShareFrameMetadataResponseBody.
@@ -82,7 +82,7 @@ function buildOgMetaTags(
         ]
       : []),
     `<meta property="og:type" content="website">`,
-    `<meta property="og:site_name" content="Dust">`,
+    `<meta property="og:site_name" content="Ruby">`,
     `<meta property="og:title" content="${escapeHtml(title)}">`,
     `<meta property="og:url" content="${escapeHtml(canonicalUrl)}">`,
     `<meta property="og:image" content="${escapeHtml(image)}">`,
@@ -125,7 +125,7 @@ export default {
         await htmlResponse,
         token,
         url.href,
-        env.DUST_API_URL
+        env.RUBY_API_URL
       );
     }
 

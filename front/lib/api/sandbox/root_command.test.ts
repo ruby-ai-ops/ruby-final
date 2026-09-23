@@ -36,17 +36,17 @@ describe("rootCommand", () => {
     const command = rootCommand.background(
       rootCommand.redirectStdout(
         rootCommand.nohup(
-          rootCommand.env(rootCommand.exec("/opt/bin/dsbx", ["forward"]), {
+          rootCommand.env(rootCommand.exec("/opt/bin/rbx", ["forward"]), {
             unset: ["SSL_CERT_FILE"],
           })
         ),
-        "/tmp/dsbx.log",
+        "/tmp/rbx.log",
         { stderrToStdout: true }
       )
     );
 
     expect(renderRootCommand(command)).toBe(
-      "/usr/bin/nohup /usr/bin/env -u SSL_CERT_FILE /opt/bin/dsbx forward >'/tmp/dsbx.log' 2>&1 &"
+      "/usr/bin/nohup /usr/bin/env -u SSL_CERT_FILE /opt/bin/rbx forward >'/tmp/rbx.log' 2>&1 &"
     );
   });
 

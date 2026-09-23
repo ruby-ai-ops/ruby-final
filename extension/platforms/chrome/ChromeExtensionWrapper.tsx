@@ -1,4 +1,4 @@
-import { Button, cn, DustLogo, Page } from "@dust-tt/sparkle";
+import { Button, cn, RubyLogo, Page } from "@ruby-ai/ui";
 import type { ChromePlatformService } from "@extension/platforms/chrome/services/platform";
 import { usePlatform } from "@extension/shared/context/PlatformContext";
 import { compare } from "compare-versions";
@@ -45,10 +45,10 @@ export const ChromeExtensionWrapper = ({
       >
         <div className="flex h-full w-full flex-col items-center justify-center gap-4 text-center">
           <div className="flex flex-col items-center gap-4 text-center">
-            <DustLogo width={256} height={64} />
+            <RubyLogo width={256} height={64} />
             <Page.Header title="New version ready" />
             <Page.P>
-              Install the latest version to keep using Dust. <br />
+              Install the latest version to keep using Ruby. <br />
               Relaunch from toolbar.
             </Page.P>
             <Button

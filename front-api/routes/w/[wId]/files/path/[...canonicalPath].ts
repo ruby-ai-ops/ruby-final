@@ -1,5 +1,5 @@
 import config from "@app/lib/api/config";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import {
   convertCanonicalFileToPdf,
   deleteCanonicalFile,
@@ -24,14 +24,14 @@ import {
   isFolderExtractError,
   MAX_ARCHIVE_UPLOAD_SIZE_BYTES,
 } from "@app/lib/api/files/folder_extract";
-import { requestDustProjectIncrementalSyncForScopedPath } from "@app/lib/api/projects/request_incremental_sync";
+import { requestRubyProjectIncrementalSyncForScopedPath } from "@app/lib/api/projects/request_incremental_sync";
 import type { PostExtractArchiveResponseBody } from "@app/types/api/file_system/types";
 import type { APIErrorWithContentfulStatusCode } from "@app/types/error";
-import type { DustFileSystemError } from "@app/types/file_system";
+import type { RubyFileSystemError } from "@app/types/file_system";
 import {
-  DUST_FILE_CAN_WRITE_HEADER,
-  DUST_FILE_CONTENT_TYPE_HEADER,
-  DUST_FILE_ID_HEADER,
+  RUBY_FILE_CAN_WRITE_HEADER,
+  RUBY_FILE_CONTENT_TYPE_HEADER,
+  RUBY_FILE_ID_HEADER,
   getFileFormat,
   normalizeMimeType,
 } from "@app/types/files";
@@ -74,7 +74,7 @@ const ParamsSchema = z.object({
  * Raw GCS reads return ETag for exactly the streamed bytes. PUT accepts that ETag
  * in If-Match and returns 412 on a revision mismatch. Successful GCS writes return
  * their new ETag. Backends without revision support reject conditional writes.
- * GET and HEAD expose current mount write permission in X-Dust-File-Can-Write.
+ * GET and HEAD expose current mount write permission in X-Ruby-File-Can-Write.
  */
 const app = workspaceApp();
 
@@ -151,9 +151,9 @@ async function resolveFs(
   }
 
   const auth = ctx.get("auth");
-  const fsResult = await DustFileSystem.fromScopedPath(auth, canonicalPath);
+  const fsResult = await RubyFileSystem.fromScopedPath(auth, canonicalPath);
   if (fsResult.isErr()) {
-    return { fs: null, err: apiError(ctx, mapDustFsError(fsResult.error)) };
+    return { fs: null, err: apiError(ctx, mapRubyFsError(fsResult.error)) };
   }
 
   return { fs: fsResult.value, err: null };
@@ -163,7 +163,7 @@ function mapFolderArchiveError(
   error: FolderArchivePlanError
 ): APIErrorWithContentfulStatusCode {
   if (!isFolderArchiveError(error)) {
-    return mapDustFsError(error);
+    return mapRubyFsError(error);
   }
 
   const { code } = error;
@@ -203,14 +203,14 @@ async function handleFolderArchiveRequest(
   canonicalPath: string,
   { headOnly }: { headOnly: boolean }
 ) {
-  const { fs: dustFs, err } = await resolveFs(ctx, canonicalPath, {
+  const { fs: rubyFs, err } = await resolveFs(ctx, canonicalPath, {
     allowMountRoot: true,
   });
   if (err) {
     return err;
   }
 
-  const planResult = await planFolderArchive(dustFs, canonicalPath);
+  const planResult = await planFolderArchive(rubyFs, canonicalPath);
   if (planResult.isErr()) {
     return apiError(ctx, mapFolderArchiveError(planResult.error));
   }
@@ -228,7 +228,7 @@ async function handleFolderArchiveRequest(
     return new Response(null, { status: 200, headers });
   }
 
-  return new Response(streamFolderArchive(dustFs, planResult.value), {
+  return new Response(streamFolderArchive(rubyFs, planResult.value), {
     status: 200,
     headers,
   });
@@ -239,14 +239,14 @@ async function handleHeadRequest(
   canonicalPath: string
 ) {
   const auth = ctx.get("auth");
-  const { fs: dustFs, err } = await resolveFs(ctx, canonicalPath);
+  const { fs: rubyFs, err } = await resolveFs(ctx, canonicalPath);
   if (err) {
     return err;
   }
 
-  const statResult = await dustFs.stat(canonicalPath);
+  const statResult = await rubyFs.stat(canonicalPath);
   if (statResult.isErr()) {
-    return apiError(ctx, mapDustFsError(statResult.error));
+    return apiError(ctx, mapRubyFsError(statResult.error));
   }
   if (!statResult.value) {
     return apiError(ctx, {
@@ -257,20 +257,20 @@ async function handleHeadRequest(
 
   const linkedFileResource = await fetchLinkedFileResource(
     auth,
-    dustFs,
+    rubyFs,
     canonicalPath
   );
   const headers: Record<string, string> = {
     "Content-Type": statResult.value.contentType,
     "Content-Length": String(statResult.value.sizeBytes),
-    [DUST_FILE_CAN_WRITE_HEADER]: String(
-      dustFs.checkWriteAccess(canonicalPath).isOk()
+    [RUBY_FILE_CAN_WRITE_HEADER]: String(
+      rubyFs.checkWriteAccess(canonicalPath).isOk()
     ),
     "X-Content-Type-Options": "nosniff",
   };
   if (linkedFileResource) {
-    headers[DUST_FILE_ID_HEADER] = linkedFileResource.sId;
-    headers[DUST_FILE_CONTENT_TYPE_HEADER] = linkedFileResource.contentType;
+    headers[RUBY_FILE_ID_HEADER] = linkedFileResource.sId;
+    headers[RUBY_FILE_CONTENT_TYPE_HEADER] = linkedFileResource.contentType;
   }
 
   return new Response(null, {
@@ -296,7 +296,7 @@ app.get("/:canonicalPath{.+}", validate("param", ParamsSchema), async (ctx) => {
   }
 
   const auth = ctx.get("auth");
-  const { fs: dustFs, err } = await resolveFs(ctx, canonicalPath);
+  const { fs: rubyFs, err } = await resolveFs(ctx, canonicalPath);
   if (err) {
     return err;
   }
@@ -319,7 +319,7 @@ app.get("/:canonicalPath{.+}", validate("param", ParamsSchema), async (ctx) => {
     }
 
     const conversionResult = await convertCanonicalFileToPdf(
-      dustFs,
+      rubyFs,
       canonicalPath,
       rendererUrl
     );
@@ -376,7 +376,7 @@ app.get("/:canonicalPath{.+}", validate("param", ParamsSchema), async (ctx) => {
 
   // ?thumbnail=1 serves the resized/processed version (images only).
   if (thumbnail && thumbnail !== "0") {
-    const thumbResult = await streamThumbnail(auth, dustFs, canonicalPath);
+    const thumbResult = await streamThumbnail(auth, rubyFs, canonicalPath);
     if (thumbResult.isErr()) {
       const e = thumbResult.error;
       switch (e.code) {
@@ -412,9 +412,9 @@ app.get("/:canonicalPath{.+}", validate("param", ParamsSchema), async (ctx) => {
   }
 
   // Normal inline or attachment stream.
-  const readResult = await readCanonicalFileContent(dustFs, canonicalPath);
+  const readResult = await readCanonicalFileContent(rubyFs, canonicalPath);
   if (readResult.isErr()) {
-    return apiError(ctx, mapDustFsError(readResult.error));
+    return apiError(ctx, mapRubyFsError(readResult.error));
   }
   if (!readResult.value) {
     return apiError(ctx, {
@@ -427,8 +427,8 @@ app.get("/:canonicalPath{.+}", validate("param", ParamsSchema), async (ctx) => {
   const headers: Record<string, string> = {
     "Content-Type": contentType,
     "X-Content-Type-Options": "nosniff",
-    [DUST_FILE_CAN_WRITE_HEADER]: String(
-      dustFs.checkWriteAccess(canonicalPath).isOk()
+    [RUBY_FILE_CAN_WRITE_HEADER]: String(
+      rubyFs.checkWriteAccess(canonicalPath).isOk()
     ),
   };
   if (revision !== undefined) {
@@ -457,7 +457,7 @@ app.patch(
   async (ctx) => {
     const auth = ctx.get("auth");
     const { canonicalPath } = ctx.req.valid("param");
-    const { fs: dustFs, err } = await resolveFs(ctx, canonicalPath);
+    const { fs: rubyFs, err } = await resolveFs(ctx, canonicalPath);
     if (err) {
       return err;
     }
@@ -492,12 +492,12 @@ app.patch(
       case "rename": {
         const renameResult = await renameCanonicalFile(
           auth,
-          dustFs,
+          rubyFs,
           canonicalPath,
           data.fileName
         );
         if (renameResult.isErr()) {
-          return apiError(ctx, mapDustFsError(renameResult.error));
+          return apiError(ctx, mapRubyFsError(renameResult.error));
         }
         break;
       }
@@ -508,12 +508,12 @@ app.patch(
         }
         const moveResult = await moveCanonicalFile(
           auth,
-          dustFs,
+          rubyFs,
           canonicalPath,
           data.dest
         );
         if (moveResult.isErr()) {
-          return apiError(ctx, mapDustFsError(moveResult.error));
+          return apiError(ctx, mapRubyFsError(moveResult.error));
         }
         break;
       }
@@ -585,7 +585,7 @@ app.post(
     }
 
     // The destination is a folder, so a bare mount root is a valid target.
-    const { fs: dustFs, err } = await resolveFs(ctx, canonicalPath, {
+    const { fs: rubyFs, err } = await resolveFs(ctx, canonicalPath, {
       allowMountRoot: true,
     });
     if (err) {
@@ -609,7 +609,7 @@ app.post(
     }
 
     const extractResult = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       canonicalPath,
       Buffer.from(archiveBuffer)
     );
@@ -619,11 +619,11 @@ app.post(
         ctx,
         isFolderExtractError(error)
           ? mapFolderExtractError(error)
-          : mapDustFsError(error)
+          : mapRubyFsError(error)
       );
     }
 
-    requestDustProjectIncrementalSyncForScopedPath(auth, canonicalPath);
+    requestRubyProjectIncrementalSyncForScopedPath(auth, canonicalPath);
 
     const body: PostExtractArchiveResponseBody = extractResult.value;
 
@@ -640,7 +640,7 @@ app.put(
   async (ctx) => {
     const auth = ctx.get("auth");
     const { canonicalPath } = ctx.req.valid("param");
-    const { fs: dustFs, err } = await resolveFs(ctx, canonicalPath);
+    const { fs: rubyFs, err } = await resolveFs(ctx, canonicalPath);
     if (err) {
       return err;
     }
@@ -678,7 +678,7 @@ app.put(
 
     const writeResult = await writeCanonicalFileContent(
       auth,
-      dustFs,
+      rubyFs,
       canonicalPath,
       new Uint8Array(contentBuffer),
       ctx.req.header("content-type") ?? undefined,
@@ -719,7 +719,7 @@ app.put(
             return assertNever(code);
         }
       }
-      return apiError(ctx, mapDustFsError(error));
+      return apiError(ctx, mapRubyFsError(error));
     }
 
     return new Response(null, {
@@ -738,24 +738,24 @@ app.delete(
   async (ctx) => {
     const auth = ctx.get("auth");
     const { canonicalPath } = ctx.req.valid("param");
-    const { fs: dustFs, err } = await resolveFs(ctx, canonicalPath);
+    const { fs: rubyFs, err } = await resolveFs(ctx, canonicalPath);
     if (err) {
       return err;
     }
 
-    const deleteResult = await deleteCanonicalFile(auth, dustFs, canonicalPath);
+    const deleteResult = await deleteCanonicalFile(auth, rubyFs, canonicalPath);
     if (deleteResult.isErr()) {
-      return apiError(ctx, mapDustFsError(deleteResult.error));
+      return apiError(ctx, mapRubyFsError(deleteResult.error));
     }
 
-    requestDustProjectIncrementalSyncForScopedPath(auth, canonicalPath);
+    requestRubyProjectIncrementalSyncForScopedPath(auth, canonicalPath);
 
     return new Response(null, { status: 204 });
   }
 );
 
-function mapDustFsError(
-  err: DustFileSystemError
+function mapRubyFsError(
+  err: RubyFileSystemError
 ): APIErrorWithContentfulStatusCode {
   switch (err.code) {
     case "not_found":

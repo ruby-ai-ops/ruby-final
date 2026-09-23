@@ -60,7 +60,7 @@ describe("parseStdoutResultEnvelope", () => {
     });
   });
 
-  it("preserves the output_truncated code dsbx mints for a cut envelope", () => {
+  it("preserves the output_truncated code rbx mints for a cut envelope", () => {
     expect(
       parseStdoutResultEnvelope(
         JSON.stringify({
@@ -100,7 +100,7 @@ describe("parseStdoutResultEnvelope", () => {
           delivery: "stdout",
           outcome: {
             ok: true,
-            resultFile: "/tmp/dust-fn-results/abc.json",
+            resultFile: "/tmp/ruby-fn-results/abc.json",
             resultBytes: 300_000,
           },
           timingsMs: { total: 12, runner: 8, runnerKind: "cold" },
@@ -110,7 +110,7 @@ describe("parseStdoutResultEnvelope", () => {
       outcome: null,
       spill: {
         ok: true,
-        resultFile: "/tmp/dust-fn-results/abc.json",
+        resultFile: "/tmp/ruby-fn-results/abc.json",
         resultBytes: 300_000,
       },
       timings: { total: 12, runner: 8, runnerKind: "cold" },
@@ -134,7 +134,7 @@ describe("parseStdoutResultEnvelope", () => {
 describe("resolveSpilledResult", () => {
   const spill = {
     ok: true as const,
-    resultFile: "/tmp/dust-fn-results/abc.json",
+    resultFile: "/tmp/ruby-fn-results/abc.json",
     resultBytes: 300_000,
   };
 
@@ -154,7 +154,7 @@ describe("resolveSpilledResult", () => {
       ok: true,
       output: { hello: "big world" },
     });
-    expect(readFile).toHaveBeenCalledWith("/tmp/dust-fn-results/abc.json");
+    expect(readFile).toHaveBeenCalledWith("/tmp/ruby-fn-results/abc.json");
   });
 
   it("fails with invocation_failed naming the file when the read fails", async () => {
@@ -165,7 +165,7 @@ describe("resolveSpilledResult", () => {
       error: {
         code: "invocation_failed",
         message:
-          "Frame function result could not be read back from /tmp/dust-fn-results/abc.json: gone",
+          "Frame function result could not be read back from /tmp/ruby-fn-results/abc.json: gone",
       },
     });
   });
@@ -188,7 +188,7 @@ describe("resolveSpilledResult", () => {
 
     for (const resultFile of [
       "/etc/shadow",
-      "/tmp/dust-fn-results/../../etc/shadow",
+      "/tmp/ruby-fn-results/../../etc/shadow",
     ]) {
       await expect(
         resolveSpilledResult({ ...spill, resultFile }, readFile)

@@ -1,16 +1,16 @@
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 import { describe, expect, it } from "vitest";
 
-import type { DustAppRunInputType } from "./agent";
+import type { RubyAppRunInputType } from "./agent";
 import {
-  dustAppRunInputsToInputSchema,
-  inputSchemaToDustAppRunInputs,
+  rubyAppRunInputsToInputSchema,
+  inputSchemaToRubyAppRunInputs,
 } from "./agent";
 
 describe("Agent Type Utilities", () => {
-  describe("dustAppRunInputsToInputSchema", () => {
+  describe("rubyAppRunInputsToInputSchema", () => {
     it("should convert basic inputs to schema", () => {
-      const inputs: DustAppRunInputType[] = [
+      const inputs: RubyAppRunInputType[] = [
         {
           name: "query",
           type: "string",
@@ -38,11 +38,11 @@ describe("Agent Type Utilities", () => {
         required: ["query", "count"],
       };
 
-      expect(dustAppRunInputsToInputSchema(inputs)).toEqual(expected);
+      expect(rubyAppRunInputsToInputSchema(inputs)).toEqual(expected);
     });
 
     it("should handle array type inputs", () => {
-      const inputs: DustAppRunInputType[] = [
+      const inputs: RubyAppRunInputType[] = [
         {
           name: "tags",
           type: "array",
@@ -67,11 +67,11 @@ describe("Agent Type Utilities", () => {
         required: ["tags"],
       };
 
-      expect(dustAppRunInputsToInputSchema(inputs)).toEqual(expected);
+      expect(rubyAppRunInputsToInputSchema(inputs)).toEqual(expected);
     });
   });
 
-  describe("inputSchemaToDustAppRunInputs", () => {
+  describe("inputSchemaToRubyAppRunInputs", () => {
     it("should convert schema to basic inputs", () => {
       const schema: JSONSchema = {
         type: "object",
@@ -88,7 +88,7 @@ describe("Agent Type Utilities", () => {
         required: ["query", "count"],
       };
 
-      const expected: DustAppRunInputType[] = [
+      const expected: RubyAppRunInputType[] = [
         {
           name: "query",
           type: "string",
@@ -101,7 +101,7 @@ describe("Agent Type Utilities", () => {
         },
       ];
 
-      expect(inputSchemaToDustAppRunInputs(schema)).toEqual(expected);
+      expect(inputSchemaToRubyAppRunInputs(schema)).toEqual(expected);
     });
 
     it("should handle array type properties", () => {
@@ -119,7 +119,7 @@ describe("Agent Type Utilities", () => {
         required: ["tags"],
       };
 
-      const expected: DustAppRunInputType[] = [
+      const expected: RubyAppRunInputType[] = [
         {
           name: "tags",
           type: "array",
@@ -127,7 +127,7 @@ describe("Agent Type Utilities", () => {
         },
       ];
 
-      expect(inputSchemaToDustAppRunInputs(schema)).toEqual(expected);
+      expect(inputSchemaToRubyAppRunInputs(schema)).toEqual(expected);
     });
 
     it("should handle missing properties", () => {
@@ -145,7 +145,7 @@ describe("Agent Type Utilities", () => {
         required: ["valid", "missingType"],
       };
 
-      const expected: DustAppRunInputType[] = [
+      const expected: RubyAppRunInputType[] = [
         {
           name: "valid",
           type: "string",
@@ -158,7 +158,7 @@ describe("Agent Type Utilities", () => {
         },
       ];
 
-      expect(inputSchemaToDustAppRunInputs(schema)).toEqual(expected);
+      expect(inputSchemaToRubyAppRunInputs(schema)).toEqual(expected);
     });
 
     it("should handle empty properties object", () => {
@@ -168,7 +168,7 @@ describe("Agent Type Utilities", () => {
         required: [],
       };
 
-      expect(inputSchemaToDustAppRunInputs(schema)).toEqual([]);
+      expect(inputSchemaToRubyAppRunInputs(schema)).toEqual([]);
     });
   });
 });

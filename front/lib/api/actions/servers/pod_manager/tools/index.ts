@@ -50,7 +50,7 @@ import {
 import { isContentNodeAttachmentType } from "@app/lib/api/assistant/conversation/attachments";
 import { getLightConversation } from "@app/lib/api/assistant/conversation/fetch";
 import config from "@app/lib/api/config";
-import { DustFileSystem, SCOPED_PREFIX_POD } from "@app/lib/api/file_system";
+import { RubyFileSystem, SCOPED_PREFIX_POD } from "@app/lib/api/file_system";
 import {
   addContentNodeToProject,
   listProjectContextAttachments,
@@ -81,7 +81,7 @@ import { isUserMessageType } from "@app/types/assistant/conversation";
 import { extractDataSourceIdFromNodeId } from "@app/types/core/content_node";
 import { Err, Ok } from "@app/types/shared/result";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { AGENT_LESS_DEFAULT_RETRIEVAL_TOP_K } from "../../data_sources_file_system/tools/search";
 import { formatConversationsForDisplay } from "./conversation_formatting";
 
@@ -118,7 +118,7 @@ export function createProjectManagerTools(
       return withErrorHandling(async () => {
         const contextRes = await getWritablePodContext(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -137,7 +137,7 @@ export function createProjectManagerTools(
           );
         }
 
-        const dataSource = await DataSourceResource.fetchByDustAPIDataSourceId(
+        const dataSource = await DataSourceResource.fetchByRubyAPIDataSourceId(
           auth,
           dataSourceId
         );
@@ -208,7 +208,7 @@ export function createProjectManagerTools(
       return withErrorHandling(async () => {
         const contextRes = await getWritablePodContext(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -247,7 +247,7 @@ export function createProjectManagerTools(
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -357,7 +357,7 @@ export function createProjectManagerTools(
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -409,11 +409,11 @@ export function createProjectManagerTools(
       }, "Failed to set Pod pinned frame");
     },
 
-    [SET_DEFAULT_AGENT_TOOL_NAME]: async ({ agentName, dustPod }) => {
+    [SET_DEFAULT_AGENT_TOOL_NAME]: async ({ agentName, rubyPod }) => {
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod,
+          rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -431,7 +431,7 @@ export function createProjectManagerTools(
         }
 
         // Resolve the agent by name. A null agentName clears the default so new
-        // conversations fall back to the workspace default (Dust).
+        // conversations fall back to the workspace default (Ruby).
         let defaultAgentId: string | null = null;
         let defaultAgentName: string | null = null;
         if (agentName !== null) {
@@ -478,7 +478,7 @@ export function createProjectManagerTools(
               ? `Pod default agent set to ${
                   defaultAgentName ? `@${defaultAgentName}` : defaultAgentId
                 }.`
-              : "Pod default agent reset to the default (Dust).",
+              : "Pod default agent reset to the default (Ruby).",
           })
         );
       }, "Failed to set Pod default agent");
@@ -488,7 +488,7 @@ export function createProjectManagerTools(
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -634,7 +634,7 @@ export function createProjectManagerTools(
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -658,7 +658,7 @@ export function createProjectManagerTools(
             dataSourceViewId: node.nodeDataSourceViewId,
           }));
 
-        const fsResult = await DustFileSystem.forPod(auth, pod);
+        const fsResult = await RubyFileSystem.forPod(auth, pod);
         if (fsResult.isErr()) {
           return new Err(
             new MCPError("Failed to initialise file system for this Pod.", {
@@ -720,7 +720,7 @@ export function createProjectManagerTools(
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -918,9 +918,9 @@ export function createProjectManagerTools(
         const pods = pagePods.map((pod) => ({
           id: pod.sId,
           name: pod.name,
-          dustPod: {
+          rubyPod: {
             uri: makePodConfigurationURI(workspaceId, pod.sId),
-            mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD,
+            mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD,
           },
         }));
 
@@ -949,7 +949,7 @@ export function createProjectManagerTools(
               `Found ${pods.length} of ${total} ${accessLabel}${filterLabel}.` +
               (hasMore
                 ? " Pass nextPageCursor to fetch more Pods."
-                : " Use each entry's dustPod as the dustPod argument for other pod_manager tools."),
+                : " Use each entry's rubyPod as the rubyPod argument for other pod_manager tools."),
           })
         );
       }, "Failed to list Pods");
@@ -1104,9 +1104,9 @@ export function createProjectManagerTools(
               id: pod.sId,
               title: pod.name,
               access: (await pod.isRestricted(auth)) ? "restricted" : "open",
-              dustPod: {
+              rubyPod: {
                 uri: makePodConfigurationURI(owner.sId, pod.sId),
-                mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD,
+                mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD,
               },
               url: projectUrl,
             },
@@ -1128,7 +1128,7 @@ export function createProjectManagerTools(
 
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -1187,7 +1187,7 @@ export function createProjectManagerTools(
         const scope = params.searchScope ?? "all";
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -1221,7 +1221,7 @@ export function createProjectManagerTools(
       return withErrorHandling(async () => {
         const contextRes = await getWritablePodContext(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -1314,7 +1314,7 @@ export function createProjectManagerTools(
             : {}),
           skipToolsValidation: false,
           doNotAssociateUser: true,
-          skipDustAutoMention: true,
+          skipRubyAutoMention: true,
         });
 
         if (messageRes.isErr()) {
@@ -1349,7 +1349,7 @@ export function createProjectManagerTools(
       return withErrorHandling(async () => {
         const contextRes = await getPod(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -1499,7 +1499,7 @@ export function createProjectManagerTools(
       return withErrorHandling(async () => {
         const contextRes = await getWritablePodContext(auth, {
           toolContext,
-          dustPod: params.dustPod,
+          rubyPod: params.rubyPod,
         });
         if (contextRes.isErr()) {
           return contextRes;
@@ -1609,7 +1609,7 @@ export function createProjectManagerTools(
           },
           skipToolsValidation: false,
           doNotAssociateUser: true,
-          skipDustAutoMention: true,
+          skipRubyAutoMention: true,
         });
 
         if (messageRes.isErr()) {
@@ -1682,9 +1682,9 @@ export function createProjectManagerTools(
         );
 
         if (params.destination === "pod") {
-          if (!params.dustPod) {
+          if (!params.rubyPod) {
             return new Err(
-              new MCPError("dustPod is required when destination is 'pod'.", {
+              new MCPError("rubyPod is required when destination is 'pod'.", {
                 tracked: false,
               })
             );
@@ -1692,7 +1692,7 @@ export function createProjectManagerTools(
 
           const contextRes = await getPod(auth, {
             toolContext,
-            dustPod: params.dustPod,
+            rubyPod: params.rubyPod,
           });
           if (contextRes.isErr()) {
             return contextRes;

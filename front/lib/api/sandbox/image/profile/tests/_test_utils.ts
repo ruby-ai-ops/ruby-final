@@ -22,7 +22,7 @@ export function runBashFunction(
   exitCode: number;
 } {
   const commonPath = path.join(PROFILE_LOCAL_DIR, "common.sh");
-  const dustToolsCommand = `${process.execPath} ${tsxCliPath} ${path.join(
+  const rubyToolsCommand = `${process.execPath} ${tsxCliPath} ${path.join(
     PROFILE_LOCAL_DIR,
     "src",
     "index.ts"
@@ -35,8 +35,8 @@ export function runBashFunction(
       encoding: "utf-8",
       env: {
         ...process.env,
-        DUST_PROFILE: profile,
-        DUST_TOOLS_CMD: dustToolsCommand,
+        RUBY_PROFILE: profile,
+        RUBY_TOOLS_CMD: rubyToolsCommand,
         TSX_TSCONFIG_PATH: path.resolve(
           PROFILE_LOCAL_DIR,
           "../../../../../tsconfig.json"

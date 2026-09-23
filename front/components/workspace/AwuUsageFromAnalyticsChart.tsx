@@ -33,7 +33,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import { useCallback, useMemo, useState } from "react";
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
@@ -607,7 +607,7 @@ export function BaseAwuUsageFromAnalyticsChart({
       filter,
       effectiveEnabledKeys,
     }),
-    filename: `dust_credit_usage_last_${days}_days.csv`,
+    filename: `ruby_credit_usage_last_${days}_days.csv`,
     disabled: isAwuUsageLoading || !!isAwuUsageError || chartData.length === 0,
   });
 

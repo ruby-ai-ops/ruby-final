@@ -41,13 +41,13 @@ export const CORE_API_LIST_TABLES_BATCH_SIZE = 64;
 
 export interface DataSourceCoreIds {
   id: ModelId;
-  dustAPIProjectId: string;
-  dustAPIDataSourceId: string;
+  rubyAPIProjectId: string;
+  rubyAPIDataSourceId: string;
 }
 
 export interface CreateDataSourceProjectResult {
-  dustAPIProjectId: string;
-  dustAPIDataSourceId: string;
+  rubyAPIProjectId: string;
+  rubyAPIDataSourceId: string;
 }
 
 export interface APIRelocationBlob<

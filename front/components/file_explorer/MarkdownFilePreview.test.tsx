@@ -62,12 +62,12 @@ describe("MarkdownFilePreview", () => {
   it("keeps external links opening in a new tab", () => {
     render(
       <MarkdownFilePreview
-        content={"[Dust](https://www.dust.tt)"}
+        content={"[Ruby](https://www.ruby.ad)"}
         viewMode="preview"
       />
     );
 
-    const link = screen.getByRole("link", { name: "Dust" });
+    const link = screen.getByRole("link", { name: "Ruby" });
     expect(link).toHaveAttribute("target", "_blank");
     expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
@@ -95,13 +95,13 @@ describe("MarkdownFilePreview", () => {
     render(
       <MarkdownFilePreview
         canEdit
-        content={"[Dust](https://www.dust.tt)"}
+        content={"[Ruby](https://www.ruby.ad)"}
         viewMode="preview"
         onViewModeChange={onViewModeChange}
       />
     );
 
-    fireEvent.doubleClick(screen.getByRole("link", { name: "Dust" }));
+    fireEvent.doubleClick(screen.getByRole("link", { name: "Ruby" }));
 
     expect(onViewModeChange).not.toHaveBeenCalled();
   });

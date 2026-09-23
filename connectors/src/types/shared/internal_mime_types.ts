@@ -1,4 +1,4 @@
-import type { ConnectorProvider } from "@dust-tt/client";
+import type { ConnectorProvider } from "@ruby-ai/client";
 
 /**
  * This is a utility type that indicates that we removed all underscores from a string.
@@ -18,7 +18,7 @@ type UnderscoreToDash<T extends string> = T extends `${infer A}_${infer B}`
 
 /**
  * This function generates mime types for a given provider and resource types.
- * The mime types are in the format `application/vnd.dust.PROVIDER.RESOURCE_TYPE`.
+ * The mime types are in the format `application/vnd.ruby.PROVIDER.RESOURCE_TYPE`.
  * Notes:
  * - The underscores in the provider name are stripped in the generated mime type.
  * - The underscores in the resource type are replaced with dashes in the generated mime type.
@@ -33,19 +33,19 @@ function generateMimeTypes<
   provider: P;
   resourceTypes: T;
 }): {
-  [K in T[number]]: `application/vnd.dust.${WithoutUnderscores<P>}.${Lowercase<
+  [K in T[number]]: `application/vnd.ruby.${WithoutUnderscores<P>}.${Lowercase<
     UnderscoreToDash<K>
   >}`;
 } {
   return resourceTypes.reduce(
     (acc, s) => ({
       ...acc,
-      [s]: `application/vnd.dust.${provider.replace("_", "")}.${s
+      [s]: `application/vnd.ruby.${provider.replace("_", "")}.${s
         .replace("_", "-")
         .toLowerCase()}`,
     }),
     {} as {
-      [K in T[number]]: `application/vnd.dust.${WithoutUnderscores<P>}.${Lowercase<
+      [K in T[number]]: `application/vnd.ruby.${WithoutUnderscores<P>}.${Lowercase<
         UnderscoreToDash<K>
       >}`;
     }
@@ -147,8 +147,8 @@ export const INTERNAL_MIME_TYPES = {
     provider: "gong",
     resourceTypes: ["TRANSCRIPT", "TRANSCRIPT_FOLDER"],
   }),
-  DUST_PROJECT: generateMimeTypes({
-    provider: "dust_project",
+  RUBY_PROJECT: generateMimeTypes({
+    provider: "ruby_project",
     resourceTypes: [
       "CONVERSATION_FOLDER",
       "CONVERSATION_MESSAGES",
@@ -194,10 +194,10 @@ export type ZendeskMimeType =
 export type SalesforceMimeType =
   (typeof INTERNAL_MIME_TYPES.SALESFORCE)[keyof typeof INTERNAL_MIME_TYPES.SALESFORCE];
 
-export type DustProjectMimeType =
-  (typeof INTERNAL_MIME_TYPES.DUST_PROJECT)[keyof typeof INTERNAL_MIME_TYPES.DUST_PROJECT];
+export type RubyProjectMimeType =
+  (typeof INTERNAL_MIME_TYPES.RUBY_PROJECT)[keyof typeof INTERNAL_MIME_TYPES.RUBY_PROJECT];
 
-export type DustMimeType =
+export type RubyMimeType =
   | BigQueryMimeType
   | ConfluenceMimeType
   | GithubMimeType
@@ -210,4 +210,4 @@ export type DustMimeType =
   | WebcrawlerMimeType
   | ZendeskMimeType
   | SalesforceMimeType
-  | DustProjectMimeType;
+  | RubyProjectMimeType;

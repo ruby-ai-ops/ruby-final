@@ -3,7 +3,7 @@ import { EditorSelectionToolbar } from "@app/components/editor/EditorSelectionTo
 import { cleanupPastedHTML } from "@app/components/editor/input_bar/cleanupPastedHTML";
 import { buildMarkdownEditorExtensions } from "@app/lib/editor/build_markdown_editor_extensions";
 import { useIsMobile } from "@app/lib/swr/useIsMobile";
-import { cn, Toolbar } from "@dust-tt/sparkle";
+import { cn, Toolbar } from "@ruby-ai/ui";
 import type { Editor as CoreEditor, Extensions } from "@tiptap/core";
 import type { Editor, EditorOptions } from "@tiptap/react";
 import { EditorContent, useEditor } from "@tiptap/react";

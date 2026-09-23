@@ -265,7 +265,7 @@ export type ProjectWithAdminMetadata = EnrichedSpaceType & {
 /**
  * Every project space in the workspace, with the admin-relevant metadata
  * (description, archived state, todo-generation flag) merged in. Used by the
- * poke admin UI.
+ * admin admin UI.
  */
 export async function listAllProjectsWithAdminMetadata(
   auth: Authenticator

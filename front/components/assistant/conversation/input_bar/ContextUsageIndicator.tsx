@@ -10,7 +10,7 @@ import {
   PopoverContent,
   PopoverRoot,
   PopoverTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface ContextUsageIndicatorProps {
   buttonSize: "xs" | "sm";
@@ -24,7 +24,7 @@ interface CircleProgressProps {
   variant?: "default" | "warning";
 }
 
-const COMPACTION_GUIDE_URL = "https://docs.dust.tt/docs/context-compaction";
+const COMPACTION_GUIDE_URL = "https://docs.ruby.ad/docs/context-compaction";
 
 function CircleProgress({
   percentage,

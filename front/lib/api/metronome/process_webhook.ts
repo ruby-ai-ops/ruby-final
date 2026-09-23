@@ -76,7 +76,7 @@ class ProcessMetronomeWebhookError extends Error {
 }
 
 /**
- * Stamp `DUST_CONTRACT_CREDIT_TYPE` on an AWU contract_credit so pool balance
+ * Stamp `RUBY_CONTRACT_CREDIT_TYPE` on an AWU contract_credit so pool balance
  * alerts and queries count it. Idempotent — bails if already stamped. Only AWU
  * credits are stamped; others belong to different pools and are left alone
  * (mirrors `stampCommitCreditType`).
@@ -133,12 +133,12 @@ async function stampContractCreditType({
   }
   logger.info(
     { workspaceId, creditId: credit.id, value, eventType },
-    `[Metronome Webhook] ${eventType}: stamped DUST_CONTRACT_CREDIT_TYPE`
+    `[Metronome Webhook] ${eventType}: stamped RUBY_CONTRACT_CREDIT_TYPE`
   );
   return new Ok(undefined);
 }
 
-// Stamp `DUST_CONTRACT_CREDIT_TYPE=pool` on an AWU commit so the pool balance
+// Stamp `RUBY_CONTRACT_CREDIT_TYPE=pool` on an AWU commit so the pool balance
 // alert's Commit filter counts it alongside pool credits. The key is shared with
 // contract credits — Metronome requires every entity in an alert's
 // custom_field_filters to use the same key/value. Idempotent — bails if already
@@ -183,7 +183,7 @@ async function stampCommitCreditType({
   }
   logger.info(
     { workspaceId, commitId: commit.id, eventType },
-    `[Metronome Webhook] ${eventType}: stamped DUST_CONTRACT_CREDIT_TYPE=pool on commit`
+    `[Metronome Webhook] ${eventType}: stamped RUBY_CONTRACT_CREDIT_TYPE=pool on commit`
   );
   return new Ok(undefined);
 }

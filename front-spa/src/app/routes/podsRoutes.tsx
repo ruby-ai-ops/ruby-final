@@ -4,7 +4,7 @@ import type { RouteObject } from "react-router-dom";
 import { Navigate, useLocation, useParams } from "react-router-dom";
 
 const PodPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/pod/PodPage"),
+  () => import("@ruby-ai/front/components/pages/pod/PodPage"),
   "PodPage"
 );
 

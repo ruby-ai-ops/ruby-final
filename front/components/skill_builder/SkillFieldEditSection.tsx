@@ -1,4 +1,4 @@
-import { DiffBlock } from "@dust-tt/sparkle";
+import { DiffBlock } from "@ruby-ai/ui";
 
 interface SkillFieldEditSectionProps {
   label: string;

@@ -14,7 +14,7 @@ import { useSendNotification } from "@app/hooks/useNotification";
 import type { PodUiScopedPreferences } from "@app/hooks/useScopedUIPreferences";
 import type { PodTab } from "@app/hooks/useSpaceProjectTabs";
 import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { useAppRouter } from "@app/lib/platform";
 import type { useSpaceInfo } from "@app/lib/swr/spaces";
 import { getConversationRoute } from "@app/lib/utils/router";
@@ -26,7 +26,7 @@ import type { PodFileTab } from "@app/types/pod_file_tab";
 import { makePodFileTabValue } from "@app/types/pod_file_tab";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
-import { NavTabPillContent } from "@dust-tt/sparkle";
+import { NavTabPillContent } from "@ruby-ai/ui";
 import { useCallback, useState } from "react";
 
 type PodInfo = NonNullable<ReturnType<typeof useSpaceInfo>["spaceInfo"]>;
@@ -119,7 +119,7 @@ export function PodPageContent({
       selectedMCPServerViewIds?: string[],
       _selectedSpaceIds?: string[],
       modelSelection?: ModelSelectionType
-    ): Promise<Result<undefined, DustError>> => {
+    ): Promise<Result<undefined, RubyError>> => {
       if (isSubmitting) {
         return new Err({
           code: "internal_error",

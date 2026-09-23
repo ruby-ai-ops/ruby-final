@@ -86,7 +86,7 @@ import {
   Pin02,
   Tooltip,
   UploadCloud02,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import {
   useCallback,

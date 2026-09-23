@@ -4,7 +4,7 @@ import { formatRelativeTime } from "@app/lib/utils/timestamps";
 import type { PodConversationListItemType } from "@app/types/api/assistant/conversation/spaces";
 import { stripMarkdown } from "@app/types/shared/utils/markdown";
 import type { WorkspaceType } from "@app/types/user";
-import { ConversationListItem, ReplySection } from "@dust-tt/sparkle";
+import { ConversationListItem, ReplySection } from "@ruby-ai/ui";
 
 interface PodConversationListItemProps {
   conversation: PodConversationListItemType;

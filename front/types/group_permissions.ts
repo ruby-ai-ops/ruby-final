@@ -73,7 +73,7 @@ export const GROUP_PERMISSION_RESOURCE_TYPES = [
   "billing",
   "security",
   "models_tier",
-  "dust_app",
+  "ruby_app",
   "trigger",
   "*",
 ] as const;
@@ -157,7 +157,7 @@ export function emptyWorkspacePermissions(): WorkspacePermissions {
     billing: [],
     security: [],
     models_tier: [],
-    dust_app: [],
+    ruby_app: [],
     trigger: [],
   };
 }

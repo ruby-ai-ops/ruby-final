@@ -24,7 +24,7 @@ async function backfillDataSource(
   const rows: { id: number }[] = await coreSequelize.query(
     `SELECT id FROM data_sources WHERE data_source_id = :dataSourceId;`,
     {
-      replacements: { dataSourceId: frontDataSource.dustAPIDataSourceId },
+      replacements: { dataSourceId: frontDataSource.rubyAPIDataSourceId },
       type: QueryTypes.SELECT,
     }
   );
@@ -138,7 +138,7 @@ async function backfillFolders(
   let rows: {
     id: number;
     driveFileId: string;
-    dustFileId: string;
+    rubyFileId: string;
     mimeType: string;
   }[] = [];
 
@@ -146,11 +146,11 @@ async function backfillFolders(
     // querying connectors for the next batch of folders
 
     rows = await connectorsSequelize.query(
-      `SELECT id, "driveFileId", "dustFileId", "mimeType"
+      `SELECT id, "driveFileId", "rubyFileId", "mimeType"
        FROM google_drive_files
        WHERE id > :lastId
          AND "connectorId" = :connectorId
-         AND "mimeType" = in ('application/vnd.google-apps.folder', 'application/vnd.dust.googledrive.spreadsheet')
+         AND "mimeType" = in ('application/vnd.google-apps.folder', 'application/vnd.ruby.googledrive.spreadsheet')
        ORDER BY id
        LIMIT :batchSize;`,
       {
@@ -170,7 +170,7 @@ async function backfillFolders(
     const urls = rows.map((row) =>
       getSourceUrlForGoogleDriveFiles(row.driveFileId, row.mimeType)
     );
-    const nodeIds = rows.map((row) => row.dustFileId);
+    const nodeIds = rows.map((row) => row.rubyFileId);
 
     if (execute) {
       // updating on core on the nodeIds

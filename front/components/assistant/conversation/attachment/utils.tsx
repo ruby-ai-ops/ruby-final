@@ -16,7 +16,7 @@ import {
   isCustomResourceIconType,
   isInternalAllowedIcon,
 } from "@app/components/resources/resources_icons";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { CONNECTOR_CONFIGURATIONS } from "@app/lib/connector_providers";
 import { getConnectorProviderLogoWithFallback } from "@app/lib/connector_providers_ui";
 import { getFileTypeIcon } from "@app/lib/file_icon_utils";
@@ -38,7 +38,7 @@ import {
   Image01,
   Table,
   VolumeMax,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";

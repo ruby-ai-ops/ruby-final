@@ -6,18 +6,18 @@ import { honoApp } from "@front-api/app";
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 import { describe, expect, it } from "vitest";
 
-const DUST_DATA_SOURCE_MIME = "application/vnd.dust.tool-input.data-source";
+const RUBY_DATA_SOURCE_MIME = "application/vnd.ruby.tool-input.data-source";
 
-// A tool input schema with a Dust configurable input on a required path: attaching such a
+// A tool input schema with a Ruby configurable input on a required path: attaching such a
 // tool in a conversation is not possible, the view must be excluded from JIT responses.
-const requiredDustInputSchema: JSONSchema = {
+const requiredRubyInputSchema: JSONSchema = {
   type: "object",
   properties: {
     dataSources: {
       type: "object",
       properties: {
         uri: { type: "string" },
-        mimeType: { const: DUST_DATA_SOURCE_MIME },
+        mimeType: { const: RUBY_DATA_SOURCE_MIME },
       },
       required: ["uri", "mimeType"],
     },
@@ -56,7 +56,7 @@ async function setup() {
       {
         name: "query_data_source",
         description: "Query a configured data source",
-        inputSchema: requiredDustInputSchema,
+        inputSchema: requiredRubyInputSchema,
       },
     ],
   });
@@ -88,7 +88,7 @@ describe("GET /api/w/:wId/mcp/views/jit", () => {
       (v) => v.server.sId === configurableServer.sId
     );
 
-    // The view whose tool has a required Dust configurable input is excluded, based on the
+    // The view whose tool has a required Ruby configurable input is excluded, based on the
     // precomputed cachedToolsRequireConfiguration flag.
     expect(configurableView).toBeUndefined();
 

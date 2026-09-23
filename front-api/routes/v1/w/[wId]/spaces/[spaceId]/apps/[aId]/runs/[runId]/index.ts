@@ -3,7 +3,7 @@ import { AppResource } from "@app/lib/resources/app_resource";
 import logger from "@app/logger/logger";
 import { CoreAPI } from "@app/types/core/core_api";
 import type { RunType } from "@app/types/run";
-import type { RunAppResponseType } from "@dust-tt/client";
+import type { RunAppResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";
@@ -109,7 +109,7 @@ app.get(
 
     const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
     const runRes = await coreAPI.getRun({
-      projectId: appResource.dustAPIProjectId,
+      projectId: appResource.rubyAPIProjectId,
       runId,
     });
     if (runRes.isErr()) {

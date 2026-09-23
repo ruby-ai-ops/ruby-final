@@ -1,20 +1,20 @@
 /* Single unified Tailwind build for marketing.
  *
- * Scans marketing and sparkle sources in ONE Tailwind pass so every utility
+ * Scans marketing and ui sources in ONE Tailwind pass so every utility
  * lands in a single, correctly-ordered `@layer utilities` (base before
  * variant). global.css is imported separately in _app.tsx; it emits no
  * utilities.
  */
 
-/* Sparkle's full CSS entry: tailwindcss, tokens, themes, plugins, base/
-   components/utilities layers, and the sparkle/src source scan. */
-@import "@dust-tt/sparkle/styles/tailwind.css";
+/* RubyUI's full CSS entry: tailwindcss, tokens, themes, plugins, base/
+   components/utilities layers, and the ui/src source scan. */
+@import "@ruby-ai/ui/styles/tailwind.css";
 
 /* Marketing theme extras (border-darker token, animation/keyframe overrides). */
 @import "./theme-extras.css";
 
 /* Container query variants must be inlined — @tailwindcss/postcss does not
-   resolve @custom-variant from @import'ed files. Keep in sync with sparkle's
+   resolve @custom-variant from @import'ed files. Keep in sync with ui's
    tailwind.css (canonical copy). */
 @custom-variant @xxxs (@container (width >= 16rem));
 @custom-variant @xxs (@container (width >= 24rem));
@@ -38,14 +38,130 @@
 @custom-variant @lg-table (@container table (width >= 64rem));
 @custom-variant @xl-table (@container table (width >= 80rem));
 
-/* Source scanning for the unified build. sparkle/src is already scanned by the
-   imported sparkle entry's own @source (relies on the workspace symlink). */
+/* Source scanning for the unified build. ui/src is already scanned by the
+   imported ui entry's own @source (relies on the workspace symlink). */
 @source "../pages/**/*.{ts,tsx}";
 @source "../components/**/*.{ts,tsx}";
 @source "../lib/**/*.{ts,tsx}";
 @source "../hooks/**/*.{ts,tsx}";
 
-/* Safelists marketing needs beyond sparkle's: dynamic text-* avatar colors and
-   taller grid-rows (sparkle already provides bg-* combos and grid-rows-2..5). */
+/* Safelists marketing needs beyond ui's: dynamic text-* avatar colors and
+   taller grid-rows (ui already provides bg-* combos and grid-rows-2..5). */
 @source inline("text-gray-100 text-gray-200 text-gray-300 text-gray-400 text-gray-500 text-gray-600 text-gray-700 text-gray-800 text-gray-900 text-blue-100 text-blue-200 text-blue-300 text-blue-400 text-blue-500 text-blue-600 text-blue-700 text-blue-800 text-blue-900 text-violet-100 text-violet-200 text-violet-300 text-violet-400 text-violet-500 text-violet-600 text-violet-700 text-violet-800 text-violet-900 text-pink-100 text-pink-200 text-pink-300 text-pink-400 text-pink-500 text-pink-600 text-pink-700 text-pink-800 text-pink-900 text-red-100 text-red-200 text-red-300 text-red-400 text-red-500 text-red-600 text-red-700 text-red-800 text-red-900 text-orange-100 text-orange-200 text-orange-300 text-orange-400 text-orange-500 text-orange-600 text-orange-700 text-orange-800 text-orange-900 text-golden-100 text-golden-200 text-golden-300 text-golden-400 text-golden-500 text-golden-600 text-golden-700 text-golden-800 text-golden-900 text-lime-100 text-lime-200 text-lime-300 text-lime-400 text-lime-500 text-lime-600 text-lime-700 text-lime-800 text-lime-900 text-emerald-100 text-emerald-200 text-emerald-300 text-emerald-400 text-emerald-500 text-emerald-600 text-emerald-700 text-emerald-800 text-emerald-900");
 @source inline("grid-rows-6 grid-rows-7 grid-rows-8");
+
+/* Tailwind v4 emits responsive display utilities as nested media rules. The
+   production Brave parser can leave the base `.hidden` declaration winning,
+   which hides desktop-only marketing content. These explicit unlayered rules
+   preserve the intended breakpoint behavior for display utilities. */
+@media (min-width: 384px) {
+  [class~="xxs:block"] { display: block !important; }
+  [class~="xxs:contents"] { display: contents !important; }
+  [class~="xxs:flex"] { display: flex !important; }
+  [class~="xxs:flow-root"] { display: flow-root !important; }
+  [class~="xxs:grid"] { display: grid !important; }
+  [class~="xxs:hidden"] { display: none !important; }
+  [class~="xxs:inline"] { display: inline !important; }
+  [class~="xxs:inline-block"] { display: inline-block !important; }
+  [class~="xxs:inline-flex"] { display: inline-flex !important; }
+  [class~="xxs:table"] { display: table !important; }
+  [class~="xxs:table-caption"] { display: table-caption !important; }
+  [class~="xxs:table-cell"] { display: table-cell !important; }
+  [class~="xxs:table-row"] { display: table-row !important; }
+}
+
+@media (min-width: 512px) {
+  [class~="xs:block"] { display: block !important; }
+  [class~="xs:contents"] { display: contents !important; }
+  [class~="xs:flex"] { display: flex !important; }
+  [class~="xs:flow-root"] { display: flow-root !important; }
+  [class~="xs:grid"] { display: grid !important; }
+  [class~="xs:hidden"] { display: none !important; }
+  [class~="xs:inline"] { display: inline !important; }
+  [class~="xs:inline-block"] { display: inline-block !important; }
+  [class~="xs:inline-flex"] { display: inline-flex !important; }
+  [class~="xs:table"] { display: table !important; }
+  [class~="xs:table-caption"] { display: table-caption !important; }
+  [class~="xs:table-cell"] { display: table-cell !important; }
+  [class~="xs:table-row"] { display: table-row !important; }
+}
+
+@media (min-width: 640px) {
+  [class~="sm:block"] { display: block !important; }
+  [class~="sm:contents"] { display: contents !important; }
+  [class~="sm:flex"] { display: flex !important; }
+  [class~="sm:flow-root"] { display: flow-root !important; }
+  [class~="sm:grid"] { display: grid !important; }
+  [class~="sm:hidden"] { display: none !important; }
+  [class~="sm:inline"] { display: inline !important; }
+  [class~="sm:inline-block"] { display: inline-block !important; }
+  [class~="sm:inline-flex"] { display: inline-flex !important; }
+  [class~="sm:table"] { display: table !important; }
+  [class~="sm:table-caption"] { display: table-caption !important; }
+  [class~="sm:table-cell"] { display: table-cell !important; }
+  [class~="sm:table-row"] { display: table-row !important; }
+}
+
+@media (min-width: 768px) {
+  [class~="md:block"] { display: block !important; }
+  [class~="md:contents"] { display: contents !important; }
+  [class~="md:flex"] { display: flex !important; }
+  [class~="md:flow-root"] { display: flow-root !important; }
+  [class~="md:grid"] { display: grid !important; }
+  [class~="md:hidden"] { display: none !important; }
+  [class~="md:inline"] { display: inline !important; }
+  [class~="md:inline-block"] { display: inline-block !important; }
+  [class~="md:inline-flex"] { display: inline-flex !important; }
+  [class~="md:table"] { display: table !important; }
+  [class~="md:table-caption"] { display: table-caption !important; }
+  [class~="md:table-cell"] { display: table-cell !important; }
+  [class~="md:table-row"] { display: table-row !important; }
+}
+
+@media (min-width: 1024px) {
+  [class~="lg:block"] { display: block !important; }
+  [class~="lg:contents"] { display: contents !important; }
+  [class~="lg:flex"] { display: flex !important; }
+  [class~="lg:flow-root"] { display: flow-root !important; }
+  [class~="lg:grid"] { display: grid !important; }
+  [class~="lg:hidden"] { display: none !important; }
+  [class~="lg:inline"] { display: inline !important; }
+  [class~="lg:inline-block"] { display: inline-block !important; }
+  [class~="lg:inline-flex"] { display: inline-flex !important; }
+  [class~="lg:table"] { display: table !important; }
+  [class~="lg:table-caption"] { display: table-caption !important; }
+  [class~="lg:table-cell"] { display: table-cell !important; }
+  [class~="lg:table-row"] { display: table-row !important; }
+}
+
+@media (min-width: 1280px) {
+  [class~="xl:block"] { display: block !important; }
+  [class~="xl:contents"] { display: contents !important; }
+  [class~="xl:flex"] { display: flex !important; }
+  [class~="xl:flow-root"] { display: flow-root !important; }
+  [class~="xl:grid"] { display: grid !important; }
+  [class~="xl:hidden"] { display: none !important; }
+  [class~="xl:inline"] { display: inline !important; }
+  [class~="xl:inline-block"] { display: inline-block !important; }
+  [class~="xl:inline-flex"] { display: inline-flex !important; }
+  [class~="xl:table"] { display: table !important; }
+  [class~="xl:table-caption"] { display: table-caption !important; }
+  [class~="xl:table-cell"] { display: table-cell !important; }
+  [class~="xl:table-row"] { display: table-row !important; }
+}
+
+@media (min-width: 1536px) {
+  [class~="2xl:block"] { display: block !important; }
+  [class~="2xl:contents"] { display: contents !important; }
+  [class~="2xl:flex"] { display: flex !important; }
+  [class~="2xl:flow-root"] { display: flow-root !important; }
+  [class~="2xl:grid"] { display: grid !important; }
+  [class~="2xl:hidden"] { display: none !important; }
+  [class~="2xl:inline"] { display: inline !important; }
+  [class~="2xl:inline-block"] { display: inline-block !important; }
+  [class~="2xl:inline-flex"] { display: inline-flex !important; }
+  [class~="2xl:table"] { display: table !important; }
+  [class~="2xl:table-caption"] { display: table-caption !important; }
+  [class~="2xl:table-cell"] { display: table-cell !important; }
+  [class~="2xl:table-row"] { display: table-row !important; }
+}

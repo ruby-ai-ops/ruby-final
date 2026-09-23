@@ -1,4 +1,4 @@
-// import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+// import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 // import assert from "assert";
 // import type { Logger } from "pino";
 // import type { CreationAttributes } from "sequelize";

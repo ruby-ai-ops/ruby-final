@@ -79,8 +79,8 @@ export async function retrieveDataSourceCoreIdsBatch({
         dataSources: skippedDataSources.map((ds) => ({
           id: ds.id,
           conversationId: ds.conversationId,
-          dustAPIDataSourceId: ds.dustAPIDataSourceId,
-          dustAPIProjectId: ds.dustAPIProjectId,
+          rubyAPIDataSourceId: ds.rubyAPIDataSourceId,
+          rubyAPIProjectId: ds.rubyAPIProjectId,
         })),
       },
       {
@@ -113,8 +113,8 @@ export async function retrieveDataSourceCoreIdsBatch({
   return {
     dataSourceCoreIds: dataSourcesToRelocate.map((ds) => ({
       id: ds.id,
-      dustAPIDataSourceId: ds.dustAPIDataSourceId,
-      dustAPIProjectId: ds.dustAPIProjectId,
+      rubyAPIDataSourceId: ds.rubyAPIDataSourceId,
+      rubyAPIProjectId: ds.rubyAPIProjectId,
     })),
     hasMore: dataSources.length === BATCH_SIZE,
     lastId: batchLastId,
@@ -138,8 +138,8 @@ export async function getCoreDataSource({
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), localLogger);
 
   const dataSourceRes = await coreAPI.getDataSource({
-    projectId: dataSourceCoreIds.dustAPIProjectId,
-    dataSourceId: dataSourceCoreIds.dustAPIDataSourceId,
+    projectId: dataSourceCoreIds.rubyAPIProjectId,
+    dataSourceId: dataSourceCoreIds.rubyAPIDataSourceId,
   });
 
   if (dataSourceRes.isErr()) {

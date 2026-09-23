@@ -4,7 +4,7 @@ import { CLAUDE_OPUS_4_6 } from "@app/lib/model_constructors/types/models";
 
 import { z } from "zod";
 
-// Real model spec. The Dust product cap (250k) is applied in the llms layer.
+// Real model spec. The Ruby product cap (250k) is applied in the llms layer.
 const CONTEXT_SIZE = 1_000_000;
 const DEFAULT_REASONING_EFFORT = "high";
 const MAX_OUTPUT_TOKENS = 128_000;
@@ -38,7 +38,7 @@ const baseConfig = anthropicBaseConfigSchema;
 // restriction belongs to *extended* thinking, not adaptive.
 //
 // Note the reasoning `.default(...)`: Anthropic runs a `thinking`-less request
-// on 4.6 *without* thinking, so the default here is a deliberate Dust
+// on 4.6 *without* thinking, so the default here is a deliberate Ruby
 // divergence — see `anthropicBaseConfigSchema`.
 const configSchema = z.union([
   baseConfig.extend({
@@ -75,9 +75,9 @@ export function WithAnthropicClaudeOpusFourDotSixConfig<
       unknown
     > = configSchema;
 
-    // Typed as `number` (not the literal) so the Dust layer can cap it.
+    // Typed as `number` (not the literal) so the Ruby layer can cap it.
     static readonly contextSize: number = CONTEXT_SIZE;
-    // Typed as `number` (not the literal) so the Dust layer can cap it.
+    // Typed as `number` (not the literal) so the Ruby layer can cap it.
     static readonly maxOutputTokens: number = MAX_OUTPUT_TOKENS;
   }
 

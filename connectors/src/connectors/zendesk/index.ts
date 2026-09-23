@@ -53,8 +53,8 @@ import type {
   ContentNodesViewType,
   DataSourceConfig,
 } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { assertNever, Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { assertNever, Err, Ok } from "@ruby-ai/client";
 
 export const ZENDESK_CONFIG_KEYS = {
   TICKET_TAGS_TO_INCLUDE: "zendeskTicketTagsToInclude",
@@ -364,7 +364,7 @@ export class ZendeskConnectorManager extends BaseConnectorManager<null> {
       return new Ok(nodes);
     } catch (e) {
       // Listing all Zendesk brands requires an admin or an agent with the
-      // `assign_tickets_to_any_brand` permission. Dust requires an admin
+      // `assign_tickets_to_any_brand` permission. Ruby requires an admin
       // connection, so a root-level 403 must be re-authorized with an admin.
       // https://developer.zendesk.com/api-reference/ticketing/account-configuration/brands/#list-brands
       if (

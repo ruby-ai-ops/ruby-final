@@ -428,8 +428,8 @@ export async function processTranscriptActivity(
 
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), localLogger);
     const upsertRes = await coreAPI.upsertDataSourceDocument({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       documentId: transcriptTitle,
       tags: [
         "transcript",
@@ -636,7 +636,7 @@ export async function processTranscriptActivity(
     await sendEmailWithTemplate({
       to: user.email,
       from: config.getSupportEmailAddress(),
-      subject: `[DUST] Transcripts - ${transcriptTitle.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")}`,
+      subject: `[RUBY] Transcripts - ${transcriptTitle.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")}`,
       body: `${htmlAnswer}<div style="text-align: center; margin-top: 20px;">
     <a href="${getConversationRoute(owner.sId, conversation.sId, undefined, config.getAppUrl())}"
       style="display: inline-block;
@@ -646,7 +646,7 @@ export async function processTranscriptActivity(
               text-decoration: none;
               border-radius: 0.75rem;
               font-weight: bold;">
-      Open this conversation in Dust
+      Open this conversation in Ruby
     </a>
   </div>`,
     });

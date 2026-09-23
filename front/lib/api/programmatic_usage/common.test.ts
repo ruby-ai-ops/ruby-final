@@ -21,7 +21,7 @@ describe("isProgrammaticUsageFromContext", () => {
   });
 
   it("resolves unattributed Slack usage to programmatic", () => {
-    // e.g. a Slack message whose sender's email didn't match a Dust
+    // e.g. a Slack message whose sender's email didn't match a Ruby
     // workspace member: attributeUserFromWorkspaceAndEmail found no user.
     expect(
       isProgrammaticUsageFromContext({
@@ -58,7 +58,7 @@ describe("isProgrammaticUsageFromContext", () => {
   });
 
   it("leaves other unattributed user origins as user (genuine attribution bug)", () => {
-    // web/extension/cli/... always carry a real Dust user — a missing
+    // web/extension/cli/... always carry a real Ruby user — a missing
     // userId there is a bug that buildUsageEvents must still catch.
     expect(
       isProgrammaticUsageFromContext({

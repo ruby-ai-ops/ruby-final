@@ -1,5 +1,5 @@
-Contact: mailto:security@dust.tt
+Contact: mailto:security@ruby.ad
 Expires: 2026-12-31T23:59:59.000Z
 Preferred-Languages: en
-Canonical: https://dust.tt/.well-known/security.txt
-Policy: https://dust.tt/home/vulnerability
+Canonical: https://ruby.ad/.well-known/security.txt
+Policy: https://ruby.ad/home/vulnerability

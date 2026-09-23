@@ -1,4 +1,4 @@
-import { Code01, CodeSquare01, Heading01 } from "@dust-tt/sparkle";
+import { Code01, CodeSquare01, Heading01 } from "@ruby-ai/ui";
 import type { Editor as CoreEditor } from "@tiptap/core";
 import type { Editor as ReactEditor } from "@tiptap/react";
 import type {

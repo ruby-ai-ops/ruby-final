@@ -115,9 +115,9 @@ export function buildServerSideMCPServerConfiguration({
     childAgentId,
     additionalConfiguration,
     timeFrame: null,
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     jsonSchema: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
   };
 }

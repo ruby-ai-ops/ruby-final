@@ -17,7 +17,7 @@ import type {
 } from "@app/types/assistant/conversation";
 import { isLightAgentMessageWithActionsType } from "@app/types/assistant/conversation";
 import type { WorkspaceType } from "@app/types/user";
-import { AnimatedText, Check, XCircle } from "@dust-tt/sparkle";
+import { AnimatedText, Check, XCircle } from "@ruby-ai/ui";
 
 interface InlineActivityStepsProps {
   agentMessage: LightAgentMessageType | LightAgentMessageWithActionsType;

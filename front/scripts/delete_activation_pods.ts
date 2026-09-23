@@ -106,7 +106,7 @@ export async function deleteActivationPodsForWorkspace(
     }
 
     // Force: Activation Pods typically have skills / data sources that would
-    // otherwise block deletion. Same path as poke Activation Management
+    // otherwise block deletion. Same path as admin Activation Management
     // force-recreate.
     const deleteResult = await softDeleteSpaceAndLaunchScrubWorkflow(
       auth,

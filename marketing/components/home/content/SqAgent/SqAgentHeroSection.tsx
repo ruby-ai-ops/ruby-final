@@ -1,7 +1,7 @@
 // biome-ignore-all lint/plugin/noNextImports: Next.js-specific file
 import { P } from "@marketing/components/home/ContentComponents";
 import { LandingEmailSignup } from "@marketing/components/home/content/Landing/LandingEmailSignup";
-import { ChevronLeft, ChevronRight, cn, Users01 } from "@dust-tt/sparkle";
+import { ChevronLeft, ChevronRight, cn, Users01 } from "@ruby-ai/ui";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
@@ -27,6 +27,7 @@ interface SqAgentHeroSectionProps {
   testimonials: TestimonialConfig[];
   videos: VideoConfig[];
   usersCount: string;
+  showSocialProof?: boolean;
 }
 
 const TESTIMONIAL_ROTATION_INTERVAL_MS = 5000;
@@ -39,21 +40,28 @@ export function SqAgentHeroSection({
   testimonials,
   videos,
   usersCount,
+  showSocialProof = true,
 }: SqAgentHeroSectionProps) {
   const [activeVideo, setActiveVideo] = useState(0);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   const rotateTestimonial = useCallback(() => {
+    if (!showSocialProof || testimonials.length === 0) {
+      return;
+    }
     setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
-  }, [testimonials.length]);
+  }, [showSocialProof, testimonials.length]);
 
   useEffect(() => {
+    if (!showSocialProof || testimonials.length === 0) {
+      return;
+    }
     const interval = setInterval(
       rotateTestimonial,
       TESTIMONIAL_ROTATION_INTERVAL_MS
     );
     return () => clearInterval(interval);
-  }, [rotateTestimonial]);
+  }, [rotateTestimonial, showSocialProof, testimonials.length]);
 
   const currentTestimonial = testimonials[activeTestimonial];
 
@@ -96,120 +104,125 @@ export function SqAgentHeroSection({
               />
 
               {/* Rotating Testimonial */}
-              <div className="mt-6 w-full md:mt-10">
-                <div className="relative min-h-[140px] overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-                  <div key={activeTestimonial} className="animate-fade-in-up">
-                    <p className="mb-4 text-sm italic text-muted-foreground">
-                      "{currentTestimonial.quote}"
-                    </p>
-                    <div className="flex items-center gap-3">
-                      <div className="relative h-10 w-20 overflow-hidden">
-                        <Image
-                          src={currentTestimonial.logo}
-                          alt={`${currentTestimonial.name} company logo`}
-                          fill
-                          className="object-contain object-left"
-                        />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-foreground">
-                          {currentTestimonial.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {currentTestimonial.title}
-                        </p>
+              {showSocialProof && currentTestimonial && (
+                <div className="mt-6 w-full md:mt-10">
+                  <div className="relative min-h-[140px] overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div key={activeTestimonial} className="animate-fade-in-up">
+                      <p className="mb-4 text-sm italic text-muted-foreground">
+                        "{currentTestimonial.quote}"
+                      </p>
+                      <div className="flex items-center gap-3">
+                        <div className="relative h-10 w-20 overflow-hidden">
+                          <Image
+                            src={currentTestimonial.logo}
+                            alt={`${currentTestimonial.name} company logo`}
+                            fill
+                            className="object-contain object-left"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-foreground">
+                            {currentTestimonial.name}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {currentTestimonial.title}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Testimonial navigation */}
-                <div className="mt-4 flex items-center justify-center gap-4">
-                  <button
-                    onClick={() =>
-                      setActiveTestimonial(
-                        (prev) =>
-                          (prev - 1 + testimonials.length) % testimonials.length
-                      )
-                    }
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:bg-slate-50"
-                    aria-label="Previous testimonial"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <div className="flex gap-2">
-                    {testimonials.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setActiveTestimonial(index)}
-                        className={cn(
-                          "h-2 w-2 rounded-full transition-colors",
-                          activeTestimonial === index
-                            ? "bg-blue-500"
-                            : "bg-slate-300 hover:bg-slate-400"
-                        )}
-                        aria-label={`View testimonial ${index + 1}`}
-                      />
-                    ))}
+                  {/* Testimonial navigation */}
+                  <div className="mt-4 flex items-center justify-center gap-4">
+                    <button
+                      onClick={() =>
+                        setActiveTestimonial(
+                          (prev) =>
+                            (prev - 1 + testimonials.length) %
+                            testimonials.length
+                        )
+                      }
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:bg-slate-50"
+                      aria-label="Previous testimonial"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </button>
+                    <div className="flex gap-2">
+                      {testimonials.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setActiveTestimonial(index)}
+                          className={cn(
+                            "h-2 w-2 rounded-full transition-colors",
+                            activeTestimonial === index
+                              ? "bg-blue-500"
+                              : "bg-slate-300 hover:bg-slate-400"
+                          )}
+                          aria-label={`View testimonial ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                    <button
+                      onClick={() =>
+                        setActiveTestimonial(
+                          (prev) => (prev + 1) % testimonials.length
+                        )
+                      }
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:bg-slate-50"
+                      aria-label="Next testimonial"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </button>
                   </div>
-                  <button
-                    onClick={() =>
-                      setActiveTestimonial(
-                        (prev) => (prev + 1) % testimonials.length
-                      )
-                    }
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition-colors hover:bg-slate-50"
-                    aria-label="Next testimonial"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Right side - Video Player */}
-            <div className="flex-1">
-              {/* Video embed area */}
-              <div className="aspect-video overflow-hidden rounded-xl border border-border/50 bg-black/5 shadow-2xl">
-                <iframe
-                  key={videos[activeVideo].id}
-                  width="100%"
-                  height="100%"
-                  src={videos[activeVideo].embedUrl}
-                  title={videos[activeVideo].title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="h-full w-full"
-                />
-              </div>
+            {showSocialProof && videos.length > 0 && (
+              <div className="flex-1">
+                {/* Video embed area */}
+                <div className="aspect-video overflow-hidden rounded-xl border border-border/50 bg-black/5 shadow-2xl">
+                  <iframe
+                    key={videos[activeVideo].id}
+                    width="100%"
+                    height="100%"
+                    src={videos[activeVideo].embedUrl}
+                    title={videos[activeVideo].title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="h-full w-full"
+                  />
+                </div>
 
-              {/* Video buttons - below video */}
-              <div className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
-                {videos.map((video, index) => (
-                  <button
-                    key={video.id}
-                    onClick={() => setActiveVideo(index)}
-                    className={cn(
-                      "rounded-lg border px-4 py-2 text-sm font-medium transition-all duration-200",
-                      activeVideo === index
-                        ? "border-primary bg-primary text-white shadow-md"
-                        : "border-border bg-white text-muted-foreground hover:border-primary/50 hover:text-foreground"
-                    )}
-                  >
-                    {video.title}
-                  </button>
-                ))}
-              </div>
+                {/* Video buttons - below video */}
+                <div className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
+                  {videos.map((video, index) => (
+                    <button
+                      key={video.id}
+                      onClick={() => setActiveVideo(index)}
+                      className={cn(
+                        "rounded-lg border px-4 py-2 text-sm font-medium transition-all duration-200",
+                        activeVideo === index
+                          ? "border-primary bg-primary text-white shadow-md"
+                          : "border-border bg-white text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                      )}
+                    >
+                      {video.title}
+                    </button>
+                  ))}
+                </div>
 
-              {/* Users count badge */}
-              <div className="mt-4 flex items-center justify-center gap-2 lg:justify-start">
-                <Users01 className="h-4 w-4 text-blue-500" />
-                <span className="text-sm font-medium text-muted-foreground">
-                  {usersCount}
-                </span>
+                {/* Users count badge */}
+                <div className="mt-4 flex items-center justify-center gap-2 lg:justify-start">
+                  <Users01 className="h-4 w-4 text-blue-500" />
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {usersCount}
+                  </span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

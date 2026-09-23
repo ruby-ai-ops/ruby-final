@@ -11,13 +11,13 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Repo root is the parent of tools/. Exported so process-compose.yaml can build
-# absolute working_dir / readiness paths via ${DUST_DEV_ROOT}.
-DUST_DEV_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-export DUST_DEV_ROOT
+# absolute working_dir / readiness paths via ${RUBY_DEV_ROOT}.
+RUBY_DEV_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+export RUBY_DEV_ROOT
 
 # Sentinel checked by the _check-start-script process: proves the dev stack was
 # launched through this wrapper (and therefore that the setup steps below ran).
-export DUST_USE_DEV_SH=1
+export RUBY_USE_DEV_SH=1
 
 # Force colored output: process-compose captures stdout into its log view, so
 # tools would otherwise disable colors when they detect a non-TTY pipe.
@@ -43,13 +43,13 @@ fi
 # Source and select the correct Node version using nvm. All Node projects in
 # this repo pin the same version (see .nvmrc), so a single `nvm use` here is
 # inherited (via PATH) by every process-compose process.
-# If DUST_NODE_VERSION is set (e.g. via `source scripts/try-node24.sh`), use
+# If RUBY_NODE_VERSION is set (e.g. via `source scripts/try-node24.sh`), use
 # that version instead of the .nvmrc default.
 # shellcheck disable=SC1090
 source ~/.nvm/nvm.sh
-if [ -n "${DUST_NODE_VERSION:-}" ]; then
-  nvm install "$DUST_NODE_VERSION"
-  nvm use "$DUST_NODE_VERSION"
+if [ -n "${RUBY_NODE_VERSION:-}" ]; then
+  nvm install "$RUBY_NODE_VERSION"
+  nvm use "$RUBY_NODE_VERSION"
 else
   nvm install
 fi
@@ -57,12 +57,12 @@ fi
 # Clear the sdks-js dist so dependents wait for a fresh build instead of
 # starting against a stale SDK. The sdks-js readiness probe checks for a dist
 # file, so a leftover dist would let front-api/connectors start immediately.
-rm -rf "$DUST_DEV_ROOT/sdks/js/dist"
+rm -rf "$RUBY_DEV_ROOT/sdks/js/dist"
 
 # Install npm workspace dependencies.
-(cd "$DUST_DEV_ROOT" && npm install)
+(cd "$RUBY_DEV_ROOT" && npm install)
 
 # Launch process-compose (TUI). Services and their dependencies are defined in
 # process-compose.yaml; closing the TUI stops the managed processes.
-cd "$DUST_DEV_ROOT"
+cd "$RUBY_DEV_ROOT"
 exec process-compose -f "$SCRIPT_DIR/process-compose.yaml"

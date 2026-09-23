@@ -2,7 +2,7 @@ import { MCPError } from "@app/lib/actions/mcp_errors";
 import type { ToolHandlerExtra } from "@app/lib/actions/mcp_internal_actions/tool_definition";
 import { isAgentLoopRunContext } from "@app/lib/actions/types";
 
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import type { Authenticator } from "@app/lib/auth";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
 import type { Result } from "@app/types/shared/result";
@@ -25,7 +25,7 @@ export function requireAgentLoopConversation(
   return new Ok(conversation);
 }
 
-/** Collects non-empty scoped paths from tool arguments for {@link DustFileSystem.forAgentLoop}. */
+/** Collects non-empty scoped paths from tool arguments for {@link RubyFileSystem.forAgentLoop}. */
 export function scopedPathsFromArgs(
   ...paths: Array<string | undefined>
 ): string[] {
@@ -34,12 +34,12 @@ export function scopedPathsFromArgs(
   );
 }
 
-export async function getDustFileSystemForAgentLoop(
+export async function getRubyFileSystemForAgentLoop(
   auth: Authenticator,
   conversation: ConversationWithoutContentType,
   scopedPaths: string[]
-): Promise<Result<DustFileSystem, MCPError>> {
-  const fsResult = await DustFileSystem.forAgentLoop(auth, {
+): Promise<Result<RubyFileSystem, MCPError>> {
+  const fsResult = await RubyFileSystem.forAgentLoop(auth, {
     conversation,
     scopedPaths,
   });

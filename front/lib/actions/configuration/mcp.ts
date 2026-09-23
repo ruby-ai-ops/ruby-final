@@ -84,7 +84,7 @@ export async function fetchMCPServerActionConfigurations(
   );
 
   const [
-    allDustApps,
+    allRubyApps,
     allDataSourceConfigurations,
     allTablesConfigurations,
     allChildAgentConfigurations,
@@ -148,7 +148,7 @@ export async function fetchMCPServerActionConfigurations(
       (pc) => pc.mcpServerConfigurationId === config.id
     );
 
-    const dustApp = allDustApps.filter((app) => app.sId === config.appId)[0];
+    const rubyApp = allRubyApps.filter((app) => app.sId === config.appId)[0];
 
     const mcpServerView = mcpServerViewsById.get(mcpServerViewId) ?? null;
     let serverName: string | null = null;
@@ -200,15 +200,15 @@ export async function fetchMCPServerActionConfigurations(
           tablesConfigurations.length > 0
             ? tablesConfigurations.map(renderTableConfiguration)
             : null,
-        dustAppConfiguration: dustApp
+        rubyAppConfiguration: rubyApp
           ? {
-              id: dustApp.id,
-              name: dustApp.name,
-              description: dustApp.description,
-              appId: dustApp.sId,
-              sId: dustApp.sId,
+              id: rubyApp.id,
+              name: rubyApp.name,
+              description: rubyApp.description,
+              appId: rubyApp.sId,
+              sId: rubyApp.sId,
               appWorkspaceId: auth.getNonNullableWorkspace().sId,
-              type: "dust_app_run_configuration",
+              type: "ruby_app_run_configuration",
             }
           : null,
         childAgentId:
@@ -220,7 +220,7 @@ export async function fetchMCPServerActionConfigurations(
         timeFrame: config.timeFrame,
         jsonSchema: config.jsonSchema,
         secretName: config.secretName,
-        dustProject:
+        rubyProject:
           projectConfigurations.length > 0
             ? renderProjectConfiguration(projectConfigurations[0])
             : null,

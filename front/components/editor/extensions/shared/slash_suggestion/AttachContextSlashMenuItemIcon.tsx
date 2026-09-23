@@ -3,7 +3,7 @@ import { getConnectorProviderLogoWithFallback } from "@app/lib/connector_provide
 import { getVisualForDataSourceViewContentNode } from "@app/lib/content_nodes";
 import { isFolder, isWebsite } from "@app/lib/data_sources";
 import { getFileTypeIcon } from "@app/lib/file_icon_utils";
-import { DoubleIcon, Icon } from "@dust-tt/sparkle";
+import { DoubleIcon, Icon } from "@ruby-ai/ui";
 
 export function AttachContextSlashMenuItemIcon({
   item,

@@ -3,8 +3,8 @@ import { SkillActionsMenu } from "@app/components/skills/SkillActionsMenu";
 import { useSkillMenuItems } from "@app/hooks/useSkillMenuItems";
 import { useSkill } from "@app/lib/swr/skill_configurations";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { MenuItem } from "@dust-tt/sparkle";
-import { Spinner } from "@dust-tt/sparkle";
+import type { MenuItem } from "@ruby-ai/ui";
+import { Spinner } from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface SkillSearchActionsMenuProps {

@@ -1,12 +1,12 @@
 import { dropTemperature } from "@app/lib/llms/stream/types/configuration";
 import { MISTRAL_MEDIUM_3_5_MODEL_CONFIG } from "@app/types/assistant/models/mistral";
 
-export function WithDustMistralMedium35Config<
+export function WithRubyMistralMedium35Config<
   TBase extends abstract new (
     ...args: any[]
   ) => object,
 >(Base: TBase) {
-  abstract class DustMistralMedium35 extends Base {
+  abstract class RubyMistralMedium35 extends Base {
     static readonly displayName = "Mistral Medium 3.5";
     static readonly description =
       "Mistral's `medium 3.5` model, multimodal and optimized for agentic and coding use cases (256k context).";
@@ -18,11 +18,11 @@ export function WithDustMistralMedium35Config<
     static readonly configParsers = [dropTemperature];
 
     // Nest the legacy model config under a single `modelConfig` static (see
-    // `DustStreamEndpointConfiguration`) so consumers can retrieve the full
+    // `RubyStreamEndpointConfiguration`) so consumers can retrieve the full
     // `ModelConfigurationType` off the endpoint without spreading its fields
     // onto the class statics.
     static readonly modelConfig = MISTRAL_MEDIUM_3_5_MODEL_CONFIG;
   }
 
-  return DustMistralMedium35;
+  return RubyMistralMedium35;
 }

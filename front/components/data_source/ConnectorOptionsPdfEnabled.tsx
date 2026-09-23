@@ -7,7 +7,7 @@ import {
   ContextItem,
   GooglePdfLogo as GenericPdfLogo,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 export const createConnectorOptionsPdfEnabled = (description: string) => {
   const ConnectorOptionsPdfEnabled = ({

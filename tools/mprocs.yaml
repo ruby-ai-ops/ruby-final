@@ -23,7 +23,7 @@ procs:
     env:
       CORE_API: "http://localhost:3001"
       IS_LOCAL_DEV: "1"
-      DATABASES_STORE_DATABASE_URI: "postgresql://dev:dev@localhost:5432/dust_databases_store"
+      DATABASES_STORE_DATABASE_URI: "postgresql://dev:dev@localhost:5432/ruby_databases_store"
       CORE_API_KEY: "soupinou"
     shell: "bacon sqlite-worker"
 
@@ -31,8 +31,8 @@ procs:
     cwd: "<CONFIG_DIR>/../core"
     shell: "RUST_BACKTRACE=1 bacon oauth"
 
-  sparkle:
-    cwd: "<CONFIG_DIR>/../sparkle"
+  ui:
+    cwd: "<CONFIG_DIR>/../ui"
     shell: |
       npm run watch
 
@@ -81,45 +81,45 @@ procs:
   front-spa:
     cwd: "<CONFIG_DIR>/../front-spa"
     env:
-      READY_FILE: "../sparkle/dist/cjs/index.js"
+      READY_FILE: "../ui/dist/cjs/index.js"
     shell: |
-      echo "Waiting for sparkle to compile..."
+      echo "Waiting for ui to compile..."
       echo "Expecting file: $READY_FILE"
       while [ ! -f "$READY_FILE" ]; do sleep 1; done
       bash ../tools/wait-for-front-api-ready.sh
       npm run dev:app
 
-  front-poke:
+  front-admin:
     cwd: "<CONFIG_DIR>/../front-spa"
     env:
-      READY_FILE: "../sparkle/dist/cjs/index.js"
+      READY_FILE: "../ui/dist/cjs/index.js"
     shell: |
-      echo "Waiting for sparkle to compile..."
+      echo "Waiting for ui to compile..."
       echo "Expecting file: $READY_FILE"
       while [ ! -f "$READY_FILE" ]; do sleep 1; done
       bash ../tools/wait-for-front-api-ready.sh
-      npm run dev:poke
+      npm run dev:admin
 
   marketing-site:
     cwd: "<CONFIG_DIR>/../marketing"
     env:
-      READY_FILE: "../sparkle/dist/cjs/index.js"
+      READY_FILE: "../ui/dist/cjs/index.js"
     shell: |
-      echo "Waiting for sparkle to compile..."
+      echo "Waiting for ui to compile..."
       echo "Expecting file: $READY_FILE"
       while [ ! -f "$READY_FILE" ]; do sleep 1; done
-      echo "sparkle ready. Starting marketing site on port 3009."
+      echo "ui ready. Starting marketing site on port 3009."
       npm run dev -- -p 3009
     autostart: false
 
-  sparkle-storybook:
-    cwd: "<CONFIG_DIR>/../sparkle"
+  ui-storybook:
+    cwd: "<CONFIG_DIR>/../ui"
     shell: |
       npm run storybook
     autostart: false
 
-  sparkle-playground:
-    cwd: "<CONFIG_DIR>/../sparkle/playground"
+  ui-playground:
+    cwd: "<CONFIG_DIR>/../ui/playground"
     shell: |
       npm install && npm run dev
     autostart: false
@@ -145,7 +145,7 @@ procs:
   firebase-webhook-router:
     cwd: "<CONFIG_DIR>/../firebase-functions/webhook-router"
     shell: |
-      if [ -f /.dockerenv ] || [ "${DUST_IN_CONTAINER:-}" = 1 ]; then
+      if [ -f /.dockerenv ] || [ "${RUBY_IN_CONTAINER:-}" = 1 ]; then
         echo "Skipping firebase-webhook-router compose: no Docker socket in shared dev container."
         exit 0
       fi
@@ -156,7 +156,7 @@ procs:
   apache-tika:
     cwd: "<CONFIG_DIR>/.."
     shell: |
-      if [ -f /.dockerenv ] || [ "${DUST_IN_CONTAINER:-}" = 1 ]; then
+      if [ -f /.dockerenv ] || [ "${RUBY_IN_CONTAINER:-}" = 1 ]; then
         echo "Skipping apache-tika compose: no Docker socket in shared dev container."
         exit 0
       fi
@@ -167,7 +167,7 @@ procs:
   kibana:
     cwd: "<CONFIG_DIR>/.."
     shell: |
-      if [ -f /.dockerenv ] || [ "${DUST_IN_CONTAINER:-}" = 1 ]; then
+      if [ -f /.dockerenv ] || [ "${RUBY_IN_CONTAINER:-}" = 1 ]; then
         echo "Skipping kibana compose: no Docker socket in shared dev container."
         exit 0
       fi
@@ -179,7 +179,7 @@ procs:
   gotenberg:
     cwd: "<CONFIG_DIR>/.."
     shell: |
-      if [ -f /.dockerenv ] || [ "${DUST_IN_CONTAINER:-}" = 1 ]; then
+      if [ -f /.dockerenv ] || [ "${RUBY_IN_CONTAINER:-}" = 1 ]; then
         echo "Skipping gotenberg compose: no Docker socket in shared dev container."
         exit 0
       fi
@@ -192,6 +192,6 @@ procs:
     autostart: false
 
   stripe:
-    # Doc: https://app.notion.com/p/dust-tt/Runbook-Local-Dev-setup-720bffc7d67a447184cb957e9471380c?source=copy_link#5814f227351d4d258422e21e8de39c82/
+    # Doc: https://app.notion.com/p/ruby-ai/Runbook-Local-Dev-setup-720bffc7d67a447184cb957e9471380c?source=copy_link#5814f227351d4d258422e21e8de39c82/
     shell: "stripe listen --forward-to localhost:3000/api/stripe/webhook"
     autostart: false

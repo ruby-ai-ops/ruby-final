@@ -6,7 +6,7 @@ import { z } from "zod";
 // wider than the shared `temperatureSchema` (0..1), which matches Anthropic.
 //
 // Google *recommends* `temperature: 1` for Gemini 3, but recommending is not
-// rejecting: every value in range is accepted. Forcing 1 is a Dust product
+// rejecting: every value in range is accepted. Forcing 1 is a Ruby product
 // choice and lives in the llms layer as a `configParsers` entry, not here — the
 // endpoint schema mirrors the API.
 export const geminiTemperatureSchema = z.number().min(0).max(2);

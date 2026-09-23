@@ -321,7 +321,7 @@ export class AgentSuggestionResource extends BaseResource<AgentSuggestionModel> 
     auth: Authenticator,
     suggestions: AgentSuggestionResource[]
   ): Promise<Result<number, Error>> {
-    if (!auth.isDustSuperUser()) {
+    if (!auth.isRubySuperUser()) {
       return new Err(new Error("Only super users can bulk delete suggestions"));
     }
 

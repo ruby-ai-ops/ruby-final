@@ -1,4 +1,4 @@
-import type { LoggerInterface } from "@dust-tt/client";
+import type { LoggerInterface } from "@ruby-ai/client";
 import { CancelledFailure } from "@temporalio/common";
 import { v4 as uuidv4 } from "uuid";
 

@@ -182,24 +182,24 @@ describe("sandbox security check assertions", () => {
   test("detects unsafe root-invoked helper ownership or modes", () => {
     expect(() =>
       assertRootInvokedHelpersSafe(
-        "/opt/bin/dsbx root:root 755 -rwxr-xr-x\n/usr/local/bin/dust-install-trust-bundle root:root 755 -rwxr-xr-x\n/usr/local/bin/dust-gcs-token-server.py root:root 755 -rwxr-xr-x\n/usr/local/bin/dust-gcs-write-token.sh root:root 755 -rwxr-xr-x\n/usr/local/bin/dust-gcs-token-firewall.sh root:root 755 -rwxr-xr-x\n/opt/bin/litestream root:root 755 -rwxr-xr-x"
+        "/opt/bin/rbx root:root 755 -rwxr-xr-x\n/usr/local/bin/ruby-install-trust-bundle root:root 755 -rwxr-xr-x\n/usr/local/bin/ruby-gcs-token-server.py root:root 755 -rwxr-xr-x\n/usr/local/bin/ruby-gcs-write-token.sh root:root 755 -rwxr-xr-x\n/usr/local/bin/ruby-gcs-token-firewall.sh root:root 755 -rwxr-xr-x\n/opt/bin/litestream root:root 755 -rwxr-xr-x"
       )
     ).not.toThrow();
     expect(() =>
       assertRootInvokedHelpersSafe(
-        "/opt/bin/dsbx root:root 777 -rwxrwxrwx\n/usr/local/bin/dust-install-trust-bundle root:root 755 -rwxr-xr-x\n/opt/bin/litestream root:root 755 -rwxr-xr-x"
+        "/opt/bin/rbx root:root 777 -rwxrwxrwx\n/usr/local/bin/ruby-install-trust-bundle root:root 755 -rwxr-xr-x\n/opt/bin/litestream root:root 755 -rwxr-xr-x"
       )
     ).toThrow("root-invoked helper is not root-owned");
     expect(() =>
       assertRootInvokedHelpersSafe(
-        "/opt/bin/dsbx root:root 755 -rwxr-xr-x\n/opt/bin/litestream root:root 755 -rwxr-xr-x"
+        "/opt/bin/rbx root:root 755 -rwxr-xr-x\n/opt/bin/litestream root:root 755 -rwxr-xr-x"
       )
     ).toThrow(
-      "missing root-invoked helper audit for /usr/local/bin/dust-install-trust-bundle"
+      "missing root-invoked helper audit for /usr/local/bin/ruby-install-trust-bundle"
     );
     expect(() =>
       assertRootInvokedHelpersSafe(
-        "/opt/bin/dsbx root:root 755 -rwxr-xr-x\n/usr/local/bin/dust-install-trust-bundle root:root 755 -rwxr-xr-x\n/usr/local/bin/dust-gcs-token-server.py root:root 755 -rwxr-xr-x\n/usr/local/bin/dust-gcs-write-token.sh root:root 755 -rwxr-xr-x\n/usr/local/bin/dust-gcs-token-firewall.sh root:root 755 -rwxr-xr-x"
+        "/opt/bin/rbx root:root 755 -rwxr-xr-x\n/usr/local/bin/ruby-install-trust-bundle root:root 755 -rwxr-xr-x\n/usr/local/bin/ruby-gcs-token-server.py root:root 755 -rwxr-xr-x\n/usr/local/bin/ruby-gcs-write-token.sh root:root 755 -rwxr-xr-x\n/usr/local/bin/ruby-gcs-token-firewall.sh root:root 755 -rwxr-xr-x"
       )
     ).toThrow("missing root-invoked helper audit for /opt/bin/litestream");
   });
@@ -207,23 +207,23 @@ describe("sandbox security check assertions", () => {
   test("detects unsafe pod-state directory ownership or modes", () => {
     const safeOutput = [
       "POD_STATE_DIR=/sandbox-state root:root 755 drwxr-xr-x",
-      "POD_STATE_DIR=/sandbox-state/databases dust-state:agent 2770 drwxrws---",
-      "POD_STATE_DIR=/sandbox-state/replica dust-state:dust-state 700 drwx------",
+      "POD_STATE_DIR=/sandbox-state/databases ruby-state:agent 2770 drwxrws---",
+      "POD_STATE_DIR=/sandbox-state/replica ruby-state:ruby-state 700 drwx------",
     ].join("\n");
 
     expect(() => assertPodStateDirsSafe(safeOutput)).not.toThrow();
     expect(() =>
       assertPodStateDirsSafe(
         safeOutput.replace(
-          "/sandbox-state/replica dust-state:dust-state 700",
-          "/sandbox-state/replica dust-state:dust-state 755"
+          "/sandbox-state/replica ruby-state:ruby-state 700",
+          "/sandbox-state/replica ruby-state:ruby-state 755"
         )
       )
     ).toThrow("pod-state directory /sandbox-state/replica");
     expect(() =>
       assertPodStateDirsSafe(
         safeOutput.replace(
-          "/sandbox-state/databases dust-state:agent 2770",
+          "/sandbox-state/databases ruby-state:agent 2770",
           "/sandbox-state/databases agent:agent 2770"
         )
       )

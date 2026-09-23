@@ -7,7 +7,7 @@ import { useSkillsContext } from "@app/components/shared/skills/SkillsContext";
 import { useMCPServerViewsContext } from "@app/components/shared/tools_picker/MCPServerViewsContext";
 import { removeNulls } from "@app/types/shared/utils/general";
 import type { SpaceType } from "@app/types/space";
-import { Button, Planet } from "@dust-tt/sparkle";
+import { Button, Planet } from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 

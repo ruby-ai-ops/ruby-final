@@ -12,7 +12,7 @@ import {
   Hoverable,
   Icon,
   ListItem,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface FrameSharingFilesProps {
   viewerFiles: ShareFrameViewerFile[];

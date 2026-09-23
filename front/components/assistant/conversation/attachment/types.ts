@@ -1,7 +1,7 @@
 import type { SupportedContentFragmentType } from "@app/types/content_fragment";
 import type {
   AllSupportedFileContentType,
-  AllSupportedWithDustSpecificFileContentType,
+  AllSupportedWithRubySpecificFileContentType,
 } from "@app/types/files";
 import type React from "react";
 
@@ -77,7 +77,7 @@ export interface MCPAttachmentCitation extends BaseAttachmentCitation {
   filePath?: string;
   isUploading: false;
   description?: string;
-  contentType: AllSupportedWithDustSpecificFileContentType;
+  contentType: AllSupportedWithRubySpecificFileContentType;
 }
 
 export type AttachmentCitation =

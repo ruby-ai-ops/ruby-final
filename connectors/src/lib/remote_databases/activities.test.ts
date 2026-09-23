@@ -479,7 +479,7 @@ describe("sync remote databases", async () => {
     );
 
     await RemoteDatabaseModel.create({
-      internalId: "test__DUST_DOT__db",
+      internalId: "test__RUBY_DOT__db",
       name: "test.db",
       permission: "selected",
       connectorId: connector.id,
@@ -516,7 +516,7 @@ describe("sync remote databases", async () => {
     // Check database model
     const remoteDatabase = await RemoteDatabaseModel.findOne({
       where: {
-        internalId: "test__DUST_DOT__db",
+        internalId: "test__RUBY_DOT__db",
       },
     });
     expect(remoteDatabase).not.toBeNull();
@@ -525,7 +525,7 @@ describe("sync remote databases", async () => {
     // Check schema model
     const remoteSchema = await RemoteSchemaModel.findOne({
       where: {
-        internalId: "test__DUST_DOT__db.test__DUST_DOT__schema",
+        internalId: "test__RUBY_DOT__db.test__RUBY_DOT__schema",
       },
     });
     expect(remoteSchema).not.toBeNull();
@@ -536,7 +536,7 @@ describe("sync remote databases", async () => {
     const remoteTable = await RemoteTableModel.findOne({
       where: {
         internalId:
-          "test__DUST_DOT__db.test__DUST_DOT__schema.test__DUST_DOT__table",
+          "test__RUBY_DOT__db.test__RUBY_DOT__schema.test__RUBY_DOT__table",
       },
     });
     expect(remoteTable).not.toBeNull();
@@ -547,22 +547,22 @@ describe("sync remote databases", async () => {
     // Verify upsertDataSourceFolder calls
     expect(upsertDataSourceFolder).toHaveBeenCalledWith({
       dataSourceConfig: dataSourceConfig,
-      folderId: "test__DUST_DOT__db",
+      folderId: "test__RUBY_DOT__db",
       title: "test.db",
-      parents: ["test__DUST_DOT__db"],
+      parents: ["test__RUBY_DOT__db"],
       parentId: null,
       mimeType: INTERNAL_MIME_TYPES.BIGQUERY.DATABASE,
     });
 
     expect(upsertDataSourceFolder).toHaveBeenCalledWith({
       dataSourceConfig: dataSourceConfig,
-      folderId: "test__DUST_DOT__db.test__DUST_DOT__schema",
+      folderId: "test__RUBY_DOT__db.test__RUBY_DOT__schema",
       title: "test.schema",
       parents: [
-        "test__DUST_DOT__db.test__DUST_DOT__schema",
-        "test__DUST_DOT__db",
+        "test__RUBY_DOT__db.test__RUBY_DOT__schema",
+        "test__RUBY_DOT__db",
       ],
-      parentId: "test__DUST_DOT__db",
+      parentId: "test__RUBY_DOT__db",
       mimeType: INTERNAL_MIME_TYPES.BIGQUERY.SCHEMA,
     });
 
@@ -570,19 +570,19 @@ describe("sync remote databases", async () => {
     expect(upsertDataSourceRemoteTable).toHaveBeenCalledWith({
       dataSourceConfig: dataSourceConfig,
       tableId:
-        "test__DUST_DOT__db.test__DUST_DOT__schema.test__DUST_DOT__table",
+        "test__RUBY_DOT__db.test__RUBY_DOT__schema.test__RUBY_DOT__table",
       tableName:
-        "test__DUST_DOT__db.test__DUST_DOT__schema.test__DUST_DOT__table",
+        "test__RUBY_DOT__db.test__RUBY_DOT__schema.test__RUBY_DOT__table",
       remoteDatabaseTableId:
-        "test__DUST_DOT__db.test__DUST_DOT__schema.test__DUST_DOT__table",
+        "test__RUBY_DOT__db.test__RUBY_DOT__schema.test__RUBY_DOT__table",
       remoteDatabaseSecretId: connector.connectionId,
       tableDescription: "",
       parents: [
-        "test__DUST_DOT__db.test__DUST_DOT__schema.test__DUST_DOT__table",
-        "test__DUST_DOT__db.test__DUST_DOT__schema",
-        "test__DUST_DOT__db",
+        "test__RUBY_DOT__db.test__RUBY_DOT__schema.test__RUBY_DOT__table",
+        "test__RUBY_DOT__db.test__RUBY_DOT__schema",
+        "test__RUBY_DOT__db",
       ],
-      parentId: "test__DUST_DOT__db.test__DUST_DOT__schema",
+      parentId: "test__RUBY_DOT__db.test__RUBY_DOT__schema",
       title: "test.table",
       mimeType: INTERNAL_MIME_TYPES.BIGQUERY.TABLE,
       tags: ["my-test-tag"],

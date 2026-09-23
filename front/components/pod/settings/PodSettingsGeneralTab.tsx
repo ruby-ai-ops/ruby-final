@@ -29,7 +29,7 @@ import {
   Separator,
   TextArea,
   Upload01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useContext, useEffect, useState } from "react";
 
 const NOTIFICATION_CONDITION_LABELS: Record<NotificationCondition, string> = {

@@ -13,7 +13,7 @@ import type {
 import type { ModelId } from "@app/types/shared/model_id";
 
 interface LLMRunLifecycleParameters {
-  dustRunId: string;
+  rubyRunId: string;
   inferenceProvider: string;
   inferenceRegion: InferenceRegionType;
   modelId: ModelIdType;
@@ -43,7 +43,7 @@ export class LLMRunLifecycle {
     const { run, runUsageModelId } = await RunResource.makeNewWithPendingUsage(
       {
         appId: null,
-        dustRunId: parameters.dustRunId,
+        rubyRunId: parameters.rubyRunId,
         runType: "deploy",
         useWorkspaceCredentials: false,
         workspaceId: auth.getNonNullableWorkspace().id,

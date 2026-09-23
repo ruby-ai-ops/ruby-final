@@ -1,6 +1,6 @@
 import { AuthenticatedVisualizationActionIframe } from "@app/components/assistant/conversation/actions/AuthenticatedVisualizationActionIframe";
 import type { LightWorkspaceType } from "@app/types/user";
-import { MarkdownContentContext } from "@dust-tt/sparkle";
+import { MarkdownContentContext } from "@ruby-ai/ui";
 import { useContext, useMemo } from "react";
 import { visit } from "unist-util-visit";
 

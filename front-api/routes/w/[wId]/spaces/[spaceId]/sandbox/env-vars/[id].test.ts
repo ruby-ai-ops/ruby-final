@@ -6,7 +6,7 @@ import type { MembershipRoleType } from "@app/types/memberships";
 import { honoApp } from "@front-api/app";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-process.env.DUST_DEVELOPERS_SECRETS_SECRET ??= "test-developer-secret";
+process.env.RUBY_DEVELOPERS_SECRETS_SECRET ??= "test-developer-secret";
 
 const { mockEmitAuditLogEvent } = vi.hoisted(() => ({
   mockEmitAuditLogEvent: vi.fn(),

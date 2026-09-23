@@ -39,7 +39,7 @@ export type UnsavedMCPServerConfigurationType =
 // }
 // ```
 
-export type DustAppRunInputType = {
+export type RubyAppRunInputType = {
   name: string;
   description: string;
   type: "string" | "number" | "boolean" | "array";
@@ -58,8 +58,8 @@ export type AgentActionSpecification = {
   eager?: boolean;
 };
 
-export function dustAppRunInputsToInputSchema(
-  inputs: DustAppRunInputType[]
+export function rubyAppRunInputsToInputSchema(
+  inputs: RubyAppRunInputType[]
 ): JSONSchema {
   const properties: JSONSchema["properties"] = {};
   for (const i of inputs) {
@@ -76,14 +76,14 @@ export function dustAppRunInputsToInputSchema(
   };
 }
 
-export function inputSchemaToDustAppRunInputs(
+export function inputSchemaToRubyAppRunInputs(
   inputSchema: JSONSchema
-): DustAppRunInputType[] {
+): RubyAppRunInputType[] {
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   return Object.entries(inputSchema.properties || {}).map(
     ([name, property]) => {
-      let type: DustAppRunInputType["type"] = "string";
-      let description: DustAppRunInputType["description"] = "";
+      let type: RubyAppRunInputType["type"] = "string";
+      let description: RubyAppRunInputType["description"] = "";
 
       if (property !== null && typeof property === "object") {
         if (
@@ -91,11 +91,11 @@ export function inputSchemaToDustAppRunInputs(
           typeof property.type === "string" &&
           ["string", "number", "boolean", "array"].includes(property.type)
         ) {
-          type = property.type as DustAppRunInputType["type"];
+          type = property.type as RubyAppRunInputType["type"];
         }
         if ("description" in property) {
           description =
-            property.description as DustAppRunInputType["description"];
+            property.description as RubyAppRunInputType["description"];
         }
       }
 

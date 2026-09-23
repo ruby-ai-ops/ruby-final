@@ -372,7 +372,7 @@ export const MICROSOFT_TEAMS_SERVER = {
         },
       ],
     },
-    documentationUrl: "https://docs.dust.tt/docs/microsoft-teams-tool-setup",
+    documentationUrl: "https://docs.ruby.ad/docs/microsoft-teams-tool-setup",
   },
   tools: MICROSOFT_TEAMS_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

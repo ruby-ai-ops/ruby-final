@@ -1,4 +1,4 @@
-import { DustFileSystemError } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystemError } from "@app/lib/api/file_system/ruby_file_system";
 import { getUserMemory, setUserMemory } from "@app/lib/api/user_memory";
 import { FeatureFlagFactory } from "@app/tests/utils/FeatureFlagFactory";
 import { createPrivateApiMockRequest } from "@app/tests/utils/generic_private_api_tests";
@@ -18,7 +18,7 @@ const ApiErrorSchema = z.object({
   }),
 });
 
-// The content is read/written through GCS via DustFileSystem.forUser, so mock
+// The content is read/written through GCS via RubyFileSystem.forUser, so mock
 // those two functions. The enabled flag lives in user metadata and runs for
 // real against the test DB.
 vi.mock(import("@app/lib/api/user_memory"), async (orig) => {
@@ -90,7 +90,7 @@ describe("GET /api/w/:wId/me/memory", () => {
 
   it("maps a filesystem error to a 500", async () => {
     vi.mocked(getUserMemory).mockResolvedValue(
-      new Err(new DustFileSystemError("internal", "boom"))
+      new Err(new RubyFileSystemError("internal", "boom"))
     );
     const { workspace } = await setup();
 

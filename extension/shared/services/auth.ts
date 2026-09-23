@@ -121,8 +121,8 @@ export abstract class AuthService {
   ): Promise<Result<StoredTokens, AuthError>>;
 }
 
-const CELL_CLAIM = `https://dust.tt/cell`;
-const REGION_CLAIM = `https://dust.tt/region`;
+const CELL_CLAIM = `https://ruby.ad/cell`;
+const REGION_CLAIM = `https://ruby.ad/region`;
 
 export function getCellInfoFromClaims(
   claims: Record<string, string>,

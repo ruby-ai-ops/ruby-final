@@ -37,7 +37,7 @@ const TEST_AGENT_PARAMS = {
   name: "Test Agent",
   description: "Test Agent Description",
   instructions: "Test instructions",
-  pictureUrl: "https://dust.tt/static/systemavatar/test_avatar_1.png",
+  pictureUrl: "https://ruby.ad/static/systemavatar/test_avatar_1.png",
   status: "active",
   scope: "visible",
   model: TEST_MODEL,
@@ -566,9 +566,9 @@ describe("POST /api/w/:wId/assistant/agent_configurations - additionalRequestedS
             timeFrame: null,
             jsonSchema: null,
             additionalConfiguration: {},
-            dustAppConfiguration: null,
+            rubyAppConfiguration: null,
             secretName: null,
-            dustProject: null,
+            rubyProject: null,
           },
         ],
         editors: [{ sId: user.sId }],
@@ -633,9 +633,9 @@ describe("POST /api/w/:wId/assistant/agent_configurations - additionalRequestedS
             timeFrame: null,
             jsonSchema: null,
             additionalConfiguration: {},
-            dustAppConfiguration: null,
+            rubyAppConfiguration: null,
             secretName: null,
-            dustProject: null,
+            rubyProject: null,
           },
         ],
         editors: [{ sId: user.sId }],
@@ -669,9 +669,9 @@ describe("POST /api/w/:wId/assistant/agent_configurations - tools in spaces the 
     timeFrame: null,
     jsonSchema: null,
     additionalConfiguration: {},
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
   };
 
   async function setupNonMemberBuilder() {
@@ -758,7 +758,7 @@ describe("POST /api/w/:wId/assistant/agent_configurations - tools in spaces the 
     );
   });
 
-  it("rejects a Dust app that lives in a restricted space", async () => {
+  it("rejects a Ruby app that lives in a restricted space", async () => {
     const { workspace, user, globalSpace, restrictedSpace } =
       await setupNonMemberBuilder();
     const app = await AppFactory.basic(workspace, restrictedSpace);
@@ -779,8 +779,8 @@ describe("POST /api/w/:wId/assistant/agent_configurations - tools in spaces the 
             ...BASE_ACTION,
             mcpServerViewId: view.sId,
             name: "run_restricted_app",
-            dustAppConfiguration: {
-              type: "dust_app_run_configuration",
+            rubyAppConfiguration: {
+              type: "ruby_app_run_configuration",
               appWorkspaceId: workspace.sId,
               appId: app.sId,
             },
@@ -792,7 +792,7 @@ describe("POST /api/w/:wId/assistant/agent_configurations - tools in spaces the 
     expect(response.status).toBe(400);
     const data = await response.json();
     expect(data.error.message).toContain(
-      `User does not have access to the following Dust apps: ${app.sId}`
+      `User does not have access to the following Ruby apps: ${app.sId}`
     );
   });
 
@@ -817,7 +817,7 @@ describe("POST /api/w/:wId/assistant/agent_configurations - tools in spaces the 
             ...BASE_ACTION,
             mcpServerViewId: podView.sId,
             name: "pod_tool",
-            dustProject: {
+            rubyProject: {
               projectId: restrictedPod.sId,
               workspaceId: workspace.sId,
             },
@@ -854,7 +854,7 @@ describe("POST /api/w/:wId/assistant/agent_configurations - tools in spaces the 
             ...BASE_ACTION,
             mcpServerViewId: podView.sId,
             name: "pod_tool",
-            dustProject: { projectId: malformedId, workspaceId: workspace.sId },
+            rubyProject: { projectId: malformedId, workspaceId: workspace.sId },
           },
         ],
       },
@@ -906,7 +906,7 @@ describe("POST /api/w/:wId/assistant/agent_configurations - tools in spaces the 
               ...BASE_ACTION,
               mcpServerViewId: podView.sId,
               name: "pod_tool",
-              dustProject: { projectId: aliasedId, workspaceId: workspace.sId },
+              rubyProject: { projectId: aliasedId, workspaceId: workspace.sId },
             },
           ],
         },

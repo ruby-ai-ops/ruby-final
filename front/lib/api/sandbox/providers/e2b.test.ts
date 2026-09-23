@@ -140,7 +140,7 @@ describe("E2BSandboxProvider", () => {
 
     const result = await provider.create(
       {
-        imageId: { imageName: "dust-base", tag: "0.8.30" },
+        imageId: { imageName: "ruby-base", tag: "0.8.30" },
         network: { mode: "deny_all" },
         resources: { vcpu: 2, memoryMb: 2048 },
       },
@@ -156,7 +156,7 @@ describe("E2BSandboxProvider", () => {
       `PATH='${SANDBOX_ROOT_SAFE_PATH}' HOME=/root`
     );
     expect(hardeningCommand).toContain("/bin/bash --noprofile --norc -c");
-    expect(hardeningCommand).toContain("zz-dust-root-safe-path.sh");
+    expect(hardeningCommand).toContain("zz-ruby-root-safe-path.sh");
     expect(mockCreateCommandRun).toHaveBeenCalledWith(
       expect.stringContaining(
         "usermod --lock --expiredate 1 --shell /usr/sbin/nologin user"
@@ -175,13 +175,13 @@ describe("E2BSandboxProvider", () => {
     expect(hardeningCommand).toContain("/usr/bin/systemd-analyze unit-paths");
     expect(hardeningCommand).toContain("systemd unit path must be absolute");
     expect(hardeningCommand).toContain(
-      "for path in /opt/bin/dsbx /usr/local/bin/dust-install-trust-bundle"
+      "for path in /opt/bin/rbx /usr/local/bin/ruby-install-trust-bundle"
     );
     expect(hardeningCommand).toContain(
       "/usr/bin/chown -R root:agent /home/agent"
     );
     expect(hardeningCommand).toContain("/usr/bin/chown -R root:root /opt/venv");
-    expect(hardeningCommand).toContain("/bin/chmod 644 /opt/dust/profile/*.sh");
+    expect(hardeningCommand).toContain("/bin/chmod 644 /opt/ruby/profile/*.sh");
     expect(hardeningCommand).toContain("privileged primary group");
     expect(mockKill).not.toHaveBeenCalled();
   });
@@ -394,7 +394,7 @@ describe("E2BSandboxProvider", () => {
 
     const result = await provider.create(
       {
-        imageId: { imageName: "dust-base", tag: "0.8.30" },
+        imageId: { imageName: "ruby-base", tag: "0.8.30" },
         network: { mode: "deny_all" },
         resources: { vcpu: 2, memoryMb: 2048 },
       },
@@ -427,7 +427,7 @@ describe("E2BSandboxProvider", () => {
 
     const result = await provider.create(
       {
-        imageId: { imageName: "dust-base", tag: "0.8.30" },
+        imageId: { imageName: "ruby-base", tag: "0.8.30" },
         network: { mode: "deny_all" },
         resources: { vcpu: 2, memoryMb: 2048 },
       },
@@ -454,7 +454,7 @@ describe("E2BSandboxProvider", () => {
       domain: undefined,
     });
     const stdin = '{"message":"hi"}';
-    const command = "/opt/bin/dsbx function run greet";
+    const command = "/opt/bin/rbx function run greet";
 
     const result = await provider.exec(
       "provider-id",
@@ -477,8 +477,8 @@ describe("E2BSandboxProvider", () => {
     expect(wrappedCommand).toContain(command);
     // The payload travels in the environment and is unexported before the command starts. What it
     // must never reach is argv, which is world-readable through /proc.
-    expect(wrappedCommand).toContain(`printf '%s' "$__dust_stdin"`);
-    expect(wrappedCommand).toContain("unset DUST_EXEC_STDIN");
+    expect(wrappedCommand).toContain(`printf '%s' "$__ruby_stdin"`);
+    expect(wrappedCommand).toContain("unset RUBY_EXEC_STDIN");
     expect(wrappedCommand).not.toContain(stdin);
     // `exec` keeps the pid envd started as the pid running the workload. Without it envd holds a
     // wrapper shell, and killing that on timeout leaves the workload running as a grandchild.
@@ -488,7 +488,7 @@ describe("E2BSandboxProvider", () => {
       wrappedCommand,
       expect.objectContaining({
         background: true,
-        envs: expect.objectContaining({ DUST_EXEC_STDIN: stdin }),
+        envs: expect.objectContaining({ RUBY_EXEC_STDIN: stdin }),
         timeoutMs: 5_000,
         user: "agent-proxied",
       })
@@ -510,7 +510,7 @@ describe("E2BSandboxProvider", () => {
 
     const result = await provider.exec(
       "provider-id",
-      "/opt/bin/dsbx function run big",
+      "/opt/bin/rbx function run big",
       { stdin, allowStdinInEnvironment: true, user: "agent-proxied" },
       { workspaceId: "workspace-id" }
     );
@@ -538,7 +538,7 @@ describe("E2BSandboxProvider", () => {
 
     const result = await provider.exec(
       "provider-id",
-      "/opt/bin/dsbx function run binary",
+      "/opt/bin/rbx function run binary",
       { stdin, allowStdinInEnvironment: true, user: "agent-proxied" },
       { workspaceId: "workspace-id" }
     );
@@ -571,7 +571,7 @@ describe("E2BSandboxProvider", () => {
 
     const result = await provider.exec(
       "provider-id",
-      "/opt/bin/dsbx function run big",
+      "/opt/bin/rbx function run big",
       {
         stdin: "x".repeat(64 * 1_024),
         allowStdinInEnvironment: true,
@@ -608,7 +608,7 @@ describe("E2BSandboxProvider", () => {
     const result = await provider.execRoot(
       "provider-id",
       rootCommand.unsafeShell(
-        "install -m 600 /dev/stdin /run/dust/egress-secrets.json",
+        "install -m 600 /dev/stdin /run/ruby/egress-secrets.json",
         "test legacy stdin root command"
       ),
       { stdin: "secret-json".repeat(8_192), timeoutMs: 5_000 },
@@ -649,7 +649,7 @@ describe("E2BSandboxProvider", () => {
 
     const result = await provider.exec(
       "provider-id",
-      "/opt/bin/dsbx function run new-function",
+      "/opt/bin/rbx function run new-function",
       { stdin: "request-json".repeat(8_192), user: "agent-proxied" },
       { workspaceId: "workspace-id" }
     );

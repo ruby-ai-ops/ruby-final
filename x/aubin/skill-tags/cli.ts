@@ -50,7 +50,7 @@ Options:
   --workspace ID           Workspace string ID (locates the default --out; required for API fetch)
   --from-embeddings FILE   Build the snapshot from a skill-embeddings embeddings.json
   --input FILE             Build the snapshot from a saved public skills API response
-  --dust-url URL           Dust origin for API fetch, default https://dust.tt
+  --ruby-url URL           Ruby origin for API fetch, default https://ruby.ad
   --status STATUS          active (default), archived, or suggested
   --include-unpublished   Include editor-only skills (admin API key)
   --model MODEL            Tagging model, default claude-opus-5
@@ -64,7 +64,7 @@ Options:
   --embeddings FILE        Semantic reference for evaluate; defaults to the snapshot source
   --help                   Show this help
 
-Credentials: ANTHROPIC_API_KEY for tagging, DUST_API_KEY for API fetch.
+Credentials: ANTHROPIC_API_KEY for tagging, RUBY_API_KEY for API fetch.
 `;
 
 type Options = {
@@ -72,7 +72,7 @@ type Options = {
   workspace: string | undefined;
   fromEmbeddings: string | undefined;
   input: string | undefined;
-  dustUrl: string;
+  rubyUrl: string;
   status: string;
   includeUnpublished: boolean;
   model: string;
@@ -135,11 +135,11 @@ async function snapshot(options: Options): Promise<{ snapshot: SkillsSnapshotTyp
         path: resolve(options.input),
       });
     } else {
-      const key = EnvironmentConfig.getOptionalEnvVariable("DUST_API_KEY");
+      const key = EnvironmentConfig.getOptionalEnvVariable("RUBY_API_KEY");
       if (!key) {
-        throw new Error("Set DUST_API_KEY to fetch workspace skills.");
+        throw new Error("Set RUBY_API_KEY to fetch workspace skills.");
       }
-      const origin = new URL(options.dustUrl).origin;
+      const origin = new URL(options.rubyUrl).origin;
       const payload: unknown = await fetchSkills(
         origin,
         workspace,
@@ -149,7 +149,7 @@ async function snapshot(options: Options): Promise<{ snapshot: SkillsSnapshotTyp
       );
       result = snapshotFromPayload(payload, workspace, {
         kind: "api",
-        dustUrl: origin,
+        rubyUrl: origin,
         status,
         includeUnpublished: options.includeUnpublished,
       });
@@ -391,7 +391,7 @@ async function main() {
       workspace: { type: "string" },
       "from-embeddings": { type: "string" },
       input: { type: "string" },
-      "dust-url": { type: "string", default: "https://dust.tt" },
+      "ruby-url": { type: "string", default: "https://ruby.ad" },
       status: { type: "string", default: "active" },
       "include-unpublished": { type: "boolean", default: false },
       model: { type: "string", default: "claude-opus-5" },
@@ -411,7 +411,7 @@ async function main() {
     workspace: values.workspace,
     fromEmbeddings: values["from-embeddings"],
     input: values.input,
-    dustUrl: values["dust-url"],
+    rubyUrl: values["ruby-url"],
     status: values.status,
     includeUnpublished: values["include-unpublished"],
     model: values.model,

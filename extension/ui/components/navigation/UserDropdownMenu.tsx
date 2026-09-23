@@ -1,4 +1,4 @@
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { WorkspacePickerRadioGroup } from "@app/components/WorkspacePicker";
 import {
   Avatar,
@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
   LogOut01,
   Sun,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useExtensionAuth } from "@extension/ui/components/auth/AuthProvider";
 import { useMemo } from "react";
 

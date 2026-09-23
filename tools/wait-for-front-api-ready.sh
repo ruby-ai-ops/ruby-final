@@ -2,7 +2,7 @@
 # Block until the Hono front-api health endpoint is ready.
 set -euo pipefail
 
-HEALTH_URL="${DUST_FRONT_API:-http://127.0.0.1:3000}/api/healthz"
+HEALTH_URL="${RUBY_FRONT_API:-http://127.0.0.1:3000}/api/healthz"
 
 echo "Waiting for front-api at ${HEALTH_URL}..."
 attempt=0

@@ -29,16 +29,16 @@ pub struct ExecutionWithTimestamp {
 pub type Credentials = HashMap<String, String>;
 
 /// Credential key `front` sets for workspaces on a BYOK plan.
-pub const BYOK_CREDENTIAL_KEY: &str = "DUST_BYOK";
+pub const BYOK_CREDENTIAL_KEY: &str = "RUBY_BYOK";
 
 /// @cc [owner:pmilliotte,label:security] byok-credentials-never-fall-back-to-env
 /// When `credentials` carries `BYOK_CREDENTIAL_KEY`, the returned value MUST come from
 /// `credentials`, and resolution MUST fail when the key is absent there: reading the process
-/// environment instead would run a BYOK workspace's inference on Dust's own provider account.
+/// environment instead would run a BYOK workspace's inference on Ruby's own provider account.
 ///
 /// A request carrying that key MUST therefore never obtain a provider credential from the
 /// environment. A provider satisfies this either by resolving through this helper, or by rejecting
-/// the request up front when its whole backend runs on Dust's identity -- as
+/// the request up front when its whole backend runs on Ruby's identity -- as
 /// `VertexAnthropicBackend::initialize` and the embedders do before reading their environment
 /// fallback. Reading `std::env::var` for a credential outside one of those two shapes violates it.
 pub async fn credential_or_env(credentials: &Credentials, key: &str) -> Result<String> {
@@ -48,7 +48,7 @@ pub async fn credential_or_env(credentials: &Credentials, key: &str) -> Result<S
 
     if credentials.contains_key(BYOK_CREDENTIAL_KEY) {
         return Err(anyhow!(
-            "Credential `{}` is not set; a BYOK workspace cannot fall back on Dust-managed \
+            "Credential `{}` is not set; a BYOK workspace cannot fall back on Ruby-managed \
              credentials.",
             key
         ));
@@ -371,7 +371,7 @@ mod tests {
 
     #[tokio::test]
     async fn byok_never_falls_back_to_env() {
-        std::env::set_var("TEST_CREDENTIAL_BYOK", "dust-managed-key");
+        std::env::set_var("TEST_CREDENTIAL_BYOK", "ruby-managed-key");
 
         let error = match credential_or_env(&byok_credentials(), "TEST_CREDENTIAL_BYOK").await {
             Ok(value) => panic!("Expected a refusal, resolved `{value}` instead"),
@@ -379,14 +379,14 @@ mod tests {
         };
 
         assert!(
-            error.contains("cannot fall back on Dust-managed"),
+            error.contains("cannot fall back on Ruby-managed"),
             "{error}"
         );
     }
 
     #[tokio::test]
     async fn byok_uses_its_own_credential() -> Result<()> {
-        std::env::set_var("TEST_CREDENTIAL_BYOK_OWN", "dust-managed-key");
+        std::env::set_var("TEST_CREDENTIAL_BYOK_OWN", "ruby-managed-key");
         let mut credentials = byok_credentials();
         credentials.insert(
             "TEST_CREDENTIAL_BYOK_OWN".to_string(),

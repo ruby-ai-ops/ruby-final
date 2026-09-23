@@ -57,7 +57,7 @@ export function getFrameDatabaseReplicasBasePath(args: {
  *
  * Its `state/databases/` sibling is mounted as its own gcsfuse target, and the two must never be
  * collapsed into one `state/` mount: a mount carries a single uid and mode for its whole tree,
- * and these two need opposite ones. The replica is mounted as `dust-state` with no `allow_other`
+ * and these two need opposite ones. The replica is mounted as `ruby-state` with no `allow_other`
  * so no other uid can see it, while this folder must be workload-readable and writable.
  */
 export function getFramePersistentFilesBasePath(args: {

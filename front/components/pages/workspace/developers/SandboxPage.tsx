@@ -8,7 +8,7 @@ import { SandboxScopeSelector } from "@app/components/sandbox/SandboxScopeSelect
 import { useComputerAdminAccess } from "@app/hooks/useComputerAdminAccess";
 import { useWorkspace } from "@app/lib/auth/AuthContext";
 import { useEgressPolicyPods } from "@app/lib/swr/sandbox";
-import { ContentMessage, InfoCircle, Page } from "@dust-tt/sparkle";
+import { ContentMessage, InfoCircle, Page } from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
 export function SandboxPage() {

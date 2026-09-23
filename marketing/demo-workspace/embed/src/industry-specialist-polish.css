@@ -1,0 +1,879 @@
+/* Load after the original widget styles. The ScenarioArtifact opt-in and
+   explicit widget roots keep these adjustments out of the earlier industries. */
+.industry-widget-polish
+  :is(
+    .loom-campaign-studio:not(.industry-record-widget),
+    .loom-social-planner:not(.industry-record-widget),
+    .loom-launch-room:not(.industry-record-widget),
+    .cartly-campaigns:not(.industry-record-widget),
+    .kl-atlas:not(.industry-record-widget),
+    .kl-quotes:not(.industry-record-widget)
+  ) {
+  --rw-bg: var(--artifact-surface);
+  --rw-raised: var(--artifact-muted-soft);
+  --rw-line: var(--artifact-line);
+  --rw-text: var(--artifact-text);
+  --rw-muted: var(--artifact-muted);
+  --rw-good: var(--artifact-positive);
+  --rw-risk: var(--artifact-danger);
+  min-width: 0;
+  border-radius: 10px;
+  box-shadow: none;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.industry-widget-polish
+  :is(
+    .loom-campaign-studio:not(.industry-record-widget),
+    .loom-social-planner:not(.industry-record-widget),
+    .loom-launch-room:not(.industry-record-widget),
+    .cartly-campaigns:not(.industry-record-widget),
+    .kl-atlas:not(.industry-record-widget),
+    .kl-quotes:not(.industry-record-widget)
+  )
+  :is(.batch-widget-header, .rw-heading, .cartly-heading) {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  padding: 18px;
+}
+
+.industry-widget-polish
+  :is(
+    .loom-campaign-studio:not(.industry-record-widget),
+    .loom-social-planner:not(.industry-record-widget),
+    .loom-launch-room:not(.industry-record-widget),
+    .cartly-campaigns:not(.industry-record-widget),
+    .kl-atlas:not(.industry-record-widget),
+    .kl-quotes:not(.industry-record-widget)
+  )
+  :is(.batch-widget-header > strong, .rw-heading h3, .cartly-heading h3) {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  overflow-wrap: anywhere;
+}
+
+.industry-widget-polish
+  :is(
+    .loom-campaign-studio:not(.industry-record-widget),
+    .loom-social-planner:not(.industry-record-widget)
+  )
+  .batch-widget-header
+  > strong {
+  flex: 1 1 240px;
+}
+
+.industry-widget-polish
+  :is(
+    .loom-campaign-studio:not(.industry-record-widget),
+    .loom-social-planner:not(.industry-record-widget)
+  )
+  .batch-widget-header
+  > span {
+  padding-top: 3px;
+  font-size: 11px;
+}
+
+.industry-widget-polish
+  :is(
+    .loom-launch-room:not(.industry-record-widget),
+    .kl-atlas:not(.industry-record-widget),
+    .kl-quotes:not(.industry-record-widget)
+  )
+  .rw-heading
+  > span:first-child {
+  flex: 1 1 auto;
+}
+
+.industry-widget-polish
+  :is(
+    .loom-launch-room:not(.industry-record-widget),
+    .kl-atlas:not(.industry-record-widget),
+    .kl-quotes:not(.industry-record-widget)
+  )
+  .rw-badge {
+  width: fit-content;
+  max-width: 100%;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+/* Campaign imagery stays visible above a solid, readable caption. */
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-studio-layout {
+  grid-template-columns: minmax(0, 1.6fr) minmax(155px, 0.8fr);
+  align-items: start;
+  gap: 20px;
+  padding: 18px;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-preview {
+  min-height: 0;
+  border: 1px solid var(--artifact-line);
+  border-radius: 8px;
+  background: var(--artifact-surface);
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-preview
+  > .rw-photo {
+  margin: 0;
+  border-radius: 0;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-preview
+  > .rw-photo
+  img {
+  display: block;
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-preview
+  > div {
+  position: static;
+  gap: 6px;
+  padding: 16px;
+  border-top: 1px solid var(--artifact-line);
+  background: var(--artifact-surface);
+  color: var(--artifact-text);
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-preview
+  :is(small, span) {
+  color: var(--artifact-muted);
+  font-size: 11px;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-preview
+  strong {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-preview
+  b {
+  color: var(--artifact-positive);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-preview
+  button {
+  min-height: 36px;
+  margin-top: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--artifact-line);
+  background: var(--artifact-muted-soft);
+  color: var(--artifact-text);
+  font-size: 12px;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-studio-layout
+  aside {
+  min-width: 0;
+  gap: 18px;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-channel-tabs {
+  gap: 6px;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-channel-tabs
+  button {
+  min-height: 36px;
+  padding: 8px 10px;
+  font-size: 12px;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-studio-layout
+  dl {
+  gap: 0;
+}
+
+.industry-widget-polish
+  .loom-campaign-studio:not(.industry-record-widget)
+  .campaign-studio-layout
+  dl
+  div {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--artifact-line);
+  border-radius: 0;
+  background: transparent;
+  font-size: 12px;
+}
+
+/* These calendar entries have no thumbnails; give the text the full column. */
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-layout {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding: 18px;
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-calendar {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-calendar
+  > div {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-calendar
+  > div
+  > strong {
+  margin-bottom: 8px;
+  color: var(--artifact-muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-calendar
+  button {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 122px;
+  margin: 0;
+  padding: 12px;
+  line-height: 1.5;
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-calendar
+  button
+  span {
+  align-content: start;
+  gap: 6px;
+  overflow-wrap: anywhere;
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-calendar
+  :is(small, em) {
+  font-size: 11px;
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-calendar
+  b {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-preview {
+  grid-row: auto;
+  gap: 7px;
+  padding: 16px;
+  border: 1px solid var(--artifact-line);
+  border-radius: 8px;
+  background: var(--artifact-muted-soft);
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-preview
+  :is(small, span) {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-preview
+  strong {
+  font-size: 15px;
+}
+
+.industry-widget-polish
+  .loom-social-planner:not(.industry-record-widget)
+  .social-preview
+  > button {
+  justify-self: start;
+  min-height: 36px;
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+.industry-widget-polish
+  :is(
+    .loom-campaign-studio:not(.industry-record-widget),
+    .loom-social-planner:not(.industry-record-widget),
+    .loom-launch-room:not(.industry-record-widget)
+  )
+  button:focus-visible {
+  outline: 2px solid var(--artifact-accent);
+  outline-offset: 2px;
+}
+
+/* Opening readiness reads as an aligned checklist, including long statuses. */
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-countdown {
+  gap: 3px;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-countdown
+  strong {
+  color: var(--artifact-text);
+  font-size: 13px;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-countdown
+  small {
+  font-size: 11px;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-summary {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  padding: 18px;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-summary
+  > span {
+  gap: 10px;
+  padding: 0;
+  background: transparent;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-summary
+  small {
+  font-size: 12px;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-summary
+  strong {
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-summary
+  > button {
+  min-height: 36px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-items {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  padding: 0 18px 18px;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-items
+  article {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) minmax(90px, 0.45fr);
+  gap: 12px;
+  padding: 14px 0;
+  border: 0;
+  border-top: 1px solid var(--artifact-line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-items
+  article
+  > .rw-badge {
+  justify-self: end;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-items
+  strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .launch-items
+  small {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.industry-widget-polish
+  .loom-launch-room:not(.industry-record-widget)
+  .rw-source {
+  margin: 0;
+  color: var(--artifact-muted);
+  font-size: 11px;
+}
+
+/* Four homepage metrics share a row; text values use a quieter type scale. */
+.industry-widget-polish
+  .cartly-campaigns:not(.industry-record-widget)
+  .cartly-heading
+  > div {
+  flex: 1 1 auto;
+}
+
+.industry-widget-polish
+  .cartly-campaigns:not(.industry-record-widget)
+  .campaign-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.industry-widget-polish
+  .cartly-campaigns:not(.industry-record-widget)
+  .cartly-stat {
+  gap: 6px;
+  padding: 16px;
+}
+
+.industry-widget-polish
+  .cartly-campaigns:not(.industry-record-widget)
+  .cartly-stat
+  > strong {
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+.industry-widget-polish
+  .cartly-campaigns:not(.industry-record-widget)
+  .cartly-stat:nth-child(n + 3)
+  > strong {
+  font-size: 16px;
+  line-height: 1.95;
+  letter-spacing: -0.01em;
+}
+
+.industry-widget-polish
+  .cartly-campaigns:not(.industry-record-widget)
+  .cartly-table
+  :is(th, td) {
+  padding: 14px 18px;
+  font-size: 13px;
+  line-height: 1.5;
+  vertical-align: top;
+}
+
+.industry-widget-polish
+  .cartly-campaigns:not(.industry-record-widget)
+  .cartly-table
+  thead
+  th {
+  font-size: 11px;
+}
+
+.industry-widget-polish
+  .cartly-campaigns:not(.industry-record-widget)
+  .cartly-table
+  th:first-child {
+  width: 29%;
+}
+
+.industry-widget-polish
+  .cartly-campaigns:not(.industry-record-widget)
+  .cartly-table
+  th:last-child {
+  width: 26%;
+}
+
+.industry-widget-polish
+  .cartly-campaigns:not(.industry-record-widget)
+  .cartly-footnote {
+  border-top: 0;
+  line-height: 1.6;
+}
+
+/* Listing cards retain their photos and selection controls. Textual statuses
+   occupy a full-width opaque label over the inherited inline occupancy ring. */
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-building-cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 12px;
+  padding: 18px;
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-building-cards
+  button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  align-content: start;
+  padding: 0;
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-building-cards
+  .rw-photo {
+  height: 132px;
+  max-height: none;
+  margin: 0;
+  border-bottom: 1px solid var(--rw-line);
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-building-cards
+  button
+  > div {
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 8px;
+  padding: 14px;
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-building-cards
+  strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-occupancy-ring {
+  display: flex;
+  grid-column: auto;
+  grid-row: auto;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-occupancy-ring
+  b {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 6px 0;
+  border-block: 1px solid var(--rw-line);
+  border-radius: 0;
+  background: var(--rw-bg);
+  color: var(--rw-muted);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-building-cards
+  small {
+  grid-column: auto;
+  font-size: 12px;
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .rw-metric
+  > strong {
+  font-size: 22px;
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-building-issues {
+  gap: 14px;
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-building-issues
+  > div {
+  grid-template-columns: minmax(100px, 0.4fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 6px 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rw-line);
+}
+
+.industry-widget-polish
+  .kl-atlas:not(.industry-record-widget)
+  .kl-building-issues
+  > div
+  > strong {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Give the slider a complete row and separate its value from the explanation. */
+.industry-widget-polish
+  .kl-quotes:not(.industry-record-widget)
+  .kl-quote-assumption {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  padding: 20px 18px;
+}
+
+.industry-widget-polish
+  .kl-quotes:not(.industry-record-widget)
+  .kl-quote-assumption
+  label {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 10px 16px;
+}
+
+.industry-widget-polish
+  .kl-quotes:not(.industry-record-widget)
+  .kl-quote-assumption
+  label
+  strong {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+
+.industry-widget-polish
+  .kl-quotes:not(.industry-record-widget)
+  .kl-quote-assumption
+  input[type="range"] {
+  min-height: 28px;
+  margin: 0;
+}
+
+.industry-widget-polish
+  .kl-quotes:not(.industry-record-widget)
+  table
+  :is(th, td) {
+  padding: 13px 18px;
+  font-size: 13px;
+  vertical-align: top;
+}
+
+.industry-widget-polish .kl-quotes:not(.industry-record-widget) table thead th {
+  font-size: 11px;
+}
+
+.industry-widget-polish
+  .kl-quotes:not(.industry-record-widget)
+  table
+  th:first-child {
+  width: 26%;
+}
+
+.industry-widget-polish
+  .kl-quotes:not(.industry-record-widget)
+  .kl-quote-recommendation {
+  gap: 6px;
+  background: var(--rw-raised);
+}
+
+.industry-widget-polish
+  .kl-quotes:not(.industry-record-widget)
+  .kl-quote-recommendation
+  p {
+  color: var(--rw-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@container (max-width: 600px) {
+  .industry-widget-polish
+    .loom-campaign-studio:not(.industry-record-widget)
+    .campaign-studio-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .industry-widget-polish
+    .loom-campaign-studio:not(.industry-record-widget)
+    .campaign-channel-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .industry-widget-polish
+    .loom-launch-room:not(.industry-record-widget)
+    .launch-countdown {
+    text-align: left;
+  }
+
+  .industry-widget-polish
+    .cartly-campaigns:not(.industry-record-widget)
+    .campaign-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .industry-widget-polish
+    .kl-atlas:not(.industry-record-widget)
+    .kl-building-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .industry-widget-polish
+    .kl-atlas:not(.industry-record-widget)
+    .kl-building-cards
+    button {
+    grid-template-columns: 120px minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .industry-widget-polish
+    .kl-atlas:not(.industry-record-widget)
+    .kl-building-cards
+    .rw-photo {
+    height: 100%;
+    border-right: 1px solid var(--rw-line);
+    border-bottom: 0;
+  }
+
+  .industry-widget-polish
+    .kl-atlas:not(.industry-record-widget)
+    .kl-building-cards
+    .rw-photo
+    img {
+    height: 100%;
+  }
+}
+
+@container (max-width: 420px) {
+  .industry-widget-polish
+    .kl-quotes:not(.industry-record-widget)
+    table
+    :is(th, td) {
+    padding: 12px 10px;
+    font-size: 12px;
+  }
+
+  .industry-widget-polish
+    .kl-quotes:not(.industry-record-widget)
+    table
+    th:first-child {
+    width: 34%;
+  }
+
+  .industry-widget-polish
+    .loom-social-planner:not(.industry-record-widget)
+    .social-calendar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .industry-widget-polish
+    .loom-social-planner:not(.industry-record-widget)
+    .social-calendar
+    button {
+    min-height: 0;
+  }
+
+  .industry-widget-polish
+    .loom-launch-room:not(.industry-record-widget)
+    .launch-summary {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .industry-widget-polish
+    .loom-launch-room:not(.industry-record-widget)
+    .launch-summary
+    > button {
+    justify-self: start;
+  }
+
+  .industry-widget-polish
+    .loom-launch-room:not(.industry-record-widget)
+    .launch-items
+    article {
+    grid-template-columns: 18px minmax(0, 1fr);
+  }
+
+  .industry-widget-polish
+    .loom-launch-room:not(.industry-record-widget)
+    .launch-items
+    article
+    > .rw-badge {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .industry-widget-polish
+    .kl-atlas:not(.industry-record-widget)
+    .kl-building-issues
+    > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .industry-widget-polish
+    .kl-atlas:not(.industry-record-widget)
+    .kl-building-issues
+    > div
+    > span:last-child {
+    grid-column: 1;
+  }
+}

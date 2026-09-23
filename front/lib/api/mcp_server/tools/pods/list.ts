@@ -1,5 +1,5 @@
 import config from "@app/lib/api/config";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { listPodsForScope } from "@app/lib/api/projects/list";
 import { getPodRoute } from "@app/lib/utils/router";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -38,7 +38,7 @@ const inputSchema = {
 };
 
 export function registerPodsListTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "list_pods",
     {

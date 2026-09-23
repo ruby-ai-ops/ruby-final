@@ -507,7 +507,7 @@ describe("renderAllMessages", () => {
                 content: [
                   {
                     type: "text",
-                    text: "<dust_system>Enabled skill instructions</dust_system>",
+                    text: "<ruby_system>Enabled skill instructions</ruby_system>",
                   },
                 ],
               },
@@ -542,7 +542,7 @@ describe("renderAllMessages", () => {
     }
     expect(enabledSkillMessage.content[0]).toEqual({
       type: "text",
-      text: "<dust_system>Enabled skill instructions</dust_system>",
+      text: "<ruby_system>Enabled skill instructions</ruby_system>",
     });
   });
 });

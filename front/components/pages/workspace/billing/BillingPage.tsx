@@ -20,7 +20,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect } from "react";
 
 export function BillingPage() {

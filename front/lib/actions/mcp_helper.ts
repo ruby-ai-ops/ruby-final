@@ -45,7 +45,7 @@ import type {
  * Since SDK 1.22, `Client.listTools()` pre-compiles AJV validators for each tool's
  * `outputSchema`. Some remote servers (e.g. Google Stitch) declare `$ref`s in
  * `outputSchema` without in-document `$defs`, which makes `listTools()` throw even
- * though the RPC response is valid. Dust only consumes `inputSchema` from
+ * though the RPC response is valid. Ruby only consumes `inputSchema` from
  * `tools/list` and does not validate structured tool output, so we skip
  * output-schema compilation entirely (same intent as MCP Inspector's try/catch
  * around `ajv.compile`).
@@ -217,8 +217,8 @@ export function getMcpServerDisplayName(
   if (res.isOk()) {
     const isCustomName = action?.name && action.name !== server.name;
 
-    // If there is a custom name, add it to the display name (except run_dust_app, which is handled below).
-    if (isCustomName && res.value.name !== "run_dust_app") {
+    // If there is a custom name, add it to the display name (except run_ruby_app, which is handled below).
+    if (isCustomName && res.value.name !== "run_ruby_app") {
       displayName += " - " + asDisplayName(action.name);
     }
 
@@ -232,8 +232,8 @@ export function getMcpServerDisplayName(
     if (res.value.name === "notion") {
       displayName += " (old)";
     }
-    // Will append Dust App name.
-    if (res.value.name === "run_dust_app" && action) {
+    // Will append Ruby App name.
+    if (res.value.name === "run_ruby_app" && action) {
       displayName += " - " + action.name;
     }
   }

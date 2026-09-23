@@ -87,7 +87,7 @@ import {
 } from "@connectors/types";
 import { redisClient } from "@connectors/types/shared/redis_client";
 import { sha256 } from "@connectors/types/shared/utils/hashing";
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 import { Storage } from "@google-cloud/storage";
 import {
   APIResponseError,
@@ -2538,7 +2538,7 @@ export async function renderAndUpsertPageFromCache({
               pageCacheEntry.pagePropertiesText
             ) as PageObjectProperties,
           ],
-          dustIdColumn: [pageId],
+          rubyIdColumn: [pageId],
           cellSeparator: ",",
           rowBoundary: "",
         });
@@ -3070,7 +3070,7 @@ export async function upsertDatabaseStructuredDataFromCache({
   }
 
   let pagesProperties: PageObjectProperties[] = [];
-  let dustIdColumn: string[] = [];
+  let rubyIdColumn: string[] = [];
 
   // Loop by chunks of 250 and use raw data to avoid memory issues
   const chunkSize = 250;
@@ -3107,7 +3107,7 @@ export async function upsertDatabaseStructuredDataFromCache({
       pageCacheEntries.map((p) => JSON.parse(p.pagePropertiesText))
     );
 
-    dustIdColumn = dustIdColumn.concat(
+    rubyIdColumn = rubyIdColumn.concat(
       pageCacheEntries.map((p) => p.notionPageId)
     );
   }
@@ -3115,7 +3115,7 @@ export async function upsertDatabaseStructuredDataFromCache({
   const { csv } = await renderDatabaseFromPages({
     databaseTitle: null,
     pagesProperties,
-    dustIdColumn,
+    rubyIdColumn,
     cellSeparator: ",",
     rowBoundary: "",
   });
@@ -3162,7 +3162,7 @@ export async function upsertDatabaseStructuredDataFromCache({
     })
   );
 
-  // Same as above, but without the `dustId` column
+  // Same as above, but without the `rubyId` column
   const { csv: csvForDocument, originalHeader: headerForDocument } =
     await renderDatabaseFromPages({
       databaseTitle: null,
@@ -3665,17 +3665,17 @@ export async function getResourcesFromGCSFile({
       ? connectorsConfig.getServiceAccount()
       : undefined,
   });
-  const bucket = storage.bucket(connectorsConfig.getDustTmpSyncBucketName());
+  const bucket = storage.bucket(connectorsConfig.getRubyTmpSyncBucketName());
 
   try {
     // Validate file metadata for security
     const file = bucket.file(gcsFilePath);
     const [metadata] = await file.getMetadata();
 
-    // Check if this is a Dust internal file
-    if (metadata.metadata?.dustInternal !== "notion-accessibility-check") {
+    // Check if this is a Ruby internal file
+    if (metadata.metadata?.rubyInternal !== "notion-accessibility-check") {
       throw new Error(
-        "Invalid file: not a Dust internal accessibility check file"
+        "Invalid file: not a Ruby internal accessibility check file"
       );
     }
 

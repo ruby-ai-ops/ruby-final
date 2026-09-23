@@ -19,7 +19,7 @@ import { isString } from "@marketing/types/shared/utils/general";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import type { ReactElement } from "react";
 
-const INDUSTRY_PAGE_MAP = {
+const INRUBYRY_PAGE_MAP = {
   "b2b-saas": {
     config: b2bSaasConfig,
     trackingPrefix: "b2b",
@@ -65,10 +65,10 @@ const INDUSTRY_PAGE_MAP = {
   { config: IndustryPageConfig; trackingPrefix: string }
 >;
 
-type IndustryKey = keyof typeof INDUSTRY_PAGE_MAP;
+type IndustryKey = keyof typeof INRUBYRY_PAGE_MAP;
 
 function isIndustryKey(value: string): value is IndustryKey {
-  return value in INDUSTRY_PAGE_MAP;
+  return value in INRUBYRY_PAGE_MAP;
 }
 
 interface IndustryDynamicPageProps {
@@ -109,12 +109,11 @@ export const getStaticProps: GetStaticProps<IndustryDynamicPageProps> = async ({
   };
 };
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function IndustryDynamicPage({
+export default function IndustryDynamicPageNextJS({
   customerStories,
   industryKey,
 }: IndustryDynamicPageProps) {
-  const { config: baseConfig, trackingPrefix } = INDUSTRY_PAGE_MAP[industryKey];
+  const { config: baseConfig, trackingPrefix } = INRUBYRY_PAGE_MAP[industryKey];
 
   const config: IndustryPageConfig = {
     ...baseConfig,
@@ -124,7 +123,7 @@ export default function IndustryDynamicPage({
   return <IndustryTemplate config={config} trackingPrefix={trackingPrefix} />;
 }
 
-IndustryDynamicPage.getLayout = (
+IndustryDynamicPageNextJS.getLayout = (
   page: ReactElement,
   pageProps: LandingLayoutProps
 ) => {

@@ -118,7 +118,7 @@ FileModel.init(
         where: { mountFilePath: { [Op.ne]: null } },
       },
       {
-        // Poke's workspace Frames list orders by updatedAt within a workspace. Partial so the
+        // Admin's workspace Frames list orders by updatedAt within a workspace. Partial so the
         // index stays small: Frames are a tiny fraction of the files table. Plain ascending —
         // Postgres scans a btree backwards at the same cost, so this serves ORDER BY DESC.
         name: "files_workspace_id_frame_v2_updated_at",

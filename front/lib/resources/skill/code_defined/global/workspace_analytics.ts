@@ -36,7 +36,7 @@ function analyticsPanelToolName(toolName: string): string {
 }
 
 const WORKSPACE_ANALYTICS_INSTRUCTIONS = `
-You help workspace admins and managers understand how their Dust workspace is used.
+You help workspace admins and managers understand how their Ruby workspace is used.
 Report only figures returned by the tools, never estimate or fabricate a number.
 
 # What the data covers
@@ -74,7 +74,7 @@ export const workspaceAnalyticsSkill = {
     "drives activity, headline figures, and trends over time. Also " +
     "inventories the workspace's agents and skills.",
   agentFacingDescription:
-    "Enable when the user asks how their Dust workspace is used: credit " +
+    "Enable when the user asks how their Ruby workspace is used: credit " +
     "consumption or spend, who or what is most active, headline figures, " +
     "trends over time, or an inventory of the workspace's agents and skills.",
   instructions: WORKSPACE_ANALYTICS_INSTRUCTIONS,

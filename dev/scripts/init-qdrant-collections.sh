@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Idempotent local Qdrant collection bootstrap (mirrors dust-hive initQdrant).
+# Idempotent local Qdrant collection bootstrap (mirrors ruby-hive initQdrant).
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=init-qdrant
+RUBY_DEV_SCRIPT_NAME=init-qdrant
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh
@@ -35,7 +35,7 @@ collection_exists() {
 ensure_collection() {
   local provider="$1"
   local model="$2"
-  # DustQdrantClient::collection_prefix() is hardcoded to "c" in core.
+  # RubyQdrantClient::collection_prefix() is hardcoded to "c" in core.
   local name="c_${provider}_${model}"
   local output_file status
 
@@ -52,7 +52,7 @@ ensure_collection() {
   # --skip-confirmation flag like elasticsearch_create_index does.
   status=0
   (
-    cd "${DUST_REPO_ROOT}/core"
+    cd "${RUBY_REPO_ROOT}/core"
     set -o pipefail
     printf 'y\n' | "$(qdrant_create_collection_bin)" \
       --cluster cluster-0 \
@@ -73,7 +73,7 @@ ensure_collection() {
 
 wait_for_qdrant
 
-# Keep in sync with x/henry/dust-hive/src/lib/init.ts (initQdrant).
+# Keep in sync with x/henry/ruby-hive/src/lib/init.ts (initQdrant).
 ensure_collection openai text-embedding-3-large-1536
 
 log "Qdrant collections ready"

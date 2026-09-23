@@ -35,8 +35,8 @@ import { importCode, Runner } from "react-runner";
 const PDF_MODE_READY_DELAY_MS = 5000;
 
 const FRAME_MIME_TYPES = new Set([
-  "application/vnd.dust.frame",
-  "application/vnd.dust.frame.slideshow",
+  "application/vnd.ruby.frame",
+  "application/vnd.ruby.frame.slideshow",
 ]);
 
 /**
@@ -539,11 +539,11 @@ export function VisualizationWrapper({
         });
 
         setRunnerParams({
-          code: "() => {import Comp from '@dust/generated-code'; return (<Comp />);}",
+          code: "() => {import Comp from '@ruby-ai/generated-code'; return (<Comp />);}",
           scope: {
             import: {
               ...baseImports,
-              "@dust/generated-code": generatedModule,
+              "@ruby-ai/generated-code": generatedModule,
             },
           },
         });
@@ -697,12 +697,12 @@ export function VisualizationWrapper({
 
 /**
  * Check if an origin matches any of the allowed origins.
- * Supports wildcard patterns like "*.preview.dust.tt" which match any subdomain.
+ * Supports wildcard patterns like "*.preview.ruby.ad" which match any subdomain.
  */
 function isOriginAllowed(origin: string, allowedOrigins: string[]): boolean {
   return allowedOrigins.some((allowed) => {
     if (allowed.startsWith("https://*.")) {
-      const suffix = allowed.slice("https://*".length); // e.g. ".preview.dust.tt"
+      const suffix = allowed.slice("https://*".length); // e.g. ".preview.ruby.ad"
       return origin.startsWith("https://") && origin.endsWith(suffix);
     }
     // Firefox Internal UUID is not stable, so we allow all moz-extension:// origins.

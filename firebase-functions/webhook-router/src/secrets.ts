@@ -39,20 +39,20 @@ export class SecretManager {
 
   private async loadSecrets(): Promise<Secrets> {
     // Try local development environment variables first.
-    if (CONFIG.DUST_CONNECTORS_WEBHOOKS_SECRET) {
+    if (CONFIG.RUBY_CONNECTORS_WEBHOOKS_SECRET) {
       log("Using secrets from environment variables", {
         component: "secrets",
         source: "environment",
       });
       return {
-        cell00002Secret: CONFIG.DUST_CONNECTORS_WEBHOOKS_SECRET,
-        euSecret: CONFIG.DUST_CONNECTORS_WEBHOOKS_SECRET,
+        cell00002Secret: CONFIG.RUBY_CONNECTORS_WEBHOOKS_SECRET,
+        euSecret: CONFIG.RUBY_CONNECTORS_WEBHOOKS_SECRET,
         microsoftBotId: CONFIG.MICROSOFT_BOT_ID_SECRET,
         slackSigningSecret: CONFIG.SLACK_SIGNING_SECRET ?? "",
         notionSigningSecret: CONFIG.NOTION_SIGNING_SECRET ?? "",
         shopifyClientSecret: CONFIG.OAUTH_SHOPIFY_CLIENT_SECRET ?? "",
-        usSecret: CONFIG.DUST_CONNECTORS_WEBHOOKS_SECRET,
-        webhookSecret: CONFIG.DUST_CONNECTORS_WEBHOOKS_SECRET,
+        usSecret: CONFIG.RUBY_CONNECTORS_WEBHOOKS_SECRET,
+        webhookSecret: CONFIG.RUBY_CONNECTORS_WEBHOOKS_SECRET,
       };
     }
 

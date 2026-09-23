@@ -2,14 +2,14 @@
 # Start the local Temporal dev server if needed and wait until gRPC port 7233 is open.
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=ensure-temporal
+RUBY_DEV_SCRIPT_NAME=ensure-temporal
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh
 source "$(dirname "$0")/env.sh"
 
 # Always probe/start the in-container dev server — never a cloud TEMPORAL_ADDRESS from 1Password.
-LOCAL_TEMPORAL_ADDRESS="${DUST_LOCAL_TEMPORAL_ADDRESS:-127.0.0.1:7233}"
+LOCAL_TEMPORAL_ADDRESS="${RUBY_LOCAL_TEMPORAL_ADDRESS:-127.0.0.1:7233}"
 TEMPORAL_HOST="${LOCAL_TEMPORAL_ADDRESS}"
 TEMPORAL_HOST_ONLY="${TEMPORAL_HOST%%:*}"
 TEMPORAL_PORT="${TEMPORAL_HOST##*:}"
@@ -25,13 +25,13 @@ temporal_port_open() {
 }
 
 start_temporal_dev_server() {
-  mkdir -p "$(dirname "$DUST_TEMPORAL_DB_FILE")" "${DUST_INFRA_LOG_DIR}"
+  mkdir -p "$(dirname "$RUBY_TEMPORAL_DB_FILE")" "${RUBY_INFRA_LOG_DIR}"
   log "Starting Temporal dev server on ${LOCAL_TEMPORAL_ADDRESS} (${TEMPORAL_BIN})..."
   nohup "$TEMPORAL_BIN" server start-dev \
     --ip 0.0.0.0 \
     --port "${TEMPORAL_PORT}" \
-    --db-filename "$DUST_TEMPORAL_DB_FILE" \
-    >>"${DUST_INFRA_LOG_DIR}/temporal.log" 2>&1 &
+    --db-filename "$RUBY_TEMPORAL_DB_FILE" \
+    >>"${RUBY_INFRA_LOG_DIR}/temporal.log" 2>&1 &
 }
 
 wait_for_temporal() {
@@ -42,8 +42,8 @@ wait_for_temporal() {
     attempt=$((attempt + 1))
     if [ "$attempt" -gt "$max_attempts" ]; then
       log "Temporal did not become ready on ${LOCAL_TEMPORAL_ADDRESS}"
-      if [ -f "${DUST_INFRA_LOG_DIR}/temporal.log" ]; then
-        tail -40 "${DUST_INFRA_LOG_DIR}/temporal.log"
+      if [ -f "${RUBY_INFRA_LOG_DIR}/temporal.log" ]; then
+        tail -40 "${RUBY_INFRA_LOG_DIR}/temporal.log"
       fi
       return 1
     fi

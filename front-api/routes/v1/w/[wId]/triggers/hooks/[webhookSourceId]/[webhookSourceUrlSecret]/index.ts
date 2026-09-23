@@ -10,7 +10,7 @@ import {
 } from "@app/lib/triggers/webhook";
 import { statsDMetrics } from "@app/lib/utils/statsd";
 import { isString } from "@app/types/shared/utils/general";
-import type { PostWebhookTriggerResponseType } from "@dust-tt/client";
+import type { PostWebhookTriggerResponseType } from "@ruby-ai/client";
 import { createHono } from "@front-api/lib/hono";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";

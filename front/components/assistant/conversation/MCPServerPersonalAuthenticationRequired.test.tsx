@@ -71,7 +71,7 @@ vi.mock("@app/types/oauth/lib", () => ({
   getOverridablePersonalAuthInputs: () => null,
 }));
 
-vi.mock("@dust-tt/sparkle", () => ({
+vi.mock("@ruby-ai/ui", () => ({
   Avatar: () => null,
   Card: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
   Button: ({
@@ -167,7 +167,7 @@ describe("MCPServerPersonalAuthenticationRequired", () => {
     renderCard();
 
     expect(
-      screen.getByText("Dust needs access to GitHub to complete this action.")
+      screen.getByText("Ruby needs access to GitHub to complete this action.")
     ).toBeDefined();
     expect(
       screen.getByText(

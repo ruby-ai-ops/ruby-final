@@ -8,7 +8,7 @@ import {
   Input,
   Label,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 type Header = { key: string; value: string };
 

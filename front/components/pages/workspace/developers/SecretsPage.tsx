@@ -3,9 +3,9 @@ import { useSendNotification } from "@app/hooks/useNotification";
 import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
 import { useSubmitFunction } from "@app/lib/client/utils";
 import { clientFetch } from "@app/lib/egress/client";
-import { useDustAppSecrets } from "@app/lib/swr/apps";
-import type { DustAppSecretType } from "@app/types/dust_app_secret";
-import type { DataTableSkeletonCellProps } from "@dust-tt/sparkle";
+import { useRubyAppSecrets } from "@app/lib/swr/apps";
+import type { RubyAppSecretType } from "@app/types/ruby_app_secret";
+import type { DataTableSkeletonCellProps } from "@ruby-ai/ui";
 import {
   BookOpen01,
   Button,
@@ -25,7 +25,7 @@ import {
   Plus,
   SearchInput,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
@@ -103,21 +103,21 @@ export function SecretsPage() {
 
   const { mutate } = useSWRConfig();
   const defaultSecret = { name: "", value: "" };
-  const [newDustAppSecret, setNewDustAppSecret] =
-    useState<DustAppSecretType>(defaultSecret);
+  const [newRubyAppSecret, setNewRubyAppSecret] =
+    useState<RubyAppSecretType>(defaultSecret);
   const [secretToRevoke, setSecretToRevoke] =
-    useState<DustAppSecretType | null>(null);
+    useState<RubyAppSecretType | null>(null);
   const [isNewSecretPromptOpen, setIsNewSecretPromptOpen] = useState(false);
   const [isInputNameDisabled, setIsInputNameDisabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const sendNotification = useSendNotification();
 
   const { secrets, isSecretsLoading, isSecretsError } =
-    useDustAppSecrets(owner);
+    useRubyAppSecrets(owner);
 
   const { submit: handleGenerate, isSubmitting: isGenerating } =
-    useSubmitFunction(async (secret: DustAppSecretType) => {
-      const r = await clientFetch(`/api/w/${owner.sId}/dust_app_secrets`, {
+    useSubmitFunction(async (secret: RubyAppSecretType) => {
+      const r = await clientFetch(`/api/w/${owner.sId}/ruby_app_secrets`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,9 +125,9 @@ export function SecretsPage() {
         body: JSON.stringify({ name: secret.name, value: secret.value }),
       });
       if (r.ok) {
-        await mutate(`/api/w/${owner.sId}/dust_app_secrets`);
+        await mutate(`/api/w/${owner.sId}/ruby_app_secrets`);
         setIsNewSecretPromptOpen(false);
-        setNewDustAppSecret(defaultSecret);
+        setNewRubyAppSecret(defaultSecret);
         sendNotification({
           type: "success",
           title: "Secret saved",
@@ -144,9 +144,9 @@ export function SecretsPage() {
     });
 
   const { submit: handleRevoke, isSubmitting: isRevoking } = useSubmitFunction(
-    async (secret: DustAppSecretType) => {
+    async (secret: RubyAppSecretType) => {
       await clientFetch(
-        `/api/w/${owner.sId}/dust_app_secrets/${secret.name}/destroy`,
+        `/api/w/${owner.sId}/ruby_app_secrets/${secret.name}/destroy`,
         {
           method: "DELETE",
           headers: {
@@ -154,7 +154,7 @@ export function SecretsPage() {
           },
         }
       );
-      await mutate(`/api/w/${owner.sId}/dust_app_secrets`);
+      await mutate(`/api/w/${owner.sId}/ruby_app_secrets`);
       setSecretToRevoke(null);
       sendNotification({
         type: "success",
@@ -168,8 +168,8 @@ export function SecretsPage() {
     return name.replace(/[^a-zA-Z0-9_]/g, "").toUpperCase();
   };
 
-  const handleUpdate = (secret: DustAppSecretType) => {
-    setNewDustAppSecret({ ...secret, value: "" });
+  const handleUpdate = (secret: RubyAppSecretType) => {
+    setNewRubyAppSecret({ ...secret, value: "" });
     setIsNewSecretPromptOpen(true);
     setIsInputNameDisabled(true);
   };
@@ -240,11 +240,11 @@ export function SecretsPage() {
                 message="Secret names must be alphanumeric and underscore characters only."
                 name="Secret Name"
                 placeholder="SECRET_NAME"
-                value={newDustAppSecret.name}
+                value={newRubyAppSecret.name}
                 disabled={isInputNameDisabled}
                 onChange={(e) =>
-                  setNewDustAppSecret({
-                    ...newDustAppSecret,
+                  setNewRubyAppSecret({
+                    ...newRubyAppSecret,
                     name: cleanSecretName(e.target.value),
                   })
                 }
@@ -255,10 +255,10 @@ export function SecretsPage() {
                 message="Secret values are encrypted and stored securely in our database."
                 name="Secret value"
                 placeholder="Type the secret value"
-                value={newDustAppSecret.value}
+                value={newRubyAppSecret.value}
                 onChange={(e) =>
-                  setNewDustAppSecret({
-                    ...newDustAppSecret,
+                  setNewRubyAppSecret({
+                    ...newRubyAppSecret,
                     value: e.target.value,
                   })
                 }
@@ -273,7 +273,7 @@ export function SecretsPage() {
               rightButtonProps={{
                 label: isInputNameDisabled ? "Update" : "Create",
                 variant: "primary",
-                onClick: () => handleGenerate(newDustAppSecret),
+                onClick: () => handleGenerate(newRubyAppSecret),
               }}
             />
           </DialogContent>
@@ -282,7 +282,7 @@ export function SecretsPage() {
         <Page.Vertical gap="xl" align="stretch">
           <Page.Header
             title="Developer Secrets"
-            description="Secrets usable in Dust apps or MCP servers to safely store sensitive data."
+            description="Secrets usable in Ruby apps or MCP servers to safely store sensitive data."
           />
           <Page.Vertical align="stretch" gap="md">
             <div className="flex items-center gap-2">
@@ -300,7 +300,7 @@ export function SecretsPage() {
                 icon={BookOpen01}
                 onClick={() => {
                   window.open(
-                    "https://docs.dust.tt/reference/developer-platform-overview#developer-secrets",
+                    "https://docs.ruby.ad/reference/developer-platform-overview#developer-secrets",
                     "_blank"
                   );
                 }}
@@ -310,7 +310,7 @@ export function SecretsPage() {
                   label="Create Secret"
                   variant="primary"
                   onClick={() => {
-                    setNewDustAppSecret(defaultSecret);
+                    setNewRubyAppSecret(defaultSecret);
                     setIsInputNameDisabled(false);
                     setIsNewSecretPromptOpen(true);
                   }}

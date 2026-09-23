@@ -19,7 +19,7 @@ import { withSpace } from "@front-api/middlewares/with_space";
 
 // Mounted at /api/w/:wId/spaces/:spaceId/data_sources/:dsId/configuration.
 // Only Slack and Webcrawler connectors have configurations; Slack is set from
-// Poke, so this route is effectively for webcrawler-managed data sources.
+// Admin, so this route is effectively for webcrawler-managed data sources.
 const app = workspaceApp();
 
 /** @ignoreswagger */

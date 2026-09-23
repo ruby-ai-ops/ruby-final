@@ -1,5 +1,5 @@
-import type { MenuItem } from "@dust-tt/sparkle";
-import { DataTable } from "@dust-tt/sparkle";
+import type { MenuItem } from "@ruby-ai/ui";
+import { DataTable } from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface SkillActionsMenuProps {

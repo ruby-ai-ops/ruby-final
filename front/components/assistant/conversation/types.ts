@@ -4,7 +4,7 @@ import type { AgentLoopToolNotificationEvent } from "@app/lib/actions/mcp";
 import type { ProgressNotificationContentType } from "@app/lib/actions/mcp_internal_actions/output_schemas";
 import type { AgentMessageFeedbackType } from "@app/lib/api/assistant/feedback";
 import type { AgentMessageEvents } from "@app/lib/api/assistant/streaming/types";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import type { AgentMCPActionType } from "@app/types/actions";
 import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
 import type {
@@ -120,7 +120,7 @@ export type VirtuosoMessageListContext = {
     input: string,
     mentions: RichMention[],
     contentFragments: ContentFragmentsType
-  ) => Promise<Result<undefined, DustError>>;
+  ) => Promise<Result<undefined, RubyError>>;
   draftKey: string;
   conversation?: ConversationWithoutContentType;
   // Whether the conversation should render its compact UI variant (currently:

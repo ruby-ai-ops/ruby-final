@@ -65,8 +65,8 @@ import {
   normalizeError,
   WithRetriesError,
 } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { assertNever } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { assertNever } from "@ruby-ai/client";
 import { GraphError } from "@microsoft/microsoft-graph-client";
 import axios from "axios";
 

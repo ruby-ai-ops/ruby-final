@@ -1,23 +1,23 @@
 {
   "icons": {
-    "16": "images/dust32green.png",
-    "32": "images/dust32green.png",
-    "48": "images/dust32green.png",
-    "128": "images/dust32green.png"
+    "16": "images/ruby32green.png",
+    "32": "images/ruby32green.png",
+    "48": "images/ruby32green.png",
+    "128": "images/ruby32green.png"
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "dust-dev@dust.tt",
+      "id": "ruby-dev@ruby.ad",
       "strict_min_version": "140.0"
     }
   },
   "sidebar_action": {
     "default_panel": "main.html",
-    "default_title": "Dust",
+    "default_title": "Ruby",
     "open_at_install": true,
     "default_icon": {
-      "16": "images/dust16green.png",
-      "32": "images/dust32green.png"
+      "16": "images/ruby16green.png",
+      "32": "images/ruby32green.png"
     }
   },
   "content_security_policy": {

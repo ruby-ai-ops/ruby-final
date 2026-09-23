@@ -58,7 +58,7 @@ app.get(
     }
     const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
     const run = await coreAPI.getRunBlock({
-      projectId: found.dustAPIProjectId,
+      projectId: found.rubyAPIProjectId,
       runId,
       blockType: type as BlockType,
       blockName: name,

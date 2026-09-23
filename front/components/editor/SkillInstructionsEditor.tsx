@@ -15,7 +15,7 @@ import {
 } from "@app/lib/editor/build_skill_instructions_extensions";
 import { preprocessMarkdownForEditor } from "@app/lib/editor/skill_instructions_preprocessing";
 import type { LightWorkspaceType } from "@app/types/user";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import type { Range } from "@tiptap/core";
 import { CharacterCount, Placeholder } from "@tiptap/extensions";
 import type { Transaction } from "@tiptap/pm/state";

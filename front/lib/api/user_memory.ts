@@ -1,5 +1,5 @@
-import type { DustFileSystemError } from "@app/lib/api/file_system/dust_file_system";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import type { RubyFileSystemError } from "@app/lib/api/file_system/ruby_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import type { Authenticator } from "@app/lib/auth";
 import { MAX_USER_MEMORY_CONTENT_LENGTH } from "@app/types/api/me/memory";
 import { userScopedPath } from "@app/types/file_system";
@@ -20,13 +20,13 @@ export function exceedsUserMemoryLimit(content: string): boolean {
 
 export async function getUserMemory(
   auth: Authenticator
-): Promise<Result<string, DustFileSystemError>> {
-  const fsResult = await DustFileSystem.forUser(auth);
+): Promise<Result<string, RubyFileSystemError>> {
+  const fsResult = await RubyFileSystem.forUser(auth);
   if (fsResult.isErr()) {
     return fsResult;
   }
 
-  // Having a user is guaranteed by DustFileSystem.forUser, so we can safely call getNonNullableUser here.
+  // Having a user is guaranteed by RubyFileSystem.forUser, so we can safely call getNonNullableUser here.
   const user = auth.getNonNullableUser();
   const readResult = await fsResult.value.readBuffer(userMemoryPath(user.sId));
   if (readResult.isErr()) {
@@ -39,8 +39,8 @@ export async function getUserMemory(
 export async function setUserMemory(
   auth: Authenticator,
   content: string
-): Promise<Result<undefined, DustFileSystemError>> {
-  const fsResult = await DustFileSystem.forUser(auth);
+): Promise<Result<undefined, RubyFileSystemError>> {
+  const fsResult = await RubyFileSystem.forUser(auth);
   if (fsResult.isErr()) {
     return fsResult;
   }

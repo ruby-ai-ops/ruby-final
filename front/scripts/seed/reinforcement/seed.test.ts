@@ -52,7 +52,7 @@ describe("reinforcement seed script integration test", () => {
 
     await seedReinforcement(ctx, { skipAnalytics: true });
 
-    // Verify all 5 IT helpdesk conversations + 3 Dust conversations
+    // Verify all 5 IT helpdesk conversations + 3 Ruby conversations
     const conversationIds = [
       { sId: "RAConv01", title: "Laptop won't turn on", messageCount: 4 },
       { sId: "RAConv02", title: "Can't access Slack", messageCount: 2 },
@@ -64,17 +64,17 @@ describe("reinforcement seed script integration test", () => {
       },
       { sId: "RAConv05", title: "Password reset", messageCount: 2 },
       {
-        sId: "RADustConv01",
+        sId: "RARubyConv01",
         title: "Analyse a haiku about spring",
         messageCount: 2,
       },
       {
-        sId: "RADustConv02",
+        sId: "RARubyConv02",
         title: "Analyse a haiku about the moon",
         messageCount: 2,
       },
       {
-        sId: "RADustConv03",
+        sId: "RARubyConv03",
         title: "Analyse a haiku about a frog",
         messageCount: 4,
       },
@@ -98,7 +98,7 @@ describe("reinforcement seed script integration test", () => {
       expect(messages.length).toBe(messageCount);
     }
 
-    // Verify feedbacks: 3 IT thumbs down + 1 IT thumbs up + 1 Dust thumbs down = 4 down, 1 up
+    // Verify feedbacks: 3 IT thumbs down + 1 IT thumbs up + 1 Ruby thumbs down = 4 down, 1 up
     const allFeedbacks = (
       await Promise.all(
         conversationIds.map(async ({ sId }) => {

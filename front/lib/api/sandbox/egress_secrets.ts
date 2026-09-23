@@ -16,12 +16,12 @@ import { Err, Ok } from "@app/types/shared/result";
 import { decrypt } from "@app/types/shared/utils/encryption";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
 
-export const EGRESS_SECRETS_PATH = "/run/dust/egress-secrets.json";
+export const EGRESS_SECRETS_PATH = "/run/ruby/egress-secrets.json";
 
-const EGRESS_SECRETS_DIR = "/run/dust";
+const EGRESS_SECRETS_DIR = "/run/ruby";
 
 type EgressSecretFileEntry = {
-  // Bare workspace-row name (no DSEC_ prefix). dsbx pairs this with the
+  // Bare workspace-row name (no DSEC_ prefix). rbx pairs this with the
   // placeholder when scanning outbound HTTPS bodies.
   name: string;
   placeholder: string;
@@ -188,11 +188,11 @@ export async function writeEgressSecretsFile(
     return entriesResult;
   }
 
-  // /run/dust is created by dsbx (for egress-ca.{pem,key}) before front ever
+  // /run/ruby is created by rbx (for egress-ca.{pem,key}) before front ever
   // writes here in a healthy sandbox; the mkdir -p covers cold-start ordering
-  // (front beats dsbx) without changing perms on a directory dsbx may have
+  // (front beats rbx) without changing perms on a directory rbx may have
   // hardened. install -m 600 sets the file's perms; the directory's perms are
-  // dsbx's call.
+  // rbx's call.
   const tmpPath = `${EGRESS_SECRETS_DIR}/.egress-secrets.json.${randomBytes(8).toString("hex")}.tmp`;
   const command = rootCommand.and([
     rootCommand.exec("/usr/bin/mkdir", ["-p", EGRESS_SECRETS_DIR]),

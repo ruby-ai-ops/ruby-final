@@ -1,5 +1,3 @@
-import { CONTENTFUL_REVALIDATE_SECONDS } from "@marketing/lib/contentful/client";
-import { fetchLogoLists } from "@marketing/lib/logo_bars_server";
 import {
   Grid,
   H1,
@@ -13,6 +11,10 @@ import { DemoVideoSection } from "@marketing/components/home/content/Solutions/D
 import type { LandingLayoutProps } from "@marketing/components/home/LandingLayout";
 import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
+import {
+  MARKETING_SURFACES,
+  isMarketingSurfaceVisible,
+} from "@marketing/lib/marketing_visibility";
 import TrustedBy from "@marketing/components/home/TrustedBy";
 import { classNames } from "@marketing/lib/utils";
 import {
@@ -21,7 +23,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useRouter } from "next/router";
 import type { ReactElement } from "react";
 
@@ -56,7 +58,7 @@ const EXTENSION_TABS: ExtensionTab[] = [
     heading: "Close faster, from any tab.",
     image: {
       src: "/static/landing/chrome_ext/Ext_Sales.png",
-      alt: "Sales teams using Dust Chrome Extension",
+      alt: "Sales teams using Ruby Chrome Extension",
     },
     features: [
       {
@@ -87,7 +89,7 @@ const EXTENSION_TABS: ExtensionTab[] = [
     heading: "Build faster, from any tab.",
     image: {
       src: "/static/landing/chrome_ext/Ext_Engineer.png",
-      alt: "Engineering teams using Dust Chrome Extension",
+      alt: "Engineering teams using Ruby Chrome Extension",
     },
     features: [
       {
@@ -118,7 +120,7 @@ const EXTENSION_TABS: ExtensionTab[] = [
     heading: "Resolve faster, from any tab.",
     image: {
       src: "/static/landing/chrome_ext/Ext_CSupport.png",
-      alt: "Support teams using Dust Chrome Extension",
+      alt: "Support teams using Ruby Chrome Extension",
     },
     features: [
       {
@@ -160,7 +162,7 @@ const INSTALLATION_STEPS: InstallationStep[] = [
   {
     number: "1.",
     title: "Install",
-    description: "Install the Dust Chrome Extension from the Chrome Web Store.",
+    description: "Install the Ruby Chrome Extension from the Chrome Web Store.",
     image: {
       src: "/static/landing/chrome_ext/Step1.png",
       alt: "Chrome Web Store installation",
@@ -169,7 +171,7 @@ const INSTALLATION_STEPS: InstallationStep[] = [
   {
     number: "2.",
     title: "Configure",
-    description: "Pin the Dust extension to keep it at your fingertips.",
+    description: "Pin the Ruby extension to keep it at your fingertips.",
     image: {
       src: "/static/landing/chrome_ext/Step2.png",
       alt: "Extension configuration interface",
@@ -179,7 +181,7 @@ const INSTALLATION_STEPS: InstallationStep[] = [
     number: "3.",
     title: "Start using",
     description:
-      "Access Dust AI assistance directly from any web page with a simple click.",
+      "Access Ruby AI assistance directly from any web page with a simple click.",
     image: {
       src: "/static/landing/chrome_ext/Step3.png",
       alt: "Chrome extension in action",
@@ -188,20 +190,21 @@ const INSTALLATION_STEPS: InstallationStep[] = [
 ];
 
 const CHROME_EXTENSION_URL =
-  "https://chromewebstore.google.com/detail/dust/fnkfcndbgingjcbdhaofkcnhcjpljhdn";
+  process.env.NEXT_PUBLIC_CHROME_EXTENSION_URL || "/home/contact";
 
 const CHROME_EXTENSION_VIDEO_URL =
-  "https://fast.wistia.net/embed/iframe/ivk2mh7it7";
+  "/static/workspace-demo/index.html";
+
+const ANNOTATED_HEADING_STYLE = {
+  fontFamily: '"RubySerif", var(--font-display)',
+  letterSpacing: "-0.05em",
+};
 
 export async function getStaticProps() {
   return {
     props: {
       gtmTrackingId: process.env.NEXT_PUBLIC_GTM_TRACKING_ID ?? null,
-      logoLists: await fetchLogoLists(),
     },
-    // The logo bar is editor-managed in Contentful, so the page has to
-    // revalidate for a GTM change to go live without a deploy.
-    revalidate: CONTENTFUL_REVALIDATE_SECONDS,
   };
 }
 
@@ -213,8 +216,9 @@ function HeroSection() {
           <H1
             mono
             className="mb-4 text-4xl font-medium leading-tight md:text-5xl lg:text-6xl xl:text-7xl"
+            style={ANNOTATED_HEADING_STYLE}
           >
-            Bring Dust agents into your browser
+            Bring Ruby agents into your browser
           </H1>
           <P
             size="lg"
@@ -251,7 +255,7 @@ function HeroSection() {
               <div className="relative z-10 mx-auto flex w-full items-center justify-center">
                 <img
                   src="/static/landing/chrome_ext/Ext_Hero.png"
-                  alt="Chrome extension preview showing Dust AI assistant in browser"
+                  alt="Chrome extension preview showing Ruby AI assistant in browser"
                   className="h-auto w-full max-w-lg rounded-2xl object-contain lg:max-w-xl xl:max-w-2xl"
                 />
               </div>
@@ -264,6 +268,10 @@ function HeroSection() {
 }
 
 function WebAppSidebarSection() {
+  if (!isMarketingSurfaceVisible(MARKETING_SURFACES.demoVideo)) {
+    return null;
+  }
+
   return (
     <Grid>
       <div className={GRID_SECTION_CLASSES}>
@@ -386,17 +394,16 @@ function InstallationSection() {
   );
 }
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function ChromeExtension() {
+export default function ChromeExtensionNextJS() {
   const router = useRouter();
 
   return (
     <>
       <PageMetadata
-        title="Dust Chrome Extension: AI Agents in Your Browser"
-        description="Bring your Dust agents right into your browser. Access company knowledge and AI assistance without leaving your current tab."
+        title="Ruby Chrome Extension: AI Agents in Your Browser"
+        description="Bring your Ruby agents right into your browser. Access company knowledge and AI assistance without leaving your current tab."
         pathname={router.asPath}
-        ogImage="https://dust.tt/static/landing/hero_dust.png"
+        ogImage="https://ruby.ad/static/landing/hero_ruby.png"
       />
 
       <div className="container flex w-full flex-col gap-16 px-2 py-2">
@@ -404,16 +411,20 @@ export default function ChromeExtension() {
         <WebAppSidebarSection />
         <ChromeExtensionInActionFor />
         <InstallationSection />
-        <TrustedBy logoSet="landing" />
-        <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
-          <HomeAIOperatorsCTASection />
-        </div>
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.trustedSection) && (
+          <TrustedBy logoSet="landing" />
+        )}
+        {isMarketingSurfaceVisible(MARKETING_SURFACES.aiOperatorsCta) && (
+          <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
+            <HomeAIOperatorsCTASection />
+          </div>
+        )}
       </div>
     </>
   );
 }
 
-ChromeExtension.getLayout = (
+ChromeExtensionNextJS.getLayout = (
   page: ReactElement,
   pageProps: LandingLayoutProps
 ) => {

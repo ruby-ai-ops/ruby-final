@@ -1,8 +1,8 @@
 import type { ConversationDotStatus } from "@app/lib/utils/conversation_dot_status";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 
 /**
- * Same colors as Sparkle `NavigationListItem` status dots (sidebar conversation rows).
+ * Same colors as RubyUI `NavigationListItem` status dots (sidebar conversation rows).
  */
 export function ConversationSidebarStatusDot({
   status,

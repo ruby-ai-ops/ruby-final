@@ -169,9 +169,9 @@ describe("createSandboxChildAction", () => {
       jsonSchema: null,
       additionalConfiguration: {},
       mcpServerViewId: "sandbox-server-view",
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
       internalMCPServerId: null,
       availability: "manual",
       permission: "never_ask",
@@ -301,7 +301,7 @@ describe("createSandboxChildAction", () => {
     const { run } = await RunFactory.createWithUsage(auth);
     await Promise.all([
       AgentMessageModel.update(
-        { runIds: [run.dustRunId] },
+        { runIds: [run.rubyRunId] },
         {
           where: {
             id: agentMessage.agentMessageId,
@@ -310,7 +310,7 @@ describe("createSandboxChildAction", () => {
         }
       ),
       AgentStepContentModel.update(
-        { dustRunId: run.dustRunId },
+        { rubyRunId: run.rubyRunId },
         {
           where: {
             id: parentAction.stepContent.id,
@@ -550,7 +550,7 @@ describe("createSandboxChildAction", () => {
     expect(vi.mocked(launchSandboxChildToolWorkflow)).not.toHaveBeenCalled();
   });
 
-  it("rejects calls from a `dsbx` process that outlived its parent bash action", async () => {
+  it("rejects calls from a `rbx` process that outlived its parent bash action", async () => {
     await setToolPermission("medium");
 
     // The bash call returned, but its in-sandbox process issues one more `/call`.
@@ -598,7 +598,7 @@ describe("createSandboxChildAction", () => {
     });
 
     const result = await callChildTool(
-      { query: "dust" },
+      { query: "ruby" },
       { serverViewId: websearchView.sId, toolName: "websearch" }
     );
     if (result.isErr()) {

@@ -1,7 +1,7 @@
 [
   "@anthropic-ai/vertex-sdk",
   "@datadog/browser-logs",
-  "@dust-tt/client",
+  "@ruby-ai/client",
   "@elastic/elasticsearch",
   "@elevenlabs/elevenlabs-js",
   "@google-cloud/bigquery",

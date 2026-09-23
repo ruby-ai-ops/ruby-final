@@ -204,7 +204,7 @@ const SPIRIT_AVATAR_FILES = [
 const EMOJI_AVATARS_BASE_PATH = "/static/";
 
 // Avatar URLs
-const BASE_URL = "https://dust.tt/";
+const BASE_URL = "https://ruby.ad/";
 const buildAvatarUrl = (basePath: string, fileName: string) => {
   const url = new URL(BASE_URL);
   url.pathname = `${basePath}${fileName}`;

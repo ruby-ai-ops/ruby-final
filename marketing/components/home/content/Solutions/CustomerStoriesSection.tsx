@@ -31,45 +31,45 @@ interface CustomerStoriesSectionProps {
 
 export const defaultCustomerStories: CustomerStory[] = [
   {
-    title: "Doctolib uses Dust for AI adoption of 3,000 employees",
+    title: "Doctolib uses Ruby for AI adoption of 3,000 employees",
     content:
       "Doctolib achieved 70% weekly usage across 3,000 employees by treating AI transformation as a cultural imperative, not just tool deployment.",
     href: "/customers/why-doctolib-made-company-wide-enterprise-ai-a-national-cause",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Doctolib-__-Dust---Part-1.jpg",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Doctolib-__-Ruby---Part-1.jpg",
   },
   {
-    title: "How Clay is powering 4x team growth with Dust",
+    title: "How Clay is powering 4x team growth with Ruby",
     content:
-      "Clay uses Dust AI agents to scale their GTM team 4x while maintaining sales velocity and achieving 100% adoption across their growing team.",
+      "Clay uses Ruby AI agents to scale their GTM team 4x while maintaining sales velocity and achieving 100% adoption across their growing team.",
     href: "/customers/clay-scaling-gtme-team",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/06/clay_dust_agents.jpg",
+    src: "https://ruby.ad/content/images/size/w2000/2025/06/clay_ruby_agents.jpg",
   },
   {
-    title: "Malt cuts support ticket closing time by 50% with Dust",
+    title: "Malt cuts support ticket closing time by 50% with Ruby",
     content:
-      "Malt streamlines customer support using Dust’s AI platform for rapid, consistent multilingual responses.",
+      "Malt streamlines customer support using Ruby’s AI platform for rapid, consistent multilingual responses.",
     href: "/customers/malt-customer-support",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/malt_dust.png",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/malt_ruby.png",
   },
   {
-    title: "Pennylane’s journey to deploy Dust for Customer Care teams",
+    title: "Pennylane’s journey to deploy Ruby for Customer Care teams",
     content:
-      "Dust evolved from a simple support tool into an integral part of Pennylane's operations.",
-    href: "/customers/pennylane-dust-customer-support-journey",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Pennylane-__-Dust.jpg",
+      "Ruby evolved from a simple support tool into an integral part of Pennylane's operations.",
+    href: "/customers/pennylane-ruby-customer-support-journey",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Pennylane-__-Ruby.jpg",
   },
   {
-    title: "Lifen uses Dust AI agents to boost team productivity",
+    title: "Lifen uses Ruby AI agents to boost team productivity",
     content:
-      "Lifen uses Dust AI agents to boost team productivity and save hours of work each week.",
+      "Lifen uses Ruby AI agents to boost team productivity and save hours of work each week.",
     href: "/customers/customer-story-lifen",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Lifen-__-Dust.png",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Lifen-__-Ruby.png",
   },
 ];
 
 export const CustomerStoriesSection: FC<CustomerStoriesSectionProps> = ({
   title = "Customer stories",
-  subtitle = "Leading enterprises are already transforming their operations with Dust.",
+  subtitle = "Leading enterprises are already transforming their operations with Ruby.",
   stories = defaultCustomerStories,
 }) => (
   <Grid gap="gap-8">

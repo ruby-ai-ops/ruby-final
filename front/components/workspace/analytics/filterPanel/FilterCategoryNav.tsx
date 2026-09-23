@@ -3,7 +3,7 @@ import {
   NavigationList,
   NavigationListItem,
   NavigationListLabel,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface FilterCategoryNavProps<Category extends string> {
   categories: readonly Category[];

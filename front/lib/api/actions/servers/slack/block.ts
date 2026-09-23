@@ -42,14 +42,14 @@ export function makeMarkdownBlocks(
   ];
 }
 
-// "Sent via <agent> on Dust" attribution as legacy Slack mrkdwn (link uses
+// "Sent via <agent> on Ruby" attribution as legacy Slack mrkdwn (link uses
 // `<url|label>`). Single source of truth for the footer text, shared by the
 // context block below and the file-upload `initial_comment` path.
 export function makeSentByFooterText(
   agentName: string,
   agentUrl: string
 ): string {
-  return `_Sent via <${agentUrl}|${agentName} Agent> on Dust_`;
+  return `_Sent via <${agentUrl}|${agentName} Agent> on Ruby_`;
 }
 
 // The footer as a standalone context block — kept separate from the message

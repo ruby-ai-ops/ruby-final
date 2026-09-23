@@ -3,21 +3,21 @@ import type { ToolContext } from "@app/lib/actions/types";
 import {
   generateProcessToolOutput,
   getCoreDataSourceSearchCriterias,
-  getPromptForProcessDustApp,
+  getPromptForProcessRubyApp,
 } from "@app/lib/api/actions/servers/extract_data/helpers";
 import { EXTRACT_DATA_MAIN_TOOL_NAME } from "@app/lib/api/actions/servers/extract_data/metadata";
 import { createExtractDataTools } from "@app/lib/api/actions/servers/extract_data/tools";
 import { processDataSources } from "@app/lib/api/assistant/process_data_sources";
 import type { Authenticator } from "@app/lib/auth";
 import { Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@app/lib/api/actions/servers/extract_data/helpers", () => ({
   generateProcessToolOutput: vi.fn(),
   getCoreDataSourceSearchCriterias: vi.fn(),
-  getPromptForProcessDustApp: vi.fn(),
+  getPromptForProcessRubyApp: vi.fn(),
 }));
 
 vi.mock("@app/lib/api/assistant/process_data_sources", () => ({
@@ -54,10 +54,10 @@ function makeRunContext(): ToolContext {
     jsonSchema: CONFIGURED_JSON_SCHEMA,
     additionalConfiguration: {},
     mcpServerViewId: "mcp-server-view-id",
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     availability: "manual",
     permission: "never_ask",
     toolServerId: "tool-server-id",
@@ -83,7 +83,7 @@ function makeRunContext(): ToolContext {
 describe("createExtractDataTools", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(getPromptForProcessDustApp).mockResolvedValue("prompt");
+    vi.mocked(getPromptForProcessRubyApp).mockResolvedValue("prompt");
     vi.mocked(getCoreDataSourceSearchCriterias).mockResolvedValue(new Ok([]));
     vi.mocked(processDataSources).mockResolvedValue(
       new Ok({

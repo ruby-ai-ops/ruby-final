@@ -2,7 +2,7 @@ import { AdminPageContainer } from "@app/components/layouts/AdminPageContainer";
 import WorkspaceAccessPanel from "@app/components/workspace/WorkspaceAccessPanel";
 import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
 import { useWorkspaceVerifiedDomains } from "@app/lib/swr/workspaces";
-import { Page, Spinner } from "@dust-tt/sparkle";
+import { Page, Spinner } from "@ruby-ai/ui";
 
 export function WorkspaceIdentityProvisioningPage() {
   const owner = useWorkspace();

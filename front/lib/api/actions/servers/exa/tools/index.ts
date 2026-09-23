@@ -3,13 +3,13 @@ import type { ToolHandlers } from "@app/lib/actions/mcp_internal_actions/tool_de
 import { buildTools } from "@app/lib/actions/mcp_internal_actions/tool_definition";
 import { EXA_TOOLS_METADATA } from "@app/lib/api/actions/servers/exa/metadata";
 import logger from "@app/logger/logger";
-import { dustManagedServiceCredentials } from "@app/types/api/credentials";
+import { rubyManagedServiceCredentials } from "@app/types/api/credentials";
 import { Err, Ok } from "@app/types/shared/result";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import Exa from "exa-js";
 
-const credentials = dustManagedServiceCredentials();
+const credentials = rubyManagedServiceCredentials();
 
 async function exaSearch({
   query,

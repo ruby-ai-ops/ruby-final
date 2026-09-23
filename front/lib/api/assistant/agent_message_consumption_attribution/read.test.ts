@@ -46,7 +46,7 @@ async function setupMessage() {
     workspace,
     conversation,
     agentConfig: agentConfiguration,
-    runIds: [run.dustRunId],
+    runIds: [run.rubyRunId],
   });
   await ConversationResource.updateAgentMessageCostCredits(auth, {
     agentMessageModelId: agentMessage.agentMessageId,
@@ -101,7 +101,7 @@ describe("getAgentMessageConsumption", () => {
       conversationModelId: conversation.id,
       agentMessageModelId: agentMessage.agentMessageId,
       status: "succeeded",
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
       step: 1,
     });
     const { action: secondAction } = await AgentMCPActionFactory.create(auth, {
@@ -109,7 +109,7 @@ describe("getAgentMessageConsumption", () => {
       conversationModelId: conversation.id,
       agentMessageModelId: agentMessage.agentMessageId,
       status: "succeeded",
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
       step: 2,
     });
 
@@ -181,7 +181,7 @@ describe("getAgentMessageConsumption", () => {
       agentMessage,
     } = await setupMessage();
     const childAgentId = hidden
-      ? GLOBAL_AGENTS_SID.DUST_TASK
+      ? GLOBAL_AGENTS_SID.RUBY_TASK
       : (
           await AgentConfigurationFactory.createTestAgent(auth, {
             name: "Research agent",
@@ -271,7 +271,7 @@ describe("getAgentMessageConsumption", () => {
         conversationModelId: conversation.id,
         agentMessageModelId: agentMessage.agentMessageId,
         status: "succeeded",
-        dustRunId: run.dustRunId,
+        rubyRunId: run.rubyRunId,
         functionCallName: "run_research_agent",
         toolName: "run_research_agent",
         toolServerId: runAgentServerId,
@@ -292,7 +292,7 @@ describe("getAgentMessageConsumption", () => {
         conversationModelId: childConversation.id,
         agentMessageModelId: childAgentMessage.agentMessageId,
         status: "succeeded",
-        dustRunId: run.dustRunId,
+        rubyRunId: run.rubyRunId,
         functionCallName: "run_web_researcher",
         toolName: "run_web_researcher",
         toolServerId: runAgentServerId,
@@ -364,7 +364,7 @@ describe("getAgentMessageConsumption", () => {
       workspace,
       conversationModelId: conversation.id,
       agentMessageModelId: agentMessage.agentMessageId,
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
     });
     const { action: hiddenHelperAction } = await AgentMCPActionFactory.create(
       auth,
@@ -373,10 +373,10 @@ describe("getAgentMessageConsumption", () => {
         conversationModelId: conversation.id,
         agentMessageModelId: agentMessage.agentMessageId,
         status: "errored",
-        dustRunId: run.dustRunId,
-        functionCallName: "run_dust_task",
-        toolName: "run_dust_task",
-        childAgentId: GLOBAL_AGENTS_SID.DUST_TASK,
+        rubyRunId: run.rubyRunId,
+        functionCallName: "run_ruby_task",
+        toolName: "run_ruby_task",
+        childAgentId: GLOBAL_AGENTS_SID.RUBY_TASK,
       }
     );
 

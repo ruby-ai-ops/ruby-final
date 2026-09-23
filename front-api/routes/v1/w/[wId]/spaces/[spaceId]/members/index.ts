@@ -5,8 +5,8 @@ import { assertNever } from "@app/types/shared/utils/assert_never";
 import type {
   GetSpaceMembersResponseBody,
   PostSpaceMembersResponseBody,
-} from "@dust-tt/client";
-import { PostSpaceMembersRequestBodySchema } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { PostSpaceMembersRequestBodySchema } from "@ruby-ai/client";
 import type { PublicApiCtx } from "@front-api/middlewares/ctx";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsAdmin } from "@front-api/middlewares/ensure_role";

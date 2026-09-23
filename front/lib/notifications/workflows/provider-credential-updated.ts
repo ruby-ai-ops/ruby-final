@@ -1,5 +1,5 @@
 import type { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { getNovuClient } from "@app/lib/notifications/novu-client";
 import type { MembershipsPaginationParams } from "@app/lib/resources/membership_resource";
 import { MembershipResource } from "@app/lib/resources/membership_resource";
@@ -49,7 +49,7 @@ export const providerCredentialsHealthUpdatedWorkflow = workflow(
 
 const triggerProviderCredentialsHealthUpdatedNotifications = async (
   auth: Authenticator
-): Promise<Result<void, DustError<"internal_error">>> => {
+): Promise<Result<void, RubyError<"internal_error">>> => {
   const workspace = auth.getNonNullableWorkspace();
 
   const novuPayload: ProviderCredentialsHealthUpdatedPayloadType = {
@@ -99,7 +99,7 @@ const triggerProviderCredentialsHealthUpdatedNotifications = async (
           .map(({ error }) => error?.join("; "))
           .join("; ");
         return new Err({
-          name: "dust_error",
+          name: "ruby_error",
           code: "internal_error",
           message: `Failed to trigger provider credentials health updated notification: ${eventErrors}`,
         });
@@ -109,7 +109,7 @@ const triggerProviderCredentialsHealthUpdatedNotifications = async (
     } while (paginationParams);
   } catch (err) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message:
         "Failed to trigger provider credentials health updated notification",

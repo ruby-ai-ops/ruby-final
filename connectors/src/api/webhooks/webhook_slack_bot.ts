@@ -76,9 +76,9 @@ const _webhookSlackBotAPIHandler = async (
       };
 
       const requestFromRouter =
-        typeof req.headers["x-dust-clientid"] === "string" &&
+        typeof req.headers["x-ruby-clientid"] === "string" &&
         ["slack-webhook-router", "webhook-router"].includes(
-          req.headers["x-dust-clientid"]
+          req.headers["x-ruby-clientid"]
         );
 
       if (requestFromRouter) {

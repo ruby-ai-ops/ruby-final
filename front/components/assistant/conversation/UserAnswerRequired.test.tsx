@@ -50,7 +50,7 @@ vi.mock("@app/hooks/useAnswerUserQuestion", () => ({
   }),
 }));
 
-vi.mock("@dust-tt/sparkle", () => {
+vi.mock("@ruby-ai/ui", () => {
   const cn = (...values: Array<unknown>) =>
     values
       .flatMap((value) => (Array.isArray(value) ? value : [value]))

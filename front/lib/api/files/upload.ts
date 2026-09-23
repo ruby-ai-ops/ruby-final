@@ -34,7 +34,7 @@ export async function processAndStoreFromUrl(
   const validUrl = validateUrl(url);
   if (!validUrl.valid) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "invalid_request_error",
       message: "Invalid URL",
     });
@@ -44,7 +44,7 @@ export async function processAndStoreFromUrl(
     const response = await untrustedFetch(url);
     if (!response.ok) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "invalid_request_error",
         message: `Failed to fetch URL: ${response.statusText}`,
       });
@@ -52,7 +52,7 @@ export async function processAndStoreFromUrl(
 
     if (!response.body) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "invalid_request_error",
         message: "Response body is null",
       });
@@ -68,7 +68,7 @@ export async function processAndStoreFromUrl(
 
     if (!isSupportedFileContentType(finalContentType)) {
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "invalid_request_error",
         message: "Unsupported content type",
       });
@@ -94,7 +94,7 @@ export async function processAndStoreFromUrl(
     });
   } catch (error) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_server_error",
       message: `Failed to create file from URL: ${error}`,
     });

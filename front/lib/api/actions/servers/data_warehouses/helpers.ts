@@ -15,7 +15,7 @@ import { DATA_SOURCE_NODE_ID } from "@app/types/core/content_node";
 import { CoreAPI } from "@app/types/core/core_api";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import keyBy from "lodash/keyBy";
 
 export async function getAvailableWarehouses(
@@ -51,11 +51,11 @@ export async function getAvailableWarehouses(
   }
 
   const dataSourceById = keyBy(
-    await DataSourceResource.fetchByDustAPIDataSourceIds(
+    await DataSourceResource.fetchByRubyAPIDataSourceIds(
       auth,
       searchResult.value.nodes.map((node) => node.data_source_id)
     ),
-    "dustAPIDataSourceId"
+    "rubyAPIDataSourceId"
   );
 
   const dataSourceNodes = searchResult.value.nodes.map((node) =>
@@ -114,7 +114,7 @@ export async function getWarehouseNodes(
     }
     const dataSourceConfiguration = dataSourceConfigurations.find(
       (ds) =>
-        ds.dataSource.dustAPIDataSourceId === dataSource.dustAPIDataSourceId
+        ds.dataSource.rubyAPIDataSourceId === dataSource.rubyAPIDataSourceId
     );
     if (!dataSourceConfiguration) {
       return new Err(
@@ -126,18 +126,18 @@ export async function getWarehouseNodes(
     configsToUse = [dataSourceConfiguration];
     parentIdToUse = "root";
     dataSourceById = {
-      [dataSource.dustAPIDataSourceId]: dataSource,
+      [dataSource.rubyAPIDataSourceId]: dataSource,
     };
   }
 
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   if (!dataSourceById) {
     dataSourceById = keyBy(
-      await DataSourceResource.fetchByDustAPIDataSourceIds(
+      await DataSourceResource.fetchByRubyAPIDataSourceIds(
         auth,
-        configsToUse.map((ds) => ds.dataSource.dustAPIDataSourceId)
+        configsToUse.map((ds) => ds.dataSource.rubyAPIDataSourceId)
       ),
-      "dustAPIDataSourceId"
+      "rubyAPIDataSourceId"
     );
   }
 
@@ -314,7 +314,7 @@ export async function validateTables(
 
   const relevantConfig = dataSourceConfigurations.find(
     (config) =>
-      config.dataSource.dustAPIDataSourceId === dataSource.dustAPIDataSourceId
+      config.dataSource.rubyAPIDataSourceId === dataSource.rubyAPIDataSourceId
   );
 
   if (!relevantConfig) {

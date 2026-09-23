@@ -5,7 +5,7 @@ import type { ConsumptionAnalyticsScope } from "@app/lib/analytics/consumption_s
 import { WORKSPACE_CONSUMPTION_ANALYTICS_SCOPE } from "@app/lib/analytics/consumption_scope";
 import type { GetConsumptionOverviewResponse } from "@app/lib/api/analytics/consumption/overview";
 import { timeAgoFrom } from "@app/lib/utils";
-import { LoadingBlock, Page, Tooltip } from "@dust-tt/sparkle";
+import { LoadingBlock, Page, Tooltip } from "@ruby-ai/ui";
 
 export interface ConsumptionOverviewProps {
   workspaceId: string;

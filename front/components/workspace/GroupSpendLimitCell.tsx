@@ -1,5 +1,5 @@
 import type { GroupSpendLimit } from "@app/types/api/groups/spend_limit";
-import { InputWithSave } from "@dust-tt/sparkle";
+import { InputWithSave } from "@ruby-ai/ui";
 import { useState } from "react";
 
 export interface GroupSpendLimitRowData {

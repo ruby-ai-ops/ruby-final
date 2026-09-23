@@ -11,7 +11,7 @@ describe("getShareFrameViewerFiles", () => {
     const { authenticator: auth } = await createResourceTest({ role: "admin" });
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const conversationTitle = conversation.title ?? "Test Conversation";

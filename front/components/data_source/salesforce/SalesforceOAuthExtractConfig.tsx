@@ -4,7 +4,7 @@ import {
   isValidClientIdOrSecret,
   isValidSalesforceDomain,
 } from "@app/types/oauth/lib";
-import { Input } from "@dust-tt/sparkle";
+import { Input } from "@ruby-ai/ui";
 import { useEffect } from "react";
 
 export function SalesforceOauthExtraConfig({

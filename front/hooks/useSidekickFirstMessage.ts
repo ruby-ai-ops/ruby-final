@@ -15,15 +15,15 @@ const SIDEKICK_USE_CASES = [
 ] as const;
 type SidekickUseCase = (typeof SIDEKICK_USE_CASES)[number];
 
-const NEW_AGENT_FIRST_MESSAGE = `<dust_system>
+const NEW_AGENT_FIRST_MESSAGE = `<ruby_system>
 This is a new agent. To start the conversation, you should NOT call any tools. 
 Just ask a very simple question, such as "What would you like to build?"
-</dust_system>`;
+</ruby_system>`;
 
-const DUPLICATE_AGENT_FIRST_MESSAGE = `<dust_system>
+const DUPLICATE_AGENT_FIRST_MESSAGE = `<ruby_system>
 This is a new agent created by duplicating an existing one.
 Call \`get_agent_config\` to retrieve the current configuration, then ask what they'd like to change or add.
-</dust_system>`;
+</ruby_system>`;
 
 async function fetchFirstMessage(
   endpoint: string

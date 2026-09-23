@@ -6,7 +6,7 @@ import {
   softDeleteSpaceAndLaunchScrubWorkflow,
 } from "@app/lib/api/spaces";
 import { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { AgentConfigurationModel } from "@app/lib/models/agent/agent";
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import { GroupPermissionResource } from "@app/lib/resources/group_permission_resource";
@@ -92,7 +92,7 @@ describe("createSpaceAndGroup", () => {
         "invalid_request_error"
       );
 
-      await FeatureFlagFactory.basic(adminAuth, "dust_filesystem");
+      await FeatureFlagFactory.basic(adminAuth, "ruby_filesystem");
       const enabledRes = await createSpaceAndGroup(adminAuth, params);
       expect(enabledRes.isOk()).toBe(true);
       if (enabledRes.isErr()) {
@@ -197,7 +197,7 @@ describe("createSpaceAndGroup", () => {
       }
     });
 
-    it("should create dust_project connector when creating a project space", async () => {
+    it("should create ruby_project connector when creating a project space", async () => {
       // Mock createDataSourceAndConnectorForProject
       const createConnectorSpy = vi
         .spyOn(
@@ -250,7 +250,7 @@ describe("createSpaceAndGroup", () => {
         // Verify connector was NOT created for regular spaces
         expect(createConnectorSpy).not.toHaveBeenCalled();
 
-        // Verify no dust_project data source exists
+        // Verify no ruby_project data source exists
         const dataSource = await DataSourceResource.fetchByNameOrId(
           adminAuth,
           getProjectConversationsDatasourceName(space)
@@ -539,7 +539,7 @@ describe("createSpaceAndGroup", () => {
 
       expect(duplicateResult.isErr()).toBe(true);
       if (duplicateResult.isErr()) {
-        expect(duplicateResult.error).toBeInstanceOf(DustError);
+        expect(duplicateResult.error).toBeInstanceOf(RubyError);
         expect(duplicateResult.error.code).toBe("space_already_exists");
         expect(duplicateResult.error.message).toBe(
           "This space name is already used."
@@ -592,7 +592,7 @@ describe("createSpaceAndGroup", () => {
 
         expect(limitResult.isErr()).toBe(true);
         if (limitResult.isErr()) {
-          expect(limitResult.error).toBeInstanceOf(DustError);
+          expect(limitResult.error).toBeInstanceOf(RubyError);
           expect(limitResult.error.code).toBe("limit_reached");
           expect(limitResult.error.message).toBe(
             "The maximum number of spaces has been reached."
@@ -709,7 +709,7 @@ describe("createSpaceAndGroup", () => {
         });
         expect(limitResult.isErr()).toBe(true);
         if (limitResult.isErr()) {
-          expect(limitResult.error).toBeInstanceOf(DustError);
+          expect(limitResult.error).toBeInstanceOf(RubyError);
           expect(limitResult.error.code).toBe("limit_reached");
         }
 
@@ -741,7 +741,7 @@ describe("createSpaceAndGroup", () => {
 
       expect(result.isErr()).toBe(true);
       if (result.isErr()) {
-        expect(result.error).toBeInstanceOf(DustError);
+        expect(result.error).toBeInstanceOf(RubyError);
         expect(result.error.code).toBe("internal_error");
       }
     });
@@ -759,7 +759,7 @@ describe("createSpaceAndGroup", () => {
       // The function should either succeed (ignoring invalid IDs) or fail gracefully
       expect(result.isOk() || result.isErr()).toBe(true);
       if (result.isErr()) {
-        expect(result.error).toBeInstanceOf(DustError);
+        expect(result.error).toBeInstanceOf(RubyError);
       }
     });
   });
@@ -808,7 +808,7 @@ describe("createSpaceAndGroup", () => {
 
       expect(duplicateResult.isErr()).toBe(true);
       if (duplicateResult.isErr()) {
-        expect(duplicateResult.error).toBeInstanceOf(DustError);
+        expect(duplicateResult.error).toBeInstanceOf(RubyError);
         expect(duplicateResult.error.code).toBe("space_already_exists");
       }
     });
@@ -841,7 +841,7 @@ describe("createSpaceAndGroup", () => {
 
       expect(duplicateResult.isErr()).toBe(true);
       if (duplicateResult.isErr()) {
-        expect(duplicateResult.error).toBeInstanceOf(DustError);
+        expect(duplicateResult.error).toBeInstanceOf(RubyError);
         expect(duplicateResult.error.code).toBe("space_already_exists");
       }
     });
@@ -1020,7 +1020,7 @@ describe("softDeleteSpaceAndLaunchScrubWorkflow", () => {
     );
 
     // Mock launchScrubSpaceWorkflow to prevent actual workflow execution
-    vi.mock("@app/poke/temporal/client", () => ({
+    vi.mock("@app/admin-app/temporal/client", () => ({
       launchScrubSpaceWorkflow: vi.fn().mockResolvedValue(undefined),
     }));
   });

@@ -1,11 +1,11 @@
-import { WithDustThinkingMachinesInklingConfig } from "@app/lib/llms/providers/fireworks/models/inkling";
-import { defineDustStreamEndpoint } from "@app/lib/llms/stream/dust_stream_endpoint";
+import { WithRubyThinkingMachinesInklingConfig } from "@app/lib/llms/providers/fireworks/models/inkling";
+import { defineRubyStreamEndpoint } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import { ThinkingMachinesInklingGlobalFireworksStream } from "@app/lib/model_constructors/stream/endpoints/thinking_machines_inkling_global_fireworks";
 
-export class DustThinkingMachinesInklingGlobalFireworksStream extends WithDustThinkingMachinesInklingConfig(
+export class RubyThinkingMachinesInklingGlobalFireworksStream extends WithRubyThinkingMachinesInklingConfig(
   ThinkingMachinesInklingGlobalFireworksStream
 ) {
   static readonly endpointFilter = {};
 }
 
-defineDustStreamEndpoint(DustThinkingMachinesInklingGlobalFireworksStream);
+defineRubyStreamEndpoint(RubyThinkingMachinesInklingGlobalFireworksStream);

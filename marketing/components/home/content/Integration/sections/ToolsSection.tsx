@@ -1,5 +1,5 @@
 import { H2 } from "@marketing/components/home/ContentComponents";
-import { BookOpen01, Plus } from "@dust-tt/sparkle";
+import { BookOpen01, Plus } from "@ruby-ai/ui";
 
 import type { IntegrationTool } from "../types";
 

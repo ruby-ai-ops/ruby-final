@@ -13,7 +13,7 @@ import type {
 } from "@marketing/components/home/content/Solutions/configs/utils";
 import type { DemoVideoProps } from "@marketing/components/home/content/Solutions/DemoVideoSection";
 import type { UseCaseProps } from "@marketing/components/home/content/Solutions/UseCasesSection";
-import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@dust-tt/sparkle";
+import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@ruby-ai/ui";
 
 // Config exports
 export const pageSettings: pageSettingsProps = {
@@ -157,38 +157,38 @@ export const ROI: ROIProps = {
 
 export const Quote: QuoteProps = {
   quote:
-    "It's really become a reflex now to ask a Dust agent. With just two keystrokes, it instantly surfaces exactly the context I need - whether from code, documentation, or overlooked team discussions.",
+    "It's really become a reflex now to ask a Ruby agent. With just two keystrokes, it instantly surfaces exactly the context I need - whether from code, documentation, or overlooked team discussions.",
   name: "Vincent Delagabbe",
   title: "Software Engineer at Alan",
   logo: "/static/landing/logos/color/alan.png",
 };
 
 export const DemoVideo: DemoVideoProps = {
-  sectionTitle: "Watch Dust in motion",
-  videoUrl: "https://fast.wistia.net/embed/iframe/6z5rtwsuvo",
+  sectionTitle: "Watch Ruby in motion",
+  videoUrl: "/static/workspace-demo/index.html",
   showCaptions: true,
 };
 
 export const Stories: CustomerStory[] = [
   {
-    title: "Alan's engineering team speeds up projects 20% with Dust",
+    title: "Alan's engineering team speeds up projects 20% with Ruby",
     content:
-      "Alan uses Dust to improve efficiency in the context of an expanding codebase and documentation.",
+      "Alan uses Ruby to improve efficiency in the context of an expanding codebase and documentation.",
     href: "/customers/integrating-ai-workflows-alan",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Alan-__-Dust-1--1--1.png",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Alan-__-Ruby-1--1--1.png",
   },
   // {
-  //   title: "November Five's journey to minimizing routine tasks with Dust",
+  //   title: "November Five's journey to minimizing routine tasks with Ruby",
   //   content:
-  //     "Discover how November Five accelerates work with Dust, turning 3-hour tasks into 30 minutes.",
-  //   href: "/customers/november-five-ai-transformation-dust",
-  //   src: "https://blog.dust.tt/content/images/size/w2000/2025/01/dust_november_five.png",
+  //     "Discover how November Five accelerates work with Ruby, turning 3-hour tasks into 30 minutes.",
+  //   href: "/customers/november-five-ai-transformation-ruby",
+  //   src: "https://ruby.ad/content/images/size/w2000/2025/01/ruby_november_five.png",
   // },
   // {
-  //   title: "Lifen uses Dust AI agents to boost team productivity", // Soon to be replaced with Clay for RFP?
+  //   title: "Lifen uses Ruby AI agents to boost team productivity", // Soon to be replaced with Clay for RFP?
   //   content:
-  //     "Lifen uses Dust AI agents to boost team productivity and save hours of work each week.",
+  //     "Lifen uses Ruby AI agents to boost team productivity and save hours of work each week.",
   //   href: "/customers/customer-story-lifen",
-  //   src: "https://blog.dust.tt/content/images/size/w2000/2024/11/lifen_dust_customer_story.jpg",
+  //   src: "https://ruby.ad/content/images/size/w2000/2024/11/lifen_ruby_customer_story.jpg",
   // },
 ];

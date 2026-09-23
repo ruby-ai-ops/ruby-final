@@ -8,8 +8,8 @@
 const shutdownController = new AbortController();
 let shutdownAbortTimeout: NodeJS.Timeout | undefined;
 
-export const DUST_WORKER_SHUTDOWN_ABORT_REASON =
-  "DUST_WORKER_SHUTDOWN_ABORT" as const;
+export const RUBY_WORKER_SHUTDOWN_ABORT_REASON =
+  "RUBY_WORKER_SHUTDOWN_ABORT" as const;
 
 /**
  * Marks the pod as shutting down, but lets active work use most of the grace period.
@@ -36,5 +36,5 @@ function abortShutdownSignal(): void {
     return;
   }
 
-  shutdownController.abort(DUST_WORKER_SHUTDOWN_ABORT_REASON);
+  shutdownController.abort(RUBY_WORKER_SHUTDOWN_ABORT_REASON);
 }

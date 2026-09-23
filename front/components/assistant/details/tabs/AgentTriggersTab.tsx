@@ -24,7 +24,7 @@ import {
   DialogTitle,
   Plus,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo, useState } from "react";
 
 function getTriggerIcon(trigger: TriggerType) {

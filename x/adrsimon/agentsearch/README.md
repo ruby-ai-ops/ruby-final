@@ -37,7 +37,7 @@ agentsearch/
 └── docker-compose.yml                ES 8.16.0 on 127.0.0.1:9250
 ```
 
-Port 9250 stays clear of the dev container (9200) and of dust-hive, which allocates `1X2XX` per environment.
+Port 9250 stays clear of the dev container (9200) and of ruby-hive, which allocates `1X2XX` per environment.
 
 Both export scripts live here as the single source of truth, but neither can run from here: they import `@app/...`, which only resolves under `front/`. Copy them into `front/scripts/` to run or typecheck them. The flip side is that `front`'s CI never sees them, so re-check after touching anything they call into.
 
@@ -58,14 +58,14 @@ npm run search -- --q sales --spaces vlt_ZqMdUAzI0OTf --groups grp_gXHmJEbOCeCy
 Neither runs from this directory — they import `@app/...`. On prodbox:
 
 ```bash
-kclpush prodbox scripts/export_workspace_agents.ts /dust/front/scripts/export_workspace_agents.ts
-kclpush prodbox scripts/export_user_profile.ts     /dust/front/scripts/export_user_profile.ts
+kclpush prodbox scripts/export_workspace_agents.ts /ruby/front/scripts/export_workspace_agents.ts
+kclpush prodbox scripts/export_user_profile.ts     /ruby/front/scripts/export_user_profile.ts
 kclssh prodbox
-  cd /dust/front
+  cd /ruby/front
   npx tsx scripts/export_workspace_agents.ts --wId <wId> --days 30 --execute
-  npx tsx scripts/export_user_profile.ts --wId <wId> --email <someone@dust.tt> --execute
-kclpull prodbox /dust/front/agents_<wId>.json        ./assets/agents_<wId>.json
-kclpull prodbox /dust/front/profile_<userSId>.json   ./assets/profile_<userSId>.json
+  npx tsx scripts/export_user_profile.ts --wId <wId> --email <someone@ruby.ad> --execute
+kclpull prodbox /ruby/front/agents_<wId>.json        ./assets/agents_<wId>.json
+kclpull prodbox /ruby/front/profile_<userSId>.json   ./assets/profile_<userSId>.json
 ```
 
 Then `rm` both files on the pod, and point ingest at the export: `npm run ingest -- --file assets/agents_<wId>.json`.
@@ -113,7 +113,7 @@ npm run test:permissions
 
 Matching and ranking are structurally separate. Text clauses go in a `must`, so they decide *which* agents come back; group adjacency goes in a `should`, which — with a `must` present — defaults to `minimum_should_match: 0` and therefore only contributes score. Collapsing the two into one `should` list means any agent with group usage matches every query, text match or not.
 
-Text matching runs two `multi_match` clauses over `name^4` and `description^2`: a `best_fields` clause carrying full BM25 term weighting, and a `bool_prefix` clause at boost 0.5 for as-you-type prefix tolerance (`--match-mode`, default `hybrid`). `instructions` is **off by default** and enabled with `--with-instructions`; see below. Typo tolerance on `name` comes from a `fuzziness: AUTO` match (`--name-fallback`, default `fuzzy`). The alternative, a wildcard subsequence clause, is available as `--name-fallback subsequence` but is strictly worse — see below. Neither is applied to `description`: a subsequence only requires the letters in order *anywhere*, so on a field of a few hundred characters almost any short query matches — `*i*n*v*o*i*c*e*` happily matches "**In**cident in**v**estigat**i**on assistant for Dust using Datad**o**g logs".
+Text matching runs two `multi_match` clauses over `name^4` and `description^2`: a `best_fields` clause carrying full BM25 term weighting, and a `bool_prefix` clause at boost 0.5 for as-you-type prefix tolerance (`--match-mode`, default `hybrid`). `instructions` is **off by default** and enabled with `--with-instructions`; see below. Typo tolerance on `name` comes from a `fuzziness: AUTO` match (`--name-fallback`, default `fuzzy`). The alternative, a wildcard subsequence clause, is available as `--name-fallback subsequence` but is strictly worse — see below. Neither is applied to `description`: a subsequence only requires the letters in order *anywhere*, so on a field of a few hundred characters almost any short query matches — `*i*n*v*o*i*c*e*` happily matches "**In**cident in**v**estigat**i**on assistant for Ruby using Datad**o**g logs".
 
 `description` and `instructions` use an English analyzer — possessive stripping, lowercase, stopwords, light stemming — so `reviews` matches `review` and `for`/`the` stop being full-weight terms that match nearly every document. `name` uses a `word_delimiter_graph` analyzer so compound names split into their parts: `TitleClassifierAI` indexes as `titleclassifierai`, `title`, `classifier`, `ai`, and `agenda_cleaner` as `agenda_cleaner`, `agendacleaner`, `agenda`, `cleaner`. Without it the standard analyzer emits one opaque token and "industry radar" cannot find `IndustryRadar`. The same filter runs at search time, minus `flatten_graph`.
 
@@ -167,8 +167,8 @@ Tuning without measurement is guessing, so every ranking change should be scored
 
 ```bash
 npm run gen:queries -- --profile assets/profile_pQwo5uKyt6.json --exclude-global \
-  --out assets/eval_queries_dust.json
-npm run eval -- --queries assets/eval_queries_dust.json \
+  --out assets/eval_queries_ruby.json
+npm run eval -- --queries assets/eval_queries_ruby.json \
   --profile assets/profile_pQwo5uKyt6.json --exclude-global
 ```
 
@@ -242,16 +242,16 @@ This only became measurable after adding the typo kinds. The earlier comparison 
 
 ## What the first runs showed
 
-Against the Dust workspace (2,566 agents, 30-day window):
+Against the Ruby workspace (2,566 agents, 30-day window):
 
 - **The space filter behaves.** `--q sales` with nothing readable returns 574 hits; adding Company Data takes it to 1,734.
-- **Discovery mode works well.** With no query at all, a user in the `Dev` group gets `AVTDustPRReviewPro`, `at_pr`, `AVTGitHubPRDocGen`, `DD` — the agents their colleagues actually use.
+- **Discovery mode works well.** With no query at all, a user in the `Dev` group gets `AVTRubyPRReviewPro`, `at_pr`, `AVTGitHubPRDocGen`, `DD` — the agents their colleagues actually use.
 - **The two signals are on incompatible scales, and it is expensive.** The eval put a number on it: at `--group-boost 2`, overall MRR@10 is 0.561; at 0, it is 0.904. Exact-name lookup collapses from 0.992 to 0.229 — popular agents outscore the agent you literally named. The default is now 0.5, which costs ~0.01 MRR, but the additive `should` clause is the wrong shape regardless. It wants rank fusion or a normalized popularity feature in a rescorer over the top-N.
 - **Compound names did not tokenize — the single biggest win so far.** `name` analyzed `TitleClassifierAI` to one opaque token, so "industry radar" could not find `IndustryRadar`. Adding a `word_delimiter_graph` analyzer took `name_words` from 0.570 to 0.924 MRR and overall from 0.895 to 0.953. Description kinds gave back a little (name tokens now compete for the same queries), a clearly worthwhile trade.
 - **Stopwords and stemming were missing entirely.** `reviews` did not match `review`, and `for`/`the` were scored like content words. Adding an English analyzer moved the eval slightly *down* (0.950 to 0.927 without coordination) — expected, since eval queries are drawn from the indexed text and so never suffer the vocabulary mismatch stemming exists to fix. Qualitatively it is what makes `review pull requests` find `CodingRules`.
 - **Two precision bugs the eval could not see.** Group adjacency shared a `should` list with the text clauses under `minimum_should_match: 1`, so it satisfied the match by itself and every agent with group usage matched every query. And the `description.subsequence` wildcard matched nearly anything. Together they made `--q invoice` and `--q datadog` return the same agents. Fixing both moved the eval by +0.003 — it measures whether the target ranks, not whether junk ranks with it. `--q invoice` now returns 0 hits.
 - **Subsequence wildcards blow up past ~24 characters.** Lucene refuses to determinize the automaton (`would require more than 10000 effort`), and the whole query errors — not just that clause. The clause is also pointless for multi-word input, since the field holds the full name and a space in the pattern demands a literal space in the name. Now gated on both length and token count.
-- **Global agents swamp anything usage-weighted.** `dust` alone accounts for 42k of the workspace's messages. `--exclude-global` filters them out.
+- **Global agents swamp anything usage-weighted.** `ruby` alone accounts for 42k of the workspace's messages. `--exclude-global` filters them out.
 - **The historical list comparison was close.** With no query, the old profile returned 389 hits, or 341 with `--exclude-global`, against 350 observed in `/manage/agents`. The profile predates pod export support, so those numbers are not a current correctness check.
 - **82% of the corpus is dead.** 2,108 of 2,566 agents saw zero messages in the window, and 2,141 are `hidden`. BM25 will happily surface a well-written agent nobody has ever used.
 - **Programmatic traffic has no groups.** 25 agents have usage but no group attribution at all (`CodingRules`: 1,568 messages, 0 users) — API-key runs carry no `user.group_ids`, so adjacency scores them zero no matter how popular.
@@ -263,7 +263,7 @@ Against the Dust workspace (2,566 agents, 30-day window):
 
 ```
 npx tsx scripts/sweep_bm25.ts --similarity name_bm25 --param b --values 0,0.25,0.5,0.75,1 \
-  --queries assets/eval_queries_dust.json --profile assets/profile_<id>.json --exclude-global
+  --queries assets/eval_queries_ruby.json --profile assets/profile_<id>.json --exclude-global
 ```
 
 Results over the 2,184-query set:

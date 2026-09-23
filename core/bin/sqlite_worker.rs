@@ -7,7 +7,7 @@ use axum::{
 };
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 
-use dust::{
+use ruby::{
     databases::table::{LocalTable, Table},
     databases_store::{self, gcs::GoogleCloudStorageDatabasesStore},
     open_telemetry::init_subscribers,
@@ -43,7 +43,7 @@ static GLOBAL: Jemalloc = Jemalloc;
 
 lazy_static! {
     // Defaults to the conventional local-dev port; overridable so multiple
-    // instances (e.g. one per dust-hive environment) can run side by side.
+    // instances (e.g. one per ruby-hive environment) can run side by side.
     static ref SQLITE_WORKER_PORT: String =
         std::env::var("SQLITE_WORKER_PORT").unwrap_or_else(|_| "3005".to_string());
     static ref WORKER_URL: String = match std::env::var("IS_LOCAL_DEV") {

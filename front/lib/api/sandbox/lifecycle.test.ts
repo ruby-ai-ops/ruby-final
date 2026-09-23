@@ -55,14 +55,14 @@ vi.mock("@app/lib/api/sandbox/egress", () => ({
   prepareSandboxEgressBeforeMount: mockPrepareSandboxEgressBeforeMount,
 }));
 
-vi.mock("@app/lib/api/file_system/dust_file_system", async (importOriginal) => {
+vi.mock("@app/lib/api/file_system/ruby_file_system", async (importOriginal) => {
   const actual =
     await importOriginal<
-      typeof import("@app/lib/api/file_system/dust_file_system")
+      typeof import("@app/lib/api/file_system/ruby_file_system")
     >();
   return {
     ...actual,
-    DustFileSystem: {
+    RubyFileSystem: {
       forConversation: mockForConversation,
       forFrameSandboxProvisioning: mockForFrameSandboxProvisioning,
     },
@@ -148,7 +148,7 @@ describe("ensureConversationSandboxReady", () => {
     spaceId: string | null;
   };
   const pod = { sId: "space-id" };
-  const image = { name: "dust-base" };
+  const image = { name: "ruby-base" };
   let sandbox: SandboxResource;
   const mockFs = {
     setupSandboxMount: mockSetupSandboxMount,
@@ -690,7 +690,7 @@ describe("ensureConversationSandboxReady", () => {
     expect(mockEnsureSandboxEgressOnExec).not.toHaveBeenCalled();
   });
 
-  it("short-circuits when DustFileSystem.forConversation fails", async () => {
+  it("short-circuits when RubyFileSystem.forConversation fails", async () => {
     mockEnsureSandboxActive.mockResolvedValue(
       new Ok({
         freshlyCreated: true,

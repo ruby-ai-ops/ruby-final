@@ -803,9 +803,9 @@ describe("destroyConversation", () => {
       jsonSchema: null,
       additionalConfiguration: {},
       mcpServerViewId: "test-server-view",
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
       internalMCPServerId: null,
       availability: "auto",
       permission: "low",
@@ -1198,7 +1198,7 @@ describe("fetchMCPServerViews", () => {
     });
 
     const conversation = await ConversationFactory.create(authenticator, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 
@@ -1271,7 +1271,7 @@ describe("fetchMCPServerViews", () => {
     });
 
     const conversation = await ConversationFactory.create(authenticator, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const remoteMCPServer = await RemoteMCPServerFactory.create(workspace);
@@ -1776,7 +1776,7 @@ describe("baseFetchWithAuthorization with space-based permissions", () => {
         sessionId: "test-session-id-user",
         user: {
           workOSUserId: sessionUser.workOSUserId,
-          email: sessionUser.email ?? "user@dust.tt",
+          email: sessionUser.email ?? "user@ruby.ad",
           email_verified: true,
           name: sessionUser.username ?? "user",
           nickname: sessionUser.username ?? "user",
@@ -1847,7 +1847,7 @@ describe("baseFetchWithAuthorization with space-based permissions", () => {
         sessionId: "test-session-id-admin",
         user: {
           workOSUserId: sessionAdminUser.workOSUserId,
-          email: sessionAdminUser.email ?? "admin@dust.tt",
+          email: sessionAdminUser.email ?? "admin@ruby.ad",
           email_verified: true,
           name: sessionAdminUser.username ?? "admin",
           nickname: sessionAdminUser.username ?? "admin",
@@ -2072,7 +2072,7 @@ describe("baseFetchWithAuthorization with space-based permissions", () => {
         sessionId: "test-session-id-subconversation",
         user: {
           workOSUserId: sessionUser.workOSUserId,
-          email: sessionUser.email ?? "user@dust.tt",
+          email: sessionUser.email ?? "user@ruby.ad",
           email_verified: true,
           name: sessionUser.username ?? "user",
           nickname: sessionUser.username ?? "user",

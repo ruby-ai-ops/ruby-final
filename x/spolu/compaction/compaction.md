@@ -15,7 +15,7 @@ context use.
 
 Claude Code solves this with a multi-layered compaction system (autocompact, microcompact, session
 memory compact) that summarizes the conversation and replaces the history with a compact summary.
-We want to bring a similar capability to Dust conversations.
+We want to bring a similar capability to Ruby conversations.
 
 We want to introduce compaction capability to provide more explicit context management to users but
 also to support forking a conversation into another one (fork would trigger a compaction that would
@@ -161,7 +161,7 @@ The chain is:
 ```
 AgentMessageModel.runIds (string[])
   → last runId
-    → RunModel.dustRunId
+    → RunModel.rubyRunId
       → RunUsageModel.promptTokens
 ```
 
@@ -201,8 +201,8 @@ When the threshold is crossed, trigger compaction:
 The token count is not stored as a dedicated column — it's resolved on-the-fly from the existing
 run usage data:
 
-- `AgentMessageModel.runIds` contains the dustRunIds for each agent message.
-- Query `RunResource.listByDustRunIds()` → take the last run (ordered by `createdAt`) →
+- `AgentMessageModel.runIds` contains the rubyRunIds for each agent message.
+- Query `RunResource.listByRubyRunIds()` → take the last run (ordered by `createdAt`) →
   `listRunUsages()` → read `promptTokens`.
 - This is a read-only lookup, no new columns needed.
 

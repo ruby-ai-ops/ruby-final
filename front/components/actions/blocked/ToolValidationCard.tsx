@@ -24,7 +24,7 @@ import {
   DialogTrigger,
   PieChart01,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 const DEFAULT_ICON = PieChart01;

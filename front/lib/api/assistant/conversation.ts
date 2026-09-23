@@ -112,7 +112,7 @@ import {
 } from "@app/lib/models/agent/conversation";
 import { notifyNewProjectConversation } from "@app/lib/notifications/triggers/project-new-conversation";
 import { triggerConversationUnreadNotifications } from "@app/lib/notifications/workflows/conversation-unread";
-import { isEnterpriseOrDust } from "@app/lib/plans/plan_codes";
+import { isEnterpriseOrRuby } from "@app/lib/plans/plan_codes";
 import { computeEffectiveMessageLimit } from "@app/lib/plans/usage/limits";
 import { AgentMCPActionResource } from "@app/lib/resources/agent_mcp_action_resource";
 import { ContentFragmentResource } from "@app/lib/resources/content_fragment_resource";
@@ -479,7 +479,7 @@ export function isUserMessageContextValid(
 
   const {
     "user-agent": userAgent,
-    "x-dust-extension-version": extensionVersion,
+    "x-ruby-extension-version": extensionVersion,
     "x-zendesk-user-id": zendeskUserId,
   } = headers;
 
@@ -499,7 +499,7 @@ export function isUserMessageContextValid(
       );
     case "cli":
     case "cli_programmatic":
-      return authMethod === "oauth" && userAgent === "Dust CLI";
+      return authMethod === "oauth" && userAgent === "Ruby CLI";
     case "extension":
       return authMethod === "oauth" && !!extensionVersion;
     case "raycast":
@@ -535,7 +535,7 @@ export async function postUserMessage(
     context,
     agenticMessageData,
     skipToolsValidation,
-    skipDustAutoMention,
+    skipRubyAutoMention,
     doNotAssociateUser,
     modelSelection,
   }: {
@@ -546,7 +546,7 @@ export async function postUserMessage(
     agenticMessageData?: AgenticMessageData;
     skipToolsValidation: boolean;
     doNotAssociateUser?: boolean;
-    skipDustAutoMention?: boolean;
+    skipRubyAutoMention?: boolean;
     modelSelection?: ModelSelectionType;
   }
 ): Promise<
@@ -612,12 +612,12 @@ export async function postUserMessage(
   // visibility decisions downstream depend on user intent, not on server-injected mentions.
   const explicitAgentMentions = mentions.filter(isAgentMention);
 
-  // Auto-inject @dust for mention-less web/extension messages in single-user conversations.
+  // Auto-inject @ruby for mention-less web/extension messages in single-user conversations.
   // Must run before the plan rate-limit check so the resulting agent message is counted.
   // Note: the per-pod default agent is applied client-side via the input bar sticky mention,
   // so the normal pod flow sends an explicit mention and never reaches this backstop.
   if (
-    !skipDustAutoMention &&
+    !skipRubyAutoMention &&
     mentions.length === 0 &&
     (context.origin === "web" || context.origin === "extension")
   ) {
@@ -627,14 +627,14 @@ export async function postUserMessage(
       });
 
     if (!hasOtherHumans) {
-      const dustAgent = await getAgentConfiguration(auth, {
-        agentId: GLOBAL_AGENTS_SID.DUST,
+      const rubyAgent = await getAgentConfiguration(auth, {
+        agentId: GLOBAL_AGENTS_SID.RUBY,
         variant: "extra_light",
       });
 
-      if (dustAgent && dustAgent.status === "active") {
-        mentions.push({ configurationId: dustAgent.sId });
-        content = `${serializeMention({ id: dustAgent.sId, type: "agent", label: dustAgent.name })} ${content}`;
+      if (rubyAgent && rubyAgent.status === "active") {
+        mentions.push({ configurationId: rubyAgent.sId });
+        content = `${serializeMention({ id: rubyAgent.sId, type: "agent", label: rubyAgent.name })} ${content}`;
       }
     }
   }
@@ -1823,7 +1823,7 @@ export async function retryAgentMessage(
       status_code: 403,
       api_error: {
         type: "workspace_auth_error",
-        message: "The answer to a message posted by Dust cannot be retried.",
+        message: "The answer to a message posted by Ruby cannot be retried.",
       },
     });
   }
@@ -2549,7 +2549,7 @@ export async function checkMessagesLimit(
       });
     }
 
-    const sidekickDailyLimit = isEnterpriseOrDust(auth.plan())
+    const sidekickDailyLimit = isEnterpriseOrRuby(auth.plan())
       ? SIDEKICK_MESSAGE_RATE_LIMIT_PER_ACTOR_PER_DAY_ENTERPRISE
       : SIDEKICK_MESSAGE_RATE_LIMIT_PER_ACTOR_PER_DAY;
     const remaining = await rateLimiter({
@@ -2695,7 +2695,7 @@ export async function checkMessagesLimit(
             api_error: {
               type: "rate_limit_error",
               message:
-                "This API key has reached its credit spend limit. Please increase the limit in the Developers > API Keys section of the Dust dashboard.",
+                "This API key has reached its credit spend limit. Please increase the limit in the Developers > API Keys section of the Ruby dashboard.",
             },
           });
         }
@@ -2735,7 +2735,7 @@ export async function checkMessagesLimit(
   } else if (user && !isFreeOrigin(context.origin)) {
     // Non-credit-priced plans: no workspace pool and no Metronome per-user cap,
     // so the per-user credit limit is enforced solely from the Redis fixed-window
-    // counter, bucketed on the UTC calendar month. Admin-set (poke) workspace
+    // counter, bucketed on the UTC calendar month. Admin-set (admin) workspace
     // default, overridable per member. Free origins produce no billable usage,
     // and API keys have no per-user limit (they are gated by the programmatic
     // caps below).
@@ -3285,7 +3285,7 @@ export async function updateAgentMessageWithFinalStatus(
     status: Exclude<AgentMessageStatus, "created">;
     error?: ToolErrorEvent["error"];
     // Force finalization even if the message is in an anomalous state (e.g. blocked actions
-    // spanning multiple steps). Used by the unstick-conversation poke plugin to rescue genuinely
+    // spanning multiple steps). Used by the unstick-conversation admin plugin to rescue genuinely
     // stuck conversations. Leave false everywhere else so invariant violations surface as errors.
     dangerouslyBypassSameStepCheck?: boolean;
   }

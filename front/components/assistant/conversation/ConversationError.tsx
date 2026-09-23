@@ -7,7 +7,7 @@ import {
   Icon,
   LinkWrapper,
   LogIn01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
 interface ConversationErrorProps {

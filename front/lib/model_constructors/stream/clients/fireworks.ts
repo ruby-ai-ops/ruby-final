@@ -55,7 +55,7 @@ export abstract class FireworksStream extends WithOpenAICompletionsInputConverte
     this.client = new OpenAI({
       apiKey: FIREWORKS_API_KEY,
       baseURL: FIREWORKS_BASE_URL,
-      // The agent loop owns retries so every attempt gets its own Dust trace.
+      // The agent loop owns retries so every attempt gets its own Ruby trace.
       maxRetries: 0,
     });
   }

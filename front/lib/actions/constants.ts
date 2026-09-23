@@ -27,8 +27,8 @@ export const PROCESS_ACTION_TOP_K = 768;
 export const DEFAULT_CONVERSATION_QUERY_TABLES_ACTION_NAME =
   "query_conversation_tables";
 
-export const DUST_CONVERSATION_HISTORY_MAGIC_INPUT_KEY =
-  "__dust_conversation_history";
+export const RUBY_CONVERSATION_HISTORY_MAGIC_INPUT_KEY =
+  "__ruby_conversation_history";
 
 export const ENABLE_SKILL_TOOL_NAME = "enable_skill";
 

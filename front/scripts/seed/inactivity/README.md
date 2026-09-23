@@ -18,7 +18,7 @@ different rule:
 
 ## Prerequisites
 
-- `dust-hive` seed must have run, for the workspace and its admin.
+- `ruby-hive` seed must have run, for the workspace and its admin.
 - Temporal must be reachable: creating the enabled schedule starts a workflow. Its cron is yearly, so
   the seeded agent will not actually run.
 

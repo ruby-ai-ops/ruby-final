@@ -1,5 +1,5 @@
-import type { LightAgentConfigurationType, Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { LightAgentConfigurationType, Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import jaroWinkler from "talisman/metrics/jaro-winkler";
 
 export type MentionMatch = {
@@ -139,7 +139,7 @@ export function processMessageForMention({
   },
   Error
 > {
-  const fallbackAgentIds = ["dust", "claude-4-sonnet", "gpt-5"];
+  const fallbackAgentIds = ["ruby", "claude-4-sonnet", "gpt-5"];
 
   let processedMessage = message;
   let mention: MentionMatch | undefined;

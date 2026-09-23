@@ -1,5 +1,5 @@
 import { FrameBetaChip } from "@app/components/assistant/conversation/interactive_content/frame/FrameBetaChip";
-import { AppLayoutTitle } from "@app/components/sparkle/AppLayoutTitle";
+import { AppLayoutTitle } from "@app/components/ui/AppLayoutTitle";
 import config from "@app/lib/api/config";
 import { LinkWrapper } from "@app/lib/platform";
 import { TRACKING_AREAS, withTracking } from "@app/lib/tracking";
@@ -7,11 +7,11 @@ import type { UserTypeWithWorkspaces } from "@app/types/user";
 import {
   Button,
   cn,
-  DustLogo,
+  RubyLogo,
   MessageCircle01,
   Rocket02,
   SpaceClosed,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface PublicInteractiveContentHeaderProps {
   title: string;
@@ -53,7 +53,7 @@ export function PublicInteractiveContentHeader({
             <LinkWrapper
               href={`${staticWebsiteUrl}/home${user ? "" : `?${UTM_PARAM}`}`}
             >
-              <DustLogo className="h-[20px] w-[80px]" />
+              <RubyLogo className="h-[20px] w-[80px]" />
             </LinkWrapper>
           )}
         </div>

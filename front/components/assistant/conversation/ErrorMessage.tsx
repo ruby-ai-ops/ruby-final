@@ -23,7 +23,7 @@ import {
   ContentMessage,
   InfoCircle,
   RefreshCw02,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface ErrorMessageProps {
   error: GenericErrorContent;

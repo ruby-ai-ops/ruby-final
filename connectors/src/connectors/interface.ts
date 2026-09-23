@@ -7,8 +7,8 @@ import type {
   DataSourceConfig,
   ModelId,
 } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { Err } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { Err } from "@ruby-ai/client";
 
 export type CreateConnectorErrorCode = "INVALID_CONFIGURATION";
 

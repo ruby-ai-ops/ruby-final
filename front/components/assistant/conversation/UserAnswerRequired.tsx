@@ -6,7 +6,7 @@ import type { UserQuestionAnswer } from "@app/lib/actions/types";
 import { canCurrentUserRespondToParentUserMessage } from "@app/lib/api/assistant/conversation/can_current_user_respond";
 import { useAuth } from "@app/lib/auth/AuthContext";
 import type { LightWorkspaceType, UserType } from "@app/types/user";
-import { ArrowUp, Button, cn, OptionCard, Spinner } from "@dust-tt/sparkle";
+import { ArrowUp, Button, cn, OptionCard, Spinner } from "@ruby-ai/ui";
 import { useReducedMotion } from "framer-motion";
 import type { KeyboardEvent } from "react";
 import { useEffect, useRef, useState } from "react";

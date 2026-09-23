@@ -27,7 +27,7 @@ import {
   Hoverable,
   Icon,
   Lock01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -168,7 +168,7 @@ export function PersonalConnectionRequiredDialog({
             agent.{" "}
             <Hoverable
               variant="highlight"
-              href={`https://docs.dust.tt/docs/personal-vs-workspace-credentials-for-tools-mcp-servers`}
+              href={`https://docs.ruby.ad/docs/personal-vs-workspace-credentials-for-tools-mcp-servers`}
               target="_blank"
             >
               Learn more

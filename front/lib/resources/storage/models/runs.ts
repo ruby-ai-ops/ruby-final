@@ -13,11 +13,11 @@ export class RunModel extends WorkspaceAwareModel<RunModel> {
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
-  declare dustRunId: string;
+  declare rubyRunId: string;
   declare runType: string;
   declare useWorkspaceCredentials: boolean | null;
   // Identifies the agent-loop execution this run belongs to (sha256 of the
-  // execution's sorted dustRunIds). Set at finalize so per-execution credit
+  // execution's sorted rubyRunIds). Set at finalize so per-execution credit
   // costs can be ceiled per group, matching the Metronome billing partition.
   // Null for non-agent-loop runs and legacy rows.
   declare runKey: string | null;
@@ -39,7 +39,7 @@ RunModel.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    dustRunId: {
+    rubyRunId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -62,7 +62,7 @@ RunModel.init(
     indexes: [
       { fields: ["workspaceId", "appId", "runType", "createdAt"] },
       { fields: ["workspaceId", "createdAt"] },
-      { unique: true, fields: ["dustRunId"] },
+      { unique: true, fields: ["rubyRunId"] },
     ],
   }
 );
@@ -107,7 +107,7 @@ export class RunUsageModel extends WorkspaceAwareModel<RunUsageModel> {
    * @cc [owner:pmilliotte,label:product] run-usage-records-credential-owner
    * Records which credential source served the inference: `true` for credentials the workspace
    * provided -- a BYOK plan, or the legacy per-app provider keys selected by
-   * `use_workspace_credentials` -- and `false` for Dust-managed ones. It must be set when the usage
+   * `use_workspace_credentials` -- and `false` for Ruby-managed ones. It must be set when the usage
    * row is created, from the plan in force then, and never recomputed on finalize, so the row keeps
    * pointing at the source that actually served it.
    *
@@ -116,7 +116,7 @@ export class RunUsageModel extends WorkspaceAwareModel<RunUsageModel> {
    * `migrations/20260916_backfill_byok_run_usages.ts` read `true` before that date; and `runs`
    * carries an unrelated legacy column of the same name that predates this one. A legacy app run on
    * workspace provider keys records `true` from that selection alone: those credentials carry no
-   * `DUST_BYOK` marker, so `core` can still fall back to its own environment key for a provider the
+   * `RUBY_BYOK` marker, so `core` can still fall back to its own environment key for a provider the
    * workspace never configured. And a batch row is only created when the results are retrieved, so it
    * carries the plan in force then rather than at submit: a workspace that flips BYOK while a batch
    * is pending records the source that did not serve it.

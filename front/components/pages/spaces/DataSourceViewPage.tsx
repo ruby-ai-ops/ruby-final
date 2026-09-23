@@ -12,7 +12,7 @@ import {
   useSystemSpace,
 } from "@app/lib/swr/spaces";
 import { isValidDataSourceViewCategory } from "@app/types/api/public/spaces";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 export function DataSourceViewPage() {
   const router = useAppRouter();

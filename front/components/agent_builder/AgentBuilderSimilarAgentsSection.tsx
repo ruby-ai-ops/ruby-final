@@ -9,7 +9,7 @@ import {
 } from "@app/lib/swr/assistants";
 import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import { Avatar, cn, Spinner } from "@dust-tt/sparkle";
+import { Avatar, cn, Spinner } from "@ruby-ai/ui";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { useWatch } from "react-hook-form";
 

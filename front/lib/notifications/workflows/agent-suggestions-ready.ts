@@ -1,6 +1,6 @@
 import { getEditors } from "@app/lib/api/assistant/editors";
 import type { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { getNovuClient } from "@app/lib/notifications";
 import { fireAndForgetNotification } from "@app/lib/notifications/fire_and_forget";
 import { getAgentBuilderRoute } from "@app/lib/utils/router";
@@ -63,7 +63,7 @@ const triggerAgentSuggestionsReadyNotifications = async (
     agentConfiguration: LightAgentConfigurationType;
     suggestionCount: number;
   }
-): Promise<Result<void, DustError<"internal_error">>> => {
+): Promise<Result<void, RubyError<"internal_error">>> => {
   if (suggestionCount === 0) {
     return new Ok(undefined);
   }
@@ -107,14 +107,14 @@ const triggerAgentSuggestionsReadyNotifications = async (
         .map(({ error }) => error?.join("; "))
         .join("; ");
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: `Failed to trigger agent suggestions ready notification: ${eventErrors}`,
       });
     }
   } catch (err) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: "Failed to trigger agent suggestions ready notification",
       cause: normalizeError(err),

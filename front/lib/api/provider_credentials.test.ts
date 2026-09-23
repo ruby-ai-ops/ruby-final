@@ -19,7 +19,7 @@ vi.mock("@app/types/oauth/oauth_api", async (importOriginal) => {
 });
 
 const BYOK_BASE_VARIABLES = {
-  DUST_BYOK: "true",
+  RUBY_BYOK: "true",
   OPENAI_BASE_URL: "",
   OPENAI_USE_EU_ENDPOINT: "false",
 };
@@ -31,7 +31,7 @@ describe("getLlmCredentials", () => {
     );
   });
 
-  it("returns Dust-managed LLM credentials for non-BYOK workspaces", async () => {
+  it("returns Ruby-managed LLM credentials for non-BYOK workspaces", async () => {
     const { authenticator } = await createResourceTest({ role: "admin" });
 
     const result = await getLlmCredentials(authenticator, {
@@ -190,11 +190,11 @@ describe("getLlmCredentials", () => {
 
   // Last in the file on purpose: `EnvironmentConfig` caches every value it reads, so the env
   // stubbed here would leak into any test declared after it.
-  it("hands Dust-managed keys and the Vertex project id to non-BYOK workspaces only", async () => {
-    vi.stubEnv("VERTEX_AI_PROJECT_ID", "dust-vertex-project");
-    vi.stubEnv("DUST_MANAGED_ANTHROPIC_API_KEY", "sk-dust-anthropic");
-    vi.stubEnv("DUST_MANAGED_OPENAI_API_KEY", "sk-dust-openai");
-    vi.stubEnv("DUST_MANAGED_GOOGLE_AI_STUDIO_API_KEY", "sk-dust-google");
+  it("hands Ruby-managed keys and the Vertex project id to non-BYOK workspaces only", async () => {
+    vi.stubEnv("VERTEX_AI_PROJECT_ID", "ruby-vertex-project");
+    vi.stubEnv("RUBY_MANAGED_ANTHROPIC_API_KEY", "sk-ruby-anthropic");
+    vi.stubEnv("RUBY_MANAGED_OPENAI_API_KEY", "sk-ruby-openai");
+    vi.stubEnv("RUBY_MANAGED_GOOGLE_AI_STUDIO_API_KEY", "sk-ruby-google");
 
     const { authenticator: nonByokAuth } = await createResourceTest({
       role: "admin",
@@ -204,10 +204,10 @@ describe("getLlmCredentials", () => {
     });
 
     expect(nonByokCredentials).toMatchObject({
-      AGENT_PLATFORM_PROJECT_ID: "dust-vertex-project",
-      ANTHROPIC_API_KEY: "sk-dust-anthropic",
-      OPENAI_API_KEY: "sk-dust-openai",
-      GOOGLE_AI_STUDIO_API_KEY: "sk-dust-google",
+      AGENT_PLATFORM_PROJECT_ID: "ruby-vertex-project",
+      ANTHROPIC_API_KEY: "sk-ruby-anthropic",
+      OPENAI_API_KEY: "sk-ruby-openai",
+      GOOGLE_AI_STUDIO_API_KEY: "sk-ruby-google",
     });
 
     const { authenticator: byokAuth } = await createResourceTest({

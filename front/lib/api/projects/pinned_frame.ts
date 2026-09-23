@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import type { Authenticator } from "@app/lib/auth";
 import type { SpaceResource } from "@app/lib/resources/space_resource";
 import { resolveCanonicalScopedPath } from "@app/types/mount_path";
@@ -28,7 +28,7 @@ export async function validatePinnedFramePath(
     return new Err(new Error("Invalid pinned frame path."));
   }
 
-  const fsResult = await DustFileSystem.forPod(auth, space);
+  const fsResult = await RubyFileSystem.forPod(auth, space);
   if (fsResult.isErr()) {
     return new Err(new Error("Failed to initialize file system."));
   }

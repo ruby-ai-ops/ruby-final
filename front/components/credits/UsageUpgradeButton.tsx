@@ -12,7 +12,7 @@ import {
   DialogTitle,
   Hoverable,
   TextArea,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";

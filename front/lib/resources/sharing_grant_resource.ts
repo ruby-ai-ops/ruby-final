@@ -5,7 +5,7 @@ import {
   getAuditLogContext,
 } from "@app/lib/api/audit/workos_audit";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { BaseResource } from "@app/lib/resources/base_resource";
 import type { FileResource } from "@app/lib/resources/file_resource";
 import {
@@ -189,7 +189,7 @@ export class SharingGrantResource extends BaseResource<SharingGrantModel> {
     file: FileResource,
     { emails = [], domains = [] }: { emails?: string[]; domains?: string[] },
     { transaction }: { transaction?: Transaction } = {}
-  ): Promise<Result<SharingGrantResource[], DustError>> {
+  ): Promise<Result<SharingGrantResource[], RubyError>> {
     assert(
       auth.getNonNullableWorkspace().id === file.workspaceId,
       "Sharing grant workspace mismatch"
@@ -203,7 +203,7 @@ export class SharingGrantResource extends BaseResource<SharingGrantModel> {
       .safeParse({ emails, domains });
     if (!parsed.success) {
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_request_error",
           fromError(parsed.error).toString()
         )
@@ -361,7 +361,7 @@ export class SharingGrantResource extends BaseResource<SharingGrantModel> {
   async revoke(
     auth: Authenticator,
     { transaction }: { transaction?: Transaction } = {}
-  ): Promise<Result<undefined, DustError>> {
+  ): Promise<Result<undefined, RubyError>> {
     assert(
       auth.getNonNullableWorkspace().id === this.workspaceId,
       "Sharing grant workspace mismatch"
@@ -369,7 +369,7 @@ export class SharingGrantResource extends BaseResource<SharingGrantModel> {
     const canInvite = auth.hasWorkspacePermission("invite", "frame");
     if (!canInvite) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "You do not have permission to revoke sharing grants for Frames."
         )
@@ -386,7 +386,7 @@ export class SharingGrantResource extends BaseResource<SharingGrantModel> {
     );
     if (count === 0) {
       return new Err(
-        new DustError("file_not_found", "Sharing grant not found")
+        new RubyError("file_not_found", "Sharing grant not found")
       );
     }
 

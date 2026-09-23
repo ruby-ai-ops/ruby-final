@@ -300,9 +300,9 @@ describe("matchPayload", () => {
         },
       },
       repository: {
-        name: "dust",
+        name: "ruby",
         owner: {
-          login: "dust-tt",
+          login: "ruby-ai",
         },
       },
     };

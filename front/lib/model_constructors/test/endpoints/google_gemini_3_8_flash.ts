@@ -9,7 +9,7 @@ import type { StreamSetup } from "@app/lib/model_constructors/test/setup";
 // work. Minimal returns
 // INVALID_ARGUMENT. Thinking-off works but is undocumented, so the product does
 // not expose it. Temperatures from 0 to 2 are accepted but ignored by the API;
-// the Dust layer strips them according to Google's migration guidance.
+// the Ruby layer strips them according to Google's migration guidance.
 export const GEMINI_3_8_FLASH_TESTS = {
   "simple/no-tools/t-default/r-default": null,
   "simple/no-tools/t-default/r-none": [INPUT_CONFIGURATION_ERROR],

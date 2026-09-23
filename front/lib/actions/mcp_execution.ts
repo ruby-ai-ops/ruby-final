@@ -265,7 +265,7 @@ export async function processToolResults(
 
       switch (block.type) {
         case "text": {
-          // If persistToolOutput wrote this block to DustFileSystem (too large), return a resource
+          // If persistToolOutput wrote this block to RubyFileSystem (too large), return a resource
           // block pointing at the scoped path. The model reads it via the `cat` tool.
           if (res.value !== null) {
             const snippet = makeOffloadedSnippet(block.text, res.value);
@@ -588,7 +588,7 @@ export function getAugmentedInputs(
     rawInputs: Record<string, unknown>;
   }
 ): Record<string, unknown> {
-  // Remote MCP tools pass inputSchema through as-is; only Dust internal tools
+  // Remote MCP tools pass inputSchema through as-is; only Ruby internal tools
   // inject configured data sources, tables, etc. via augmentInputsWithConfiguration.
   if (!isInternalServerSideMCPToolConfiguration(actionConfiguration)) {
     return rawInputs;

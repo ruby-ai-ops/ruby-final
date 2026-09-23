@@ -87,7 +87,7 @@ vi.mock("@app/hooks/useNotification", () => ({
   useSendNotification: () => vi.fn(),
 }));
 vi.mock("@app/lib/auth/AuthContext", () => ({
-  useAuth: () => ({ vizUrl: "https://viz.dust.tt" }),
+  useAuth: () => ({ vizUrl: "https://viz.ruby.ad" }),
   useFeatureFlags: () => ({ hasFeature: () => false }),
 }));
 vi.mock("@app/lib/context/clientType", () => ({
@@ -114,7 +114,7 @@ vi.mock("@app/lib/swr/files", () => ({
     mutateFileMetadata: vi.fn(),
   }),
   useShareInteractiveContentFile: () => ({
-    fileShare: { shareUrl: "https://dust.tt/share/frame/share-token" },
+    fileShare: { shareUrl: "https://ruby.ad/share/frame/share-token" },
   }),
 }));
 vi.mock("@app/lib/swr/frames", () => ({
@@ -258,7 +258,7 @@ describe("FrameRenderer", () => {
     const betaLink = screen.getByRole("link", { name: "Beta" });
     expect(betaLink).toHaveAttribute(
       "href",
-      "https://app.dust.tt/share/frame/c5d83f0e-4825-4c6f-b33a-6841b1490d19"
+      "https://app.ruby.ad/share/frame/c5d83f0e-4825-4c6f-b33a-6841b1490d19"
     );
     expect(betaLink).toHaveAttribute("target", "_blank");
   });
@@ -294,7 +294,7 @@ describe("FrameRenderer", () => {
     fireEvent.click(screen.getByRole("button", { name: "Open in a new tab" }));
 
     expect(open).toHaveBeenCalledWith(
-      "https://dust.tt/share/frame/share-token",
+      "https://ruby.ad/share/frame/share-token",
       "_blank",
       "noopener,noreferrer"
     );

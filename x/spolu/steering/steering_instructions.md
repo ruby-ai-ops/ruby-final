@@ -5,7 +5,7 @@ Deferred from steering.md. Can be implemented once steering is working end-to-en
 ## Overview
 
 Add a `wasPending` boolean on `MessageModel` (set to `true` when promoting pending messages to
-visible) so that `renderUserMessage()` can append a steering instruction to the `<dust_system>`
+visible) so that `renderUserMessage()` can append a steering instruction to the `<ruby_system>`
 block, making the model aware that the message was sent to steer its current work.
 
 ## Type Changes
@@ -18,15 +18,15 @@ block, making the model aware that the message was sent to steer its current wor
 
 When the promoted pending messages are included in the new agent loop's conversation context, they
 are rendered by `renderUserMessage()` (in `helpers.ts`). This function wraps each user message
-with a `<dust_system>` block containing metadata:
+with a `<ruby_system>` block containing metadata:
 
 ```
-<dust_system>
+<ruby_system>
 - Sender: John Doe (@John Doe) <john@example.com>
 - Conversation: abc123
 - Sent at: Apr 02, 2026, 14:30:00 UTC
 - Source: web
-</dust_system>
+</ruby_system>
 
 The actual message content here...
 ```
@@ -35,18 +35,18 @@ This rendering is already correct for steering messages — the sender identity,
 source are all accurate and useful context for the model.
 
 To make the model aware that these messages were sent to steer its current work (rather than
-being a new conversation turn), an additional instruction is added to the `<dust_system>` block
+being a new conversation turn), an additional instruction is added to the `<ruby_system>` block
 for messages that were pending (i.e. sent while the previous agent loop was running):
 
 ```
-<dust_system>
+<ruby_system>
 - Sender: John Doe (@John Doe) <john@example.com>
 - Conversation: abc123
 - Sent at: Apr 02, 2026, 14:30:00 UTC
 - Source: web
 
 This message was sent by the user to steer your current work.
-</dust_system>
+</ruby_system>
 
 Please focus on the backend first...
 ```
@@ -65,9 +65,9 @@ if (m.wasPending) {
 }
 ```
 
-### Introspection: Nothing Problematic in Existing `<dust_system>`
+### Introspection: Nothing Problematic in Existing `<ruby_system>`
 
-The existing `<dust_system>` content for user messages contains only:
+The existing `<ruby_system>` content for user messages contains only:
 - **Sender identity** (name, mention, email) — correct for steering, identifies who is steering.
 - **Conversation ID** — neutral.
 - **Timestamp** — useful, tells the model when the steering was sent relative to its work.

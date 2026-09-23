@@ -6,7 +6,7 @@
     "analysis": "The skill should leverage web search to find up-to-date contact information and include instructions on how to use the web search tool effectively.",
     "state": "pending",
     "source": "reinforcement",
-    "sourceConversationIds": ["RADustConv04"],
+    "sourceConversationIds": ["RARubyConv04"],
     "suggestion": {
       "instructionEdits": [
         {

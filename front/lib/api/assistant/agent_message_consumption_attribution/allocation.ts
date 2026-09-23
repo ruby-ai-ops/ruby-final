@@ -28,7 +28,7 @@ export type MessageConsumptionAllocation<
 export type AllocationSkipReason = {
   code:
     | "no_billed_credits"
-    | "no_items_or_dust_run_ids"
+    | "no_items_or_ruby_run_ids"
     | "no_message_usages"
     | "incomplete_attribution"
     | "reconciliation_failed";
@@ -158,11 +158,11 @@ function hasCompleteModelAttribution(
 function hasCompleteToolAttribution({
   actions,
   items,
-  dustRunIdsWithUsage,
+  rubyRunIdsWithUsage,
 }: {
   actions: AgentMCPActionResource[];
   items: AgentMessageConsumptionItemResource[];
-  dustRunIdsWithUsage: Set<string>;
+  rubyRunIdsWithUsage: Set<string>;
 }): boolean {
   const toolItemByActionModelId = new Map<
     ModelId,
@@ -182,8 +182,8 @@ function hasCompleteToolAttribution({
   }
 
   for (const action of actions) {
-    const dustRunId = action.stepContent.dustRunId;
-    if (!dustRunId || !dustRunIdsWithUsage.has(dustRunId)) {
+    const rubyRunId = action.stepContent.rubyRunId;
+    if (!rubyRunId || !rubyRunIdsWithUsage.has(rubyRunId)) {
       continue;
     }
 
@@ -208,7 +208,7 @@ function buildMessageConsumptionAllocationForVersion<
   actions,
   attributionVersion,
   billedCredits,
-  dustRunIds,
+  rubyRunIds,
   items,
   runs,
   usages,
@@ -216,25 +216,25 @@ function buildMessageConsumptionAllocationForVersion<
   actions: AgentMCPActionResource[];
   attributionVersion: number;
   billedCredits: number;
-  dustRunIds: string[];
+  rubyRunIds: string[];
   items: AgentMessageConsumptionItemResource[];
   runs: RunResource[];
   usages: TUsage[];
 }): Result<MessageConsumptionAllocation<TUsage>, AllocationSkipReason> {
-  if (items.length === 0 || dustRunIds.length === 0) {
+  if (items.length === 0 || rubyRunIds.length === 0) {
     return new Err({
-      code: "no_items_or_dust_run_ids",
+      code: "no_items_or_ruby_run_ids",
       context: {
         attributionVersion,
-        dustRunIdCount: dustRunIds.length,
+        rubyRunIdCount: rubyRunIds.length,
         itemCount: items.length,
       },
     });
   }
 
-  const dustRunIdSet = new Set(dustRunIds);
+  const rubyRunIdSet = new Set(rubyRunIds);
   const messageRunModelIds = new Set(
-    runs.filter((run) => dustRunIdSet.has(run.dustRunId)).map((run) => run.id)
+    runs.filter((run) => rubyRunIdSet.has(run.rubyRunId)).map((run) => run.id)
   );
   const messageUsages = usages.filter((usage) =>
     messageRunModelIds.has(usage.runModelId)
@@ -244,7 +244,7 @@ function buildMessageConsumptionAllocationForVersion<
       code: "no_message_usages",
       context: {
         attributionVersion,
-        dustRunIdCount: dustRunIds.length,
+        rubyRunIdCount: rubyRunIds.length,
         runCount: runs.length,
         matchedRunCount: messageRunModelIds.size,
         totalUsageCount: usages.length,
@@ -252,13 +252,13 @@ function buildMessageConsumptionAllocationForVersion<
     });
   }
 
-  const dustRunIdByRunModelId = new Map(
-    runs.map((run) => [run.id, run.dustRunId])
+  const rubyRunIdByRunModelId = new Map(
+    runs.map((run) => [run.id, run.rubyRunId])
   );
-  const dustRunIdsWithUsage = new Set(
+  const rubyRunIdsWithUsage = new Set(
     messageUsages.flatMap((usage) => {
-      const dustRunId = dustRunIdByRunModelId.get(usage.runModelId);
-      return dustRunId ? [dustRunId] : [];
+      const rubyRunId = rubyRunIdByRunModelId.get(usage.runModelId);
+      return rubyRunId ? [rubyRunId] : [];
     })
   );
 
@@ -268,7 +268,7 @@ function buildMessageConsumptionAllocationForVersion<
     hasCompleteToolAttribution({
       actions,
       items,
-      dustRunIdsWithUsage,
+      rubyRunIdsWithUsage,
     });
 
   if (!completeModel || !completeTool) {
@@ -324,14 +324,14 @@ export function buildLatestMessageConsumptionAllocation<
 >({
   actions,
   billedCredits,
-  dustRunIds,
+  rubyRunIds,
   items,
   runs,
   usages,
 }: {
   actions: AgentMCPActionResource[];
   billedCredits: number | null;
-  dustRunIds: string[];
+  rubyRunIds: string[];
   items: AgentMessageConsumptionItemResource[];
   runs: RunResource[];
   usages: TUsage[];
@@ -360,7 +360,7 @@ export function buildLatestMessageConsumptionAllocation<
       actions,
       attributionVersion,
       billedCredits,
-      dustRunIds,
+      rubyRunIds,
       items: itemsByAttributionVersion.get(attributionVersion) ?? [],
       runs,
       usages,
@@ -373,8 +373,8 @@ export function buildLatestMessageConsumptionAllocation<
 
   return new Err(
     lastSkipReason ?? {
-      code: "no_items_or_dust_run_ids",
-      context: { itemCount: 0, dustRunIdCount: dustRunIds.length },
+      code: "no_items_or_ruby_run_ids",
+      context: { itemCount: 0, rubyRunIdCount: rubyRunIds.length },
     }
   );
 }

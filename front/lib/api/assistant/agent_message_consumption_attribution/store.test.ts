@@ -93,7 +93,7 @@ async function setupSettledMessageWithUsage({
     workspace,
     conversation,
     agentConfig: agentConfiguration,
-    runIds: runs.map(({ dustRunId }) => dustRunId),
+    runIds: runs.map(({ rubyRunId }) => rubyRunId),
   });
   await ConversationResource.updateAgentMessageCostCredits(auth, {
     agentMessageModelId: agentMessage.agentMessageId,
@@ -261,7 +261,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       conversationModelId: conversation.id,
       agentMessageModelId,
       status: "succeeded",
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
     });
 
     await expect(
@@ -288,7 +288,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       conversationModelId: conversation.id,
       agentMessageModelId,
       status: "errored",
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
       functionCallName: "sandbox__bash",
       toolName: "bash",
       mcpServerName: "sandbox",
@@ -380,7 +380,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       status: "succeeded",
       // Stamp the action's step content with the run that emitted it, which is how attribution ties
       // a tool call back to its run usage.
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
     });
 
     await computeAndStoreAgentMessageConsumptionAttribution(auth, {
@@ -466,7 +466,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       conversationModelId: conversation.id,
       agentMessageModelId,
       status: "succeeded",
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
       functionCallName: "attributed_server__attributed_tool",
       toolName: "attributed_tool",
       toolServerId: server.sId,
@@ -514,7 +514,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
         conversationModelId: conversation.id,
         agentMessageModelId,
         status: "succeeded",
-        dustRunId: run.dustRunId,
+        rubyRunId: run.rubyRunId,
       });
       actions.push(action);
     }
@@ -627,7 +627,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
         conversationModelId: conversation.id,
         agentMessageModelId,
         status: "succeeded",
-        dustRunId: run.dustRunId,
+        rubyRunId: run.rubyRunId,
         functionCallName: "sandbox__bash",
         toolName: "bash",
         mcpServerName: "sandbox",
@@ -642,7 +642,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       conversationModelId: conversation.id,
       agentMessageModelId,
       status: "succeeded",
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
       functionCallName: "interactive_content__create_interactive_content_file",
       toolName: "create_interactive_content_file",
       mcpServerName: "interactive_content",
@@ -675,7 +675,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       file_name: "dashboard.tsx",
       mode: "inline",
     });
-    // Only the parent Computer call/result is model-visible. The child inputs are issued by dsbx,
+    // Only the parent Computer call/result is model-visible. The child inputs are issued by rbx,
     // and the child result reaches the model inside the Computer output.
     expect(inputTexts).toHaveLength(1);
 
@@ -762,7 +762,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       conversationModelId: conversation.id,
       agentMessageModelId,
       status: "succeeded",
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
       output: [
         makeEnableSkillResultOutput({
           skillId: skill.sId,
@@ -785,7 +785,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
     const [inputTexts] = inputTokenizationCall;
     expect(inputTexts).toHaveLength(1);
     expect(inputTexts[0]).toContain(
-      "<dust_system>\n<Measured Skill>\nFollow the enabled skill instructions."
+      "<ruby_system>\n<Measured Skill>\nFollow the enabled skill instructions."
     );
     const toolDefinition = '"name":"common_utilities__set_conversation_title"';
     if (includesToolDefinitions) {
@@ -824,7 +824,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       workspace,
       conversationModelId: conversation.id,
       agentMessageModelId,
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
     });
 
     await computeAndStoreAgentMessageConsumptionAttribution(auth, {
@@ -876,7 +876,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       workspace,
       conversationModelId: conversation.id,
       agentMessageModelId,
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
     });
 
     // First finalize, while the tool is still blocked: a pending row is written.
@@ -932,7 +932,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       workspace,
       conversationModelId: conversation.id,
       agentMessageModelId,
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
     });
 
     // First finalize, while the tool is still blocked: a pending row is written.
@@ -1018,7 +1018,7 @@ describe("computeAndStoreAgentMessageConsumptionAttribution", () => {
       workspace,
       conversationModelId: conversation.id,
       agentMessageModelId,
-      dustRunId: run.dustRunId,
+      rubyRunId: run.rubyRunId,
     });
 
     await computeAndStoreAgentMessageConsumptionAttribution(auth, {

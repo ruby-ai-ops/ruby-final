@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { DustFileSystem, parseScopedPrefix } from "@app/lib/api/file_system";
+import { RubyFileSystem, parseScopedPrefix } from "@app/lib/api/file_system";
 import type { GCSMountPoint } from "@app/lib/api/files/gcs_mount/files";
 import { FRAME_MANIFEST_FILE } from "@app/types/api/frame_manifest";
 import type { Result } from "@app/types/shared/result";
@@ -39,7 +39,7 @@ export type FrameSourceMovePaths = {
 };
 
 function normalizeFrameDirectoryPath(scopedPath: string): string | null {
-  const normalized = DustFileSystem.normalizeScopedPath(scopedPath);
+  const normalized = RubyFileSystem.normalizeScopedPath(scopedPath);
   if (!normalized) {
     return null;
   }

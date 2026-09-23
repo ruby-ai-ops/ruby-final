@@ -30,10 +30,10 @@ export default defineConfig(() => {
         // invalidation and the idle-in-transaction watchdog print during the runs.
         LOG_LEVEL: process.env.TEST_LOG_LEVEL ?? "silent",
         // Map API keys from non-VITE env vars to VITE prefixed ones for browser compatibility
-        DUST_MANAGED_ANTHROPIC_API_KEY:
-          process.env.DUST_MANAGED_ANTHROPIC_API_KEY ?? "",
-        DUST_MANAGED_OPENAI_API_KEY:
-          process.env.DUST_MANAGED_OPENAI_API_KEY ?? "",
+        RUBY_MANAGED_ANTHROPIC_API_KEY:
+          process.env.RUBY_MANAGED_ANTHROPIC_API_KEY ?? "",
+        RUBY_MANAGED_OPENAI_API_KEY:
+          process.env.RUBY_MANAGED_OPENAI_API_KEY ?? "",
       },
       testTimeout: 300000,
       maxConcurrency: parseInt(process.env.EVAL_MAX_CONCURRENCY ?? "5", 10),

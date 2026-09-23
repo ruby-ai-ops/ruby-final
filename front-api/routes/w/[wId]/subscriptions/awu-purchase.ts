@@ -89,7 +89,7 @@ app.post(
             api_error: {
               type: "invalid_request_error",
               message:
-                "Credit purchases are not available for Enterprise workspaces. Please contact your Dust sales representative.",
+                "Credit purchases are not available for Enterprise workspaces. Please contact your Ruby sales representative.",
             },
           });
         case "no_stripe_customer":

@@ -1,6 +1,6 @@
 import DataSourceViewDocumentModal from "@app/components/DataSourceViewDocumentModal";
 import { DataSourceViewPermissionTree } from "@app/components/DataSourceViewPermissionTree";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { isServerSideMCPServerConfiguration } from "@app/lib/actions/types/guards";
 import type {
   DataSourceConfiguration,
@@ -45,7 +45,7 @@ import {
   Stars02,
   Table,
   Tree,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import uniq from "lodash/uniq";
 import { useMemo, useState } from "react";
 
@@ -380,7 +380,7 @@ function DataSourceViewsSection({
                 className="whitespace-nowrap"
                 actions={
                   <RetrievalActionTagsFilterPopover
-                    dustAPIDataSourceId={dsConfig.dataSourceViewId}
+                    rubyAPIDataSourceId={dsConfig.dataSourceViewId}
                     tagsFilter={dsConfig.filter.tags ?? null}
                     connectorProvider={
                       dataSourceView?.dataSource.connectorProvider ?? null
@@ -424,11 +424,11 @@ function DataSourceViewsSection({
 }
 
 function RetrievalActionTagsFilterPopover({
-  dustAPIDataSourceId,
+  rubyAPIDataSourceId,
   tagsFilter,
   connectorProvider,
 }: {
-  dustAPIDataSourceId: string;
+  rubyAPIDataSourceId: string;
   tagsFilter: TagsFilter;
   connectorProvider: ConnectorProvider | null;
 }) {
@@ -443,7 +443,7 @@ function RetrievalActionTagsFilterPopover({
   tagsIn.push(
     ...tagsFilter.in.map((tag) => ({
       tag,
-      dustAPIDataSourceId,
+      rubyAPIDataSourceId,
       connectorProvider,
     }))
   );
@@ -451,7 +451,7 @@ function RetrievalActionTagsFilterPopover({
     tagsNot.push(
       ...tagsFilter.not.map((tag) => ({
         tag,
-        dustAPIDataSourceId,
+        rubyAPIDataSourceId,
         connectorProvider,
       }))
     );

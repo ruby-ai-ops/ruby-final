@@ -17,7 +17,7 @@ export type {
   AttachmentInput,
   ConversationInfo,
   CreateConversationParams,
-  DustAPIOptions,
+  RubyAPIOptions,
   FileInfo,
   MessageStream,
   RawContent,

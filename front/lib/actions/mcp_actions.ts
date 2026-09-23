@@ -56,7 +56,7 @@ import type {
 import {
   connectToMCPServer,
   extractMetadataFromTools,
-  getDustToolMeta,
+  getRubyToolMeta,
   isConnectViaClientSideMCPServer,
   isConnectViaMCPServerId,
 } from "@app/lib/actions/mcp_metadata";
@@ -124,7 +124,7 @@ import { normalizeError } from "@app/types/shared/utils/error_utils";
 import { isRecord } from "@app/types/shared/utils/general";
 import { slugify } from "@app/types/shared/utils/string_utils";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import {
@@ -146,7 +146,7 @@ const MCP_TOOL_HEARTBEAT_EVENT_NAME = "TOOL_HEARTBEAT" as const;
 const SLOW_MCP_TOOLS_LIST_THRESHOLD_MS = 5_000;
 const TOOL_EXECUTION_CANCELLED_MESSAGE = "The tool execution was cancelled.";
 const TOOL_EXECUTION_INTERRUPTED_MESSAGE =
-  "A tool was interrupted before Dust could confirm the result. Please check whether it completed, then retry.";
+  "A tool was interrupted before Ruby could confirm the result. Please check whether it completed, then retry.";
 
 const EMPTY_INPUT_SCHEMA: JSONSchema = {
   properties: {},
@@ -266,9 +266,9 @@ export function makeServerSideMCPToolConfigurations(
     toolServerId: tool.toolServerId,
     originalName: tool.name,
     mcpServerName: config.name,
-    dustAppConfiguration: config.dustAppConfiguration,
+    rubyAppConfiguration: config.rubyAppConfiguration,
     secretName: config.secretName,
-    dustProject: config.dustProject,
+    rubyProject: config.rubyProject,
     ...(tool.timeoutMs && { timeoutMs: tool.timeoutMs }),
     ...(tool.displayLabels && { displayLabels: tool.displayLabels }),
     ...(tool.eager && { eager: true }),
@@ -1173,7 +1173,7 @@ export async function tryListMCPTools(
     ACTIVATION_NUDGE_ORIGIN;
 
   // An admin scoping a server to `personal_actions` decided it runs on each
-  // person's own credentials. A message nobody wrote (posted by Dust on the
+  // person's own credentials. A message nobody wrote (posted by Ruby on the
   // user's behalf) has no person to run as, so those servers are left out of the
   // tool list entirely: running them on the workspace connection instead would
   // quietly override that decision.
@@ -1379,20 +1379,20 @@ async function listToolsForClientSideMCPServer(
     });
 
     nextPageCursor = nextCursor;
-    const dustMetaByTool = new Map(
-      tools.map((t) => [t.name, getDustToolMeta(t._meta)])
+    const rubyMetaByTool = new Map(
+      tools.map((t) => [t.name, getRubyToolMeta(t._meta)])
     );
     allTools = [
       ...allTools,
       ...extractMetadataFromTools(tools).map((tool) => {
-        const dustMeta = dustMetaByTool.get(tool.name);
+        const rubyMeta = rubyMetaByTool.get(tool.name);
         return {
           ...tool,
           availability: "manual" as const,
           stakeLevel:
-            dustMeta?.stake ?? DEFAULT_CLIENT_SIDE_MCP_TOOL_STAKE_LEVEL,
-          argumentsRequiringApproval: dustMeta?.argumentsRequiringApproval,
-          ...(dustMeta?.timeoutMs && { timeoutMs: dustMeta.timeoutMs }),
+            rubyMeta?.stake ?? DEFAULT_CLIENT_SIDE_MCP_TOOL_STAKE_LEVEL,
+          argumentsRequiringApproval: rubyMeta?.argumentsRequiringApproval,
+          ...(rubyMeta?.timeoutMs && { timeoutMs: rubyMeta.timeoutMs }),
         };
       }),
     ];

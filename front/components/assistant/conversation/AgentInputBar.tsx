@@ -42,7 +42,7 @@ import {
   InfoCircle,
   MOTION_DURATIONS,
   MOTION_EASINGS,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import {
   useVirtuosoLocation,
   useVirtuosoMethods,
@@ -226,7 +226,7 @@ export const AgentInputBar = ({ context }: AgentInputBarProps) => {
       return [lastAgentMentionInConversation];
     }
 
-    // For new conversations, the sticky agent (personal default → @dust) is resolved
+    // For new conversations, the sticky agent (personal default → @ruby) is resolved
     // downstream in `useHandleMentions` once the default has loaded, so we intentionally
     // emit no agent mention here. In existing conversations where messages are still
     // loading, don't default either — wait for messages.

@@ -28,7 +28,7 @@ import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import { removeNulls } from "@app/types/shared/utils/general";
 import { asDisplayName } from "@app/types/shared/utils/string_utils";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Avatar, Button, Command, Spinner, Tooltip } from "@dust-tt/sparkle";
+import { Avatar, Button, Command, Spinner, Tooltip } from "@ruby-ai/ui";
 import sortBy from "lodash/sortBy";
 import uniqBy from "lodash/uniqBy";
 import type { ReactNode } from "react";
@@ -37,7 +37,7 @@ import { useMemo, useState } from "react";
 interface AssistantToolsSectionProps {
   agentConfiguration: AgentConfigurationType;
   owner: LightWorkspaceType;
-  isDustAgent: boolean;
+  isRubyAgent: boolean;
 }
 
 const TOOLS_INITIAL_COUNT = 10;
@@ -55,22 +55,22 @@ function isActionData(
   return "avatar" in item;
 }
 
-const HIDDEN_DUST_ACTIONS = [
+const HIDDEN_RUBY_ACTIONS = [
   "toolsets",
   "agent_router",
   "data_sources_file_system",
   "data_warehouses",
 ] as const;
 
-// Since Dust is configured with one search for all, plus individual searches for each managed data source,
+// Since Ruby is configured with one search for all, plus individual searches for each managed data source,
 // we hide these additional searches from the user in the UI to avoid displaying the same data source twice.
-// We use the `hidden_dust_search_` prefix to identify these additional searches.
-function isHiddenDustAction(action: MCPServerConfigurationType): boolean {
-  if (action.name.startsWith("hidden_dust_search_")) {
+// We use the `hidden_ruby_search_` prefix to identify these additional searches.
+function isHiddenRubyAction(action: MCPServerConfigurationType): boolean {
+  if (action.name.startsWith("hidden_ruby_search_")) {
     return true;
   }
   if (isServerSideMCPServerConfiguration(action)) {
-    return HIDDEN_DUST_ACTIONS.some((serverName) =>
+    return HIDDEN_RUBY_ACTIONS.some((serverName) =>
       matchesInternalMCPServerName(action.internalMCPServerId, serverName)
     );
   }
@@ -80,7 +80,7 @@ function isHiddenDustAction(action: MCPServerConfigurationType): boolean {
 export function AssistantSkillsToolsSection({
   agentConfiguration,
   owner,
-  isDustAgent,
+  isRubyAgent,
 }: AssistantToolsSectionProps) {
   const { mcpServers, isMCPServersLoading: isToolsLoading } = useMCPServers({
     owner,
@@ -99,11 +99,11 @@ export function AssistantSkillsToolsSection({
   const sortedActions = useMemo(() => {
     const actions = removeNulls(
       agentConfiguration.actions
-        .filter((action) => (isDustAgent ? !isHiddenDustAction(action) : true))
+        .filter((action) => (isRubyAgent ? !isHiddenRubyAction(action) : true))
         .map((action) => renderOtherAction(action, mcpServers))
     );
     return sortBy(uniqBy(actions, "title"), ["order", "title"]);
-  }, [agentConfiguration.actions, mcpServers, isDustAgent]);
+  }, [agentConfiguration.actions, mcpServers, isRubyAgent]);
 
   const sortedSkills = useMemo(() => sortBy(skills, "name"), [skills]);
 

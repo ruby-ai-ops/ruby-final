@@ -13,7 +13,7 @@ import logger from "@app/logger/logger";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 
-const FLUENT_BIT_ENV_PATH = "/run/dust/fluent-bit.env";
+const FLUENT_BIT_ENV_PATH = "/run/ruby/fluent-bit.env";
 const DD_HOST = "http-intake.logs.datadoghq.eu";
 const TELEMETRY_ENV_VALUE_PATTERN = /^[A-Za-z0-9_./:@-]+$/;
 
@@ -92,7 +92,7 @@ export async function startTelemetry(
     sandbox.execRoot(
       auth,
       rootCommand.unsafeShell(
-        `/usr/bin/install -d -o root -g root -m 755 /run/dust && umask 077 && builtin printf '%s\\n' ${environmentLines} > ${tmpPath} && /bin/chown root:root ${tmpPath} && /bin/chmod 600 ${tmpPath} && /bin/mv -f ${tmpPath} ${FLUENT_BIT_ENV_PATH} && /usr/bin/systemctl restart fluent-bit`,
+        `/usr/bin/install -d -o root -g root -m 755 /run/ruby && umask 077 && builtin printf '%s\\n' ${environmentLines} > ${tmpPath} && /bin/chown root:root ${tmpPath} && /bin/chmod 600 ${tmpPath} && /bin/mv -f ${tmpPath} ${FLUENT_BIT_ENV_PATH} && /usr/bin/systemctl restart fluent-bit`,
         "bash builtins atomically render validated environment values into a root-only Fluent Bit EnvironmentFile without embedding the key in argv"
       ),
       {

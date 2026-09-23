@@ -9,7 +9,7 @@ export const OpenAIGptFiveDotSixTerraLongContextGlobalOpenAIResponsesStreamSetup
   {
     createInstance: () =>
       new OpenAIGptFiveDotSixTerraLongContextGlobalOpenAIResponsesStream({
-        OPENAI_API_KEY: process.env.DUST_MANAGED_OPENAI_API_KEY ?? "",
+        OPENAI_API_KEY: process.env.RUBY_MANAGED_OPENAI_API_KEY ?? "",
       }),
     tests: {
       "simple/no-tools/t-default/r-default": null,

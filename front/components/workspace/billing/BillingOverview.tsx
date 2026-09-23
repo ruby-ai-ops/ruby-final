@@ -6,7 +6,7 @@ import {
   Icon,
   Spinner,
   Upload01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { SubscriptionActionButtons } from "./SubscriptionActionButtons";
 import { useSubscriptionContext } from "./SubscriptionContext";
 import { SubscriptionStatusChip } from "./SubscriptionStatusChip";

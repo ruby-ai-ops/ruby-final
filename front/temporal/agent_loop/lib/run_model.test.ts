@@ -132,9 +132,9 @@ function makeServerSideToolConfiguration(
     jsonSchema: null,
     additionalConfiguration: {},
     mcpServerViewId,
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     internalMCPServerId: null,
     originalName: name,
     mcpServerName: "server",
@@ -184,9 +184,9 @@ function makeAgentServerConfiguration({
     jsonSchema: null,
     additionalConfiguration: {},
     mcpServerViewId,
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     internalMCPServerId: null,
   };
 }
@@ -329,7 +329,7 @@ describe("buildBaseSpecifications", () => {
         }),
       ],
       {
-        sId: "dust",
+        sId: "ruby",
         actions: [
           makeAgentServerConfiguration({
             mcpServerViewId: "view_configured",

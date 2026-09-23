@@ -61,9 +61,9 @@ describe("OAuth setup handler", () => {
           },
         })
     );
-    vi.spyOn(config, "getAppUrl").mockReturnValue("https://app.dust.tt");
+    vi.spyOn(config, "getAppUrl").mockReturnValue("https://app.ruby.ad");
     vi.spyOn(config, "getLegacyOAuthRedirectBaseUrl").mockReturnValue(
-      "https://eu.dust.tt"
+      "https://app.ruby.ad"
     );
     vi.spyOn(config, "getOAuthFreshserviceClientId").mockReturnValue(
       "workspace-client"
@@ -75,37 +75,37 @@ describe("OAuth setup handler", () => {
   });
 
   it.each([
-    { provider: "mcp", redirectUri: "https://dust.tt/oauth/mcp/finalize" },
-    { provider: "mcp", redirectUri: "https://eu.dust.tt/oauth/mcp/finalize" },
+    { provider: "mcp", redirectUri: "https://app.ruby.ad/oauth/mcp/finalize" },
+    { provider: "mcp", redirectUri: "https://app.ruby.ad/oauth/mcp/finalize" },
     {
       provider: "mcp_static",
-      redirectUri: "https://eu.dust.tt/oauth/mcp_static/finalize",
+      redirectUri: "https://app.ruby.ad/oauth/mcp_static/finalize",
     },
     {
       provider: "snowflake",
-      redirectUri: "https://eu.dust.tt/oauth/snowflake/finalize",
+      redirectUri: "https://app.ruby.ad/oauth/snowflake/finalize",
     },
     {
       provider: "salesforce",
-      redirectUri: "https://eu.dust.tt/oauth/salesforce/finalize",
+      redirectUri: "https://app.ruby.ad/oauth/salesforce/finalize",
     },
     {
       provider: "servicenow",
-      redirectUri: "https://eu.dust.tt/oauth/servicenow/finalize",
+      redirectUri: "https://app.ruby.ad/oauth/servicenow/finalize",
     },
     {
       provider: "ukg_ready",
-      redirectUri: "https://eu.dust.tt/oauth/ukg_ready/finalize",
+      redirectUri: "https://app.ruby.ad/oauth/ukg_ready/finalize",
     },
     {
       provider: "freshservice",
-      redirectUri: "https://eu.dust.tt/oauth/freshservice/finalize",
+      redirectUri: "https://app.ruby.ad/oauth/freshservice/finalize",
     },
     {
       provider: "gmail",
-      redirectUri: "https://eu.dust.tt/oauth/gmail/finalize",
+      redirectUri: "https://app.ruby.ad/oauth/gmail/finalize",
     },
-    { provider: "mcp", redirectUri: "https://app.dust.tt/oauth/mcp/finalize" },
+    { provider: "mcp", redirectUri: "https://app.ruby.ad/oauth/mcp/finalize" },
     { provider: "mcp", redirectUri: null },
     { provider: "mcp_static", redirectUri: null },
   ] as const)("keeps $provider credentials paired with the stored callback $redirectUri", async ({
@@ -162,7 +162,7 @@ describe("OAuth setup handler", () => {
 
     expect(response.status).toBe(200);
     const expectedRedirect =
-      redirectUri ?? `https://eu.dust.tt/oauth/${provider}/finalize`;
+      redirectUri ?? `https://app.ruby.ad/oauth/${provider}/finalize`;
     expect(mocks.createConnection).toHaveBeenCalledExactlyOnceWith(
       expect.objectContaining({
         redirectUri: expectedRedirect,
@@ -191,23 +191,23 @@ describe("OAuth setup handler", () => {
   it.each([
     {
       provider: "mcp",
-      legacyBase: "https://dust.tt",
-      callbackBase: "https://dust.tt",
+      legacyBase: "https://ruby.ad",
+      callbackBase: "https://ruby.ad",
     },
     {
       provider: "mcp",
-      legacyBase: "https://eu.dust.tt",
-      callbackBase: "https://eu.dust.tt",
+      legacyBase: "https://app.ruby.ad",
+      callbackBase: "https://app.ruby.ad",
     },
     {
       provider: "mcp_static",
-      legacyBase: "https://dust.tt",
-      callbackBase: "https://dust.tt",
+      legacyBase: "https://ruby.ad",
+      callbackBase: "https://ruby.ad",
     },
     {
       provider: "mcp_static",
-      legacyBase: "https://eu.dust.tt",
-      callbackBase: "https://eu.dust.tt",
+      legacyBase: "https://app.ruby.ad",
+      callbackBase: "https://app.ruby.ad",
     },
     {
       provider: "mcp_static",
@@ -216,13 +216,13 @@ describe("OAuth setup handler", () => {
     },
     {
       provider: "gmail",
-      legacyBase: "https://eu.dust.tt",
-      callbackBase: "https://app.dust.tt",
+      legacyBase: "https://app.ruby.ad",
+      callbackBase: "https://app.ruby.ad",
     },
     {
       provider: "salesforce",
-      legacyBase: "https://eu.dust.tt",
-      callbackBase: "https://app.dust.tt",
+      legacyBase: "https://app.ruby.ad",
+      callbackBase: "https://app.ruby.ad",
     },
   ] as const)("uses $callbackBase for a new $provider workspace client despite caller overrides", async ({
     provider,
@@ -278,24 +278,24 @@ describe("OAuth setup handler", () => {
   });
 
   it.each([
-    ["google_drive", "connection", "https://dust.tt", "https://dust.tt"],
-    ["google_drive", "connection", "https://eu.dust.tt", "https://eu.dust.tt"],
+    ["google_drive", "connection", "https://ruby.ad", "https://ruby.ad"],
+    ["google_drive", "connection", "https://app.ruby.ad", "https://app.ruby.ad"],
     [
       "google_drive",
       "connection",
-      "https://app.dust.tt",
-      "https://app.dust.tt",
+      "https://app.ruby.ad",
+      "https://app.ruby.ad",
     ],
-    ["notion", "connection", "https://eu.dust.tt", "https://eu.dust.tt"],
-    ["notion", "platform_actions", "https://eu.dust.tt", "https://app.dust.tt"],
-    ["gong", "connection", "https://eu.dust.tt", "https://eu.dust.tt"],
-    ["gong", "personal_actions", "https://eu.dust.tt", "https://eu.dust.tt"],
-    ["slack", "bot", "https://eu.dust.tt", "https://app.dust.tt"],
+    ["notion", "connection", "https://app.ruby.ad", "https://app.ruby.ad"],
+    ["notion", "platform_actions", "https://app.ruby.ad", "https://app.ruby.ad"],
+    ["gong", "connection", "https://app.ruby.ad", "https://app.ruby.ad"],
+    ["gong", "personal_actions", "https://app.ruby.ad", "https://app.ruby.ad"],
+    ["slack", "bot", "https://app.ruby.ad", "https://app.ruby.ad"],
     [
       "slack_tools",
       "platform_actions",
-      "https://eu.dust.tt",
-      "https://app.dust.tt",
+      "https://app.ruby.ad",
+      "https://app.ruby.ad",
     ],
   ] as const)("uses the same advertised, saved, and authorization callback for %s/%s with base %s", async (provider, useCase, legacyBase, callbackBase) => {
     vi.mocked(config.getLegacyOAuthRedirectBaseUrl).mockReturnValue(legacyBase);

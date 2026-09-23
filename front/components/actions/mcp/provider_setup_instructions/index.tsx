@@ -1,5 +1,5 @@
 import type { MCPOAuthUseCase, OAuthProvider } from "@app/types/oauth/lib";
-import { Icon, InfoCircle } from "@dust-tt/sparkle";
+import { Icon, InfoCircle } from "@ruby-ai/ui";
 
 import { NetSuiteSetupInstructions } from "./NetSuiteSetupInstructions";
 import { PowerBiSetupInstructions } from "./PowerBiSetupInstructions";

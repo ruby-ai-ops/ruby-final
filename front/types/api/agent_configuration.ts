@@ -93,8 +93,8 @@ const ProjectConfigurationSchema = z.object({
 
 // Actions
 
-const DustAppRunActionConfigurationSchema = z.object({
-  type: z.literal("dust_app_run_configuration"),
+const RubyAppRunActionConfigurationSchema = z.object({
+  type: z.literal("ruby_app_run_configuration"),
   appWorkspaceId: z.string(),
   appId: z.string(),
 });
@@ -134,9 +134,9 @@ const MCPServerActionConfigurationSchema = z.object({
       z.null(),
     ])
   ),
-  dustAppConfiguration: DustAppRunActionConfigurationSchema.nullable(),
+  rubyAppConfiguration: RubyAppRunActionConfigurationSchema.nullable(),
   secretName: z.string().nullable(),
-  dustProject: ProjectConfigurationSchema.nullable(),
+  rubyProject: ProjectConfigurationSchema.nullable(),
 });
 
 const ModelConfigurationSchema = z

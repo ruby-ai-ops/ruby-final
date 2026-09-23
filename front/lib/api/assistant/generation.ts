@@ -16,7 +16,7 @@ import {
 } from "@app/lib/api/actions/servers/common_utilities/metadata";
 import { FILES_SERVER_NAME } from "@app/lib/api/actions/servers/files/metadata";
 import { citationMetaPrompt } from "@app/lib/api/assistant/citations";
-import { isDustLikeAgent } from "@app/lib/api/assistant/global_agents/prompt_context";
+import { isRubyLikeAgent } from "@app/lib/api/assistant/global_agents/prompt_context";
 import { TRUNCATED_SNIPPET_SIZE } from "@app/lib/api/files/snippet";
 import type {
   StructuredSystemPrompt,
@@ -117,7 +117,7 @@ function constructBranchContextSection({
 function constructPlatformSpecificContextSection(): string {
   return (
     "# PLATFORM-SPECIFIC CONTEXT\n\n" +
-    "When the current user message's `<dust_system>` metadata identifies its source as `extension`, " +
+    "When the current user message's `<ruby_system>` metadata identifies its source as `extension`, " +
     "platform-specific tools may be available to access local, visible, or current browser context. " +
     "Look for relevant tools before asking the user to paste that context.\n" +
     "\n" +
@@ -432,11 +432,11 @@ export function constructPromptMultiActions(
   // Global agents with fully static instructions (no per-user data baked in) use the tuple form
   // [instructions, context] which enables extended prompt caching. Per-user dynamic content like
   // the user profile is passed as a separate context section so it doesn't pollute instruction caching.
-  // Only enabled for `deep-dive` and `dust(-x)` agents.
+  // Only enabled for `deep-dive` and `ruby(-x)` agents.
   const hasStaticInstructions =
     agentConfiguration.sId === GLOBAL_AGENTS_SID.DEEP_DIVE ||
     agentConfiguration.sId === GLOBAL_AGENTS_SID.SIDEKICK ||
-    isDustLikeAgent(agentConfiguration.sId);
+    isRubyLikeAgent(agentConfiguration.sId);
 
   const instructionsContent = constructInstructionsSection({
     agentConfiguration,
@@ -565,12 +565,12 @@ export function renderToolUseDisabledUserMessage(): UserMessageTypeModel {
       {
         type: "text",
         text:
-          "<dust_system>\n" +
+          "<ruby_system>\n" +
           "Tools are unavailable for this step: you cannot call one, and no further step " +
           "will run. Write your final answer to the user now, based on what you already " +
           "have. If you found nothing, could not complete the task, or were blocked, say " +
           "so explicitly and explain why. Do not end this turn without a written answer.\n" +
-          "</dust_system>",
+          "</ruby_system>",
       },
     ],
   };

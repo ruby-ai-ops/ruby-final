@@ -1,4 +1,4 @@
-import { Page, ProgressBar } from "@dust-tt/sparkle";
+import { Page, ProgressBar } from "@ruby-ai/ui";
 
 interface ConsumptionProgressBarProps {
   consumed: number;

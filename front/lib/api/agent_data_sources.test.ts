@@ -87,7 +87,7 @@ describe("data source view/source usage with skills", () => {
       categoryUsage[view.dataSource.id]?.skills.map((skill) => skill.sId)
     ).toEqual([restrictedSkill.sId, visibleSkill.sId]);
 
-    // Single-item variants used by Poke and the delete-confirmation dialogs.
+    // Single-item variants used by Admin and the delete-confirmation dialogs.
     const singleViewUsage = await getDataSourceViewUsage({
       auth: testContext.authenticator,
       dataSourceView: view,

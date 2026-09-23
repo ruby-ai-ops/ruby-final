@@ -3,7 +3,7 @@ import { clientFetch } from "@app/lib/egress/client";
 import { untrustedFetch } from "@app/lib/egress/server";
 import { concurrentExecutor } from "@app/lib/utils/async_utils";
 import logger from "@app/logger/logger";
-import { dustManagedServiceCredentials } from "@app/types/api/credentials";
+import { rubyManagedServiceCredentials } from "@app/types/api/credentials";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
 import type {
   ErrorResponse,
@@ -13,7 +13,7 @@ import type {
 import FirecrawlApp, { FirecrawlError } from "@mendable/firecrawl-js";
 import Exa from "exa-js";
 
-const credentials = dustManagedServiceCredentials();
+const credentials = rubyManagedServiceCredentials();
 
 const SPIDER_API_BASE_URL = "https://api.spider.cloud";
 
@@ -247,7 +247,7 @@ const browseUrlFirecrawl = async (
 ): Promise<BrowseScrapeSuccessResponse | BrowseScrapeErrorResponse> => {
   if (!credentials.FIRECRAWL_API_KEY) {
     throw new Error(
-      "util/webbrowse: a DUST_MANAGED_FIRECRAWL_API_KEY is required"
+      "util/webbrowse: a RUBY_MANAGED_FIRECRAWL_API_KEY is required"
     );
   }
 
@@ -458,7 +458,7 @@ const browseUrlSpider = async (
 ): Promise<BrowseScrapeSuccessResponse | BrowseScrapeErrorResponse> => {
   if (!credentials.SPIDER_API_KEY) {
     throw new Error(
-      "util/webbrowse: a DUST_MANAGED_SPIDER_API_KEY is required"
+      "util/webbrowse: a RUBY_MANAGED_SPIDER_API_KEY is required"
     );
   }
 
@@ -613,7 +613,7 @@ const browseUrlExa = async (
   }
 ): Promise<BrowseScrapeSuccessResponse | BrowseScrapeErrorResponse> => {
   if (!credentials.EXA_API_KEY) {
-    throw new Error("util/webbrowse: a DUST_MANAGED_EXA_API_KEY is required");
+    throw new Error("util/webbrowse: a RUBY_MANAGED_EXA_API_KEY is required");
   }
 
   const exa = new Exa(credentials.EXA_API_KEY);

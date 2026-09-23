@@ -1,5 +1,5 @@
-// import type { SearchQueryResourceType } from "@dust-tt/client";
-// import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+// import type { SearchQueryResourceType } from "@ruby-ai/client";
+// import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 // import assert from "assert";
 // import type { Logger } from "pino";
 // import type { CreationAttributes } from "sequelize";
@@ -184,7 +184,7 @@
 
 // async function migrateSingleRetrievalAction(
 //   auth: Authenticator,
-//   dustAppsWorkspaceAuth: Authenticator,
+//   rubyAppsWorkspaceAuth: Authenticator,
 //   agentMessage: AgentMessage,
 //   retrievalAction: AgentRetrievalAction,
 //   agentConfiguration: AgentConfiguration | null,
@@ -221,17 +221,17 @@
 //     ...documentRetrievalsWithChunks,
 //   ];
 
-//   // Step 2.2: Fetch in dust-apps workspace as well. This is required to cover for the usage of
+//   // Step 2.2: Fetch in ruby-apps workspace as well. This is required to cover for the usage of
 //   // `@help` agent that relies on public data sources.
 //   const isHelperAgent =
 //     agentMessage.agentConfigurationId === GLOBAL_AGENTS_SID["HELPER"];
 //   if (isHelperAgent) {
-//     const dustAppsDocumentRetrievalsWithChunks =
-//       await RetrievalDocumentResource.listAllForActions(dustAppsWorkspaceAuth, [
+//     const rubyAppsDocumentRetrievalsWithChunks =
+//       await RetrievalDocumentResource.listAllForActions(rubyAppsWorkspaceAuth, [
 //         retrievalAction.id,
 //       ]);
 
-//     allDocumentRetrievals.push(...dustAppsDocumentRetrievalsWithChunks);
+//     allDocumentRetrievals.push(...rubyAppsDocumentRetrievalsWithChunks);
 //   }
 
 //   logger.info(
@@ -278,10 +278,10 @@
 //         retrievalAction.id,
 //       ]);
 
-//       // Step 5.2 Delete in dust-apps workspace.
+//       // Step 5.2 Delete in ruby-apps workspace.
 //       if (isHelperAgent) {
 //         await RetrievalDocumentResource.deleteAllForActions(
-//           dustAppsWorkspaceAuth,
+//           rubyAppsWorkspaceAuth,
 //           [retrievalAction.id]
 //         );
 //       }
@@ -291,7 +291,7 @@
 
 // async function migrateWorkspaceRetrievalActions(
 //   workspace: LightWorkspaceType,
-//   dustAppsWorkspaceAuth: Authenticator,
+//   rubyAppsWorkspaceAuth: Authenticator,
 //   logger: Logger,
 //   { execute }: { execute: boolean }
 // ) {
@@ -386,14 +386,14 @@
 //         assert(
 //           agentConfiguration ||
 //             isGlobalAgentId(agentMessage.agentConfigurationId) ||
-//             // Dust Next is a global agent that was removed from everywhere.
-//             agentMessage.agentConfigurationId === "dust-next",
+//             // Ruby Next is a global agent that was removed from everywhere.
+//             agentMessage.agentConfigurationId === "ruby-next",
 //           `Agent configuration must exist for agent ${agentMessage.agentConfigurationId}`
 //         );
 
 //         await migrateSingleRetrievalAction(
 //           auth,
-//           dustAppsWorkspaceAuth,
+//           rubyAppsWorkspaceAuth,
 //           agentMessage,
 //           retrievalAction,
 //           agentConfiguration ?? null,
@@ -437,8 +437,8 @@
 //   async ({ execute, workspaceId }, parentLogger) => {
 //     const logger = parentLogger.child({ workspaceId });
 
-//     const dustAppsWorkspaceAuth = await Authenticator.internalAdminForWorkspace(
-//       config.getDustAppsWorkspaceId()
+//     const rubyAppsWorkspaceAuth = await Authenticator.internalAdminForWorkspace(
+//       config.getRubyAppsWorkspaceId()
 //     );
 
 //     if (workspaceId) {
@@ -450,7 +450,7 @@
 
 //       await migrateWorkspaceRetrievalActions(
 //         workspace,
-//         dustAppsWorkspaceAuth,
+//         rubyAppsWorkspaceAuth,
 //         logger,
 //         { execute }
 //       );
@@ -459,7 +459,7 @@
 //         async (workspace) =>
 //           migrateWorkspaceRetrievalActions(
 //             workspace,
-//             dustAppsWorkspaceAuth,
+//             rubyAppsWorkspaceAuth,
 //             logger.child({ workspaceId: workspace.sId }),
 //             {
 //               execute,

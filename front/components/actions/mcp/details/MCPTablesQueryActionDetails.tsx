@@ -14,8 +14,8 @@ import {
   isToolGeneratedFile,
 } from "@app/lib/actions/mcp_internal_actions/output_schemas";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
-import { CodeBlock, Table } from "@dust-tt/sparkle";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
+import { CodeBlock, Table } from "@ruby-ai/ui";
 
 export function MCPTablesQueryActionDetails({
   toolOutput,

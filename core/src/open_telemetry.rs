@@ -93,7 +93,7 @@ where
     init_propagator()?;
     let layer = tracing_opentelemetry::layer()
         .with_error_records_to_exceptions(true)
-        .with_tracer(tracer_provider.tracer("Dust OTLP tracer"));
+        .with_tracer(tracer_provider.tracer("Ruby OTLP tracer"));
     global::set_tracer_provider(tracer_provider.clone());
     Ok((layer, TracingGuard { tracer_provider }))
 }
@@ -155,7 +155,7 @@ pub fn init_subscribers_and_loglevel(log_directives: &str) -> Result<TracingGuar
             .with(JsonStorageLayer) // Store span fields
             .with(otel_layer) // Our enriched OTEL layer - should come AFTER JsonStorageLayer
             .with(
-                BunyanFormattingLayer::new("dust_api".into(), std::io::stdout)
+                BunyanFormattingLayer::new("ruby_api".into(), std::io::stdout)
                     .skip_fields(vec!["file", "line", "target"].into_iter())
                     .expect("valid field skip configuration")
                     .with_filter(

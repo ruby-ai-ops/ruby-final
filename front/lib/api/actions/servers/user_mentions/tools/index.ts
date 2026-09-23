@@ -13,7 +13,7 @@ import { serializeMention } from "@app/lib/mentions/format";
 import logger from "@app/logger/logger";
 import { Err, Ok } from "@app/types/shared/result";
 import { getHeaderFromUserEmail } from "@app/types/user";
-import { DustAPI } from "@dust-tt/client";
+import { RubyAPI } from "@ruby-ai/client";
 
 const handlers: ToolHandlers<typeof USER_MENTIONS_TOOLS_METADATA> = {
   [SEARCH_AVAILABLE_USERS_TOOL_NAME]: async (
@@ -24,8 +24,8 @@ const handlers: ToolHandlers<typeof USER_MENTIONS_TOOLS_METADATA> = {
     const prodCredentials = await prodAPICredentialsForOwner(
       auth.getNonNullableWorkspace()
     );
-    const api = new DustAPI(
-      config.getDustAPIConfig(),
+    const api = new RubyAPI(
+      config.getRubyAPIConfig(),
       {
         ...prodCredentials,
         extraHeaders: {

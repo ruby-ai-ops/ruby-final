@@ -144,7 +144,7 @@ try {
               [
                 'export default function Nested() { return <span className="ring-opacity-50">Nested frame</span>; }',
               ],
-              { type: "application/vnd.dust.frame" },
+              { type: "application/vnd.ruby.frame" },
             ),
           };
         } else {

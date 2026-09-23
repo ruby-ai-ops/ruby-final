@@ -5,7 +5,7 @@ import type {
   ToolHandlerResult,
 } from "@app/lib/actions/mcp_internal_actions/tool_definition";
 import {
-  getDustFileSystemForAgentLoop,
+  getRubyFileSystemForAgentLoop,
   requireAgentLoopConversation,
   scopedPathsFromArgs,
 } from "@app/lib/api/actions/servers/files/tools/agent_loop_fs";
@@ -18,7 +18,7 @@ import {
   TextExtraction,
 } from "@app/types/shared/text_extraction";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { basename, dirname, extname } from "path";
 
 function deriveExtractedPath(sourcePath: string): string {
@@ -35,7 +35,7 @@ export async function extractTextHandler(
     return conversationRes;
   }
 
-  const fsResult = await getDustFileSystemForAgentLoop(
+  const fsResult = await getRubyFileSystemForAgentLoop(
     auth,
     conversationRes.value,
     scopedPathsFromArgs(path)
@@ -44,9 +44,9 @@ export async function extractTextHandler(
     return fsResult;
   }
 
-  const dustFs = fsResult.value;
+  const rubyFs = fsResult.value;
 
-  const statResult = await dustFs.stat(path);
+  const statResult = await rubyFs.stat(path);
   if (statResult.isErr()) {
     return new Err(new MCPError(statResult.error.message, { tracked: false }));
   }
@@ -68,7 +68,7 @@ export async function extractTextHandler(
     );
   }
 
-  const readResult = await dustFs.read(path);
+  const readResult = await rubyFs.read(path);
   if (readResult.isErr()) {
     return new Err(new MCPError(readResult.error.message, { tracked: false }));
   }
@@ -110,7 +110,7 @@ export async function extractTextHandler(
   const extractedContent = Buffer.concat(chunks);
   const outputPath = deriveExtractedPath(path);
 
-  const writeResult = await dustFs.write(
+  const writeResult = await rubyFs.write(
     outputPath,
     extractedContent,
     "text/plain"

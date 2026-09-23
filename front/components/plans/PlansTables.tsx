@@ -23,7 +23,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useState } from "react";
@@ -182,7 +182,7 @@ function getSeatBasedPlanItems(
           Free credits for programmatic usage (API, GSheet, Zapier,...) (
           <Hoverable
             className="cursor-pointer text-muted-foreground underline hover:text-muted-foreground"
-            href="https://dust-tt.notion.site/Programmatic-usage-at-Dust-2b728599d94181ceb124d8585f794e2e#2b728599d941808b8f8dfa8dbe7e466f"
+            href="https://ruby-ai.notion.site/Programmatic-usage-at-Ruby-2b728599d94181ceb124d8585f794e2e#2b728599d941808b8f8dfa8dbe7e466f"
             target="_blank"
           >
             Learn more

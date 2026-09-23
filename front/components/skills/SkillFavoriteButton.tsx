@@ -1,5 +1,5 @@
-import type { ButtonVariantType } from "@dust-tt/sparkle";
-import { Button, Star01, StarFilled } from "@dust-tt/sparkle";
+import type { ButtonVariantType } from "@ruby-ai/ui";
+import { Button, Star01, StarFilled } from "@ruby-ai/ui";
 import type { MouseEvent } from "react";
 import { useState } from "react";
 

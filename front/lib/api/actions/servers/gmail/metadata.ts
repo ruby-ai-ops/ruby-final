@@ -222,7 +222,7 @@ export const GMAIL_SERVER = {
         "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify",
     },
     icon: "GmailLogo",
-    documentationUrl: "https://docs.dust.tt/docs/gmail",
+    documentationUrl: "https://docs.ruby.ad/docs/gmail",
   },
   tools: GMAIL_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

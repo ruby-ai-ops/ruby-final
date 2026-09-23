@@ -6,7 +6,7 @@ import {
   useUpdatePodEgressPolicy,
 } from "@app/lib/swr/pods";
 import type { LightWorkspaceType } from "@app/types/user";
-import { ContentMessage, InfoCircle, Spinner } from "@dust-tt/sparkle";
+import { ContentMessage, InfoCircle, Spinner } from "@ruby-ai/ui";
 
 interface PodNetworkSectionProps {
   owner: LightWorkspaceType;

@@ -6,7 +6,7 @@ import {
   shouldRetryToolInterruption,
   TOOL_INTERRUPTION_ERROR_TYPE,
 } from "@app/lib/actions/tool_interruptions";
-import { DUST_WORKER_SHUTDOWN_ABORT_REASON } from "@app/lib/shutdown_signal";
+import { RUBY_WORKER_SHUTDOWN_ABORT_REASON } from "@app/lib/shutdown_signal";
 import { ApplicationFailure, CancelledFailure } from "@temporalio/common";
 import { describe, expect, it } from "vitest";
 
@@ -14,7 +14,7 @@ describe("tool interruptions", () => {
   it.each<[unknown, ToolAbortClassification]>([
     [new CancelledFailure("CANCELLED"), "user_cancellation"],
     [new CancelledFailure("WORKER_SHUTDOWN"), "deploy_interruption"],
-    [DUST_WORKER_SHUTDOWN_ABORT_REASON, "deploy_interruption"],
+    [RUBY_WORKER_SHUTDOWN_ABORT_REASON, "deploy_interruption"],
     ["unexpected", "none"],
   ])("classifies abort reason %#", (reason, expectedClassification) => {
     expect(classifyToolAbortReason(reason)).toBe(expectedClassification);

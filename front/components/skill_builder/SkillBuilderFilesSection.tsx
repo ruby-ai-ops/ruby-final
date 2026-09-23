@@ -15,7 +15,7 @@ import {
   ReverseLeft,
   Spinner,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFieldArray, useFormContext, useFormState } from "react-hook-form";
 

@@ -1,0 +1,104 @@
+import { describe, expect, it } from "bun:test";
+import { ALL_SERVICES, type ServiceName } from "../../src/lib/services";
+
+describe("services", () => {
+  describe("ALL_SERVICES", () => {
+    it("contains all expected services", () => {
+      expect(ALL_SERVICES).toContain("ui");
+      expect(ALL_SERVICES).toContain("sdk");
+      expect(ALL_SERVICES).toContain("front-api");
+      expect(ALL_SERVICES).toContain("marketing");
+      expect(ALL_SERVICES).toContain("proxy");
+      expect(ALL_SERVICES).toContain("core");
+      expect(ALL_SERVICES).toContain("oauth");
+      expect(ALL_SERVICES).toContain("connectors");
+      expect(ALL_SERVICES).toContain("front-workers");
+      expect(ALL_SERVICES).toContain("front-spa-admin");
+      expect(ALL_SERVICES).toContain("front-spa-app");
+      expect(ALL_SERVICES).toContain("viz");
+      expect(ALL_SERVICES).toContain("storybook");
+      expect(ALL_SERVICES).toContain("sqlite-worker");
+    });
+
+    it("does not contain the removed front service", () => {
+      // `front` (monolithic Next.js) was replaced by proxy + front-api + marketing.
+      expect(ALL_SERVICES).not.toContain("front" as ServiceName);
+    });
+
+    it("has 14 services total", () => {
+      expect(ALL_SERVICES).toHaveLength(14);
+    });
+
+    it("has sdk as first service (start order)", () => {
+      expect(ALL_SERVICES[0]).toBe("sdk");
+    });
+
+    it("has sqlite-worker as last service", () => {
+      expect(ALL_SERVICES[ALL_SERVICES.length - 1]).toBe("sqlite-worker");
+    });
+
+    it("is immutable (readonly tuple)", () => {
+      // TypeScript ensures immutability at compile time
+      // At runtime, we can verify it's an array
+      expect(Array.isArray(ALL_SERVICES)).toBe(true);
+    });
+
+    it("defines start order with SDK first, then ui", () => {
+      const sdkIndex = ALL_SERVICES.indexOf("sdk");
+      const uiIndex = ALL_SERVICES.indexOf("ui");
+      const frontApiIndex = ALL_SERVICES.indexOf("front-api");
+      const coreIndex = ALL_SERVICES.indexOf("core");
+
+      // SDK should be first
+      expect(sdkIndex).toBe(0);
+      // RubyUI should be second
+      expect(uiIndex).toBe(1);
+      // front-api and core come after ui
+      expect(frontApiIndex).toBeGreaterThan(uiIndex);
+      expect(coreIndex).toBeGreaterThan(uiIndex);
+    });
+
+    it("starts marketing before proxy so the proxy can route to it", () => {
+      const marketingIndex = ALL_SERVICES.indexOf("marketing");
+      const proxyIndex = ALL_SERVICES.indexOf("proxy");
+      const frontApiIndex = ALL_SERVICES.indexOf("front-api");
+      expect(marketingIndex).toBeGreaterThan(-1);
+      expect(proxyIndex).toBeGreaterThan(marketingIndex);
+      expect(proxyIndex).toBeGreaterThan(frontApiIndex);
+    });
+  });
+
+  describe("ServiceName type", () => {
+    it("accepts valid service names", () => {
+      const services: ServiceName[] = [
+        "sdk",
+        "ui",
+        "front-api",
+        "marketing",
+        "proxy",
+        "core",
+        "oauth",
+        "connectors",
+        "front-workers",
+        "front-spa-admin",
+        "front-spa-app",
+        "viz",
+        "storybook",
+        "sqlite-worker",
+      ];
+
+      // All should be valid ServiceName values
+      for (const service of services) {
+        expect(ALL_SERVICES).toContain(service);
+      }
+    });
+
+    it("all ALL_SERVICES elements are valid ServiceName", () => {
+      // This is a type-level test that verifies the const assertion works
+      for (const service of ALL_SERVICES) {
+        const name: ServiceName = service;
+        expect(typeof name).toBe("string");
+      }
+    });
+  });
+});

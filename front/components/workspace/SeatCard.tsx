@@ -23,7 +23,7 @@ import {
   LayerSingle,
   LayersThree01,
   LayersTwo01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 // Per-seat-type display icon, matching the plan-selection pages
 // (SubscriptionPlans.tsx). The label / name comes from the API

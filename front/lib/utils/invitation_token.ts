@@ -32,7 +32,7 @@ export function getMembershipInvitationToken(
       iat,
       exp,
     },
-    config.getDustInviteTokenSecret()
+    config.getRubyInviteTokenSecret()
   );
 }
 

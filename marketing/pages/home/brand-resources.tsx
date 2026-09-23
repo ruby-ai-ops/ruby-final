@@ -8,7 +8,7 @@ import {
 import type { LandingLayoutProps } from "@marketing/components/home/LandingLayout";
 import LandingLayout from "@marketing/components/home/LandingLayout";
 import { PageMetadata } from "@marketing/components/home/PageMetadata";
-import { LegacyButton as Button } from "@dust-tt/sparkle";
+import { LegacyButton as Button } from "@ruby-ai/ui";
 import { useRouter } from "next/router";
 import type { ReactElement } from "react";
 
@@ -20,28 +20,38 @@ export async function getStaticProps() {
   };
 }
 
-const ASSET_BASE_PATH = "/static/landing/logos/dust";
+const ASSET_BASE_PATH = "/static/landing/logos/ruby";
+const BRAND_KIT_DOWNLOAD_HREF = `${ASSET_BASE_PATH}/Ruby_Brand_Logo.zip`;
+const CURRENT_RUBY_LOGO = "/static/ruby-logo.png";
+const SHOW_BRAND_KIT_DOWNLOAD = false;
+const ANNOTATED_HEADING_STYLE = {
+  fontFamily: '"RubySerif", var(--font-display)',
+  letterSpacing: "-0.05em",
+};
 
-// biome-ignore lint/plugin/nextjsPageComponentNaming: pre-existing
-export default function BrandResources() {
+export default function BrandResourcesNextJS() {
   const router = useRouter();
 
   return (
     <>
       <PageMetadata
         title="Brand Resources"
-        description="Download official Dust logos in SVG and PNG formats. Includes primary and square logo variants with usage guidelines."
+        description="Download official Ruby logos in SVG and PNG formats. Includes primary and square logo variants with usage guidelines."
         pathname={router.asPath}
       />
 
       <div className="container flex w-full flex-col gap-16 px-6 pb-24 md:gap-20">
         <Grid>
           <div className="col-span-12 col-start-1 flex flex-col gap-2 pt-24 md:col-span-10 md:col-start-2">
-            <H1 mono className="text-5xl font-medium md:text-6xl lg:text-7xl">
+            <H1
+              mono
+              className="text-5xl font-medium md:text-6xl lg:text-7xl"
+              style={ANNOTATED_HEADING_STYLE}
+            >
               Brand resources
             </H1>
             <P size="lg" className="text-muted-foreground">
-              Download official Dust logos and follow the guidelines below for
+              Download official Ruby logos and follow the guidelines below for
               proper usage.
             </P>
           </div>
@@ -53,24 +63,29 @@ export default function BrandResources() {
               <div className="flex flex-col gap-2">
                 <H2>Media assets</H2>
                 <P className="text-muted-foreground">
-                  The Dust wordmark is available in two shapes: standard and
+                  The Ruby wordmark is available in two shapes: standard and
                   square.
                 </P>
               </div>
               <div>
                 <Button
-                  href={`${ASSET_BASE_PATH}/Dust_Brand_Logo.zip`}
+                  href={
+                    SHOW_BRAND_KIT_DOWNLOAD
+                      ? BRAND_KIT_DOWNLOAD_HREF
+                      : undefined
+                  }
                   variant="primary"
                   size="md"
                   label="Download brand kit"
+                  disabled={!SHOW_BRAND_KIT_DOWNLOAD}
                 />
               </div>
             </div>
             <div className="col-span-12 xl:col-span-5 xl:col-start-8">
               <img
-                src={`${ASSET_BASE_PATH}/brand_ressources_logos.svg`}
-                alt="Dust logo variants"
-                className="w-full"
+                src={CURRENT_RUBY_LOGO}
+                alt="Ruby logo"
+                className="w-full rounded-2xl object-contain"
               />
             </div>
           </div>
@@ -100,7 +115,7 @@ export default function BrandResources() {
   );
 }
 
-BrandResources.getLayout = (
+BrandResourcesNextJS.getLayout = (
   page: ReactElement,
   pageProps: LandingLayoutProps
 ) => {

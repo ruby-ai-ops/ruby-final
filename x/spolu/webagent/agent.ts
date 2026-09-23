@@ -455,13 +455,13 @@ type AgentAction =
       reason: string;
     };
 
-const runWebAgentDustApp = async (input: any) => {
+const runWebAgentRubyApp = async (input: any) => {
   const res = await fetch(
-    "https://dust.tt/api/v1/w/0ec9852c2f/spaces/vlt_ZqMdUAzI0OTf/apps/wiG964FakA/runs",
+    "https://app.ruby.ad/api/v1/w/0ec9852c2f/spaces/vlt_ZqMdUAzI0OTf/apps/wiG964FakA/runs",
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.DUST_PROD_API_KEY}`,
+        Authorization: `Bearer ${process.env.RUBY_PROD_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -539,7 +539,7 @@ const runAgent = async (
     history: h,
   };
 
-  const out = await runWebAgentDustApp(input);
+  const out = await runWebAgentRubyApp(input);
   if (
     !(
       out.run.results.length === 1 &&

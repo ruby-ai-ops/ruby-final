@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "target": "es2018",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist/esm",
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["node", "react", "react-dom", "react-syntax-highlighter"],
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "jsx": "react",
+    "paths": {
+      "@ui/*": ["./src/*"]
+    },
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
+}

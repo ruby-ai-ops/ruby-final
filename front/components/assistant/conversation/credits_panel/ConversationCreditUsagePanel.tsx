@@ -10,7 +10,7 @@ import {
 } from "@app/lib/tracking";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
 import type { LightWorkspaceType } from "@app/types/user";
-import { CoinsStacked01, Spinner } from "@dust-tt/sparkle";
+import { CoinsStacked01, Spinner } from "@ruby-ai/ui";
 import { useEffect } from "react";
 
 interface ConversationCreditUsagePanelProps {

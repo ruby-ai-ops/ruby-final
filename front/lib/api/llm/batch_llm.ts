@@ -421,7 +421,7 @@ export async function downloadBatchResultFromLlm(
   const storedResultInfo = new Map<string, StoreLlmResultInfo>();
   for (const [
     conversationId,
-    { events: convEvents, dustRunId },
+    { events: convEvents, rubyRunId },
   ] of batchResults) {
     events.set(conversationId, convEvents);
     const conversation = conversationById.get(conversationId);
@@ -433,7 +433,7 @@ export async function downloadBatchResultFromLlm(
       conversation,
       convEvents,
       agentConfigurationId,
-      { runIds: [dustRunId] }
+      { runIds: [rubyRunId] }
     );
     storedResultInfo.set(conversationId, info);
   }

@@ -22,7 +22,7 @@ type ActivationNewConversationEmailTemplateProps = z.infer<
 
 const HOW_IT_WORKS_STEPS = [
   {
-    title: "Dust spots an opportunity",
+    title: "Ruby spots an opportunity",
     sub: "A useful idea based on the work you already do.",
     emoji: "✨",
     bg: "#EEF2FF",
@@ -34,7 +34,7 @@ const HOW_IT_WORKS_STEPS = [
     bg: "#F5F3FF",
   },
   {
-    title: "Dust runs it for you",
+    title: "Ruby runs it for you",
     sub: "Set it up once, then let it run.",
     emoji: "📅",
     bg: "#E9F7FF",
@@ -68,9 +68,9 @@ const ActivationNewConversationEmailTemplate = ({
         Hi {name}!
         <br />
         <br />
-        Welcome to your Dust Learning environment:
+        Welcome to your Ruby Learning environment:
         <br />
-        The place where Dust works for you.
+        The place where Ruby works for you.
       </p>
       <p
         style={{
@@ -80,7 +80,7 @@ const ActivationNewConversationEmailTemplate = ({
           lineHeight: "1.6",
         }}
       >
-        Dust looks at how you work and suggests new ways to be more productive.
+        Ruby looks at how you work and suggests new ways to be more productive.
         You choose what to set up, and everything you approve stays here, ready
         to run when you need it.
       </p>
@@ -186,7 +186,7 @@ const ActivationNewConversationEmailTemplate = ({
         {/* The goal is a short llm generated description of the recommendation. Falls back to a generic message */}
         {goal
           ? `We put together a simple way to help you ${goal}.`
-          : `We put something together to help you get started with Dust.`}
+          : `We put something together to help you get started with Ruby.`}
       </p>
 
       {/* Button into the activation conversation */}

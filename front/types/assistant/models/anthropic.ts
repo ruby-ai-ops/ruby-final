@@ -521,7 +521,7 @@ export const CLAUDE_FABLE_5_DEFAULT_MODEL_CONFIG: ModelConfigurationType = {
   // Opus 4.8 so the user still gets an answer in one round trip.
   fallbackModels: [CLAUDE_OPUS_4_8_MODEL_ID],
   // Served from a separate Anthropic workspace (EAP) whose org has the 30-day
-  // data retention Fable 5 requires; the Dust-managed org does not, and returns
+  // data retention Fable 5 requires; the Ruby-managed org does not, and returns
   // 400 `model_not_available` for this model.
   useEapKey: true,
   disablePrefill: true,
@@ -533,7 +533,7 @@ export const CLAUDE_FABLE_5_DEFAULT_MODEL_CONFIG: ModelConfigurationType = {
 // Specs verified 2026-09-22 against
 // https://platform.claude.com/docs/en/models/fable-5-1/overview (1M native
 // context, 128k max output, adaptive thinking always on, default effort
-// `high`, text and image input). Dust caps context at 250k and output at 64k.
+// `high`, text and image input). Ruby caps context at 250k and output at 64k.
 export const CLAUDE_FABLE_5_1_DEFAULT_MODEL_CONFIG: ModelConfigurationType = {
   providerId: "anthropic",
   modelId: CLAUDE_FABLE_5_1_MODEL_ID,

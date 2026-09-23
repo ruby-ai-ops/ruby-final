@@ -2,8 +2,8 @@ import { ExternalOAuthTokenError } from "@connectors/lib/error";
 import { getOAuthConnectionAccessTokenWithThrow } from "@connectors/lib/oauth";
 import logger from "@connectors/logger/logger";
 import { isValidSalesforceDomain } from "@connectors/types";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 
 export type SalesforceAPICredentials = {
   accessToken: string;

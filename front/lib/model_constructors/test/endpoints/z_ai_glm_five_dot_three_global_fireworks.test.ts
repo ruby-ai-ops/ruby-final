@@ -8,7 +8,7 @@ import type { StreamSetup } from "@app/lib/model_constructors/test/setup";
 export const ZAiGlmFiveDotThreeGlobalFireworksStreamSetup: StreamSetup = {
   createInstance: () =>
     new ZAiGlmFiveDotThreeGlobalFireworksStream({
-      FIREWORKS_API_KEY: process.env.DUST_MANAGED_FIREWORKS_API_KEY ?? "",
+      FIREWORKS_API_KEY: process.env.RUBY_MANAGED_FIREWORKS_API_KEY ?? "",
     }),
   tests: {
     "simple/no-tools/t-default/r-default": null,

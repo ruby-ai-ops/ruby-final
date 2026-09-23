@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import type { ensureSandboxStateHealthOnSleep } from "@app/lib/api/sandbox/db";
 import type { Authenticator } from "@app/lib/auth";
 import { ConversationSandboxAdapter } from "@app/lib/resources/conversation_sandbox_adapter";
@@ -93,7 +93,7 @@ describe("reapSandboxPhaseActivity", () => {
         return refreshMountCredential();
       }
     );
-    vi.spyOn(DustFileSystem.prototype, "refreshSandboxMount").mockResolvedValue(
+    vi.spyOn(RubyFileSystem.prototype, "refreshSandboxMount").mockResolvedValue(
       new Ok(undefined)
     );
   });
@@ -167,7 +167,7 @@ describe("reapSandboxPhaseActivity", () => {
     });
     // Frame sleeps run the pre-sleep state health check; conversations don't.
     expect(mockEnsureSandboxStateHealthOnSleep).toHaveBeenCalledTimes(1);
-    expect(DustFileSystem.prototype.refreshSandboxMount).toHaveBeenCalledTimes(
+    expect(RubyFileSystem.prototype.refreshSandboxMount).toHaveBeenCalledTimes(
       1
     );
   });
@@ -224,7 +224,7 @@ describe("reapSandboxPhaseActivity", () => {
     expect(mockProviderDestroy).toHaveBeenCalledWith("frame-provider", {
       workspaceId: workspace.sId,
     });
-    expect(DustFileSystem.prototype.refreshSandboxMount).toHaveBeenCalledTimes(
+    expect(RubyFileSystem.prototype.refreshSandboxMount).toHaveBeenCalledTimes(
       1
     );
     const sandbox = await FrameSandboxAdapter.fetchSandbox(
@@ -280,7 +280,7 @@ describe("reapSandboxPhaseActivity", () => {
       workspaceId: workspace.sId,
     });
     expect(mockEnsureSandboxStateHealthOnSleep).toHaveBeenCalledTimes(1);
-    expect(DustFileSystem.prototype.refreshSandboxMount).toHaveBeenCalledTimes(
+    expect(RubyFileSystem.prototype.refreshSandboxMount).toHaveBeenCalledTimes(
       1
     );
   });

@@ -274,7 +274,7 @@ app.post(
           },
         });
       }
-      if (!(await hasFeatureFlag(auth, "dust_filesystem"))) {
+      if (!(await hasFeatureFlag(auth, "ruby_filesystem"))) {
         return apiError(ctx, {
           status_code: 403,
           api_error: {

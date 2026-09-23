@@ -140,8 +140,8 @@ async function getMCPServerActionConfiguration(
       )
     : null;
 
-  builderAction.configuration.dustAppConfiguration =
-    action.dustAppConfiguration;
+  builderAction.configuration.rubyAppConfiguration =
+    action.rubyAppConfiguration;
 
   builderAction.configuration.childAgentId = action.childAgentId;
 
@@ -153,7 +153,7 @@ async function getMCPServerActionConfiguration(
   builderAction.configuration.additionalConfiguration =
     action.additionalConfiguration;
   builderAction.configuration.secretName = action.secretName;
-  builderAction.configuration.dustProject = action.dustProject;
+  builderAction.configuration.rubyProject = action.rubyProject;
 
   return { ...builderAction, id: action.sId };
 }

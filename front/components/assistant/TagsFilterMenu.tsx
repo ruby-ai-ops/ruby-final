@@ -11,7 +11,7 @@ import {
   DropdownMenuTagList,
   DropdownMenuTrigger,
   Tag01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 import { TagsManager } from "./TagsManager";

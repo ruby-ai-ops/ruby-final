@@ -1,5 +1,5 @@
 import type { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import { getNovuClient } from "@app/lib/notifications/novu-client";
 import logger from "@app/logger/logger";
 import {
@@ -47,7 +47,7 @@ export const manualActionRequiredWorkflow = workflow(
 const triggerManualActionRequiredNotification = async (
   auth: Authenticator,
   { conversationId, actionId }: { conversationId: string; actionId?: string }
-): Promise<Result<void, DustError<"internal_error">>> => {
+): Promise<Result<void, RubyError<"internal_error">>> => {
   const user = auth.user();
   if (!user) {
     return new Ok(undefined);
@@ -90,14 +90,14 @@ const triggerManualActionRequiredNotification = async (
         .map(({ error }) => error?.join("; "))
         .join("; ");
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: `Failed to trigger manual action required notification: ${eventErrors}`,
       });
     }
   } catch (err) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: "Failed to trigger manual action required notification",
       cause: normalizeError(err),

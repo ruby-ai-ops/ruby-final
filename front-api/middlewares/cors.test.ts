@@ -1,13 +1,13 @@
 import {
-  DUST_FILE_CAN_WRITE_HEADER,
-  DUST_FILE_CONTENT_TYPE_HEADER,
-  DUST_FILE_ID_HEADER,
+  RUBY_FILE_CAN_WRITE_HEADER,
+  RUBY_FILE_CONTENT_TYPE_HEADER,
+  RUBY_FILE_ID_HEADER,
 } from "@app/types/files";
 import { cors } from "@front-api/middlewares/cors";
 import { Hono } from "hono";
 import { describe, expect, it } from "vitest";
 
-const APP_ORIGIN = "https://app.dust.tt";
+const APP_ORIGIN = "https://app.ruby.ad";
 
 function createApp() {
   const app = new Hono();
@@ -79,11 +79,11 @@ describe("cors middleware", () => {
     });
 
     expect(response.status).toBe(200);
-    expect(getExposedHeaders(response)).toContain(DUST_FILE_ID_HEADER);
-    expect(getExposedHeaders(response)).toContain(DUST_FILE_CAN_WRITE_HEADER);
+    expect(getExposedHeaders(response)).toContain(RUBY_FILE_ID_HEADER);
+    expect(getExposedHeaders(response)).toContain(RUBY_FILE_CAN_WRITE_HEADER);
     expect(getExposedHeaders(response)).toContain("ETag");
     expect(getExposedHeaders(response)).toContain(
-      DUST_FILE_CONTENT_TYPE_HEADER
+      RUBY_FILE_CONTENT_TYPE_HEADER
     );
   });
 
@@ -94,11 +94,11 @@ describe("cors middleware", () => {
     });
 
     expect(response.status).toBe(200);
-    expect(getExposedHeaders(response)).toContain(DUST_FILE_ID_HEADER);
-    expect(getExposedHeaders(response)).toContain(DUST_FILE_CAN_WRITE_HEADER);
+    expect(getExposedHeaders(response)).toContain(RUBY_FILE_ID_HEADER);
+    expect(getExposedHeaders(response)).toContain(RUBY_FILE_CAN_WRITE_HEADER);
     expect(getExposedHeaders(response)).toContain("ETag");
     expect(getExposedHeaders(response)).toContain(
-      DUST_FILE_CONTENT_TYPE_HEADER
+      RUBY_FILE_CONTENT_TYPE_HEADER
     );
   });
 

@@ -10,13 +10,13 @@ export const AnthropicClaudeFableFiveGlobalAnthropicStreamSetup: StreamSetup = {
     new AnthropicClaudeFableFiveGlobalAnthropicStream({
       ANTHROPIC_API_KEY:
         process.env.ANTHROPIC_EAP_API_KEY ??
-        process.env.DUST_MANAGED_ANTHROPIC_API_KEY ??
+        process.env.RUBY_MANAGED_ANTHROPIC_API_KEY ??
         "",
     }),
   // `null` runs the case with its default checkers; a checker array overrides
   // them. Every case always runs.
   //
-  // Verified against the live API with the EAP key (the Dust-managed org lacks
+  // Verified against the live API with the EAP key (the Ruby-managed org lacks
   // the 30-day data retention Fable 5 requires). Two families of case never
   // reach the API, because `configSchema` rejects them and `runStream`
   // short-circuits with an `input_configuration_error`:

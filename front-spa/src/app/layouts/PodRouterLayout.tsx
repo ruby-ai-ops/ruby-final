@@ -1,5 +1,5 @@
-import { PodLayout } from "@dust-tt/front/components/pages/pod/PodLayout";
-import { useWorkspace } from "@dust-tt/front/lib/auth/AuthContext";
+import { PodLayout } from "@ruby-ai/front/components/pages/pod/PodLayout";
+import { useWorkspace } from "@ruby-ai/front/lib/auth/AuthContext";
 import { Outlet } from "react-router-dom";
 
 /**

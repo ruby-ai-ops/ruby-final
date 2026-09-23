@@ -27,7 +27,7 @@ import {
 import { FOR_YOU_EMAIL_UTM } from "@app/lib/tracking/campaigns";
 import { getConversationRoute } from "@app/lib/utils/router";
 import { resolveDefaultAgentId } from "@app/types/user";
-import { Button, Spinner } from "@dust-tt/sparkle";
+import { Button, Spinner } from "@ruby-ai/ui";
 import { useCallback, useEffect, useState } from "react";
 
 const LEARNING_WORK_AREA_COPY: WorkAreaSectionCopy = {
@@ -64,7 +64,7 @@ const LEARNING_RECOMMENDATION_COPY: RecommendationSectionCopy = {
   title: "Ideas for right now",
   description:
     "These change as you work. New ones surface as your context shifts.",
-  emptyState: "No new ideas yet. Let Dust suggest things to try.",
+  emptyState: "No new ideas yet. Let Ruby suggest things to try.",
   generateLabel: "Generate a new idea for me",
   runningBanner: "An agent is actively looking for ideas for you.",
 };
@@ -78,12 +78,12 @@ const QUICK_PROMPTS = [
   {
     label: "What's coming up that I should prep for?",
     message:
-      "Look at my calendar and recent work. What's coming up that I should prep for, and how can Dust help?",
+      "Look at my calendar and recent work. What's coming up that I should prep for, and how can Ruby help?",
   },
   {
-    label: "How are people in my role using Dust?",
+    label: "How are people in my role using Ruby?",
     message:
-      "How are people in the same role as me using Dust? Show me the skills and agents they actually use, and which of those would help my work.",
+      "How are people in the same role as me using Ruby? Show me the skills and agents they actually use, and which of those would help my work.",
   },
 ];
 
@@ -198,7 +198,7 @@ export function GetStartedPage() {
         highlightedTitle="This is your learning space"
         description={
           <>
-            Your own corner of Dust, where your agents and connected tools come
+            Your own corner of Ruby, where your agents and connected tools come
             together.
             <br />
             Nothing here is a demo. It is already wired to how your team works,

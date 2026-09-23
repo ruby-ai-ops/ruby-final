@@ -425,11 +425,11 @@ describe("addPrepaidCommitToContract", () => {
   it("forwards custom_fields when provided", async () => {
     await addPrepaidCommitToContract({
       ...BASE_PREPAID_COMMIT_PARAMS,
-      customFields: { DUST_CARRY_ON_RENEWAL: "true" },
+      customFields: { RUBY_CARRY_ON_RENEWAL: "true" },
     });
 
     expect(firstAddedCommit()).toMatchObject({
-      custom_fields: { DUST_CARRY_ON_RENEWAL: "true" },
+      custom_fields: { RUBY_CARRY_ON_RENEWAL: "true" },
     });
   });
 
@@ -453,11 +453,11 @@ describe("addPaymentGatedCommitToContract", () => {
   it("forwards custom_fields when provided", async () => {
     await addPaymentGatedCommitToContract({
       ...BASE_PAYMENT_GATED_PARAMS,
-      customFields: { DUST_CARRY_ON_RENEWAL: "true" },
+      customFields: { RUBY_CARRY_ON_RENEWAL: "true" },
     });
 
     expect(firstAddedCommit()).toMatchObject({
-      custom_fields: { DUST_CARRY_ON_RENEWAL: "true" },
+      custom_fields: { RUBY_CARRY_ON_RENEWAL: "true" },
     });
   });
 
@@ -485,13 +485,13 @@ describe("addComplimentaryCommitToContract", () => {
   it("adds a PREPAID commit with no invoice schedule", async () => {
     await addComplimentaryCommitToContract({
       ...BASE_COMPLIMENTARY_PARAMS,
-      customFields: { DUST_CARRY_ON_RENEWAL: "true" },
+      customFields: { RUBY_CARRY_ON_RENEWAL: "true" },
     });
 
     const commit = firstAddedCommit();
     expect(commit).toMatchObject({
       type: "PREPAID",
-      custom_fields: { DUST_CARRY_ON_RENEWAL: "true" },
+      custom_fields: { RUBY_CARRY_ON_RENEWAL: "true" },
     });
     expect(commit.access_schedule.schedule_items[0].amount).toBe(4_200);
     expect(commit).not.toHaveProperty("invoice_schedule");

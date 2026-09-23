@@ -2,7 +2,7 @@ import { useAppRouter } from "@app/lib/platform";
 import { getConversationRoute } from "@app/lib/utils/router";
 import type { PodConversationListItemType } from "@app/types/api/assistant/conversation/spaces";
 import type { WorkspaceType } from "@app/types/user";
-import { ArrowRight, Button, Spinner } from "@dust-tt/sparkle";
+import { ArrowRight, Button, Spinner } from "@ruby-ai/ui";
 
 interface ActivationRunningBannerProps {
   owner: WorkspaceType;

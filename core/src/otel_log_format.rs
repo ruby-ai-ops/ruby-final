@@ -54,7 +54,7 @@ impl EnrichedOtelLayer {
         event: &tracing::Event<'_>,
         span_fields: &HashMap<String, String>,
     ) {
-        let logger = self.logger_provider.logger("enriched_dust_api");
+        let logger = self.logger_provider.logger("enriched_ruby_api");
 
         // === REUSE: Standard OTEL layer event processing logic ===
         let metadata = event.metadata();

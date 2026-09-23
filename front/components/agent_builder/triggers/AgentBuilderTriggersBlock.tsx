@@ -22,7 +22,7 @@ import {
   Hoverable,
   Spinner,
   Zap,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import uniqBy from "lodash/uniqBy";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useMemo, useState } from "react";
@@ -216,7 +216,7 @@ export function AgentBuilderTriggersBlock({
           Run agents based on events. Need help? Check our{" "}
           <Hoverable
             variant="primary"
-            href="https://docs.dust.tt/docs/scheduling-your-agent-beta#/"
+            href="https://docs.ruby.ad/docs/scheduling-your-agent-beta#/"
             target="_blank"
           >
             guide

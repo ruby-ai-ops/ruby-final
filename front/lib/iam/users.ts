@@ -6,7 +6,7 @@ import {
   AgentUserRelationModel,
 } from "@app/lib/models/agent/agent";
 import { UserMessageModel } from "@app/lib/models/agent/conversation";
-import { DustAppSecretModel } from "@app/lib/models/dust_app_secret";
+import { RubyAppSecretModel } from "@app/lib/models/ruby_app_secret";
 import { invalidateAgentResourceCaches } from "@app/lib/resources/agent_resource_cache";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { GroupResource } from "@app/lib/resources/group_resource";
@@ -240,7 +240,7 @@ export async function createOrUpdateUser({
 }
 
 // Number of each asset transferred from the secondary user to the primary user during an identity
-// merge. Surfaced by the "merge user identities" poke plugin so support can confirm, in real time,
+// merge. Surfaced by the "merge user identities" admin plugin so support can confirm, in real time,
 // that the secondary user's data moved onto the primary user without waiting for a data warehouse
 // refresh. Counts reflect rows actually re-pointed to the primary user (duplicates that the primary
 // already owned are discarded, not transferred).
@@ -250,7 +250,7 @@ export interface UserIdentityMergeTransferCounts {
   userMessages: number;
   contentFragments: number;
   files: number;
-  dustAppSecrets: number;
+  rubyAppSecrets: number;
   agentMemories: number;
   groupMemberships: number;
   agentUserRelations: number;
@@ -369,7 +369,7 @@ export async function mergeUserIdentities({
   );
   // Migrate authorship of files from the secondary user to the primary user.
   const [filesCount] = await FileModel.update(userIdValues, userIdOptions);
-  const [dustAppSecretsCount] = await DustAppSecretModel.update(
+  const [rubyAppSecretsCount] = await RubyAppSecretModel.update(
     userIdValues,
     userIdOptions
   );
@@ -446,7 +446,7 @@ export async function mergeUserIdentities({
       userMessages: userMessagesCount,
       contentFragments: contentFragmentsCount,
       files: filesCount,
-      dustAppSecrets: dustAppSecretsCount,
+      rubyAppSecrets: rubyAppSecretsCount,
       agentMemories: agentMemoriesCount,
       groupMemberships: groupMembershipsCount,
       agentUserRelations: agentUserRelationsCount,

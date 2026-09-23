@@ -29,7 +29,7 @@ Analyze saved vectors again, without API calls:
 
 Options:
   --workspace ID           Workspace string ID (required for fetching)
-  --dust-url URL           Dust origin, default https://dust.tt; use your workspace region
+  --ruby-url URL           Ruby origin, default https://ruby.ad; use your workspace region
   --include-unpublished   Include editor-only skills; requires an admin API key
   --status STATUS          active (default), archived, or suggested
   --input FILE             Read a public skills API response instead of fetching
@@ -41,7 +41,7 @@ Options:
   --seed N                 Reproducible clustering seed, default 42
   --help                   Show this help
 
-Credentials: DUST_API_KEY and OPENAI_EMBEDDING_API_KEY (fallback OPENAI_API_KEY).
+Credentials: RUBY_API_KEY and OPENAI_EMBEDDING_API_KEY (fallback OPENAI_API_KEY).
 Node's --env-file=/path/to/credentials.env may be used before --import.
 Reruns reuse matching vectors and resume incomplete embedding files.
 Only names, descriptions, instructions, and enabled tool metadata are embedded.
@@ -62,7 +62,7 @@ function httpOrigin(value: string): string {
       ))
   ) {
     throw new Error(
-      "--dust-url must be an HTTPS origin (HTTP is allowed for localhost).",
+      "--ruby-url must be an HTTPS origin (HTTP is allowed for localhost).",
     );
   }
   return url.origin;
@@ -150,7 +150,7 @@ async function main() {
   const { values } = parseArgs({
     options: {
       workspace: { type: "string" },
-      "dust-url": { type: "string", default: "https://dust.tt" },
+      "ruby-url": { type: "string", default: "https://ruby.ad" },
       "include-unpublished": { type: "boolean", default: false },
       status: { type: "string", default: "active" },
       input: { type: "string" },
@@ -192,7 +192,7 @@ async function main() {
     .string()
     .regex(/^[a-zA-Z0-9_-]+$/, "Provide a workspace string ID with --workspace")
     .parse(values.workspace);
-  const origin = httpOrigin(values["dust-url"]);
+  const origin = httpOrigin(values["ruby-url"]);
   const model = z
     .enum(["text-embedding-3-large", "text-embedding-3-small"])
     .parse(values.model);
@@ -207,9 +207,9 @@ async function main() {
     .parse(values.status);
   const out = resolve(values.out ?? resolve(HERE, "output", workspace));
   const path = resolve(out, "embeddings.json");
-  const dustKey = EnvironmentConfig.getOptionalEnvVariable("DUST_API_KEY");
-  if (!values.input && !dustKey) {
-    throw new Error("Set DUST_API_KEY to fetch workspace skills.");
+  const rubyKey = EnvironmentConfig.getOptionalEnvVariable("RUBY_API_KEY");
+  if (!values.input && !rubyKey) {
+    throw new Error("Set RUBY_API_KEY to fetch workspace skills.");
   }
   const payload = values.input
     ? JSON.parse(await readFile(resolve(values.input), "utf8"))
@@ -218,7 +218,7 @@ async function main() {
         workspace,
         status,
         values["include-unpublished"],
-        dustKey ?? "",
+        rubyKey ?? "",
       );
   const skills = extractSkills(payload);
   if (!skills.length) {
@@ -229,7 +229,7 @@ async function main() {
   let data: EmbeddingData = {
     version: 1,
     workspace,
-    dustUrl: origin,
+    rubyUrl: origin,
     status,
     includeUnpublished: values["include-unpublished"],
     model,

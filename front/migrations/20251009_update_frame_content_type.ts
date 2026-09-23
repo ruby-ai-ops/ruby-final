@@ -12,7 +12,7 @@ import { frameContentType } from "@app/types/files";
 const CHUNK_SIZE = 100;
 const CONCURRENCY = 5;
 
-const LEGACY_FRAME_CONTENT_TYPE = "application/vnd.dust.client-executable";
+const LEGACY_FRAME_CONTENT_TYPE = "application/vnd.ruby.client-executable";
 
 async function updateLegacyFrameContentType(
   logger: Logger,

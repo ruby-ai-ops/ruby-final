@@ -280,7 +280,7 @@ export const google_drive = async ({
       const file = await GoogleDriveFilesModel.findOne({
         where: {
           connectorId: connector.id,
-          dustFileId: args.fileId,
+          rubyFileId: args.fileId,
         },
       });
       if (!file) {
@@ -289,7 +289,7 @@ export const google_drive = async ({
       const now = new Date().getTime();
       const localParents = await getLocalParents(
         connector.id,
-        file.dustFileId,
+        file.rubyFileId,
         `${now}`
       );
       await updateParentsField(connector, file, localParents, logger);
@@ -352,7 +352,7 @@ export const google_drive = async ({
       } else {
         await GoogleDriveFilesModel.create({
           driveFileId: args.fileId,
-          dustFileId: getInternalId(args.fileId),
+          rubyFileId: getInternalId(args.fileId),
           name: "unknown",
           mimeType: "unknown",
           connectorId: connector.id,

@@ -66,7 +66,7 @@ export class ChromeMcpService extends McpService {
 
     const transport = new BrowserMCPTransport(
       owner.sId,
-      "dust-chrome-extension",
+      "ruby-chrome-extension",
       (serverId) => {
         this.serverId = serverId;
         onServerIdReceived(serverId);

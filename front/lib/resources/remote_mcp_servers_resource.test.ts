@@ -36,9 +36,9 @@ vi.mock("@modelcontextprotocol/sdk/client/auth.js", async (importOriginal) => {
 const oauthProvider: OAuthClientProvider = {
   redirectUrl: undefined,
   clientMetadata: {
-    client_name: "Dust",
+    client_name: "Ruby",
     grant_types: ["authorization_code", "refresh_token"],
-    redirect_uris: ["https://dust.example.com/oauth/mcp"],
+    redirect_uris: ["https://ruby.example.com/oauth/mcp"],
     response_types: ["code"],
     token_endpoint_auth_method: "none",
   },

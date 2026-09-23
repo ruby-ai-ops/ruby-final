@@ -34,11 +34,11 @@ const _syncConnectorIncrementalAPIHandler = async (
     return;
   }
 
-  if (connector.type !== "dust_project") {
+  if (connector.type !== "ruby_project") {
     res.status(400).send({
       error: {
         type: "invalid_request_error",
-        message: `Incremental sync on demand is only supported for dust_project connectors (got ${connector.type})`,
+        message: `Incremental sync on demand is only supported for ruby_project connectors (got ${connector.type})`,
       },
     });
     return;

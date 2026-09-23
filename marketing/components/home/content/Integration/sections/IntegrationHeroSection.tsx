@@ -11,7 +11,7 @@ import {
   LinkExternal01,
   PuzzlePiece01,
   Rocket02,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 import type { IntegrationBase } from "../types";
 
@@ -35,10 +35,7 @@ export function IntegrationHeroSection({
           <ResourceAvatar icon={IconComponent} size="lg" />
         </div>
 
-        <H1
-          mono
-          className="mb-2 text-center text-4xl font-medium leading-tight text-foreground md:text-5xl"
-        >
+        <H1 className="mb-2 text-center font-['Bricolage_Grotesque'] text-4xl font-medium leading-tight tracking-[-0.05em] text-foreground md:text-5xl">
           {seoTitle}
         </H1>
 
@@ -55,9 +52,9 @@ export function IntegrationHeroSection({
         {/* CTAs */}
         <div className="flex flex-col gap-4 sm:flex-row">
           <Button
-            variant="highlight"
+            variant="primary"
             size="md"
-            label="Get started with Dust"
+            label="Get started with Ruby"
             icon={Rocket02}
             href="/home/contact"
             onClick={withTracking(

@@ -28,7 +28,7 @@ import {
   BuilderEditorLoadErrorMessage,
 } from "@app/components/shared/BuilderEditorGateMessage";
 import { useMCPServerViewsContext } from "@app/components/shared/tools_picker/MCPServerViewsContext";
-import { FormProvider } from "@app/components/sparkle/FormProvider";
+import { FormProvider } from "@app/components/ui/FormProvider";
 import { useBuilderTracking } from "@app/hooks/useBuilderTracking";
 import { useNavigationLock } from "@app/hooks/useNavigationLock";
 import { useSendNotification } from "@app/hooks/useNotification";
@@ -58,7 +58,7 @@ import {
   InfoCircle,
   RefreshCw02,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import isEqual from "lodash/isEqual";
 import {

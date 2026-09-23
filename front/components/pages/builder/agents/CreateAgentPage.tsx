@@ -5,8 +5,8 @@ import {
   useSetContentWidth,
   useSetHideSidebar,
   useSetTitle,
-} from "@app/components/sparkle/AppLayoutContext";
-import { AppLayoutSimpleCloseTitle } from "@app/components/sparkle/AppLayoutTitle";
+} from "@app/components/ui/AppLayoutContext";
+import { AppLayoutSimpleCloseTitle } from "@app/components/ui/AppLayoutTitle";
 import { useWorkspace } from "@app/lib/auth/AuthContext";
 import { useAppRouter } from "@app/lib/platform";
 import { useAssistantTemplates } from "@app/lib/swr/assistants";
@@ -20,7 +20,7 @@ import {
   isTemplateTagCodeArray,
   TEMPLATES_TAGS_CONFIG,
 } from "@app/types/assistant/templates";
-import { Button, Page, SearchInput } from "@dust-tt/sparkle";
+import { Button, Page, SearchInput } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
@@ -106,7 +106,7 @@ export function CreateAgentPage() {
         <div className="flex flex-col gap-6">
           <Page.Header
             title="Start with a template"
-            description="Explore different ways to use Dust. Find a setup that works for you and make it your own."
+            description="Explore different ways to use Ruby. Find a setup that works for you and make it your own."
           />
 
           <div className="flex flex-col gap-6">

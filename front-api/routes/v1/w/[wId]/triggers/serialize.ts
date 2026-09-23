@@ -2,7 +2,7 @@ import type { Authenticator } from "@app/lib/auth";
 import type { TriggerResource } from "@app/lib/resources/trigger_resource";
 import { WebhookSourcesViewResource } from "@app/lib/resources/webhook_sources_view_resource";
 import { removeNulls } from "@app/types/shared/utils/general";
-import type { TriggerType as PublicTriggerType } from "@dust-tt/client";
+import type { TriggerType as PublicTriggerType } from "@ruby-ai/client";
 
 /**
  * @cc [owner:adrien,label:api] public-api-trigger-serialization

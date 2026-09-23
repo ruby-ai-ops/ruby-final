@@ -1,6 +1,6 @@
 import { listSpaceConversationsForSync } from "@app/lib/api/assistant/conversation/fetch";
 import { SpaceResource } from "@app/lib/resources/space_resource";
-import type { GetSpaceConversationsForDataSourceResponseType } from "@dust-tt/client";
+import type { GetSpaceConversationsForDataSourceResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsSystemKey } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";

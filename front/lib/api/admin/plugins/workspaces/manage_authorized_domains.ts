@@ -1,0 +1,156 @@
+import { checkUserCellAffinity } from "@app/lib/api/cells/lookup";
+import type { PluginResponse } from "@app/lib/api/admin/types";
+import { createPlugin } from "@app/lib/api/admin/types";
+import {
+  addWorkOSOrganizationDomain,
+  getOrCreateWorkOSOrganization,
+} from "@app/lib/api/workos/organization";
+import {
+  getWorkOSOrganization,
+  removeWorkOSOrganizationDomain,
+} from "@app/lib/api/workos/organization_primitives";
+import type { Authenticator } from "@app/lib/auth";
+import { WorkspaceResource } from "@app/lib/resources/workspace_resource";
+import { isDomain } from "@app/lib/utils";
+import { mapToEnumValues } from "@app/types/admin/plugins";
+import type { Result } from "@app/types/shared/result";
+import { Err, Ok } from "@app/types/shared/result";
+
+async function handleAddDomain(
+  auth: Authenticator,
+  { domain }: { domain: string },
+  existingDomainWorkspace: WorkspaceResource | null
+): Promise<Result<PluginResponse, Error>> {
+  const workspace = auth.getNonNullableWorkspace();
+
+  if (existingDomainWorkspace) {
+    if (existingDomainWorkspace.id === workspace.id) {
+      return new Ok({
+        display: "text",
+        value: `Domain ${domain} is already authorized for this workspace.`,
+      });
+    }
+    return new Err(
+      new Error(
+        `This domain is already authorized for workspace ${existingDomainWorkspace.sId}.`
+      )
+    );
+  }
+
+  // Check if domain is whitelisted in any other cell.
+  const affinityRes = await checkUserCellAffinity({
+    email: `email@${domain}`,
+    email_verified: true,
+  });
+  if (affinityRes.isErr()) {
+    return new Err(new Error("Cannot check domain in other cell."));
+  } else if (affinityRes.value) {
+    return new Err(
+      new Error(
+        `This domain is already authorized in cell ${affinityRes.value.name}.`
+      )
+    );
+  }
+
+  const workOSOrganizationRes = await getOrCreateWorkOSOrganization(workspace);
+  if (workOSOrganizationRes.isErr()) {
+    return new Err(workOSOrganizationRes.error);
+  }
+
+  // If organization has just been created, the domain has been added to the organization.
+  if (!workOSOrganizationRes.value.domains.some((d) => d.domain === domain)) {
+    const result = await addWorkOSOrganizationDomain(workspace, {
+      domain,
+    });
+    if (result.isErr()) {
+      return new Err(result.error);
+    }
+  }
+
+  return new Ok({
+    display: "text",
+    value:
+      `Domain ${domain} has been added to the workspace. Next webhook will add it to ` +
+      "the workspace in the database.",
+  });
+}
+
+export async function handleRemoveDomain(
+  auth: Authenticator,
+  { domain }: { domain: string },
+  existingDomainWorkspace: WorkspaceResource | null
+): Promise<Result<PluginResponse, Error>> {
+  const workspace = auth.getNonNullableWorkspace();
+
+  if (!existingDomainWorkspace || existingDomainWorkspace.id !== workspace.id) {
+    return new Err(
+      new Error(`Domain ${domain} is not authorized for this workspace.`)
+    );
+  }
+
+  const organization = await getWorkOSOrganization(workspace);
+  if (!organization) {
+    return new Err(new Error("Failed to get WorkOS organization."));
+  }
+
+  const result = await removeWorkOSOrganizationDomain(workspace, {
+    domain,
+  });
+  if (result.isErr()) {
+    return new Err(result.error);
+  }
+
+  return new Ok({
+    display: "text",
+    value:
+      `Domain ${domain} has been removed from the workspace in WorkOS. Next webhook will ` +
+      "remove it from the workspace in the database.",
+  });
+}
+
+export const addAuthorizedDomain = createPlugin({
+  manifest: {
+    id: "manage-authorized-domains",
+    name: "Add/Remove Authorized Domain",
+    description: "Add or remove an authorized domain to the workspace",
+    resourceTypes: ["workspaces"],
+    args: {
+      domain: {
+        type: "string",
+        label: "Domain",
+        description: "Domain to authorize/remove (e.g. example.com)",
+      },
+      operation: {
+        type: "enum",
+        label: "Operation",
+        description: "Select operation to perform",
+        values: mapToEnumValues(["add", "remove"], (operation) => ({
+          label: operation,
+          value: operation,
+        })),
+        multiple: false,
+      },
+    },
+    requiredRoles: ["support"],
+  },
+  execute: async (auth, _, args) => {
+    const domain = args.domain.trim().toLowerCase();
+    const operation = args.operation;
+    if (!isDomain(domain)) {
+      return new Err(new Error("Invalid domain format."));
+    }
+    if (!operation) {
+      return new Err(new Error("Please select an operation."));
+    }
+
+    // Check if domain exists in any workspace.
+    const existingDomainWorkspace =
+      await WorkspaceResource.fetchByDomain(domain);
+
+    if (operation[0] === "add") {
+      return handleAddDomain(auth, { domain }, existingDomainWorkspace);
+    } else {
+      return handleRemoveDomain(auth, { domain }, existingDomainWorkspace);
+    }
+  },
+});

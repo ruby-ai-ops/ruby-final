@@ -15,7 +15,7 @@ import {
   getWorkOSSessionWithSetCookies,
 } from "@app/lib/api/workos/user";
 import { Authenticator } from "@app/lib/auth";
-import { DUST_HAS_SESSION } from "@app/lib/cookies";
+import { RUBY_HAS_SESSION } from "@app/lib/cookies";
 import type { SessionWithUser } from "@app/lib/iam/provider";
 import { fetchUserFromSession } from "@app/lib/iam/users";
 import { MembershipInvitationResource } from "@app/lib/resources/membership_invitation_resource";
@@ -432,7 +432,7 @@ async function handleCallback(ctx: Context) {
       sessionData: sealedSession,
       organizationId,
       authenticationMethod,
-      workspaceId: decodedPayload["https://dust.tt/workspaceId"],
+      workspaceId: decodedPayload["https://ruby.ad/workspaceId"],
     };
 
     callbackWorkspaceId = sessionCookie.workspaceId;
@@ -445,7 +445,7 @@ async function handleCallback(ctx: Context) {
     const currentCell = cellsConfig.getCurrentCell();
     let targetCell: CellInfo = cellsConfig.getCellInfo("cell-00000");
 
-    const cellClaim = decodedPayload["https://dust.tt/cell"];
+    const cellClaim = decodedPayload["https://ruby.ad/cell"];
     const userSessionCellName =
       isString(cellClaim) && isCellType(cellClaim) ? cellClaim : null;
     const validatedReturnTo = validateRelativePath(stateObj.returnTo);
@@ -517,8 +517,8 @@ async function handleCallback(ctx: Context) {
     const secureFlag = isDevelopment() ? "" : "; Secure";
 
     const indicatorCookie = domain
-      ? `${DUST_HAS_SESSION}=1; Domain=${domain}; Path=/${secureFlag}; SameSite=Lax; Max-Age=2592000`
-      : `${DUST_HAS_SESSION}=1; Path=/${secureFlag}; SameSite=Lax; Max-Age=2592000`;
+      ? `${RUBY_HAS_SESSION}=1; Domain=${domain}; Path=/${secureFlag}; SameSite=Lax; Max-Age=2592000`
+      : `${RUBY_HAS_SESSION}=1; Path=/${secureFlag}; SameSite=Lax; Max-Age=2592000`;
 
     if (domain) {
       ctx.header(
@@ -641,7 +641,7 @@ async function handleCallback(ctx: Context) {
             "workspace",
             loginFailedAuth.getNonNullableWorkspace()
           ),
-          // Follow the member.invited pattern: when we don't have a Dust
+          // Follow the member.invited pattern: when we don't have a Ruby
           // UserResource (the user may never have signed up here), use the
           // email as the user target's sId.
           buildAuditLogTarget("user", {
@@ -721,12 +721,12 @@ async function handleLogout(ctx: Context) {
     );
     ctx.header(
       "Set-Cookie",
-      `${DUST_HAS_SESSION}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT${secureFlag}; SameSite=Lax`,
+      `${RUBY_HAS_SESSION}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT${secureFlag}; SameSite=Lax`,
       { append: true }
     );
     ctx.header(
       "Set-Cookie",
-      `${DUST_HAS_SESSION}=; Domain=${domain}; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT${secureFlag}; SameSite=Lax`,
+      `${RUBY_HAS_SESSION}=; Domain=${domain}; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT${secureFlag}; SameSite=Lax`,
       { append: true }
     );
   } else {
@@ -737,7 +737,7 @@ async function handleLogout(ctx: Context) {
     );
     ctx.header(
       "Set-Cookie",
-      `${DUST_HAS_SESSION}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT${secureFlag}; SameSite=Lax`,
+      `${RUBY_HAS_SESSION}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT${secureFlag}; SameSite=Lax`,
       { append: true }
     );
   }

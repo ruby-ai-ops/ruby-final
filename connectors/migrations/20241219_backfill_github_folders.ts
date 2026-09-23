@@ -43,7 +43,7 @@ async function upsertFoldersForConnector(
         parents: [repoInternalId],
         parentId: null,
         title: repoName,
-        mimeType: "application/vnd.dust.github.repository",
+        mimeType: "application/vnd.ruby.github.repository",
       });
       logger.info(
         `Upserted repository folder ${repoInternalId} for ${repoName}`
@@ -63,7 +63,7 @@ async function upsertFoldersForConnector(
         parents: [issuesInternalId, repoInternalId],
         parentId: repoInternalId,
         title: "Issues",
-        mimeType: "application/vnd.dust.github.issues",
+        mimeType: "application/vnd.ruby.github.issues",
       });
       logger.info(`Upserted issues folder ${issuesInternalId}`);
     } else {
@@ -79,7 +79,7 @@ async function upsertFoldersForConnector(
         parents: [discussionsInternalId, repoInternalId],
         parentId: repoInternalId,
         title: "Discussions",
-        mimeType: "application/vnd.dust.github.discussions",
+        mimeType: "application/vnd.ruby.github.discussions",
       });
       logger.info(`Upserted discussions folder ${discussionsInternalId}`);
     } else {
@@ -99,7 +99,7 @@ async function upsertFoldersForConnector(
           title: "Code",
           parents: [codeRootInternalId, repoInternalId],
           parentId: repoInternalId,
-          mimeType: "application/vnd.dust.github.code.root",
+          mimeType: "application/vnd.ruby.github.code.root",
         });
         logger.info(`Upserted code root folder ${codeRootInternalId}`);
       } else {
@@ -126,7 +126,7 @@ async function upsertFoldersForConnector(
               parents: [directory.internalId, ...dirParents],
               parentId: dirParents[0] || null,
               title: directory.dirName,
-              mimeType: "application/vnd.dust.github.code.directory",
+              mimeType: "application/vnd.ruby.github.code.directory",
             });
             logger.info(
               `Upserted directory folder ${directory.internalId} for ${directory.dirName}`

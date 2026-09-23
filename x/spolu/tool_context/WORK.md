@@ -41,7 +41,7 @@
 [+]    11  front/lib/api/actions/servers/pod_manager/tools/index.ts:986
 [+]     3  front/lib/api/actions/servers/pod_tasks/tools/index.ts:303
 [+]     1  front/lib/api/actions/servers/query_tables_v2/tools/index.ts:262
-[+]     3  front/lib/api/actions/servers/run_dust_app/index.ts:141
+[+]     3  front/lib/api/actions/servers/run_ruby_app/index.ts:141
 [+]     2  front/lib/api/actions/servers/search/tools/index.ts:65
 [+]     3  front/lib/api/actions/servers/slack_personal/tools/index.ts:449
 [+]     2  front/lib/api/actions/servers/snowflake/tools/index.ts:42
@@ -91,8 +91,8 @@ to dynamically express that a server is not usable.
 ### files server
 
 Maybe:
-  getDustFileSystemForAgentLoop => 
-    getDustFileSystemForToolContext + getDustFileSystemForSandboxFunction
+  getRubyFileSystemForAgentLoop => 
+    getRubyFileSystemForToolContext + getRubyFileSystemForSandboxFunction
 
 But since we're in a sandbox we should never call these tools?
 

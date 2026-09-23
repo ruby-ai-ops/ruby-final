@@ -1,8 +1,8 @@
-import { AppLayoutTitle } from "@app/components/sparkle/AppLayoutTitle";
+import { AppLayoutTitle } from "@app/components/ui/AppLayoutTitle";
 import config from "@app/lib/api/config";
 import { LinkWrapper } from "@app/lib/platform";
 import { useSendOtpVerification, useVerifyOtpCode } from "@app/lib/swr/share";
-import { Button, DustLogo, Input, Label } from "@dust-tt/sparkle";
+import { Button, RubyLogo, Input, Label } from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePostHog } from "posthog-js/react";
 import type { ReactNode } from "react";
@@ -28,7 +28,7 @@ function VerificationLayout({
       <AppLayoutTitle className="h-12 bg-primary-50 px-4">
         <div className="flex h-full items-center">
           <LinkWrapper href={`${staticWebsiteUrl}/home`}>
-            <DustLogo className="h-[20px] w-[80px]" />
+            <RubyLogo className="h-[20px] w-[80px]" />
           </LinkWrapper>
         </div>
       </AppLayoutTitle>

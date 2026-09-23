@@ -166,28 +166,28 @@ describe("filterAndSortEditorSuggestionAgents", () => {
   });
 
   describe("priority agents (SUGGESTION_PRIORITY)", () => {
-    it("should prioritize Dust agent at the top", () => {
+    it("should prioritize Ruby agent at the top", () => {
       const agents = [
         createAgentMention("1", "Agent A", true),
-        createAgentMention(GLOBAL_AGENTS_SID.DUST, "Dust", false),
+        createAgentMention(GLOBAL_AGENTS_SID.RUBY, "Ruby", false),
         createAgentMention("2", "Agent B", true),
       ];
 
       const result = filterAndSortEditorSuggestionAgents("", agents);
 
-      expect(result[0].id).toBe(GLOBAL_AGENTS_SID.DUST);
+      expect(result[0].id).toBe(GLOBAL_AGENTS_SID.RUBY);
     });
 
-    it("should prioritize Deep Dive after Dust", () => {
+    it("should prioritize Deep Dive after Ruby", () => {
       const agents = [
         createAgentMention(GLOBAL_AGENTS_SID.DEEP_DIVE, "Deep Dive", false),
         createAgentMention("1", "Agent A", true),
-        createAgentMention(GLOBAL_AGENTS_SID.DUST, "Dust", false),
+        createAgentMention(GLOBAL_AGENTS_SID.RUBY, "Ruby", false),
       ];
 
       const result = filterAndSortEditorSuggestionAgents("", agents);
 
-      expect(result[0].id).toBe(GLOBAL_AGENTS_SID.DUST);
+      expect(result[0].id).toBe(GLOBAL_AGENTS_SID.RUBY);
       expect(result[1].id).toBe(GLOBAL_AGENTS_SID.DEEP_DIVE);
     });
 
@@ -196,14 +196,14 @@ describe("filterAndSortEditorSuggestionAgents", () => {
         createAgentMention("other1", "Other Agent 1", false),
         createAgentMention(GLOBAL_AGENTS_SID.DEEP_DIVE, "Deep Dive", false),
         createAgentMention("other2", "Other Agent 2", false),
-        createAgentMention(GLOBAL_AGENTS_SID.DUST, "Dust", false),
+        createAgentMention(GLOBAL_AGENTS_SID.RUBY, "Ruby", false),
       ];
 
       const result = filterAndSortEditorSuggestionAgents("", agents);
 
-      expect(result[0].id).toBe(GLOBAL_AGENTS_SID.DUST);
+      expect(result[0].id).toBe(GLOBAL_AGENTS_SID.RUBY);
       expect(result[1].id).toBe(GLOBAL_AGENTS_SID.DEEP_DIVE);
-      expect(SUGGESTION_PRIORITY[GLOBAL_AGENTS_SID.DUST]).toBeLessThan(
+      expect(SUGGESTION_PRIORITY[GLOBAL_AGENTS_SID.RUBY]).toBeLessThan(
         SUGGESTION_PRIORITY[GLOBAL_AGENTS_SID.DEEP_DIVE]
       );
     });
@@ -211,7 +211,7 @@ describe("filterAndSortEditorSuggestionAgents", () => {
     it("should apply priority sorting after fuzzy sort and favorites", () => {
       const agents = [
         createAgentMention("1", "Agent A", true),
-        createAgentMention(GLOBAL_AGENTS_SID.DUST, "Dust", false),
+        createAgentMention(GLOBAL_AGENTS_SID.RUBY, "Ruby", false),
         createAgentMention("2", "Agent B", false),
         createAgentMention(GLOBAL_AGENTS_SID.DEEP_DIVE, "Deep Dive", false),
       ];
@@ -219,7 +219,7 @@ describe("filterAndSortEditorSuggestionAgents", () => {
       const result = filterAndSortEditorSuggestionAgents("", agents);
 
       // Priority agents should be first
-      expect(result[0].id).toBe(GLOBAL_AGENTS_SID.DUST);
+      expect(result[0].id).toBe(GLOBAL_AGENTS_SID.RUBY);
       expect(result[1].id).toBe(GLOBAL_AGENTS_SID.DEEP_DIVE);
     });
   });
@@ -254,7 +254,7 @@ describe("filterAndSortEditorSuggestionAgents", () => {
 
     it("should prioritize participants even over priority agents", () => {
       const agents = [
-        createAgentMention(GLOBAL_AGENTS_SID.DUST, "Dust", false, false),
+        createAgentMention(GLOBAL_AGENTS_SID.RUBY, "Ruby", false, false),
         createAgentMention("1", "Agent A", false, true, 1000),
         createAgentMention(
           GLOBAL_AGENTS_SID.DEEP_DIVE,
@@ -318,7 +318,7 @@ describe("filterAndSortEditorSuggestionAgents", () => {
     it("should maintain non-participant sorting when all are participants", () => {
       const agents = [
         createAgentMention("1", "Agent A", true, true, 1000),
-        createAgentMention(GLOBAL_AGENTS_SID.DUST, "Dust", false, true, 500),
+        createAgentMention(GLOBAL_AGENTS_SID.RUBY, "Ruby", false, true, 500),
         createAgentMention("2", "Agent B", false, true, 2000),
       ];
 
@@ -327,12 +327,12 @@ describe("filterAndSortEditorSuggestionAgents", () => {
       // All are participants, so sorted by lastActivityAt
       expect(result[0].label).toBe("Agent B");
       expect(result[1].label).toBe("Agent A");
-      expect(result[2].label).toBe("Dust");
+      expect(result[2].label).toBe("Ruby");
     });
 
     it("should keep non-participants after participants regardless of other properties", () => {
       const agents = [
-        createAgentMention(GLOBAL_AGENTS_SID.DUST, "Dust", false, false),
+        createAgentMention(GLOBAL_AGENTS_SID.RUBY, "Ruby", false, false),
         createAgentMention("1", "Regular Agent", false, true, 100),
         createAgentMention("2", "Favorite Agent", true, false),
       ];
@@ -344,7 +344,7 @@ describe("filterAndSortEditorSuggestionAgents", () => {
       expect(result[0].isParticipant).toBe(true);
 
       // Non-participants follow their usual sorting (priority, then favorite)
-      expect(result[1].id).toBe(GLOBAL_AGENTS_SID.DUST);
+      expect(result[1].id).toBe(GLOBAL_AGENTS_SID.RUBY);
       expect(result[2].label).toBe("Favorite Agent");
     });
 
@@ -372,7 +372,7 @@ describe("filterAndSortEditorSuggestionAgents", () => {
       const agents = [
         createAgentMention("1", "Test Agent Long Name", false),
         createAgentMention("2", "Test", true),
-        createAgentMention(GLOBAL_AGENTS_SID.DUST, "Dust Test", false),
+        createAgentMention(GLOBAL_AGENTS_SID.RUBY, "Ruby Test", false),
         createAgentMention("3", "Test Agent", false),
         createAgentMention(
           GLOBAL_AGENTS_SID.DEEP_DIVE,
@@ -384,7 +384,7 @@ describe("filterAndSortEditorSuggestionAgents", () => {
       const result = filterAndSortEditorSuggestionAgents("test", agents);
 
       // Priority agents first
-      expect(result[0].id).toBe(GLOBAL_AGENTS_SID.DUST);
+      expect(result[0].id).toBe(GLOBAL_AGENTS_SID.RUBY);
       expect(result[1].id).toBe(GLOBAL_AGENTS_SID.DEEP_DIVE);
       // Then favorites
       expect(result[2].userFavorite).toBe(true);
@@ -394,7 +394,7 @@ describe("filterAndSortEditorSuggestionAgents", () => {
       const agents = [
         createAgentMention("1", "Customer Support Agent", false),
         createAgentMention("2", "Code Assistant", true),
-        createAgentMention(GLOBAL_AGENTS_SID.DUST, "Dust", false),
+        createAgentMention(GLOBAL_AGENTS_SID.RUBY, "Ruby", false),
         createAgentMention("3", "Content Writer", false),
         createAgentMention("4", "Code Review Bot", true),
         createAgentMention(GLOBAL_AGENTS_SID.DEEP_DIVE, "Deep Dive", false),
@@ -407,7 +407,7 @@ describe("filterAndSortEditorSuggestionAgents", () => {
       expect(labels).toContain("Code Assistant");
       expect(labels).toContain("Content Writer");
       expect(labels).toContain("Code Review Bot");
-      expect(labels).not.toContain("Dust");
+      expect(labels).not.toContain("Ruby");
 
       // Favorites should be ranked higher than non-favorites
       const favoriteIndex = result.findIndex((a) => a.userFavorite);

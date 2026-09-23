@@ -28,13 +28,13 @@ import { extractKnowledgeTagReferences } from "@app/lib/knowledge/format";
 import { isContentNodeContentFragment } from "@app/types/content_fragment";
 import { isSupportedImageContentType } from "@app/types/files";
 import type { UserType } from "@app/types/user";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import { useVirtuosoMethods } from "@virtuoso.dev/message-list";
 import React, { useMemo } from "react";
 
-// Inter-message spacing lives here (not in Sparkle) because it depends on
+// Inter-message spacing lives here (not in RubyUI) because it depends on
 // conversation-level context (who sent the message, steering flow, grouping).
-// Sparkle message components only handle padding inside the bubble.
+// RubyUI message components only handle padding inside the bubble.
 // The last message also gets a margin-bottom for breathing space (see MessageItem).
 //
 // - No margin: consecutive messages from the same user

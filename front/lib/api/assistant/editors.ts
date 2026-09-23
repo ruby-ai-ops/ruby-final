@@ -1,5 +1,5 @@
 import type { Authenticator } from "@app/lib/auth";
-import { DustError, isDustError } from "@app/lib/error";
+import { RubyError, isRubyError } from "@app/lib/error";
 import { AgentResource } from "@app/lib/resources/agent_resource";
 import { UserResource } from "@app/lib/resources/user_resource";
 import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
@@ -28,10 +28,10 @@ export const getAuthors = async (
 export async function getAgentEditors(
   auth: Authenticator,
   agentConfiguration: LightAgentConfigurationType
-): Promise<Result<UserResource[], DustError<"group_not_found">>> {
+): Promise<Result<UserResource[], RubyError<"group_not_found">>> {
   if (agentConfiguration.scope === "global") {
     return new Err(
-      new DustError("group_not_found", "Global agents have no editors.")
+      new RubyError("group_not_found", "Global agents have no editors.")
     );
   }
 
@@ -101,14 +101,14 @@ export async function updateAgentEditorsFromDelta(
     usersToAdd,
     usersToRemove,
   }: { usersToAdd: UserResource[]; usersToRemove: UserResource[] }
-): Promise<Result<AgentResource, DustError<EditorDeltaErrorCode>>> {
+): Promise<Result<AgentResource, RubyError<EditorDeltaErrorCode>>> {
   const agentResource = AgentResource.fromAgentConfiguration(auth, agent);
   const currentEditors = (await agentResource.listEditors(auth)) ?? [];
   const currentEditorModelIds = new Set(currentEditors.map((u) => u.id));
 
   if (usersToAdd.some((u) => currentEditorModelIds.has(u.id))) {
     return new Err(
-      new DustError(
+      new RubyError(
         "user_already_member",
         "The user is already a member of the agent editors group."
       )
@@ -117,7 +117,7 @@ export async function updateAgentEditorsFromDelta(
 
   if (usersToRemove.some((u) => !currentEditorModelIds.has(u.id))) {
     return new Err(
-      new DustError(
+      new RubyError(
         "user_not_member",
         "The user is not a member of the agent editors group."
       )
@@ -135,15 +135,15 @@ export async function updateAgentEditorsFromDelta(
   });
   if (updateRes.isErr()) {
     const { error } = updateRes;
-    if (isDustError(error) && error.code === "user_not_found") {
+    if (isRubyError(error) && error.code === "user_not_found") {
       return new Err(
-        new DustError(
+        new RubyError(
           "user_not_found",
           "The user was not found in the workspace."
         )
       );
     }
-    return new Err(new DustError("internal_error", error.message));
+    return new Err(new RubyError("internal_error", error.message));
   }
 
   return new Ok(updateRes.value.resource);

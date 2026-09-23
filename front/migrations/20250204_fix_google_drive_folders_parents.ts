@@ -82,8 +82,8 @@ async function migrateNode({
       logger,
       async () => {
         const updateRes = await coreAPI.upsertDataSourceFolder({
-          projectId: dataSource.dustAPIProjectId,
-          dataSourceId: dataSource.dustAPIDataSourceId,
+          projectId: dataSource.rubyAPIProjectId,
+          dataSourceId: dataSource.rubyAPIDataSourceId,
           folderId: coreNode.node_id,
           parents: newParents,
           parentId: newParentId,
@@ -147,22 +147,22 @@ async function migrateDataSource({
   const logger = parentLogger.child({ dataSourceId: dataSource.id });
   const corePrimary = getCorePrimaryDbConnection();
 
-  const { dustAPIProjectId, dustAPIDataSourceId } = dataSource;
+  const { rubyAPIProjectId, rubyAPIDataSourceId } = dataSource;
   // Retrieve the core data source.
   const [coreDataSourceRows] = (await corePrimary.query(
     `SELECT id, data_source_id
      FROM data_sources
-     WHERE project = :dustAPIProjectId
-       AND data_source_id = :dustAPIDataSourceId`,
-    { replacements: { dustAPIProjectId, dustAPIDataSourceId } }
+     WHERE project = :rubyAPIProjectId
+       AND data_source_id = :rubyAPIDataSourceId`,
+    { replacements: { rubyAPIProjectId, rubyAPIDataSourceId } }
   )) as { id: number; data_source_id: string }[][];
 
   if (
     coreDataSourceRows.length !== 1 ||
-    coreDataSourceRows[0].data_source_id !== dataSource.dustAPIDataSourceId
+    coreDataSourceRows[0].data_source_id !== dataSource.rubyAPIDataSourceId
   ) {
     logger.error(
-      { coreDataSourceRows, dustAPIProjectId, dustAPIDataSourceId },
+      { coreDataSourceRows, rubyAPIProjectId, rubyAPIDataSourceId },
       "Core data source mismatch"
     );
     return;

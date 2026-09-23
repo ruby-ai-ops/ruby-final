@@ -58,7 +58,7 @@ const MULTI_FILE_MODULE: Record<string, string> = {
   "dashboard.tsx": `
 import React from "react";
 import { Chart } from "./components/Chart";
-import { useFile } from "@dust/react-hooks";
+import { useFile } from "@ruby-ai/react-hooks";
 
 export default function Dashboard() {
   const [count] = React.useState(0);
@@ -119,7 +119,7 @@ describe("bundleModule", () => {
     // Externals preserved as imports for the runtime import scope to resolve.
     expect(code).toMatch(/from\s+["']react["']/);
     expect(code).toMatch(/from\s+["']recharts["']/);
-    expect(code).toMatch(/from\s+["']@dust\/react-hooks["']/);
+    expect(code).toMatch(/from\s+["']@ruby\/react-hooks["']/);
 
     // Relative siblings inlined (no relative import statements remain).
     expect(code).not.toMatch(/["']\.\/components\/Chart["']/);

@@ -121,10 +121,10 @@ export async function seedConversationalBuilding(
     createdSkills
   );
 
-  // 5. The Dust conversation embedding the suggestions as `:skill_suggestion[]` directives.
+  // 5. The Ruby conversation embedding the suggestions as `:skill_suggestion[]` directives.
   logger.info("Seeding conversations...");
   const agents = new Map<string, CreatedAgent>([
-    ["Dust", { sId: GLOBAL_AGENTS_SID.DUST, name: "Dust" }],
+    ["Ruby", { sId: GLOBAL_AGENTS_SID.RUBY, name: "Ruby" }],
   ]);
   const suggestionSId = (id: string) =>
     createdSkillSuggestions.get(id)?.sId ?? "";

@@ -8,7 +8,7 @@ import { z } from "zod";
 // 1,000,000-token prompt-plus-completion budget. Use the runtime limit.
 const CONTEXT_SIZE = 1_000_000;
 // Fireworks reports 1,000,000 as the maximum completion-token value, subject to
-// the shared prompt-plus-completion budget. Dust applies a 64k product cap.
+// the shared prompt-plus-completion budget. Ruby applies a 64k product cap.
 const MAX_OUTPUT_TOKENS = 1_000_000;
 
 // Thinking Machines maps named efforts onto continuous levels and defaults to

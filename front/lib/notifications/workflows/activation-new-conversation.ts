@@ -1,6 +1,6 @@
 import config from "@app/lib/api/config";
 import { Authenticator } from "@app/lib/auth";
-import type { DustError } from "@app/lib/error";
+import type { RubyError } from "@app/lib/error";
 import type { NotificationAllowedTags } from "@app/lib/notifications";
 import { getNovuClient } from "@app/lib/notifications";
 import { hasUnreadSucceededAgentReply } from "@app/lib/notifications/conversation_fetch";
@@ -33,7 +33,7 @@ export function getActivationNewConversationEmailSubject(
   recommendationName: string | null
 ): string {
   const normalizedName = recommendationName?.replace(/\s+/g, " ").trim();
-  return `[Dust] Try this next: ${
+  return `[Ruby] Try this next: ${
     normalizedName || ACTIVATION_NEW_CONVERSATION_EMAIL_SUBJECT_FALLBACK
   }`;
 }
@@ -207,7 +207,7 @@ export const triggerActivationNewConversationEmail = async (
     conversation: ConversationWithoutContentType;
     userToNotify: UserResource;
   }
-): Promise<Result<void, DustError<"internal_error">>> => {
+): Promise<Result<void, RubyError<"internal_error">>> => {
   try {
     const novuClient = await getNovuClient();
 
@@ -243,14 +243,14 @@ export const triggerActivationNewConversationEmail = async (
         .map(({ error }) => error?.join("; "))
         .join("; ");
       return new Err({
-        name: "dust_error",
+        name: "ruby_error",
         code: "internal_error",
         message: `Failed to trigger activation new conversation email: ${eventErrors}`,
       });
     }
   } catch (err) {
     return new Err({
-      name: "dust_error",
+      name: "ruby_error",
       code: "internal_error",
       message: "Failed to trigger activation new conversation email",
       cause: normalizeError(err),

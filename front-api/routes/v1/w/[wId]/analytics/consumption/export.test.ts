@@ -187,7 +187,7 @@ describe("POST /api/v1/w/[wId]/analytics/consumption/export", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toBe("text/csv");
     expect(response.headers.get("Content-Disposition")).toContain(
-      "dust_consumption_2024-06-01T00:00:00.000Z_2024-06-15T00:00:00.000Z.csv"
+      "ruby_consumption_2024-06-01T00:00:00.000Z_2024-06-15T00:00:00.000Z.csv"
     );
     const csv = await response.text();
     expect(csv).toContain("completedAt");

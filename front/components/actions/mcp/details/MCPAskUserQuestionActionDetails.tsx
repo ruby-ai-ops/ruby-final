@@ -3,7 +3,7 @@ import type { ToolExecutionDetailsProps } from "@app/components/actions/mcp/deta
 import { isTextContent } from "@app/lib/actions/mcp_internal_actions/output_schemas";
 import { UserQuestionSchema } from "@app/lib/actions/types";
 import { parseUserQuestionAnswer } from "@app/lib/actions/user_question";
-import { Check, Icon, MessageCircle01 } from "@dust-tt/sparkle";
+import { Check, Icon, MessageCircle01 } from "@ruby-ai/ui";
 
 export function MCPAskUserQuestionActionDetails({
   toolOutput,

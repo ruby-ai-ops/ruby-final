@@ -1,4 +1,4 @@
-import { SearchInput } from "@dust-tt/sparkle";
+import { SearchInput } from "@ruby-ai/ui";
 import { useEffect, useRef } from "react";
 
 interface SidebarSearchProps {

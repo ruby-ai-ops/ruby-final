@@ -17,7 +17,7 @@ import {
   Tabs,
   TabsList,
   TabsTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { ConversationLayout } from "@extension/ui/components/conversation/ConversationLayout";
 import { useClientSideMCPServerIds } from "@extension/ui/components/conversation/ExtensionClientSideMCPServerProvider";
 import { useParams } from "react-router-dom";

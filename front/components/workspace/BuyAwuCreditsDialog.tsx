@@ -47,7 +47,7 @@ import {
   TabsList,
   TabsTrigger,
   XCircle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 type PurchaseState = "idle" | "processing" | "success" | "error";
@@ -730,7 +730,7 @@ export function BuyAwuCreditsDialog({
                   <span className="text-sm text-foreground">
                     I agree to the{" "}
                     <Hoverable
-                      href="https://dust.tt/terms"
+                      href="https://ruby.ad/terms"
                       variant="highlight"
                       target="_blank"
                     >
@@ -738,7 +738,7 @@ export function BuyAwuCreditsDialog({
                     </Hoverable>{" "}
                     and{" "}
                     <Hoverable
-                      href="https://dust.tt/privacy"
+                      href="https://ruby.ad/privacy"
                       variant="highlight"
                       target="_blank"
                     >

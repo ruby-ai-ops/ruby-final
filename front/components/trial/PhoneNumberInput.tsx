@@ -6,7 +6,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
   Input,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React from "react";
 import type { Country } from "react-phone-number-input";
 import PhoneInput from "react-phone-number-input";

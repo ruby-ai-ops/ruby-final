@@ -23,12 +23,12 @@ import {
   LinkExternal01,
   Spinner,
   XCircle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useMemo, useState } from "react";
 
 type PurchaseState = "idle" | "processing" | "success" | "redirect" | "error";
 
-const SUPPORT_EMAIL = "support@dust.tt";
+const SUPPORT_EMAIL = "support@ruby.ad";
 
 // Minimum purchase amount in microUsd ($1).
 const LIMIT_EXHAUSTED_THRESHOLD_MICRO_USD = 1_000_000;
@@ -361,7 +361,7 @@ export function BuyCreditDialog({
                 <span className="text-sm text-foreground">
                   I agree to the{" "}
                   <Hoverable
-                    href="https://dust.tt/terms"
+                    href="https://ruby.ad/terms"
                     variant="highlight"
                     target="_blank"
                   >
@@ -369,7 +369,7 @@ export function BuyCreditDialog({
                   </Hoverable>{" "}
                   and{" "}
                   <Hoverable
-                    href="https://dust.tt/privacy"
+                    href="https://ruby.ad/privacy"
                     variant="highlight"
                     target="_blank"
                   >
@@ -590,7 +590,7 @@ export function BuyCreditDialog({
                 Please complete your pending payment before making a new
                 purchase or contact support to cancel your pending payments.{" "}
                 <a
-                  href="https://dust-tt.notion.site/Programmatic-usage-at-Dust-2b728599d94181ceb124d8585f794e2e#2ce28599d94180f69e02e90280c309b4"
+                  href="https://ruby-ai.notion.site/Programmatic-usage-at-Ruby-2b728599d94181ceb124d8585f794e2e#2ce28599d94180f69e02e90280c309b4"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-action-500 hover:underline"

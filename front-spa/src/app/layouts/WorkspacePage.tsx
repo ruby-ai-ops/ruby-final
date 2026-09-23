@@ -1,7 +1,7 @@
-import { ProfileOnboardingDialog } from "@dust-tt/front/components/onboarding/ProfileOnboardingDialog";
-import { AppAuthContextLayout } from "@dust-tt/front/components/sparkle/AppAuthContextLayout";
-import { computeIsMetronomeCheckout } from "@dust-tt/front/lib/client/subscription";
-import { useAuthContext } from "@dust-tt/front/lib/swr/workspaces";
+import { ProfileOnboardingDialog } from "@ruby-ai/front/components/onboarding/ProfileOnboardingDialog";
+import { AppAuthContextLayout } from "@ruby-ai/front/components/ui/AppAuthContextLayout";
+import { computeIsMetronomeCheckout } from "@ruby-ai/front/lib/client/subscription";
+import { useAuthContext } from "@ruby-ai/front/lib/swr/workspaces";
 import { AuthErrorPage } from "@spa/app/components/AuthErrorPage";
 import { useAppReadyContext } from "@spa/app/contexts/AppReadyContext";
 import { useRequiredPathParam } from "@spa/lib/platform";

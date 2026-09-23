@@ -1,5 +1,5 @@
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import type { PublicActivationWorkAreaStatus } from "@app/lib/models/activation/activation_work_area";
 import { ActivationPodResource } from "@app/lib/resources/activation_pod_resource";
 import { ActivationWorkAreaResource } from "@app/lib/resources/activation_work_area_resource";
@@ -71,7 +71,7 @@ export async function updateActivationWorkAreaForUser(
     title?: string;
     description?: string;
   }
-): Promise<Result<undefined, DustError<"activation_work_area_not_found">>> {
+): Promise<Result<undefined, RubyError<"activation_work_area_not_found">>> {
   const row = await ActivationWorkAreaResource.fetchById(auth, workAreaId);
 
   // fetchById only scopes to the workspace. Authorize like other Pod edits:
@@ -86,7 +86,7 @@ export async function updateActivationWorkAreaForUser(
     : [];
   if (!row || !space || !auth.can("admin", space)) {
     return new Err(
-      new DustError("activation_work_area_not_found", "Work area not found.")
+      new RubyError("activation_work_area_not_found", "Work area not found.")
     );
   }
 

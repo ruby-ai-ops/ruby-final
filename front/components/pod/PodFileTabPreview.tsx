@@ -21,7 +21,7 @@ import {
 } from "@app/types/files";
 import { parseCanonicalScopedPath } from "@app/types/mount_path";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Button, cn, Spinner } from "@dust-tt/sparkle";
+import { Button, cn, Spinner } from "@ruby-ai/ui";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSWRConfig } from "swr";
 

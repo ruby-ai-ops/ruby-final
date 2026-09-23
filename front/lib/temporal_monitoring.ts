@@ -25,7 +25,7 @@ export type WorkflowErrorType =
 export type WorkflowError = {
   type: WorkflowErrorType;
   message: string;
-  __is_dust_error: boolean;
+  __is_ruby_error: boolean;
 };
 
 export class ActivityInboundLogInterceptor
@@ -100,15 +100,15 @@ export class ActivityInboundLogInterceptor
       const durationMs = new Date().getTime() - startTime.getTime();
       if (error) {
         let errorType = "unhandled_internal_activity_error";
-        const isDustError = error.__is_dust_error !== undefined;
-        if (isDustError) {
+        const isRubyError = error.__is_ruby_error !== undefined;
+        if (isRubyError) {
           errorType = error.type;
         }
 
         this.logger.error(
           {
             error,
-            dustError: isDustError ? error : undefined,
+            rubyError: isRubyError ? error : undefined,
             error_stack: error?.stack,
             errorType,
             durationMs,

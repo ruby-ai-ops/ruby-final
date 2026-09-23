@@ -71,12 +71,12 @@ export const CREDIT_TYPE_USD_ID = "2714e483-4ff1-48e4-9e25-ac732e8f24f2";
 export const CREDIT_TYPE_EUR_ID = "58f0be15-cc47-4220-bdaf-072ab0e44f96";
 export const CREDIT_TYPE_GBP_ID = "0f99b795-a801-4653-ad4b-b99922be625d";
 
-export const PLAN_CODE_CUSTOM_FIELD_KEY = "DUST_PLAN_CODE";
+export const PLAN_CODE_CUSTOM_FIELD_KEY = "RUBY_PLAN_CODE";
 
 // Custom field stamped on payment-gated contracts to identify the activation
 // flow type. The contract.start webhook checks this field and skips the
 // automatic subscription swap when set — payment_gate.payment_status handles it.
-export const PAYMENT_GATE_TYPE_CUSTOM_FIELD_KEY = "DUST_PAYMENT_GATE_TYPE";
+export const PAYMENT_GATE_TYPE_CUSTOM_FIELD_KEY = "RUBY_PAYMENT_GATE_TYPE";
 export const PAYMENT_GATE_TYPE_SUBSCRIPTION_ACTIVATION =
   "subscription_activation";
 
@@ -89,14 +89,14 @@ export const PAYMENT_GATE_TYPE_SUBSCRIPTION_ACTIVATION =
 // leaving the workspace with two active subscriptions. The contract.start
 // webhook checks this field and skips its subscription swap entirely when set.
 export const SUBSCRIPTION_SWAP_HANDLED_INLINE_CUSTOM_FIELD_KEY =
-  "DUST_SUBSCRIPTION_SWAP_INLINE";
+  "RUBY_SUBSCRIPTION_SWAP_INLINE";
 
 // Custom field stamped on every seat-style product (Workspace / Pro / Max /
 // Free / future seat tiers). Value is the membership seat type ("workspace"
 // | "pro" | "max" | "free"). Lets runtime code identify which subscription
 // bills which seat type without comparing product names or IDs (both of
 // which can change on redeploy).
-export const SEAT_TYPE_CUSTOM_FIELD_KEY = "DUST_SEAT_TYPE";
+export const SEAT_TYPE_CUSTOM_FIELD_KEY = "RUBY_SEAT_TYPE";
 
 // Product-level custom field carrying the Stripe product ID Metronome
 // should reference when invoicing this product. Populated manually in the
@@ -117,7 +117,7 @@ export const STRIPE_PRODUCT_ID_CUSTOM_FIELD_KEY = "STRIPE_PRODUCT_ID";
 // and value pairs for every entity type"). Commits only ever take "pool" (they
 // have no excess variant).
 export const CONTRACT_CREDIT_TYPE_CUSTOM_FIELD_KEY =
-  "DUST_CONTRACT_CREDIT_TYPE";
+  "RUBY_CONTRACT_CREDIT_TYPE";
 export const CONTRACT_CREDIT_TYPE_EXCESS = "excess";
 export const CONTRACT_CREDIT_TYPE_POOL = "pool";
 // Per-user free-seat credits. Stamped at creation so they're explicitly typed
@@ -155,17 +155,17 @@ export type ContractCreditType =
 // a non-seat-based commit may not be prioritized over a seat-based one, so the
 // transition is rejected. Re-granting as a plain prepaid commit keeps it in the
 // prepaid tier, ordered after the seat allocation by priority.
-export const CARRY_ON_RENEWAL_CUSTOM_FIELD_KEY = "DUST_CARRY_ON_RENEWAL";
+export const CARRY_ON_RENEWAL_CUSTOM_FIELD_KEY = "RUBY_CARRY_ON_RENEWAL";
 
 export const CARRY_ON_RENEWAL_FOREVER_VALUE = "forever";
 
 // Custom fields stamped on AWU pool commits (admin grants via
 // `grantAwuCreditsPlugin` and self-serve top-ups via `addPaymentGatedCommitToContract`)
 // for finance reconciliation against the Stripe invoice Metronome generates.
-export const AWU_PURCHASE_ORDER_ID_CUSTOM_FIELD_KEY = "DUST_PURCHASE_ORDER_ID";
-export const AWU_AMOUNT_CUSTOM_FIELD_KEY = "DUST_AWU_AMOUNT";
+export const AWU_PURCHASE_ORDER_ID_CUSTOM_FIELD_KEY = "RUBY_PURCHASE_ORDER_ID";
+export const AWU_AMOUNT_CUSTOM_FIELD_KEY = "RUBY_AWU_AMOUNT";
 export const AWU_DISCOUNT_PERCENT_CUSTOM_FIELD_KEY =
-  "DUST_AWU_DISCOUNT_PERCENT";
+  "RUBY_AWU_DISCOUNT_PERCENT";
 
 export const FOREVER_ENDING_BEFORE = new Date("2999-01-01T00:00:00.000Z");
 
@@ -182,7 +182,7 @@ export function oneYearAfter(start: Date): Date {
 // Metronome (see `CUSTOM_FIELD_KEYS` in `scripts/metronome_setup.ts`) before it
 // can be stamped, or the create is rejected with "Invalid custom field keys".
 export const PER_USER_CREDIT_USER_CUSTOM_FIELD_KEY =
-  "DUST_PER_USER_CREDIT_USER";
+  "RUBY_PER_USER_CREDIT_USER";
 
 // Prefix applied to user sIds when emitting Metronome usage events for users on
 // a free seat, and when creating their per-user credits. This
@@ -225,7 +225,7 @@ export const HUBSPOT_DEAL_ID_CUSTOM_FIELD_KEY = "HUBSPOT_DEAL_ID";
 // workspace member (a stringified integer). Must be registered in Metronome
 // before it can be stamped.
 export const LEGACY_CREDIT_MIGRATION_CUSTOM_FIELD_KEY =
-  "DUST_LEGACY_CREDIT_MIGRATION";
+  "RUBY_LEGACY_CREDIT_MIGRATION";
 
 // Suffix appended to the annual variant of each seat product name in
 // Metronome (e.g. "Pro Seat (Yearly)"). Used by the setup script when

@@ -1,5 +1,5 @@
 /**
- * Upload a CSV file as a table in a Dust data source using the public API.
+ * Upload a CSV file as a table in a Ruby data source using the public API.
  *
  * Usage:
  *   npx tsx admin/upload_csv_to_table.ts \
@@ -9,7 +9,7 @@
  *     --dataSourceId <dsId> \
  *     --tableName <name> \
  *     --apiKey <key> \
- *     [--dustApiUrl https://dust.tt] \
+ *     [--rubyApiUrl https://ruby.ad] \
  *     [--tableDescription "description"] \
  *     [--batchSize 500]
  *
@@ -23,7 +23,7 @@ import { parse } from "csv-parse/sync";
 import * as fs from "fs";
 import * as path from "path";
 
-const DUST_API_URL_DEFAULT = "https://dust.tt";
+const RUBY_API_URL_DEFAULT = "https://ruby.ad";
 const BATCH_SIZE_DEFAULT = 500;
 
 interface Args {
@@ -33,7 +33,7 @@ interface Args {
   dataSourceId: string;
   tableName: string;
   apiKey: string;
-  dustApiUrl: string;
+  rubyApiUrl: string;
   tableDescription: string;
   batchSize: number;
 }
@@ -72,7 +72,7 @@ function parseArgs(): Args {
     dataSourceId: map.get("dataSourceId")!,
     tableName: map.get("tableName")!,
     apiKey: map.get("apiKey")!,
-    dustApiUrl: map.get("dustApiUrl") ?? DUST_API_URL_DEFAULT,
+    rubyApiUrl: map.get("rubyApiUrl") ?? RUBY_API_URL_DEFAULT,
     tableDescription: map.get("tableDescription") ?? "",
     batchSize: parseInt(map.get("batchSize") ?? String(BATCH_SIZE_DEFAULT), 10),
   };
@@ -142,7 +142,7 @@ async function main() {
   }
 
   // Step 1: Create the table.
-  const baseUrl = `${args.dustApiUrl}/api/v1/w/${args.workspaceId}/spaces/${args.spaceId}/data_sources/${args.dataSourceId}`;
+  const baseUrl = `${args.rubyApiUrl}/api/v1/w/${args.workspaceId}/spaces/${args.spaceId}/data_sources/${args.dataSourceId}`;
 
   console.log(`\nCreating table "${args.tableName}"...`);
   const createResult = (await apiRequest(

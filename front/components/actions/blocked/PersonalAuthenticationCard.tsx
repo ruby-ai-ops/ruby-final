@@ -13,7 +13,7 @@ import {
 import type { OAuthProvider } from "@app/types/oauth/lib";
 import { getOverridablePersonalAuthInputs } from "@app/types/oauth/lib";
 import type { LightWorkspaceType, UserType } from "@app/types/user";
-import { Avatar, Button, Card, Check, Key01, XClose } from "@dust-tt/sparkle";
+import { Avatar, Button, Card, Check, Key01, XClose } from "@ruby-ai/ui";
 import { useMemo, useRef, useState } from "react";
 
 export type PersonalAuthResolutionOutcome = "completed" | "denied";
@@ -136,7 +136,7 @@ export function PersonalAuthenticationCard({
       </div>
 
       <div className="text-base text-muted-foreground">
-        {`Dust needs access to ${serverDisplayName ?? "this service"} to complete this action.`}
+        {`Ruby needs access to ${serverDisplayName ?? "this service"} to complete this action.`}
       </div>
       <div className="text-base text-muted-foreground">
         {`Once connected, ${serverDisplayName ?? "this service"} will remain connected for future requests.`}

@@ -153,7 +153,7 @@ function parseCsvRows(csvPath: string, logger?: Logger): TemplateRow[] {
 const argumentSpecs: ArgumentSpecs = {
   csvPath: {
     type: "string",
-    description: "Path to the Internal Dust Use Cases CSV file",
+    description: "Path to the Internal Ruby Use Cases CSV file",
     demandOption: true,
   },
 };

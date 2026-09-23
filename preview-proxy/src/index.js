@@ -1,22 +1,22 @@
 const PROJECTS = {
-  app: "app-dust-tt",
-  poke: "poke-dust-tt",
+  app: "app-ruby-ai",
+  admin: "admin-ruby-ai",
 };
 
-const WORKERS_SUBDOMAIN = "dust-account.workers.dev";
+const WORKERS_SUBDOMAIN = "ruby-account.workers.dev";
 
 export default {
   async fetch(request) {
     const url = new URL(request.url);
     // Expected formats:
-    //   branch--app.preview.dust.tt         → branch.app-dust-tt.pages.dev (Pages, legacy)
-    //   branch--app-worker.preview.dust.tt  → branch-app-dust-tt.dust-account.workers.dev (Workers preview alias)
-    const prefix = url.hostname.split(".preview.dust.tt")[0];
+    //   branch--app.preview.ruby.ad         → branch.app-ruby-ai.pages.dev (Pages, legacy)
+    //   branch--app-worker.preview.ruby.ad  → branch-app-ruby-ai.ruby-account.workers.dev (Workers preview alias)
+    const prefix = url.hostname.split(".preview.ruby.ad")[0];
     const separatorIndex = prefix.lastIndexOf("--");
 
     if (separatorIndex === -1) {
       return new Response(
-        "Expected format: <branch>--<app|poke>.preview.dust.tt",
+        "Expected format: <branch>--<app|admin>.preview.ruby.ad",
         { status: 400 }
       );
     }
@@ -30,7 +30,7 @@ export default {
     const projectName = PROJECTS[project];
 
     if (!projectName) {
-      return new Response(`Unknown project: ${project}. Use "app" or "poke".`, {
+      return new Response(`Unknown project: ${project}. Use "app" or "admin".`, {
         status: 400,
       });
     }

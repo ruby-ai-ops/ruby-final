@@ -90,7 +90,7 @@ async function createFrameFile(
   { spaceId }: { spaceId?: ModelId } = {}
 ) {
   const conversation = await ConversationFactory.create(auth, {
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     messagesCreatedAt: [new Date()],
     spaceId,
   });
@@ -248,7 +248,7 @@ describe("publishFrame", () => {
   it("refuses to publish a non-interactive-content file", async () => {
     const { authenticator: auth } = await createResourceTest({});
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
     const file = await FileFactory.create(auth, null, {
@@ -276,7 +276,7 @@ describe("publishFrame", () => {
   it("publishes two frames sharing a fileName independently, each from its own content", async () => {
     const { authenticator: auth } = await createResourceTest({});
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [new Date()],
     });
 

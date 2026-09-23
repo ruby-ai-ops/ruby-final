@@ -1,4 +1,4 @@
-import { LoadingBlock } from "@dust-tt/sparkle";
+import { LoadingBlock } from "@ruby-ai/ui";
 
 export function ConversationViewerEmptyState() {
   return (

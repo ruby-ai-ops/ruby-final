@@ -65,7 +65,7 @@ describe("Static OAuth callback instructions", () => {
 
     expect(await screen.findByText(REDIRECT_URI)).toBeInTheDocument();
     expect(fetcher).toHaveBeenCalledWith(CALLBACK_ENDPOINT);
-    expect(screen.queryByText(/app\.dust\.tt/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/app\.ruby\.ad/)).not.toBeInTheDocument();
   });
 
   it("does not show a browser-computed callback while loading", () => {
@@ -75,7 +75,7 @@ describe("Static OAuth callback instructions", () => {
     expect(screen.getByRole("status")).toHaveTextContent(
       "Loading redirect URI"
     );
-    expect(screen.queryByText(/app\.dust\.tt/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/app\.ruby\.ad/)).not.toBeInTheDocument();
   });
 
   it("allows retrying a failed request without falling back to the app callback", async () => {
@@ -90,7 +90,7 @@ describe("Static OAuth callback instructions", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Could not load the redirect URI"
     );
-    expect(screen.queryByText(/app\.dust\.tt/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/app\.ruby\.ad/)).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Retry" }));
     await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
     expect(screen.getByRole("alert")).toBeInTheDocument();

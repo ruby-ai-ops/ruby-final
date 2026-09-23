@@ -8,7 +8,7 @@ import {
   CitationTitle,
   Icon,
   Table,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 export function MCPDataWarehousesBrowseDetails({
   toolOutput,

@@ -21,10 +21,10 @@ const MOUNT_TIMEOUT_MS = 30_000;
 const TOKEN_SERVER_URL = "http://127.0.0.1:987";
 const TOKEN_SERVER_PATH_PREFIX = `${TOKEN_SERVER_URL}/token`;
 const TOKEN_SERVER_HEALTH_URL = `${TOKEN_SERVER_URL}/healthz`;
-const TOKEN_DIRECTORY = "/run/dust-gcs";
-const TOKEN_SERVER_PATH = "/usr/local/bin/dust-gcs-token-server.py";
-const TOKEN_WRITER_PATH = "/usr/local/bin/dust-gcs-write-token.sh";
-const TOKEN_FIREWALL_PATH = "/usr/local/bin/dust-gcs-token-firewall.sh";
+const TOKEN_DIRECTORY = "/run/ruby-gcs";
+const TOKEN_SERVER_PATH = "/usr/local/bin/ruby-gcs-token-server.py";
+const TOKEN_WRITER_PATH = "/usr/local/bin/ruby-gcs-write-token.sh";
+const TOKEN_FIREWALL_PATH = "/usr/local/bin/ruby-gcs-token-firewall.sh";
 const TOKEN_SERVER_POLL_ATTEMPTS = 100;
 const TOKEN_SERVER_POLL_INTERVAL_SECONDS = 0.05;
 const TOKEN_SERVER_EXEC_TIMEOUT_MS = 10_000;
@@ -74,11 +74,11 @@ function tokenUrl(index: number): string {
  *   or another sandbox.
  * - "frame_publications": same access model as "workload", but without caching so newly
  *   published or replaced functions are visible immediately.
- * - "sandbox_state_replica": mounted AS `dust-state` (via runuser) so the FUSE
+ * - "sandbox_state_replica": mounted AS `ruby-state` (via runuser) so the FUSE
  *   default — only the mounting user can access the fs — makes it invisible to
  *   every other uid, including the untrusted workload uid 1003 and root. No
  *   `allow_other`, restrictive modes, and NO kernel list caching: litestream
- *   restore must never see a stale LTX listing. Needs the dust-state user and
+ *   restore must never see a stale LTX listing. Needs the ruby-state user and
  *   sandbox state layout in the image; targets with this profile are only ever
  *   constructed for stateful Frame sandboxes.
  */
@@ -463,7 +463,7 @@ export function buildMountCommand({
     }
 
     case "sandbox_state_replica": {
-      // Mounted AS dust-state (runuser): with no allow_other, the FUSE layer
+      // Mounted AS ruby-state (runuser): with no allow_other, the FUSE layer
       // denies every uid but the mounting one — the kernel-enforced version of
       // "invisible to uid 1003". List caching is OFF: litestream restore reads
       // the LTX listing at cold start and must never see a cached view.
@@ -480,7 +480,7 @@ export function buildMountCommand({
         rootCommand.timeout(
           rootCommand.exec("/usr/sbin/runuser", [
             "-u",
-            "dust-state",
+            "ruby-state",
             "--",
             "/usr/bin/gcsfuse",
             ...flags,

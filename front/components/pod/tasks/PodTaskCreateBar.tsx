@@ -1,6 +1,6 @@
 import { AddTaskComposer } from "@app/components/pod/tasks/AddTaskComposer";
 import { usePodTasksPanel } from "@app/components/pod/tasks/PodTasksPanelContext";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 export function PodTaskCreateBar() {
   const {

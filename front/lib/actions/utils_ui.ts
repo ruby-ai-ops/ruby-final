@@ -1,5 +1,5 @@
 import type { ActionSpecification } from "@app/components/agent_builder/types";
-import { ShapesPlus } from "@dust-tt/sparkle";
+import { ShapesPlus } from "@ruby-ai/ui";
 
 export const MCP_SPECIFICATION: ActionSpecification = {
   label: "More...",

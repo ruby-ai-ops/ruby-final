@@ -1050,7 +1050,7 @@ export class FileSystemNodeResource extends BaseResource<FileSystemNodeModel> {
           nodeId: this.id,
           blobId: request.blobId,
         },
-        "Dust filesystem could not verify an uploaded blob"
+        "Ruby filesystem could not verify an uploaded blob"
       );
       if (isGCSNotFoundError(error)) {
         return new Err(

@@ -1,7 +1,7 @@
 import { startServer } from "@connectors/api_server";
 import { runBigQueryWorker } from "@connectors/connectors/bigquery/temporal/worker";
 import { runConfluenceWorker } from "@connectors/connectors/confluence/temporal/worker";
-import { runDustProjectWorker } from "@connectors/connectors/dust_project/temporal/worker";
+import { runRubyProjectWorker } from "@connectors/connectors/ruby_project/temporal/worker";
 import { runGongWorker } from "@connectors/connectors/gong/temporal/worker";
 import { runMicrosoftWorker } from "@connectors/connectors/microsoft/temporal/worker";
 import { runSalesforceWorker } from "@connectors/connectors/salesforce/temporal/worker";
@@ -70,8 +70,8 @@ runSalesforceWorker().catch((err) =>
 runGongWorker().catch((err) =>
   logger.error(normalizeError(err), "Error running gong worker")
 );
-runDustProjectWorker().catch((err) =>
-  logger.error(normalizeError(err), "Error running dust project worker")
+runRubyProjectWorker().catch((err) =>
+  logger.error(normalizeError(err), "Error running ruby project worker")
 );
 
 initializeDiscordCommands();

@@ -5,25 +5,26 @@ const isDev = process.env.NODE_ENV === "development";
 
 const CONTENT_SECURITY_POLICIES = [
   "default-src 'none';",
-  `script-src 'self' 'unsafe-inline' 'unsafe-eval' dust.tt *.dust.tt https://dust.tt https://*.dust.tt *.googletagmanager.com *.google-analytics.com *.hsforms.net *.hs-scripts.com *.hs-analytics.net *.hubspot.com *.hs-banner.com *.hscollectedforms.net *.usercentrics.eu *.licdn.com *.datadoghq-browser-agent.com *.doubleclick.net *.hsadspixel.net *.wistia.net *.ads-twitter.com apis.google.com;`,
-  `script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' dust.tt *.dust.tt https://dust.tt https://*.dust.tt *.googletagmanager.com *.google-analytics.com *.hsforms.net *.hs-scripts.com *.hs-analytics.net *.hubspot.com *.hs-banner.com *.hscollectedforms.net *.usercentrics.eu *.licdn.com *.datadoghq-browser-agent.com *.doubleclick.net *.hsadspixel.net *.wistia.net *.hsappstatic.net *.hubspotusercontent-eu1.net import-cdn.default.com *.ads-twitter.com *.vector.co apis.google.com;`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' ruby.ad *.ruby.ad https://ruby.ad https://*.ruby.ad *.googletagmanager.com *.google-analytics.com *.hsforms.net *.hs-scripts.com *.hs-analytics.net *.hubspot.com *.hs-banner.com *.hscollectedforms.net *.usercentrics.eu *.licdn.com *.datadoghq-browser-agent.com *.doubleclick.net *.hsadspixel.net *.wistia.net *.ads-twitter.com apis.google.com;`,
+  `script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' ruby.ad *.ruby.ad https://ruby.ad https://*.ruby.ad *.googletagmanager.com *.google-analytics.com *.hsforms.net *.hs-scripts.com *.hs-analytics.net *.hubspot.com *.hs-banner.com *.hscollectedforms.net *.usercentrics.eu *.licdn.com *.datadoghq-browser-agent.com *.doubleclick.net *.hsadspixel.net *.wistia.net *.hsappstatic.net *.hubspotusercontent-eu1.net import-cdn.default.com *.ads-twitter.com *.vector.co apis.google.com;`,
   `style-src 'self' 'unsafe-inline' *.fontawesome.com *.googleapis.com;`,
   `style-src-elem 'self' 'unsafe-inline' *.fontawesome.com *.googleapis.com *.gstatic.com;`,
   `img-src 'self' data: blob: webkit-fake-url: https:;`,
-  `connect-src 'self' blob: dust.tt *.dust.tt https://dust.tt https://*.dust.tt browser-intake-datadoghq.eu *.google-analytics.com *.googlesyndication.com *.googleadservices.com cdn.jsdelivr.net *.hsforms.com *.hscollectedforms.net *.hubspot.com *.hubapi.com *.hsappstatic.net *.usercentrics.eu *.ads.linkedin.com px.ads.linkedin.com google.com *.google.com *.workos.com translate-pa.googleapis.com forms.default.com nucleus.default.com *.default.com *.vector.co;`,
-  `frame-src 'self' dust.tt *.dust.tt *.wistia.net eu.viz.dust.tt viz.dust.tt *.hsforms.net *.googletagmanager.com *.doubleclick.net *.default.com *.hsforms.com *.youtube.com *.youtube-nocookie.com *.google.com docs.google.com drive.google.com view.officeapps.live.com${isDev ? " http://localhost:3007 http://localhost:3011" : ""};`,
-  `font-src 'self' data: dust.tt *.dust.tt https://dust.tt https://*.dust.tt *.gstatic.com *.wistia.net fonts.cdnfonts.com migaku-public-data.migaku.com;`,
+  `connect-src 'self' blob: ruby.ad *.ruby.ad https://ruby.ad https://*.ruby.ad browser-intake-datadoghq.eu *.google-analytics.com *.googlesyndication.com *.googleadservices.com cdn.jsdelivr.net *.hsforms.com *.hscollectedforms.net *.hubspot.com *.hubapi.com *.hsappstatic.net *.usercentrics.eu *.ads.linkedin.com px.ads.linkedin.com google.com *.google.com *.workos.com translate-pa.googleapis.com forms.default.com nucleus.default.com *.default.com *.vector.co;`,
+  `frame-src 'self' ruby.ad *.ruby.ad *.wistia.net eu.viz.ruby.ad viz.ruby.ad *.hsforms.net *.googletagmanager.com *.doubleclick.net *.default.com *.hsforms.com *.youtube.com *.youtube-nocookie.com *.google.com docs.google.com drive.google.com view.officeapps.live.com${isDev ? " http://localhost:3007 http://localhost:3011" : ""};`,
+  `font-src 'self' data: ruby.ad *.ruby.ad https://ruby.ad https://*.ruby.ad *.gstatic.com *.wistia.net fonts.cdnfonts.com migaku-public-data.migaku.com;`,
   `media-src 'self' data:;`,
   `object-src 'none';`,
   `form-action 'self' *.hsforms.com;`,
   `base-uri 'self';`,
-  `frame-ancestors 'self' https://dust.tt https://*.dust.tt https://app.contentful.com${isDev ? " http://localhost:3000 http://localhost:3007" : ""};`,
+  `frame-ancestors 'self' https://ruby.ad https://*.ruby.ad https://app.contentful.com${isDev ? " http://localhost:3000 http://localhost:3007" : ""};`,
   `manifest-src 'self';`,
   `worker-src 'self' blob:;`,
   ...(isDev ? [] : ["upgrade-insecure-requests;"]),
 ].join(" ");
 
 const config = {
+  distDir: isDev ? ".next" : ".next-build",
   output: "standalone",
   images: {
     remotePatterns: [
@@ -54,16 +55,16 @@ const config = {
         permanent: true,
       },
       {
-        source: "/blog/how-persona-hit-80-ai-agent-adoption-with-dust",
+        source: "/blog/how-persona-hit-80-ai-agent-adoption-with-ruby",
         destination:
-          "/customers/how-persona-hit-80-ai-agent-adoption-with-dust",
+          "/customers/how-persona-hit-80-ai-agent-adoption-with-ruby",
         permanent: true,
       },
       {
         source:
-          "/blog/how-cmi-strategies-achieved-95-ai-adoption-across-100-consultants-with-dust",
+          "/blog/how-cmi-strategies-achieved-95-ai-adoption-across-100-consultants-with-ruby",
         destination:
-          "/customers/how-cmi-strategies-achieved-95-ai-adoption-across-100-consultants-with-dust",
+          "/customers/how-cmi-strategies-achieved-95-ai-adoption-across-100-consultants-with-ruby",
         permanent: true,
       },
       {
@@ -82,29 +83,29 @@ const config = {
       },
       {
         source:
-          "/blog/how-watershed-got-90-of-its-team-to-leverage-dust-agents",
+          "/blog/how-watershed-got-90-of-its-team-to-leverage-ruby-agents",
         destination:
-          "/customers/how-watershed-got-90-of-its-team-to-leverage-dust-agents",
+          "/customers/how-watershed-got-90-of-its-team-to-leverage-ruby-agents",
         permanent: true,
       },
       {
-        source: "/blog/why-mirakl-chose-dust-as-its-go-to-agentic-solution",
+        source: "/blog/why-mirakl-chose-ruby-as-its-go-to-agentic-solution",
         destination:
-          "/customers/why-mirakl-chose-dust-as-its-go-to-agentic-solution",
-        permanent: true,
-      },
-      {
-        source:
-          "/blog/less-admin-more-selling-how-dust-frees-up-payfits-sales-team-to-close-more-deals",
-        destination:
-          "/customers/less-admin-more-selling-how-dust-frees-up-payfits-sales-team-to-close-more-deals",
+          "/customers/why-mirakl-chose-ruby-as-its-go-to-agentic-solution",
         permanent: true,
       },
       {
         source:
-          "/blog/how-wakam-cut-legal-contract-analysis-time-by-50-with-dust",
+          "/blog/less-admin-more-selling-how-ruby-frees-up-payfits-sales-team-to-close-more-deals",
         destination:
-          "/customers/how-wakam-cut-legal-contract-analysis-time-by-50-with-dust",
+          "/customers/less-admin-more-selling-how-ruby-frees-up-payfits-sales-team-to-close-more-deals",
+        permanent: true,
+      },
+      {
+        source:
+          "/blog/how-wakam-cut-legal-contract-analysis-time-by-50-with-ruby",
+        destination:
+          "/customers/how-wakam-cut-legal-contract-analysis-time-by-50-with-ruby",
         permanent: true,
       },
       {
@@ -122,9 +123,9 @@ const config = {
       },
       {
         source:
-          "/blog/why-doctolibs-vp-of-data-stopped-internal-development-to-buy-dust",
+          "/blog/why-doctolibs-vp-of-data-stopped-internal-development-to-buy-ruby",
         destination:
-          "/customers/why-doctolibs-vp-of-data-stopped-internal-development-to-buy-dust",
+          "/customers/why-doctolibs-vp-of-data-stopped-internal-development-to-buy-ruby",
         permanent: true,
       },
       {
@@ -150,9 +151,9 @@ const config = {
       },
       {
         source:
-          "/blog/the-end-of-data-queues-how-alan-scaled-analytics-with-dust-2",
+          "/blog/the-end-of-data-queues-how-alan-scaled-analytics-with-ruby-2",
         destination:
-          "/customers/the-end-of-data-queues-how-alan-scaled-analytics-with-dust-2",
+          "/customers/the-end-of-data-queues-how-alan-scaled-analytics-with-ruby-2",
         permanent: true,
       },
       {
@@ -171,8 +172,8 @@ const config = {
         permanent: true,
       },
       {
-        source: "/blog/alan-marketing-customer-story-production-dust",
-        destination: "/customers/alan-marketing-customer-story-production-dust",
+        source: "/blog/alan-marketing-customer-story-production-ruby",
+        destination: "/customers/alan-marketing-customer-story-production-ruby",
         permanent: true,
       },
       {
@@ -186,26 +187,26 @@ const config = {
         permanent: true,
       },
       {
-        source: "/blog/kyriba-accelerating-innovation-with-dust",
-        destination: "/customers/kyriba-accelerating-innovation-with-dust",
+        source: "/blog/kyriba-accelerating-innovation-with-ruby",
+        destination: "/customers/kyriba-accelerating-innovation-with-ruby",
         permanent: true,
       },
       {
         source:
-          "/blog/how-lucas-people-analyst-at-alan-introduced-dust-to-his-hr-team",
+          "/blog/how-lucas-people-analyst-at-alan-introduced-ruby-to-his-hr-team",
         destination:
-          "/customers/how-lucas-people-analyst-at-alan-introduced-dust-to-his-hr-team",
+          "/customers/how-lucas-people-analyst-at-alan-introduced-ruby-to-his-hr-team",
         permanent: true,
       },
       {
-        source: "/blog/qonto-dust-ai-partnership",
-        destination: "/customers/qonto-dust-ai-partnership",
+        source: "/blog/qonto-ruby-ai-partnership",
+        destination: "/customers/qonto-ruby-ai-partnership",
         permanent: true,
       },
       {
-        source: "/blog/how-valentine-head-of-marketing-at-fleet-uses-dust",
+        source: "/blog/how-valentine-head-of-marketing-at-fleet-uses-ruby",
         destination:
-          "/customers/how-valentine-head-of-marketing-at-fleet-uses-dust",
+          "/customers/how-valentine-head-of-marketing-at-fleet-uses-ruby",
         permanent: true,
       },
       {
@@ -221,13 +222,13 @@ const config = {
         permanent: true,
       },
       {
-        source: "/blog/dust-ai-payfit-efficiency",
-        destination: "/customers/dust-ai-payfit-efficiency",
+        source: "/blog/ruby-ai-payfit-efficiency",
+        destination: "/customers/ruby-ai-payfit-efficiency",
         permanent: true,
       },
       {
-        source: "/blog/november-five-ai-transformation-dust",
-        destination: "/customers/november-five-ai-transformation-dust",
+        source: "/blog/november-five-ai-transformation-ruby",
+        destination: "/customers/november-five-ai-transformation-ruby",
         permanent: true,
       },
       {
@@ -242,8 +243,7 @@ const config = {
       },
       {
         source: "/website-privacy",
-        destination:
-          "https://dust-tt.notion.site/Website-Privacy-Policy-a118bb3472f945a1be8e11fbfb733084",
+        destination: "/home/platform-privacy",
         permanent: true,
       },
       {
@@ -252,19 +252,13 @@ const config = {
         permanent: true,
       },
       {
-        source: "/terms",
-        destination:
-          "https://dust-tt.notion.site/17bb854ffc674e1ba729d1a10837e50d?v=de92d1770a344beeafe9f701e78ad8f3",
-        permanent: true,
-      },
-      {
         source: "/jobs",
-        destination: "https://jobs.ashbyhq.com/dust",
+        destination: "/home/about",
         permanent: true,
       },
       {
         source: "/triggers",
-        destination: "https://docs.dust.tt/docs/triggers",
+        destination: "https://docs.ruby.ad/docs/triggers",
         permanent: true,
       },
       {
@@ -308,8 +302,8 @@ const config = {
         permanent: true,
       },
       {
-        source: "/solutions/dust-platform",
-        destination: "/home/solutions/dust-platform",
+        source: "/solutions/ruby-platform",
+        destination: "/home/solutions/ruby-platform",
         permanent: true,
       },
       {
@@ -349,7 +343,7 @@ const config = {
         permanent: false,
       },
       {
-        // Page removed, see https://github.com/dust-tt/dust/pull/29781.
+        // Page removed, see https://ruby.ad/ruby/pull/29781.
         source: "/home/api-pricing",
         destination: "/home/pricing",
         permanent: true,
@@ -417,12 +411,12 @@ const config = {
     };
     return config;
   },
-  // @dust-tt/sparkle is a workspace symlink, so Next resolves it under the
+  // @ruby-ai/ui is a workspace symlink, so Next resolves it under the
   // monorepo tree and treats it as first-party. Without transpiling, its
   // internal global CSS imports (e.g. allotment.css inside SidebarLayout) trip
   // the "Global CSS only in _app" rule and the build fails. Transpiling routes
-  // sparkle's modules through the local pipeline so its CSS is allowed.
-  transpilePackages: ["@dust-tt/sparkle"],
+  // ui's modules through the local pipeline so its CSS is allowed.
+  transpilePackages: ["@ruby-ai/ui"],
 };
 
 module.exports = config;

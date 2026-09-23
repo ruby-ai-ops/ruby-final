@@ -1,0 +1,682 @@
+import {
+  Avatar,
+  Bell01,
+  Zap,
+  Button,
+  Chip,
+  Clock,
+  Collapsible,
+  CollapsibleContent,
+  DataTable,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+  Input,
+  Label,
+  Sun,
+  Moon01,
+  Notification,
+  Page,
+  Edit04,
+  SearchInput,
+  Separator,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Trash01,
+  useSendNotification,
+} from "@ruby-ai/ui";
+import type { ColumnDef } from "@tanstack/react-table";
+import { useMemo, useState } from "react";
+
+import { mockUsers, type User } from "../data";
+
+// Fake data types and constants
+type Theme = "light" | "dark" | "system";
+type SubmitMessageKey = "enter" | "cmd+enter";
+
+// Notification preferences (unplugged – same structure as front, local state only)
+type NotificationCondition = "all_messages" | "only_mentions" | "never";
+type NotificationPreferencesDelay =
+  | "5_minutes"
+  | "15_minutes"
+  | "30_minutes"
+  | "1_hour"
+  | "daily";
+
+const NOTIFICATION_CONDITION_LABELS: Record<NotificationCondition, string> = {
+  all_messages: "Notify me for all messages",
+  only_mentions: "Notify me only when mentioned",
+  never: "Never notify me",
+};
+
+type NewConvNotificationChoice = "notify" | "never";
+const NEW_CONV_NOTIFICATION_LABELS: Record<NewConvNotificationChoice, string> =
+  {
+    notify: "Notify me of new conversations",
+    never: "Never notify me",
+  };
+
+const NOTIFICATION_DELAY_OPTIONS: NotificationPreferencesDelay[] = [
+  "5_minutes",
+  "15_minutes",
+  "30_minutes",
+  "1_hour",
+  "daily",
+];
+
+const NOTIFICATION_DELAY_LABELS: Record<NotificationPreferencesDelay, string> =
+  {
+    "5_minutes": "every 5 minutes",
+    "15_minutes": "every 15 minutes",
+    "30_minutes": "every 30 minutes",
+    "1_hour": "every hour",
+    daily: "a day",
+  };
+
+type UnifiedDefaultEvent = "all_activity" | "when_mentioned" | "never";
+
+const UNIFIED_DEFAULT_EVENT_LABELS: Record<UnifiedDefaultEvent, string> = {
+  all_activity: "All activity",
+  when_mentioned: "When mentioned",
+  never: "Never",
+};
+
+const UNIFIED_DEFAULT_EVENT_DESCRIPTIONS: Record<
+  UnifiedDefaultEvent,
+  string | undefined
+> = {
+  all_activity: "New messages in project and conversations",
+  when_mentioned: "New messages when directly mentioned",
+  never: "No notifications",
+};
+
+interface ToolRow {
+  id: string;
+  name: string;
+  description: string;
+  connected: boolean;
+}
+
+interface TriggerRow {
+  id: string;
+  agentName: string;
+  agentPictureUrl: string | null;
+  agentStatus: string;
+  name: string;
+  kind: "schedule" | "mention";
+  scheduleLabel?: string;
+}
+
+const FAKE_TOOLS: ToolRow[] = [
+  {
+    id: "tool-1",
+    name: "Slack",
+    description: "Search and post to Slack channels",
+    connected: true,
+  },
+  {
+    id: "tool-2",
+    name: "Google Drive",
+    description: "Read and search Drive files",
+    connected: true,
+  },
+  {
+    id: "tool-3",
+    name: "Notion",
+    description: "Query Notion workspaces",
+    connected: false,
+  },
+];
+
+const FAKE_TRIGGERS: TriggerRow[] = [
+  {
+    id: "trig-1",
+    agentName: "Analyst",
+    agentPictureUrl: null,
+    agentStatus: "enabled",
+    name: "Daily digest",
+    kind: "schedule",
+    scheduleLabel: "Every day at 9:00",
+  },
+  {
+    id: "trig-2",
+    agentName: "Support Bot",
+    agentPictureUrl: null,
+    agentStatus: "enabled",
+    name: "Mention alert",
+    kind: "mention",
+  },
+];
+
+const randomUser = () =>
+  mockUsers[Math.floor(Math.random() * mockUsers.length)];
+
+interface ProfileContentProps {
+  initialUser?: User;
+}
+
+function ProfileContent({ initialUser }: ProfileContentProps) {
+  const randomUserValue = useMemo(randomUser, []);
+  const user = initialUser ?? randomUserValue;
+  const sendNotification = useSendNotification();
+
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [savedFirstName, setSavedFirstName] = useState(user.firstName);
+  const [savedLastName, setSavedLastName] = useState(user.lastName);
+  const isNameDirty =
+    firstName !== savedFirstName || lastName !== savedLastName;
+  const [theme, setTheme] = useState<Theme>("system");
+  const [submitMessageKey, setSubmitMessageKey] =
+    useState<SubmitMessageKey>("enter");
+  const [toolsSearch, setToolsSearch] = useState("");
+  const [triggersSearch, setTriggersSearch] = useState("");
+
+  // Notification preferences (unplugged – local state only)
+  const [notifyCondition, setNotifyCondition] =
+    useState<NotificationCondition>("all_messages");
+  const [conversationInApp, setConversationInApp] = useState(true);
+  const [conversationEmail, setConversationEmail] = useState(true);
+  const [conversationSlack, setConversationSlack] = useState(false);
+  const [conversationEmailDelay, setConversationEmailDelay] =
+    useState<NotificationPreferencesDelay>("1_hour");
+
+  // New conversation notification preferences (2 options only)
+  const [notifyConditionNewConv, setNotifyConditionNewConv] =
+    useState<NewConvNotificationChoice>("notify");
+  const [newConvInApp, setNewConvInApp] = useState(true);
+  const [newConvEmail, setNewConvEmail] = useState(false);
+  const [newConvSlack, setNewConvSlack] = useState(false);
+  const [newConvEmailDelay, setNewConvEmailDelay] =
+    useState<NotificationPreferencesDelay>("1_hour");
+
+  const [projectInApp, setProjectInApp] = useState(true);
+  const [projectEmail, setProjectEmail] = useState(false);
+  const [projectNewConvInApp, setProjectNewConvInApp] = useState(true);
+  const [projectNewConvEmail, setProjectNewConvEmail] = useState(false);
+  const [projectNewConvEmailDelay, setProjectNewConvEmailDelay] =
+    useState<NotificationPreferencesDelay>("1_hour");
+
+  const [unifiedEvent, setUnifiedEvent] =
+    useState<UnifiedDefaultEvent>("all_activity");
+  const [unifiedInApp, setUnifiedInApp] = useState(true);
+  const [unifiedEmail, setUnifiedEmail] = useState(true);
+  const [unifiedSlack, setUnifiedSlack] = useState(false);
+  const [unifiedEmailDelay, setUnifiedEmailDelay] =
+    useState<NotificationPreferencesDelay>("1_hour");
+
+  const filteredTools = useMemo(() => {
+    const q = toolsSearch.toLowerCase();
+    if (!q) return FAKE_TOOLS;
+    return FAKE_TOOLS.filter(
+      (t) =>
+        t.name.toLowerCase().includes(q) ||
+        t.description.toLowerCase().includes(q)
+    );
+  }, [toolsSearch]);
+
+  const filteredTriggers = useMemo(() => {
+    const q = triggersSearch.toLowerCase();
+    if (!q) return FAKE_TRIGGERS;
+    return FAKE_TRIGGERS.filter(
+      (t) =>
+        t.agentName.toLowerCase().includes(q) ||
+        t.name.toLowerCase().includes(q)
+    );
+  }, [triggersSearch]);
+
+  const toolsColumns = useMemo<ColumnDef<ToolRow>[]>(
+    () => [
+      {
+        accessorKey: "name",
+        header: "Name",
+        sortingFn: (rowA, rowB) =>
+          rowA.original.name.localeCompare(rowB.original.name),
+        cell: ({ row }) => (
+          <DataTable.CellContent grow>
+            <div className="flex flex-row items-center gap-3 py-3">
+              <div className="flex min-w-0 flex-grow flex-col gap-0 overflow-hidden">
+                <div className="truncate text-sm font-semibold text-foreground">
+                  {row.original.name}
+                </div>
+                <div className="truncate text-sm text-muted-foreground">
+                  {row.original.description}
+                </div>
+              </div>
+              {row.original.connected && (
+                <Chip color="success" size="xs">
+                  Connected
+                </Chip>
+              )}
+            </div>
+          </DataTable.CellContent>
+        ),
+        meta: { className: "w-full" },
+      },
+      {
+        header: "",
+        accessorKey: "actions",
+        cell: ({ row }) => (
+          <DataTable.MoreButton
+            menuItems={[
+              {
+                kind: "item",
+                label: "Clear confirmation preferences",
+                onClick: () => {},
+              },
+            ]}
+          />
+        ),
+        meta: { className: "w-12" },
+      },
+    ],
+    []
+  );
+
+  const triggersColumns = useMemo<ColumnDef<TriggerRow>[]>(
+    () => [
+      {
+        accessorKey: "agentName",
+        header: "Agent",
+        sortingFn: (rowA, rowB) =>
+          rowA.original.agentName.localeCompare(rowB.original.agentName),
+        cell: ({ row }) => (
+          <DataTable.CellContent>
+            <div className="flex items-center gap-2">
+              <Avatar size="xs" visual={row.original.agentPictureUrl} />
+              <div className="truncate text-sm font-semibold text-foreground">
+                {row.original.agentName}
+              </div>
+              {row.original.agentStatus !== "enabled" && (
+                <Chip size="xs" color="primary">
+                  {row.original.agentStatus.charAt(0).toUpperCase() +
+                    row.original.agentStatus.slice(1)}
+                </Chip>
+              )}
+            </div>
+          </DataTable.CellContent>
+        ),
+        meta: { className: "w-48" },
+      },
+      {
+        accessorKey: "name",
+        header: "Triggers",
+        sortingFn: (rowA, rowB) =>
+          rowA.original.name.localeCompare(rowB.original.name),
+        cell: ({ row }) => (
+          <DataTable.CellContent grow>
+            <div className="flex flex-row items-center gap-1 py-3 text-muted-foreground">
+              <Avatar
+                size="xs"
+                visual={
+                  row.original.kind === "schedule" ? <Clock /> : <Bell01 />
+                }
+              />
+              <div className="flex min-w-0 flex-col gap-0">
+                <div className="text-sm font-semibold">{row.original.name}</div>
+                {row.original.scheduleLabel && (
+                  <div className="truncate text-sm">
+                    {row.original.scheduleLabel}
+                  </div>
+                )}
+              </div>
+            </div>
+          </DataTable.CellContent>
+        ),
+        meta: { className: "w-full" },
+      },
+      {
+        header: "Action",
+        accessorKey: "actions",
+        cell: ({ row }) => (
+          <DataTable.CellContent>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                icon={Edit04}
+                label="Manage"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                icon={Trash01}
+                label="Delete"
+              />
+            </div>
+          </DataTable.CellContent>
+        ),
+        meta: { className: "w-32" },
+      },
+    ],
+    []
+  );
+
+  const themeIcon = theme === "light" ? Sun : theme === "dark" ? Moon01 : Sun;
+  const themeLabel =
+    theme === "light" ? "Light" : theme === "dark" ? "Dark" : "System";
+
+  return (
+    <Page>
+      <Page.Header title="Profile" />
+      <Page.Layout direction="vertical">
+        <Page.SectionHeader title="Account Settings" />
+
+        <Avatar
+          size="lg"
+          name={user.fullName}
+          visual={user.portrait ?? undefined}
+          isRounded
+        />
+        <div className="space-y-1">
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <Input
+                name="firstName"
+                label="First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First Name"
+              />
+            </div>
+            <div className="flex-1">
+              <Input
+                name="lastName"
+                label="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Last Name"
+              />
+            </div>
+          </div>
+
+          <Collapsible open={isNameDirty}>
+            <CollapsibleContent>
+              <div className="flex gap-2 py-2">
+                <Button
+                  variant="outline"
+                  label="Cancel"
+                  type="button"
+                  onClick={() => {
+                    setFirstName(savedFirstName);
+                    setLastName(savedLastName);
+                  }}
+                />
+                <Button
+                  variant="highlight"
+                  label="Save"
+                  type="button"
+                  onClick={() => {
+                    sendNotification({
+                      type: "success",
+                      title: "Saved",
+                      description: "Your name has been updated.",
+                    });
+                    setSavedFirstName(firstName);
+                    setSavedLastName(lastName);
+                  }}
+                />
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+
+        <div className="flex gap-2">
+          <Label>Email</Label>
+          <span className="text-muted-foreground">{user.email}</span>
+        </div>
+
+        <div className="flex w-full flex-row justify-between gap-4">
+          <div className="flex-1">
+            <div>
+              <Label>Theme</Label>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button
+                  variant="outline"
+                  icon={themeIcon}
+                  label={themeLabel}
+                  isSelect
+                  className="w-fit"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  icon={Sun}
+                  onClick={() => setTheme("light")}
+                  label="Light"
+                />
+                <DropdownMenuItem
+                  icon={Moon01}
+                  onClick={() => setTheme("dark")}
+                  label="Dark"
+                />
+                <DropdownMenuItem
+                  icon={Sun}
+                  onClick={() => setTheme("system")}
+                  label="System"
+                />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <div className="flex-1">
+            <Label>Keyboard Shortcuts</Label>
+            <div className="copy-sm flex items-center gap-2 text-foreground">
+              Send message:
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button
+                    variant="outline"
+                    label={
+                      submitMessageKey === "enter"
+                        ? "Enter (↵)"
+                        : "Cmd + Enter (⌘ + ↵)"
+                    }
+                    isSelect
+                    className="w-fit"
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem
+                    onClick={() => setSubmitMessageKey("enter")}
+                  >
+                    Enter
+                    <DropdownMenuShortcut>↵</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setSubmitMessageKey("cmd+enter")}
+                  >
+                    Cmd + Enter
+                    <DropdownMenuShortcut>⌘ + ↵</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        </div>
+        <Separator />
+        <Page.SectionHeader
+          title="Default Notification Settings"
+          description="Tell us what you’d generally like to be notified about."
+        />
+        <div className="items-center pt-1.5 space-y-1">
+          Notify me{" "}
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button
+                variant="outline"
+                size="sm"
+                isSelect
+                label={UNIFIED_DEFAULT_EVENT_LABELS[unifiedEvent]}
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                label={UNIFIED_DEFAULT_EVENT_LABELS.all_activity}
+                description={UNIFIED_DEFAULT_EVENT_DESCRIPTIONS.all_activity}
+                onClick={() => setUnifiedEvent("all_activity")}
+              />
+              <DropdownMenuItem
+                label={UNIFIED_DEFAULT_EVENT_LABELS.when_mentioned}
+                description={UNIFIED_DEFAULT_EVENT_DESCRIPTIONS.when_mentioned}
+                onClick={() => setUnifiedEvent("when_mentioned")}
+              />
+              <DropdownMenuItem
+                label={UNIFIED_DEFAULT_EVENT_LABELS.never}
+                description={UNIFIED_DEFAULT_EVENT_DESCRIPTIONS.never}
+                onClick={() => setUnifiedEvent("never")}
+              />
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {unifiedEvent !== "never" && (
+            <>
+              {", "}by{" "}
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    isSelect
+                    label={
+                      [
+                        unifiedInApp && "In-app popup",
+                        unifiedEmail && "Email",
+                        unifiedSlack && "Slack",
+                      ]
+                        .filter(Boolean)
+                        .join(", ") || "None"
+                    }
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuCheckboxItem
+                    checked={unifiedInApp}
+                    onCheckedChange={(checked) =>
+                      setUnifiedInApp(checked === true)
+                    }
+                    label="In-app popup"
+                  />
+                  <DropdownMenuCheckboxItem
+                    checked={unifiedEmail}
+                    onCheckedChange={(checked) =>
+                      setUnifiedEmail(checked === true)
+                    }
+                    label="Email"
+                  />
+                  <DropdownMenuCheckboxItem
+                    checked={unifiedSlack}
+                    onCheckedChange={(checked) =>
+                      setUnifiedSlack(checked === true)
+                    }
+                    label="Slack"
+                  />
+                </DropdownMenuContent>
+              </DropdownMenu>
+              {unifiedEmail && (
+                <>
+                  {". "}Email me max once{" "}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        isSelect
+                        label={NOTIFICATION_DELAY_LABELS[unifiedEmailDelay]}
+                      />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      {NOTIFICATION_DELAY_OPTIONS.map((delay) => (
+                        <DropdownMenuItem
+                          key={delay}
+                          label={NOTIFICATION_DELAY_LABELS[delay]}
+                          onClick={() => setUnifiedEmailDelay(delay)}
+                        />
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  .
+                </>
+              )}
+            </>
+          )}
+        </div>
+
+        <Separator />
+        <Page.SectionHeader title="Tools & Triggers" />
+        <Tabs defaultValue="tools" className="w-full">
+          <TabsList>
+            <TabsTrigger value="tools" label="Tools" icon={Zap} />
+            <TabsTrigger value="triggers" label="Triggers" icon={Bell01} />
+          </TabsList>
+          <TabsContent value="tools" className="mt-4">
+            <div className="relative my-4">
+              <SearchInput
+                name="tools-search"
+                placeholder="Search tools"
+                value={toolsSearch}
+                onChange={setToolsSearch}
+              />
+            </div>
+            {filteredTools.length > 0 ? (
+              <DataTable
+                data={filteredTools}
+                columns={toolsColumns}
+                sorting={[{ id: "name", desc: false }]}
+              />
+            ) : (
+              <Label>
+                {toolsSearch
+                  ? "No matching tools found"
+                  : "You don't have any tool-specific settings yet."}
+              </Label>
+            )}
+          </TabsContent>
+          <TabsContent value="triggers" className="mt-4">
+            <div className="relative my-4">
+              <SearchInput
+                name="triggers-search"
+                placeholder="Search triggers and agents"
+                value={triggersSearch}
+                onChange={setTriggersSearch}
+              />
+            </div>
+            {filteredTriggers.length > 0 ? (
+              <DataTable
+                data={filteredTriggers}
+                columns={triggersColumns}
+                sorting={[{ id: "agentName", desc: false }]}
+              />
+            ) : FAKE_TRIGGERS.length === 0 ? (
+              <div className="py-8 text-center text-muted-foreground">
+                You haven't created any triggers yet.
+              </div>
+            ) : (
+              <div className="py-8 text-center text-muted-foreground">
+                No triggers match your search criteria.
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+      </Page.Layout>
+    </Page>
+  );
+}
+
+/** Embedded profile panel for use in sidebar layouts: Notification.Area + ProfileContent with the given user. */
+export function ProfilePanel({ user }: { user: User }) {
+  return (
+    <div className="flex h-full w-full flex-col bg-background">
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <Notification.Area>
+          <ProfileContent initialUser={user} />
+        </Notification.Area>
+      </div>
+    </div>
+  );
+}

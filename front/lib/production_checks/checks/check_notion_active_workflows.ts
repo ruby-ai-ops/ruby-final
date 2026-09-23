@@ -178,11 +178,11 @@ async function getLatestWorkflowEventDate({
     : null;
 }
 
-function makePokeDataSourceUrl(entry: {
+function makeAdminDataSourceUrl(entry: {
   workspaceId: string;
   dataSourceId: string;
 }): string {
-  return `${config.getPokeAppUrl()}/${entry.workspaceId}/data_sources/${entry.dataSourceId}`;
+  return `${config.getAdminAppUrl()}/${entry.workspaceId}/data_sources/${entry.dataSourceId}`;
 }
 
 export const checkNotionActiveWorkflows: CheckFunction = async (
@@ -290,13 +290,13 @@ export const checkNotionActiveWorkflows: CheckFunction = async (
               : `${w.workflowType} (${w.reason})`
           )
           .join(", ")}: ${c.dataSourceId}`,
-        url: makePokeDataSourceUrl(c),
+        url: makeAdminDataSourceUrl(c),
       })),
       ...stalledActiveWorkflows.map((c) => ({
         label: `Stalled ${c.stalledWorkflows
           .map((w) => w.workflowType)
           .join(", ")}: ${c.dataSourceId}`,
-        url: makePokeDataSourceUrl(c),
+        url: makeAdminDataSourceUrl(c),
       })),
     ];
     reportFailure(

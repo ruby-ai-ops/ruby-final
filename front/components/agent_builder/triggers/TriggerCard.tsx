@@ -7,7 +7,7 @@ import { normalizeWebhookIcon } from "@app/lib/webhook_source";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 import type { WebhookSourceViewType } from "@app/types/triggers/webhooks";
 import { CLIENT_SIDE_WEBHOOK_PRESETS } from "@app/types/triggers/webhooks_client_side";
-import { ActionCard, Clock } from "@dust-tt/sparkle";
+import { ActionCard, Clock } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 function getTriggerIconComponent(trigger: AgentBuilderTriggerType) {

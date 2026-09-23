@@ -12,7 +12,7 @@ describe("creditsExhaustedMessage", () => {
   it("tells admins to purchase more credits", () => {
     const auth = { isAdmin: () => true } as unknown as Authenticator;
     expect(creditsExhaustedMessage(auth)).toBe(
-      "Your workspace has run out of credits. Please purchase more credits to continue using Dust."
+      "Your workspace has run out of credits. Please purchase more credits to continue using Ruby."
     );
   });
 

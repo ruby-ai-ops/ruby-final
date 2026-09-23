@@ -104,7 +104,7 @@ describe("GET /api/w/:wId/assistant/conversations/search", () => {
       await createConversationWithTitle(
         auth,
         {
-          agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+          agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
           messagesCreatedAt: [new Date()],
         },
         "My Important Meeting",
@@ -131,7 +131,7 @@ describe("GET /api/w/:wId/assistant/conversations/search", () => {
       const conv1 = await createConversationWithTitle(
         auth,
         {
-          agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+          agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
           messagesCreatedAt: [new Date()],
         },
         "Discussion about testing",
@@ -141,7 +141,7 @@ describe("GET /api/w/:wId/assistant/conversations/search", () => {
       await createConversationWithTitle(
         auth,
         {
-          agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+          agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
           messagesCreatedAt: [new Date()],
         },
         "Random conversation",
@@ -151,7 +151,7 @@ describe("GET /api/w/:wId/assistant/conversations/search", () => {
       const conv3 = await createConversationWithTitle(
         auth,
         {
-          agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+          agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
           messagesCreatedAt: [new Date()],
         },
         "Testing best practices",
@@ -178,7 +178,7 @@ describe("GET /api/w/:wId/assistant/conversations/search", () => {
       const rootConv = await createConversationWithTitle(
         auth,
         {
-          agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+          agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
           messagesCreatedAt: [new Date()],
         },
         "Deep dive on testing",
@@ -188,11 +188,11 @@ describe("GET /api/w/:wId/assistant/conversations/search", () => {
       await createConversationWithTitle(
         auth,
         {
-          agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+          agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
           messagesCreatedAt: [new Date()],
           depth: 1,
         },
-        "run_agent deep-dive > dust_task testing",
+        "run_agent deep-dive > ruby_task testing",
         user.id
       );
 
@@ -213,7 +213,7 @@ describe("GET /api/w/:wId/assistant/conversations/search", () => {
       const conv = await createConversationWithTitle(
         auth,
         {
-          agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+          agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
           messagesCreatedAt: [new Date()],
         },
         "UPPERCASE Title Here",
@@ -237,7 +237,7 @@ describe("GET /api/w/:wId/assistant/conversations/search", () => {
       await createConversationWithTitle(
         auth,
         {
-          agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+          agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
           messagesCreatedAt: [new Date()],
         },
         "Test conversation",
@@ -264,7 +264,7 @@ describe("GET /api/w/:wId/assistant/conversations/search", () => {
         await createConversationWithTitle(
           auth,
           {
-            agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+            agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
             messagesCreatedAt: [new Date()],
           },
           `Test conversation ${i}`,
@@ -290,7 +290,7 @@ describe("GET /api/w/:wId/assistant/conversations/search", () => {
       await createConversationWithTitle(
         auth,
         {
-          agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+          agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
           messagesCreatedAt: [new Date()],
         },
         "Single test conversation",

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Ruby</title>
+  <desc id="description">Ruby - AI agents for teams</desc>
+  <rect width="1200" height="630" fill="#FFF7F8" />
+  <circle cx="1050" cy="90" r="220" fill="#FFE4E6" />
+  <circle cx="1100" cy="560" r="260" fill="#FECDD3" />
+  <path fill="#9B123B" d="m185 190 130 80-40 190-90 55-90-55-40-190Z" />
+  <path fill="#E11D48" d="m185 190 130 80-90 35-90-35Z" />
+  <path fill="#FB7185" d="m315 270-90 35-40 190 90-55Z" />
+  <path fill="#BE123C" d="m95 270 90 35 40 190-90-55Z" />
+  <path fill="#FDA4AF" d="m185 190 40 115-40 190-40-190Z" />
+  <text x="390" y="300" fill="#4C0519" font-family="Arial, sans-serif" font-size="112" font-weight="700">Ruby</text>
+  <text x="397" y="382" fill="#881337" font-family="Arial, sans-serif" font-size="38">AI agents for teams</text>
+</svg>

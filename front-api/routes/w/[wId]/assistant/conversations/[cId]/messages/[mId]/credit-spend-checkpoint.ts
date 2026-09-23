@@ -2,7 +2,7 @@ import {
   continueCreditSpendCheckpointPause,
   declineCreditSpendCheckpointPause,
 } from "@app/lib/api/assistant/conversation/credit_spend_checkpoint_pause";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import type { Result } from "@app/types/shared/result";
 import { assertNever } from "@app/types/shared/utils/assert_never";
@@ -45,7 +45,7 @@ app.post(
 
     const { decision } = ctx.req.valid("json");
 
-    let result: Result<void, DustError | Error>;
+    let result: Result<void, RubyError | Error>;
     switch (decision) {
       case "continue":
         result = await continueCreditSpendCheckpointPause(auth, conversation, {
@@ -64,7 +64,7 @@ app.post(
     if (result.isErr()) {
       const { error } = result;
 
-      if (error instanceof DustError) {
+      if (error instanceof RubyError) {
         switch (error.code) {
           case "agent_message_not_resumable":
             return apiError(ctx, {

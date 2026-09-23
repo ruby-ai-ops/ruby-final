@@ -1,5 +1,5 @@
 /**
- * dust-tools is a single CLI entrypoint for sandbox profile file/search tools.
+ * ruby-tools is a single CLI entrypoint for sandbox profile file/search tools.
  *
  * The caller selects a provider profile with `--profile <anthropic|openai|gemini>`,
  * then invokes a subcommand whose argument contract may vary slightly by profile.
@@ -40,7 +40,7 @@ const TOOLS: Record<string, ToolModule> = {
 };
 
 function printGlobalUsage(stream: NodeJS.WriteStream): void {
-  stream.write("Usage: dust-tools [--profile NAME] <tool> [args...]\n");
+  stream.write("Usage: ruby-tools [--profile NAME] <tool> [args...]\n");
   stream.write(`Available tools: ${Object.keys(TOOLS).sort().join(", ")}\n`);
 }
 

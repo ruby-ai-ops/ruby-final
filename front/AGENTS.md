@@ -1,14 +1,14 @@
-Dust is a platform to build and operate agents for work. `front` holds the business logic, the
+Ruby is a platform to build and operate agents for work. `front` holds the business logic, the
 React components and the background workers behind it. It is a library workspace, not a running
 server: HTTP handlers live in `front-api` (Hono) and the browser app in `front-spa`. `front-api`
-imports `front` through the `@app/*` path alias, `front-spa` through the `@dust-tt/front/*`
+imports `front` through the `@app/*` path alias, `front-spa` through the `@ruby-ai/front/*`
 workspace exports. The dependency is one-way — `front` never imports from `front-api` or
 `front-spa`.
 
 # Tech Stack
 
 - **Language**: TypeScript (strict mode)
-- **UI**: React 18 with Sparkle Design System (shadcn/ui + Tailwind + Radix)
+- **UI**: React 18 with RubyUI Design System (shadcn/ui + Tailwind + Radix)
 - **Styling**: Tailwind CSS 4.x
 - **Database**: PostgreSQL via Sequelize ORM (with Resources abstraction)
 - **State Management**: SWR for data fetching
@@ -25,7 +25,7 @@ front/
 │ ├── resources
 │ └── swr/ # SWR hooks for data fetching (migrating to hooks/)
 ├── logger/ # Logger and request logging helpers
-├── poke/ # Poke (internal admin) hooks and workflows
+├── admin/ # Admin (internal admin) hooks and workflows
 ├── types/ # TypeScript type definitions
 ├── tests/ # Test utilities and factories
 ├── temporal/ # Temporal workflows for background jobs

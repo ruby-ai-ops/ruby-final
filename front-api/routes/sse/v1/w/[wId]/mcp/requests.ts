@@ -6,8 +6,8 @@
 import { validateMCPServerAccess } from "@app/lib/api/actions/mcp/client_side_registry";
 import { getMCPEventsForServer } from "@app/lib/api/assistant/mcp_events";
 import type { Authenticator } from "@app/lib/auth";
-import type { PostMCPRequestsRequestQueryType } from "@dust-tt/client";
-import { PostMCPRequestsRequestQuerySchema } from "@dust-tt/client";
+import type { PostMCPRequestsRequestQueryType } from "@ruby-ai/client";
+import { PostMCPRequestsRequestQuerySchema } from "@ruby-ai/client";
 import { streamEvents } from "@front-api/lib/api/sse/stream_events";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { streamingTag } from "@front-api/middlewares/streaming";
@@ -16,7 +16,7 @@ import { validate } from "@front-api/middlewares/validator";
 import type { Context } from "hono";
 
 // Re-exported so the private mirror can reuse the query schema without importing
-// `@dust-tt/client` itself (that dependency stays confined to public-API files).
+// `@ruby-ai/client` itself (that dependency stays confined to public-API files).
 export { PostMCPRequestsRequestQuerySchema };
 
 export async function streamMcpRequests(

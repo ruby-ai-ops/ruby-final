@@ -7,7 +7,7 @@ import {
   getPageElementsDiff,
   typeText,
 } from "@extension/shared/interactWithPage";
-import { DUST_US_URL } from "@extension/shared/lib/config";
+import { RUBY_US_URL } from "@extension/shared/lib/config";
 import { extractPage } from "@extension/shared/lib/extraction";
 import { htmlToMarkdown } from "@extension/shared/lib/html_to_markdown";
 import { generatePKCE, normalizeError } from "@extension/shared/lib/utils";
@@ -289,7 +289,7 @@ const authenticate = async (
 
   const queryString = new URLSearchParams(options).toString();
 
-  const authUrl = `${DUST_US_URL}/api/workos/login?${queryString}`;
+  const authUrl = `${RUBY_US_URL}/api/workos/login?${queryString}`;
 
   // Open auth flow in a regular tab instead of chrome.identity.launchWebAuthFlow
   // to avoid "Authorization page could not be loaded" errors when Google's OAuth
@@ -445,7 +445,7 @@ const exchangeCodeForTokens = async (
       code,
     };
 
-    const response = await fetch(`${DUST_US_URL}/api/workos/authenticate`, {
+    const response = await fetch(`${RUBY_US_URL}/api/workos/authenticate`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams(tokenParams),
@@ -499,7 +499,7 @@ const logout = async (
   }
 
   try {
-    const response = await fetch(`${DUST_US_URL}/api/workos/revoke-session`, {
+    const response = await fetch(`${RUBY_US_URL}/api/workos/revoke-session`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

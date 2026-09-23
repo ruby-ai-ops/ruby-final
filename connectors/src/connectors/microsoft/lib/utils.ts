@@ -3,7 +3,7 @@ import { clientApiGet } from "@connectors/connectors/microsoft/lib/graph_api";
 import { isItemNotFoundError } from "@connectors/connectors/microsoft/temporal/cast_known_errors";
 import { MicrosoftNodeResource } from "@connectors/resources/microsoft_resource";
 import { cacheWithRedis } from "@connectors/types";
-import type { LoggerInterface } from "@dust-tt/client";
+import type { LoggerInterface } from "@ruby-ai/client";
 import type { Client } from "@microsoft/microsoft-graph-client";
 import type {
   ColumnDefinition,

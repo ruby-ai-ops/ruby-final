@@ -1,30 +1,30 @@
-import { useOpenDustTarget } from "@marketing/hooks/useOpenDustTarget";
+import { useOpenRubyTarget } from "@marketing/hooks/useOpenRubyTarget";
 import {
-  DUST_SKIP_LANDING,
-  DUST_SKIP_LANDING_PROMPT_DISMISSED,
+  RUBY_SKIP_LANDING,
+  RUBY_SKIP_LANDING_PROMPT_DISMISSED,
   isSkipLandingPromptDismissed,
   shouldSkipLanding,
   SKIP_LANDING_COOKIE_OPTIONS,
 } from "@marketing/lib/cookies";
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
-import { ArrowRight, LegacyButton as Button, XClose } from "@dust-tt/sparkle";
+import { ArrowRight, LegacyButton as Button, XClose } from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 /**
  * Offers a logged-in visitor on the marketing root the option to go straight to
- * the app on subsequent visits. Opting in sets `dust-skip-landing`, which the
+ * the app on subsequent visits. Opting in sets `ruby-skip-landing`, which the
  * root page reads server-side to redirect before rendering.
  *
  * Rendered inside the header's CTA cluster, which must be `relative` for the
- * card to anchor under the "Open Dust" button.
+ * card to anchor under the "Open Ruby" button.
  */
 export function SkipLandingPrompt() {
   const [cookies, setCookie] = useCookies(
-    [DUST_SKIP_LANDING, DUST_SKIP_LANDING_PROMPT_DISMISSED],
+    [RUBY_SKIP_LANDING, RUBY_SKIP_LANDING_PROMPT_DISMISSED],
     { doNotParse: true }
   );
-  const { hasSession, isAuthenticated, target } = useOpenDustTarget();
+  const { hasSession, isAuthenticated, target } = useOpenRubyTarget();
 
   // Read the preference cookies on the client only, to avoid a hydration
   // mismatch: the root page is server-rendered for everyone who has not opted
@@ -32,9 +32,9 @@ export function SkipLandingPrompt() {
   const [showPrompt, setShowPrompt] = useState(false);
   useEffect(() => {
     setShowPrompt(
-      !shouldSkipLanding(cookies[DUST_SKIP_LANDING]) &&
+      !shouldSkipLanding(cookies[RUBY_SKIP_LANDING]) &&
         !isSkipLandingPromptDismissed(
-          cookies[DUST_SKIP_LANDING_PROMPT_DISMISSED]
+          cookies[RUBY_SKIP_LANDING_PROMPT_DISMISSED]
         )
     );
   }, [cookies]);
@@ -60,7 +60,7 @@ export function SkipLandingPrompt() {
               "dismiss_skip_landing_prompt",
               () => {
                 setCookie(
-                  DUST_SKIP_LANDING_PROMPT_DISMISSED,
+                  RUBY_SKIP_LANDING_PROMPT_DISMISSED,
                   "1",
                   SKIP_LANDING_COOKIE_OPTIONS
                 );
@@ -71,13 +71,13 @@ export function SkipLandingPrompt() {
         <Button
           variant="highlight-secondary"
           size="sm"
-          label="Always open Dust"
+          label="Always open Ruby"
           icon={ArrowRight}
           onClick={withTracking(
             TRACKING_AREAS.NAVIGATION,
-            "always_open_dust",
+            "always_open_ruby",
             () => {
-              setCookie(DUST_SKIP_LANDING, "1", SKIP_LANDING_COOKIE_OPTIONS);
+              setCookie(RUBY_SKIP_LANDING, "1", SKIP_LANDING_COOKIE_OPTIONS);
               // eslint-disable-next-line react-hooks/immutability
               window.location.href = target;
             }

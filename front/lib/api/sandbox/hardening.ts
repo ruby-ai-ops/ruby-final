@@ -55,17 +55,17 @@ export const SANDBOX_STATIC_ROOT_CONSUMED_DIRS = [
   "/lib/tmpfiles.d",
 ] as const;
 export const SANDBOX_ROOT_INVOKED_HELPERS = [
-  "/opt/bin/dsbx",
-  "/usr/local/bin/dust-install-trust-bundle",
-  "/usr/local/bin/dust-gcs-token-server.py",
-  "/usr/local/bin/dust-gcs-write-token.sh",
-  "/usr/local/bin/dust-gcs-token-firewall.sh",
+  "/opt/bin/rbx",
+  "/usr/local/bin/ruby-install-trust-bundle",
+  "/usr/local/bin/ruby-gcs-token-server.py",
+  "/usr/local/bin/ruby-gcs-write-token.sh",
+  "/usr/local/bin/ruby-gcs-token-firewall.sh",
   // Root invokes litestream on the pod-state pre-sleep sync (`litestream sync
   // -wait`) and cold-start restore, so it must stay root-owned/non-writable.
   "/opt/bin/litestream",
 ] as const;
 
-const ROOT_SAFE_PATH_PROFILE = "/etc/profile.d/zz-dust-root-safe-path.sh";
+const ROOT_SAFE_PATH_PROFILE = "/etc/profile.d/zz-ruby-root-safe-path.sh";
 const STATIC_ROOT_CONSUMED_DIRS = SANDBOX_STATIC_ROOT_CONSUMED_DIRS.join(" ");
 const ROOT_INVOKED_HELPERS = SANDBOX_ROOT_INVOKED_HELPERS.join(" ");
 
@@ -83,19 +83,19 @@ export function getSandboxServicePathHardeningCommand(): string {
     "/bin/chmod -R go-w /opt/venv",
     "/usr/bin/find /opt/venv -type d -exec /bin/chmod 755 {} +",
   ].join(" && ");
-  const hardenDustProfiles = [
-    "/usr/bin/chown -R root:root /opt/dust/profile",
-    "/bin/chmod -R go-w /opt/dust/profile",
-    "/usr/bin/find /opt/dust/profile -type d -exec /bin/chmod 755 {} +",
-    "/bin/chmod 644 /opt/dust/profile/*.sh",
-    "/bin/chmod 755 /opt/dust/profile/dust-tools /opt/dust/profile/soffice/*.py",
+  const hardenRubyProfiles = [
+    "/usr/bin/chown -R root:root /opt/ruby/profile",
+    "/bin/chmod -R go-w /opt/ruby/profile",
+    "/usr/bin/find /opt/ruby/profile -type d -exec /bin/chmod 755 {} +",
+    "/bin/chmod 644 /opt/ruby/profile/*.sh",
+    "/bin/chmod 755 /opt/ruby/profile/ruby-tools /opt/ruby/profile/soffice/*.py",
   ].join(" && ");
   const assertPermissions = [
     `if [ "$(/usr/bin/getent passwd agent | /usr/bin/cut -d: -f6)" != ${SANDBOX_AGENT_SERVICE_HOME} ]; then`,
     "echo 'agent service account must use the root-owned empty home' >&2;",
     "exit 1;",
     "fi;",
-    "if /usr/bin/find /home/agent /opt/venv /opt/dust/profile \\( -type f -o -type d \\) -perm /022 -print -quit | /usr/bin/grep -q .; then",
+    "if /usr/bin/find /home/agent /opt/venv /opt/ruby/profile \\( -type f -o -type d \\) -perm /022 -print -quit | /usr/bin/grep -q .; then",
     "echo 'sandbox service paths must not be group/other writable' >&2;",
     "exit 1;",
     "fi",
@@ -104,7 +104,7 @@ export function getSandboxServicePathHardeningCommand(): string {
   return [
     hardenAgentHome,
     hardenPythonVenv,
-    hardenDustProfiles,
+    hardenRubyProfiles,
     assertPermissions,
   ].join(" && ");
 }
@@ -146,7 +146,7 @@ export function getLocalAccountPrivilegeHardeningCommand(): string {
     [
       "printf '%s\\n'",
       shellEscape(
-        "# Managed by Dust. Root must not resolve agent-writable paths."
+        "# Managed by Ruby. Root must not resolve agent-writable paths."
       ),
       shellEscape('if [ "$(/usr/bin/id -u)" = "0" ]; then'),
       shellEscape(`  export PATH=${shellEscape(SANDBOX_ROOT_SAFE_PATH)}`),
@@ -204,7 +204,7 @@ export function getLocalAccountPrivilegeHardeningCommand(): string {
   const removeSudoBinary = [
     "if command -v sudo >/dev/null 2>&1; then",
     "DEBIAN_FRONTEND=noninteractive apt-get purge -y sudo >/dev/null 2>&1",
-    '|| { sudo_path=$(command -v sudo); chmod u-s "$sudo_path"; mv "$sudo_path" "$sudo_path.disabled-by-dust"; };',
+    '|| { sudo_path=$(command -v sudo); chmod u-s "$sudo_path"; mv "$sudo_path" "$sudo_path.disabled-by-ruby"; };',
     "hash -r 2>/dev/null || true;",
     "fi",
   ].join(" ");

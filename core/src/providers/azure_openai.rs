@@ -631,7 +631,7 @@ impl Provider for AzureOpenAIProvider {
         utils::info("");
         utils::info("Note that Deployment Ids should be used as model Id with `azure_openai`.");
         utils::info("");
-        utils::info("Once ready you can check your setup with `dust provider test azure_openai`");
+        utils::info("Once ready you can check your setup with `ruby provider test azure_openai`");
 
         Ok(())
     }

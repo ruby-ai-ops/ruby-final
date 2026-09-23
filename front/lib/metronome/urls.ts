@@ -1,7 +1,7 @@
 import { isDevelopment } from "@app/types/shared/env";
 
 /**
- * Helpers to build links into the Metronome web dashboard. Used by Poke pages
+ * Helpers to build links into the Metronome web dashboard. Used by Admin pages
  * and tools to deep-link from a workspace into its Metronome resources.
  *
  * In development we route to the sandbox instance; in production to the live

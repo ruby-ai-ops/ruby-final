@@ -242,8 +242,8 @@ impl LLM {
             prompt.push_str(Self::replace_prompt_variables(p, env)?.as_str());
         }
 
-        // replace <DUST_TRIPLE_BACKTICKS> with ```
-        prompt = prompt.replace("<DUST_TRIPLE_BACKTICKS>", "```");
+        // replace <RUBY_TRIPLE_BACKTICKS> with ```
+        prompt = prompt.replace("<RUBY_TRIPLE_BACKTICKS>", "```");
         // println!("PROMPT: {}", prompt);
 
         Ok(prompt)

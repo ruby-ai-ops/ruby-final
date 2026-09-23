@@ -8,7 +8,7 @@ import {
   Chip,
   DoubleIcon,
   Icon,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 
 type KnowledgeNode = Omit<

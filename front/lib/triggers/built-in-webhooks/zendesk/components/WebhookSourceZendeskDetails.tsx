@@ -1,6 +1,6 @@
 import type { WebhookDetailsComponentProps } from "@app/components/triggers/webhook_preset_components";
 import { ZendeskWebhookStoredMetadataSchema } from "@app/lib/triggers/built-in-webhooks/zendesk/types";
-import { IconButton, LinkExternal01, Page } from "@dust-tt/sparkle";
+import { IconButton, LinkExternal01, Page } from "@ruby-ai/ui";
 
 export function WebhookSourceZendeskDetails({
   webhookSource,

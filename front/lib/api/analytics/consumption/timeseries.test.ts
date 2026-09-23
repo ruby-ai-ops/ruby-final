@@ -395,7 +395,7 @@ describe("fetchConsumptionTimeseries", () => {
 
     it("returns one series per ranked group, named and in rank order", async () => {
       const { auth, period } = await setup();
-      mockGroupNames({ agent1: "@dust", agent2: "@deep-dive" });
+      mockGroupNames({ agent1: "@ruby", agent2: "@deep-dive" });
       mockBreakdown({
         rankedKeys: ["agent1", "agent2"],
         buckets: [
@@ -420,7 +420,7 @@ describe("fetchConsumptionTimeseries", () => {
       }
       expect(result.value.breakdownBy).toBe("agent");
       expect(result.value.groups).toEqual([
-        { groupKey: "agent1", name: "@dust" },
+        { groupKey: "agent1", name: "@ruby" },
         { groupKey: "agent2", name: "@deep-dive" },
       ]);
       // A group absent from a bucket still gets a 0, so the stack is complete.
@@ -514,7 +514,7 @@ describe("fetchConsumptionTimeseries", () => {
 
     it("accumulates each series independently in cumulative mode", async () => {
       const { auth, period } = await setup();
-      mockGroupNames({ agent1: "@dust", agent2: "@deep-dive" });
+      mockGroupNames({ agent1: "@ruby", agent2: "@deep-dive" });
       mockBreakdown({
         rankedKeys: ["agent1", "agent2"],
         buckets: [

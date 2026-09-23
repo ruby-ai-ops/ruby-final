@@ -46,7 +46,7 @@ const document: AgentSearchDocument = {
     reasoning_effort: "medium",
   },
   name: "Agent",
-  picture_url: "https://dust.tt/static/agent.png",
+  picture_url: "https://ruby.ad/static/agent.png",
   last_edited_by_user_id: null,
   requested_space_ids: [],
   created_at: "2026-08-01T00:00:00.000Z",

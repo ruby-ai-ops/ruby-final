@@ -32,11 +32,11 @@ import { someHelper } from "@app/components/agent_builder/types";
 FORBIDDEN_CLIENT_IMPORT
 ```
 
-## Should flag a value import from Sparkle
+## Should flag a value import from RubyUI
 
 ```typescript
 // @filename: app/front/lib/api/foo.ts
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 ```
 
 ```typescript

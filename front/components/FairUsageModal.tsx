@@ -14,7 +14,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 // The per-seat fair-use limit for a plan: if the plan sets maxAwuCredits it's a
 // credit limit, otherwise it's a max number of messages.
@@ -87,18 +87,18 @@ function getFairUseContent(seatLimit?: FairUseSeatLimit): string {
   return `
 # **Fair use principles for user seats**
 
-Each user seat at Dust is tied to a specific human user, and is destined to be used by that person only, for the purposes of typing and sending messages manually (as opposed to using programmatic methods such as scripts, API calls, etc. which is covered separately).
+Each user seat at Ruby is tied to a specific human user, and is destined to be used by that person only, for the purposes of typing and sending messages manually (as opposed to using programmatic methods such as scripts, API calls, etc. which is covered separately).
 
 To prevent abuse, a "fair use" limit applies to each user seat. ${limitLine}
 
 This limit should be understood as a way to prevent abuse, not as an allowed quota. In particular, it is considered unfair to share a single seat between multiple people.
 
 ___
-# **Can messages be sent programmatically with Dust?**
+# **Can messages be sent programmatically with Ruby?**
 
 Yes, and this usage is encouraged. However, such messages are not covered by individual user seats and fair use limits, and are billed separately.
 
-Dust plans already include monthly credits for programmatic usage, and more credits can be purchased if needed, see [Programmatic usage at Dust](https://dust-tt.notion.site/Programmatic-usage-at-Dust-2b728599d94181ceb124d8585f794e2e).
+Ruby plans already include monthly credits for programmatic usage, and more credits can be purchased if needed, see [Programmatic usage at Ruby](https://ruby-ai.notion.site/Programmatic-usage-at-Ruby-2b728599d94181ceb124d8585f794e2e).
 
 `;
 }
@@ -119,7 +119,7 @@ export function FairUsageModal({
     >
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Dust's Fair Use Policy</SheetTitle>
+          <SheetTitle>Ruby's Fair Use Policy</SheetTitle>
         </SheetHeader>
         <SheetContainer>
           <Icon visual={Attachment01} size="lg" className="text-success-500" />

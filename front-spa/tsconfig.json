@@ -24,7 +24,7 @@
       "@spa/*": [
         "./src/*"
       ],
-      "@dust-tt/front/*": [
+      "@ruby-ai/front/*": [
         "../front/*"
       ],
       "@app/*": [

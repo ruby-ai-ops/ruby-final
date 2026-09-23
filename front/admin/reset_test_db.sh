@@ -9,13 +9,13 @@ HIVE_ENV_NAME=""
 if [[ "$REPO_ROOT" == */.hives/* ]]; then
   HIVE_ENV_NAME="${REPO_ROOT#*/.hives/}"
   HIVE_ENV_NAME="${HIVE_ENV_NAME%%/*}"
-elif [[ "$REPO_ROOT" == "$HOME"/dust-hive/* ]]; then
-  HIVE_ENV_NAME="${REPO_ROOT#"$HOME"/dust-hive/}"
+elif [[ "$REPO_ROOT" == "$HOME"/ruby-hive/* ]]; then
+  HIVE_ENV_NAME="${REPO_ROOT#"$HOME"/ruby-hive/}"
   HIVE_ENV_NAME="${HIVE_ENV_NAME%%/*}"
 fi
 
 if [[ -z "${TEST_FRONT_DATABASE_URI:-}" && -n "$HIVE_ENV_NAME" ]]; then
-  HIVE_ENV_FILE="$HOME/.dust-hive/envs/$HIVE_ENV_NAME/env.sh"
+  HIVE_ENV_FILE="$HOME/.ruby-hive/envs/$HIVE_ENV_NAME/env.sh"
 
   if [[ -f "$HIVE_ENV_FILE" ]]; then
     source "$HIVE_ENV_FILE"

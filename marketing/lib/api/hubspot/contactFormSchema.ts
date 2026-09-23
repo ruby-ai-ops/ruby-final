@@ -90,7 +90,7 @@ export const FIELD_DEFINITIONS = [
   },
   {
     name: "landing_use_cases",
-    label: "How do you want to use Dust?",
+    label: "How do you want to use Ruby?",
     type: "textarea",
     required: false,
   },

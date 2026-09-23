@@ -93,7 +93,7 @@ async function processProjectSpace(
       if (r.isOk() && r.value.connectorId) {
         if (!hadConnectorBefore) {
           stats.created++;
-          localLogger.info("Successfully created dust_project connector");
+          localLogger.info("Successfully created ruby_project connector");
         } else {
           stats.alreadyHasConnector++;
         }
@@ -135,10 +135,10 @@ async function processProjectSpace(
       });
     } else {
       if (hadConnectorBefore) {
-        localLogger.info("Would ensure dust_project connector sync is running");
+        localLogger.info("Would ensure ruby_project connector sync is running");
       } else {
         localLogger.info(
-          "Would create dust_project connector and ensure sync is running"
+          "Would create ruby_project connector and ensure sync is running"
         );
       }
     }

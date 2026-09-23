@@ -1,9 +1,9 @@
 use anyhow::{anyhow, Result};
 use csv::Reader;
-use dust::data_sources::data_source::{make_document_id_hash, DataSource};
-use dust::data_sources::qdrant::{DustQdrantClient, QdrantClients};
-use dust::stores::postgres;
-use dust::stores::store::Store;
+use ruby::data_sources::data_source::{make_document_id_hash, DataSource};
+use ruby::data_sources::qdrant::{RubyQdrantClient, QdrantClients};
+use ruby::stores::postgres;
+use ruby::stores::store::Store;
 use qdrant_client::qdrant;
 use std::collections::HashMap;
 use std::env;
@@ -12,7 +12,7 @@ use std::fs::File;
 async fn delete_orphaned_points_for_document_id(
     store: &Box<dyn Store + Sync + Send>,
     ds: &DataSource,
-    qdrant_client: &DustQdrantClient,
+    qdrant_client: &RubyQdrantClient,
     document_id: &str,
 ) -> Result<()> {
     match ds.retrieve(store.clone(), &document_id, &None, true).await {

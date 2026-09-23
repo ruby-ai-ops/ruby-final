@@ -20,7 +20,7 @@ const WORKSPACE_CONCURRENCY = 8;
 
 /**
  * Backfill of the "Builders" group (builder role deprecation, PR 2 of
- * https://github.com/dust-tt/tasks/issues/9459).
+ * https://github.com/ruby-ai/tasks/issues/9459).
  *
  * The sync shipped in PR 1 only fires on membership writes, so builders whose role never
  * changes after the deploy would never enter the group. This one-shot reconciles every

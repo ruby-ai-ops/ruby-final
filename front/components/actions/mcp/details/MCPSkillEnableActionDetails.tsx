@@ -14,7 +14,7 @@ import {
   getManageSkillsRoute,
   getSkillBuilderRoute,
 } from "@app/lib/utils/router";
-import { IconButton, LinkExternal01, Spinner } from "@dust-tt/sparkle";
+import { IconButton, LinkExternal01, Spinner } from "@ruby-ai/ui";
 
 export function MCPSkillEnableActionDetails({
   owner,

@@ -277,7 +277,7 @@ export class ConversationFactory {
     origin?: UserMessageOrigin;
     rank?: number;
     createdAt?: Date;
-    // Posted by Dust on the user's behalf, so no author on the row.
+    // Posted by Ruby on the user's behalf, so no author on the row.
     authorless?: boolean;
     agenticMessageType?: "run_agent" | "agent_handover";
     agenticOriginMessageId?: string;
@@ -723,8 +723,8 @@ const createUserMessage = async ({
             userContextUsername: "soupinou",
             userContextTimezone: "Europe/Paris",
             userContextFullName: "Soupinou",
-            userContextEmail: "soupinou@dust.tt",
-            userContextProfilePictureUrl: "https://dust.tt/soupinou",
+            userContextEmail: "soupinou@ruby.ad",
+            userContextProfilePictureUrl: "https://ruby.ad/soupinou",
             userContextOrigin: "web",
             clientSideMCPServerIds: [], // TODO(MCP Clean-up): Rename field in DB.
           },

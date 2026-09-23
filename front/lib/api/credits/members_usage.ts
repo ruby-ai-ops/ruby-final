@@ -106,7 +106,7 @@ import type { LightWorkspaceType } from "@app/types/user";
 import type { estypes } from "@elastic/elasticsearch";
 import { z } from "zod";
 
-// The rate-limiter's spend-cap verdict for a member (poke debugging): the
+// The rate-limiter's spend-cap verdict for a member (admin debugging): the
 // synchronous counter vs the seat's cap threshold.
 export type RateLimiterState = "capped" | "near_limit" | "ok";
 
@@ -153,12 +153,12 @@ export type MemberUsageType = {
   spendLimitAwuCredits: number | null;
   // AWU credits recorded in the Redis fixed-window spend-cap counter for the
   // current billing cycle — the value enforcement reads, shown alongside the
-  // Elasticsearch-derived `consumedAwuCredits` to compare the two. Poke-only
+  // Elasticsearch-derived `consumedAwuCredits` to compare the two. Admin-only
   // (null otherwise, or when the billing period can't be resolved).
   rateLimiterSpendAwuCredits: number | null;
   // Metronome-side per-user AWU consumption for the current billing cycle (the
   // value reconcile and the per-user cap check read). Shown next to the ES and
-  // rate-limiter figures to spot divergence. Poke-only (null otherwise, or when
+  // rate-limiter figures to spot divergence. Admin-only (null otherwise, or when
   // Metronome isn't configured).
   metronomeConsumedAwuCredits: number | null;
   // Where `spendLimitAwuCredits` comes from: a user-specific `override`, the
@@ -182,7 +182,7 @@ export type MemberUsageType = {
   // free-seat allowance / effective cycle cap. Null when no cap applies, or not
   // requested.
   rateLimiterState: RateLimiterState | null;
-  // "Blocked by the per-user spend cap" verdict — the signal the poke Unblock
+  // "Blocked by the per-user spend cap" verdict — the signal the admin Unblock
   // action keys off. Resolved from the rate-limiter counter (`rateLimiterState`),
   // mirroring the enforcement in lib/api/credits/access_control.ts so it never
   // disagrees with what actually blocks. The single-member / synthetic
@@ -191,7 +191,7 @@ export type MemberUsageType = {
   // Classifies seat-allowance consumption against how far the billing cycle
   // has elapsed: "elevated"/"critical" mean the member is burning through
   // their seat allowance faster than a linear pace would predict. Null when
-  // not requested (poke's `includeAlertLinks`) and the rate-cap flag is off,
+  // not requested (admin's `includeAlertLinks`) and the rate-cap flag is off,
   // or when the billing cycle can't be resolved.
   seatUsageTarget: CreditUsageTarget | null;
   // Same pace classification as `seatUsageTarget`, but against the member's
@@ -200,7 +200,7 @@ export type MemberUsageType = {
   // Per-user fair-use AWU credit usage (credits, with decimals) backed by the
   // microCredit rate-limit counter. Applies to non-credit-based plans
   // (free/trial) where a fair-use limit is set. Null when the plan carries no
-  // fair-use limit (limit === -1) or when not requested. Poke-only.
+  // fair-use limit (limit === -1) or when not requested. Admin-only.
   fairUse?: MemberFairUseUsage | null;
   premiumMessageUsage?: PremiumModelMessageUsage | null;
 };
@@ -262,8 +262,8 @@ export const MembersUsagePaginationSchema = z.object({
       "email",
       // Legacy usage page only: sorts by total consumed credits. Kept
       // alongside `consumedFromPoolAwuCredits`, which sorts by pool-only
-      // consumption for the compact (Poke) variant.
-      // TODO(avervaet, 2026-09-01): remove once the app page and Poke page usage tables are uniformized.
+      // consumption for the compact (Admin) variant.
+      // TODO(avervaet, 2026-09-01): remove once the app page and Admin page usage tables are uniformized.
       "consumedAwuCredits",
       "consumedFromPoolAwuCredits",
       "seatType",
@@ -477,7 +477,7 @@ type ApiKeyConsumedCreditsAggs = {
  * Elasticsearch-derived AWU consumption for the current billing cycle, summed
  * per `api_key_name` — the same dimension the Metronome per-API-key cap alert
  * aggregates spend on. Used to lazily seed / resync the per-API-key spend-cap
- * counter, and to populate the poke API-keys usage table. Returns an empty map
+ * counter, and to populate the admin API-keys usage table. Returns an empty map
  * on no usage or an analytics read failure.
  */
 export async function fetchConsumedAwuCreditsByApiKeyName({
@@ -786,7 +786,7 @@ export async function fetchSeatDataForMembersTable({
 }
 
 // Live per-seat AWU balance remaining for paid (seat-managed) seats, keyed by
-// userId. This is the expensive read (`listMetronomeSeatBalances`) gated to poke
+// userId. This is the expensive read (`listMetronomeSeatBalances`) gated to admin
 // — free seats are handled separately by `fetchFreeSeatCreditsForMembersTable`.
 // Always queried by explicit `seatIds`: Metronome's unfiltered seat-balances
 // list silently omits most seats on contracts with a few hundred+ seats.
@@ -832,12 +832,12 @@ async function fetchSeatBalancesForMembersTable({
 
 // Per-user free-seat credit data, keyed by userId: live remaining balance
 // (`freeBalanceByUserId`) and granted total (`freeStartingByUserId`). Free seats
-// hold a per-user customer credit rather than a seat balance, and a Dust rep can
-// raise a single member's grant (see the `grant-user-free-credits` poke plugin),
+// hold a per-user customer credit rather than a seat balance, and a Ruby rep can
+// raise a single member's grant (see the `grant-user-free-credits` admin plugin),
 // so every surface reads each free member's real allowance/balance from their
 // credit rather than the fixed seat-type constant. This is a single
 // `credits.list` read, so — unlike the paid-seat balances above — it runs on the
-// customer usage page too, not just poke. Degrades to empty maps on read failure.
+// customer usage page too, not just admin. Degrades to empty maps on read failure.
 async function fetchFreeSeatCreditsForMembersTable({
   metronomeCustomerId,
 }: {
@@ -1464,8 +1464,8 @@ export async function getMemberUsage({
   const seatData = seatDataByUserId.get(userId);
   const awuAllocation = seatData?.awuAllocation ?? 0;
 
-  // Free seats draw from a per-user credit whose granted total a Dust rep can
-  // raise (see the `grant-user-free-credits` poke plugin). Read the live balance
+  // Free seats draw from a per-user credit whose granted total a Ruby rep can
+  // raise (see the `grant-user-free-credits` admin plugin). Read the live balance
   // and granted total so the "Your Credits" bar reflects the member's real
   // allowance and lifetime usage rather than the fixed seat-type constant.
   // Degrades to the constant on read failure.
@@ -2119,7 +2119,7 @@ export async function getMembersUsage({
   auth: Authenticator;
   paginationParams: MembersUsagePaginationInput;
   includeAlertLinks?: boolean;
-  // Live per-seat balance read (an extra Metronome call). Poke-only — the
+  // Live per-seat balance read (an extra Metronome call). Admin-only — the
   // customer usage page doesn't surface it, so it stays off there.
   includeSeatBalance?: boolean;
 }): Promise<GetMembersUsageResponseBody> {
@@ -2182,7 +2182,7 @@ export async function getMembersUsage({
   // Non-credit-priced (legacy) per-member cap: the raw pool default, applied
   // uniformly to every member with no per-member/group override and no seat
   // allowance (matching `getNonCreditPricedDefaultUserSpendLimit`). `0` means
-  // "no limit". Poke-only (`includeAlertLinks`): surfaces the enforced legacy
+  // "no limit". Admin-only (`includeAlertLinks`): surfaces the enforced legacy
   // cap in the admin members table without altering the customer usage page,
   // whose unblock/override affordances don't apply on legacy plans.
   const nonCreditPricedCapAwuCredits =
@@ -2238,7 +2238,7 @@ export async function getMembersUsage({
       metronomeCustomerId: metronomeCustomerId ?? null,
       metronomeContractId,
     }),
-    // Paid (seat-managed) live balances — the expensive read, poke-only.
+    // Paid (seat-managed) live balances — the expensive read, admin-only.
     includeSeatBalance
       ? fetchSeatBalancesForMembersTable({
           metronomeCustomerId: metronomeCustomerId ?? null,
@@ -2289,7 +2289,7 @@ export async function getMembersUsage({
       userIds: memberships.map((m) => m.userId),
     });
 
-  // Bulk-fetch the Redis fixed-window spend-cap counter per user (poke-only), to
+  // Bulk-fetch the Redis fixed-window spend-cap counter per user (admin-only), to
   // display beside the Elasticsearch-derived usage. Free seats are enforced on a
   // never-rolling *lifetime* counter (their lifetime credit allowance); everyone
   // else on the per-contract-cycle counter. The cycle also backs the per-member
@@ -2306,7 +2306,7 @@ export async function getMembersUsage({
   // enforcement writer accrues into: the UTC calendar month for
   // non-credit-priced workspaces (no Metronome contract to anchor on), the
   // Metronome billing period otherwise. Mirror `spendLimitCycleOverrideForAuth`
-  // so the poke counter read lands on the same Redis key. Poke-only
+  // so the admin counter read lands on the same Redis key. Admin-only
   // (`includeAlertLinks`): only the admin members table surfaces the legacy
   // rate-limiter state, and this leaves the customer usage page unchanged
   // (`spendLimitCycleOverrideForAuth` is a no-op for credit-priced workspaces,
@@ -2352,7 +2352,7 @@ export async function getMembersUsage({
     rateLimiterSpendByUserId.set(sId, value);
   }
 
-  // Bulk-fetch each user's Metronome-side per-user AWU consumption (poke-only),
+  // Bulk-fetch each user's Metronome-side per-user AWU consumption (admin-only),
   // shown next to the ES and rate-limiter figures to spot divergence. Reuses the
   // resilient wrapper (empty map when Metronome isn't configured or on error).
   const metronomeConsumedByUserId = includeAlertLinks
@@ -2367,7 +2367,7 @@ export async function getMembersUsage({
       })
     : new Map<string, number>();
 
-  // Bulk-fetch each user's fair-use AWU credit usage (poke-only). This is a
+  // Bulk-fetch each user's fair-use AWU credit usage (admin-only). This is a
   // bounded page (≤ 150) of Redis reads, so batch with `concurrentExecutor`.
   // Fair-use limits apply to non-credit-based plans (free/trial), so this is
   // resolved regardless of the workspace's credit-based status. Null when the
@@ -2449,9 +2449,9 @@ export async function getMembersUsage({
     const scheduled = scheduledByUserId.get(membership.userId);
 
     // For free seats, the real allowance is the granted total of the member's
-    // per-user free-seat credit (a Dust rep can raise it via the
-    // `grant-user-free-credits` poke plugin), not the fixed seat-type constant.
-    // Only available when seat balances were fetched (poke); elsewhere fall back
+    // per-user free-seat credit (a Ruby rep can raise it via the
+    // `grant-user-free-credits` admin plugin), not the fixed seat-type constant.
+    // Only available when seat balances were fetched (admin); elsewhere fall back
     // to the seat-type allocation.
     const freeStartingBalanceAwu =
       membership.seatType === "free"
@@ -2512,7 +2512,7 @@ export async function getMembersUsage({
     // Non-credit-priced (legacy) workspaces ignore the seat-allowance /
     // override / group resolution above: enforcement applies the uniform
     // workspace default to every member, so surface that same cap here to
-    // match. Poke-only (`nonCreditPricedCapAwuCredits` is gated on
+    // match. Admin-only (`nonCreditPricedCapAwuCredits` is gated on
     // `includeAlertLinks`); the customer usage page keeps the original
     // resolution untouched.
     const useLegacyUniformCap = includeAlertLinks && !isCreditPricedWorkspace;
@@ -2540,9 +2540,9 @@ export async function getMembersUsage({
           ? (defaultCapAlertsBySeatType[normalizedSeatType] ?? null)
           : null;
     // The per-user cap / 80%-warning and free-seat balance Metronome alerts no
-    // longer drive enforcement (the Redis rate limiter does); their poke
+    // longer drive enforcement (the Redis rate limiter does); their admin
     // badges/deep-links are kept for now and will be removed with the spend-alert
-    // cleanup. Poke-only.
+    // cleanup. Admin-only.
     const showMetronomeAlerts = includeAlertLinks;
     const spendLimitAlertId = showMetronomeAlerts
       ? (effectiveCapAlert?.alertId ?? null)
@@ -2553,12 +2553,12 @@ export async function getMembersUsage({
 
     const rateLimiterSpendAwuCredits =
       rateLimiterSpendByUserId.get(userId) ?? 0;
-    // Poke-only rate-limiter verdict: the counter vs the threshold the seat is
+    // Admin-only rate-limiter verdict: the counter vs the threshold the seat is
     // capped against — the free-seat lifetime
     // allowance for free seats, the effective per-cycle cap otherwise.
     // `rateLimiterSpendAwuCredits` already holds the matching counter (lifetime
     // for free seats, per-cycle otherwise). Null when no cap applies. Backs
-    // `isSpendCapped` for both poke and the customer usage page's Unblock
+    // `isSpendCapped` for both admin and the customer usage page's Unblock
     // action.
     const rateCapThresholdAwuCredits =
       membership.seatType === "free"
@@ -2583,7 +2583,7 @@ export async function getMembersUsage({
             : "ok";
     }
 
-    // Per-user cap verdict for the poke Unblock action: the rate-limiter counter
+    // Per-user cap verdict for the admin Unblock action: the rate-limiter counter
     // (mirrors enforcement in lib/api/credits/access_control.ts).
     const isSpendCapped = rateLimiterState === "capped";
 

@@ -23,7 +23,7 @@ import {
 import { compareAgentsForSort } from "@app/types/assistant/assistant";
 import { isProjectType } from "@app/types/space";
 import type { LightWorkspaceType, UserType } from "@app/types/user";
-import { Dialog, DialogContent } from "@dust-tt/sparkle";
+import { Dialog, DialogContent } from "@ruby-ai/ui";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface CommandPaletteProps {
@@ -110,7 +110,7 @@ export function CommandPalette({ owner, user }: CommandPaletteProps) {
   const isDebouncing = searchQuery.trim() !== debouncedQuery;
 
   // Cap the number of rendered items to avoid slow DOM rendering on large workspaces.
-  // This is a temporary measure until the command palette moves to Sparkle with
+  // This is a temporary measure until the command palette moves to RubyUI with
   // proper list virtualization (@tanstack/react-virtual).
   const MAX_DISPLAYED_AGENTS = 5;
   const MAX_DISPLAYED_PODS = 5;

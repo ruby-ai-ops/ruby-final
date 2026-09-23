@@ -1,6 +1,6 @@
 import { AgentDetailsBody } from "@app/components/assistant/details/AgentDetailsBody";
 import type { UserType, WorkspaceType } from "@app/types/user";
-import { Sheet, SheetContent, SheetTitle } from "@dust-tt/sparkle";
+import { Sheet, SheetContent, SheetTitle } from "@ruby-ai/ui";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export { SCOPE_INFO } from "@app/components/assistant/details/AgentDetailsBody";

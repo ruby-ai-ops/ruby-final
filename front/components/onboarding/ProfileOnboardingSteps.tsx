@@ -10,7 +10,7 @@ import {
   Card,
   Chip,
   ConfluenceLogo,
-  DustLogoSquare,
+  RubyLogoSquare,
   FrontLogo,
   GithubLogo,
   GmailLogo,
@@ -22,7 +22,7 @@ import {
   NotionLogo,
   Page,
   SlackLogo,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
 const PLATFORM_ICONS: Record<FavoritePlatform, ComponentType> = {
@@ -96,7 +96,7 @@ export function UserProfileStep({
 }: UserProfileStepProps) {
   return (
     <div className="flex h-full flex-col gap-8 pt-4 md:justify-center md:pt-0">
-      <DustLogoSquare className="-ml-11 h-10 w-32" />
+      <RubyLogoSquare className="-ml-11 h-10 w-32" />
       <Page.Header title={`Hello ${formData.firstName || "there"}!`} />
       <p className="text-muted-foreground">Let's check a few things.</p>
       {!isAdmin && (
@@ -193,7 +193,7 @@ export function FavoritePlatformsStep({
     <div className="flex h-full flex-col gap-8 pt-4 md:justify-center md:pt-0">
       <Page.Header title="What are your favorite platforms?" />
       <p className="text-muted-foreground">
-        Dust works at full potential when it can play with your knowledge and
+        Ruby works at full potential when it can play with your knowledge and
         help with your tools. Do you recognise some of these?
       </p>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">

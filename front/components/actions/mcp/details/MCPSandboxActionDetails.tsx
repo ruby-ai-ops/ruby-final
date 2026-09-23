@@ -10,7 +10,7 @@ import {
   cn,
   Markdown,
   TerminalSquare,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 const SANDBOX_SECTION_TYPES = [

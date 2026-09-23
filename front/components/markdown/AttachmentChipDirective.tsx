@@ -2,7 +2,7 @@ import { createTextDirective } from "@app/components/markdown/directives";
 import { getConnectorProviderLogoWithFallback } from "@app/lib/connector_providers_ui";
 import { getVisualForContentNodeType } from "@app/lib/content_nodes";
 import type { ContentFragmentNodeData } from "@app/types/content_fragment";
-import { AttachmentChip, DoubleIcon } from "@dust-tt/sparkle";
+import { AttachmentChip, DoubleIcon } from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
 export interface AttachmentChipDirectiveBlockProps {

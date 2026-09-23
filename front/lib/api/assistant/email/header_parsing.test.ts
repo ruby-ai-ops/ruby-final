@@ -9,13 +9,13 @@ describe("extractEmailAddressesFromHeader", () => {
   it("ignores malformed angle-bracket content that only partially looks like an email", () => {
     expect(
       extractEmailAddressesFromHeader(
-        "Sender <mailto:sender@dust.tt>, sender@dust.tt"
+        "Sender <mailto:sender@ruby.ad>, sender@ruby.ad"
       )
-    ).toEqual(["sender@dust.tt"]);
+    ).toEqual(["sender@ruby.ad"]);
   });
 
   it("does not recover a mailbox from an unmatched opening angle bracket", () => {
-    expect(extractEmailAddressesFromHeader("Sender <sender@dust.tt")).toEqual(
+    expect(extractEmailAddressesFromHeader("Sender <sender@ruby.ad")).toEqual(
       []
     );
   });
@@ -25,7 +25,7 @@ describe("extractSingleEmailAddressFromHeader", () => {
   it("extracts the single mailbox from a From header", () => {
     const result = extractSingleEmailAddressFromHeader(
       "From",
-      "Sender Name <Sender@dust.tt>"
+      "Sender Name <Sender@ruby.ad>"
     );
 
     expect(result.isOk()).toBe(true);
@@ -33,7 +33,7 @@ describe("extractSingleEmailAddressFromHeader", () => {
       throw result.error;
     }
 
-    expect(result.value).toBe("sender@dust.tt");
+    expect(result.value).toBe("sender@ruby.ad");
   });
 
   it("accepts punycode domains inside angle brackets", () => {
@@ -53,7 +53,7 @@ describe("extractSingleEmailAddressFromHeader", () => {
   it("rejects a From header with multiple mailboxes", () => {
     const result = extractSingleEmailAddressFromHeader(
       "From",
-      "Sender <sender@dust.tt>, Other <other@dust.tt>"
+      "Sender <sender@ruby.ad>, Other <other@ruby.ad>"
     );
 
     expect(result.isErr()).toBe(true);
@@ -71,12 +71,12 @@ describe("parseHeaderValue", () => {
   it("unfolds folded header values", () => {
     const rawHeaders = [
       "From: Sender Name",
-      " <sender@dust.tt>",
-      "To: agent@dust.team",
+      " <sender@ruby.ad>",
+      "To: agent@ruby.team",
     ].join("\r\n");
 
     expect(parseHeaderValue(rawHeaders, "From")).toBe(
-      "Sender Name <sender@dust.tt>"
+      "Sender Name <sender@ruby.ad>"
     );
   });
 });

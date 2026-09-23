@@ -6,7 +6,7 @@ import type { CreationOptional, ForeignKey } from "sequelize";
 export type FileSystemNodeKind = "directory" | "file";
 export type FileSystemRootKind = "conversation" | "pod";
 
-/** One stable inode in Dust's PostgreSQL-owned file tree. */
+/** One stable inode in Ruby's PostgreSQL-owned file tree. */
 export class FileSystemNodeModel extends WorkspaceAwareModel<FileSystemNodeModel> {
   declare id: CreationOptional<number>;
   declare createdAt: CreationOptional<Date>;

@@ -108,7 +108,7 @@ app.post(
         ctx.header("Content-Type", "text/csv");
         ctx.header(
           "Content-Disposition",
-          `attachment; filename="dust_automations_${exportDate}.csv"`
+          `attachment; filename="ruby_automations_${exportDate}.csv"`
         );
         return ctx.body(
           rowsToCsv(CSV_HEADERS, result.value.triggers.map(toCsvRow))

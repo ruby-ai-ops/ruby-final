@@ -96,7 +96,7 @@ describe("POST /api/w/:wId/files/:fileId/edit-text", () => {
     });
 
     const file = await FileFactory.create(auth, user, {
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       fileName: "frame.tsx",
       fileSize: 1024,
       status: "ready",
@@ -116,7 +116,7 @@ describe("POST /api/w/:wId/files/:fileId/edit-text", () => {
     });
 
     const file = await FileFactory.create(auth, user, {
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       fileName: "frame.tsx",
       fileSize: 1024,
       status: "ready",
@@ -150,7 +150,7 @@ describe("POST /api/w/:wId/files/:fileId/edit-text", () => {
     );
 
     const file = await FileFactory.create(auth, user, {
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       fileName: "frame.tsx",
       fileSize: 1024,
       status: "ready",
@@ -181,7 +181,7 @@ describe("POST /api/w/:wId/files/:fileId/edit-text", () => {
     });
 
     const file = await FileFactory.create(auth, user, {
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       fileName: "frame.tsx",
       fileSize: 1024,
       status: "ready",
@@ -205,7 +205,7 @@ describe("POST /api/w/:wId/files/:fileId/edit-text", () => {
     });
 
     const file = await FileFactory.create(auth, user, {
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       fileName: "frame.tsx",
       fileSize: 1024,
       status: "ready",
@@ -234,7 +234,7 @@ describe("POST /api/w/:wId/files/:fileId/edit-text", () => {
     await memberGroup?.dangerouslyAddMembers(auth, { users: [user.toJSON()] });
 
     const file = await FileFactory.create(auth, user, {
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       fileName: "frame.tsx",
       fileSize: 1024,
       status: "ready",
@@ -266,7 +266,7 @@ describe("POST /api/w/:wId/files/:fileId/edit-text", () => {
     // no bundle to rewrite. This also proves the request takes the source branch
     // (editFrameTextAtSource) rather than the mocked legacy path, which would return 200.
     const file = await FileFactory.create(auth, user, {
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       fileName: "frame.tsx",
       fileSize: 1024,
       status: "ready",
@@ -300,7 +300,7 @@ describe("POST /api/w/:wId/files/:fileId/edit-text", () => {
     });
 
     const file = await FileFactory.create(auth, user, {
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       fileName: "frame.tsx",
       fileSize: 1024,
       status: "ready",

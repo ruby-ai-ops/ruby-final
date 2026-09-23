@@ -1,5 +1,5 @@
 import type { LabsTranscriptsConfigurationType } from "@app/types/labs";
-import { Button, CloudArrowLeftRight, Page, XClose } from "@dust-tt/sparkle";
+import { Button, CloudArrowLeftRight, Page, XClose } from "@ruby-ai/ui";
 
 interface GoogleDriveConnectionProps {
   transcriptsConfiguration: LabsTranscriptsConfigurationType | null;
@@ -33,7 +33,7 @@ export function GoogleDriveConnection({
       ) : (
         <>
           <Page.P>
-            Connect to Google Drive so Dust can access 'My Drive' where your
+            Connect to Google Drive so Ruby can access 'My Drive' where your
             meeting transcripts are stored.
           </Page.P>
           <div>

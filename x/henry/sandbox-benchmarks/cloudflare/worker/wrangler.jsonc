@@ -1,5 +1,5 @@
 {
-  "name": "dust-sandbox-bench-cloudflare",
+  "name": "ruby-sandbox-bench-cloudflare",
   "main": "src/index.ts",
   "compatibility_date": "2025-10-13",
   "compatibility_flags": ["nodejs_compat"],

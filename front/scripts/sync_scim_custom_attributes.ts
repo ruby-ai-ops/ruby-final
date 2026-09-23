@@ -168,7 +168,7 @@ makeScript(
             return { skipped: true, reason: "no_email" };
           }
 
-          // Find the Dust user by WorkOS user ID first, fallback to email.
+          // Find the Ruby user by WorkOS user ID first, fallback to email.
           const userByWorkOSId = directoryUser.idpId
             ? await UserResource.fetchByWorkOSUserId(directoryUser.idpId)
             : null;

@@ -16,14 +16,14 @@ VALUES
 INSERT INTO
   slack_bots_whitelist("connectorId", "slackConfigurationId", "botName")
 VALUES
-  (211, 50, 'DustWorkflowTest');
+  (211, 50, 'RubyWorkflowTest');
 
 INSERT INTO
   slack_bots_whitelist("connectorId", "slackConfigurationId", "botName")
 VALUES
-  (211, 50, 'dust-email-lists-highlights');
+  (211, 50, 'ruby-email-lists-highlights');
 
 INSERT INTO
   slack_bots_whitelist("connectorId", "slackConfigurationId", "botName")
 VALUES
-  (589, 137, 'Dust_CrystalBall');
+  (589, 137, 'Ruby_CrystalBall');

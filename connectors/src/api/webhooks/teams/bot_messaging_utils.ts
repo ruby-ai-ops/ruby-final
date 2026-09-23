@@ -1,7 +1,7 @@
 import { apiConfig } from "@connectors/lib/api/config";
 import { cacheWithRedis } from "@connectors/types/shared/cache";
-import type { Result } from "@dust-tt/client";
-import { Err, normalizeError, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, normalizeError, Ok } from "@ruby-ai/client";
 import axios from "axios";
 import type { Activity, TurnContext } from "botbuilder";
 

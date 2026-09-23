@@ -31,7 +31,7 @@ function getHookCall(identifier, specifier) {
 }
 
 module.exports = {
-  meta: { name: "dust" },
+  meta: { name: "ruby" },
   rules: {
     "declared-frame-functions": {
       meta: {
@@ -50,7 +50,7 @@ module.exports = {
           : "This Frame's manifest declares no functions.";
         return {
           ImportDeclaration: (node) => {
-            if (node.source.value !== "@dust/react-hooks") {
+            if (node.source.value !== "@ruby-ai/react-hooks") {
               return;
             }
             // Follow imported bindings so a same-named local function is not checked.

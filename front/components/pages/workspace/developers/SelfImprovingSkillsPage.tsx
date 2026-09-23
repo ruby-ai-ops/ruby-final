@@ -11,7 +11,7 @@ import {
   getWorkspaceDefaultSelfImprovementCapPerSkillMicroUsd,
 } from "@app/lib/reinforcement/consumption";
 import { useReinforcementBillingUnit } from "@app/lib/swr/useSelfImprovingSkillsSettings";
-import { ContentMessage, InfoCircle, Page } from "@dust-tt/sparkle";
+import { ContentMessage, InfoCircle, Page } from "@ruby-ai/ui";
 import { useState } from "react";
 
 export function SelfImprovingSkillsPage() {
@@ -76,7 +76,7 @@ export function SelfImprovingSkillsPage() {
               <span>
                 Configure self-improving skills settings for this workspace.{" "}
                 <a
-                  href="https://docs.dust.tt/docs/self-improving-skills"
+                  href="https://docs.ruby.ad/docs/self-improving-skills"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-highlight underline"

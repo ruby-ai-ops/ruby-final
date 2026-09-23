@@ -4,7 +4,7 @@
 // discriminator every launch after the first collides on the workflow id and is
 // dropped as `WorkflowExecutionAlreadyStarted`, so only the first execution's
 // usage is ever reported. Retries of the *same* execution reuse the same
-// `runKey` (deterministic from its `dustRunIds`), so they still dedup.
+// `runKey` (deterministic from its `rubyRunIds`), so they still dedup.
 export function makeTrackProgrammaticUsageWorkflowId({
   agentMessageId,
   conversationId,

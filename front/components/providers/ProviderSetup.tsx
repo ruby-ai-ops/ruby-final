@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   Input,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type React from "react";
 import type { MouseEvent } from "react";
 import { useEffect, useState } from "react";
@@ -89,7 +89,7 @@ export const MODEL_PROVIDER_CONFIGS: Record<string, ProviderConfig> = {
           >
             here
           </a>
-          &nbsp;(you can create a new key specifically for Dust).
+          &nbsp;(you can create a new key specifically for Ruby).
         </p>
         <p className="mt-2">
           We'll never use your API key for anything other than to run your apps.
@@ -112,7 +112,7 @@ export const MODEL_PROVIDER_CONFIGS: Record<string, ProviderConfig> = {
           >
             here
           </a>
-          &nbsp;(you can create a new key specifically for Dust).
+          &nbsp;(you can create a new key specifically for Ruby).
         </p>
         <p className="mt-2">
           We'll never use your API key for anything other than to run your apps.
@@ -135,7 +135,7 @@ export const MODEL_PROVIDER_CONFIGS: Record<string, ProviderConfig> = {
           >
             here
           </a>
-          &nbsp;(you can create a new key specifically for Dust).
+          &nbsp;(you can create a new key specifically for Ruby).
         </p>
         <p className="mt-2">
           We'll never use your API key for anything other than to run your apps.

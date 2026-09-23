@@ -8,7 +8,7 @@ import { usePlanFile } from "@app/hooks/conversations/usePlanFile";
 import { useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useIsMobile } from "@app/lib/swr/useIsMobile";
 import { PLAN_SIDE_PANEL_TYPE } from "@app/types/conversation_side_panel";
-import { FilterChip, ListSelect } from "@dust-tt/sparkle";
+import { FilterChip, ListSelect } from "@ruby-ai/ui";
 import { useEffect, useMemo, useRef } from "react";
 
 interface PlanPanelChipProps {

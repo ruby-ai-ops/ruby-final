@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import type { ValidationWarning } from "@app/lib/api/files/content_validation";
 import { createMountFrameSourceReader } from "@app/lib/api/viz/build_frame_bundle";
 import {
@@ -92,15 +92,15 @@ export async function editFrameTextAtSource(
     const rootScopedPath = root.replace(/\/+$/, "");
     const scopedPath = `${rootScopedPath}/${location.relPath}`;
 
-    const fsResult = await DustFileSystem.fromScopedPath(auth, rootScopedPath);
+    const fsResult = await RubyFileSystem.fromScopedPath(auth, rootScopedPath);
     if (fsResult.isErr()) {
       return new Err(
         new EditFrameTextError("internal", fsResult.error.message)
       );
     }
-    const dustFs = fsResult.value;
+    const rubyFs = fsResult.value;
 
-    const bufferResult = await dustFs.readBuffer(scopedPath);
+    const bufferResult = await rubyFs.readBuffer(scopedPath);
     if (bufferResult.isErr()) {
       return new Err(
         new EditFrameTextError("read_failed", bufferResult.error.message)
@@ -129,11 +129,11 @@ export async function editFrameTextAtSource(
     }
 
     // Preserve the source file's existing content type when writing it back.
-    const stat = await dustFs.stat(scopedPath);
+    const stat = await rubyFs.stat(scopedPath);
     const contentType =
       stat.isOk() && stat.value ? stat.value.contentType : file.contentType;
 
-    const writeResult = await dustFs.write(
+    const writeResult = await rubyFs.write(
       scopedPath,
       edited.value,
       contentType
@@ -150,7 +150,7 @@ export async function editFrameTextAtSource(
 
     const publishResult = await publishFrame(auth, {
       file,
-      reader: createMountFrameSourceReader(dustFs, rootScopedPath),
+      reader: createMountFrameSourceReader(rubyFs, rootScopedPath),
       entryRelPath,
       rootScopedPath,
       publishedByAgentConfigurationId: editedByAgentConfigurationId,

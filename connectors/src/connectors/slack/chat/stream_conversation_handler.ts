@@ -42,15 +42,15 @@ import type {
   LightAgentConfigurationType,
   Result,
   UserMessageType,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import {
   assertNever,
-  DustAPI,
+  RubyAPI,
   Err,
   normalizeError,
   Ok,
   removeNulls,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import type { WebClient } from "@slack/web-api";
 import * as t from "io-ts";
 
@@ -160,7 +160,7 @@ async function runBestEffortSlackCleanup({
 }
 
 export async function streamConversationToSlack(
-  dustAPI: DustAPI,
+  rubyAPI: RubyAPI,
   conversationData: StreamConversationToSlackParams
 ): Promise<Result<undefined, Error>> {
   const {
@@ -193,7 +193,7 @@ export async function streamConversationToSlack(
   );
 
   const planHandler = new PlanMessageHandler({
-    dustAPI,
+    rubyAPI,
     slackClient,
     slackChannelId,
     slackMessageTs,
@@ -204,7 +204,7 @@ export async function streamConversationToSlack(
 
   try {
     return await streamAgentAnswerToSlack(
-      dustAPI,
+      rubyAPI,
       conversationData,
       planHandler
     );
@@ -254,26 +254,26 @@ function getUserActionLabel(actionType: SlackUserActionType): string {
   }
 }
 
-function getContinueOnDustSuffix(conversationUrl: string | null): string {
-  return conversationUrl ? ` <${conversationUrl}|Continue on Dust>.` : "";
+function getContinueOnRubySuffix(conversationUrl: string | null): string {
+  return conversationUrl ? ` <${conversationUrl}|Continue on Ruby>.` : "";
 }
 
 function getUserActionFallbackMessage(
   actionType: SlackUserActionType,
   conversationUrl: string | null
 ): string {
-  return `:hourglass_flowing_sand: _Streaming was interrupted after 5 mins waiting on a ${getUserActionLabel(actionType)}.${getContinueOnDustSuffix(conversationUrl)}_`;
+  return `:hourglass_flowing_sand: _Streaming was interrupted after 5 mins waiting on a ${getUserActionLabel(actionType)}.${getContinueOnRubySuffix(conversationUrl)}_`;
 }
 
 function getUserActionPostFailureFallbackMessage(
   actionType: SlackUserActionType,
   conversationUrl: string | null
 ): string {
-  return `:warning: _Dust could not display the Slack controls for a ${getUserActionLabel(actionType)}.${getContinueOnDustSuffix(conversationUrl)}_`;
+  return `:warning: _Ruby could not display the Slack controls for a ${getUserActionLabel(actionType)}.${getContinueOnRubySuffix(conversationUrl)}_`;
 }
 
 async function streamAgentAnswerToSlack(
-  dustAPI: DustAPI,
+  rubyAPI: RubyAPI,
   conversationData: StreamConversationToSlackParams,
   planHandler: PlanMessageHandler
 ) {
@@ -298,7 +298,7 @@ async function streamAgentAnswerToSlack(
 
   const abortController = new AbortController();
 
-  const streamRes = await dustAPI.streamAgentAnswerEvents({
+  const streamRes = await rubyAPI.streamAgentAnswerEvents({
     conversation,
     userMessageId: userMessage.sId,
     signal: abortController.signal,
@@ -776,7 +776,7 @@ async function streamAgentAnswerToSlack(
               ): file is Extract<ActionGeneratedFileType, { fileId: string }> =>
                 file.fileId !== null
             );
-          filesUploaded = await getFilesFromDust(files, dustAPI);
+          filesUploaded = await getFilesFromRuby(files, rubyAPI);
         }
 
         await streamHandler.stop();
@@ -1000,7 +1000,7 @@ async function streamAgentAnswerToSlack(
   await streamHandler.stop();
 
   return new Err(
-    new SlackAnswerRetryableError("Failed to get the final answer from Dust")
+    new SlackAnswerRetryableError("Failed to get the final answer from Ruby")
   );
 }
 
@@ -1241,9 +1241,9 @@ async function getMessageSplittingFromFeatureFlag(
 ): Promise<boolean> {
   try {
     const dataSourceConfig = dataSourceConfigFromConnector(connector);
-    const dustAPI = new DustAPI(
+    const rubyAPI = new RubyAPI(
       {
-        url: apiConfig.getDustFrontAPIUrl(),
+        url: apiConfig.getRubyFrontAPIUrl(),
       },
       {
         apiKey: dataSourceConfig.workspaceAPIKey,
@@ -1252,7 +1252,7 @@ async function getMessageSplittingFromFeatureFlag(
       logger
     );
 
-    const featureFlagsRes = await dustAPI.getWorkspaceFeatureFlags();
+    const featureFlagsRes = await rubyAPI.getWorkspaceFeatureFlags();
     if (featureFlagsRes.isOk()) {
       return featureFlagsRes.value.includes("slack_message_splitting");
     } else {
@@ -1279,7 +1279,7 @@ async function getMessageSplittingFromFeatureFlag(
   }
 }
 
-async function getFilesFromDust(
+async function getFilesFromRuby(
   files: Array<{
     fileId: string;
     title: string;
@@ -1287,14 +1287,14 @@ async function getFilesFromDust(
     snippet: string | null;
     hidden?: boolean;
   }>,
-  dustAPI: DustAPI
+  rubyAPI: RubyAPI
 ): Promise<{ file: Buffer; filename: string }[]> {
   const visibleFiles = files.filter((file) => !file.hidden); // Skip hidden files
   const uploadResults = await concurrentExecutor(
     visibleFiles,
     async (file) => {
       try {
-        const fileBuffer = await dustAPI.downloadFile({ fileID: file.fileId });
+        const fileBuffer = await rubyAPI.downloadFile({ fileID: file.fileId });
         if (!fileBuffer || fileBuffer.isErr()) {
           return null;
         }
@@ -1309,7 +1309,7 @@ async function getFilesFromDust(
             title: file.title,
             error: error instanceof Error ? error.message : String(error),
           },
-          "Error downloading file from Dust"
+          "Error downloading file from Ruby"
         );
         return null;
       }

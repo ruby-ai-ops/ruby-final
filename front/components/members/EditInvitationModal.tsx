@@ -21,7 +21,7 @@ import {
   SheetHeader,
   SheetTitle,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useContext, useEffect, useState } from "react";
 
 function getInvitationRoleMessage({

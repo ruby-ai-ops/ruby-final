@@ -1,4 +1,4 @@
-// We use the public API to call the Dust Apps, it's okay here.
+// We use the public API to call the Ruby Apps, it's okay here.
 
 import { default as config } from "@app/lib/api/config";
 import { getDatasetHash, getDatasets } from "@app/lib/api/datasets";
@@ -15,7 +15,7 @@ import type { DatasetType } from "@app/types/dataset";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import type { ApiAppImportType, ApiAppType } from "@dust-tt/client";
+import type { ApiAppImportType, ApiAppType } from "@ruby-ai/client";
 import isEqual from "lodash/isEqual";
 import omit from "lodash/omit";
 
@@ -71,7 +71,7 @@ async function updateOrCreateApp(
     if (p.isErr()) {
       return p;
     }
-    const dustAPIProject = p.value.project;
+    const rubyAPIProject = p.value.project;
 
     const owner = auth.getNonNullableWorkspace();
     const newApp = await AppResource.makeNew(
@@ -81,7 +81,7 @@ async function updateOrCreateApp(
         name: appToImport.name,
         description: appToImport.description,
         visibility: "private",
-        dustAPIProjectId: dustAPIProject.project_id.toString(),
+        rubyAPIProjectId: rubyAPIProject.project_id.toString(),
         workspaceId: owner.id,
       },
       space
@@ -116,7 +116,7 @@ async function updateDatasets(
     for (const datasetToImport of datasetsToImport) {
       // First, create or update the dataset in core
       const coreDataset = await coreAPI.createDataset({
-        projectId: app.dustAPIProjectId,
+        projectId: app.rubyAPIProjectId,
         datasetId: datasetToImport.name,
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         data: datasetToImport.data || [],
@@ -190,7 +190,7 @@ async function updateAppSpecifications(
 
   if (coreSpecifications) {
     const existingHashes = await coreAPI.getSpecificationHashes({
-      projectId: app.dustAPIProjectId,
+      projectId: app.rubyAPIProjectId,
     });
     if (existingHashes.isOk()) {
       // Remove hashes that already exist in core
@@ -214,7 +214,7 @@ async function updateAppSpecifications(
         Object.values(coreSpecifications),
         async (specification) => {
           await coreAPI.saveSpecification({
-            projectId: app.dustAPIProjectId,
+            projectId: app.rubyAPIProjectId,
             specification: specification,
           });
         },
@@ -362,7 +362,7 @@ export type ExportedApp = Omit<AppType, "space" | "id"> & {
 
 /**
  * Returns the serialized app along with the latest version of each dataset
- * it references (including soft-deleted ones). Used by the poke admin UI
+ * it references (including soft-deleted ones). Used by the admin admin UI
  * to export a single app for re-import elsewhere.
  */
 export async function exportAppWithDatasets(
@@ -408,7 +408,7 @@ export async function exportApps(
 
     async (app) => {
       const specsToFetch = await getSpecificationsHashesFromCore(
-        app.dustAPIProjectId
+        app.rubyAPIProjectId
       );
 
       const dataSetsToFetch = (await getDatasets(auth, app.toJSON())).map(
@@ -420,7 +420,7 @@ export async function exportApps(
       if (specsToFetch) {
         for (const hash of specsToFetch) {
           const coreSpecification = await getSpecificationFromCore(
-            app.dustAPIProjectId,
+            app.rubyAPIProjectId,
             hash
           );
           if (coreSpecification) {
@@ -458,11 +458,11 @@ export async function exportApps(
   return new Ok(enhancedApps);
 }
 
-async function getSpecificationsHashesFromCore(dustAPIProjectId: string) {
+async function getSpecificationsHashesFromCore(rubyAPIProjectId: string) {
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
   const coreSpec = await coreAPI.getSpecificationHashes({
-    projectId: dustAPIProjectId,
+    projectId: rubyAPIProjectId,
   });
 
   if (coreSpec.isErr()) {
@@ -473,13 +473,13 @@ async function getSpecificationsHashesFromCore(dustAPIProjectId: string) {
 }
 
 async function getSpecificationFromCore(
-  dustAPIProjectId: string,
+  rubyAPIProjectId: string,
   hash: string
 ) {
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
 
   const coreSpec = await coreAPI.getSpecification({
-    projectId: dustAPIProjectId,
+    projectId: rubyAPIProjectId,
     specificationHash: hash,
   });
 

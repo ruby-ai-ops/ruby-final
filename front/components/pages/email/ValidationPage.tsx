@@ -1,6 +1,6 @@
 import config from "@app/lib/api/config";
 import { useSearchParam } from "@app/lib/platform";
-import { Button, DustLogoSquare, Icon, Page, Spinner } from "@dust-tt/sparkle";
+import { Button, RubyLogoSquare, Icon, Page, Spinner } from "@ruby-ai/ui";
 import { useEffect, useRef, useState } from "react";
 
 const VALIDATION_STATUSES = [
@@ -58,7 +58,7 @@ function ConfirmView({ token }: ConfirmViewProps) {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    document.title = "Processing... - Dust";
+    document.title = "Processing... - Ruby";
   }, []);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ function ConfirmView({ token }: ConfirmViewProps) {
       <main className="z-10 mx-6">
         <div className="flex h-screen flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Icon visual={DustLogoSquare} size="lg" />
+            <Icon visual={RubyLogoSquare} size="lg" />
             <div className="flex flex-col items-center gap-4">
               <Page.Header
                 title={<span className="text-primary-100">Processing...</span>}
@@ -124,7 +124,7 @@ function ResultView({ status, conversationId, workspaceId }: ResultViewProps) {
         : status === "rejected"
           ? "Rejected"
           : "Validation";
-    document.title = `${titlePrefix} - Dust`;
+    document.title = `${titlePrefix} - Ruby`;
   }, [status]);
 
   useEffect(() => {
@@ -147,7 +147,7 @@ function ResultView({ status, conversationId, workspaceId }: ResultViewProps) {
       <main className="z-10 mx-6">
         <div className="flex h-screen flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Icon visual={DustLogoSquare} size="lg" />
+            <Icon visual={RubyLogoSquare} size="lg" />
             <div className="flex flex-col items-center gap-4">
               <Page.Header title={<span className={color}>{title}</span>} />
               <p className="text-base text-primary-100">{message}</p>
@@ -192,7 +192,7 @@ interface ErrorViewProps {
 
 function ErrorView({ errorType }: ErrorViewProps) {
   useEffect(() => {
-    document.title = "Validation Error - Dust";
+    document.title = "Validation Error - Ruby";
   }, []);
 
   const { title, message } = getErrorContent(errorType);
@@ -203,7 +203,7 @@ function ErrorView({ errorType }: ErrorViewProps) {
       <main className="z-10 mx-6">
         <div className="flex h-screen flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Icon visual={DustLogoSquare} size="lg" />
+            <Icon visual={RubyLogoSquare} size="lg" />
             <div className="flex flex-col items-center gap-4">
               <Page.Header
                 title={<span className="text-warning-500">{title}</span>}
@@ -211,7 +211,7 @@ function ErrorView({ errorType }: ErrorViewProps) {
               <p className="text-base text-primary-100">{message}</p>
             </div>
             <a href="/">
-              <Button variant="outline" label="Back to Dust" size="sm" />
+              <Button variant="outline" label="Back to Ruby" size="sm" />
             </a>
           </div>
         </div>
@@ -226,7 +226,7 @@ function getErrorContent(errorType: string) {
       return {
         title: "Link Expired",
         message:
-          "This approval link has expired. Please request a new validation email or approve the tool directly in Dust.",
+          "This approval link has expired. Please request a new validation email or approve the tool directly in Ruby.",
       };
     case "invalid":
       return {
@@ -261,7 +261,7 @@ function getStatusContent(status: ValidationStatus) {
       return {
         title: "Link Expired",
         message:
-          "This approval link has expired. Please request a new validation email or approve the tool directly in Dust.",
+          "This approval link has expired. Please request a new validation email or approve the tool directly in Ruby.",
         color: "text-warning-500",
       };
     case "invalid":

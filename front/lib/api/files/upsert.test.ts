@@ -10,7 +10,7 @@ import {
 } from "@app/lib/api/files/upsert";
 import { getFileContent } from "@app/lib/api/files/utils";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { FileResource } from "@app/lib/resources/file_resource";
 import { SubscriptionResource } from "@app/lib/resources/subscription_resource";
 import { DataSourceViewFactory } from "@app/tests/utils/DataSourceViewFactory";
@@ -25,7 +25,7 @@ import {
 import { Err, Ok } from "@app/types/shared/result";
 import { slugify } from "@app/types/shared/utils/string_utils";
 import type { WorkspaceType } from "@app/types/user";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock the data_sources module to spy on upsertTable
@@ -140,7 +140,7 @@ describe("processAndUpsertToDataSource", () => {
     const datasourceView = await DataSourceViewFactory.folder(workspace, space);
 
     vi.mocked(upsertTable).mockResolvedValue(
-      new Err(new DustError("data_source_quota_error", "File is too large."))
+      new Err(new RubyError("data_source_quota_error", "File is too large."))
     );
 
     const result = await processAndUpsertToDataSource(
@@ -172,7 +172,7 @@ describe("processAndUpsertToDataSource", () => {
 
     vi.mocked(getFileContent).mockResolvedValue("large text content");
     vi.mocked(upsertDocument).mockResolvedValue(
-      new Err(new DustError("data_source_quota_error", "File is too large."))
+      new Err(new RubyError("data_source_quota_error", "File is too large."))
     );
 
     const result = await processAndUpsertToDataSource(
@@ -204,7 +204,7 @@ describe("processAndUpsertToDataSource", () => {
 
     vi.mocked(upsertTable).mockResolvedValue(
       new Err(
-        new DustError("invalid_request_error", "Missing embedding API key.")
+        new RubyError("invalid_request_error", "Missing embedding API key.")
       )
     );
 

@@ -53,7 +53,7 @@ import {
   Tooltip,
   Trash01,
   Zap,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { Editor } from "@tiptap/react";
 import { EditorContent } from "@tiptap/react";
 import { useVirtuosoMethods } from "@virtuoso.dev/message-list";

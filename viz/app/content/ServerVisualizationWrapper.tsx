@@ -4,8 +4,8 @@ import logger from "@viz/app/lib/logger";
 import { extractFileRefs } from "@viz/app/lib/parseFileRefs";
 
 const FRAME_MIME_TYPES = new Set([
-  "application/vnd.dust.frame",
-  "application/vnd.dust.frame.slideshow",
+  "application/vnd.ruby.frame",
+  "application/vnd.ruby.frame.slideshow",
 ]);
 
 async function fetchFileRefsRecursively(
@@ -134,7 +134,7 @@ export async function ServerSideVisualizationWrapper({
 
     // Retrieve content of the visualization using the access token.
     headers["Authorization"] = `Bearer ${accessToken}`;
-    const endpoint = `${process.env.DUST_FRONT_API}/api/v1/viz/content`;
+    const endpoint = `${process.env.RUBY_FRONT_API}/api/v1/viz/content`;
 
     const codeResponse = await fetch(endpoint, {
       headers,
@@ -156,7 +156,7 @@ export async function ServerSideVisualizationWrapper({
       // SERVER-SIDE: Recursively fetch all file refs (including nested frame imports).
       preFetchedFiles = await fetchFileRefsRecursively(
         prefetchedCode,
-        process.env.DUST_FRONT_API ?? "",
+        process.env.RUBY_FRONT_API ?? "",
         headers,
         new Set()
       );

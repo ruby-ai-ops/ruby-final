@@ -1,6 +1,6 @@
 import { getSpaceIcon, getSpaceName } from "@app/lib/spaces";
 import type { EnrichedSpaceType, SpaceType } from "@app/types/space";
-import { Chip } from "@dust-tt/sparkle";
+import { Chip } from "@ruby-ai/ui";
 
 interface SpaceChipsProps {
   spaces: EnrichedSpaceType[];

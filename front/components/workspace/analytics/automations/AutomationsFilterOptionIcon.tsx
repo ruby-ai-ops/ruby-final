@@ -1,6 +1,6 @@
 import type { AutomationsFilterOption } from "@app/components/workspace/analytics/automationsFilter";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import { Avatar } from "@dust-tt/sparkle";
+import { Avatar } from "@ruby-ai/ui";
 
 interface AutomationsFilterOptionIconProps {
   option: AutomationsFilterOption;

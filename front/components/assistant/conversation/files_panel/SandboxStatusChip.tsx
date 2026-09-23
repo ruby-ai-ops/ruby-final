@@ -1,6 +1,6 @@
 import type { SandboxStatus } from "@app/lib/resources/storage/models/sandbox";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import { Chip } from "@dust-tt/sparkle";
+import { Chip } from "@ruby-ai/ui";
 
 interface SandboxStatusChipProps {
   status: SandboxStatus;

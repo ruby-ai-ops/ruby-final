@@ -1,6 +1,6 @@
 import { AGENT_MESSAGE_COMPLETED_EVENT } from "@app/lib/notifications/events";
 import { useTrialMessageUsage } from "@app/lib/swr/trial_message_usage";
-import { Button, cn, LinkWrapper, ProgressBar } from "@dust-tt/sparkle";
+import { Button, cn, LinkWrapper, ProgressBar } from "@ruby-ai/ui";
 import { useEffect } from "react";
 
 const MESSAGE_USAGE_CRITICAL_THRESHOLD = 0.9;
@@ -85,7 +85,7 @@ export function TrialMessageUsage({
             href={`/w/${workspaceId}/subscription`}
             className="no-underline"
           >
-            <Button label="Subscribe to Dust" variant="primary" />
+            <Button label="Subscribe to Ruby" variant="primary" />
           </LinkWrapper>
         </div>
       )}

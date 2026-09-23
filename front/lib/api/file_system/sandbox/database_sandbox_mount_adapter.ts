@@ -17,10 +17,10 @@ import { Err, Ok } from "@app/types/shared/result";
 
 import type { SandboxMountAdapter } from "./sandbox_mount_adapter";
 
-const FILE_SYSTEM_DIRECTORY = "/run/dust-filesystem";
+const FILE_SYSTEM_DIRECTORY = "/run/ruby-filesystem";
 const TOKEN_PATH = `${FILE_SYSTEM_DIRECTORY}/token`;
 const STAGING_DIRECTORY = `${FILE_SYSTEM_DIRECTORY}/staging`;
-const SYSTEMD_UNIT = "dust-filesystem.service";
+const SYSTEMD_UNIT = "ruby-filesystem.service";
 const MOUNT_POINT = "/files";
 const MOUNT_TIMEOUT_MS = 30_000;
 
@@ -30,7 +30,7 @@ function isTokenRootMount(
   return mount.kind === "conversation" || mount.kind === "pod";
 }
 
-/** Starts one Dust FUSE mount at /files and refreshes its short-lived token. */
+/** Starts one Ruby FUSE mount at /files and refreshes its short-lived token. */
 export class DatabaseSandboxMountAdapter implements SandboxMountAdapter {
   constructor(
     private readonly mounts: ReadonlyArray<FileSystemMount>,
@@ -104,10 +104,10 @@ export class DatabaseSandboxMountAdapter implements SandboxMountAdapter {
     sandbox: SandboxResource,
     image: SandboxImage
   ): Promise<Result<void, Error>> {
-    if (!image.hasCapability("dust_filesystem")) {
+    if (!image.hasCapability("ruby_filesystem")) {
       await sandbox.requestKill();
       return new Err(
-        new Error("Sandbox image does not contain the Dust filesystem daemon.")
+        new Error("Sandbox image does not contain the Ruby filesystem daemon.")
       );
     }
     if (this.sandboxOnlyMounts.length > 0 && !image.hasCapability("gcsfuse")) {
@@ -163,7 +163,7 @@ export class DatabaseSandboxMountAdapter implements SandboxMountAdapter {
               `/usr/bin/systemd-run --unit=${SYSTEMD_UNIT} --collect ` +
               `--property=Type=simple --property=Restart=always --property=RestartSec=1s ` +
               `--property=KillMode=control-group --property=TimeoutStopSec=10s ` +
-              `/opt/bin/dsbx filesystem supervise ` +
+              `/opt/bin/rbx filesystem supervise ` +
               `--mountpoint ${MOUNT_POINT} ` +
               `--staging-dir ${STAGING_DIRECTORY} ` +
               `--api-url '${apiUrl}' ` +
@@ -172,10 +172,10 @@ export class DatabaseSandboxMountAdapter implements SandboxMountAdapter {
               `i=0; while [ $i -lt 200 ]; do ` +
               `if /usr/bin/mountpoint -q ${MOUNT_POINT} && /usr/bin/stat -f ${MOUNT_POINT} >/dev/null 2>&1; then exit 0; fi; ` +
               `/usr/bin/sleep 0.05; i=$((i+1)); done; ` +
-              `/usr/bin/printf 'Dust filesystem mount timed out\n' >&2; ` +
+              `/usr/bin/printf 'Ruby filesystem mount timed out\n' >&2; ` +
               `/usr/bin/systemctl status ${SYSTEMD_UNIT} --no-pager >&2; ` +
               `/usr/bin/journalctl --unit=${SYSTEMD_UNIT} --no-pager -n 100 >&2; exit 1`,
-            "Start the Dust filesystem daemon and wait for /files to mount"
+            "Start the Ruby filesystem daemon and wait for /files to mount"
           ),
           { timeoutMs: MOUNT_TIMEOUT_MS }
         ),
@@ -192,18 +192,18 @@ export class DatabaseSandboxMountAdapter implements SandboxMountAdapter {
           stderr: startResult.value.stderr,
           stdout: startResult.value.stdout,
         },
-        "Dust filesystem daemon failed to mount"
+        "Ruby filesystem daemon failed to mount"
       );
       return new Err(
         new Error(
-          `Dust filesystem daemon failed: ${startResult.value.stderr || startResult.value.stdout}`
+          `Ruby filesystem daemon failed: ${startResult.value.stderr || startResult.value.stdout}`
         )
       );
     }
 
     logger.info(
       { sandboxId: sandbox.sId, workspaceId },
-      "Dust filesystem mounted"
+      "Ruby filesystem mounted"
     );
     return new Ok(undefined);
   }

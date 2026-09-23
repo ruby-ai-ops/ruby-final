@@ -24,14 +24,14 @@ describe("listConsumptionFacetCatalog", () => {
     );
 
     expect(agents).not.toContainEqual(
-      expect.objectContaining({ value: GLOBAL_AGENTS_SID.DUST_TASK })
+      expect.objectContaining({ value: GLOBAL_AGENTS_SID.RUBY_TASK })
     );
     expect(agents).not.toContainEqual(
-      expect.objectContaining({ value: GLOBAL_AGENTS_SID.DUST_PLANNING })
+      expect.objectContaining({ value: GLOBAL_AGENTS_SID.RUBY_PLANNING })
     );
     expect(agents).not.toContainEqual(
       expect.objectContaining({
-        value: GLOBAL_AGENTS_SID.DUST_BROWSER_SUMMARY,
+        value: GLOBAL_AGENTS_SID.RUBY_BROWSER_SUMMARY,
       })
     );
   });

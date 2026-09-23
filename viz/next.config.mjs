@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const isDev = process.env.NODE_ENV === "development";
 
-// Dev fronts that may embed viz. dust-hive envs run on other ports and list them in
+// Dev fronts that may embed viz. ruby-hive envs run on other ports and list them in
 // ALLOWED_VISUALIZATION_ORIGIN (the same variable the content page checks), so include those too.
 const DEV_FRAME_ANCESTORS = [
   "http://localhost:3000",
@@ -15,12 +15,12 @@ const DEV_FRAME_ANCESTORS = [
 ];
 
 const PROD_FRAME_ANCESTORS = [
-  "https://dust.tt",
-  "https://app.dust.tt",
-  "https://eu.dust.tt",
-  "https://front-edge.dust.tt",
-  "https://eu.front-edge.dust.tt",
-  "https://*.preview.dust.tt",
+  "https://ruby.ad",
+  "https://app.ruby.ad",
+  "https://app.ruby.ad",
+  "https://front-edge.ruby.ad",
+  "https://eu.front-edge.ruby.ad",
+  "https://*.preview.ruby.ad",
   "chrome-extension://okjldflokifdjecnhbmkdanjjbnmlihg",
   "chrome-extension://fnkfcndbgingjcbdhaofkcnhcjpljhdn",
 ];
@@ -39,7 +39,7 @@ const nextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: isDev ? "http://localhost:3000" : "https://dust.tt",
+            value: isDev ? "http://localhost:3000" : "https://ruby.ad",
           },
           {
             key: "Content-Security-Policy",

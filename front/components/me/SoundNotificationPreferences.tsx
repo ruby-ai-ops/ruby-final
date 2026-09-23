@@ -19,7 +19,7 @@ import {
   Icon,
   SettingsList,
   SliderToggle,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import type { Control } from "react-hook-form";

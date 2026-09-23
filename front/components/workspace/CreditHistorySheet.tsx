@@ -14,7 +14,7 @@ import {
   SheetHeader,
   SheetTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useMemo, useState } from "react";
 
@@ -89,7 +89,7 @@ export function CreditHistorySheet({
             )}
             <p className="text-sm text-muted-foreground">
               For older credits,{" "}
-              <LinkWrapper href="mailto:support@dust.tt" className="underline">
+              <LinkWrapper href="mailto:support@ruby.ad" className="underline">
                 contact support
               </LinkWrapper>
               .

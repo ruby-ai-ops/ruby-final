@@ -29,7 +29,7 @@ import {
   Planet,
   Plus,
   ShapesPlus,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useRef, useState } from "react";
 
 const PLUS_BUTTON_CLASSNAME = cn(

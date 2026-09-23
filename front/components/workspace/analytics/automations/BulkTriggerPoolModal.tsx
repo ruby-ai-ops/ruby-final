@@ -11,7 +11,7 @@ import {
   DialogTitle,
   RadioGroup,
   RadioGroupItem,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 interface BulkTriggerPoolModalProps {

@@ -3,9 +3,9 @@
 Assign every workspace skill a small set of tags from a predefined, faceted taxonomy, then
 measure how well those tags segment the skills and how closely tag similarity tracks the
 embedding similarity from `../skill-embeddings`. Everything lives in this directory; no
-application changes or running Dust services are required.
+application changes or running Ruby services are required.
 
-Run from a Dust checkout with its usual Node dependencies installed. The local `package.json`
+Run from a Ruby checkout with its usual Node dependencies installed. The local `package.json`
 records the libraries used, which are already present in the repository's dependency tree. The
 CLI reuses the skill extraction and embedding-file reader of `../skill-embeddings`.
 
@@ -25,7 +25,7 @@ weight used in tag similarity:
 | `trigger`  | 4    | 1           | 0.3    | On demand, scheduled, sub-skill, or always-on guideline     |
 | `quality`  | 3    | 1           | 0      | Substantive, thin, or test placeholder                      |
 
-The facets were chosen from a read of the 547 active skills of the Dust workspace: the data is
+The facets were chosen from a read of the 547 active skills of the Ruby workspace: the data is
 dominated by GTM work (sales, customer success, partnerships, growth prospecting), with large
 families of brand-image skills, personal operating systems, hiring, support, product rituals, and
 engineering tooling. `function` alone cannot separate, say, a cold-email drafter from a pipeline
@@ -44,7 +44,7 @@ node --import tsx x/aubin/skill-tags/cli.ts run \
   --from-embeddings x/aubin/skill-embeddings/output/YOUR_WORKSPACE_ID/embeddings.json
 ```
 
-Or snapshot skills directly from the public API with `DUST_API_KEY` set:
+Or snapshot skills directly from the public API with `RUBY_API_KEY` set:
 
 ```sh
 node --import tsx x/aubin/skill-tags/cli.ts snapshot --workspace YOUR_WORKSPACE_ID
@@ -168,7 +168,7 @@ whose weighted facets all match.
 | `cli.ts`        | Stage orchestration and report generation                               |
 | `viewer.*`      | Offline explorer, map, segments heatmap, compare view, metrics report    |
 
-## Results on the Dust workspace, taxonomy v1 (2026-09-19)
+## Results on the Ruby workspace, taxonomy v1 (2026-09-19)
 
 547 active skills, `claude-opus-5` at medium effort, names masked, one refusal served by the
 `claude-opus-4-8` fallback, one corrective retry, estimated cost $19.

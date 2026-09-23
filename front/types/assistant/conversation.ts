@@ -5,7 +5,7 @@ import type { AgentMCPActionWithOutputType } from "@app/types/actions";
 import type { AgentContentItemType } from "@app/types/assistant/agent_message_content";
 import { isSameDay } from "date-fns";
 import type { ContentFragmentType } from "../content_fragment";
-import type { AllSupportedWithDustSpecificFileContentType } from "../files";
+import type { AllSupportedWithRubySpecificFileContentType } from "../files";
 import type { ModelId } from "../shared/model_id";
 import { assertNeverAndIgnore } from "../shared/utils/assert_never";
 import type { EnrichedSpaceType } from "../space";
@@ -134,7 +134,7 @@ export type UserMessageOrigin =
   // Opening message of an Activation Pod nudge, authored by the system on the
   // user's behalf. Server-only: it is not in `CLIENT_MESSAGE_ORIGINS` and
   // `isUserMessageContextValid` rejects it on /v1/ for anything but a
-  // Dust-internal system key. It keeps nudges out of analytics and prices them
+  // Ruby-internal system key. It keeps nudges out of analytics and prices them
   // as free usage (`FREE_ORIGINS`), which holds only because nothing else can
   // ever carry it: the nudge has no author, so it can be neither edited nor
   // retried, and user replies come back as `web`.
@@ -242,7 +242,7 @@ export function isUserMessageTypeWithContentFragments(
 }
 
 /**
- * A user message with no author was posted by Dust on someone's behalf rather
+ * A user message with no author was posted by Ruby on someone's behalf rather
  * than written by them, which only server code can do (`postUserMessage`'s
  * `doNotAssociateUser`). Such a message is nobody's to edit, its answer nobody's
  * to retry, and it never runs on anyone's personal tool credentials.
@@ -331,7 +331,7 @@ export interface CitationType {
   href?: string;
   title: string;
   provider: string;
-  contentType: AllSupportedWithDustSpecificFileContentType;
+  contentType: AllSupportedWithRubySpecificFileContentType;
 }
 
 /**

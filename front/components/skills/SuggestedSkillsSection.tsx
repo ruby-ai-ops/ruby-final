@@ -12,7 +12,7 @@ import {
   Plus,
   Stars02,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 type SuggestedSkillCardProps = {

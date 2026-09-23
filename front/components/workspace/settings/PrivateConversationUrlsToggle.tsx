@@ -1,7 +1,7 @@
 import { GovernanceSettingRowLayout } from "@app/components/pages/workspace/governance/GovernanceSettingRowLayout";
 import { usePrivateConversationUrlsToggle } from "@app/hooks/usePrivateConversationUrlsToggle";
 import type { WorkspaceType } from "@app/types/user";
-import { SliderToggle } from "@dust-tt/sparkle";
+import { SliderToggle } from "@ruby-ai/ui";
 
 export const PRIVATE_CONVERSATION_URLS_LABEL =
   "Private conversation URLs by default";

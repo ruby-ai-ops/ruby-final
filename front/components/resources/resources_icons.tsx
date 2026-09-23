@@ -1,4 +1,4 @@
-import type { Avatar, Icon } from "@dust-tt/sparkle";
+import type { Avatar, Icon } from "@ruby-ai/ui";
 import {
   ActionFrame,
   ActionIcons,
@@ -84,7 +84,7 @@ import {
   SlabLogo,
   SlackLogo,
   SnowflakeLogo,
-  Avatar as SparkleAvatar,
+  Avatar as RubyUIAvatar,
   SpendeskLogo,
   StackOneLogo,
   StatuspageLogo,
@@ -99,10 +99,10 @@ import {
   VolumeMax,
   YoutrustLogo,
   ZendeskLogo,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentProps, ComponentType } from "react";
 
-// Re-export icon names, types, and type guards from the sparkle-free module so
+// Re-export icon names, types, and type guards from the ui-free module so
 // that existing imports from this file continue to work.
 export type {
   CustomResourceIconType,
@@ -155,7 +155,7 @@ export function ResourceAvatar({
   ...props
 }: ResourceAvatarProps) {
   return (
-    <SparkleAvatar
+    <RubyUIAvatar
       iconColor={iconColor ?? "text-foreground"}
       backgroundColor={backgroundColor ?? "bg-muted-background"}
       {...props}

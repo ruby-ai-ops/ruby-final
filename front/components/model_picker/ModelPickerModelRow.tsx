@@ -14,7 +14,7 @@ import type {
   ModelConfigurationType,
   ReasoningEffort,
 } from "@app/types/assistant/models/types";
-import { DropdownMenuItem, Icon, Lock01 } from "@dust-tt/sparkle";
+import { DropdownMenuItem, Icon, Lock01 } from "@ruby-ai/ui";
 import type { ComponentType, ReactNode } from "react";
 import { useRef } from "react";
 

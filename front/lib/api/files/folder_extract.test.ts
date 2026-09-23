@@ -1,6 +1,6 @@
 // @vitest-environment node: adm-zip requires Node builtins (Buffer, zlib).
 
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import type { FolderExtractErrorCode } from "@app/lib/api/files/folder_extract";
 import {
   extractArchiveToFolder,
@@ -10,17 +10,17 @@ import { Authenticator } from "@app/lib/auth";
 import { createResourceTest } from "@app/tests/utils/generic_resource_tests";
 import { fileStorageMock } from "@app/tests/utils/mocks/file_storage";
 import { SpaceFactory } from "@app/tests/utils/SpaceFactory";
-import { isDustFileSystemError } from "@app/types/file_system";
+import { isRubyFileSystemError } from "@app/types/file_system";
 import AdmZip from "adm-zip";
 import assert from "assert";
 import { beforeEach, describe, expect, it } from "vitest";
 
 /**
- * Drives the real `DustFileSystem` rather than a stand-in, so entry paths go through the same
+ * Drives the real `RubyFileSystem` rather than a stand-in, so entry paths go through the same
  * mount resolution and normalization production uses — which is where containment is decided.
  */
 async function setupPodFileSystem(): Promise<{
-  dustFs: DustFileSystem;
+  rubyFs: RubyFileSystem;
   podPrefix: string;
   filesRoot: string;
 }> {
@@ -31,11 +31,11 @@ async function setupPodFileSystem(): Promise<{
     workspace.sId
   );
 
-  const result = await DustFileSystem.forPod(auth, projectSpace);
+  const result = await RubyFileSystem.forPod(auth, projectSpace);
   assert(result.isOk());
 
   return {
-    dustFs: result.value,
+    rubyFs: result.value,
     podPrefix: `pod-${projectSpace.sId}`,
     filesRoot: `w/${workspace.sId}/pods/${projectSpace.sId}/files`,
   };
@@ -97,10 +97,10 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("writes entries under the destination, preserving the archive's own root folder", async () => {
-    const { dustFs, podPrefix, filesRoot } = await setupPodFileSystem();
+    const { rubyFs, podPrefix, filesRoot } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       `${podPrefix}/inbox`,
       makeArchive([
         { path: "reports/a.txt", content: "alpha" },
@@ -120,10 +120,10 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("creates directory entries so empty folders survive the round trip", async () => {
-    const { dustFs, podPrefix, filesRoot } = await setupPodFileSystem();
+    const { rubyFs, podPrefix, filesRoot } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       makeArchive([
         { path: "reports/" },
@@ -142,11 +142,11 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("tolerates directories that already exist at the destination", async () => {
-    const { dustFs, podPrefix, filesRoot } = await setupPodFileSystem();
+    const { rubyFs, podPrefix, filesRoot } = await setupPodFileSystem();
     fileStorageMock.setFileExists((filePath) => filePath.endsWith("/reports/"));
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       makeArchive([
         { path: "reports/" },
@@ -160,10 +160,10 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("derives the content type from the entry name", async () => {
-    const { dustFs, podPrefix, filesRoot } = await setupPodFileSystem();
+    const { rubyFs, podPrefix, filesRoot } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       makeArchive([{ path: "notes.md", content: "# hi" }])
     );
@@ -175,10 +175,10 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("writes entry types the upload API would reject rather than dropping them", async () => {
-    const { dustFs, podPrefix, filesRoot } = await setupPodFileSystem();
+    const { rubyFs, podPrefix, filesRoot } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       makeArchive([{ path: "nested.zip", content: "PK" }])
     );
@@ -199,10 +199,10 @@ describe("extractArchiveToFolder", () => {
     ],
     ["an absolute entry", "Xetc/passwd", "/etc/passwd"],
   ])("rejects %s without writing anything", async (_label, placeholder, unsafePath) => {
-    const { dustFs, podPrefix } = await setupPodFileSystem();
+    const { rubyFs, podPrefix } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       `${podPrefix}/inbox`,
       makeArchiveWithUnsafeEntry(
         [
@@ -220,13 +220,13 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("rejects an entry that only becomes traversal once control characters are stripped", async () => {
-    const { dustFs, podPrefix } = await setupPodFileSystem();
-    // `DustFileSystem.normalizeScopedPath` strips control characters before normalizing, so a
+    const { rubyFs, podPrefix } = await setupPodFileSystem();
+    // `RubyFileSystem.normalizeScopedPath` strips control characters before normalizing, so a
     // name that is not traversal as stored becomes one by the time it reaches storage.
     const unsafePath = `.${String.fromCharCode(1)}./escaped.txt`;
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       `${podPrefix}/inbox`,
       makeArchiveWithUnsafeEntry(
         [
@@ -244,10 +244,10 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("rejects an unsafe path even when the entry would otherwise be skipped", async () => {
-    const { dustFs, podPrefix } = await setupPodFileSystem();
+    const { rubyFs, podPrefix } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       makeArchiveWithUnsafeEntry(
         [
@@ -265,10 +265,10 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("counts skipped entries toward the entry limit", async () => {
-    const { dustFs, podPrefix } = await setupPodFileSystem();
+    const { rubyFs, podPrefix } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       makeArchive([
         { path: "__MACOSX/._a.txt", content: "junk" },
@@ -283,10 +283,10 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("skips archiver metadata entries", async () => {
-    const { dustFs, podPrefix, filesRoot } = await setupPodFileSystem();
+    const { rubyFs, podPrefix, filesRoot } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       makeArchive([
         { path: "__MACOSX/._a.txt", content: "junk" },
@@ -302,10 +302,10 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("rejects an archive with more entries than the limit", async () => {
-    const { dustFs, podPrefix } = await setupPodFileSystem();
+    const { rubyFs, podPrefix } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       makeArchive([
         { path: "a.txt", content: "a" },
@@ -321,10 +321,10 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("rejects an archive whose uncompressed size exceeds the limit", async () => {
-    const { dustFs, podPrefix } = await setupPodFileSystem();
+    const { rubyFs, podPrefix } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       makeArchive([{ path: "big.txt", content: "x".repeat(2048) }]),
       { maxEntries: 10, maxUncompressedSizeBytes: 1024 }
@@ -336,10 +336,10 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("rejects a buffer that is not a ZIP archive", async () => {
-    const { dustFs, podPrefix } = await setupPodFileSystem();
+    const { rubyFs, podPrefix } = await setupPodFileSystem();
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       Buffer.from("not a zip at all")
     );
@@ -349,16 +349,16 @@ describe("extractArchiveToFolder", () => {
   });
 
   it("propagates a file system write failure", async () => {
-    const { dustFs, podPrefix } = await setupPodFileSystem();
+    const { rubyFs, podPrefix } = await setupPodFileSystem();
     fileStorageMock.setFileSaveFails(() => true);
 
     const result = await extractArchiveToFolder(
-      dustFs,
+      rubyFs,
       podPrefix,
       makeArchive([{ path: "a.txt", content: "alpha" }])
     );
 
     assert(result.isErr());
-    assert(isDustFileSystemError(result.error));
+    assert(isRubyFileSystemError(result.error));
   });
 });

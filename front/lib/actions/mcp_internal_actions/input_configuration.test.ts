@@ -13,7 +13,7 @@ import type { MCPServerViewType } from "@app/lib/api/mcp";
 import { generateRandomModelSId } from "@app/lib/resources/string_ids_server";
 import { isJSONSchemaObject } from "@app/lib/utils/json_schemas";
 import type { WorkspaceType } from "@app/types/user";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
@@ -51,7 +51,7 @@ function createBasicMCPConfiguration(
     jsonSchema: null,
     additionalConfiguration: {},
     mcpServerViewId: "test-view-id",
-    dustAppConfiguration: null,
+    rubyAppConfiguration: null,
     internalMCPServerId: null,
     inputSchema: {
       type: "object",
@@ -64,7 +64,7 @@ function createBasicMCPConfiguration(
     originalName: "test_tool",
     mcpServerName: "test_server",
     secretName: null,
-    dustProject: null,
+    rubyProject: null,
     ...overrides,
   };
 }
@@ -100,13 +100,13 @@ describe("hideInternalConfiguration", () => {
   });
 
   it("keeps optional internal properties so the model can see inferable configuration fields", () => {
-    const dustPod =
-      ConfigurableToolInputJSONSchemas[INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD];
+    const rubyPod =
+      ConfigurableToolInputJSONSchemas[INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD];
     const inputSchema = {
       type: "object",
       properties: {
         fileName: { type: "string" },
-        dustPod,
+        rubyPod,
       },
       required: ["fileName"],
     } as JSONSchema;
@@ -114,7 +114,7 @@ describe("hideInternalConfiguration", () => {
     const result = hideInternalConfiguration(inputSchema);
 
     expect(result.properties?.fileName).toEqual({ type: "string" });
-    expect(result.properties?.dustPod).toEqual(dustPod);
+    expect(result.properties?.rubyPod).toEqual(rubyPod);
     expect(result.required).toEqual(["fileName"]);
   });
 
@@ -339,8 +339,8 @@ describe("augmentInputsWithConfiguration after hideInternalConfiguration", () =>
       ConfigurableToolInputJSONSchemas[
         INTERNAL_MIME_TYPES.TOOL_INPUT.TIME_FRAME
       ];
-    const dustPodSchema =
-      ConfigurableToolInputJSONSchemas[INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD];
+    const rubyPodSchema =
+      ConfigurableToolInputJSONSchemas[INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD];
     const dataSourcesSchema =
       ConfigurableToolInputJSONSchemas[
         INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE
@@ -351,7 +351,7 @@ describe("augmentInputsWithConfiguration after hideInternalConfiguration", () =>
         query: { type: "string" },
         dataSources: dataSourcesSchema,
         timeFrame: timeFrameSchema,
-        dustPod: dustPodSchema,
+        rubyPod: rubyPodSchema,
       },
       required: ["query", "dataSources"],
     } as JSONSchema;
@@ -359,7 +359,7 @@ describe("augmentInputsWithConfiguration after hideInternalConfiguration", () =>
     const hiddenForModel = hideInternalConfiguration(inputSchema);
     expect(hiddenForModel.properties).not.toHaveProperty("dataSources");
     expect(hiddenForModel.properties).toHaveProperty("timeFrame");
-    expect(hiddenForModel.properties).toHaveProperty("dustPod");
+    expect(hiddenForModel.properties).toHaveProperty("rubyPod");
 
     const config = createBasicMCPConfiguration({
       dataSources: [
@@ -374,7 +374,7 @@ describe("augmentInputsWithConfiguration after hideInternalConfiguration", () =>
         },
       ],
       timeFrame: { duration: 14, unit: "day" },
-      dustProject: {
+      rubyProject: {
         workspaceId: mockWorkspace.sId,
         projectId: "project-sid-xyz",
       },
@@ -390,7 +390,7 @@ describe("augmentInputsWithConfiguration after hideInternalConfiguration", () =>
     expect(augmented.query).toBe("find docs");
     expect(augmented.dataSources).toEqual([
       {
-        uri: `data_source_configuration://dust/w/${mockWorkspace.sId}/data_source_configurations/dsc_augment_optional`,
+        uri: `data_source_configuration://ruby/w/${mockWorkspace.sId}/data_source_configurations/dsc_augment_optional`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
       },
     ]);
@@ -399,9 +399,9 @@ describe("augmentInputsWithConfiguration after hideInternalConfiguration", () =>
       unit: "day",
       mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.TIME_FRAME,
     });
-    expect(augmented.dustPod).toEqual({
-      uri: `pod://dust/w/${mockWorkspace.sId}/pods/project-sid-xyz`,
-      mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD,
+    expect(augmented.rubyPod).toEqual({
+      uri: `pod://ruby/w/${mockWorkspace.sId}/pods/project-sid-xyz`,
+      mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD,
     });
   });
 
@@ -441,7 +441,7 @@ describe("augmentInputsWithConfiguration after hideInternalConfiguration", () =>
 
     expect(augmented.wrapper).toEqual({
       optionalAgent: {
-        uri: `agent://dust/w/${mockWorkspace.sId}/agents/child-agent-sid`,
+        uri: `agent://ruby/w/${mockWorkspace.sId}/agents/child-agent-sid`,
         mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.AGENT,
       },
     });
@@ -701,7 +701,7 @@ describe("augmentInputsWithConfiguration", () => {
       expect(result).toEqual({
         dataSource: [
           {
-            uri: `data_source_configuration://dust/w/${mockWorkspace.sId}/data_source_configurations/dsc_123`,
+            uri: `data_source_configuration://ruby/w/${mockWorkspace.sId}/data_source_configurations/dsc_123`,
             mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
           },
         ],
@@ -749,7 +749,7 @@ describe("augmentInputsWithConfiguration", () => {
       expect(result).toEqual({
         dataSource: [
           {
-            uri: `data_source_configuration://dust/w/${mockWorkspace.sId}/data_source_views/view_123/filter/${expectedFilter}`,
+            uri: `data_source_configuration://ruby/w/${mockWorkspace.sId}/data_source_views/view_123/filter/${expectedFilter}`,
             mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
           },
         ],
@@ -790,7 +790,7 @@ describe("augmentInputsWithConfiguration", () => {
       expect(result).toEqual({
         table: [
           {
-            uri: `table_configuration://dust/w/${mockWorkspace.sId}/table_configurations/table-123`,
+            uri: `table_configuration://ruby/w/${mockWorkspace.sId}/table_configurations/table-123`,
             mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.TABLE,
           },
         ],
@@ -823,7 +823,7 @@ describe("augmentInputsWithConfiguration", () => {
 
       expect(result).toEqual({
         agent: {
-          uri: `agent://dust/w/${mockWorkspace.sId}/agents/agent-123`,
+          uri: `agent://ruby/w/${mockWorkspace.sId}/agents/agent-123`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.AGENT,
         },
       });
@@ -1434,14 +1434,14 @@ describe("primitive types", () => {
   });
 });
 
-describe("DUST_APP mime type", () => {
-  it("should augment inputs with Dust app configuration", () => {
+describe("RUBY_APP mime type", () => {
+  it("should augment inputs with Ruby app configuration", () => {
     const rawInputs = {};
     const config = createBasicMCPConfiguration({
-      dustAppConfiguration: {
+      rubyAppConfiguration: {
         id: 1,
         sId: "app-123",
-        type: "dust_app_run_configuration",
+        type: "ruby_app_run_configuration",
         name: "Test App",
         description: "Test app description",
         appWorkspaceId: mockWorkspace.sId,
@@ -1450,19 +1450,19 @@ describe("DUST_APP mime type", () => {
       inputSchema: {
         type: "object",
         properties: {
-          dustApp: {
+          rubyApp: {
             type: "object",
             properties: {
               appId: { type: "string" },
               mimeType: {
                 type: "string",
-                const: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_APP,
+                const: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_APP,
               },
             },
             required: ["appId", "mimeType"],
           },
         },
-        required: ["dustApp"],
+        required: ["rubyApp"],
       },
     });
 
@@ -1473,33 +1473,33 @@ describe("DUST_APP mime type", () => {
     });
 
     expect(result).toEqual({
-      dustApp: {
+      rubyApp: {
         appId: "app-123",
-        mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_APP,
+        mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_APP,
       },
     });
   });
 
-  it("should throw error when dustAppConfiguration is missing", () => {
+  it("should throw error when rubyAppConfiguration is missing", () => {
     const rawInputs = {};
     const config = createBasicMCPConfiguration({
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       inputSchema: {
         type: "object",
         properties: {
-          dustApp: {
+          rubyApp: {
             type: "object",
             properties: {
               appId: { type: "string" },
               mimeType: {
                 type: "string",
-                const: INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_APP,
+                const: INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_APP,
               },
             },
             required: ["appId", "mimeType"],
           },
         },
-        required: ["dustApp"],
+        required: ["rubyApp"],
       },
     });
 
@@ -1509,7 +1509,7 @@ describe("DUST_APP mime type", () => {
         rawInputs,
         actionConfiguration: config,
       });
-    }).toThrow("Invalid Dust App configuration");
+    }).toThrow("Invalid Ruby App configuration");
   });
 });
 
@@ -1889,7 +1889,7 @@ describe("nested objects and complex schemas", () => {
       },
       dataSource: [
         {
-          uri: `data_source_configuration://dust/w/${mockWorkspace.sId}/data_source_configurations/dsc_123`,
+          uri: `data_source_configuration://ruby/w/${mockWorkspace.sId}/data_source_configurations/dsc_123`,
           mimeType: INTERNAL_MIME_TYPES.TOOL_INPUT.DATA_SOURCE,
         },
       ],

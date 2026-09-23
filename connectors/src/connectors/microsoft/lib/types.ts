@@ -76,7 +76,7 @@ export function isValidNodeType(
  * own `internal id`. This is because the Microsoft API does not allow to query a document or
  * list its children using its id alone. We compute an internal id that contains all
  * information. More details
- * [here](https://app.notion.com/p/dust-tt/Design-Doc-Microsoft-ids-parents-c27726652aae45abafaac587b971a41d?pvs=4)
+ * [here](https://app.notion.com/p/ruby-ai/Design-Doc-Microsoft-ids-parents-c27726652aae45abafaac587b971a41d?pvs=4)
  */
 export type MicrosoftNode = {
   nodeType: MicrosoftNodeType;

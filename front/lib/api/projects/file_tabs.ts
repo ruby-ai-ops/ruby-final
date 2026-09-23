@@ -1,4 +1,4 @@
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import type { Authenticator } from "@app/lib/auth";
 import type { SpaceResource } from "@app/lib/resources/space_resource";
 import { isFilePreviewableContentType } from "@app/types/file_preview";
@@ -40,7 +40,7 @@ export async function validatePodFileTabs(
     );
   }
 
-  const fsResult = await DustFileSystem.forPod(auth, space);
+  const fsResult = await RubyFileSystem.forPod(auth, space);
   if (fsResult.isErr()) {
     return new Err(new Error("Failed to initialize file system."));
   }

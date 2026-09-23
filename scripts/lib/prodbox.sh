@@ -1,14 +1,14 @@
 # shellcheck shell=bash
 #
-# Shared helpers for talking to prodbox via dust-cell + kubectl.
+# Shared helpers for talking to prodbox via ruby-cell + kubectl.
 #
 # Source this file from a script; do not execute it directly. All log/status
 # output goes to stderr so that helpers which "return" a value via stdout
-# (e.g. cell_for_alias, current_dust_cell, get_prodbox_pod) stay safe inside $(...).
+# (e.g. cell_for_alias, current_ruby_cell, get_prodbox_pod) stay safe inside $(...).
 
-require_dust_cell() {
-  if ! command -v dust-cell &>/dev/null; then
-    echo "❌ dust-cell not found. Run dust-infra/scripts/setup_infra.sh and open a new shell." >&2
+require_ruby_cell() {
+  if ! command -v ruby-cell &>/dev/null; then
+    echo "❌ ruby-cell not found. Run ruby-infra/scripts/setup_infra.sh and open a new shell." >&2
     return 1
   fi
   if ! command -v kubectl &>/dev/null; then
@@ -31,9 +31,9 @@ cell_for_alias() {
   esac
 }
 
-# Cell marked current by `dust-cell` (non-tty listing). Empty if none.
-current_dust_cell() {
-  dust-cell | awk '$1 == "*" { print $2; exit }'
+# Cell marked current by `ruby-cell` (non-tty listing). Empty if none.
+current_ruby_cell() {
+  ruby-cell | awk '$1 == "*" { print $2; exit }'
 }
 
 # Print the prodbox pod name in the current kubectl context.

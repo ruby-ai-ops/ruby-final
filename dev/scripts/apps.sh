@@ -2,7 +2,7 @@
 # Wait for infra (when started in parallel), optional WorkOS seed, then mprocs app graph.
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=apps
+RUBY_DEV_SCRIPT_NAME=apps
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=dev/scripts/common.sh
 source "${SCRIPT_DIR}/common.sh"
@@ -22,24 +22,24 @@ fi
 # Refresh materialized 1Password env (runtime secrets are already in this process).
 materialize_dev_environment || log "1Password env not loaded; using defaults + host secrets only"
 # shellcheck disable=SC1090
-source "${DUST_SHELL_ENV_FILE}"
+source "${RUBY_SHELL_ENV_FILE}"
 
 bash "${SCRIPT_DIR}/wait-for-infra.sh" || {
-  log "Infra is not ready; fix infra.sh first (see ${DUST_INFRA_LOG_DIR}/)"
+  log "Infra is not ready; fix infra.sh first (see ${RUBY_INFRA_LOG_DIR}/)"
   exit 1
 }
 
 # Temporal is started by infra.sh; only wait on the port here if needed.
 bash "${SCRIPT_DIR}/ensure-temporal.sh" || {
-  log "Temporal is required for front-workers and connectors; see ${DUST_INFRA_LOG_DIR}/temporal.log"
+  log "Temporal is required for front-workers and connectors; see ${RUBY_INFRA_LOG_DIR}/temporal.log"
   exit 1
 }
 
 print_seed_failure_logs() {
   for log_file in seed-dev-user.log init-plans.log upgrade-workspace.log; do
-    if [ -s "${DUST_INFRA_LOG_DIR}/${log_file}" ]; then
+    if [ -s "${RUBY_INFRA_LOG_DIR}/${log_file}" ]; then
       log "--- ${log_file} ---"
-      tail -40 "${DUST_INFRA_LOG_DIR}/${log_file}"
+      tail -40 "${RUBY_INFRA_LOG_DIR}/${log_file}"
     fi
   done
 }
@@ -58,13 +58,13 @@ fi
 # Public HTTPS tunnels so E2B sandboxes can reach local front-api (:3000) and viz (:3007).
 # Soft-fails when NGROK_AUTHTOKEN is missing; URLs are also read by apply_local_overrides.
 bash "${SCRIPT_DIR}/ensure-ngrok.sh" || log "ngrok tunnel not ready; sandbox callbacks to local API will fail"
-SBX_DEV_FRONT_URL_FILE="${SBX_DEV_FRONT_URL_FILE:-${DUST_INFRA_LOG_DIR}/sbx-dev-front-url}"
+SBX_DEV_FRONT_URL_FILE="${SBX_DEV_FRONT_URL_FILE:-${RUBY_INFRA_LOG_DIR}/sbx-dev-front-url}"
 if [ -f "${SBX_DEV_FRONT_URL_FILE}" ]; then
   # Trim trailing newline from the persisted URL.
   export SBX_DEV_FRONT_URL="$(tr -d '\n' <"${SBX_DEV_FRONT_URL_FILE}")"
   export SBX_DEV_UNRESTRICTED_EGRESS="${SBX_DEV_UNRESTRICTED_EGRESS:-true}"
 fi
-SBX_DEV_VIZ_URL_FILE="${SBX_DEV_VIZ_URL_FILE:-${DUST_INFRA_LOG_DIR}/sbx-dev-viz-url}"
+SBX_DEV_VIZ_URL_FILE="${SBX_DEV_VIZ_URL_FILE:-${RUBY_INFRA_LOG_DIR}/sbx-dev-viz-url}"
 if [ -f "${SBX_DEV_VIZ_URL_FILE}" ]; then
   export VIZ_PUBLIC_URL="$(tr -d '\n' <"${SBX_DEV_VIZ_URL_FILE}")"
   export SBX_DEV_UNRESTRICTED_EGRESS="${SBX_DEV_UNRESTRICTED_EGRESS:-true}"

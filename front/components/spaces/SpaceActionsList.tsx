@@ -21,13 +21,13 @@ import { isDevelopment } from "@app/types/shared/env";
 import { isString } from "@app/types/shared/utils/general";
 import type { SpaceType } from "@app/types/space";
 import type { LightWorkspaceType } from "@app/types/user";
-import type { DataTableSkeletonCellProps } from "@dust-tt/sparkle";
+import type { DataTableSkeletonCellProps } from "@ruby-ai/ui";
 import {
   AvatarCellSkeleton,
   DataTable,
   DataTableSkeleton,
   TextCellSkeleton,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import type { ParsedUrlQuery } from "querystring";
 import * as React from "react";

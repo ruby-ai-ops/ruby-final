@@ -5,8 +5,8 @@ import {
 } from "@app/lib/api/frames/call_frame_function";
 import { isValidSandboxFunctionSlug } from "@app/types/api/sandbox_functions";
 import {
-  type DustFileSystemError,
-  isDustFileSystemError,
+  type RubyFileSystemError,
+  isRubyFileSystemError,
 } from "@app/types/file_system";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 import { getSandboxFunctionInvocationErrorStatusCode } from "@front-api/lib/api/sandbox_function_invocation_errors";
@@ -38,7 +38,7 @@ function frameCallErrorStatus(
   }
 }
 
-function fileSystemErrorStatus(error: DustFileSystemError): 400 | 403 | 500 {
+function fileSystemErrorStatus(error: RubyFileSystemError): 400 | 403 | 500 {
   switch (error.code) {
     case "unauthorized":
       return 403;
@@ -91,7 +91,7 @@ export function frameFunctionCallApiError(
     };
   }
 
-  const statusCode = isDustFileSystemError(error)
+  const statusCode = isRubyFileSystemError(error)
     ? fileSystemErrorStatus(error)
     : frameCallErrorStatus(error);
   return {

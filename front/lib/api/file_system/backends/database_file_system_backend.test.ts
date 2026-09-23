@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { text } from "node:stream/consumers";
-import { DustFileSystem } from "@app/lib/api/file_system/dust_file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system/ruby_file_system";
 import { FileSystemScope } from "@app/lib/api/file_system/namespace_scope";
 import { DATABASE_FILE_SYSTEM_POD_PREFIX } from "@app/lib/api/file_system/storage_mode";
 import { Authenticator } from "@app/lib/auth";
@@ -31,7 +31,7 @@ async function databaseFileSystem() {
     messagesCreatedAt: [],
     spaceId: pod.id,
   });
-  const result = await DustFileSystem.forConversation(auth, conversation);
+  const result = await RubyFileSystem.forConversation(auth, conversation);
   assert(result.isOk());
   const scope = new FileSystemScope(
     result.value.getMounts().flatMap((mount) =>
@@ -56,7 +56,7 @@ async function databaseFileSystem() {
   return {
     auth,
     conversation,
-    dustFileSystem: result.value,
+    rubyFileSystem: result.value,
     pod,
     scope,
     conversationRoot,
@@ -66,7 +66,7 @@ async function databaseFileSystem() {
 
 describe("DatabaseFileSystemBackend", () => {
   it("writes and reads immutable GCS content through a database node", async () => {
-    const { conversation, dustFileSystem } = await databaseFileSystem();
+    const { conversation, rubyFileSystem } = await databaseFileSystem();
     const path = `conversation-${conversation.sId}/report.txt`;
     fileStorageMock.setFileMetadata(() => ({
       size: "5",
@@ -74,7 +74,7 @@ describe("DatabaseFileSystemBackend", () => {
       contentEncoding: "identity",
     }));
 
-    const written = await dustFileSystem.write(path, "hello", "text/plain");
+    const written = await rubyFileSystem.write(path, "hello", "text/plain");
 
     expect(written.isOk()).toBe(true);
     expect(fileStorageMock.saveFileCalls).toHaveLength(1);
@@ -83,10 +83,10 @@ describe("DatabaseFileSystemBackend", () => {
     fileStorageMock.setFileContent((filePath) =>
       filePath === saved.filePath ? "hello" : null
     );
-    const read = await dustFileSystem.read(path);
+    const read = await rubyFileSystem.read(path);
     assert(read.isOk() && read.value);
     expect(await text(read.value)).toBe("hello");
-    expect(await dustFileSystem.stat(path)).toEqual(
+    expect(await rubyFileSystem.stat(path)).toEqual(
       expect.objectContaining({
         value: { contentType: "text/plain", sizeBytes: 5 },
       })
@@ -94,7 +94,7 @@ describe("DatabaseFileSystemBackend", () => {
   });
 
   it("returns the id of the node a write or mkdir touched", async () => {
-    const { auth, conversation, dustFileSystem, pod, scope } =
+    const { auth, conversation, rubyFileSystem, pod, scope } =
       await databaseFileSystem();
     fileStorageMock.setFileMetadata(() => ({
       size: "5",
@@ -102,7 +102,7 @@ describe("DatabaseFileSystemBackend", () => {
       contentEncoding: "identity",
     }));
 
-    const directory = await dustFileSystem.mkdir(
+    const directory = await rubyFileSystem.mkdir(
       `conversation-${conversation.sId}/reports`
     );
     assert(directory.isOk());
@@ -112,7 +112,7 @@ describe("DatabaseFileSystemBackend", () => {
     });
     expect(directory.value.nodeId).not.toBeNull();
 
-    const written = await dustFileSystem.write(
+    const written = await rubyFileSystem.write(
       `conversation-${conversation.sId}/reports/report.txt`,
       "hello",
       "text/plain"
@@ -122,7 +122,7 @@ describe("DatabaseFileSystemBackend", () => {
     assert(nodeId !== null);
 
     // Overwriting reports the node that already carries the name, not a new one.
-    const overwritten = await dustFileSystem.write(
+    const overwritten = await rubyFileSystem.write(
       `conversation-${conversation.sId}/reports/report.txt`,
       "world",
       "text/plain"
@@ -132,7 +132,7 @@ describe("DatabaseFileSystemBackend", () => {
 
     // The id is what a caller may hold onto: it still names the same file
     // after a move, which a path would not.
-    const moved = await dustFileSystem.move({
+    const moved = await rubyFileSystem.move({
       src: `conversation-${conversation.sId}/reports/report.txt`,
       dest: `pod-${pod.sId}/report.txt`,
     });
@@ -147,7 +147,7 @@ describe("DatabaseFileSystemBackend", () => {
   });
 
   it("preserves the inode while moving a file from a conversation to its Pod", async () => {
-    const { auth, conversation, dustFileSystem, pod, scope, conversationRoot } =
+    const { auth, conversation, rubyFileSystem, pod, scope, conversationRoot } =
       await databaseFileSystem();
     const created = await FileSystemMutationResource.createNode(auth, scope, {
       operation: "create",
@@ -159,7 +159,7 @@ describe("DatabaseFileSystemBackend", () => {
     });
     assert(created.isOk());
 
-    const moved = await dustFileSystem.move({
+    const moved = await rubyFileSystem.move({
       src: `conversation-${conversation.sId}/report.txt`,
       dest: `pod-${pod.sId}/report.txt`,
     });
@@ -180,7 +180,7 @@ describe("DatabaseFileSystemBackend", () => {
       rootId: pod.sId,
       name: "report.txt",
     });
-    const entries = await dustFileSystem.list(`pod-${pod.sId}`);
+    const entries = await rubyFileSystem.list(`pod-${pod.sId}`);
     expect(entries.isOk() && entries.value).toEqual([
       expect.objectContaining({
         fileName: "report.txt",
@@ -190,17 +190,17 @@ describe("DatabaseFileSystemBackend", () => {
   });
 
   it("removes a directory tree from the inode namespace", async () => {
-    const { conversation, dustFileSystem } = await databaseFileSystem();
+    const { conversation, rubyFileSystem } = await databaseFileSystem();
     const root = `conversation-${conversation.sId}`;
-    expect((await dustFileSystem.mkdir(`${root}/folder`)).isOk()).toBe(true);
-    expect((await dustFileSystem.mkdir(`${root}/folder/nested`)).isOk()).toBe(
+    expect((await rubyFileSystem.mkdir(`${root}/folder`)).isOk()).toBe(true);
+    expect((await rubyFileSystem.mkdir(`${root}/folder/nested`)).isOk()).toBe(
       true
     );
 
-    const removed = await dustFileSystem.delete(`${root}/folder`);
+    const removed = await rubyFileSystem.delete(`${root}/folder`);
 
     expect(removed.isOk()).toBe(true);
-    expect(await dustFileSystem.exists(`${root}/folder`)).toEqual(
+    expect(await rubyFileSystem.exists(`${root}/folder`)).toEqual(
       expect.objectContaining({ value: false })
     );
   });

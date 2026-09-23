@@ -142,7 +142,7 @@ impl AnthropicBackend for VertexAnthropicBackend {
     async fn initialize(&mut self, credentials: &Credentials) -> Result<String> {
         if credentials.contains_key(BYOK_CREDENTIAL_KEY) {
             return Err(anyhow!(
-                "Vertex is served by Dust's own GCP project and service account, it must not be \
+                "Vertex is served by Ruby's own GCP project and service account, it must not be \
                  reached by a BYOK workspace."
             ));
         }

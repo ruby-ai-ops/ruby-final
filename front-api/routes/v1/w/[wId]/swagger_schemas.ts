@@ -5,7 +5,7 @@
  *     BearerAuth:
  *       type: http
  *       scheme: bearer
- *       description: Your DUST API key is a Bearer token.
+ *       description: Your RUBY API key is a Bearer token.
  *   schemas:
  *     User:
  *       type: object
@@ -358,7 +358,7 @@
  *                                 fileId:
  *                                   type: string
  *                                   nullable: true
- *                                   description: Dust file id for DB-backed files, or null for path-backed files.
+ *                                   description: Ruby file id for DB-backed files, or null for path-backed files.
  *                                 filePath:
  *                                   type: string
  *                                   description: Canonical scoped path for path-backed files, as surfaced by agent file system tools.
@@ -573,9 +573,9 @@
  *           type: string
  *           description: Description of the datasource
  *           example: "Contains all customer-related information and FAQs"
- *         dustAPIProjectId:
+ *         rubyAPIProjectId:
  *           type: string
- *           description: ID of the associated Dust API project
+ *           description: ID of the associated Ruby API project
  *           example: "5e9d8c7b6a"
  *         connectorId:
  *           type: string
@@ -706,7 +706,7 @@
  *         repoUrl:
  *           type: string
  *           description: URL of the source repository, when applicable
- *           example: "https://github.com/dust-tt/skills"
+ *           example: "https://github.com/ruby-ai/skills"
  *         filePath:
  *           type: string
  *           description: Path to the source skill file

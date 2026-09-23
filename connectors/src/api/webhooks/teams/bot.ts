@@ -19,8 +19,8 @@ import type {
   PublicPostMessagesRequestBody,
   Result,
   UserMessageType,
-} from "@dust-tt/client";
-import { DustAPI, Err, Ok } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { RubyAPI, Err, Ok } from "@ruby-ai/client";
 import type { ChatMessage } from "@microsoft/microsoft-graph-types";
 import type { Activity, TurnContext } from "botbuilder";
 import removeMarkdown from "remove-markdown";
@@ -64,7 +64,7 @@ export async function botAnswerMessage(
 
   const { email, displayName, userAadObjectId } = validatedUser;
 
-  // Check for existing Dust conversation for this Teams conversation
+  // Check for existing Ruby conversation for this Teams conversation
   const allMicrosoftBotMessages = await MicrosoftBotMessageModel.findAll({
     where: {
       connectorId: connector.id,
@@ -73,12 +73,12 @@ export async function botAnswerMessage(
     order: [["createdAt", "DESC"]],
   });
 
-  // Find the most recent message that has a Dust conversation ID
+  // Find the most recent message that has a Ruby conversation ID
   const lastMicrosoftBotMessage =
-    allMicrosoftBotMessages.find((msg) => msg.dustConversationId) || null;
+    allMicrosoftBotMessages.find((msg) => msg.rubyConversationId) || null;
 
-  const dustAPI = new DustAPI(
-    { url: apiConfig.getDustFrontAPIUrl() },
+  const rubyAPI = new RubyAPI(
+    { url: apiConfig.getRubyFrontAPIUrl() },
     {
       workspaceId: connector.workspaceId,
       apiKey: connector.workspaceAPIKey,
@@ -89,7 +89,7 @@ export async function botAnswerMessage(
     localLogger
   );
 
-  const agentConfigurationsRes = await dustAPI.getAgentConfigurations({});
+  const agentConfigurationsRes = await rubyAPI.getAgentConfigurations({});
   if (agentConfigurationsRes.isErr()) {
     return new Err(new Error(agentConfigurationsRes.error.message));
   }
@@ -133,7 +133,7 @@ export async function botAnswerMessage(
 
   const buildContentFragmentRes = await makeContentFragments(
     context,
-    dustAPI,
+    rubyAPI,
     connector,
     lastMicrosoftBotMessage,
     localLogger
@@ -167,10 +167,10 @@ export async function botAnswerMessage(
   let conversation: ConversationPublicType | undefined = undefined;
   let userMessage: UserMessageType | undefined = undefined;
 
-  if (lastMicrosoftBotMessage?.dustConversationId) {
+  if (lastMicrosoftBotMessage?.rubyConversationId) {
     // Check conversation existence (it might have been deleted between two messages).
-    const conversationRes = await dustAPI.getConversation({
-      conversationId: lastMicrosoftBotMessage.dustConversationId,
+    const conversationRes = await rubyAPI.getConversation({
+      conversationId: lastMicrosoftBotMessage.rubyConversationId,
     });
 
     // If it doesn't exist, we will create a new one later.
@@ -178,8 +178,8 @@ export async function botAnswerMessage(
       // Add content fragments if available
       if (buildContentFragmentRes.isOk() && buildContentFragmentRes.value) {
         for (const cf of buildContentFragmentRes.value) {
-          const contentFragmentRes = await dustAPI.postContentFragment({
-            conversationId: lastMicrosoftBotMessage.dustConversationId,
+          const contentFragmentRes = await rubyAPI.postContentFragment({
+            conversationId: lastMicrosoftBotMessage.rubyConversationId,
             contentFragment: cf,
           });
           if (contentFragmentRes.isErr()) {
@@ -196,8 +196,8 @@ export async function botAnswerMessage(
         }
       }
 
-      const messageRes = await dustAPI.postUserMessage({
-        conversationId: lastMicrosoftBotMessage.dustConversationId,
+      const messageRes = await rubyAPI.postUserMessage({
+        conversationId: lastMicrosoftBotMessage.rubyConversationId,
         message: messageReqBody,
       });
       if (messageRes.isErr()) {
@@ -206,8 +206,8 @@ export async function botAnswerMessage(
       userMessage = messageRes.value;
 
       // Reload conversation to get the latest state
-      const newConversationRes = await dustAPI.getConversation({
-        conversationId: lastMicrosoftBotMessage.dustConversationId,
+      const newConversationRes = await rubyAPI.getConversation({
+        conversationId: lastMicrosoftBotMessage.rubyConversationId,
       });
       if (newConversationRes.isErr()) {
         return new Err(new Error(newConversationRes.error.message));
@@ -218,16 +218,16 @@ export async function botAnswerMessage(
         {
           connectorId: connector.id,
           teamsConversationId: conversationId,
-          dustConversationId: lastMicrosoftBotMessage.dustConversationId,
+          rubyConversationId: lastMicrosoftBotMessage.rubyConversationId,
         },
-        "Dust conversation not found, will create new one"
+        "Ruby conversation not found, will create new one"
       );
     }
   }
 
   // If the conversation does not exist, we create a new one.
   if (!conversation || !userMessage) {
-    const newConversationRes = await dustAPI.createConversation({
+    const newConversationRes = await rubyAPI.createConversation({
       title: null,
       visibility: "unlisted",
       message: messageReqBody,
@@ -254,14 +254,14 @@ export async function botAnswerMessage(
     conversationId: conversationId,
     userActivityId: userActivityId,
     agentActivityId: agentActivityId,
-    dustConversationId: conversation.sId,
+    rubyConversationId: conversation.sId,
     replyToId: replyToId,
   });
 
   // Stream agent response and send updates to Teams
   const streamAgentResponseRes = await streamAgentResponse({
     context,
-    dustAPI,
+    rubyAPI,
     conversation,
     userMessage,
     mention,
@@ -278,7 +278,7 @@ export async function botAnswerMessage(
     streamAgentResponseRes.value;
 
   await m.update({
-    dustAgentMessageId: agentMessageId,
+    rubyAgentMessageId: agentMessageId,
   });
 
   const finalCard = createResponseAdaptiveCard({
@@ -302,7 +302,7 @@ export async function botAnswerMessage(
 
 async function streamAgentResponse({
   context,
-  dustAPI,
+  rubyAPI,
   conversation,
   userMessage,
   mention,
@@ -311,7 +311,7 @@ async function streamAgentResponse({
   localLogger,
 }: {
   context: TurnContext;
-  dustAPI: DustAPI;
+  rubyAPI: RubyAPI;
   conversation: ConversationPublicType;
   userMessage: UserMessageType;
   mention: MentionMatch;
@@ -329,7 +329,7 @@ async function streamAgentResponse({
   >
 > {
   // For Bot Framework approach with streaming updates
-  const streamRes = await dustAPI.streamAgentAnswerEvents({
+  const streamRes = await rubyAPI.streamAgentAnswerEvents({
     conversation,
     userMessageId: userMessage.sId,
   });
@@ -454,7 +454,7 @@ async function streamAgentResponse({
         const microsoftBotMessage = await MicrosoftBotMessageModel.findOne({
           where: {
             connectorId: connector.id,
-            dustConversationId: conversation.sId,
+            rubyConversationId: conversation.sId,
           },
           order: [["createdAt", "DESC"]],
         });
@@ -568,7 +568,7 @@ const sendTeamsResponse = async (
 
 async function makeContentFragments(
   context: TurnContext,
-  dustAPI: DustAPI,
+  rubyAPI: RubyAPI,
   connector: ConnectorResource,
   lastMicrosoftBotMessage: MicrosoftBotMessageModel | null,
   localLogger: Logger
@@ -597,7 +597,7 @@ async function makeContentFragments(
 
     const allContentFragments = await processFileAttachments(
       currentMessageAttachments,
-      dustAPI,
+      rubyAPI,
       client,
       localLogger
     );
@@ -631,7 +631,7 @@ async function makeContentFragments(
     }
     const allContentFragments = await processFileAttachments(
       currentMessageAttachments,
-      dustAPI,
+      rubyAPI,
       client,
       localLogger
     );
@@ -679,7 +679,7 @@ async function makeContentFragments(
   // Upload file attachments
   const fileContentFragments = await processFileAttachments(
     allAttachments,
-    dustAPI,
+    rubyAPI,
     client,
     localLogger
   );
@@ -707,7 +707,7 @@ async function makeContentFragments(
     : "Teams conversation history";
   const fileName = `teams_conversation-${teamsConversationId}.txt`;
 
-  const fileRes = await dustAPI.uploadFile({
+  const fileRes = await rubyAPI.uploadFile({
     contentType: "text/plain",
     fileName,
     fileSize: conversationText.length,
@@ -765,7 +765,7 @@ export async function sendFeedback({
     return;
   }
 
-  // Find the MicrosoftBotMessage to get the Dust conversation ID
+  // Find the MicrosoftBotMessage to get the Ruby conversation ID
   const microsoftBotMessage = await MicrosoftBotMessageModel.findOne({
     where: {
       connectorId: connector.id,
@@ -776,8 +776,8 @@ export async function sendFeedback({
   });
 
   if (
-    !microsoftBotMessage?.dustConversationId ||
-    !microsoftBotMessage?.dustAgentMessageId
+    !microsoftBotMessage?.rubyConversationId ||
+    !microsoftBotMessage?.rubyAgentMessageId
   ) {
     localLogger.error(
       "No MicrosoftBotMessage found for conversation ID and reply to ID"
@@ -785,8 +785,8 @@ export async function sendFeedback({
     return;
   }
 
-  const dustAPI = new DustAPI(
-    { url: apiConfig.getDustFrontAPIUrl() },
+  const rubyAPI = new RubyAPI(
+    { url: apiConfig.getRubyFrontAPIUrl() },
     {
       workspaceId: connector.workspaceId,
       apiKey: connector.workspaceAPIKey,
@@ -797,9 +797,9 @@ export async function sendFeedback({
     localLogger
   );
 
-  const feedbackRes = await dustAPI.postFeedback(
-    microsoftBotMessage.dustConversationId,
-    microsoftBotMessage.dustAgentMessageId,
+  const feedbackRes = await rubyAPI.postFeedback(
+    microsoftBotMessage.rubyConversationId,
+    microsoftBotMessage.rubyAgentMessageId,
     {
       thumbDirection,
       feedbackContent: null,
@@ -811,7 +811,7 @@ export async function sendFeedback({
     localLogger.error(
       {
         error: feedbackRes.error,
-        dustConversationId: microsoftBotMessage.dustConversationId,
+        rubyConversationId: microsoftBotMessage.rubyConversationId,
         thumbDirection,
         userEmail: email,
         userDisplayName: displayName,
@@ -866,8 +866,8 @@ export async function botValidateToolExecution({
     return new Err(new Error("Missing Microsoft bot message"));
   }
 
-  const dustAPI = new DustAPI(
-    { url: apiConfig.getDustFrontAPIUrl() },
+  const rubyAPI = new RubyAPI(
+    { url: apiConfig.getRubyFrontAPIUrl() },
     {
       workspaceId: connector.workspaceId,
       apiKey: connector.workspaceAPIKey,
@@ -878,8 +878,8 @@ export async function botValidateToolExecution({
     localLogger
   );
 
-  // Call validateAction on Dust API
-  const res = await dustAPI.validateAction({
+  // Call validateAction on Ruby API
+  const res = await rubyAPI.validateAction({
     conversationId,
     messageId,
     actionId,
@@ -894,17 +894,17 @@ export async function botValidateToolExecution({
         messageId,
         actionId,
       },
-      "Failed to validate action on Dust API"
+      "Failed to validate action on Ruby API"
     );
     return res;
   }
 
   // Retry blocked actions on the main conversation if it differs from the event's conversation
   if (
-    microsoftBotMessage.dustConversationId &&
-    microsoftBotMessage.dustConversationId !== conversationId
+    microsoftBotMessage.rubyConversationId &&
+    microsoftBotMessage.rubyConversationId !== conversationId
   ) {
-    const retryRes = await dustAPI.retryMessage({
+    const retryRes = await rubyAPI.retryMessage({
       conversationId,
       messageId,
       blockedOnly: true,
@@ -915,7 +915,7 @@ export async function botValidateToolExecution({
         {
           error: retryRes.error,
           connectorId: connector.id,
-          mainConversationId: microsoftBotMessage.dustConversationId,
+          mainConversationId: microsoftBotMessage.rubyConversationId,
           eventConversationId: conversationId,
           agentMessageId: messageId,
         },

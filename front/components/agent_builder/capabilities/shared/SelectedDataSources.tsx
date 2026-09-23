@@ -5,7 +5,7 @@ import { CONFIGURATION_SHEET_PAGE_IDS } from "@app/components/agent_builder/type
 import { useKnowledgePageContext } from "@app/components/data_source_view/context/PageContext";
 import type { DataSourceBuilderTreeItemType } from "@app/components/data_source_view/context/types";
 import { useMCPServerViewsContext } from "@app/components/shared/tools_picker/MCPServerViewsContext";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { DATA_WAREHOUSE_SERVER_NAME } from "@app/lib/actions/mcp_internal_actions/constants";
 import { TABLE_QUERY_V2_SERVER_NAME } from "@app/lib/api/actions/servers/query_tables_v2/metadata";
 import { getConnectorProviderLogoWithFallback } from "@app/lib/connector_providers_ui";
@@ -30,7 +30,7 @@ import {
   Lock01,
   MessageChatSquare,
   Tree,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 
@@ -86,7 +86,7 @@ const groupSourcesByDataSource = (sources: DataSourceBuilderTreeItemType[]) => {
       const dataSourceView = isDataSource
         ? source.dataSourceView
         : source.node.dataSourceView;
-      const dustAPIDataSourceId = dataSourceView.dataSource.dustAPIDataSourceId;
+      const rubyAPIDataSourceId = dataSourceView.dataSource.rubyAPIDataSourceId;
 
       const sourceItem = isDataSource
         ? ({
@@ -104,11 +104,11 @@ const groupSourcesByDataSource = (sources: DataSourceBuilderTreeItemType[]) => {
             expandable: source.node.expandable,
           } satisfies SourceItem);
 
-      if (!acc[dustAPIDataSourceId]) {
-        acc[dustAPIDataSourceId] = { dataSourceView, selectedSources: [] };
+      if (!acc[rubyAPIDataSourceId]) {
+        acc[rubyAPIDataSourceId] = { dataSourceView, selectedSources: [] };
       }
 
-      acc[dustAPIDataSourceId].selectedSources.push(sourceItem);
+      acc[rubyAPIDataSourceId].selectedSources.push(sourceItem);
       return acc;
     },
     {} as Record<string, DataSourceFilterItem>

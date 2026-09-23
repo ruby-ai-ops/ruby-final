@@ -11,7 +11,7 @@ import {
   getAuditLogContext,
 } from "@app/lib/api/audit/workos_audit";
 import { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { getEffectiveReasoningEffort } from "@app/lib/llms/model_configurations";
 import { AgentDataSourceConfigurationModel } from "@app/lib/models/agent/actions/data_sources";
 import {
@@ -1361,7 +1361,7 @@ export class AgentResource
    * Archiving, restoring, or hard-deleting a custom agent MUST require the agent `admin` verb,
    * checked inside the resource (`auth.can("admin", this)`) and never delegated to the caller: no
    * caller may archive, restore, or delete an agent it does not hold `admin` on. Editors and
-   * workspace admins hold it; a Poke superuser session holds it through its admin role.
+   * workspace admins hold it; a Admin superuser session holds it through its admin role.
    */
   /**
    * @cc [owner:tdraier,label:product] archive-disables-triggers
@@ -1374,7 +1374,7 @@ export class AgentResource
     assert(this.scope !== "global", "Global agents cannot be archived.");
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Archiving an agent requires the agent `admin` verb."
         )
@@ -1494,7 +1494,7 @@ export class AgentResource
   ): Promise<
     Result<
       { restored: boolean },
-      DustError<"name_conflict" | "internal_error" | "unauthorized">
+      RubyError<"name_conflict" | "internal_error" | "unauthorized">
     >
   > {
     assert(this.scope !== "global", "Global agents cannot be restored.");
@@ -1504,7 +1504,7 @@ export class AgentResource
     // `agent-archive-restore-requires-admin` contract).
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Restoring an agent requires the agent `admin` verb."
         )
@@ -1513,7 +1513,7 @@ export class AgentResource
 
     if (this.status !== "archived") {
       return new Err(
-        new DustError("internal_error", "Agent configuration is not archived")
+        new RubyError("internal_error", "Agent configuration is not archived")
       );
     }
 
@@ -1522,7 +1522,7 @@ export class AgentResource
       const canPublish = auth.hasWorkspacePermission("publish", "agent");
       if (!canPublish) {
         return new Err(
-          new DustError("unauthorized", "Publishing agents is restricted.")
+          new RubyError("unauthorized", "Publishing agents is restricted.")
         );
       }
     }
@@ -1538,7 +1538,7 @@ export class AgentResource
     });
     if (existingActive) {
       return new Err(
-        new DustError(
+        new RubyError(
           "name_conflict",
           `Cannot restore: an active agent named "${this.name}" already exists.`
         )
@@ -1685,7 +1685,7 @@ export class AgentResource
     );
     if (!auth.can("admin", this)) {
       return new Err(
-        new DustError(
+        new RubyError(
           "unauthorized",
           "Deleting an agent requires the agent `admin` verb."
         )
@@ -2615,7 +2615,7 @@ export class AgentResource
       if (error instanceof SyntaxError) {
         return new Err(new Error(error.message));
       }
-      if (error instanceof DustError) {
+      if (error instanceof RubyError) {
         return new Err(error);
       }
       if (error instanceof Error) {

@@ -14,9 +14,9 @@ import logger from "@connectors/logger/logger";
 import type {
   AgentActionPublicType,
   AgentEvent,
-  DustAPI,
+  RubyAPI,
   NotificationRunAgentContent,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 import type { WebClient } from "@slack/web-api";
 
 // Match the SDK defaults (sdks/js/src/index.ts DEFAULT_MAX_RECONNECT_ATTEMPTS / DEFAULT_RECONNECT_DELAY).
@@ -24,7 +24,7 @@ const CHILD_STREAM_MAX_RECONNECT_ATTEMPTS = 10;
 const CHILD_STREAM_RECONNECT_DELAY_MS = 5_000;
 
 interface PlanMessageHandlerParams {
-  dustAPI: DustAPI;
+  rubyAPI: RubyAPI;
   slackClient: WebClient;
   slackChannelId: string;
   slackMessageTs: string;
@@ -34,7 +34,7 @@ interface PlanMessageHandlerParams {
 }
 
 export class PlanMessageHandler {
-  private readonly dustAPI: DustAPI;
+  private readonly rubyAPI: RubyAPI;
   private readonly slackClient: WebClient;
   private readonly slackChannelId: string;
   private readonly slackMessageTs: string;
@@ -47,7 +47,7 @@ export class PlanMessageHandler {
   private readonly childStreamControllers = new Map<string, AbortController>();
 
   constructor({
-    dustAPI,
+    rubyAPI,
     slackClient,
     slackChannelId,
     slackMessageTs,
@@ -55,7 +55,7 @@ export class PlanMessageHandler {
     assistantName,
     workspaceId,
   }: PlanMessageHandlerParams) {
-    this.dustAPI = dustAPI;
+    this.rubyAPI = rubyAPI;
     this.slackClient = slackClient;
     this.slackChannelId = slackChannelId;
     this.slackMessageTs = slackMessageTs;
@@ -182,7 +182,7 @@ export class PlanMessageHandler {
     agentMessageId: string,
     controller: AbortController
   ): Promise<void> {
-    const streamRes = await this.dustAPI.streamAgentMessageEvents({
+    const streamRes = await this.rubyAPI.streamAgentMessageEvents({
       conversationId,
       agentMessageId,
       signal: controller.signal,

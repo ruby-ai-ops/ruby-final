@@ -69,7 +69,7 @@ describe("GET /api/w/:wId/analytics/export", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toContain("text/csv");
     expect(response.headers.get("Content-Disposition")).toContain(
-      "dust_usage_metrics_2026-01-01_2026-01-31.csv"
+      "ruby_usage_metrics_2026-01-01_2026-01-31.csv"
     );
     expect(await response.text()).toBe("date,messages\n");
   });

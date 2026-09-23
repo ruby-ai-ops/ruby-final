@@ -48,7 +48,7 @@ export async function getDataSourceTables({
   const filter: CoreAPINodesSearchFilter = {
     data_source_views: [
       {
-        data_source_id: dataSourceCoreIds.dustAPIDataSourceId,
+        data_source_id: dataSourceCoreIds.rubyAPIDataSourceId,
         // Only paginate through data source nodes.
         search_scope: "nodes_titles",
         // Leaving empty to get all tables.
@@ -94,8 +94,8 @@ export async function getDataSourceTables({
     async (n) => {
       try {
         return await coreAPI.getDataSourceTableBlob({
-          projectId: dataSourceCoreIds.dustAPIProjectId,
-          dataSourceId: dataSourceCoreIds.dustAPIDataSourceId,
+          projectId: dataSourceCoreIds.rubyAPIProjectId,
+          dataSourceId: dataSourceCoreIds.rubyAPIDataSourceId,
           tableId: n.node_id,
         });
       } catch (err) {

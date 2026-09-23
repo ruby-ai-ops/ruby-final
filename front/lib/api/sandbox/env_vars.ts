@@ -200,7 +200,7 @@ export function normalizeAllowedDomainsForKind({
 }
 
 // Format used both as the agent-visible env var (DSEC_*) for HTTPS secrets
-// and as the placeholder field of /run/dust/egress-secrets.json that dsbx
+// and as the placeholder field of /run/ruby/egress-secrets.json that rbx
 // scans for at MITM time. Both call sites must agree byte-for-byte.
 export function renderEgressSecretPlaceholder(nonce: Buffer): string {
   return `__DSEC_${nonce.toString("hex")}__`;

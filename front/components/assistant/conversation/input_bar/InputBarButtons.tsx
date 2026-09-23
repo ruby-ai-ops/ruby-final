@@ -42,7 +42,7 @@ import {
   InfoCircle,
   Robot,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React from "react";
 
 interface InputBarButtonsProps {
@@ -58,7 +58,7 @@ interface InputBarButtonsProps {
   handleSingleAgentSelect: (mention: RichMention) => void;
   hideCapabilities: boolean;
   // When true, the pod's configured default agent isn't available to the
-  // current member (unpublished/deleted), so @dust is shown instead. Surfaces
+  // current member (unpublished/deleted), so @ruby is shown instead. Surfaces
   // a notice on the agent pill.
   isDefaultAgentUnavailable: boolean;
   // When true, disables every picker (tools, attachment) in addition to the
@@ -137,8 +137,8 @@ export const InputBarButtons = React.memo(function InputBarButtons({
 
   const isPod = space ? isProjectType(space) : false;
   const defaultAgentUnavailableLabel = isPod
-    ? "This Pod's default agent isn't available to you, so @dust is used instead. Discuss with your Pod editors if you think this is an error."
-    : "This conversation's default agent isn't available to you, so @dust is used instead. Discuss with your Workspace admin if you think this is an error.";
+    ? "This Pod's default agent isn't available to you, so @ruby is used instead. Discuss with your Pod editors if you think this is an error."
+    : "This conversation's default agent isn't available to you, so @ruby is used instead. Discuss with your Workspace admin if you think this is an error.";
 
   const handleAgentDetailsClick = (agentId: string) => {
     setQueryParam(router, "agentDetails", agentId);

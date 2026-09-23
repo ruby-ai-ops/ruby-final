@@ -18,7 +18,7 @@ import type {
 } from "@app/components/file_explorer/types";
 import { isFileExplorerMovableFile } from "@app/components/file_explorer/utils";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import { CardGrid, ScrollArea, Spinner } from "@dust-tt/sparkle";
+import { CardGrid, ScrollArea, Spinner } from "@ruby-ai/ui";
 import type React from "react";
 
 const cardGridClasses =

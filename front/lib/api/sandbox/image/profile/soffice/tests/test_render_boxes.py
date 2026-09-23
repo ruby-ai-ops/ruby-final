@@ -101,7 +101,7 @@ def test_rects_overlap():
 
 
 def test_suppress_as_layering_only_for_declared_overlap():
-    # boxes are (left, top, width, height) EMU; 10 x 5.62in slide (the dust deck)
+    # boxes are (left, top, width, height) EMU; 10 x 5.62in slide (the ruby deck)
     W, H = int(10 * EMU), int(5.62 * EMU)
     # full-width subtitle (w/W=0.93 -> full-span) and a title just above it whose
     # declared box does NOT reach it (bottom 3.03 < subtitle top 3.10).

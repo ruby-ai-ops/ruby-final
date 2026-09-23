@@ -14,7 +14,7 @@ import {
   CodeBlock,
   Icon,
   Scan,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { JSONSchema7 as JSONSchema } from "json-schema";
 import { useState } from "react";
 

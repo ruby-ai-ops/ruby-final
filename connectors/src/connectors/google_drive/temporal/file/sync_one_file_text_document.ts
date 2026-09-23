@@ -85,7 +85,7 @@ export async function syncOneFileTextDocument(
       upsertTimestampMs = await runWithGoogleDriveContentPhaseMemoryTelemetry({
         logger: localLogger,
         mimeType: file.mimeType,
-        phase: "dust_upsert",
+        phase: "ruby_upsert",
         payloadKind: "extracted_document",
         getPayloadSizeBytes: () => upsertPayloadSizeBytes,
         task: () =>

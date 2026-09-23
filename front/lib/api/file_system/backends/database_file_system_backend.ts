@@ -23,7 +23,7 @@ import type {
   FileSystemEntry,
 } from "@app/types/api/file_system/types";
 import type { FileSystemMount, SandboxOnlyMount } from "@app/types/file_system";
-import { DustFileSystemError } from "@app/types/file_system";
+import { RubyFileSystemError } from "@app/types/file_system";
 import { stripMimeParameters } from "@app/types/files";
 import { TOOL_OUTPUTS_FOLDER_NAME } from "@app/types/mount_path";
 import type { Result } from "@app/types/shared/result";
@@ -109,7 +109,7 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
   private async resolve(scopedPath: string): Promise<ResolvedPath | null> {
     const parsed = this.parse(scopedPath);
     if (!parsed) {
-      throw new DustFileSystemError(
+      throw new RubyFileSystemError(
         "invalid_path",
         `Unknown database filesystem path: ${scopedPath}`
       );
@@ -139,14 +139,14 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
   }> {
     const parsed = this.parse(scopedPath);
     if (!parsed || parsed.segments.length === 0) {
-      throw new DustFileSystemError(
+      throw new RubyFileSystemError(
         "invalid_path",
         `A filesystem root cannot be modified: ${scopedPath}`
       );
     }
     const name = parsed.segments.at(-1);
     if (!name) {
-      throw new DustFileSystemError("invalid_path", "A file name is required.");
+      throw new RubyFileSystemError("invalid_path", "A file name is required.");
     }
     const parentPath = [
       parsed.mount.scopedPrefix,
@@ -166,27 +166,27 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
     return { parsed, parent: parent.node, name, existing: existing.value };
   }
 
-  private error(error: unknown): DustFileSystemError {
-    if (error instanceof DustFileSystemError) {
+  private error(error: unknown): RubyFileSystemError {
+    if (error instanceof RubyFileSystemError) {
       return error;
     }
     if (error instanceof FileSystemOperationError) {
       switch (error.code) {
         case "already_exists":
-          return new DustFileSystemError("already_exists", error.message);
+          return new RubyFileSystemError("already_exists", error.message);
         case "not_found":
-          return new DustFileSystemError("not_found", error.message);
+          return new RubyFileSystemError("not_found", error.message);
         case "unauthorized":
-          return new DustFileSystemError("unauthorized", error.message);
+          return new RubyFileSystemError("unauthorized", error.message);
         case "is_directory":
         case "not_directory":
         case "invalid_operation":
         case "not_empty":
         case "stale":
-          return new DustFileSystemError("internal", error.message);
+          return new RubyFileSystemError("internal", error.message);
       }
     }
-    return new DustFileSystemError("internal", normalizeError(error).message);
+    return new RubyFileSystemError("internal", normalizeError(error).message);
   }
 
   private entry(
@@ -241,7 +241,7 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
       maxFiles,
       includeProcessed = false,
     }: { maxFiles?: number; includeProcessed?: boolean } = {}
-  ): Promise<Result<FileSystemEntry[], DustFileSystemError>> {
+  ): Promise<Result<FileSystemEntry[], RubyFileSystemError>> {
     try {
       const resolved = await this.resolve(scopedPath.replace(/\/$/, ""));
       if (!resolved || resolved.node.kind !== "directory") {
@@ -285,7 +285,7 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
 
   async read(
     scopedPath: string
-  ): Promise<Result<Readable | null, DustFileSystemError>> {
+  ): Promise<Result<Readable | null, RubyFileSystemError>> {
     try {
       const resolved = await this.resolve(scopedPath);
       if (!resolved) {
@@ -309,7 +309,7 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
   ): Promise<
     Result<
       { contentType: string; sizeBytes: number } | null,
-      DustFileSystemError
+      RubyFileSystemError
     >
   > {
     try {
@@ -333,7 +333,7 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
 
   async exists(
     scopedPath: string
-  ): Promise<Result<boolean, DustFileSystemError>> {
+  ): Promise<Result<boolean, RubyFileSystemError>> {
     try {
       return new Ok((await this.resolve(scopedPath)) !== null);
     } catch (error) {
@@ -345,7 +345,7 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
     scopedPath: string,
     content: Buffer | string | Readable,
     contentType: string
-  ): Promise<Result<FileSystemNodeIdentity, DustFileSystemError>> {
+  ): Promise<Result<FileSystemNodeIdentity, RubyFileSystemError>> {
     try {
       const destination = await this.resolveParent(scopedPath);
       let node = destination.existing;
@@ -393,14 +393,14 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
   ): Promise<
     Result<
       { entry: FileSystemDirectoryEntry } & FileSystemNodeIdentity,
-      DustFileSystemError
+      RubyFileSystemError
     >
   > {
     try {
       const destination = await this.resolveParent(scopedPath);
       if (destination.existing) {
         return new Err(
-          new DustFileSystemError(
+          new RubyFileSystemError(
             "already_exists",
             "A file or directory already exists at this path."
           )
@@ -459,14 +459,14 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
   async delete(
     scopedPath: string,
     { ignoreNotFound = false }: { ignoreNotFound?: boolean } = {}
-  ): Promise<Result<void, DustFileSystemError>> {
+  ): Promise<Result<void, RubyFileSystemError>> {
     try {
       const destination = await this.resolveParent(scopedPath);
       if (!destination.existing) {
         return ignoreNotFound
           ? new Ok(undefined)
           : new Err(
-              new DustFileSystemError(
+              new RubyFileSystemError(
                 "not_found",
                 `Path not found: ${scopedPath}`
               )
@@ -530,18 +530,18 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
   }: {
     src: string;
     dest: string;
-  }): Promise<Result<void, DustFileSystemError>> {
+  }): Promise<Result<void, RubyFileSystemError>> {
     try {
       const source = await this.resolve(src);
       if (!source) {
         return new Err(
-          new DustFileSystemError("not_found", `Path not found: ${src}`)
+          new RubyFileSystemError("not_found", `Path not found: ${src}`)
         );
       }
       const destination = await this.resolveParent(dest);
       if (destination.existing) {
         return new Err(
-          new DustFileSystemError(
+          new RubyFileSystemError(
             "already_exists",
             "A file or directory already exists at the destination."
           )
@@ -560,18 +560,18 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
   }: {
     src: string;
     dest: string;
-  }): Promise<Result<{ sourceDeletionFailed: boolean }, DustFileSystemError>> {
+  }): Promise<Result<{ sourceDeletionFailed: boolean }, RubyFileSystemError>> {
     try {
       const source = await this.resolveParent(src);
       if (!source.existing) {
         return new Err(
-          new DustFileSystemError("not_found", `Path not found: ${src}`)
+          new RubyFileSystemError("not_found", `Path not found: ${src}`)
         );
       }
       const destination = await this.resolveParent(dest);
       if (destination.existing) {
         return new Err(
-          new DustFileSystemError(
+          new RubyFileSystemError(
             "already_exists",
             "A file or directory already exists at the destination."
           )
@@ -601,12 +601,12 @@ export class DatabaseFileSystemBackend implements FileSystemBackend {
   async getDownloadUrl(
     scopedPath: string,
     opts?: { expiresInMs?: number; fileName?: string }
-  ): Promise<Result<string, DustFileSystemError>> {
+  ): Promise<Result<string, RubyFileSystemError>> {
     try {
       const resolved = await this.resolve(scopedPath);
       if (!resolved) {
         return new Err(
-          new DustFileSystemError("not_found", `Path not found: ${scopedPath}`)
+          new RubyFileSystemError("not_found", `Path not found: ${scopedPath}`)
         );
       }
       const result = await getFileSystemDownloadUrl(

@@ -1,4 +1,4 @@
-import { BookOpen01, Page } from "@dust-tt/sparkle";
+import { BookOpen01, Page } from "@ruby-ai/ui";
 import type { ReactNode } from "react";
 
 interface GovernanceSettingRowLayoutProps {

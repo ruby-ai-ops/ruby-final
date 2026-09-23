@@ -72,7 +72,7 @@ const backfillActionConfigs = async () => {
   //   );
   // }
 
-  // const dustAppRunConfigs = await AgentDustAppRunConfiguration.findAll({
+  // const rubyAppRunConfigs = await AgentRubyAppRunConfiguration.findAll({
   //   // @ts-expect-error agentConfigurationId is marked as required in the model, but we are looking for null values
   //   where: {
   //     agentConfigurationId: null,
@@ -80,25 +80,25 @@ const backfillActionConfigs = async () => {
   // });
 
   // logger.info(
-  //   `Found ${dustAppRunConfigs.length} dust app run configurations without agent configuration`
+  //   `Found ${rubyAppRunConfigs.length} ruby app run configurations without agent configuration`
   // );
 
-  // for (const chunk of _.chunk(dustAppRunConfigs, 16)) {
+  // for (const chunk of _.chunk(rubyAppRunConfigs, 16)) {
   //   await Promise.all(
   //     chunk.map(async (darc) => {
   //       const agent = await AgentConfiguration.findOne({
   //         where: {
-  //           dustAppRunConfigurationId: darc.id,
+  //           rubyAppRunConfigurationId: darc.id,
   //         },
   //       });
   //       if (!agent) {
   //         logger.warn(
-  //           `No agent found for dust app run configuration ${darc.id}`
+  //           `No agent found for ruby app run configuration ${darc.id}`
   //         );
   //         return;
   //       }
   //       logger.info(
-  //         `Backfilling dust app run configuration ${darc.id} with \`agentConfigurationId=${agent.id}\` [execute: ${execute}]`
+  //         `Backfilling ruby app run configuration ${darc.id} with \`agentConfigurationId=${agent.id}\` [execute: ${execute}]`
   //       );
   //       if (execute) {
   //         await darc.update({ agentConfigurationId: agent.id });

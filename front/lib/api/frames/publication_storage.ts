@@ -319,7 +319,7 @@ export async function storeFramePublication(
   ];
 
   // One object for every published function bundle. Cold invocation extracts
-  // it once; poke/activation read the same archive.
+  // it once; admin/activation read the same archive.
   if (functionArtifacts.length > 0) {
     const functionsArchive = await buildFrameFunctionsTarArchive(
       functionArtifacts.map((artifact) => ({
@@ -362,7 +362,7 @@ export async function storeFramePublication(
 
 /**
  * The published bundle of a single Frame function, taken from `functions.tar`.
- * Activation verifies every entry's hash via the same archive; poke only needs
+ * Activation verifies every entry's hash via the same archive; admin only needs
  * one slug and still shares this path.
  */
 export async function readFramePublicationFunctionBundle(

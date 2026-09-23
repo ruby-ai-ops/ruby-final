@@ -14,12 +14,12 @@ import { usePodMetadata } from "@app/lib/swr/pods";
 import { getConversationRoute } from "@app/lib/utils/router";
 import type { UserType, WorkspaceType } from "@app/types/user";
 import { resolveDefaultAgentId } from "@app/types/user";
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 import { useState } from "react";
 
 const GOAL_SKILL_TAG = serializeSkillTag({
-  id: "dust_pod_goal",
-  name: "Dust Pod Goal",
+  id: "ruby_pod_goal",
+  name: "Ruby Pod Goal",
   icon: "ActionFlagIcon",
 });
 
@@ -45,7 +45,7 @@ const GOAL_WORK_AREA_ACTIONS = [
       "1. Read the current work areas; that is the job this Pod is working on.\n" +
       "2. Scan connected sources for progress, changes, blockers, and stale assumptions.\n" +
       "3. Update the work areas and let me correct them if needed.\n" +
-      "4. Once that job is settled, pick one bounded next action only if it materially advances it, then decide whether Dust or a human should own it.",
+      "4. Once that job is settled, pick one bounded next action only if it materially advances it, then decide whether Ruby or a human should own it.",
   },
   {
     label: "Help me sharpen this",
@@ -54,7 +54,7 @@ const GOAL_WORK_AREA_ACTIONS = [
       "1. Read the current work areas; that is the job this Pod is working on.\n" +
       "2. Ask focused questions about the work, constraints, progress, and blockers.\n" +
       "3. Update the work areas based on my answers and let me correct them if needed.\n" +
-      "4. Once that job is settled, pick one bounded next action only if it materially advances it, then decide whether Dust or a human should own it.",
+      "4. Once that job is settled, pick one bounded next action only if it materially advances it, then decide whether Ruby or a human should own it.",
   },
 ] as const;
 
@@ -70,7 +70,7 @@ const GOAL_QUICK_PROMPTS = [
   {
     label: "What should happen next",
     message:
-      "Review the job this Pod is working on against the latest available evidence. Diagnose the current constraint, pick one bounded next action, decide whether Dust or a human should own it, and present that move only if it would materially advance the job now.",
+      "Review the job this Pod is working on against the latest available evidence. Diagnose the current constraint, pick one bounded next action, decide whether Ruby or a human should own it, and present that move only if it would materially advance the job now.",
   },
   {
     label: "Where are we blocked?",

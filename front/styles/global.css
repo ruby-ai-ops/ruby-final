@@ -1,14 +1,14 @@
 @import "./fonts.css";
 
-/* Preflight, the Tailwind theme, and sparkle's color tokens are already emitted
-   by the unified build (front-spa/src/index.css → @dust-tt/sparkle/styles/tailwind.css,
+/* Preflight, the Tailwind theme, and ui's color tokens are already emitted
+   by the unified build (front-spa/src/index.css → @ruby-ai/ui/styles/tailwind.css,
    which is imported alongside this file in every front-spa entry point). Pulling
    them in here too would ship a second copy of preflight and the full color
    palette (~22KB raw / ~3KB gzip of duplicated `:root` tokens). Reference them
    instead: `@reference` gives this entry the theme context it needs to resolve
    `@apply` (h-full, bg-panel-background) without emitting any bytes. */
 @reference "tailwindcss";
-@reference "@dust-tt/sparkle/styles/theme.css";
+@reference "@ruby-ai/ui/styles/theme.css";
 
 @layer base {
   /* v4 changed border-color default from gray-200 to currentColor.

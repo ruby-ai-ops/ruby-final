@@ -811,7 +811,7 @@ export class EventSourceManager {
     try {
       return new URL(
         url,
-        typeof document === "undefined" ? "https://dust.tt" : document.baseURI
+        typeof document === "undefined" ? "https://ruby.ad" : document.baseURI
       ).pathname;
     } catch {
       return null;
@@ -942,7 +942,7 @@ export class EventSourceManager {
         subscriberCount: entry.subscribers.size,
         ...details,
       },
-      "[Dust SSE]"
+      "[Ruby SSE]"
     );
   }
 

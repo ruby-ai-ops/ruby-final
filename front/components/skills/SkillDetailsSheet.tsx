@@ -20,7 +20,7 @@ import {
   SheetHeader,
   SheetTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useCallback } from "react";
 

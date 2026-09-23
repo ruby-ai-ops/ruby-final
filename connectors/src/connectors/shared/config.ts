@@ -8,8 +8,8 @@ export const SUPPORTED_CELLS = [
 export type CellType = (typeof SUPPORTED_CELLS)[number];
 
 export const connectorsConfig = {
-  getDustTmpSyncBucketName: (): string => {
-    return EnvironmentConfig.getEnvVariable("DUST_TMP_SYNC_BUCKET_NAME");
+  getRubyTmpSyncBucketName: (): string => {
+    return EnvironmentConfig.getEnvVariable("RUBY_TMP_SYNC_BUCKET_NAME");
   },
   getServiceAccount: (): string => {
     return EnvironmentConfig.getEnvVariable("SERVICE_ACCOUNT");

@@ -1,11 +1,11 @@
 import path from "node:path";
 
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import type { Authenticator } from "@app/lib/auth";
 import { FileResource } from "@app/lib/resources/file_resource";
 import { FRAME_MANIFEST_FILE } from "@app/types/api/frame_manifest";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
-import type { DustFileSystemError } from "@app/types/file_system";
+import type { RubyFileSystemError } from "@app/types/file_system";
 import type { FileShareScope } from "@app/types/files";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
@@ -25,7 +25,7 @@ export class FrameShareLinkError extends Error {
 }
 
 export type GetFrameShareLinkFromSourceError =
-  | DustFileSystemError
+  | RubyFileSystemError
   | FrameShareLinkError;
 
 function shareLinkError(
@@ -61,7 +61,7 @@ export async function getFrameShareLinkFromSource(
   }
 
   const sourceDirectory =
-    DustFileSystem.normalizeScopedPath(sourceDirectoryPath);
+    RubyFileSystem.normalizeScopedPath(sourceDirectoryPath);
   if (
     !sourceDirectory ||
     !sourceDirectory.includes("/") ||
@@ -74,19 +74,19 @@ export async function getFrameShareLinkFromSource(
   }
   const manifestPath = path.posix.join(sourceDirectory, FRAME_MANIFEST_FILE);
 
-  const fsResult = await DustFileSystem.forConversation(auth, conversation);
+  const fsResult = await RubyFileSystem.forConversation(auth, conversation);
   if (fsResult.isErr()) {
     return new Err(fsResult.error);
   }
-  const dustFs = fsResult.value;
-  if (!dustFs.isGCSBacked()) {
+  const rubyFs = fsResult.value;
+  if (!rubyFs.isGCSBacked()) {
     return shareLinkError(
       "invalid_source",
       "Frames v2 share links do not support the database-backed filesystem."
     );
   }
 
-  const mount = dustFs
+  const mount = rubyFs
     .getMounts()
     .find(
       (candidate) =>
@@ -100,7 +100,7 @@ export async function getFrameShareLinkFromSource(
     );
   }
 
-  const mountFilePath = dustFs.toMountFilePath(manifestPath);
+  const mountFilePath = rubyFs.toMountFilePath(manifestPath);
   if (!mountFilePath) {
     return shareLinkError("invalid_source", "Invalid Frame source folder.");
   }
@@ -119,7 +119,7 @@ export async function getFrameShareLinkFromSource(
   if (!shareInfo) {
     return shareLinkError(
       "not_shared",
-      `No existing share link found for the Frame at ${sourceDirectory}. Configure sharing in the Dust UI.`
+      `No existing share link found for the Frame at ${sourceDirectory}. Configure sharing in the Ruby UI.`
     );
   }
 

@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
   GithubLogo,
   Tooltip,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 interface GitHubConnectionRowProps {
   owner: LightWorkspaceType;

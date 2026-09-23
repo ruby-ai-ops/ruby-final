@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 
 describe("checkDatasetData", function () {
   test("returns dataset keys if there are no key mismatch", function () {
-    const dataset = [{ hello: "world" }, { hello: "dust" }];
+    const dataset = [{ hello: "world" }, { hello: "ruby" }];
     const keys = checkDatasetData({ data: dataset });
     expect(keys).toEqual(["hello"]);
   });
@@ -23,7 +23,7 @@ describe("checkDatasetData", function () {
   });
 
   test("throws an error if there is a key mismatch", function () {
-    const dataset = [{ hello: "world" }, { hello: "dust", foo: "bar" }];
+    const dataset = [{ hello: "world" }, { hello: "ruby", foo: "bar" }];
     expect(() => checkDatasetData({ data: dataset })).toThrow(
       "Keys mismatch between data entries: hello != hello,foo"
     );
@@ -32,11 +32,11 @@ describe("checkDatasetData", function () {
 
 describe("getDatasetTypes", function () {
   test("returns the types of the dataset keys", function () {
-    const datasetKeys = ["hello", "world", "dust", "foo", "bar"];
+    const datasetKeys = ["hello", "world", "ruby", "foo", "bar"];
     const entry = {
       hello: "world",
       world: 1,
-      dust: true,
+      ruby: true,
       foo: null,
       bar: { whats: "up" },
     };

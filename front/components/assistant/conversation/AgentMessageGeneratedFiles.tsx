@@ -16,7 +16,7 @@ import {
   CitationTitle,
   cn,
   Icon,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 function getDescriptionForContentType(

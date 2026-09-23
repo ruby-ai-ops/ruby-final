@@ -12,7 +12,7 @@ import {
   frameV2ContentType,
 } from "@app/types/files";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 interface InteractiveContentContainerProps {

@@ -27,13 +27,13 @@ export type SandboxFunctionUserIdentityPolicy =
 
 // How an invocation reaches the sandbox.
 //
-// `durable` runs through a Temporal workflow, which is what a function calling Dust tools needs: a
+// `durable` runs through a Temporal workflow, which is what a function calling Ruby tools needs: a
 // tool call can wait on an approval or on personal authentication for as long as the user takes,
 // across sandbox stops and restarts.
 //
 // `fast` is for everything else, and the line is narrower than it sounds. A fast function still
 // reads and writes pod state, spawns local binaries, and makes outbound HTTP calls; what it cannot
-// do is call a Dust tool through `dsbx tools`, the one thing that can block on a person. The rest
+// do is call a Ruby tool through `rbx tools`, the one thing that can block on a person. The rest
 // is merely slow, which the ceiling on an inline invocation covers, so its invocation does not need
 // to outlive the request that starts it.
 export const SANDBOX_FUNCTION_EXECUTION_MODES = ["fast", "durable"] as const;
@@ -86,12 +86,12 @@ export type SandboxFunctionInvocationOrigin =
 // function's source lived in. Pod functions are gone, no v2 publication can produce a prefix (the
 // manifest name is a single segment), and no prefixed slug exists in either region.
 //
-// Stays deliberately stricter than dsbx's own `[A-Za-z0-9_-]+` (is_valid_name in
-// cli/dust-sandbox/src/commands/function/mod.rs), which is what lets `<slug>.ts` resolve in the flat
-// $DUST_FUNCTIONS_DIR mount without any CLI change.
+// Stays deliberately stricter than rbx's own `[A-Za-z0-9_-]+` (is_valid_name in
+// cli/ruby-sandbox/src/commands/function/mod.rs), which is what lets `<slug>.ts` resolve in the flat
+// $RUBY_FUNCTIONS_DIR mount without any CLI change.
 export const SANDBOX_FUNCTION_SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-// Mirrors DB_NAME_REGEX in cli/dust-sandbox/functions-runner/types/db.ts. Regex values cannot
+// Mirrors DB_NAME_REGEX in cli/ruby-sandbox/functions-runner/types/db.ts. Regex values cannot
 // be type-checked and front cannot runtime-import cli code; equality is asserted in
 // build_on_sandbox.test.ts.
 export const SANDBOX_DATABASE_NAME_REGEX = /^[a-z][a-z0-9_]{0,63}$/;
@@ -118,7 +118,7 @@ export const SANDBOX_FUNCTION_RUNNER_ERROR_CODES = [
   // Emitted by the warm server's admission layer when the function is at its
   // concurrency limit and the invocation was refused before anything ran.
   "overloaded",
-  // Minted by dsbx's run wrapper when the runner's stdout envelope was cut
+  // Minted by rbx's run wrapper when the runner's stdout envelope was cut
   // mid-JSON in transit, so the function ran but its result was lost.
   "output_truncated",
   // Emitted by the runner when the serialized result exceeds the hard size

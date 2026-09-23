@@ -78,9 +78,9 @@ async function resolveSandboxFunctionTool(
       jsonSchema: null,
       additionalConfiguration: {},
       mcpServerViewId: viewJSON.sId,
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
       // Null for remote servers, matching the agent path (see `configuration/actions.ts`).
       internalMCPServerId: view.internalMCPServerId,
     },

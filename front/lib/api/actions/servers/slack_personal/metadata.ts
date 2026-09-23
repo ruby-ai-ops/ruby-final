@@ -138,7 +138,7 @@ export const SLACK_PERSONAL_TOOLS_METADATA = [
         .optional()
         .default(true)
         .describe(
-          "Include the 'Sent via [AgentName] on Dust' footer. Set false only when explicitly asked to remove the footer, never for formatting or brevity."
+          "Include the 'Sent via [AgentName] on Ruby' footer. Set false only when explicitly asked to remove the footer, never for formatting or brevity."
         ),
     },
     stake: "medium",
@@ -196,7 +196,7 @@ export const SLACK_PERSONAL_TOOLS_METADATA = [
         .optional()
         .default(true)
         .describe(
-          "Include the 'Sent via [AgentName] on Dust' footer. Set false only when explicitly asked to remove the footer, never for formatting or brevity."
+          "Include the 'Sent via [AgentName] on Ruby' footer. Set false only when explicitly asked to remove the footer, never for formatting or brevity."
         ),
     },
     stake: "medium",
@@ -667,7 +667,7 @@ export const SLACK_PERSONAL_SERVER = {
       supported_use_cases: ["personal_actions"] as const,
     },
     icon: "SlackLogo",
-    documentationUrl: "https://docs.dust.tt/docs/slack-mcp",
+    documentationUrl: "https://docs.ruby.ad/docs/slack-mcp",
   },
   tools: SLACK_PERSONAL_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

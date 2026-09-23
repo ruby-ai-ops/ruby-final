@@ -103,7 +103,7 @@ import {
   TooltipRoot,
   TooltipTrigger,
   VoicePicker,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { Editor } from "@tiptap/react";
 import { EditorContent } from "@tiptap/react";
 import type React from "react";
@@ -821,7 +821,7 @@ const InputBarContainer = ({
         });
 
         const file = new File([text], filename, {
-          type: "text/vnd.dust.attachment.pasted",
+          type: "text/vnd.ruby.attachment.pasted",
         });
 
         const uploaded = await fileUploaderService.handleFilesUpload([file]);
@@ -963,7 +963,7 @@ const InputBarContainer = ({
     const currentPastedIds = new Set(
       fileUploaderService.fileBlobs
         .filter(
-          (blob) => blob.contentType === "text/vnd.dust.attachment.pasted"
+          (blob) => blob.contentType === "text/vnd.ruby.attachment.pasted"
         )
         .map((blob) => blob.id)
     );
@@ -1252,7 +1252,7 @@ const InputBarContainer = ({
       queueMicrotask(() => editorService.focusEnd());
     };
     const handleMessage = (event: MessageEvent) => {
-      if (event.data?.type === "DUST_SIDEBAR_SHOWN") {
+      if (event.data?.type === "RUBY_SIDEBAR_SHOWN") {
         queueMicrotask(() => editorService.focusEnd());
       }
     };
@@ -1478,7 +1478,7 @@ const InputBarContainer = ({
     !isAgentBuilder &&
     !isDefaultAgentLoading &&
     !!defaultAgentId &&
-    defaultAgentId !== GLOBAL_AGENTS_SID.DUST &&
+    defaultAgentId !== GLOBAL_AGENTS_SID.RUBY &&
     !agentsById.has(defaultAgentId);
 
   const contentEditableClasses = classNames(

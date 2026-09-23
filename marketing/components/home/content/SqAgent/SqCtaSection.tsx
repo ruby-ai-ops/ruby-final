@@ -1,6 +1,6 @@
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
 import { appendUTMParams } from "@marketing/lib/utils/utm";
-import { LegacyButton as Button } from "@dust-tt/sparkle";
+import { LegacyButton as Button } from "@ruby-ai/ui";
 
 interface SqCtaSectionProps {
   title: string;
@@ -29,7 +29,7 @@ export function SqCtaSection({
           </h2>
           <p className="mb-8 text-lg text-blue-100">{subtitle}</p>
           <Button
-            variant="highlight"
+            variant="primary"
             size="md"
             label={ctaText}
             onClick={withTracking(

@@ -52,8 +52,8 @@ export class MicrosoftBotMessageModel extends ConnectorBaseModel<MicrosoftBotMes
   declare userActivityId: string;
   declare agentActivityId: string;
   declare replyToId?: string;
-  declare dustConversationId?: string;
-  declare dustAgentMessageId?: string;
+  declare rubyConversationId?: string;
+  declare rubyAgentMessageId?: string;
 }
 
 MicrosoftBotMessageModel.init(
@@ -92,11 +92,11 @@ MicrosoftBotMessageModel.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    dustConversationId: {
+    rubyConversationId: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    dustAgentMessageId: {
+    rubyAgentMessageId: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -112,7 +112,7 @@ MicrosoftBotMessageModel.init(
         fields: ["connectorId", "conversationId"],
       },
       {
-        fields: ["connectorId", "dustConversationId"],
+        fields: ["connectorId", "rubyConversationId"],
       },
     ],
   }

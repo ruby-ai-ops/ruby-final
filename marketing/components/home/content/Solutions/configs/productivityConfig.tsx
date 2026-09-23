@@ -12,7 +12,7 @@ import type {
 } from "@marketing/components/home/content/Solutions/configs/utils";
 import type { DemoVideoProps } from "@marketing/components/home/content/Solutions/DemoVideoSection";
 import type { UseCaseProps } from "@marketing/components/home/content/Solutions/UseCasesSection";
-import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@dust-tt/sparkle";
+import { CheckCircle, MagicWand02, Rocket02, Users01 } from "@ruby-ai/ui";
 
 // Config exports
 export const pageSettings: pageSettingsProps = {
@@ -150,39 +150,39 @@ export const UseCases: UseCaseProps = {
 
 export const Quote: QuoteProps = {
   quote:
-    "The Dust platform is more than just a tool for post-ideation; it's a catalyst for innovation, stimulating idea generation as employees engage with it.",
+    "The Ruby platform is more than just a tool for post-ideation; it's a catalyst for innovation, stimulating idea generation as employees engage with it.",
   name: "Boris Lipiainen",
   title: "Chief Product and Technology Officer at Kyriba",
   logo: "/static/landing/logos/color/kyriba.png",
 };
 
 export const DemoVideo: DemoVideoProps = {
-  sectionTitle: "Watch Dust in motion",
-  videoUrl: "https://fast.wistia.net/embed/iframe/rnyvpdxfrk",
+  sectionTitle: "Watch Ruby in motion",
+  videoUrl: "/static/workspace-demo/index.html",
   showCaptions: true,
 };
 
 export const Stories: CustomerStory[] = [
   {
-    title: "Kyriba's adoption of Dust across all functions",
+    title: "Kyriba's adoption of Ruby across all functions",
     content:
-      "43% of Kyriba employees save more than 3 hours weekly leveraging Dust for RFPs.",
-    href: "/customers/kyriba-accelerating-innovation-with-dust",
-    src: "https://blog.dust.tt/content/images/size/w2000/2024/10/kyriba_dust.jpg",
+      "43% of Kyriba employees save more than 3 hours weekly leveraging Ruby for RFPs.",
+    href: "/customers/kyriba-accelerating-innovation-with-ruby",
+    src: "https://ruby.ad/content/images/size/w2000/2024/10/kyriba_ruby.jpg",
   },
   {
     title:
-      "PayFit Accelerates Content Creation and Knowledge Sharing with Dust",
+      "PayFit Accelerates Content Creation and Knowledge Sharing with Ruby",
     content:
-      "PayFit leverages Dust AI assistants to improve their internal processes across the board.",
-    href: "/customers/dust-ai-payfit-efficiency",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/01/dust_payfit.png",
+      "PayFit leverages Ruby AI assistants to improve their internal processes across the board.",
+    href: "/customers/ruby-ai-payfit-efficiency",
+    src: "https://ruby.ad/content/images/size/w2000/2025/01/ruby_payfit.png",
   },
   {
-    title: "November Five's journey to minimizing routine tasks with Dust",
+    title: "November Five's journey to minimizing routine tasks with Ruby",
     content:
-      "Discover how November Five accelerates work with Dust, turning 3-hour tasks into 30 minutes.",
-    href: "/customers/november-five-ai-transformation-dust",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/01/dust_november_five.png",
+      "Discover how November Five accelerates work with Ruby, turning 3-hour tasks into 30 minutes.",
+    href: "/customers/november-five-ai-transformation-ruby",
+    src: "https://ruby.ad/content/images/size/w2000/2025/01/ruby_november_five.png",
   },
 ];

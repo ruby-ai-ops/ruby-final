@@ -118,7 +118,7 @@ export function isWorkspaceAnalyticsEnabled(
 }
 
 // Conversation unread email and Slack are on by default. Admins can turn them
-// off workspace-wide; in-app Dust notifications are not affected.
+// off workspace-wide; in-app Ruby notifications are not affected.
 export function areConversationExternalNotificationsEnabled(
   owner: LightWorkspaceType
 ): boolean {
@@ -148,7 +148,7 @@ export function areRestrictedModelsAllowedForPublishedAgents(
  * A pod-level default agent takes precedence over the workspace-level default agent.
  *
  * Returns the resolved agent sId, or `null` when no default applies (callers then
- * fall back to @dust). ).
+ * fall back to @ruby). ).
  */
 export function resolveDefaultAgentId({
   owner,
@@ -363,12 +363,12 @@ export function isOnlyManager(
   return owner.role === "manager";
 }
 
-const DustUserEmailHeader = "x-api-user-email";
+const RubyUserEmailHeader = "x-api-user-email";
 
 export function getUserEmailFromHeaders(headers: {
   [key: string]: string | string[] | undefined;
 }) {
-  const email = headers[DustUserEmailHeader];
+  const email = headers[RubyUserEmailHeader];
   if (typeof email === "string") {
     return decodeUtf8HeaderValue(email);
   }
@@ -381,9 +381,9 @@ export function getHeaderFromUserEmail(email: string | undefined) {
     return undefined;
   }
 
-  // The email may exceed Latin-1 (internationalized addresses); DustAPI
-  // encodes extra header values on the wire (see @dust-tt/client baseHeaders).
+  // The email may exceed Latin-1 (internationalized addresses); RubyAPI
+  // encodes extra header values on the wire (see @ruby-ai/client baseHeaders).
   return {
-    [DustUserEmailHeader]: email,
+    [RubyUserEmailHeader]: email,
   };
 }

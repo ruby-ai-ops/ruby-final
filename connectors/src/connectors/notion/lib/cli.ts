@@ -503,7 +503,7 @@ export const notion = async ({
     // To use when we have many nodes in "syncing" state for a connector that have a
     // You can check with the following SQL query on core:
     // SELECT count(*) FROM data_sources_nodes dsn JOIN data_sources ds ON (dsn.data_source = ds.id) WHERE 'notion-syncing' = ANY(parents)
-    // AND mime_type != 'application/vnd.dust.notion.syncing-folder' AND ds.data_source_id = 'XXX'
+    // AND mime_type != 'application/vnd.ruby.notion.syncing-folder' AND ds.data_source_id = 'XXX'
     // Clearing the parentsLastUpdatedAt field will force a resync of all parents at the end of the next sync
     case "clear-parents-last-updated-at": {
       const connector = await getConnector(args);
@@ -637,8 +637,8 @@ export const notion = async ({
     }
 
     // WARNING: This is meant to be used on pages deleted from Notion but not
-    // yet from Dust Since garbage collection can be long, we allow manually
-    // deleting pages from Dust before it finishes It is not meant to be used on
+    // yet from Ruby Since garbage collection can be long, we allow manually
+    // deleting pages from Ruby before it finishes It is not meant to be used on
     // pages that are still synced in Notion
     case "delete-url": {
       const connector = await getConnector(args);

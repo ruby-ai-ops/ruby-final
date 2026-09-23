@@ -161,11 +161,11 @@ export interface SeededScenario {
   knowledgeByKey: Map<string, SeededKnowledgeNode>;
 }
 
-/** The agent under test: the Dust global agent with the conversational-building skill enabled. */
+/** The agent under test: the Ruby global agent with the conversational-building skill enabled. */
 export interface BuildingAgentConfig {
   agentId: string;
   instructions: string;
-  // The `<dust_system>` message injecting the enabled skill instructions, as rendered in production.
+  // The `<ruby_system>` message injecting the enabled skill instructions, as rendered in production.
   skillInstructionsMessage: string;
   model: {
     modelId: ModelIdType;

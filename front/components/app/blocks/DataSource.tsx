@@ -2,7 +2,7 @@ import "@uiw/react-textarea-code-editor/dist.css";
 
 import DataSourcePicker from "@app/components/data_source/DataSourcePicker";
 import { SuspensedCodeEditor } from "@app/components/SuspensedCodeEditor";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { shallowBlockClone } from "@app/lib/utils";
 import type {
   AppType,
@@ -19,7 +19,7 @@ import {
   CollapsibleTrigger,
   Input,
   Label,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useState } from "react";
 
 import Block from "./Block";

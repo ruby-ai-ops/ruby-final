@@ -1,0 +1,8 @@
+name = "admin-ruby-ai"
+compatibility_date = "2025-01-01"
+main = "./worker/admin.ts"
+
+[assets]
+directory = "./dist/admin"
+not_found_handling = "none"
+binding = "ASSETS"

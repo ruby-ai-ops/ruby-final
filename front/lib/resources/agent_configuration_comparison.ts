@@ -6,7 +6,7 @@ import type { SaveAgentConfigurationParams } from "@app/lib/resources/agent_reso
 // worst case is a redundant save.
 
 // Identity/presentation fields the DB-reconstructed action carries but the wire payload never sends,
-// at every depth (nested in data-source/table/Dust-app entries). Dropped so an unchanged tool
+// at every depth (nested in data-source/table/Ruby-app entries). Dropped so an unchanged tool
 // compares equal.
 const ACTION_IDENTITY_KEYS_TO_DROP = new Set([
   "id",
@@ -21,12 +21,12 @@ const ACTION_IDENTITY_KEYS_TO_DROP = new Set([
 // never descended into — dropping a key inside them could silently skip a real edit.
 const OPAQUE_ACTION_KEYS = new Set(["jsonSchema", "additionalConfiguration"]);
 
-// A reconstructed `dustAppConfiguration` also carries the app's presentation fields (`name`,
+// A reconstructed `rubyAppConfiguration` also carries the app's presentation fields (`name`,
 // `description`) the PATCH payload never sends — only `appId`/`appWorkspaceId`/`type` identify it.
-// Dropped so an unchanged Dust-app tool compares equal (they are derived from the app, not editable
+// Dropped so an unchanged Ruby-app tool compares equal (they are derived from the app, not editable
 // here, so a real change is always reflected by `appId`).
-const DUST_APP_CONFIG_KEY = "dustAppConfiguration";
-const DUST_APP_PRESENTATION_KEYS_TO_DROP = new Set(["name", "description"]);
+const RUBY_APP_CONFIG_KEY = "rubyAppConfiguration";
+const RUBY_APP_PRESENTATION_KEYS_TO_DROP = new Set(["name", "description"]);
 
 function isRecordValue(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -46,8 +46,8 @@ function normalizeActionForComparison(value: unknown): unknown {
       }
       if (OPAQUE_ACTION_KEYS.has(key)) {
         result[key] = value[key];
-      } else if (key === DUST_APP_CONFIG_KEY && isRecordValue(value[key])) {
-        result[key] = normalizeDustAppConfigForComparison(value[key]);
+      } else if (key === RUBY_APP_CONFIG_KEY && isRecordValue(value[key])) {
+        result[key] = normalizeRubyAppConfigForComparison(value[key]);
       } else {
         result[key] = normalizeActionForComparison(value[key]);
       }
@@ -57,16 +57,16 @@ function normalizeActionForComparison(value: unknown): unknown {
   return value;
 }
 
-// Projects a `dustAppConfiguration` onto the fields the wire payload carries, dropping the
+// Projects a `rubyAppConfiguration` onto the fields the wire payload carries, dropping the
 // reconstructed-only identity and presentation fields.
-function normalizeDustAppConfigForComparison(
+function normalizeRubyAppConfigForComparison(
   value: Record<string, unknown>
 ): Record<string, unknown> {
   const result: Record<string, unknown> = Object.create(null);
   for (const key of Object.keys(value)) {
     if (
       ACTION_IDENTITY_KEYS_TO_DROP.has(key) ||
-      DUST_APP_PRESENTATION_KEYS_TO_DROP.has(key)
+      RUBY_APP_PRESENTATION_KEYS_TO_DROP.has(key)
     ) {
       continue;
     }

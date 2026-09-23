@@ -34,8 +34,8 @@ import type {
   DataSourceConfig,
 } from "@connectors/types";
 import { isSnowflakeCredentials } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { assertNever, Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { assertNever, Err, Ok } from "@ruby-ai/client";
 
 const logger = mainLogger.child({
   connector: "snowflake",

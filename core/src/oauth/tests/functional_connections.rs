@@ -1,6 +1,6 @@
-use dust::utils;
+use ruby::utils;
 
-use dust::oauth::tests::utils::{do_api_call, do_failing_api_call, HttpMethod};
+use ruby::oauth::tests::utils::{do_api_call, do_failing_api_call, HttpMethod};
 use serde::Deserialize;
 use serde_json::json;
 
@@ -15,7 +15,7 @@ struct ConnectionExpectedResponse {
 
 #[tokio::test]
 async fn test_redirect_uri_survives_metadata_reads_and_finalization() -> anyhow::Result<()> {
-    let redirect_uri = "https://eu.dust.tt/oauth/mock/finalize";
+    let redirect_uri = "https://app.ruby.ad/oauth/mock/finalize";
     for initial_redirect_uri in [Some(redirect_uri), None] {
         let created = do_api_call(
             "/connections".to_string(),
@@ -71,7 +71,7 @@ async fn test_redirect_uri_survives_metadata_reads_and_finalization() -> anyhow:
 
 #[tokio::test]
 async fn test_metadata_update_preserves_redirect_uri() -> anyhow::Result<()> {
-    let redirect_uri = "https://dust.tt/oauth/mcp/finalize";
+    let redirect_uri = "https://app.ruby.ad/oauth/mcp/finalize";
     let created = do_api_call(
         "/connections".to_string(),
         HttpMethod::POST,

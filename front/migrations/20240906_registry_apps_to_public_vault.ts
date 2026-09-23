@@ -1,19 +1,19 @@
 // import config from "@app/lib/api/config";
-// import { getDustProdActionRegistry } from "@app/lib/registry";
+// import { getRubyProdActionRegistry } from "@app/lib/registry";
 // import { AppModel } from "@app/lib/resources/storage/models/apps";
 // import { WorkspaceModel } from "@app/lib/resources/storage/models/workspace";
 // import { getResourceIdFromSId } from "@app/lib/resources/string_ids";
 // import { makeScript } from "@app/scripts/helpers";
 //
 // makeScript({}, async ({ execute }, logger) => {
-//   const publicVaultSqid = config.getDustAppsSpaceId();
+//   const publicVaultSqid = config.getRubyAppsSpaceId();
 //   const vaultId = getResourceIdFromSId(publicVaultSqid);
-//   const dustAppsWorkspace = await WorkspaceModel.findOne({
-//     where: { sId: config.getDustAppsWorkspaceId() },
+//   const rubyAppsWorkspace = await WorkspaceModel.findOne({
+//     where: { sId: config.getRubyAppsWorkspaceId() },
 //   });
-//   if (!dustAppsWorkspace) {
+//   if (!rubyAppsWorkspace) {
 //     throw new Error(
-//       `Could not find workspace with sId ${config.getDustAppsWorkspaceId()}`
+//       `Could not find workspace with sId ${config.getRubyAppsWorkspaceId()}`
 //     );
 //   }
 //   if (!vaultId) {
@@ -25,11 +25,11 @@
 //     {
 //       app: { appId },
 //     },
-//   ] of Object.entries(getDustProdActionRegistry())) {
+//   ] of Object.entries(getRubyProdActionRegistry())) {
 //     console.log(
 //       execute ? "" : "[DRY RUN] ",
-//       `Updating app ${appName} (sId=${appId}) in ${dustAppsWorkspace.name} workspace ` +
-//         `(sId=${dustAppsWorkspace.sId}) with vaultId ${vaultId}`
+//       `Updating app ${appName} (sId=${appId}) in ${rubyAppsWorkspace.name} workspace ` +
+//         `(sId=${rubyAppsWorkspace.sId}) with vaultId ${vaultId}`
 //     );
 //     if (execute) {
 //       await AppModel.update(
@@ -39,7 +39,7 @@
 //         {
 //           where: {
 //             sId: appId,
-//             workspaceId: dustAppsWorkspace.id,
+//             workspaceId: rubyAppsWorkspace.id,
 //           },
 //         }
 //       );
@@ -47,7 +47,7 @@
 //         {
 //           appName,
 //           appId,
-//           workspaceId: config.getDustAppsWorkspaceId(),
+//           workspaceId: config.getRubyAppsWorkspaceId(),
 //           vaultId,
 //           execute,
 //         },

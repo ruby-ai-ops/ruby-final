@@ -1,6 +1,6 @@
 {
   "ranAt": "2026-08-25T18:02:18.571Z",
-  "querySet": "eval_queries_dust.json",
+  "querySet": "eval_queries_ruby.json",
   "groupBoost": 0.5,
   "excludeGlobal": true,
   "includeInstructions": false,

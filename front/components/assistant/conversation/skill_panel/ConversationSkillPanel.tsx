@@ -8,7 +8,7 @@ import {
 import { useSkill } from "@app/lib/swr/skill_configurations";
 import { useUser } from "@app/lib/swr/user";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 interface ConversationSkillPanelProps {
   owner: LightWorkspaceType;

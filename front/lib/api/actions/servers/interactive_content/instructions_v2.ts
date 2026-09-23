@@ -13,7 +13,7 @@ Before declaring a frame done, mentally check both the default panel width and f
 - Import React hooks from \`react\` when using them.
 - Hooks, including \`useState\`, \`useEffect\`, and \`useFile\`, must be called at the top level of the component.
 - \`React.createElement\` is not supported.
-- Outbound network requests (fetch, XHR, WebSocket) are blocked. connect-src is restricted to the Dust service only. External images can be rendered via <img src="https://..."> tags.
+- Outbound network requests (fetch, XHR, WebSocket) are blocked. connect-src is restricted to the Ruby service only. External images can be rendered via <img src="https://..."> tags.
 - External links must include \`target="_blank"\` because frames render inside an iframe.
 - Do not use \`<form>\` elements, as the iframe sandbox blocks form submission. Use a \`<div>\` with inputs and an \`onClick\` handler on the button instead.
 - When displaying text with < or > symbols in JSX, use HTML entities such as \`&lt;\` and \`&gt;\`, or wrap the string in braces.
@@ -99,9 +99,9 @@ The same decision rule applies regardless of where the data came from:
 
 ### useFile Reference
 
-- Import \`useFile\` from \`@dust/react-hooks\`.
+- Import \`useFile\` from \`@ruby-ai/react-hooks\`.
 - \`useFile()\` accepts a file ID (\`fil_abc123\` from an attachment tag), a scoped file path for files **outside** this Frame package, or a package-relative path for files **inside** this Frame package.
-- Files that live in this Frame's own folder (CSV, JSON, images next to \`index.tsx\`) must use a package-relative path starting with \`./\`, such as \`useFile("./data.csv")\` or \`useFile("./assets/logo.png")\`. Do **not** pass an absolute \`conversation-{conversationId}/MyFrame/data.csv\` or \`pod-{podId}/MyFrame/data.csv\` path for those files: \`dsbx frame publish\` and \`validate\` reject them so the Frame stays portable when shared or moved.
+- Files that live in this Frame's own folder (CSV, JSON, images next to \`index.tsx\`) must use a package-relative path starting with \`./\`, such as \`useFile("./data.csv")\` or \`useFile("./assets/logo.png")\`. Do **not** pass an absolute \`conversation-{conversationId}/MyFrame/data.csv\` or \`pod-{podId}/MyFrame/data.csv\` path for those files: \`rbx frame publish\` and \`validate\` reject them so the Frame stays portable when shared or moved.
 - For files outside the Frame package, use a file ID or an explicit scoped path: \`conversation-{conversationId}/report.csv\` for a conversation file, and \`pod-{podId}/filename.md\` for a pod file.
 - Never use bare \`conversation/filename\` or \`pod/filename\` paths. They are context-dependent, non-portable, and can silently load the wrong file.
 - Store file IDs as intact strings such as \`"fil_abc123"\`, not as string concatenation.
@@ -109,21 +109,21 @@ The same decision rule applies regardless of where the data came from:
 - For images from the conversation, load with \`useFile\`, create a local object URL with \`URL.createObjectURL(file)\`, and render that URL in \`<img>\` or background styles. External images can be rendered directly via \`<img src="https://...">\`.
 - Custom components that render files should use \`fileId\` as the prop name so server-side prefetching can work.
 - Other frames can be imported as React components by file ID or explicit scoped path, for example \`import MyComponent from "fil_abc123"\` or \`import MyComponent from "conversation-conv_123/MyFrame.tsx"\`. Transitive imports are supported.
-- To let users download data, import \`triggerUserFileDownload\` from \`@dust/react-hooks\` and expose it through a button or other user action. Never auto-trigger downloads.
-- To capture the current visualization, import \`captureScreenshot\` from \`@dust/react-hooks\` and call \`await captureScreenshot("my-chart.png")\` or \`await captureScreenshot()\` from a user-triggered action.
+- To let users download data, import \`triggerUserFileDownload\` from \`@ruby-ai/react-hooks\` and expose it through a button or other user action. Never auto-trigger downloads.
+- To capture the current visualization, import \`captureScreenshot\` from \`@ruby-ai/react-hooks\` and call \`await captureScreenshot("my-chart.png")\` or \`await captureScreenshot()\` from a user-triggered action.
 
 ### useUserIdentity Reference
 
-- Import \`useUserIdentity\` from \`@dust/react-hooks\` to know who is viewing the Frame.
+- Import \`useUserIdentity\` from \`@ruby-ai/react-hooks\` to know who is viewing the Frame.
 - It returns \`{ isAuthenticated, isWorkspaceMember, isFrameAuthor, isPodMember, isPodEditor, user, isLoading, error }\`. When \`isAuthenticated\` is true, \`user\` is \`{ sId, firstName, lastName, fullName, image }\`; otherwise \`user\` is \`null\`.
 - \`isAuthenticated\` is only true for a signed-in member of the workspace that owns the Frame. A viewer of a shared Frame who is signed out, or signed in to a different workspace, is not authenticated.
 - \`isFrameAuthor\` is true when the viewer can modify the Frame v2 source files. For a standalone conversation this follows conversation access; in a Pod it follows write access to the Pod. Use it to show author-only controls, and declare the functions behind those controls with \`frame_author_required\` so the server enforces the same capability.
 - \`isPodMember\` is true when the viewer belongs to the Pod hosting the Frame (its member or editor group); \`isPodEditor\` when they are one of its editors or a workspace admin. Both are false when the Frame is viewed outside a Pod (a conversation, a public share) even if the viewer is in fact a member, so treat false as "do not show Pod-scoped affordances here", not as proof of the viewer's standing.
 - Render the \`isLoading\` state, and treat \`error\` and the unauthenticated case identically: fall back to the unauthenticated view rather than showing an error.
-- A Frame cannot sign anyone in. The viewer is already authenticated to Dust or they are not, and nothing the Frame renders can change that. When a Frame only makes sense for an authenticated member, render a plain view saying the content is unavailable to them, rather than a login prompt or a button that will not work.
+- A Frame cannot sign anyone in. The viewer is already authenticated to Ruby or they are not, and nothing the Frame renders can change that. When a Frame only makes sense for an authenticated member, render a plain view saying the content is unavailable to them, rather than a login prompt or a button that will not work.
 
 \`\`\`tsx
-import { useUserIdentity } from "@dust/react-hooks";
+import { useUserIdentity } from "@ruby-ai/react-hooks";
 
 const { user, isAuthenticated, isFrameAuthor, isLoading } = useUserIdentity();
 
@@ -161,8 +161,8 @@ These apply to data from any source: the user's prompt, attached files, tool out
 ### Output And Imports
 
 - Default output is a single Frame React component with a default export.
-- Use \`@dust/slideshow/v2\` only when the user explicitly asks for slides, a presentation, a deck, or multi-slide content.
-- Imports are limited to \`react\`, \`recharts\`, \`lucide-react\`, \`papaparse\`, \`shadcn\`, \`@viz/lib/utils\`, \`@dust/react-hooks\`, \`@dust/slideshow/v2\`, \`motion/react\`, legacy \`@dust/slideshow/v1\` imports only when editing an existing v1 slideshow, and frame file references.
+- Use \`@ruby-ai/slideshow/v2\` only when the user explicitly asks for slides, a presentation, a deck, or multi-slide content.
+- Imports are limited to \`react\`, \`recharts\`, \`lucide-react\`, \`papaparse\`, \`shadcn\`, \`@viz/lib/utils\`, \`@ruby-ai/react-hooks\`, \`@ruby-ai/slideshow/v2\`, \`motion/react\`, legacy \`@ruby-ai/slideshow/v1\` imports only when editing an existing v1 slideshow, and frame file references.
 - No other third-party libraries are installed or available.
 `;
 
@@ -203,7 +203,7 @@ Example using \`useFile\` when a structured file is available:
 import { useEffect, useState } from "react";
 import Papa from "papaparse";
 import { AlertCircle } from "lucide-react";
-import { useFile } from "@dust/react-hooks";
+import { useFile } from "@ruby-ai/react-hooks";
 import { Card, CardContent, CardHeader, CardTitle } from "shadcn";
 
 type Row = {
@@ -307,7 +307,7 @@ export default function DataFrame() {
 Example using \`triggerUserFileDownload\`:
 
 \`\`\`tsx
-import { triggerUserFileDownload } from "@dust/react-hooks";
+import { triggerUserFileDownload } from "@ruby-ai/react-hooks";
 import { Button } from "shadcn";
 
 <Button

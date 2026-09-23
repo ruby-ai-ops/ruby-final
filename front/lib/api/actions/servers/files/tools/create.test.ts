@@ -21,7 +21,7 @@ describe("createHandler", () => {
       {
         path: `conversation-${conversation.sId}/chart.tsx`,
         content: "export default function Chart() { return null; }",
-        content_type: "application/vnd.dust.frame",
+        content_type: "application/vnd.ruby.frame",
       },
       makeExtra(auth, conversation)
     );
@@ -33,14 +33,14 @@ describe("createHandler", () => {
     });
     expect(fileStorageMock.saveFileCalls).toHaveLength(1);
     expect(fileStorageMock.saveFileCalls[0].contentType).toBe(
-      "application/vnd.dust.frame"
+      "application/vnd.ruby.frame"
     );
   });
 
   it("overwrites an existing frame file, preserving its content type", async () => {
     const { auth, conversation } = await setupProjectConversation();
     fileStorageMock.setFileMetadata(() => ({
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       size: "100",
     }));
 
@@ -64,14 +64,14 @@ describe("createHandler", () => {
     // The mount object must keep the frame content type, not the incoming one.
     expect(fileStorageMock.saveFileCalls).toHaveLength(1);
     expect(fileStorageMock.saveFileCalls[0].contentType).toBe(
-      "application/vnd.dust.frame"
+      "application/vnd.ruby.frame"
     );
   });
 
   it("overwrites an existing frame file well over the generic 50 KB limit", async () => {
     const { auth, conversation } = await setupProjectConversation();
     fileStorageMock.setFileMetadata(() => ({
-      contentType: "application/vnd.dust.frame",
+      contentType: "application/vnd.ruby.frame",
       size: "100",
     }));
     const content = "x".repeat(CREATE_CONTENT_MAX_BYTES + 1);

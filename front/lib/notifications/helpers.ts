@@ -12,7 +12,7 @@ import {
   getAgentsDataRetention,
   getConversationsDataRetention,
 } from "@app/lib/data_retention";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import {
   conversationUsesAgentsWithRetention,
   conversationWithoutContentForResource,
@@ -287,7 +287,7 @@ const runConversationSummaryToolCall = async (
 ): Promise<
   Result<
     Record<string, unknown>,
-    DustError<"no_whitelisted_model_found" | "generation_failed">
+    RubyError<"no_whitelisted_model_found" | "generation_failed">
   >
 > => {
   const owner = auth.getNonNullableWorkspace();
@@ -295,7 +295,7 @@ const runConversationSummaryToolCall = async (
   const model = await getSmallWhitelistedModel(auth);
   if (!model) {
     return new Err(
-      new DustError("no_whitelisted_model_found", "No whitelisted model found")
+      new RubyError("no_whitelisted_model_found", "No whitelisted model found")
     );
   }
 
@@ -336,13 +336,13 @@ const runConversationSummaryToolCall = async (
   );
 
   if (res.isErr()) {
-    return new Err(new DustError("generation_failed", res.error.message));
+    return new Err(new RubyError("generation_failed", res.error.message));
   }
 
   const args = res.value.actions?.[0]?.arguments;
   if (!args) {
     return new Err(
-      new DustError("generation_failed", "No tool call result generated")
+      new RubyError("generation_failed", "No tool call result generated")
     );
   }
 
@@ -375,7 +375,7 @@ const generateUnreadMessagesSummary = async ({
 }): Promise<
   Result<
     string,
-    DustError<
+    RubyError<
       | "conversation_not_found"
       | "no_unread_messages_found"
       | "no_whitelisted_model_found"
@@ -402,7 +402,7 @@ const generateUnreadMessagesSummary = async ({
 
   if (conversationRes.isErr()) {
     return new Err(
-      new DustError("conversation_not_found", "Failed to get conversation")
+      new RubyError("conversation_not_found", "Failed to get conversation")
     );
   }
 
@@ -414,7 +414,7 @@ const generateUnreadMessagesSummary = async ({
 
   if (unreadMessages.length === 0) {
     return new Err(
-      new DustError("no_unread_messages_found", "No unread messages")
+      new RubyError("no_unread_messages_found", "No unread messages")
     );
   }
 
@@ -424,7 +424,7 @@ const generateUnreadMessagesSummary = async ({
 
   if (!userFullName) {
     return new Err(
-      new DustError("user_not_found", "User not found for summary generation")
+      new RubyError("user_not_found", "User not found for summary generation")
     );
   }
   // Generate LLM summary
@@ -435,9 +435,9 @@ const generateUnreadMessagesSummary = async ({
     `# Input Format\n` +
     `You'll receive a JSON array of UNREAD messages (not the full conversation history, only what ${userFullName} hasn't seen yet). Each message has:\n` +
     `- "role": "user" (human) or "assistant" (AI agent)\n` +
-    `- "name": sender's display name (e.g., "Sarah Chen", "dust")\n` +
-    `- "content": message text (human messages start with <dust_system> block with sender details)\n\n` +
-    `Use "role", "name", and <dust_system> to attribute senders correctly. Use message text for what happened. Never guess.\n\n` +
+    `- "name": sender's display name (e.g., "Sarah Chen", "ruby")\n` +
+    `- "content": message text (human messages start with <ruby_system> block with sender details)\n\n` +
+    `Use "role", "name", and <ruby_system> to attribute senders correctly. Use message text for what happened. Never guess.\n\n` +
     `# Writing Rules\n` +
     `1. **Length**: 1-2 sentences maximum\n` +
     `2. **Second person**: Use "you/your/yours" when referring to ${userFullName} - NEVER write "${userFullName}"\n` +
@@ -507,7 +507,7 @@ const generateUnreadMessagesSummary = async ({
   }
 
   return new Err(
-    new DustError("generation_failed", "No conversation summary generated")
+    new RubyError("generation_failed", "No conversation summary generated")
   );
 };
 
@@ -564,7 +564,7 @@ const activationRecommendationSpecification: AgentActionSpecification = {
         description:
           "A clear, friendly, plain-English goal that completes: 'We put together a simple way to help you [GOAL].' " +
           "Return a concise 6–8 word phrase that fits naturally after 'help you' and expresses what the user will be able to do or achieve. " +
-          "Use direct, everyday language that makes sense to someone unfamiliar with Dust. Avoid Dust-specific terms or references to how the " +
+          "Use direct, everyday language that makes sense to someone unfamiliar with Ruby. Avoid Ruby-specific terms or references to how the " +
           "recommendation works, such as 'agent,' 'workflow,' 'prompt,' 'pod,' or 'automation.' " +
           "For example, return ‘stay on top of important follow-ups’ rather than ‘use an agent to summarize meeting transcripts.’",
       },
@@ -573,7 +573,7 @@ const activationRecommendationSpecification: AgentActionSpecification = {
   },
 };
 
-// A proactive recommendation email surfaces a conversation a Dust agent
+// A proactive recommendation email surfaces a conversation a Ruby agent
 // prepared for the user. We generate a short "goal" phrase for the intro
 // line via a single LLM call.
 const generateActivationRecommendation = async ({
@@ -585,7 +585,7 @@ const generateActivationRecommendation = async ({
 }): Promise<
   Result<
     { goal: string },
-    DustError<
+    RubyError<
       | "conversation_not_found"
       | "no_whitelisted_model_found"
       | "generation_failed"
@@ -606,7 +606,7 @@ const generateActivationRecommendation = async ({
 
   if (conversationRes.isErr()) {
     return new Err(
-      new DustError("conversation_not_found", "Failed to get conversation")
+      new RubyError("conversation_not_found", "Failed to get conversation")
     );
   }
 
@@ -618,7 +618,7 @@ const generateActivationRecommendation = async ({
 
   if (!userFullName) {
     return new Err(
-      new DustError("user_not_found", "User not found for summary generation")
+      new RubyError("user_not_found", "User not found for summary generation")
     );
   }
 
@@ -641,7 +641,7 @@ const generateActivationRecommendation = async ({
   const prompt =
     "A clear, friendly, plain-English goal that completes: 'We put together a simple way to help you [GOAL].' " +
     "Return a concise 6–8 word phrase that fits naturally after 'help you' and expresses what the user will be able to do or achieve. " +
-    "Use direct, everyday language that makes sense to someone unfamiliar with Dust. Avoid Dust-specific terms or references to how the " +
+    "Use direct, everyday language that makes sense to someone unfamiliar with Ruby. Avoid Ruby-specific terms or references to how the " +
     "recommendation works, such as 'agent,' 'workflow,' 'prompt,' 'pod,' or 'automation.' " +
     "For example, return ‘stay on top of important follow-ups’ rather than ‘use an agent to summarize meeting transcripts.’";
 
@@ -684,7 +684,7 @@ const generateActivationRecommendation = async ({
   }
 
   return new Err(
-    new DustError("generation_failed", "No recommendation content generated")
+    new RubyError("generation_failed", "No recommendation content generated")
   );
 };
 

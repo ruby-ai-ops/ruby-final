@@ -39,7 +39,7 @@ makeScript(
         .map((m) => [m.email, m])
     );
 
-    // Secondary users have a local part ending with "xx" (e.g. matteoxx@dust.tt).
+    // Secondary users have a local part ending with "xx" (e.g. matteoxx@ruby.ad).
     const xxMembers = members.filter((m) => {
       const [local] = m.email.split("@");
       return local.endsWith("xx");

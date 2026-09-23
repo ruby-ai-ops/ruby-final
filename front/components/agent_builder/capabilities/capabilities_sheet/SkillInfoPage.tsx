@@ -14,7 +14,7 @@ import {
   TabsList,
   TabsTrigger,
   Users01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React, { useMemo, useState } from "react";
 

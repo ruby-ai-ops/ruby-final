@@ -70,7 +70,7 @@ app.post(
       content: followUpPrompt,
       mentions: [
         {
-          configurationId: GLOBAL_AGENTS_SID.DUST,
+          configurationId: GLOBAL_AGENTS_SID.RUBY,
         },
       ],
       context: {

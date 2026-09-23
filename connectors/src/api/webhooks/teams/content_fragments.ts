@@ -5,12 +5,12 @@ import {
 import type { Logger } from "@connectors/logger/logger";
 import logger from "@connectors/logger/logger";
 import type {
-  DustAPI,
+  RubyAPI,
   PublicPostContentFragmentRequestBody,
   Result,
   SupportedFileContentType,
-} from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import type { Client } from "@microsoft/microsoft-graph-client";
 import type { ChatMessageAttachment } from "@microsoft/microsoft-graph-types";
 import axios from "axios";
@@ -78,7 +78,7 @@ export async function downloadTeamsAttachment(
 // Helper function to process and upload file attachments
 export async function processFileAttachments(
   attachments: ChatMessageAttachment[],
-  dustAPI: DustAPI,
+  rubyAPI: RubyAPI,
   microsoftGraphClient: Client,
   localLogger: Logger
 ): Promise<PublicPostContentFragmentRequestBody[]> {
@@ -247,7 +247,7 @@ export async function processFileAttachments(
       fileObject,
     };
 
-    const fileRes = await dustAPI.uploadFile(uploadParams);
+    const fileRes = await rubyAPI.uploadFile(uploadParams);
 
     if (fileRes.isOk()) {
       contentFragments.push({
@@ -259,7 +259,7 @@ export async function processFileAttachments(
     } else {
       localLogger.error(
         { fileName, error: fileRes.error },
-        "Failed to upload Teams file attachment to Dust"
+        "Failed to upload Teams file attachment to Ruby"
       );
     }
   }

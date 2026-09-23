@@ -3,11 +3,11 @@ import { createServer } from "node:net";
 
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { DustAPI } from "./index";
+import { RubyAPI } from "./index";
 import type { LoggerInterface } from "./types";
 
 const RETRY_LOG_MESSAGE =
-  "DustAPI retrying fetch after connection closed before response";
+  "RubyAPI retrying fetch after connection closed before response";
 
 let closers: Array<() => Promise<void>> = [];
 
@@ -92,14 +92,14 @@ function makeLogger(): LoggerInterface {
 }
 
 function makeAPI(port: number, logger: LoggerInterface) {
-  return new DustAPI(
+  return new RubyAPI(
     { url: `http://127.0.0.1:${port}` },
     { apiKey: "test-api-key", workspaceId: "test-workspace" },
     logger
   );
 }
 
-describe("DustAPI fetch retry on connection closed before response", () => {
+describe("RubyAPI fetch retry on connection closed before response", () => {
   it("retries once and succeeds when the server closes the connection before responding", async () => {
     const server = await listen((socket, index) => {
       if (index === 0) {

@@ -9,7 +9,7 @@ import {
   Brackets,
   ConfluenceLogo,
   DriveLogo,
-  DustLogoSquare,
+  RubyLogoSquare,
   File02,
   GithubLogo,
   GongLogo,
@@ -31,13 +31,13 @@ import {
   Type01,
   VolumeMax,
   ZendeskLogo,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
-const DUST_MIME_PREFIX = "application/vnd.dust.";
+const RUBY_MIME_PREFIX = "application/vnd.ruby.";
 const VND_MIME_PREFIX = "application/vnd.";
 
-/** Map provider segment from Dust internal MIME (e.g. "notion", "googledrive") to colored logo. */
+/** Map provider segment from Ruby internal MIME (e.g. "notion", "googledrive") to colored logo. */
 const INTERNAL_PROVIDER_ICONS: Record<string, ComponentType> = {
   notion: NotionLogo,
   bigquery: BigQueryLogo,
@@ -51,7 +51,7 @@ const INTERNAL_PROVIDER_ICONS: Record<string, ComponentType> = {
   snowflake: SnowflakeLogo,
   salesforce: SalesforceLogo,
   gong: GongLogo,
-  dustproject: DustLogoSquare,
+  rubyproject: RubyLogoSquare,
 };
 
 /**
@@ -143,9 +143,9 @@ export function getFileTypeIcon(
     return VolumeMax;
   }
 
-  // Internal Dust types (Notion, BigQuery, Slack, etc.) – use colored provider logos
-  if (contentType.startsWith(DUST_MIME_PREFIX)) {
-    const suffix = contentType.slice(DUST_MIME_PREFIX.length);
+  // Internal Ruby types (Notion, BigQuery, Slack, etc.) – use colored provider logos
+  if (contentType.startsWith(RUBY_MIME_PREFIX)) {
+    const suffix = contentType.slice(RUBY_MIME_PREFIX.length);
     const provider = suffix.split(".")[0]?.toLowerCase();
     if (provider && provider in INTERNAL_PROVIDER_ICONS) {
       return INTERNAL_PROVIDER_ICONS[provider];

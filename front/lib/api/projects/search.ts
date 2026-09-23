@@ -4,7 +4,7 @@ import {
   MISSING_EMBEDDING_API_KEY_ERROR_MESSAGE,
 } from "@app/lib/api/provider_credentials";
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
 import { SpaceResource } from "@app/lib/resources/space_resource";
 import logger from "@app/logger/logger";
@@ -35,7 +35,7 @@ export async function searchProjectConversations(
 ): Promise<
   Result<
     ConversationSearchResult[],
-    DustError<"core_api_error" | "invalid_request_error">
+    RubyError<"core_api_error" | "invalid_request_error">
   >
 > {
   const { query, spaceIds, topK } = options;
@@ -72,8 +72,8 @@ export async function searchProjectConversations(
   }
 
   const searches = validProjects.map(({ dataSourceView }) => ({
-    projectId: dataSourceView.dataSource.dustAPIProjectId,
-    dataSourceId: dataSourceView.dataSource.dustAPIDataSourceId,
+    projectId: dataSourceView.dataSource.rubyAPIProjectId,
+    dataSourceId: dataSourceView.dataSource.rubyAPIDataSourceId,
     view_filter: dataSourceView.toViewFilter(),
   }));
 
@@ -87,7 +87,7 @@ export async function searchProjectConversations(
       "Failed to get LLM credentials to search project conversations"
     );
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         MISSING_EMBEDDING_API_KEY_ERROR_MESSAGE
       )
@@ -102,13 +102,13 @@ export async function searchProjectConversations(
   );
 
   if (searchResult.isErr()) {
-    return new Err(new DustError("core_api_error", searchResult.error.message));
+    return new Err(new RubyError("core_api_error", searchResult.error.message));
   }
 
   const dataSourceIdToSpaceId = new Map<string, string>();
   for (const { space, dataSourceView } of validProjects) {
     dataSourceIdToSpaceId.set(
-      dataSourceView.dataSource.dustAPIDataSourceId,
+      dataSourceView.dataSource.rubyAPIDataSourceId,
       space.sId
     );
   }

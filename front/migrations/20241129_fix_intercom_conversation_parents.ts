@@ -40,8 +40,8 @@ makeScript({}, async ({ execute }, logger) => {
       logger.info(`Running SELECT query for chunk: ${query}`);
       const result: any[] = await coreSequelize.query(query, {
         replacements: {
-          dataSourceId: ds.dustAPIDataSourceId,
-          projectId: ds.dustAPIProjectId,
+          dataSourceId: ds.rubyAPIDataSourceId,
+          projectId: ds.rubyAPIProjectId,
           chunkSize: SELECT_CHUNK_SIZE,
           nextId,
         },
@@ -65,8 +65,8 @@ makeScript({}, async ({ execute }, logger) => {
           chunks[i].map(async (row) => {
             if (execute) {
               await coreAPI.updateDataSourceDocumentParents({
-                projectId: ds.dustAPIProjectId,
-                dataSourceId: ds.dustAPIDataSourceId,
+                projectId: ds.rubyAPIProjectId,
+                dataSourceId: ds.rubyAPIDataSourceId,
                 documentId: row.document_id,
                 parentId: null,
                 parents: row.parents

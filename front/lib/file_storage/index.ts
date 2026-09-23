@@ -601,8 +601,8 @@ export const getUpsertQueueBucket = (options?: FileStorageOptions) =>
 export const getTmpWorkloadsBucket = (options?: FileStorageOptions) =>
   getBucketInstance(config.getGcsTmpWorkloadsBucket(), options);
 
-export const getDustDataSourcesBucket = (options?: FileStorageOptions) =>
-  getBucketInstance(config.getDustDataSourcesBucket(), options);
+export const getRubyDataSourcesBucket = (options?: FileStorageOptions) =>
+  getBucketInstance(config.getRubyDataSourcesBucket(), options);
 
 export const getWebhookRequestsBucket = (options?: FileStorageOptions) =>
   getBucketInstance(config.getWebhookRequestsBucket(), options);
@@ -610,5 +610,5 @@ export const getWebhookRequestsBucket = (options?: FileStorageOptions) =>
 export const getLLMTracesBucket = (options?: FileStorageOptions) =>
   getBucketInstance(config.getLLMTracesBucket(), options);
 
-export const getPokeUserConfigBucket = (options?: FileStorageOptions) =>
-  getBucketInstance(config.getPokeUserConfigBucket(), options);
+export const getAdminUserConfigBucket = (options?: FileStorageOptions) =>
+  getBucketInstance(config.getAdminUserConfigBucket(), options);

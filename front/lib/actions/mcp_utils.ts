@@ -44,7 +44,7 @@ import { Err, Ok } from "@app/types/shared/result";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 import { hasNullUnicodeCharacter } from "@app/types/shared/utils/string_utils";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { isSupportedImageContentType } from "@dust-tt/client";
+import { isSupportedImageContentType } from "@ruby-ai/client";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import assert from "assert";
 import { basename, extname } from "path";

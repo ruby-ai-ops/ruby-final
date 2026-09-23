@@ -1,5 +1,5 @@
-import { getDeepDiveInstructions } from "@app/lib/api/assistant/global_agents/configurations/dust/deep-dive";
-import { isDeepDiveDisabledByAdmin } from "@app/lib/api/assistant/global_agents/configurations/dust/utils";
+import { getDeepDiveInstructions } from "@app/lib/api/assistant/global_agents/configurations/ruby/deep-dive";
+import { isDeepDiveDisabledByAdmin } from "@app/lib/api/assistant/global_agents/configurations/ruby/utils";
 import type { Authenticator } from "@app/lib/auth";
 import { getFeatureFlags } from "@app/lib/auth";
 import type { GlobalSkillDefinition } from "@app/lib/resources/skill/code_defined/shared";
@@ -36,12 +36,12 @@ export const goDeepSkill = {
   mcpServers: [
     {
       name: "run_agent",
-      childAgentId: GLOBAL_AGENTS_SID.DUST_TASK,
+      childAgentId: GLOBAL_AGENTS_SID.RUBY_TASK,
       serverNameOverride: "sub_agent",
     },
     {
       name: "run_agent",
-      childAgentId: GLOBAL_AGENTS_SID.DUST_PLANNING,
+      childAgentId: GLOBAL_AGENTS_SID.RUBY_PLANNING,
       serverNameOverride: "planning_agent",
     },
     {

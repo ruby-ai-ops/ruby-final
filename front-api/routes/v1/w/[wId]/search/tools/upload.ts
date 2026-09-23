@@ -2,7 +2,7 @@ import {
   downloadAndUploadToolFile,
   getToolAccessToken,
 } from "@app/lib/search/tools/search";
-import type { FileUploadedRequestResponseType } from "@dust-tt/client";
+import type { FileUploadedRequestResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";
@@ -25,7 +25,7 @@ const app = publicApiApp();
  * /api/v1/w/{wId}/search/tools/upload:
  *   post:
  *     summary: Upload a tool file
- *     description: Download and upload a file from a tool (MCP server) to Dust
+ *     description: Download and upload a file from a tool (MCP server) to Ruby
  *     tags:
  *       - Search
  *     parameters:

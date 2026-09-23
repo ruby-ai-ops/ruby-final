@@ -4,16 +4,16 @@
 # speeds up bacon / rust-analyzer) and drops the rest.
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=sweep-cargo-target
+RUBY_DEV_SCRIPT_NAME=sweep-cargo-target
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh
 source "$(dirname "$0")/env.sh"
 
-TARGET_DIR="${DUST_REPO_ROOT}/core/target"
-CORE_DIR="${DUST_REPO_ROOT}/core"
-DAYS="${DUST_CARGO_SWEEP_DAYS:-14}"
-MAXSIZE="${DUST_CARGO_SWEEP_MAXSIZE:-12GiB}"
+TARGET_DIR="${RUBY_REPO_ROOT}/core/target"
+CORE_DIR="${RUBY_REPO_ROOT}/core"
+DAYS="${RUBY_CARGO_SWEEP_DAYS:-14}"
+MAXSIZE="${RUBY_CARGO_SWEEP_MAXSIZE:-12GiB}"
 
 if [ ! -d "$TARGET_DIR" ]; then
   log "No ${TARGET_DIR}; skipping"

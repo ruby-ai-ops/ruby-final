@@ -4,7 +4,7 @@ import {
   CAT_LINES_MAX,
 } from "@app/lib/api/actions/servers/files/metadata";
 import { isReadableAsText } from "@app/lib/api/actions/servers/files/tools/utils";
-import { registerDustMcpTool } from "@app/lib/api/mcp_server/tools/register";
+import { registerRubyMcpTool } from "@app/lib/api/mcp_server/tools/register";
 import { isLLMVisionSupportedImageContentType } from "@app/types/files";
 import { normalizeError } from "@app/types/shared/utils/error_utils";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -12,7 +12,7 @@ import * as readline from "readline";
 import type { Readable } from "stream";
 import { z } from "zod";
 import { mcpError, mcpJsonResponse } from "../response";
-import { getDustFileSystemForScope, validatePathMatchesScope } from "./context";
+import { getRubyFileSystemForScope, validatePathMatchesScope } from "./context";
 import { FILES_SCOPE_SCHEMA } from "./schemas";
 
 const CAT_IMAGE_MAX_BYTES = 2 * 1024 * 1024;
@@ -119,7 +119,7 @@ async function readTextFilePage(
 }
 
 export function registerFilesCatTool(server: McpServer) {
-  registerDustMcpTool(
+  registerRubyMcpTool(
     server,
     "files_cat",
     {
@@ -135,13 +135,13 @@ export function registerFilesCatTool(server: McpServer) {
         return mcpError(pathError);
       }
 
-      const fsResult = await getDustFileSystemForScope(auth, scope);
+      const fsResult = await getRubyFileSystemForScope(auth, scope);
       if (fsResult.isErr()) {
         return mcpError(fsResult.error);
       }
-      const dustFs = fsResult.value;
+      const rubyFs = fsResult.value;
 
-      const statResult = await dustFs.stat(path);
+      const statResult = await rubyFs.stat(path);
       if (statResult.isErr()) {
         return mcpError(statResult.error.message);
       }
@@ -172,7 +172,7 @@ export function registerFilesCatTool(server: McpServer) {
         });
       }
 
-      const readResult = await dustFs.read(path);
+      const readResult = await rubyFs.read(path);
       if (readResult.isErr()) {
         return mcpError(readResult.error.message);
       }

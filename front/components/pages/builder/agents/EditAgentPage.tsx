@@ -7,7 +7,7 @@ import { useAuth, useWorkspace } from "@app/lib/auth/AuthContext";
 import { useRequiredPathParam } from "@app/lib/platform";
 import { useAgentConfiguration } from "@app/lib/swr/assistants";
 import { hasHealthyProviders } from "@app/lib/utils/providersHealth";
-import { Spinner } from "@dust-tt/sparkle";
+import { Spinner } from "@ruby-ai/ui";
 
 export function EditAgentPage() {
   const owner = useWorkspace();

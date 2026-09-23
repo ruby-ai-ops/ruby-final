@@ -49,7 +49,7 @@ async function fetchSlackBotDataSource(
     return new Err(
       new SlackWorkflowError(
         "slack_bot_not_connected",
-        "The Dust Slack bot is not connected to this workspace."
+        "The Ruby Slack bot is not connected to this workspace."
       )
     );
   }

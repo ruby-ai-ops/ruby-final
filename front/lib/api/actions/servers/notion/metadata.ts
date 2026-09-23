@@ -606,7 +606,7 @@ export const NOTION_SERVER = {
       supported_use_cases: ["platform_actions", "personal_actions"],
     },
     icon: "NotionLogo",
-    documentationUrl: "https://docs.dust.tt/docs/notion-mcp",
+    documentationUrl: "https://docs.ruby.ad/docs/notion-mcp",
   },
   tools: NOTION_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

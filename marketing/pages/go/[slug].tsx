@@ -2,7 +2,7 @@ import CustomErrorPage from "@marketing/components/pages/CustomErrorPage";
 import { GoResolveSuccessSchema } from "@marketing/lib/go/schemas";
 import { clientFetch } from "@marketing/lib/egress/client";
 import { isString } from "@marketing/types/shared/utils/general";
-import { LogIn01, SpinnerBrand } from "@dust-tt/sparkle";
+import { LogIn01, SpinnerBrand } from "@ruby-ai/ui";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 

@@ -9,7 +9,7 @@ import {
 import type { UserWakeUpType } from "@app/types/assistant/wakeups";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import type { LightWorkspaceType } from "@app/types/user";
-import { DataTable, Spinner, Tooltip } from "@dust-tt/sparkle";
+import { DataTable, Spinner, Tooltip } from "@ruby-ai/ui";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 

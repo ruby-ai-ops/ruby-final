@@ -22,8 +22,8 @@ import {
   normalizeError,
 } from "@connectors/types";
 import { redisClient } from "@connectors/types/shared/redis_client";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { DustAPI, Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { RubyAPI, Err, Ok } from "@ruby-ai/client";
 import type { Attributes, ModelStatic, Transaction } from "sequelize";
 
 const AUTO_GROUP_IDS_CACHE_TTL_MS = 5 * 60 * 1000;
@@ -36,13 +36,13 @@ async function fetchAutoGroupIdsForSpaces(
     spaceIds,
   }: { workspaceId: string; workspaceAPIKey: string; spaceIds: string[] }
 ): Promise<Result<string[], Error>> {
-  const dustAPI = new DustAPI(
-    { url: apiConfig.getDustFrontAPIUrl() },
+  const rubyAPI = new RubyAPI(
+    { url: apiConfig.getRubyFrontAPIUrl() },
     { workspaceId, apiKey: workspaceAPIKey },
     logger
   );
 
-  const groupIdsRes = await dustAPI.getAutoGroupIdsForSpaces({ spaceIds });
+  const groupIdsRes = await rubyAPI.getAutoGroupIdsForSpaces({ spaceIds });
   if (groupIdsRes.isErr()) {
     return new Err(new Error(groupIdsRes.error.message));
   }
@@ -383,11 +383,11 @@ export class SlackConfigurationResource extends BaseResource<SlackConfigurationM
         {
           slackTeamId: this.slackTeamId,
         },
-        "Another Dust workspace has already enabled the slack bot for your Slack workspace."
+        "Another Ruby workspace has already enabled the slack bot for your Slack workspace."
       );
       return new Err(
         new Error(
-          "Another Dust workspace has already enabled the slack bot for your Slack workspace."
+          "Another Ruby workspace has already enabled the slack bot for your Slack workspace."
         )
       );
     }

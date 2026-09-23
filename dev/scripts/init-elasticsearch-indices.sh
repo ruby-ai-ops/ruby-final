@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Idempotent local Elasticsearch index bootstrap (mirrors dust-hive initAllElasticsearch).
+# Idempotent local Elasticsearch index bootstrap (mirrors ruby-hive initAllElasticsearch).
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=init-elasticsearch
+RUBY_DEV_SCRIPT_NAME=init-elasticsearch
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh
@@ -51,7 +51,7 @@ create_core_index() {
   # when the subshell is non-zero (e.g. "already exists" → 2).
   status=0
   (
-    cd "${DUST_REPO_ROOT}/core"
+    cd "${RUBY_REPO_ROOT}/core"
     run_logged "$binary" \
       --index-name "$index_name" \
       --index-version "$index_version" \
@@ -78,8 +78,8 @@ create_front_index() {
   # when the subshell is non-zero (e.g. "already exists" → 2).
   status=0
   (
-    cd "${DUST_REPO_ROOT}/front"
-    run_logged env PATH="${DUST_REPO_ROOT}/node_modules/.bin:${PATH}" \
+    cd "${RUBY_REPO_ROOT}/front"
+    run_logged env PATH="${RUBY_REPO_ROOT}/node_modules/.bin:${PATH}" \
       npx tsx ./scripts/create_elasticsearch_index.ts \
       --index-name "$index_name" \
       --index-version "$index_version" \
@@ -99,7 +99,7 @@ create_front_index() {
 
 wait_for_elasticsearch
 
-# Keep in sync with x/henry/dust-hive/src/lib/init.ts (initElasticsearchRust / initElasticsearchTS).
+# Keep in sync with x/henry/ruby-hive/src/lib/init.ts (initElasticsearchRust / initElasticsearchTS).
 create_core_index data_sources_nodes 4
 create_core_index data_sources 1
 

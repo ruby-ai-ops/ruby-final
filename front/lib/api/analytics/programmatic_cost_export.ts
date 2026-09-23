@@ -1,5 +1,5 @@
 import { sanitizeCsvCell } from "@app/lib/api/analytics/csv_utils";
-import { DUST_MARKUP_PERCENT } from "@app/lib/api/assistant/token_pricing";
+import { RUBY_MARKUP_PERCENT } from "@app/lib/api/assistant/token_pricing";
 import { toCsv } from "@app/lib/api/csv";
 import { bucketsToArray, searchAnalytics } from "@app/lib/api/elasticsearch";
 import { getShouldTrackTokenUsageCostsESFilter } from "@app/lib/api/programmatic_usage/common";
@@ -188,7 +188,7 @@ export async function getProgrammaticCostExport(
     }
   }
 
-  const markupMultiplier = 1 + DUST_MARKUP_PERCENT / 100;
+  const markupMultiplier = 1 + RUBY_MARKUP_PERCENT / 100;
 
   const rows: ExportRow[] = allBuckets.map((bucket) => {
     const costMicroUsd = (bucket.total_cost.value ?? 0) * markupMultiplier;

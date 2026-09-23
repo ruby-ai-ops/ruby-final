@@ -41,7 +41,7 @@ async function launchAgentMessageConsumptionAttributionAfterPersistingInputs(
   {
     creditArgs = agentLoopArgs,
   }: {
-    creditArgs?: { agentMessageId: string; dustRunIds?: string[] };
+    creditArgs?: { agentMessageId: string; rubyRunIds?: string[] };
   } = {}
 ): Promise<void> {
   await computeAndStoreAgentMessageCredits(auth, creditArgs);

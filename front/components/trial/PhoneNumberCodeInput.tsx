@@ -1,5 +1,5 @@
 import { CODE_LENGTH } from "@app/lib/plans/trial/phone";
-import { cn } from "@dust-tt/sparkle";
+import { cn } from "@ruby-ai/ui";
 import type React from "react";
 
 interface CodeInputProps {

@@ -3,7 +3,7 @@ import { useDataSourceViewSearchTags } from "@app/lib/swr/data_source_views";
 import type { DataSourceTag } from "@app/types/data_source";
 import type { DataSourceViewType } from "@app/types/data_source_view";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Label } from "@dust-tt/sparkle";
+import { Label } from "@ruby-ai/ui";
 import { useEffect, useState } from "react";
 
 interface TagSearchSectionProps {
@@ -50,21 +50,21 @@ export function TagSearchSection({
       for (const dataSourceId of tag.data_sources) {
         const isTagUsed =
           selectedTagsIn.some(
-            (t) => t.tag === tag.tag && t.dustAPIDataSourceId === dataSourceId
+            (t) => t.tag === tag.tag && t.rubyAPIDataSourceId === dataSourceId
           ) ||
           selectedTagsNot.some(
-            (t) => t.tag === tag.tag && t.dustAPIDataSourceId === dataSourceId
+            (t) => t.tag === tag.tag && t.rubyAPIDataSourceId === dataSourceId
           );
 
         if (!isTagUsed) {
           // Find the corresponding dataSourceView to get the connectorProvider
           const dataSourceView = dataSourceViews.find(
-            (dsv) => dsv.dataSource.dustAPIDataSourceId === dataSourceId
+            (dsv) => dsv.dataSource.rubyAPIDataSourceId === dataSourceId
           );
 
           formattedTags.push({
             tag: tag.tag,
-            dustAPIDataSourceId: dataSourceId,
+            rubyAPIDataSourceId: dataSourceId,
             connectorProvider:
               // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
               dataSourceView?.dataSource.connectorProvider || null,

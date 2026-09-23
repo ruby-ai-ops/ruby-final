@@ -3,7 +3,7 @@ import {
   getSelectedToolLabel,
 } from "@app/components/agent_builder/capabilities/mcp/utils/toolDisplayUtils";
 import type { SelectedTool } from "@app/components/agent_builder/capabilities/shared/types";
-import { Chip } from "@dust-tt/sparkle";
+import { Chip } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 

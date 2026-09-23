@@ -62,7 +62,7 @@ export type GetServiceDataResponseType<
 };
 
 // Data-only presets (no React components). Safe to import from temporal workers
-// and server-side code without pulling in sparkle/React.
+// and server-side code without pulling in ui/React.
 export const WEBHOOK_PRESETS = {
   fathom: FATHOM_WEBHOOK_PRESET,
   github: GITHUB_WEBHOOK_PRESET,

@@ -11,7 +11,7 @@ import {
   ActionIcons,
   BookOpen01,
   Hoverable,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import React, { useMemo } from "react";
 
 interface MCPServerCardProps {

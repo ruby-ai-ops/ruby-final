@@ -11,8 +11,8 @@ import { legacyModelIdToModel } from "@app/lib/api/llm";
 import { selectPreferredStreamEndpointForWorkspace } from "@app/lib/api/llm/selectPreferredEndpointForWorkspace";
 import type { AuthenticatorType } from "@app/lib/auth";
 import { Authenticator } from "@app/lib/auth";
-import type { DustStreamEndpointConstructor } from "@app/lib/llms/stream/dust_stream_endpoint";
-import { DustNoopNoopGlobalNoopStream } from "@app/lib/llms/stream/endpoints/noop_noop_global_noop";
+import type { RubyStreamEndpointConstructor } from "@app/lib/llms/stream/ruby_stream_endpoint";
+import { RubyNoopNoopGlobalNoopStream } from "@app/lib/llms/stream/endpoints/noop_noop_global_noop";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { cacheWithRedis } from "@app/lib/utils/cache";
 import type {
@@ -141,7 +141,7 @@ export type AgentLoopArgs = {
 
   // RunIds from the specific agent loop execution. Used by tracking workflows
   // to process only this execution's runs (not all accumulated runs on the message).
-  dustRunIds?: string[];
+  rubyRunIds?: string[];
 
   // The step at which this agent loop execution started. Used to filter MCP actions
   // to only those from this execution (step >= startStep).
@@ -165,7 +165,7 @@ export type ModelInfo<E> = {
   metaData?: Record<string, unknown>;
 };
 
-export type StreamModelInfo = ModelInfo<DustStreamEndpointConstructor>;
+export type StreamModelInfo = ModelInfo<RubyStreamEndpointConstructor>;
 
 export type AgentLoopExecutionData = {
   // No models on the agent configuration as it might be different at run time (eg: auto mode, override by inputbar picker)
@@ -501,7 +501,7 @@ async function buildAgentLoopRuntimeData(
   // bypasses the workspace endpoint gating (feature flag, region) that applies to
   // user-selected models.
   const endpoint = isNoopPinnedModel
-    ? DustNoopNoopGlobalNoopStream
+    ? RubyNoopNoopGlobalNoopStream
     : model
       ? await selectPreferredStreamEndpointForWorkspace(auth, {
           model: { eq: model },

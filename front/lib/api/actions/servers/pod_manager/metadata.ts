@@ -11,7 +11,7 @@ import {
 } from "@app/lib/api/actions/servers/pod_manager/types";
 import { DATA_SOURCE_NODE_ID } from "@app/types/core/content_node";
 import { SCOPED_PREFIX_POD } from "@app/types/file_system";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import { z } from "zod";
 
 export const POD_MANAGER_SERVER_NAME = "pod_manager" as const;
@@ -36,8 +36,8 @@ export const POD_MANAGER_TOOLS_METADATA = [
         .describe("Internal data source node ID to attach"),
       nodeId: z.string().describe("Internal node ID to attach"),
       url: z.string().nullable().optional().describe("Optional source URL"),
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -64,8 +64,8 @@ export const POD_MANAGER_TOOLS_METADATA = [
         .describe(
           "Internal data source view ID for the content node reference (from get_information attachments)"
         ),
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -100,8 +100,8 @@ export const POD_MANAGER_TOOLS_METADATA = [
         .describe(
           "Pod access. restricted = limited to invited members; open = all workspace members can join. Open Pods are subject to workspace policy."
         ),
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -128,8 +128,8 @@ export const POD_MANAGER_TOOLS_METADATA = [
         .describe(
           `Path to a Pod file to pin as the Pod banner frame (e.g. ${SCOPED_PREFIX_POD}<id>/banner.html). Pass null to unpin.`
         ),
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -148,16 +148,16 @@ export const POD_MANAGER_TOOLS_METADATA = [
     name: SET_DEFAULT_AGENT_TOOL_NAME,
     description:
       "Set or clear the Pod default agent: the agent that handles new conversations started in this Pod when no agent is picked explicitly. " +
-      "Provide agentName to set it, or pass null to reset to the default (Dust).",
+      "Provide agentName to set it, or pass null to reset to the default (Ruby).",
     schema: {
       agentName: z
         .string()
         .nullable()
         .describe(
-          "Name of the agent to set as the Pod default. The tool searches matching agent configurations and uses the best match. Pass null to reset to the default (Dust)."
+          "Name of the agent to set as the Pod default. The tool searches matching agent configurations and uses the best match. Pass null to reset to the default (Ruby)."
         ),
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -187,8 +187,8 @@ export const POD_MANAGER_TOOLS_METADATA = [
       membersToRemove: PodMembersToRemoveSchema.optional().describe(
         "User ids to remove from the Pod (membership or editorship)."
       ),
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -213,8 +213,8 @@ export const POD_MANAGER_TOOLS_METADATA = [
       `\`${SCOPED_PREFIX_POD}<id>/<rel>\` paths in the ` +
       `\`${FILES_SERVER_NAME}\` MCP server.`,
     schema: {
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -251,8 +251,8 @@ export const POD_MANAGER_TOOLS_METADATA = [
         .describe(
           "Opaque cursor from nextPageCursor of a prior list_members call. Only for pagination."
         ),
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -272,7 +272,7 @@ export const POD_MANAGER_TOOLS_METADATA = [
     description:
       "List non-archived Pods. Defaults to Pods where you are a member (access='member'). " +
       "Use access='open' to list all open Pods in the workspace. " +
-      "Each entry includes id, name, and dustPod (uri + mimeType) to pass as the dustPod argument to other pod_manager tools.",
+      "Each entry includes id, name, and rubyPod (uri + mimeType) to pass as the rubyPod argument to other pod_manager tools.",
     schema: {
       access: z
         .enum(["member", "open"])
@@ -354,9 +354,9 @@ export const POD_MANAGER_TOOLS_METADATA = [
     schema: {
       timeFrame: IncludeInputSchema.shape.timeFrame,
       nodeIds: SearchWithNodesInputSchema.shape.nodeIds,
-      dustPod:
+      rubyPod:
         ConfigurableToolInputSchemas[
-          INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+          INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
         ].optional(),
     },
     stake: "never_ask",
@@ -394,8 +394,8 @@ export const POD_MANAGER_TOOLS_METADATA = [
           "Restrict matches by document time (same as company search): `all`, or `{k}h|d|w|m|y`. Omit for all time."
         ),
       nodeIds: SearchWithNodesInputSchema.shape.nodeIds,
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -437,9 +437,9 @@ export const POD_MANAGER_TOOLS_METADATA = [
             "message is posted as a static result. Use this only to " +
             "deposit a finished artifact you have already fully produced."
         ),
-      dustPod:
+      rubyPod:
         ConfigurableToolInputSchemas[
-          INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+          INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
         ].optional(),
     },
     stake: "never_ask",
@@ -495,9 +495,9 @@ export const POD_MANAGER_TOOLS_METADATA = [
         .describe(
           "If true, fetch each conversation with messages and return formatted transcript text. If false (default), return metadata only (no getLightConversation calls)."
         ),
-      dustPod:
+      rubyPod:
         ConfigurableToolInputSchemas[
-          INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+          INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
         ].optional(),
     },
     stake: "never_ask",
@@ -512,7 +512,7 @@ export const POD_MANAGER_TOOLS_METADATA = [
     name: MOVE_CONVERSATION_TOOL_NAME,
     description:
       "Move a conversation into a Pod or out of its Pod to the user's personal conversations. " +
-      "Set destination to 'pod' to move into a Pod (requires dustPod), or 'personal' to move out of the current Pod. " +
+      "Set destination to 'pod' to move into a Pod (requires rubyPod), or 'personal' to move out of the current Pod. " +
       "If conversationId is omitted, the current agent conversation is used when available.",
     schema: {
       destination: z
@@ -526,8 +526,8 @@ export const POD_MANAGER_TOOLS_METADATA = [
         .describe(
           "Conversation id to move; defaults to the conversation this agent run is in when omitted"
         ),
-      dustPod: ConfigurableToolInputSchemas[
-        INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+      rubyPod: ConfigurableToolInputSchemas[
+        INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
       ]
         .optional()
         .describe(
@@ -576,9 +576,9 @@ export const POD_MANAGER_TOOLS_METADATA = [
             "message is posted as a static result. Use this only to " +
             "deposit a finished artifact you have already fully produced."
         ),
-      dustPod:
+      rubyPod:
         ConfigurableToolInputSchemas[
-          INTERNAL_MIME_TYPES.TOOL_INPUT.DUST_POD
+          INTERNAL_MIME_TYPES.TOOL_INPUT.RUBY_POD
         ].optional(),
     },
     stake: "medium",

@@ -118,17 +118,17 @@ export function isFreeOrigin(origin: UserMessageOrigin | null): boolean {
 // Full-length fingerprint of one agent-loop execution, for callers that need
 // collision resistance (e.g. idempotency keys): the truncated run key below
 // only has 32 bits of entropy.
-export function computeRunFingerprint(dustRunIds: string[]): string {
+export function computeRunFingerprint(rubyRunIds: string[]): string {
   return createHash("sha256")
-    .update([...dustRunIds].sort().join(","))
+    .update([...rubyRunIds].sort().join(","))
     .digest("hex");
 }
 
 // A run key identifies one agent-loop execution. Retries with the same run IDs
 // deduplicate in Metronome, while interrupt/resume executions receive distinct
 // keys and are consequently rounded and billed independently.
-export function computeRunKey(dustRunIds: string[]): string {
-  return computeRunFingerprint(dustRunIds).slice(0, 8);
+export function computeRunKey(rubyRunIds: string[]): string {
+  return computeRunFingerprint(rubyRunIds).slice(0, 8);
 }
 
 export function isToolCostCategory(value: string): value is ToolCostCategory {

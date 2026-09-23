@@ -4,6 +4,6 @@ The content page must reject `postMessage` events from any other origin, and in 
 `frame-ancestors` CSP directive must include these origins. The production `frame-ancestors` list
 is fixed in `next.config.mjs` and must not depend on the variable.
 
-@cc [owner:flvndvd,label:product] sparkle-owned-by-viz
-Sparkle MUST remain an implementation dependency of Viz's own UI. The Frame runtime import map
-MUST NOT expose Sparkle, and Frame authoring instructions MUST NOT tell models to import it.
+@cc [owner:flvndvd,label:product] ui-owned-by-viz
+RubyUI MUST remain an implementation dependency of Viz's own UI. The Frame runtime import map
+MUST NOT expose RubyUI, and Frame authoring instructions MUST NOT tell models to import it.

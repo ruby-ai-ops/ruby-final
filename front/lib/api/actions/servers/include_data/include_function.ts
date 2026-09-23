@@ -136,7 +136,7 @@ export async function runIncludeDataRetrieval(
     searchResults.value.documents.map((doc) => {
       const dataSourceView = coreSearchArgs.find(
         (args) =>
-          args.dataSourceView.dataSource.dustAPIDataSourceId ===
+          args.dataSourceView.dataSource.rubyAPIDataSourceId ===
           doc.data_source_id
       )?.dataSourceView;
 

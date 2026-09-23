@@ -33,7 +33,7 @@ export const SkillsProvider = ({ owner, children }: SkillsProviderProps) => {
 
   const value: SkillsContextType = useMemo(() => {
     return {
-      // Dust-managed non-default skills are displayed first: these are the baseline Discover capabilities.
+      // Ruby-managed non-default skills are displayed first: these are the baseline Discover capabilities.
       // Default skills are the ones that are discoverable.
       skills: skills.toSorted((a, b) => {
         const aIsDiscover =

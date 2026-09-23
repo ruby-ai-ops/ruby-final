@@ -4,7 +4,7 @@ import {
   SKILL_AVATAR_ICON_COLOR,
 } from "@app/lib/skill";
 import type { SkillWithoutInstructionsAndToolsType } from "@app/types/assistant/skill_configuration";
-import { ActionCard } from "@dust-tt/sparkle";
+import { ActionCard } from "@ruby-ai/ui";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`
 import React from "react";
 

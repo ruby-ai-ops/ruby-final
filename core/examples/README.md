@@ -2,7 +2,7 @@
 
 Complete example that goes with youtube demo in toplevel readme.
 
-## math.dust
+## math.ruby
 
 * Teaches GPT-3 math based on dataset in https://github.com/hendrycks/math
 

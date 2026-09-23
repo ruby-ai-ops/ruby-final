@@ -1,13 +1,13 @@
 import { InputBarContext } from "@app/components/assistant/conversation/input_bar/InputBarContext";
 import { TRACKING_AREAS, trackEvent, withTracking } from "@app/lib/tracking";
-import { Button, XClose } from "@dust-tt/sparkle";
+import { Button, XClose } from "@ruby-ai/ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { useContext, useEffect, useState } from "react";
 
 const MODEL_PICKER_IMAGE_PATH = "/static/Model_Picker_Banner.png";
 const MODEL_PICKER_BANNER_LOCAL_STORAGE_KEY = "model-picker-banner-dismissed";
 const MODEL_PICKER_DOCS_URL =
-  "https://docs.dust.tt/docs/user-documentation/agents/model-selection";
+  "https://docs.ruby.ad/docs/user-documentation/agents/model-selection";
 
 interface ModelPickerBannerProps {
   showModelPickerBanner: boolean;

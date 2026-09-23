@@ -3,7 +3,7 @@
 // Blocks are validated with zod; mrkdwn cleanup is delegated to `slack_mrkdwn.ts`.
 import { slackMrkdwnToText } from "@connectors/connectors/slack/lib/slack_mrkdwn";
 import logger from "@connectors/logger/logger";
-import { assertNever } from "@dust-tt/client";
+import { assertNever } from "@ruby-ai/client";
 import { z } from "zod";
 
 const TextObjectSchema = z.object({ text: z.string() });

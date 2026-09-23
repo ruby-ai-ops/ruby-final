@@ -39,7 +39,7 @@ function statusForFileSystemError(
 
 /**
  * @ignoreswagger
- * Internal syscall endpoint used only by the Dust filesystem daemon.
+ * Internal syscall endpoint used only by the Ruby filesystem daemon.
  */
 app.post(
   "/",
@@ -62,9 +62,9 @@ app.post(
       ctx.req.valid("json")
     );
     if (operationRes.isErr()) {
-      // The daemon uses this code for errno. The body remains the normal Dust
+      // The daemon uses this code for errno. The body remains the normal Ruby
       // error shape so logs and manual requests stay readable.
-      ctx.header("x-dust-filesystem-error", operationRes.error.code);
+      ctx.header("x-ruby-filesystem-error", operationRes.error.code);
       return apiError(ctx, {
         status_code: statusForFileSystemError(operationRes.error.code),
         api_error: {

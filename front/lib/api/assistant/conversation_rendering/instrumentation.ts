@@ -45,7 +45,7 @@ export function computeConversationRenderingMetrics(
   };
 }
 
-// renderConversationForModel has several callers with different budgets (the agent loop, Dust
+// renderConversationForModel has several callers with different budgets (the agent loop, Ruby
 // app history injection, reinforcement batches, operator scripts). Mixing them into one series
 // would skew the outcome and saturation distributions, so emission is opt-in: callers that want
 // their renders measured pass a caller name, everyone else emits nothing.

@@ -6,8 +6,8 @@ import {
 } from "@app/lib/api/actions/mcp/client_side_registry";
 import { rateLimiter } from "@app/lib/utils/rate_limiter";
 import logger from "@app/logger/logger";
-import type { RegisterMCPResponseType } from "@dust-tt/client";
-import { PublicRegisterMCPRequestBodySchema } from "@dust-tt/client";
+import type { RegisterMCPResponseType } from "@ruby-ai/client";
+import { PublicRegisterMCPRequestBodySchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";
@@ -22,8 +22,8 @@ const app = publicApiApp();
  *   post:
  *     summary: Register a client-side MCP server
  *     description: |
- *       [Documentation](https://docs.dust.tt/docs/client-side-mcp-server)
- *       Register a client-side MCP server to Dust.
+ *       [Documentation](https://docs.ruby.ad/docs/client-side-mcp-server)
+ *       Register a client-side MCP server to Ruby.
  *       The registration is scoped to the current user and workspace.
  *       A serverId identifier is generated and returned in the response.
  *     tags:

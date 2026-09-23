@@ -2,7 +2,7 @@ import { ManageUsersPanel } from "@app/components/assistant/conversation/space/M
 import { BecomeEditorButton } from "@app/components/shared/BecomeEditorButton";
 import { useSkillBuilderContext } from "@app/components/skill_builder/SkillBuilderContext";
 import type { SkillBuilderFormData } from "@app/components/skill_builder/SkillBuilderFormContext";
-import { Button, Users01 } from "@dust-tt/sparkle";
+import { Button, Users01 } from "@ruby-ai/ui";
 import { useState } from "react";
 import { useController } from "react-hook-form";
 

@@ -1,14 +1,14 @@
 import { useConversationSidePanelContext } from "@app/components/assistant/conversation/ConversationSidePanelContext";
 import { extractPlanTitle } from "@app/components/assistant/conversation/plan_mode/utils";
 import { ConfirmContext } from "@app/components/Confirm";
-import { AppLayoutTitle } from "@app/components/sparkle/AppLayoutTitle";
+import { AppLayoutTitle } from "@app/components/ui/AppLayoutTitle";
 import {
   useClosePlan,
   usePlanFile,
 } from "@app/hooks/conversations/usePlanFile";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
 import type { LightWorkspaceType } from "@app/types/user";
-import { Archive, Button, Markdown, Spinner, XClose } from "@dust-tt/sparkle";
+import { Archive, Button, Markdown, Spinner, XClose } from "@ruby-ai/ui";
 import { useContext } from "react";
 
 interface ConversationPlanModePanelProps {

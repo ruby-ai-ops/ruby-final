@@ -7,7 +7,7 @@ import { registerPodsTools } from "./pods";
 import { registerSearchTools } from "./search";
 import { registerSkillsTools } from "./skills";
 
-export function registerDustMcpTools(server: McpServer) {
+export function registerRubyMcpTools(server: McpServer) {
   registerIdentityTool(server);
   registerAgentsTools(server);
   registerConversationsTools(server);

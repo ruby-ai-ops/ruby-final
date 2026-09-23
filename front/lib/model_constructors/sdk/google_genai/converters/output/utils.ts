@@ -173,7 +173,7 @@ export function usageToTokenUsageEvent(
       shortCacheCreated: 0,
       cacheHit,
       standardInput: Math.max(0, totalInput - cacheHit),
-      // Gemini reports candidate and thought tokens separately, while Dust's
+      // Gemini reports candidate and thought tokens separately, while Ruby's
       // totalOutput contract is the inclusive billed output total.
       totalOutput: candidateTokens + (reasoning ?? 0),
       ...(reasoning !== undefined ? { reasoning } : {}),
@@ -191,7 +191,7 @@ export function finishReasonToErrorEvent(
       return null;
     case FinishReason.MAX_TOKENS:
       return buildErrorEvent({
-        errorSource: "dust",
+        errorSource: "ruby",
         metadata,
         type: "stop_error",
         message: "The maximum response length was reached.",
@@ -205,7 +205,7 @@ export function finishReasonToErrorEvent(
     case FinishReason.IMAGE_SAFETY:
     case FinishReason.LANGUAGE:
       return buildErrorEvent({
-        errorSource: "dust",
+        errorSource: "ruby",
         metadata,
         type: "refusal_error",
         message:
@@ -243,7 +243,7 @@ function apiErrorToErrorEvent(
 
   if (status === 401 || (status === 400 && isAuthMessage)) {
     return buildErrorEvent({
-      errorSource: "dust",
+      errorSource: "ruby",
       metadata,
       type: "authentication_error",
       message: httpErrorMessage({

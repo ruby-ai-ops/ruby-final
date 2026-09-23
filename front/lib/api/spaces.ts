@@ -14,7 +14,7 @@ import { deleteOwnerPolicy } from "@app/lib/api/sandbox/egress_policy";
 import { getWorkspaceAdministrationVersionLock } from "@app/lib/api/workspace";
 import type { Authenticator } from "@app/lib/auth";
 import { hasFeatureFlag } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { AgentConfigurationModel } from "@app/lib/models/agent/agent";
 import { AppResource } from "@app/lib/resources/app_resource";
 import { ConversationSelectedSpaceResource } from "@app/lib/resources/conversation_selected_space_resource";
@@ -32,7 +32,7 @@ import { isPrivateSpacesLimitReached } from "@app/lib/spaces_utils";
 import { concurrentExecutor } from "@app/lib/utils/async_utils";
 import { withTransaction } from "@app/lib/utils/sql_utils";
 import logger from "@app/logger/logger";
-import { launchScrubSpaceWorkflow } from "@app/poke/temporal/client";
+import { launchScrubSpaceWorkflow } from "@app/admin-app/temporal/client";
 import { DATA_SOURCE_VIEW_CATEGORIES } from "@app/types/api/public/spaces";
 import type { SpaceCategoryInfo } from "@app/types/api/spaces";
 import { SKILL_STATUSES } from "@app/types/assistant/skill_configuration";
@@ -54,7 +54,7 @@ import { Op, UniqueConstraintError } from "sequelize";
  * Summarizes a Space's contents by category (Connected Data, Folders, Websites, Tools,
  * Triggers, Apps) with a count and agent+skill usage per category. Space landing page read model.
  *
- * Apps are legacy (`legacy_dust_apps`) and left zeroed out — not worth computing.
+ * Apps are legacy (`legacy_ruby_apps`) and left zeroed out — not worth computing.
  *
  * Perf: Tools/Triggers usage comes from `getToolsUsage`/`getWebhookSourcesUsage`, which are
  * workspace-wide, not space-scoped; this function narrows after the fact. Fine at
@@ -592,7 +592,7 @@ export async function createSpaceAndGroup(
 ): Promise<
   Result<
     SpaceResource,
-    DustError<
+    RubyError<
       | "limit_reached"
       | "space_already_exists"
       | "internal_error"
@@ -606,7 +606,7 @@ export async function createSpaceAndGroup(
   // Regular spaces require admin permissions
   if (params.spaceKind !== "project" && !auth.isAdmin()) {
     return new Err(
-      new DustError(
+      new RubyError(
         "unauthorized",
         "Only users that are `admins` can create regular spaces."
       )
@@ -621,10 +621,10 @@ export async function createSpaceAndGroup(
   if (
     spaceKind === "project" &&
     isDatabaseFileSystemPodName(name) &&
-    !(await hasFeatureFlag(auth, "dust_filesystem"))
+    !(await hasFeatureFlag(auth, "ruby_filesystem"))
   ) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         "The database-backed filesystem is not enabled for this workspace."
       )
@@ -642,7 +642,7 @@ export async function createSpaceAndGroup(
 
     if (isLimitReached && !ignoreWorkspaceLimit && spaceKind !== "project") {
       return new Err(
-        new DustError(
+        new RubyError(
           "limit_reached",
           "The maximum number of spaces has been reached."
         )
@@ -652,7 +652,7 @@ export async function createSpaceAndGroup(
     const nameAvailable = await SpaceResource.isNameAvailable(auth, name, t);
     if (!nameAvailable) {
       return new Err(
-        new DustError(
+        new RubyError(
           "space_already_exists",
           "This space name is already used."
         )
@@ -672,7 +672,7 @@ export async function createSpaceAndGroup(
     } catch (err) {
       if (err instanceof UniqueConstraintError) {
         return new Err(
-          new DustError(
+          new RubyError(
             "space_already_exists",
             "This pod name is already used."
           )
@@ -738,7 +738,7 @@ export async function createSpaceAndGroup(
       // is a regular_auto group whose permissions are not checked directly, so gate on the space.
       if (!auth.can("admin", space)) {
         return new Err(
-          new DustError("unauthorized", "Only admins can change group members")
+          new RubyError("unauthorized", "Only admins can change group members")
         );
       }
     }
@@ -764,7 +764,7 @@ export async function createSpaceAndGroup(
           "Failed to add members to the member group"
         );
         return new Err(
-          new DustError("internal_error", "The space cannot be created.")
+          new RubyError("internal_error", "The space cannot be created.")
         );
       }
     }
@@ -782,7 +782,7 @@ export async function createSpaceAndGroup(
           "The space cannot be created - failed to fetch groups"
         );
         return new Err(
-          new DustError("internal_error", "The space cannot be created.")
+          new RubyError("internal_error", "The space cannot be created.")
         );
       }
 
@@ -792,7 +792,7 @@ export async function createSpaceAndGroup(
       // of a space's group-managed access.
       if (selectedGroups.some((g) => !isManageableGroupKind(g.kind))) {
         return new Err(
-          new DustError(
+          new RubyError(
             "invalid_request_error",
             "Only provisioned and manual groups can be given access to a space."
           )
@@ -833,7 +833,7 @@ export async function createSpaceAndGroup(
 
     const space = result.value;
     if (space.kind === "project") {
-      // If this is a project space, create the dust_project connector
+      // If this is a project space, create the ruby_project connector
       // Create connector outside transaction to avoid long-running transaction
       // The connector creation involves external API calls
       const connectorRes = await createDataSourceAndConnectorForProject(
@@ -847,7 +847,7 @@ export async function createSpaceAndGroup(
             spaceId: space.sId,
             workspaceId: owner.sId,
           },
-          "Failed to create dust_project connector for Pod, but space was created"
+          "Failed to create ruby_project connector for Pod, but space was created"
         );
         // Don't fail space creation if connector creation fails
         // The connector can be created later if needed

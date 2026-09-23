@@ -1,7 +1,7 @@
 import config from "@app/lib/api/config";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const PUBLIC_URL = "https://eu.dust.tt";
+const PUBLIC_URL = "https://app.ruby.ad";
 const INTERNAL_URL = "http://front-internal-service";
 
 describe("getSandboxApiBaseUrl", () => {
@@ -15,22 +15,22 @@ describe("getSandboxApiBaseUrl", () => {
   it("returns the public URL where the internal one would be used", () => {
     // Sandboxes run outside the cluster, so the internal service address that
     // the rest of Front prefers is unreachable for them.
-    process.env.NEXT_PUBLIC_DUST_API_URL = PUBLIC_URL;
-    process.env.DUST_INTERNAL_API_URL = INTERNAL_URL;
+    process.env.NEXT_PUBLIC_RUBY_API_URL = PUBLIC_URL;
+    process.env.RUBY_INTERNAL_API_URL = INTERNAL_URL;
 
     expect(config.getApiBaseUrl()).toBe(INTERNAL_URL);
     expect(config.getSandboxApiBaseUrl()).toBe(PUBLIC_URL);
   });
 
   it("follows the public URL of the region it runs in", () => {
-    process.env.NEXT_PUBLIC_DUST_API_URL = PUBLIC_URL;
-    delete process.env.DUST_INTERNAL_API_URL;
+    process.env.NEXT_PUBLIC_RUBY_API_URL = PUBLIC_URL;
+    delete process.env.RUBY_INTERNAL_API_URL;
 
     expect(config.getSandboxApiBaseUrl()).toBe(PUBLIC_URL);
   });
 
   it("uses the development host when one is set", () => {
-    process.env.NEXT_PUBLIC_DUST_API_URL = PUBLIC_URL;
+    process.env.NEXT_PUBLIC_RUBY_API_URL = PUBLIC_URL;
     process.env.IS_DEVELOPMENT = "true";
     process.env.SBX_DEV_FRONT_URL = "https://tunnel.example.com";
 
@@ -38,7 +38,7 @@ describe("getSandboxApiBaseUrl", () => {
   });
 
   it("ignores the development host outside development", () => {
-    process.env.NEXT_PUBLIC_DUST_API_URL = PUBLIC_URL;
+    process.env.NEXT_PUBLIC_RUBY_API_URL = PUBLIC_URL;
     delete process.env.IS_DEVELOPMENT;
     // Node's types mark NODE_ENV read-only, so stub it instead of assigning.
     vi.stubEnv("NODE_ENV", "production");
@@ -59,21 +59,21 @@ describe("getLegacyOAuthRedirectBaseUrl", () => {
   });
 
   it.each([
-    "https://dust.tt",
-    "https://eu.dust.tt",
+    "https://ruby.ad",
+    "https://app.ruby.ad",
   ])("preserves the configured legacy callback base %s", async (legacyBaseUrl) => {
-    vi.stubEnv("NEXT_PUBLIC_DUST_APP_URL", "https://app.dust.tt");
-    vi.stubEnv("DUST_OAUTH_REDIRECT_BASE_URL", legacyBaseUrl);
+    vi.stubEnv("NEXT_PUBLIC_RUBY_APP_URL", "https://app.ruby.ad");
+    vi.stubEnv("RUBY_OAUTH_REDIRECT_BASE_URL", legacyBaseUrl);
     const { default: config } = await import("@app/lib/api/config");
 
     expect(config.getLegacyOAuthRedirectBaseUrl()).toBe(legacyBaseUrl);
   });
 
   it("uses the app URL when the legacy override is empty", async () => {
-    vi.stubEnv("NEXT_PUBLIC_DUST_APP_URL", "https://app.dust.tt");
-    vi.stubEnv("DUST_OAUTH_REDIRECT_BASE_URL", "");
+    vi.stubEnv("NEXT_PUBLIC_RUBY_APP_URL", "https://app.ruby.ad");
+    vi.stubEnv("RUBY_OAUTH_REDIRECT_BASE_URL", "");
     const { default: config } = await import("@app/lib/api/config");
 
-    expect(config.getLegacyOAuthRedirectBaseUrl()).toBe("https://app.dust.tt");
+    expect(config.getLegacyOAuthRedirectBaseUrl()).toBe("https://app.ruby.ad");
   });
 });

@@ -11,13 +11,13 @@ export const FILE_OFFLOAD_SNIPPET_LENGTH = 8_000; // Approximately 2K tokens.
 
 // Key of the machine-readable offload descriptor in a content block's `_meta`. Attached to every
 // block whose full text was offloaded to the run context's file system, so code consumers
-// (function code via `@dust/pod`, future SDKs) can read the full content back without parsing the
+// (function code via `@ruby-ai/pod`, future SDKs) can read the full content back without parsing the
 // human-facing "[Full content archived at ...]" sentence. Reverse-domain prefixed per the MCP
 // `_meta` naming convention.
-export const TOOL_OUTPUT_OFFLOAD_META_KEY = "tt.dust/offload";
+export const TOOL_OUTPUT_OFFLOAD_META_KEY = "tt.ruby/offload";
 
 // The descriptor stored under TOOL_OUTPUT_OFFLOAD_META_KEY. This is a wire contract consumed
-// in-sandbox (`@dust/pod` carries its own copy of the shape): fields are append-only.
+// in-sandbox (`@ruby-ai/pod` carries its own copy of the shape): fields are append-only.
 // Agent-loop consumers rehydrate via the /files mount; sandbox function invocations keep
 // large outputs inline on the poll path and do not emit this descriptor.
 export interface ToolOutputOffloadDescriptor {

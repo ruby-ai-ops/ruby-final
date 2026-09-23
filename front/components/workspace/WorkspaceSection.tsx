@@ -1,4 +1,4 @@
-import { Icon, Page } from "@dust-tt/sparkle";
+import { Icon, Page } from "@ruby-ai/ui";
 import type React from "react";
 import type { ComponentType } from "react";
 

@@ -46,7 +46,7 @@ makeScript({}, async ({ execute }, logger) => {
   const workspace = await WorkspaceResource.fetchById(WORKSPACE_SID);
   if (!workspace) {
     throw new Error(
-      `Workspace ${WORKSPACE_SID} not found. Make sure dust-hive seed has run first.`
+      `Workspace ${WORKSPACE_SID} not found. Make sure ruby-hive seed has run first.`
     );
   }
 

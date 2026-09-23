@@ -7,7 +7,7 @@ import { SkillBuilderUserFacingDescriptionSection } from "@app/components/skill_
 import { parseGitHubRepoUrl } from "@app/lib/skill_detection";
 import type { SkillType } from "@app/types/assistant/skill_configuration";
 import type { WorkspaceType } from "@app/types/user";
-import { Icon, LinkExternal01, LinkWrapper } from "@dust-tt/sparkle";
+import { Icon, LinkExternal01, LinkWrapper } from "@ruby-ai/ui";
 
 interface SkillBuilderSettingsSectionProps {
   skill?: SkillType;

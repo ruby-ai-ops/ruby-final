@@ -10,7 +10,7 @@ export function CreateSkillPage() {
   const { user } = useAuth();
   const { hasPermission } = useWorkspacePermissions();
 
-  useDocumentTitle("Dust - New Skill");
+  useDocumentTitle("Ruby - New Skill");
 
   if (!hasPermission("create", "skill")) {
     return <Custom404 />;

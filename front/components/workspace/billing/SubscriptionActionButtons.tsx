@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 function CancelMetronomeSubscriptionDialog() {
   const {

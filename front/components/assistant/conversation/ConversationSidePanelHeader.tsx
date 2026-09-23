@@ -1,5 +1,5 @@
-import { AppLayoutTitle } from "@app/components/sparkle/AppLayoutTitle";
-import { Button, XClose } from "@dust-tt/sparkle";
+import { AppLayoutTitle } from "@app/components/ui/AppLayoutTitle";
+import { Button, XClose } from "@ruby-ai/ui";
 import type React from "react";
 
 interface ConversationSidePanelHeaderProps {

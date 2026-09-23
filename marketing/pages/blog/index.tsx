@@ -133,22 +133,22 @@ export default function BlogListing({ posts }: BlogListingPageProps) {
   return (
     <>
       <Head>
-        <title>{`${selectedTag ? `${selectedTag} | ` : ""}Blog | Dust`}</title>
+        <title>{`${selectedTag ? `${selectedTag} | ` : ""}Blog | Ruby`}</title>
         <meta
           name="description"
-          content="Insights, tutorials, and updates from the Dust team on AI agents, enterprise productivity, and building with AI."
+          content="Insights, tutorials, and updates from the Ruby team on AI agents, enterprise productivity, and building with AI."
         />
-        <meta property="og:title" content="Blog | Dust" />
+        <meta property="og:title" content="Blog | Ruby" />
         <meta
           property="og:description"
-          content="Insights, tutorials, and updates from the Dust team on AI agents and enterprise productivity."
+          content="Insights, tutorials, and updates from the Ruby team on AI agents and enterprise productivity."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://dust.tt/blog" />
+        <meta property="og:url" content="https://ruby.ad/blog" />
         <meta property="og:image" content="/static/og_image.png" />
-        <link rel="canonical" href="https://dust.tt/blog" />
+        <link rel="canonical" href="https://ruby.ad/blog" />
         {!selectedTag && totalPages > 1 && (
-          <link rel="next" href="https://dust.tt/blog/page/2" />
+          <link rel="next" href="https://ruby.ad/blog/page/2" />
         )}
       </Head>
 

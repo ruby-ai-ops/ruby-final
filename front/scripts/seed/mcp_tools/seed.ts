@@ -167,7 +167,7 @@ async function createAgentWithTool({
     description: agent.agentDescription,
     instructions: agent.instructions,
     instructionsHtml: null,
-    pictureUrl: "https://dust.tt/static/systemavatar/gpt4_avatar_full.png",
+    pictureUrl: "https://ruby.ad/static/systemavatar/gpt4_avatar_full.png",
     status: "active",
     scope: "visible",
     model: {
@@ -203,9 +203,9 @@ async function createAgentWithTool({
       childAgentId: null,
       timeFrame: agent.timeFrame,
       additionalConfiguration: {},
-      dustAppConfiguration: null,
+      rubyAppConfiguration: null,
       secretName: null,
-      dustProject: null,
+      rubyProject: null,
       jsonSchema: agent.jsonSchema,
     } satisfies UnsavedServerSideMCPServerConfigurationType,
     AgentResource.fromAgentConfiguration(auth, agentResult.value)

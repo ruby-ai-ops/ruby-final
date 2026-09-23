@@ -49,7 +49,7 @@ export async function getUsageConfiguration(
       ? passesBillingGate(subscription)
       : false,
     // Free plan workspaces cannot top up. Enterprise workspaces can only top up
-    // when the poke-managed flag is explicitly enabled. All other plans can
+    // when the admin-managed flag is explicitly enabled. All other plans can
     // always top up.
     topUpEnabled:
       !isFreePlan(auth.plan()?.code ?? "") &&

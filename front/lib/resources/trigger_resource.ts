@@ -132,7 +132,7 @@ export interface TriggerResource extends ReadonlyAttributesType<TriggerModel> {}
  * credit pool instead of the user's own. A trigger MUST NOT be created with, or switched to,
  * `executionMode: "workspace_pool"` unless the caller holds
  * `hasWorkspacePermission("use_workspace_pool", "trigger")`. It says nothing about who may edit
- * the trigger. Dust super users are exempt, as governed by `execution-mode-super-user-bypass`.
+ * the trigger. Ruby super users are exempt, as governed by `execution-mode-super-user-bypass`.
  */
 export class TriggerResource extends BaseResource<TriggerModel> {
   static model: ModelStatic<TriggerModel> = TriggerModel;
@@ -518,7 +518,7 @@ export class TriggerResource extends BaseResource<TriggerModel> {
     ) {
       return new Err(
         new Error(
-          "This trigger's status is managed by Dust and cannot be changed"
+          "This trigger's status is managed by Ruby and cannot be changed"
         )
       );
     }
@@ -1314,18 +1314,18 @@ export class TriggerResource extends BaseResource<TriggerModel> {
 
   /**
    * @cc [owner:adrsimon,label:security;product] execution-mode-super-user-bypass
-   * Dust super users MUST be able to move a trigger between pools regardless of the editor check,
+   * Ruby super users MUST be able to move a trigger between pools regardless of the editor check,
    * the plan check and the `use_workspace_pool` permission check. This bypass is reserved to
-   * `auth.isDustSuperUser()` callers, which only Poke sessions can be.
+   * `auth.isRubySuperUser()` callers, which only Admin sessions can be.
    */
   async setExecutionMode(
     auth: Authenticator,
     executionMode: TriggerExecutionMode
   ): Promise<Result<undefined, Error>> {
-    const isDustSuperUser = auth.isDustSuperUser();
+    const isRubySuperUser = auth.isRubySuperUser();
 
     const isEditor =
-      isDustSuperUser || auth.isManager() || this.isEditedBy(auth);
+      isRubySuperUser || auth.isManager() || this.isEditedBy(auth);
     if (!isEditor) {
       return new Err(
         new TriggerExecutionModeForbiddenError(
@@ -1339,7 +1339,7 @@ export class TriggerResource extends BaseResource<TriggerModel> {
     }
 
     if (
-      !isDustSuperUser &&
+      !isRubySuperUser &&
       !(await availableExecutionModes(auth)).includes(executionMode)
     ) {
       return new Err(
@@ -1377,7 +1377,7 @@ export class TriggerResource extends BaseResource<TriggerModel> {
 
   /**
    * Updates webhook-specific settings (execution limit and mode).
-   * Used by poke plugins for admin-level trigger configuration.
+   * Used by admin plugins for admin-level trigger configuration.
    * Does not trigger temporal workflow updates.
    */
   async updateWebhookSettings(

@@ -15,7 +15,7 @@ import { WorkspaceResource } from "@app/lib/resources/workspace_resource";
 
 interface AgentUpdateStats {
   total: number;
-  withDustApps: number;
+  withRubyApps: number;
   updated: number;
   errors: number;
 }
@@ -40,18 +40,18 @@ async function updateAgentConfigurationGroupIds(
 
     const ac = agentConfiguration[0];
 
-    // Check if agent has any dust app configurations
-    const hasDustApps = ac.actions.some(
+    // Check if agent has any ruby app configurations
+    const hasRubyApps = ac.actions.some(
       (action) =>
         action.type === "mcp_server_configuration" &&
         isServerSideMCPServerConfiguration(action) &&
-        action.dustAppConfiguration !== null
+        action.rubyAppConfiguration !== null
     );
 
-    if (!hasDustApps) {
+    if (!hasRubyApps) {
       logger.debug(
         { agentId: agent.sId },
-        "Agent has no dust app configurations, skipping"
+        "Agent has no ruby app configurations, skipping"
       );
       return { updated: false };
     }
@@ -110,7 +110,7 @@ async function updateAgentsForWorkspace(
   const workspace = await WorkspaceModel.findByPk(workspaceId);
   if (!workspace) {
     logger.error({ workspaceId }, "Workspace not found");
-    return { total: 0, withDustApps: 0, updated: 0, errors: 0 };
+    return { total: 0, withRubyApps: 0, updated: 0, errors: 0 };
   }
 
   logger.info(
@@ -120,8 +120,8 @@ async function updateAgentsForWorkspace(
 
   const auth = await Authenticator.internalAdminForWorkspace(workspace.sId);
 
-  // Find all active agent configurations that have MCP actions with dust apps
-  const agentsWithDustApps = await AgentConfigurationModel.findAll({
+  // Find all active agent configurations that have MCP actions with ruby apps
+  const agentsWithRubyApps = await AgentConfigurationModel.findAll({
     where: {
       workspaceId,
       status: "active",
@@ -140,19 +140,19 @@ async function updateAgentsForWorkspace(
   });
 
   logger.info(
-    { workspaceId, agentCount: agentsWithDustApps.length },
-    "Found agents with dust app configurations"
+    { workspaceId, agentCount: agentsWithRubyApps.length },
+    "Found agents with ruby app configurations"
   );
 
   const stats: AgentUpdateStats = {
-    total: agentsWithDustApps.length,
-    withDustApps: agentsWithDustApps.length,
+    total: agentsWithRubyApps.length,
+    withRubyApps: agentsWithRubyApps.length,
     updated: 0,
     errors: 0,
   };
 
   // Process agents in chunks to avoid overwhelming the system
-  const agentChunks = _.chunk(agentsWithDustApps, 10);
+  const agentChunks = _.chunk(agentsWithRubyApps, 10);
 
   for (const chunk of agentChunks) {
     const results = await concurrentExecutor(
@@ -184,8 +184,8 @@ async function updateAgentsForWorkspace(
   return stats;
 }
 
-async function getWorkspacesWithDustApps(): Promise<number[]> {
-  // Find all workspaces that have agents with dust app configurations
+async function getWorkspacesWithRubyApps(): Promise<number[]> {
+  // Find all workspaces that have agents with ruby app configurations
   const workspaceIds = await AgentMCPServerConfigurationModel.findAll({
     where: {
       appId: { [Op.not]: null },
@@ -209,7 +209,7 @@ makeScript(
   async ({ execute, workspaceId }, logger) => {
     logger.info(
       { execute, workspaceId },
-      "Starting dust app agent group permissions fix"
+      "Starting ruby app agent group permissions fix"
     );
 
     let workspaceModelIds: number[] = [];
@@ -222,17 +222,17 @@ makeScript(
       }
       workspaceModelIds = [workspace.id];
     } else {
-      // Process all workspaces that have agents with dust apps
-      workspaceModelIds = await getWorkspacesWithDustApps();
+      // Process all workspaces that have agents with ruby apps
+      workspaceModelIds = await getWorkspacesWithRubyApps();
       logger.info(
         { workspaceCount: workspaceModelIds.length },
-        "Found workspaces with dust app configurations"
+        "Found workspaces with ruby app configurations"
       );
     }
 
     const globalStats: AgentUpdateStats = {
       total: 0,
-      withDustApps: 0,
+      withRubyApps: 0,
       updated: 0,
       errors: 0,
     };
@@ -247,7 +247,7 @@ makeScript(
 
       for (const stats of results) {
         globalStats.total += stats.total;
-        globalStats.withDustApps += stats.withDustApps;
+        globalStats.withRubyApps += stats.withRubyApps;
         globalStats.updated += stats.updated;
         globalStats.errors += stats.errors;
       }
@@ -260,8 +260,8 @@ makeScript(
         globalStats,
       },
       execute
-        ? "Completed dust app agent group permissions fix"
-        : "Dry run completed - would have fixed dust app agent group permissions"
+        ? "Completed ruby app agent group permissions fix"
+        : "Dry run completed - would have fixed ruby app agent group permissions"
     );
 
     if (globalStats.errors > 0) {

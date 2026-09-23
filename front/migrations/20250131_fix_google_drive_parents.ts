@@ -93,24 +93,24 @@ async function migrateNode({
         let updateRes;
         if (coreNode.document) {
           updateRes = await coreAPI.updateDataSourceDocumentParents({
-            projectId: dataSource.dustAPIProjectId,
-            dataSourceId: dataSource.dustAPIDataSourceId,
+            projectId: dataSource.rubyAPIProjectId,
+            dataSourceId: dataSource.rubyAPIDataSourceId,
             documentId: coreNode.node_id,
             parents: newParents,
             parentId: newParentId,
           });
         } else if (coreNode.table) {
           updateRes = await coreAPI.updateTableParents({
-            projectId: dataSource.dustAPIProjectId,
-            dataSourceId: dataSource.dustAPIDataSourceId,
+            projectId: dataSource.rubyAPIProjectId,
+            dataSourceId: dataSource.rubyAPIDataSourceId,
             tableId: coreNode.node_id,
             parents: newParents,
             parentId: newParentId,
           });
         } else {
           updateRes = await coreAPI.upsertDataSourceFolder({
-            projectId: dataSource.dustAPIProjectId,
-            dataSourceId: dataSource.dustAPIDataSourceId,
+            projectId: dataSource.rubyAPIProjectId,
+            dataSourceId: dataSource.rubyAPIDataSourceId,
             folderId: coreNode.node_id,
             parents: newParents,
             parentId: newParentId,
@@ -160,15 +160,15 @@ async function migrateDataSource({
        AND data_source_id = ?`,
     {
       replacements: [
-        dataSource.dustAPIProjectId,
-        dataSource.dustAPIDataSourceId,
+        dataSource.rubyAPIProjectId,
+        dataSource.rubyAPIDataSourceId,
       ],
     }
   )) as { id: number; data_source_id: string }[][];
 
   assert(
     coreDataSourceRows.length === 1 &&
-      coreDataSourceRows[0].data_source_id === dataSource.dustAPIDataSourceId,
+      coreDataSourceRows[0].data_source_id === dataSource.rubyAPIDataSourceId,
     "Core data source mismatch"
   );
   const coreDataSourceId = coreDataSourceRows[0].id;

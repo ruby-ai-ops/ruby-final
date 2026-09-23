@@ -1,5 +1,5 @@
 use anyhow::{anyhow, Error, Result};
-use dust::data_sources::qdrant::{env_var_prefix_for_cluster, QdrantCluster};
+use ruby::data_sources::qdrant::{env_var_prefix_for_cluster, QdrantCluster};
 use regex::Regex;
 use serde::Deserialize;
 use std::collections::HashMap;

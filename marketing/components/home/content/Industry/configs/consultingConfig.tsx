@@ -1,20 +1,20 @@
 import type { IndustryPageConfig } from "@marketing/components/home/content/Industry/configs/utils";
 import { createLayoutConfig } from "@marketing/components/home/content/Industry/configs/utils";
-import { BarChart01 } from "@dust-tt/sparkle";
+import { BarChart01 } from "@ruby-ai/ui";
 
 export const consultingConfig: IndustryPageConfig = {
   seo: {
-    title: "Dust for Consulting Firms",
+    title: "Ruby for Consulting Firms",
     description:
       "Empower your consultants to deliver more value—faster. Build AI agents that instantly access firm knowledge, using best-in-class models of your choice.",
   },
   layout: createLayoutConfig([
     "hero",
     "impactMetrics",
-    "dustInAction",
+    "rubyInAction",
     "testimonial",
     "customerStories",
-    "justUseDust",
+    "justUseRuby",
   ]),
   hero: {
     chip: {
@@ -24,7 +24,7 @@ export const consultingConfig: IndustryPageConfig = {
     },
     title: (
       <>
-        Dust for
+        Ruby for
         <br /> Consulting
         <br /> Firms
       </>
@@ -84,7 +84,7 @@ export const consultingConfig: IndustryPageConfig = {
       },
     ],
   },
-  dustInAction: {
+  rubyInAction: {
     title: "Top Use Cases for Consulting Firms",
     useCases: [
       {
@@ -227,8 +227,8 @@ export const consultingConfig: IndustryPageConfig = {
     bgColor: "bg-green-400",
     textColor: "text-white",
   },
-  justUseDust: {
-    title: "#JustUseDust",
+  justUseRuby: {
+    title: "#JustUseRuby",
     titleColor: "text-blue-600",
     ctaButtons: {
       primary: {

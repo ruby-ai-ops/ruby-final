@@ -1,6 +1,6 @@
 import { queryFrameDatabase } from "@app/lib/api/frames/databases";
 import { isValidPodDatabaseName } from "@app/lib/api/sandbox/db";
-import type { QueryDatabaseResult } from "@app/lib/api/sandbox_functions/dsbx_db";
+import type { QueryDatabaseResult } from "@app/lib/api/sandbox_functions/rbx_db";
 import { sandboxFrameApp } from "@front-api/middlewares/ctx";
 import type { HandlerResult } from "@front-api/middlewares/utils";
 import { apiError } from "@front-api/middlewares/utils";

@@ -13,7 +13,7 @@ import {
   INTERACTIVE_CONTENT_TOOLS_METADATA,
 } from "@app/lib/api/actions/servers/interactive_content/metadata";
 import { fetchTemplateContent } from "@app/lib/api/actions/servers/interactive_content/template_utils";
-import { DustFileSystem } from "@app/lib/api/file_system";
+import { RubyFileSystem } from "@app/lib/api/file_system";
 import {
   createClientExecutableFile,
   editClientExecutableFile,
@@ -32,7 +32,7 @@ import { FileResource } from "@app/lib/resources/file_resource";
 import { splitFrameEntryScopedPath } from "@app/types/mount_path";
 import { Err, Ok } from "@app/types/shared/result";
 import { assertNever } from "@app/types/shared/utils/assert_never";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 
 export async function createInteractiveContentTools(
@@ -404,7 +404,7 @@ export async function createInteractiveContentTools(
       }
       const { root, entryRelPath } = splitResult.value;
 
-      const fsResult = await DustFileSystem.fromScopedPath(auth, root);
+      const fsResult = await RubyFileSystem.fromScopedPath(auth, root);
       if (fsResult.isErr()) {
         return new Err(
           new MCPError(fsResult.error.message, { tracked: false })

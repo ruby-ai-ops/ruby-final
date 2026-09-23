@@ -1,4 +1,4 @@
-import { runPokeWorker } from "@app/poke/temporal/worker";
+import { runAdminWorker } from "@app/admin-app/temporal/worker";
 import { runActivationSchedulerWorker } from "@app/temporal/activation_scheduler/worker";
 import { runAgentInactivityWorker } from "@app/temporal/agent_inactivity/worker";
 import {
@@ -58,7 +58,7 @@ export type WorkerName =
   | "metronome_events_queue"
   | "model_health"
   | "notifications_queue"
-  | "poke"
+  | "admin"
   | "production_checks"
   | "reinforcement"
   | "relocation"
@@ -93,7 +93,7 @@ export const workerFunctions: Record<WorkerName, () => Promise<void>> = {
   metronome_events_queue: runMetronomeEventsWorker,
   model_health: runModelHealthWorker,
   notifications_queue: runNotificationsQueueWorker,
-  poke: runPokeWorker,
+  admin: runAdminWorker,
   production_checks: runProductionChecksWorker,
   reinforcement: runReinforcementWorker,
   relocation: runRelocationWorker,

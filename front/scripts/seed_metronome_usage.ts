@@ -12,8 +12,8 @@
  *   and any active pool credit window.
  *
  * The dev workspace sId is "DevWkSpace"; the ingest alias sent to Metronome
- * is derived from it via `getMetronomeIngestAlias` (scoped per dust-hive
- * environment when running under dust-hive).
+ * is derived from it via `getMetronomeIngestAlias` (scoped per ruby-hive
+ * environment when running under ruby-hive).
  */
 
 import {

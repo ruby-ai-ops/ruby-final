@@ -1,7 +1,7 @@
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import type { ConnectorsAPIError } from "@dust-tt/client";
+import type { ConnectorsAPIError } from "@ruby-ai/client";
 // biome-ignore lint/plugin/enforceClientTypesInPublicApi: existing usage
-import { isConnectorsAPIError } from "@dust-tt/client";
+import { isConnectorsAPIError } from "@ruby-ai/client";
 import { z } from "zod";
 import type { ContentNodeType } from "../core/content_node";
 import type { ConnectorProvider, DataSourceType } from "../data_source";
@@ -126,7 +126,7 @@ export type ProviderVisibility = "public" | "private";
  * own. This is because the Microsoft API does not allow to query a document or
  * list its children using its id alone. We compute an internal id that contains all
  * information. More details here:
- * https://app.notion.com/p/dust-tt/Design-Doc-Microsoft-ids-parents-c27726652aae45abafaac587b971a41d?pvs=4
+ * https://app.notion.com/p/ruby-ai/Design-Doc-Microsoft-ids-parents-c27726652aae45abafaac587b971a41d?pvs=4
  */
 export interface ContentNode {
   childrenCount: number;
@@ -652,11 +652,11 @@ export class ConnectorsAPI {
     slackTeamId: string;
     signingSecret: string;
   }): Promise<ConnectorsAPIResponse<{ success: boolean }>> {
-    const webhooksSecret = process.env.DUST_CONNECTORS_WEBHOOKS_SECRET;
+    const webhooksSecret = process.env.RUBY_CONNECTORS_WEBHOOKS_SECRET;
     if (!webhooksSecret) {
       return new Err({
         type: "internal_server_error",
-        message: "DUST_CONNECTORS_WEBHOOKS_SECRET is not configured",
+        message: "RUBY_CONNECTORS_WEBHOOKS_SECRET is not configured",
       });
     }
 
@@ -686,7 +686,7 @@ export class ConnectorsAPI {
         exists: boolean;
         type?: "page" | "database";
       };
-      dust: {
+      ruby: {
         synced: boolean;
         lastSync?: string;
         breadcrumbs?: Array<{

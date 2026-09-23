@@ -52,9 +52,9 @@ export async function hardDeleteApp(
     async (span) => {
       span?.setTag("workspace.id", auth.workspace()?.sId ?? "unknown");
       span?.setTag("app.s_id", app.sId);
-      span?.setTag("core.project_id", app.dustAPIProjectId);
+      span?.setTag("core.project_id", app.rubyAPIProjectId);
       return coreAPI.deleteProject({
-        projectId: app.dustAPIProjectId,
+        projectId: app.rubyAPIProjectId,
         caller: "apps-api-hard-delete",
       });
     }
@@ -90,7 +90,7 @@ export async function checkAppsDeployment(
         return { ...appRequest, deployed: false };
       }
       const coreSpec = await coreAPI.getSpecification({
-        projectId: app.dustAPIProjectId,
+        projectId: app.rubyAPIProjectId,
         specificationHash: appRequest.appHash,
       });
       if (coreSpec.isErr()) {
@@ -109,10 +109,10 @@ export async function cloneAppToWorkspace(
   targetWorkspace: LightWorkspaceType,
   targetSpace: SpaceResource
 ): Promise<Result<AppResource, Error>> {
-  // Only dust super users can clone apps. Authenticator has no write permissions
+  // Only ruby super users can clone apps. Authenticator has no write permissions
   // on the target workspace.
-  if (!auth.isDustSuperUser()) {
-    throw new Error("Only dust super users can clone apps");
+  if (!auth.isRubySuperUser()) {
+    throw new Error("Only ruby super users can clone apps");
   }
   if (targetWorkspace.id !== targetSpace.workspaceId) {
     return new Err(new Error("Target space must belong to target workspace"));
@@ -121,7 +121,7 @@ export async function cloneAppToWorkspace(
   // Handle CoreAPI project cloning.
   const coreAPI = new CoreAPI(config.getCoreAPIConfig(), logger);
   const cloneRes = await coreAPI.cloneProject({
-    projectId: app.dustAPIProjectId,
+    projectId: app.rubyAPIProjectId,
   });
   if (cloneRes.isErr()) {
     return new Err(new Error(cloneRes.error.message));
@@ -129,6 +129,6 @@ export async function cloneAppToWorkspace(
 
   // Use the resource to handle the clone operation.
   return app.clone(auth, targetWorkspace, targetSpace, {
-    dustAPIProjectId: cloneRes.value.project.project_id.toString(),
+    rubyAPIProjectId: cloneRes.value.project.project_id.toString(),
   });
 }

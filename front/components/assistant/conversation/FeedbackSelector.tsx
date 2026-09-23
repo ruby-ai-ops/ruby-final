@@ -15,7 +15,7 @@ import {
   TextArea,
   ThumbsDown,
   ThumbsUp,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useController, useForm } from "react-hook-form";
@@ -336,12 +336,12 @@ export function FeedbackSelector({
                         <div className="flex flex-col">
                           <Label htmlFor="share-conversation">
                             {isGlobalAgent
-                              ? "Share conversation with the Dust team"
+                              ? "Share conversation with the Ruby team"
                               : "Share conversation with the agent’s editors"}
                           </Label>
                           <span className="text-xs text-muted-foreground">
                             {isGlobalAgent
-                              ? `Helps the Dust team improve ${agentName}`
+                              ? `Helps the Ruby team improve ${agentName}`
                               : "Helps editors improve the agent"}
                           </span>
                         </div>

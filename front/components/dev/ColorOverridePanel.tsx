@@ -1,4 +1,4 @@
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useEffect, useState } from "react";
 import type { ColorToken } from "./devModeConfig";
 import { ALL_TOKENS, COLOR_GROUPS } from "./devModeConfig";

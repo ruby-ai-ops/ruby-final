@@ -1,7 +1,7 @@
 import type { LightMCPToolConfigurationType } from "@app/lib/actions/mcp";
 import type { ToolExecutionBaseStatus } from "@app/lib/actions/statuses";
 import type { ToolOutputItemType } from "@app/lib/actions/types";
-import type { PokeSandboxFunctionMCPAction } from "@app/lib/api/poke/sandbox_functions";
+import type { AdminSandboxFunctionMCPAction } from "@app/lib/api/admin/sandbox_functions";
 import type { Authenticator } from "@app/lib/auth";
 import { getPrivateUploadBucket } from "@app/lib/file_storage";
 import {
@@ -36,7 +36,7 @@ import type { Attributes, Transaction } from "sequelize";
 import { Op } from "sequelize";
 
 // Outputs share the agent MCP output items GCS prefix (`w/<wsId>/...` so workspace relocation
-// transfers the objects), but with one object per action holding the full content array — dsbx
+// transfers the objects), but with one object per action holding the full content array — rbx
 // consumes the output exactly once as a whole, there is no per-block rendering.
 
 // The output object is either a bare content array (version 1, still the format when the tool
@@ -615,10 +615,10 @@ export class SandboxFunctionMCPActionResource extends BaseResource<SandboxFuncti
   }
 
   // `mcpServerView` names the tool's server and links to it; it is null when the view has since
-  // been deleted. The output itself stays behind `readOutput`, poke fetches it on demand.
-  toPokeJSON(
+  // been deleted. The output itself stays behind `readOutput`, admin fetches it on demand.
+  toAdminJSON(
     mcpServerView: MCPServerViewResource | null
-  ): PokeSandboxFunctionMCPAction {
+  ): AdminSandboxFunctionMCPAction {
     return {
       ...this.toJSON(),
       mcpServerViewId: mcpServerView?.sId ?? null,

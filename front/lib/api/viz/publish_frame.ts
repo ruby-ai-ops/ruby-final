@@ -56,7 +56,7 @@ function shouldValidate(relPath: string): boolean {
  *    metadata, which flips {@link FileResource.getRenderableVersion} to "processed".
  * 4. Recompute the authorized-file allowlist against the rendered bundle.
  *
- * `reader` is injected (rather than a `DustFileSystem`) so this stays unit-testable with an
+ * `reader` is injected (rather than a `RubyFileSystem`) so this stays unit-testable with an
  * in-memory tree. The handler wires `createMountFrameSourceReader`. `entryRelPath` is resolved by
  * the caller, not derived here from `file.fileName` (see `frameEntryRelPath` on
  * `FileUseCaseMetadata` for why).

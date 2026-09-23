@@ -10,7 +10,7 @@ import type { PodTaskStatus } from "@app/types/project_task";
 import { POD_TASK_NO_ASSIGNEE_LABEL } from "@app/types/project_task";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
 import type { LightWorkspaceType, UserType } from "@app/types/user";
-import { Avatar, Checkbox, Chip, Spinner } from "@dust-tt/sparkle";
+import { Avatar, Checkbox, Chip, Spinner } from "@ruby-ai/ui";
 import { useMemo } from "react";
 
 interface PodTasksUpdateValidationDetailsProps {
@@ -360,7 +360,7 @@ export function PodTasksUpdateValidationDetails({
 }: PodTasksUpdateValidationDetailsProps) {
   const { podLabel, isPodLabelLoading } = usePodLabel({
     owner,
-    dustPodUri: input.dustPod?.uri,
+    rubyPodUri: input.rubyPod?.uri,
     conversationId,
   });
 

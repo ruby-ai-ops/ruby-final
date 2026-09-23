@@ -7,8 +7,8 @@ import type {
   DeleteFolderResponseType,
   GetFolderResponseType,
   UpsertFolderResponseType,
-} from "@dust-tt/client";
-import { UpsertDataSourceFolderRequestSchema } from "@dust-tt/client";
+} from "@ruby-ai/client";
+import { UpsertDataSourceFolderRequestSchema } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsSystemKey } from "@front-api/middlewares/ensure_role";
 import type { HandlerResult } from "@front-api/middlewares/utils";
@@ -60,8 +60,8 @@ app.get(
 
     const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
     const docRes = await coreAPI.getDataSourceFolder({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       folderId: fId,
     });
 
@@ -179,10 +179,10 @@ app.post(
 
     const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
 
-    // Create folder with the Dust internal API.
+    // Create folder with the Ruby internal API.
     const upsertRes = await coreAPI.upsertDataSourceFolder({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       folderId: fId,
 
       timestamp: timestamp || null,
@@ -258,8 +258,8 @@ app.delete(
 
     const coreAPI = new CoreAPI(apiConfig.getCoreAPIConfig(), logger);
     const delRes = await coreAPI.deleteDataSourceFolder({
-      projectId: dataSource.dustAPIProjectId,
-      dataSourceId: dataSource.dustAPIDataSourceId,
+      projectId: dataSource.rubyAPIProjectId,
+      dataSourceId: dataSource.rubyAPIDataSourceId,
       folderId: fId,
       caller: "public-api",
     });

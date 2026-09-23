@@ -3,7 +3,7 @@
 # Usage: bash dev/scripts/refresh-op-env.sh
 set -euo pipefail
 
-DUST_DEV_SCRIPT_NAME=refresh-op-env
+RUBY_DEV_SCRIPT_NAME=refresh-op-env
 # shellcheck source=dev/scripts/common.sh
 source "$(dirname "$0")/common.sh"
 # shellcheck source=dev/scripts/env.sh

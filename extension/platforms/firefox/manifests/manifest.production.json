@@ -1,7 +1,7 @@
 {
   "browser_specific_settings": {
     "gecko": {
-      "id": "dust-dev@dust.tt",
+      "id": "ruby-dev@ruby.ad",
       "strict_min_version": "140.0",
       "data_collection_permissions": {
         "required": [
@@ -15,7 +15,7 @@
       }
     }
   },
- "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://browser-intake-datadoghq.eu https://dust.tt/ https://*.dust.tt/ https://*.novu.co wss://*.novu.co wss://api.elevenlabs.io data:; frame-src https://viz.dust.tt https://eu.viz.dust.tt"
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://browser-intake-datadoghq.eu https://ruby.ad/ https://*.ruby.ad/ https://*.novu.co wss://*.novu.co wss://api.elevenlabs.io data:; frame-src https://viz.ruby.ad https://eu.viz.ruby.ad"
   }
 }

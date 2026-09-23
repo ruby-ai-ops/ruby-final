@@ -1,5 +1,5 @@
 import type { CapabilityFilterType } from "@app/components/shared/tools_picker/types";
-import { Button } from "@dust-tt/sparkle";
+import { Button } from "@ruby-ai/ui";
 
 interface CapabilityFilterButtonsProps {
   filter: CapabilityFilterType;

@@ -3,7 +3,7 @@
 ## Context
 
 `AgentMessageModel` stores `runIds` as backend-only metadata that links a message to one or more
-Dust runs / LLM traces. These ids are then used to resolve run usage, analytics, and debugging
+Ruby runs / LLM traces. These ids are then used to resolve run usage, analytics, and debugging
 information.
 
 `CompactionMessageModel` currently does not store any run ids, even though compaction is produced by
@@ -52,7 +52,7 @@ await AgentMessageModel.update(
 
 The array order is not trusted to be chronological.
 
-When callers need the latest run, they resolve all runs by `dustRunId` and pick the newest one by
+When callers need the latest run, they resolve all runs by `rubyRunId` and pick the newest one by
 `createdAt`.
 
 So if we mirror this design for compaction, we should preserve the same invariant: `runIds` are a
@@ -61,7 +61,7 @@ set-like bag of linked run ids, not an ordered timeline.
 ### API surface
 
 `runIds` are not part of the normal serialized `AgentMessageType`. They are backend/debug metadata.
-They are only fetched directly in special debugging paths such as poke.
+They are only fetched directly in special debugging paths such as admin.
 
 We should follow the same approach for compaction initially.
 
@@ -111,7 +111,7 @@ Migration:
 
 Notes:
 - No index is needed on `runIds`, matching `AgentMessageModel`.
-- Lookup pattern remains: load message row, read `runIds`, resolve runs from `runs.dustRunId`.
+- Lookup pattern remains: load message row, read `runIds`, resolve runs from `runs.rubyRunId`.
 
 ### - [x] 2. Initialize compaction rows with `runIds: null`
 
@@ -239,7 +239,7 @@ Rationale:
 - `runIds` are operational metadata, not primary user-facing message content.
 - Avoid API churn until there is a concrete client/debug consumer.
 
-If needed later, expose `runIds` only through poke/debug tooling, mirroring the current agent
+If needed later, expose `runIds` only through admin/debug tooling, mirroring the current agent
 message approach.
 
 ## Tests
@@ -270,7 +270,7 @@ If we later need to query compaction usage directly, add a helper similar to:
 
 It should follow the same rule as agent messages:
 - do not trust array ordering,
-- resolve all runs by `dustRunId`,
+- resolve all runs by `rubyRunId`,
 - pick the latest by `createdAt`.
 
 ## Summary

@@ -56,7 +56,7 @@ export function registerGetAnalyticsViewTool(
     {
       description: DESCRIPTION,
       _meta: {
-        dust: {
+        ruby: {
           stake: "never_ask",
           eager: true,
           displayLabels: {

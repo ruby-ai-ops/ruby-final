@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-export const DUST_ANONYMOUS_ID_COOKIE = "_dust_aid";
+export const RUBY_ANONYMOUS_ID_COOKIE = "_ruby_aid";
 
 const ANONYMOUS_ID_MAX_AGE_SECONDS = 31536000;
 
@@ -13,7 +13,7 @@ export function getRootCookieDomain(): string | null {
     return null;
   }
 
-  return ".dust.tt";
+  return ".ruby.ad";
 }
 
 export function getPostHogCookieDomain(): string | undefined {
@@ -21,10 +21,10 @@ export function getPostHogCookieDomain(): string | undefined {
   return domain ?? undefined;
 }
 
-export function buildDustAidCookieString(value: string): string {
+export function buildRubyAidCookieString(value: string): string {
   const domain = getRootCookieDomain();
   const domainPart = domain ? `; domain=${domain}` : "";
-  return `${DUST_ANONYMOUS_ID_COOKIE}=${value}; path=/${domainPart}; SameSite=Lax; Secure; max-age=${ANONYMOUS_ID_MAX_AGE_SECONDS}`;
+  return `${RUBY_ANONYMOUS_ID_COOKIE}=${value}; path=/${domainPart}; SameSite=Lax; Secure; max-age=${ANONYMOUS_ID_MAX_AGE_SECONDS}`;
 }
 
 export function getOrCreateAnonymousId(): string | null {
@@ -38,7 +38,7 @@ export function getOrCreateAnonymousId(): string | null {
   }
 
   const id = uuidv4();
-  document.cookie = buildDustAidCookieString(id);
+  document.cookie = buildRubyAidCookieString(id);
   return id;
 }
 
@@ -46,7 +46,7 @@ function readAnonymousIdFromDocumentCookie(): string | null {
   if (typeof document === "undefined") {
     return null;
   }
-  return parseDustAidFromCookieString(document.cookie);
+  return parseRubyAidFromCookieString(document.cookie);
 }
 
 export function readAnonymousIdFromCookies(
@@ -55,11 +55,11 @@ export function readAnonymousIdFromCookies(
   if (!cookieHeader) {
     return null;
   }
-  return parseDustAidFromCookieString(cookieHeader);
+  return parseRubyAidFromCookieString(cookieHeader);
 }
 
-function parseDustAidFromCookieString(cookies: string): string | null {
-  const prefix = `${DUST_ANONYMOUS_ID_COOKIE}=`;
+function parseRubyAidFromCookieString(cookies: string): string | null {
+  const prefix = `${RUBY_ANONYMOUS_ID_COOKIE}=`;
   const match = cookies.split("; ").find((c) => c.startsWith(prefix));
   return match ? match.slice(prefix.length) : null;
 }

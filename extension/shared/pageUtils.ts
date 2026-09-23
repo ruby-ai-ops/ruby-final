@@ -1,6 +1,6 @@
 import { Err, Ok, type Result } from "@app/types/shared/result";
 
-export async function ensureDustPageUtils(
+export async function ensureRubyPageUtils(
   tab: chrome.tabs.Tab
 ): Promise<Result<void, Error>> {
   if (!tab?.id) {
@@ -11,9 +11,9 @@ export async function ensureDustPageUtils(
     target: { tabId: tab.id },
     func: () => {
       const w = window as unknown as {
-        __dustUtils?: unknown;
+        __rubyUtils?: unknown;
       };
-      if (w.__dustUtils) {
+      if (w.__rubyUtils) {
         return; // already injected
       }
 
@@ -236,7 +236,7 @@ export async function ensureDustPageUtils(
         return null;
       };
 
-      w.__dustUtils = {
+      w.__rubyUtils = {
         selector,
         CONTENT,
         getElementName,

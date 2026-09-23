@@ -1,8 +1,8 @@
-import { WithDustNoopConfig } from "@app/lib/llms/providers/noop/models/noop";
-import { defineDustStreamEndpoint } from "@app/lib/llms/stream/dust_stream_endpoint";
+import { WithRubyNoopConfig } from "@app/lib/llms/providers/noop/models/noop";
+import { defineRubyStreamEndpoint } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import { NoopNoopGlobalNoopStream } from "@app/lib/model_constructors/stream/endpoints/noop_noop_global_noop";
 
-export class DustNoopNoopGlobalNoopStream extends WithDustNoopConfig(
+export class RubyNoopNoopGlobalNoopStream extends WithRubyNoopConfig(
   NoopNoopGlobalNoopStream
 ) {
   static readonly endpointFilter = {
@@ -10,4 +10,4 @@ export class DustNoopNoopGlobalNoopStream extends WithDustNoopConfig(
   };
 }
 
-defineDustStreamEndpoint(DustNoopNoopGlobalNoopStream);
+defineRubyStreamEndpoint(RubyNoopNoopGlobalNoopStream);

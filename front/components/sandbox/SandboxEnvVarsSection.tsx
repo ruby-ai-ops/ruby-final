@@ -46,7 +46,7 @@ import {
   Spinner,
   TextArea,
   Trash01,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useController, useForm, useWatch } from "react-hook-form";
@@ -474,7 +474,7 @@ export function SandboxEnvVarsSection({
           <div className="flex flex-col gap-2">
             <div>
               <strong>HTTPS secrets (DSEC_)</strong> — for credentials and
-              anything sensitive. Stored encrypted on the host. The dsbx
+              anything sensitive. Stored encrypted on the host. The rbx
               forwarder injects the value only into outbound HTTPS requests to
               the domains you whitelist; code running in the Computer never sees
               the raw value. Safe for API keys, tokens, and other secrets bound
@@ -639,7 +639,7 @@ export function SandboxEnvVarsSection({
                   >
                     {kindValue === "https_secret" ? (
                       <>
-                        Stored securely. The dsbx forwarder injects it only into
+                        Stored securely. The rbx forwarder injects it only into
                         outbound HTTPS requests to whitelisted domains; Computer
                         code never reads it.
                       </>

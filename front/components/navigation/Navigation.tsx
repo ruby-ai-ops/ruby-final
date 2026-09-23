@@ -4,7 +4,7 @@ import {
   NavigationSidebar,
   ToggleNavigationSidebarButton,
 } from "@app/components/navigation/NavigationSidebar";
-import { SidebarContext } from "@app/components/sparkle/SidebarContext";
+import { SidebarContext } from "@app/components/ui/SidebarContext";
 import { useUser } from "@app/lib/swr/user";
 import { classNames } from "@app/lib/utils";
 import type { SubscriptionType } from "@app/types/plan";
@@ -18,7 +18,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import type React from "react";
 import { useContext } from "react";

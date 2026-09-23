@@ -1,7 +1,7 @@
 // @vitest-environment node
 
 import { MODEL_PRICING } from "@app/lib/api/assistant/token_pricing";
-import { DustXaiGrokFourDotSixGlobalXaiStream } from "@app/lib/llms/stream/endpoints/xai_grok_four_dot_six_global_xai";
+import { RubyXaiGrokFourDotSixGlobalXaiStream } from "@app/lib/llms/stream/endpoints/xai_grok_four_dot_six_global_xai";
 import { XaiGrokFourDotSixGlobalXaiStream } from "@app/lib/model_constructors/stream/endpoints/xai_grok_four_dot_six_global_xai";
 import {
   GROK_4_6_MODEL_CONFIG,
@@ -24,11 +24,11 @@ describe("Grok 4.6 model configuration", () => {
     );
   });
 
-  it("caps context and output in the Dust layer", () => {
-    expect(DustXaiGrokFourDotSixGlobalXaiStream.contextSize).toBe(
+  it("caps context and output in the Ruby layer", () => {
+    expect(RubyXaiGrokFourDotSixGlobalXaiStream.contextSize).toBe(
       EXPECTED_CONTEXT_SIZE
     );
-    expect(DustXaiGrokFourDotSixGlobalXaiStream.maxOutputTokens).toBe(
+    expect(RubyXaiGrokFourDotSixGlobalXaiStream.maxOutputTokens).toBe(
       EXPECTED_MAX_OUTPUT_TOKENS
     );
     expect(GROK_4_6_MODEL_CONFIG.contextSize).toBe(EXPECTED_CONTEXT_SIZE);

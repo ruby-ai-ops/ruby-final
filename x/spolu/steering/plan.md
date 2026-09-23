@@ -127,8 +127,8 @@ the terminal event — this adds the promotion logic:
 - When `UserMessagePromotedEvent` is received, update the message visibility to `"visible"`
   (remove spinner, normal style).
 
-### Future: `wasPending` flag + `<dust_system>` steering instruction
+### Future: `wasPending` flag + `<ruby_system>` steering instruction
 
 A `wasPending` boolean on `MessageModel` could be set when promoting pending messages to visible.
-This would allow `renderUserMessage()` to append a steering instruction to `<dust_system>`:
+This would allow `renderUserMessage()` to append a steering instruction to `<ruby_system>`:
 "This message was sent by the user to steer your current work." Deferred for now.

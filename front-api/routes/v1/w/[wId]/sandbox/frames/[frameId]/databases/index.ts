@@ -1,6 +1,6 @@
 import { listFrameDatabases } from "@app/lib/api/frames/databases";
 import { canWriteFrameV2Source } from "@app/lib/api/frames/permissions";
-import type { LiveDatabaseEntry } from "@app/lib/api/sandbox_functions/dsbx_db";
+import type { LiveDatabaseEntry } from "@app/lib/api/sandbox_functions/rbx_db";
 import { isResourceSId } from "@app/lib/resources/string_ids";
 import type { SandboxFrameCtx } from "@front-api/middlewares/ctx";
 import { sandboxFrameApp } from "@front-api/middlewares/ctx";

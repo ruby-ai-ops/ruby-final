@@ -1,5 +1,5 @@
 // SVG builder for an AI agent in the office floor: pulsing halo + blue
-// disc + sparkle robot glyph + floating @label tag. The caller positions
+// disc + ui robot glyph + floating @label tag. The caller positions
 // the agent (sets `--x`/`--y` and `_planX`/`_planY` etc.) after appending
 // the returned element to the SVG.
 

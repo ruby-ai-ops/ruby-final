@@ -2141,7 +2141,7 @@ const NON_BUSINESS_EMAIL_DOMAINS = new Set([
   "mail2dream.com",
   "mail2dreamer.com",
   "mail2dude.com",
-  "mail2dustin.com",
+  "mail2rubyin.com",
   "mail2dyke.com",
   "mail2dylan.com",
   "mail2earl.com",

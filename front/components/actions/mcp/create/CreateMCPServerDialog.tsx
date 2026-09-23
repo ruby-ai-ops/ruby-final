@@ -19,7 +19,7 @@ import type {
 } from "@app/components/actions/mcp/MCPServerAuthConnection";
 import { MCPServerAuthConnection } from "@app/components/actions/mcp/MCPServerAuthConnection";
 import { getAvatarFromIcon } from "@app/components/resources/resources_icons";
-import { FormProvider } from "@app/components/sparkle/FormProvider";
+import { FormProvider } from "@app/components/ui/FormProvider";
 import { useSendNotification } from "@app/hooks/useNotification";
 import {
   getMcpServerDisplayName,
@@ -58,7 +58,7 @@ import {
   DialogTitle,
   Input,
   Label,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";

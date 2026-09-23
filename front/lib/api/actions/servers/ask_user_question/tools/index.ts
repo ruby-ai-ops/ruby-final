@@ -11,7 +11,7 @@ import {
 } from "@app/lib/actions/user_question";
 import { ASK_USER_QUESTION_TOOLS_METADATA } from "@app/lib/api/actions/servers/ask_user_question/metadata";
 import { Ok } from "@app/types/shared/result";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 
 const handlers: ToolHandlers<typeof ASK_USER_QUESTION_TOOLS_METADATA> = {

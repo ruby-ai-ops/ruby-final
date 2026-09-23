@@ -1,4 +1,4 @@
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 import type { Logger } from "@app/logger/logger";
 import type { CreationAttributes } from "sequelize";
@@ -356,8 +356,8 @@ async function migrateWorkspaceProcessActions(
         assert(
           agentConfiguration ||
             isGlobalAgentId(agentMessage.agentConfigurationId) ||
-            // Dust Next is a global agent that was removed from everywhere.
-            agentMessage.agentConfigurationId === "dust-next",
+            // Ruby Next is a global agent that was removed from everywhere.
+            agentMessage.agentConfigurationId === "ruby-next",
           `Agent configuration must exist for agent ${agentMessage.agentConfigurationId}`
         );
 

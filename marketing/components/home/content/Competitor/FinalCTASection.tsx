@@ -4,7 +4,7 @@ import {
   P,
 } from "@marketing/components/home/ContentComponents";
 import { TRACKING_AREAS, withTracking } from "@marketing/lib/tracking";
-import { LegacyButton as Button, Rocket02 } from "@dust-tt/sparkle";
+import { LegacyButton as Button, Rocket02 } from "@ruby-ai/ui";
 
 import type { FinalCTAConfig } from "./types";
 
@@ -31,7 +31,7 @@ export function FinalCTASection({
 
         <div className="mb-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Button
-            variant="highlight"
+            variant="primary"
             size="md"
             label={config.primaryCTA.label}
             icon={Rocket02}

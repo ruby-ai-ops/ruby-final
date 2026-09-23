@@ -15,7 +15,7 @@ import {
 } from "@app/components/model_picker/modelPickerUtils";
 import { getModelMakerLogo } from "@app/components/providers/types";
 import { RegionalFlag } from "@app/components/shared/RegionalFlag";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useCanHover, useIsWidthConstrained } from "@app/lib/swr/useIsMobile";
 import { getModelMakerDisplayName } from "@app/types/assistant/models/providers";
 import type {
@@ -32,7 +32,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   Icon,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { Fragment } from "react";
 
 interface ModelPickerMakersViewProps {

@@ -52,13 +52,13 @@ export class UserFactory {
 
       username: faker.internet.displayName(),
       email: faker.internet.email({
-        provider: superUser ? "dust.tt" : undefined,
+        provider: superUser ? "ruby.ad" : undefined,
       }),
       name: faker.person.fullName(),
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
 
-      isDustSuperUser: superUser,
+      isRubySuperUser: superUser,
       createdAt,
       lastLoginAt,
     };

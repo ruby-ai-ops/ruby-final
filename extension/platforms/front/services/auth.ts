@@ -1,7 +1,7 @@
 import type { CellInfo } from "@app/types/cell";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
-import { DUST_US_URL, FRONT_EXTENSION_URL } from "@extension/shared/lib/config";
+import { RUBY_US_URL, FRONT_EXTENSION_URL } from "@extension/shared/lib/config";
 import { generatePKCE } from "@extension/shared/lib/utils";
 import type { StoredTokens } from "@extension/shared/services/auth";
 import {
@@ -57,7 +57,7 @@ const openAndWaitForPopup = async <T>(
         }
       } catch (e) {
         // Ignore errors accessing popup location (cross-origin)
-        console.log("[Dust Auth] Error accessing popup location:", e);
+        console.log("[Ruby Auth] Error accessing popup location:", e);
       }
     }, POPUP_CONFIG.CHECK_INTERVAL_MS);
   });
@@ -72,7 +72,7 @@ export class FrontAuthService extends AuthService {
     options: Record<string, string>
   ): Promise<{ code: string }> {
     const queryString = new URLSearchParams(options).toString();
-    const authUrl = `${DUST_US_URL}/api/workos/login?${queryString}`;
+    const authUrl = `${RUBY_US_URL}/api/workos/login?${queryString}`;
 
     const result = await openAndWaitForPopup<{
       code: string;
@@ -138,7 +138,7 @@ export class FrontAuthService extends AuthService {
         code_verifier: storedCodeVerifier,
         code: result.code,
       });
-      const response = await fetch(`${DUST_US_URL}/api/workos/authenticate`, {
+      const response = await fetch(`${RUBY_US_URL}/api/workos/authenticate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

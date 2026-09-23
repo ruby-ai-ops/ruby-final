@@ -165,8 +165,8 @@ export interface MCPFormData {
       unit: "hour" | "day" | "week" | "month" | "year";
     } | null;
     additionalConfiguration: AdditionalConfigurationInBuilderType;
-    dustAppConfiguration: any;
-    dustProject: ProjectConfiguration | null;
+    rubyAppConfiguration: any;
+    rubyProject: ProjectConfiguration | null;
     secretName: string | null;
     jsonSchema: any;
     _jsonSchemaString: string | null;

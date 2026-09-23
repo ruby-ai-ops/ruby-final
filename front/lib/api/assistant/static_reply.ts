@@ -5,14 +5,14 @@ import type {
 import { isReinforcedSkillNotificationMetadata } from "@app/types/assistant/conversation";
 
 /**
- * Returns pre-formatted text that the Dust global agent should echo as its
+ * Returns pre-formatted text that the Ruby global agent should echo as its
  * NOOP static reply for this turn, or `undefined` to fall back to the normal
  * LLM-driven response.
  *
  * Today only the skill-suggestion notification flow uses this: it posts hidden
- * user messages whose content is exactly the message we want Dust to display
+ * user messages whose content is exactly the message we want Ruby to display
  * (initial TODO list, accept/reject status updates). Adding a new caller is a
- * matter of recognizing it here — keep `dust.ts` and the agent-run plumbing
+ * matter of recognizing it here — keep `ruby.ts` and the agent-run plumbing
  * generic.
  */
 export function getStaticReplyForUserMessage({

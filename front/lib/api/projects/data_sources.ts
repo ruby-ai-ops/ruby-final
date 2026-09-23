@@ -1,5 +1,5 @@
 import type { Authenticator } from "@app/lib/auth";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { DataSourceResource } from "@app/lib/resources/data_source_resource";
 import { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
 import type { SpaceResource } from "@app/lib/resources/space_resource";
@@ -20,19 +20,19 @@ export function getProjectConversationsDatasourceName(
 export async function fetchProjectDataSource(
   auth: Authenticator,
   space: SpaceResource
-): Promise<Result<DataSourceResource, DustError<"data_source_not_found">>> {
+): Promise<Result<DataSourceResource, RubyError<"data_source_not_found">>> {
   const dataSources = await DataSourceResource.listBySpace(
     auth,
     space,
     undefined,
-    "dust_project"
+    "ruby_project"
   );
 
   if (dataSources.length === 0) {
     return new Err(
-      new DustError(
+      new RubyError(
         "data_source_not_found",
-        "No dust_project data source found for project space"
+        "No ruby_project data source found for project space"
       )
     );
   }
@@ -44,7 +44,7 @@ export async function fetchProjectDataSource(
         spaceId: space.sId,
         dataSources: dataSources.map((ds) => ds.sId),
       },
-      "Multiple dust_project data sources found for project space, this should not happen. Fallback by returning the first one but this should be investigated."
+      "Multiple ruby_project data sources found for project space, this should not happen. Fallback by returning the first one but this should be investigated."
     );
   }
 
@@ -57,7 +57,7 @@ export async function fetchProjectDataSourceView(
 ): Promise<
   Result<
     DataSourceViewResource,
-    DustError<"data_source_not_found" | "data_source_view_not_found">
+    RubyError<"data_source_not_found" | "data_source_view_not_found">
   >
 > {
   const r = await fetchProjectDataSource(auth, space);
@@ -74,7 +74,7 @@ export async function fetchProjectDataSourceView(
 
   if (dataSourceViews.length === 0) {
     return new Err(
-      new DustError(
+      new RubyError(
         "data_source_view_not_found",
         "No data source view found for project space"
       )

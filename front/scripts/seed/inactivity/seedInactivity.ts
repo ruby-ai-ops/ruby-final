@@ -29,7 +29,7 @@ function agentAsset(
     name,
     description,
     instructions: `You are ${name}, seeded to exercise inactive-agent archival.`,
-    pictureUrl: `https://dust.tt/static/droidavatar/Droid_Sky_${avatarNumber}.jpg`,
+    pictureUrl: `https://ruby.ad/static/droidavatar/Droid_Sky_${avatarNumber}.jpg`,
   };
 }
 

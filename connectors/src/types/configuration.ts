@@ -49,7 +49,7 @@ export type ConnectorConfigurations = {
   slack: SlackConfigurationType;
   slack_bot: SlackConfigurationType;
   discord_bot: DiscordBotConfigurationType;
-  dust_project: null;
+  ruby_project: null;
   google_drive: null;
   github: null;
   confluence: null;

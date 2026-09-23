@@ -32,7 +32,7 @@ import {
   NavTabPillTrigger,
   Settings01,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useEffect, useMemo } from "react";
 
 const SYSTEM_TAB_TRIGGERS = {

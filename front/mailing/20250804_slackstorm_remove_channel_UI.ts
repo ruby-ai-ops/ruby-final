@@ -13,7 +13,7 @@ const AGENTS_WITH_SLACK_CHANNELS: Record<string, string[]> = {
   //   "testpr",
   //   "nknkjn",
   //   "Dayplanner",
-  //   "DustWriter",
+  //   "RubyWriter",
   //   "HubspotDataChecker",
   // ],
   "98f7d7de51": ["ITsupportExpert"],
@@ -76,16 +76,16 @@ instructions. You can review and modify these instructions as needed.
 
 Please reply to this email if you have any questions.
 
-The Dust team.
+The Ruby team.
 `;
 
   const msg = {
     to: admins.members.map((a) => a.email),
-    from: "team@dust.tt",
-    cc: admins.members.map((a) => a.email).includes("spolu@dust.tt")
+    from: "team@ruby.ad",
+    cc: admins.members.map((a) => a.email).includes("spolu@ruby.ad")
       ? undefined
-      : "spolu@dust.tt",
-    subject: "[Dust] Update on Slack channel selection feature",
+      : "spolu@ruby.ad",
+    subject: "[Ruby] Update on Slack channel selection feature",
     text: email,
   };
 

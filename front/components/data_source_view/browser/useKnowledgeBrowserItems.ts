@@ -12,7 +12,7 @@ import {
   findSpaceFromNavigationHistory,
   getLatestNodeFromNavigationHistory,
 } from "@app/components/data_source_view/context/utils";
-import { useTheme } from "@app/components/sparkle/ThemeContext";
+import { useTheme } from "@app/components/ui/ThemeContext";
 import { useFeatureFlags } from "@app/lib/auth/AuthContext";
 import { useInfiniteDataSourceViewContentNodes } from "@app/lib/swr/data_source_views";
 import { useSpaceDataSourceViews, useSpaceInfo } from "@app/lib/swr/spaces";

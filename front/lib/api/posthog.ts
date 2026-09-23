@@ -61,7 +61,7 @@ export class PostHogServerSideTracking {
 
   /**
    * Alias an anonymous device ID to an identified user so that all pre-signup
-   * events captured with `dust_anonymous_id` are merged into the user's
+   * events captured with `ruby_anonymous_id` are merged into the user's
    * PostHog person profile.
    */
   static aliasAnonymousId({

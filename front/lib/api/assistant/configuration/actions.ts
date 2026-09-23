@@ -71,7 +71,7 @@ export async function createAgentActionConfiguration(
             : null,
         singleToolDescriptionOverride:
           serverDescription !== action.description ? action.description : null,
-        appId: action.dustAppConfiguration?.appId ?? null,
+        appId: action.rubyAppConfiguration?.appId ?? null,
         secretName: action.secretName ?? null,
       },
       { transaction: t }
@@ -99,9 +99,9 @@ export async function createAgentActionConfiguration(
       });
     }
     // Creating the ProjectConfiguration if configured
-    if (action.dustProject) {
+    if (action.rubyProject) {
       await createProjectConfiguration(auth, t, {
-        projectConfiguration: action.dustProject,
+        projectConfiguration: action.rubyProject,
         mcpConfig,
       });
     }
@@ -119,9 +119,9 @@ export async function createAgentActionConfiguration(
       childAgentId: action.childAgentId,
       timeFrame: action.timeFrame,
       additionalConfiguration: action.additionalConfiguration,
-      dustAppConfiguration: action.dustAppConfiguration,
+      rubyAppConfiguration: action.rubyAppConfiguration,
       secretName: action.secretName,
-      dustProject: action.dustProject,
+      rubyProject: action.rubyProject,
       jsonSchema: action.jsonSchema,
     });
   }, transaction);

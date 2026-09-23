@@ -4,11 +4,11 @@ import {
   useConversationSidePanelContext,
   useRegisterSidePanelConversation,
 } from "@app/components/assistant/conversation/ConversationSidePanelContext";
-import { SidebarContext } from "@app/components/sparkle/SidebarContext";
+import { SidebarContext } from "@app/components/ui/SidebarContext";
 import type { ConversationWithoutContentType } from "@app/types/assistant/conversation";
 import type { SubscriptionType } from "@app/types/plan";
 import type { LightWorkspaceType, UserType } from "@app/types/user";
-import { Button, cn, Menu01 } from "@dust-tt/sparkle";
+import { Button, cn, Menu01 } from "@ruby-ai/ui";
 import { usePlatform } from "@extension/shared/context/PlatformContext";
 import { sendGetSessionInfoMessage } from "@extension/shared/messages";
 import { useClientSideMCPServerIds } from "@extension/ui/components/conversation/ExtensionClientSideMCPServerProvider";
@@ -25,7 +25,7 @@ interface ConversationContainerProps {
 const SUGGESTIONS = {
   formHelper: {
     id: "form_helper",
-    title: "Fill forms with Dust extension",
+    title: "Fill forms with Ruby extension",
     description:
       "No more copy-pasting. Fill out forms directly from your agents.",
   },

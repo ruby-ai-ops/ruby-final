@@ -8,7 +8,7 @@ const isDetectionPaused = makeCachedKillSwitch("pause_model_health_detection", {
 });
 
 /**
- * Whether to stop recording attempts and detecting breaches, toggled from Poke.
+ * Whether to stop recording attempts and detecting breaches, toggled from Admin.
  *
  * The whole point of an operator switch here is that it works during an
  * incident, when shipping a revert is exactly what we cannot afford. It is read

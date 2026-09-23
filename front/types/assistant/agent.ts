@@ -72,7 +72,7 @@ export type AgentConfigurationStatus = z.infer<
 
 /**
  * Agent configuration scope
- * - 'global' scope are Dust agents, not editable, inside-list for all, cannot be overriden
+ * - 'global' scope are Ruby agents, not editable, inside-list for all, cannot be overriden
  * - 'visible' scope are published agents
  * - 'hidden' scope are unpuiblished agents, visible by editors only
  */
@@ -161,7 +161,7 @@ export type AgentFetchVariant = "light" | "full" | "extra_light";
 export type GlobalAgentContext = {
   userMessageRank: number;
   sidekickIsNewAgentFromScratch?: boolean;
-  // Pre-formatted text that the Dust global agent should echo as its NOOP
+  // Pre-formatted text that the Ruby global agent should echo as its NOOP
   // static reply for this turn. Set by `getStaticReplyForUserMessage` when the
   // triggering user message is a system-posted bootstrap/status update that
   // carries its own rendered content.

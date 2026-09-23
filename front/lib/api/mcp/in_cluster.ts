@@ -12,7 +12,7 @@ export async function isInClusterMCPUrlAllowed(
   if (
     !(await hasFeatureFlag(
       auth,
-      "dust_internal_dangerous_in_cluster_mcp_servers"
+      "ruby_internal_dangerous_in_cluster_mcp_servers"
     ))
   ) {
     return false;

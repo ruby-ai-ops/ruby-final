@@ -275,7 +275,7 @@ class FileStorageMock {
       getPublicUploadBucket: vi.fn(createStorage),
       getUpsertQueueBucket: vi.fn(createStorage),
       getTmpWorkloadsBucket: vi.fn(createStorage),
-      getDustDataSourcesBucket: vi.fn(createStorage),
+      getRubyDataSourcesBucket: vi.fn(createStorage),
       getWebhookRequestsBucket: vi.fn(createStorage),
       getLLMTracesBucket: vi.fn(createStorage),
     };

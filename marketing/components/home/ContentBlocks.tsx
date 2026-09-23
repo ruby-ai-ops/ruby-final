@@ -14,9 +14,14 @@ import {
   H5,
   P,
 } from "@marketing/components/home/ContentComponents";
+import { MarketingGradientSurface } from "@marketing/components/home/MarketingGradientSurface";
 import UTMButton from "@marketing/components/UTMButton";
+import {
+  isMarketingSurfaceVisible,
+  MARKETING_SURFACES,
+} from "@marketing/lib/marketing_visibility";
 import { classNames } from "@marketing/lib/utils";
-import { Rocket02 } from "@dust-tt/sparkle";
+import { Rocket02 } from "@ruby-ai/ui";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import React, { useEffect, useState } from "react";
@@ -57,10 +62,10 @@ export const ImgBlock: React.FC<ImgBlockProps> = ({
         className
       )}
     >
-      <div className="flex aspect-video w-full items-center justify-center bg-primary-800 p-4">
+      <MarketingGradientSurface className="flex aspect-video w-full items-center justify-center p-4">
         {/* eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing */}
         <div className="max-w-lg">{children ? children : null}</div>
-      </div>
+      </MarketingGradientSurface>
       <div className="flex flex-col gap-3 px-6 pb-6 pt-4">
         <H3 className="text-foreground" mono>
           {title}
@@ -183,7 +188,7 @@ export const HeaderContentBlock = ({
       )}
       <H1
         mono
-        className="text-5xl font-medium leading-tight md:text-6xl lg:text-7xl"
+        className="title-display text-5xl font-medium leading-tight md:text-6xl lg:text-7xl"
       >
         {title}
       </H1>
@@ -195,7 +200,7 @@ export const HeaderContentBlock = ({
       {hasCTA && (
         <div className="flex flex-col gap-4 xs:flex-row sm:flex-row md:flex-row">
           <UTMButton
-            variant="highlight"
+            variant="primary"
             size="md"
             label="Get started"
             href="/pricing"
@@ -253,6 +258,10 @@ export const MetricSection = ({
   metrics,
   color = "golden",
 }: MetricComponentProps) => {
+  if (!isMarketingSurfaceVisible(MARKETING_SURFACES.resultsClaims)) {
+    return null;
+  }
+
   const colors = getColorClasses(color);
 
   return (
@@ -304,28 +313,28 @@ interface QuoteProps {
 export const AllQuotes: QuoteProps[] = [
   {
     quote:
-      "It’s not just about retrieving information from one place. Our sales team needs information that’s often scattered across multiple internal applications. Dust brings it all together.",
+      "It’s not just about retrieving information from one place. Our sales team needs information that’s often scattered across multiple internal applications. Ruby brings it all together.",
     name: "Caren Duane",
     title: "Head of Business Operations at Clay",
     logo: "/static/landing/logos/color/clay.png",
   },
   {
     quote:
-      "Dust transformed our privacy reviews. It handles compliance checks, suggests improvements, and drafts communications. It both cuts our review time and helps pressure-test our legal interpretations.",
+      "Ruby transformed our privacy reviews. It handles compliance checks, suggests improvements, and drafts communications. It both cuts our review time and helps pressure-test our legal interpretations.",
     name: "Thomas Adhumeau",
     title: "Chief Privacy Officer at Didomi",
     logo: "/static/landing/logos/color/didomi.png",
   },
   {
     quote:
-      "It became evident that Dust could serve as a knowledgeable buddy for all staff, enhancing productivity whether you’re newly onboarded or a veteran team member.",
+      "It became evident that Ruby could serve as a knowledgeable buddy for all staff, enhancing productivity whether you’re newly onboarded or a veteran team member.",
     name: "Boris Lipiainen",
     title: "Chief Product and Technology Officer at Kyriba",
     logo: "/static/landing/logos/color/kyriba.png",
   },
   {
     quote:
-      "Dust is not just a tool - it’s like having an extra team member who knows your brand voice, can handle recurring tasks, and helps you tackle new challenges. I couldn’t do half of my job without it, especially with tight deadlines and a small team.",
+      "Ruby is not just a tool - it’s like having an extra team member who knows your brand voice, can handle recurring tasks, and helps you tackle new challenges. I couldn’t do half of my job without it, especially with tight deadlines and a small team.",
     name: "Valentine Chelius",
     title: "Head of Marketing at Fleet",
     logo: "/static/landing/logos/color/fleet.png",
@@ -339,14 +348,14 @@ export const AllQuotes: QuoteProps[] = [
   },
   {
     quote:
-      "We asked ourselves for years: what if your team had 20% more time? Dust has made it possible, empowering our employees to work smarter, innovate, and push boundaries.",
+      "We asked ourselves for years: what if your team had 20% more time? Ruby has made it possible, empowering our employees to work smarter, innovate, and push boundaries.",
     name: "Matthieu Birach",
     title: "Chief People Officer at Doctolib",
     logo: "/static/landing/logos/color/doctolib.png",
   },
   {
     quote:
-      "Dust has revolutionized our partner insights, condensing days of manual research into minutes of AI-powered conversation. It's not just about efficiency and time savings—it's about making smarter decisions and doing things we could not do before.",
+      "Ruby has revolutionized our partner insights, condensing days of manual research into minutes of AI-powered conversation. It's not just about efficiency and time savings—it's about making smarter decisions and doing things we could not do before.",
     name: "Alexandre Morillon",
     title: "CEO at Wakam",
     logo: "/static/landing/logos/color/wakam.svg",
@@ -393,6 +402,11 @@ export const QuoteSection = ({ quote, logo, name, title }: QuoteProps) => {
     );
     setQuotes([currentQuote, ...otherQuotes]);
   }, []);
+
+  // Source is intentionally retained until Ruby has verified public proof.
+  if (!isMarketingSurfaceVisible(MARKETING_SURFACES.customerProof)) {
+    return null;
+  }
 
   return (
     <div className="w-full">

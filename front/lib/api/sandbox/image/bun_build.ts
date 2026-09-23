@@ -38,7 +38,7 @@ function getSourceHash(srcDir: string, extraFiles: readonly string[]): string {
 }
 
 interface BunBuildOptions {
-  /** Artifact name used in error messages, e.g. "the sandbox dust-tools binary". */
+  /** Artifact name used in error messages, e.g. "the sandbox ruby-tools binary". */
   name: string;
   entrypoint: string;
   /** Source directory whose content (with extraHashFiles) forms the cache key. */
@@ -69,7 +69,7 @@ export function runCachedBunBuild({
     return cached;
   }
 
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "dust-bun-build-"));
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "ruby-bun-build-"));
   const outputPath = path.join(tempDir, "output");
 
   try {

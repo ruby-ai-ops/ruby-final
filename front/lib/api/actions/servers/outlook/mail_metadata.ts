@@ -636,7 +636,7 @@ export const OUTLOOK_MAIL_SERVER = {
       ],
     },
     icon: "MicrosoftOutlookLogo",
-    documentationUrl: "https://docs.dust.tt/docs/outlook-tool-setup",
+    documentationUrl: "https://docs.ruby.ad/docs/outlook-tool-setup",
   },
   tools: OUTLOOK_TOOLS_METADATA,
 } as const satisfies ServerMetadata;

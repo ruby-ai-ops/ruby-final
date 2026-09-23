@@ -13,7 +13,7 @@ import type {
 } from "@marketing/components/home/content/Solutions/configs/utils";
 import type { DemoVideoProps } from "@marketing/components/home/content/Solutions/DemoVideoSection";
 import type { UseCaseProps } from "@marketing/components/home/content/Solutions/UseCasesSection";
-import { Lightbulb04, Rocket02, Users01 } from "@dust-tt/sparkle";
+import { Lightbulb04, Rocket02, Users01 } from "@ruby-ai/ui";
 
 // Config exports
 export const pageSettings: pageSettingsProps = {
@@ -164,38 +164,38 @@ export const Quote: QuoteProps = {
 };
 
 export const DemoVideo: DemoVideoProps = {
-  sectionTitle: "Watch Dust in motion",
-  videoUrl: "https://fast.wistia.net/embed/iframe/r0dwaexoez",
+  sectionTitle: "Watch Ruby in motion",
+  videoUrl: "/static/workspace-demo/index.html",
   showCaptions: true,
 };
 
 export const Stories: CustomerStory[] = [
   {
-    title: "Blueground accelerates customer support resolution time with Dust",
+    title: "Blueground accelerates customer support resolution time with Ruby",
     content:
-      "Discover how Blueground boosted satisfaction and cut resolution time using Dust agents.",
+      "Discover how Blueground boosted satisfaction and cut resolution time using Ruby agents.",
     href: "/customers/customer-support-blueground",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/06/Blueground_dust.jpg",
+    src: "https://ruby.ad/content/images/size/w2000/2025/06/Blueground_ruby.jpg",
   },
   {
-    title: "Malt cuts support ticket closing time by 50% with Dust",
+    title: "Malt cuts support ticket closing time by 50% with Ruby",
     content:
-      "Malt streamlines customer support using Dust's AI platform for rapid, consistent multilingual responses.",
+      "Malt streamlines customer support using Ruby's AI platform for rapid, consistent multilingual responses.",
     href: "/customers/malt-customer-support",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/malt_dust.png",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/malt_ruby.png",
   },
   {
-    title: "Pennylane's journey to deploy Dust for Customer Care teams",
+    title: "Pennylane's journey to deploy Ruby for Customer Care teams",
     content:
-      "Dust evolved from a simple support tool into an integral part of Pennylane's operations.",
+      "Ruby evolved from a simple support tool into an integral part of Pennylane's operations.",
     href: "/customers/pennylane-customer-support-journey",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Pennylane-__-Dust.jpg",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Pennylane-__-Ruby.jpg",
   },
   {
-    title: "Lifen uses Dust AI agents to boost team productivity",
+    title: "Lifen uses Ruby AI agents to boost team productivity",
     content:
-      "Lifen uses Dust AI agents to boost team productivity and save hours of work each week.",
+      "Lifen uses Ruby AI agents to boost team productivity and save hours of work each week.",
     href: "/customers/customer-story-lifen",
-    src: "https://blog.dust.tt/content/images/size/w2000/2025/07/Lifen-__-Dust.png",
+    src: "https://ruby.ad/content/images/size/w2000/2025/07/Lifen-__-Ruby.png",
   },
 ];

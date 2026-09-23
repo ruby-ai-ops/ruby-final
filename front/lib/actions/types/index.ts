@@ -133,7 +133,7 @@ type ActionGeneratedFileBase = {
   isInProjectContext?: boolean;
 };
 
-// File backed by a Dust FileResource: always a supported content type.
+// File backed by a Ruby FileResource: always a supported content type.
 export type ActionGeneratedDBFileType = ActionGeneratedFileBase & {
   contentType: AllSupportedFileContentType;
   fileId: string;

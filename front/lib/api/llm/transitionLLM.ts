@@ -32,8 +32,8 @@ import {
 import { getPromptCacheKey } from "@app/lib/api/llm/utils/prompt_cache_key";
 import type { Authenticator } from "@app/lib/auth";
 import { getFeatureFlags } from "@app/lib/auth";
-import type { DustBatchEndpointConstructor } from "@app/lib/llms/batch/dust_batch_endpoint";
-import type { DustStreamEndpointConstructor } from "@app/lib/llms/stream/dust_stream_endpoint";
+import type { RubyBatchEndpointConstructor } from "@app/lib/llms/batch/ruby_batch_endpoint";
+import type { RubyStreamEndpointConstructor } from "@app/lib/llms/stream/ruby_stream_endpoint";
 import type { BatchEndpointConstructor } from "@app/lib/model_constructors/batch/configuration";
 import type {
   BatchEndpoint,
@@ -852,12 +852,12 @@ abstract class BaseTransition extends LLM {
  */
 export class StreamEndpointTransition extends BaseTransition {
   private model: StreamEndpoint;
-  private endpointConstructor: DustStreamEndpointConstructor;
+  private endpointConstructor: RubyStreamEndpointConstructor;
 
   constructor(
     auth: Authenticator,
-    llmParameters: LLMParameters<DustStreamEndpointConstructor>,
-    modelConstructor: DustStreamEndpointConstructor
+    llmParameters: LLMParameters<RubyStreamEndpointConstructor>,
+    modelConstructor: RubyStreamEndpointConstructor
   ) {
     super(
       auth,
@@ -933,7 +933,7 @@ export function getPromptCacheKeyForHost(
  * Noop-specific streaming transition. The generic transition drops the two
  * things that make the noop model useful for testing, so we handle them here:
  *
- * - `staticResponse` (from `metaData`, used by the sidekick/dust global agents)
+ * - `staticResponse` (from `metaData`, used by the sidekick/ruby global agents)
  *   is injected into the noop request; the payload alone cannot carry it.
  * - `consume $X` records a simulated run usage with an explicit cost, which the
  *   new router's token-based pricing cannot express. It surfaces through the
@@ -946,8 +946,8 @@ export class NoopStreamTransition extends StreamEndpointTransition {
 
   constructor(
     auth: Authenticator,
-    llmParameters: LLMParameters<DustStreamEndpointConstructor>,
-    modelConstructor: DustStreamEndpointConstructor
+    llmParameters: LLMParameters<RubyStreamEndpointConstructor>,
+    modelConstructor: RubyStreamEndpointConstructor
   ) {
     super(auth, llmParameters, modelConstructor);
     this.noopMetaData = llmParameters.modelInfo.metaData;
@@ -966,7 +966,7 @@ export class NoopStreamTransition extends StreamEndpointTransition {
         : undefined;
 
     const command = request.lastUserMessageContent
-      .replace(/<dust_system>[\s\S]*?<\/dust_system>/g, "")
+      .replace(/<ruby_system>[\s\S]*?<\/ruby_system>/g, "")
       .trim();
     const consumeMatch = command.match(/consume \$(\d+(?:\.\d+)?)/i);
     if (consumeMatch) {
@@ -1019,7 +1019,7 @@ export class BatchEndpointTransition extends BaseTransition {
 
   constructor(
     auth: Authenticator,
-    llmParameters: LLMParameters<DustBatchEndpointConstructor>,
+    llmParameters: LLMParameters<RubyBatchEndpointConstructor>,
     modelConstructor: BatchEndpointConstructor
   ) {
     super(

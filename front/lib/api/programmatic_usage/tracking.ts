@@ -1,6 +1,6 @@
 import assert from "node:assert";
 
-import { DUST_MARKUP_PERCENT } from "@app/lib/api/assistant/token_pricing";
+import { RUBY_MARKUP_PERCENT } from "@app/lib/api/assistant/token_pricing";
 import { isProgrammaticUsageFromContext } from "@app/lib/api/programmatic_usage/common";
 import {
   hasReachedDailyUsageCap,
@@ -53,10 +53,10 @@ const TRACKING_REDIS_ORIGIN = "programmatic_usage_tracking" as const;
  */
 async function tryMarkRunsConsumed(
   auth: Authenticator,
-  dustRunIds: string[]
+  rubyRunIds: string[]
 ): Promise<boolean> {
   const workspaceId = auth.getNonNullableWorkspace().sId;
-  const guardKey = `programmatic_usage_consumed:${workspaceId}:${computeRunFingerprint(dustRunIds)}`;
+  const guardKey = `programmatic_usage_consumed:${workspaceId}:${computeRunFingerprint(rubyRunIds)}`;
   const res = await runOnRedis({ origin: TRACKING_REDIS_ORIGIN }, (redis) =>
     redis.set(guardKey, "1", {
       NX: true,
@@ -118,9 +118,9 @@ export async function checkProgrammaticUsageLimits(
   if (hasNoCredits) {
     const message = isAdmin
       ? "Your workspace has run out of programmatic usage credits. " +
-        "Please purchase more credits in the Developers > Credits section of the Dust dashboard."
+        "Please purchase more credits in the Developers > Credits section of the Ruby dashboard."
       : "Your workspace has run out of programmatic usage credits. " +
-        "Please ask a Dust workspace admin to purchase more credits.";
+        "Please ask a Ruby workspace admin to purchase more credits.";
     return new Err(
       new ProgrammaticUsageLimitError("credits_exhausted", message)
     );
@@ -136,9 +136,9 @@ export async function checkProgrammaticUsageLimits(
     if (keyCapReached) {
       const message = isAdmin
         ? "This API key has reached its monthly usage cap. " +
-          "Please increase the cap in the Developers > API Keys section of the Dust dashboard."
+          "Please increase the cap in the Developers > API Keys section of the Ruby dashboard."
         : "This API key has reached its monthly usage cap. " +
-          "Please ask a Dust workspace admin to increase the cap.";
+          "Please ask a Ruby workspace admin to increase the cap.";
       return new Err(
         new ProgrammaticUsageLimitError("rate_limit_error", message)
       );
@@ -152,7 +152,7 @@ export async function checkProgrammaticUsageLimits(
       ? "Your workspace has reached its daily programmatic usage cap. " +
         "The cap will reset at midnight UTC, or you can increase it in admin settings."
       : "Your workspace has reached its daily programmatic usage cap. " +
-        "Please contact your Dust workspace admin.";
+        "Please contact your Ruby workspace admin.";
     return new Err(
       new ProgrammaticUsageLimitError("rate_limit_error", message)
     );
@@ -337,10 +337,10 @@ export function computeCreditAlertThresholdKey(
 export async function trackProgrammaticCost(
   auth: Authenticator,
   {
-    dustRunIds,
+    rubyRunIds,
     userMessageOrigin,
   }: {
-    dustRunIds: string[];
+    rubyRunIds: string[];
     userMessageOrigin: UserMessageOrigin;
   },
   parentLogger?: Logger
@@ -360,14 +360,14 @@ export async function trackProgrammaticCost(
   }
 
   // Retrieve all runs for the given run ids.
-  const runs = await RunResource.listByDustRunIds(auth, { dustRunIds });
+  const runs = await RunResource.listByRubyRunIds(auth, { rubyRunIds });
 
   // Compute the token usage for each run.
   const runUsages = await RunResource.listRunUsagesForRuns(auth, { runs });
 
   // There is a race condition where the run is not created before we emit the event.
-  if (runUsages.length === 0 && dustRunIds.length > 0) {
-    logger.error({ dustRunIds }, "No run usages found for the given run ids");
+  if (runUsages.length === 0 && rubyRunIds.length > 0) {
+    logger.error({ rubyRunIds }, "No run usages found for the given run ids");
   }
 
   // Compute the price for all the runs.
@@ -377,7 +377,7 @@ export async function trackProgrammaticCost(
   );
 
   const costWithMarkupMicroUsd = Math.ceil(
-    runsCostMicroUsd * (1 + DUST_MARKUP_PERCENT / 100)
+    runsCostMicroUsd * (1 + RUBY_MARKUP_PERCENT / 100)
   );
 
   // Prefetch the credits before setting the marker: reads are safe to retry,
@@ -387,10 +387,10 @@ export async function trackProgrammaticCost(
   // Everything above is read-only and safe to retry; everything below mutates
   // (credit ledger, redis counters). Guard the mutation phase so an activity
   // retry after a partial failure never consumes the same runs twice.
-  const isFirstConsumption = await tryMarkRunsConsumed(auth, dustRunIds);
+  const isFirstConsumption = await tryMarkRunsConsumed(auth, rubyRunIds);
   if (!isFirstConsumption) {
     localLogger.warn(
-      { dustRunIds },
+      { rubyRunIds },
       "[Programmatic Usage Tracking] Runs already consumed by a previous attempt. Skipping."
     );
     return;

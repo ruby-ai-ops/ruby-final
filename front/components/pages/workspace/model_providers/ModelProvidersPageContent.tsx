@@ -15,7 +15,7 @@ import type {
 } from "@app/types/assistant/models/types";
 import type { ProvidersSelection } from "@app/types/provider_selection";
 import type { WorkspaceType } from "@app/types/user";
-import { ArrowRight, Button } from "@dust-tt/sparkle";
+import { ArrowRight, Button } from "@ruby-ai/ui";
 import groupBy from "lodash/groupBy";
 import mapValues from "lodash/mapValues";
 import uniqBy from "lodash/uniqBy";

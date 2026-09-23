@@ -2,12 +2,12 @@ import { withSuspense } from "@spa/app/routes/withSuspense";
 import type { RouteObject } from "react-router-dom";
 
 const LabsPage = withSuspense(
-  () => import("@dust-tt/front/components/pages/workspace/labs/LabsPage"),
+  () => import("@ruby-ai/front/components/pages/workspace/labs/LabsPage"),
   "LabsPage"
 );
 const TranscriptsPage = withSuspense(
   () =>
-    import("@dust-tt/front/components/pages/workspace/labs/TranscriptsPage"),
+    import("@ruby-ai/front/components/pages/workspace/labs/TranscriptsPage"),
   "TranscriptsPage"
 );
 

@@ -16,7 +16,7 @@ import {
   CollapsibleTrigger,
   Input,
   Label,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 
 import Block from "./Block";
 

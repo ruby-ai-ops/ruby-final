@@ -1,7 +1,7 @@
 import { getDefaultMCPAction } from "@app/components/agent_builder/types";
 import type { SkillBuilderFormData } from "@app/components/skill_builder/SkillBuilderFormContext";
 import { useSkillVersionComparisonContext } from "@app/components/skill_builder/SkillBuilderVersionContext";
-import { Button, ReverseLeft, Separator } from "@dust-tt/sparkle";
+import { Button, ReverseLeft, Separator } from "@ruby-ai/ui";
 import { useFormContext, useFormState } from "react-hook-form";
 
 export function SkillBuilderVersionComparisonFooter() {

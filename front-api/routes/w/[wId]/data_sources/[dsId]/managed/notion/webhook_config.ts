@@ -73,7 +73,7 @@ app.get(
     }
 
     const notionWorkspaceId = workspaceIdRes.value.notionWorkspaceId;
-    const webhookUrl = `https://webhook-router.dust.tt/notion/${notionWorkspaceId}`;
+    const webhookUrl = `https://webhook-router.ruby.ad/notion/${notionWorkspaceId}`;
 
     // Try to get the verification token from the webhooks router.
     const webhookRouterRes = await connectorsAPI.getWebhookRouterEntry({

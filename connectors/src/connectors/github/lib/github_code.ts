@@ -8,8 +8,8 @@ import { getOctokit } from "@connectors/connectors/github/lib/github_api";
 import { ExternalOAuthTokenError } from "@connectors/lib/error";
 import logger from "@connectors/logger/logger";
 import type { ConnectorResource } from "@connectors/resources/connector_resource";
-import type { Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import type { Octokit } from "octokit";
 
 const REPO_SIZE_LIMIT = 10 * 1024 * 1024; // 10GB in KB
@@ -74,7 +74,7 @@ export function isRepoTooLarge(
   if (repoInfo.size > REPO_SIZE_LIMIT) {
     // We throw a panic log and skip to keep track of the very large repositories and report to the user.
     // The rest of the sync is not affected. Please check out the runbook:
-    // https://app.notion.com/p/dust-tt/Panic-Log-Github-repository-too-large-to-sync-1bf28599d9418061a396d2378bdd77de?pvs=4
+    // https://app.notion.com/p/ruby-ai/Panic-Log-Github-repository-too-large-to-sync-1bf28599d9418061a396d2378bdd77de?pvs=4
 
     // Some connectors are whitelisted to sync large repositories.
     // This is on a connectorId basis to avoid leaking repository names.

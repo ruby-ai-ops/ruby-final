@@ -25,7 +25,7 @@ interface GetSandboxToolsResponseType {
 // Mounted at /api/v1/w/:wId/sandbox/actions.
 const app = sandboxApp();
 
-// The dsbx CLI hits these same URLs from both conversation sandboxes (exec tokens) and
+// The rbx CLI hits these same URLs from both conversation sandboxes (exec tokens) and
 // sandbox function invocations; handlers branch on the claims kind.
 app.use(
   "*",

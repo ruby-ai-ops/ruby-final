@@ -3,7 +3,7 @@ import {
   isCustomResourceIconType,
   isInternalAllowedIcon,
 } from "@app/components/resources/resources_icons";
-import { AlertCircle, Chip, ShapesPlus } from "@dust-tt/sparkle";
+import { AlertCircle, Chip, ShapesPlus } from "@ruby-ai/ui";
 import type React from "react";
 
 export function getToolIcon(toolIcon: string | null) {

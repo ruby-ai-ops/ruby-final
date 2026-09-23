@@ -120,7 +120,7 @@ impl GithubConnectionProvider {
             ))
             .header("Accept", "application/vnd.github+json")
             .header("Authorization", format!("Bearer {}", self.jwt(app_type)?))
-            .header("User-Agent", "dust/oauth")
+            .header("User-Agent", "ruby/oauth")
             .header("X-GitHub-Api-Version", "2022-11-28");
 
         let raw_json = execute_request(ConnectionProvider::Github, req)
@@ -174,7 +174,7 @@ impl GithubConnectionProvider {
             .reqwest_client()
             .post("https://github.com/login/oauth/access_token")
             .header("Accept", "application/json")
-            .header("User-Agent", "dust/oauth")
+            .header("User-Agent", "ruby/oauth")
             .header("X-GitHub-Api-Version", "2022-11-28")
             .form(&[
                 ("client_id", client_id),
@@ -231,7 +231,7 @@ impl GithubConnectionProvider {
             .reqwest_client()
             .post("https://github.com/login/oauth/access_token")
             .header("Accept", "application/vnd.github+json")
-            .header("User-Agent", "dust/oauth")
+            .header("User-Agent", "ruby/oauth")
             .header("X-GitHub-Api-Version", "2022-11-28")
             .form(&[
                 ("client_id", client_id),

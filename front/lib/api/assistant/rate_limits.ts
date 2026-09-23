@@ -25,7 +25,7 @@ export const MESSAGE_RATE_LIMIT_PER_ACTOR_PER_HOUR_WINDOW_SECONDS = 60 * 60;
 
 // Sidekick messages are free (unbilled) usage, so they bypass the credit/plan
 // caps. Cap them per actor to bound how much free usage a single user can
-// generate through the builder assistant. Enterprise (and Dust internal)
+// generate through the builder assistant. Enterprise (and Ruby internal)
 // accounts get a higher allowance.
 export const SIDEKICK_MESSAGE_RATE_LIMIT_PER_ACTOR_PER_DAY = 100;
 export const SIDEKICK_MESSAGE_RATE_LIMIT_PER_ACTOR_PER_DAY_ENTERPRISE = 200;
@@ -321,7 +321,7 @@ export const makeSpendLimitAwuCreditsRateLimitKeyForUser = (
 
 // Fixed-window bounds for the per-user spend cap over a Metronome contract
 // billing cycle. Pure — both the recorder/enforcer (`spend_limit.ts`) and the
-// poke read (`members_usage.ts`) derive the window from the same cycle so they
+// admin read (`members_usage.ts`) derive the window from the same cycle so they
 // hit the same Redis key. Labelled by the cycle start so each recurrence is a
 // distinct key.
 export const makeSpendLimitCycleWindowBounds = (

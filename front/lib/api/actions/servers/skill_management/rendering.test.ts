@@ -15,7 +15,7 @@ describe("enable skill result output", () => {
     expect(output).toEqual({
       type: "resource",
       resource: {
-        mimeType: "application/vnd.dust.tool-output.enable-skill-result",
+        mimeType: "application/vnd.ruby.tool-output.enable-skill-result",
         uri: "",
         text: 'Skill "commit" has been enabled.',
         skillId: "skill_123",

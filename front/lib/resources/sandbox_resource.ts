@@ -32,7 +32,7 @@ import type { ResourceFindOptions } from "@app/lib/resources/types";
 import { concurrentExecutor } from "@app/lib/utils/async_utils";
 import { withTransaction } from "@app/lib/utils/sql_utils";
 import logger from "@app/logger/logger";
-import type { PokeSandboxType } from "@app/types/poke";
+import type { AdminSandboxType } from "@app/types/admin";
 import type { ModelId } from "@app/types/shared/model_id";
 import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
@@ -717,11 +717,11 @@ export class SandboxResource extends BaseResource<SandboxModel> {
 
     // Trust defaults for mainstream HTTPS stacks. Replace-style clients point
     // at the image-seeded bundle; installMitmTrustBundle later rebuilds it as
-    // system roots + dsbx CA. Append-style clients point at dsbx's single CA.
+    // system roots + rbx CA. Append-style clients point at rbx's single CA.
     // These are also baked into the image via /etc/environment and
     // /etc/profile.d, but provider env injection covers early non-login
     // processes started directly from the sandbox runtime. The key set is
-    // canonical in trust_env.ts so dsbx's `env -u` strip list can't drift.
+    // canonical in trust_env.ts so rbx's `env -u` strip list can't drift.
 
     const envVars = {
       ...workspaceEnvResult.value,
@@ -1628,9 +1628,9 @@ export class SandboxResource extends BaseResource<SandboxModel> {
     return result;
   }
 
-  // The provider id is the handle the `e2b sandbox connect` CLI takes, so Poke
+  // The provider id is the handle the `e2b sandbox connect` CLI takes, so Admin
   // surfaces it to let operators attach to a live sandbox.
-  toPokeJSON(): PokeSandboxType {
+  toAdminJSON(): AdminSandboxType {
     return {
       providerId: this.providerId,
       status: this.status,

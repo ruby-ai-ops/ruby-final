@@ -10,7 +10,7 @@ import type { MembershipInvitationType } from "@app/types/membership_invitation"
 import type { MembershipSeatType } from "@app/types/memberships";
 import { isString } from "@app/types/shared/utils/general";
 import type { ActiveRoleType, WorkspaceType } from "@app/types/user";
-import type { NotificationType } from "@dust-tt/sparkle";
+import type { NotificationType } from "@ruby-ai/ui";
 import { mutate } from "swr";
 
 // Matches the invitations list regardless of query params (e.g. `?includeExpired=true`).

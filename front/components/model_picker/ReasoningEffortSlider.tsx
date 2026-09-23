@@ -2,7 +2,7 @@ import type { EffortStop } from "@app/components/model_picker/modelPickerUtils";
 import { getEffortStopTooltip } from "@app/components/model_picker/modelPickerUtils";
 import { classNames } from "@app/lib/utils";
 import type { ReasoningEffort } from "@app/types/assistant/models/types";
-import { SliderSteps } from "@dust-tt/sparkle";
+import { SliderSteps } from "@ruby-ai/ui";
 import capitalize from "lodash/capitalize";
 
 interface ReasoningEffortSliderProps {

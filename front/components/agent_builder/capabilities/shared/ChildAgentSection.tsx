@@ -12,7 +12,7 @@ import {
   InfoCircle,
   SearchInput,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { PencilIcon } from "@heroicons/react/20/solid";
 import type { ColumnDef } from "@tanstack/react-table";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`

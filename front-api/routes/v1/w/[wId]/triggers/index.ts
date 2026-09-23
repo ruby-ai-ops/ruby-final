@@ -1,6 +1,6 @@
 import { TriggerResource } from "@app/lib/resources/trigger_resource";
 import { TRIGGER_KINDS } from "@app/types/assistant/triggers";
-import type { GetTriggersResponseType } from "@dust-tt/client";
+import type { GetTriggersResponseType } from "@ruby-ai/client";
 import { publicApiApp } from "@front-api/middlewares/ctx";
 import { ensureIsAdmin } from "@front-api/middlewares/ensure_role";
 import { publicApiAuth } from "@front-api/middlewares/public_api_auth";

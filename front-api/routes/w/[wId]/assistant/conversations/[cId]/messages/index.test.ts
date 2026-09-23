@@ -23,7 +23,7 @@ async function setupTest(role: MembershipRoleType = "admin") {
     await createPrivateApiMockRequest({ role, method: "POST" });
 
   const conversation = await ConversationFactory.create(auth, {
-    agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+    agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
     messagesCreatedAt: [new Date()],
   });
 
@@ -73,7 +73,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages", () => {
 
     const response = await postMessage(workspace, conversation.sId, {
       content: "Message with conversation tools",
-      mentions: [{ configurationId: GLOBAL_AGENTS_SID.DUST }],
+      mentions: [{ configurationId: GLOBAL_AGENTS_SID.RUBY }],
       context: {
         timezone: "Europe/Paris",
         profilePictureUrl: user.imageUrl ?? null,
@@ -103,7 +103,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages", () => {
     const { workspace, auth, user } = await setupTest("admin");
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [],
       visibility: "test",
     });
@@ -112,14 +112,14 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages", () => {
       auth,
       workspace,
       conversation,
-      content: "<dust_system>Opening message</dust_system>",
+      content: "<ruby_system>Opening message</ruby_system>",
       origin: "analytics_panel",
       rank: 0,
     });
 
     const response = await postMessage(workspace, conversation.sId, {
       content: "Which agents are used the most?",
-      mentions: [{ configurationId: GLOBAL_AGENTS_SID.DUST }],
+      mentions: [{ configurationId: GLOBAL_AGENTS_SID.RUBY }],
       context: {
         timezone: "Europe/Paris",
         profilePictureUrl: user.imageUrl ?? null,
@@ -143,7 +143,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages", () => {
     const { workspace, auth, user } = await setupTest("admin");
 
     const conversation = await ConversationFactory.create(auth, {
-      agentConfigurationId: GLOBAL_AGENTS_SID.DUST,
+      agentConfigurationId: GLOBAL_AGENTS_SID.RUBY,
       messagesCreatedAt: [],
       visibility: "test",
     });
@@ -159,7 +159,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages", () => {
 
     const response = await postMessage(workspace, conversation.sId, {
       content: "Hello",
-      mentions: [{ configurationId: GLOBAL_AGENTS_SID.DUST }],
+      mentions: [{ configurationId: GLOBAL_AGENTS_SID.RUBY }],
       context: {
         timezone: "Europe/Paris",
         profilePictureUrl: user.imageUrl ?? null,
@@ -182,7 +182,7 @@ describe("POST /api/w/:wId/assistant/conversations/:cId/messages", () => {
 
     const response = await postMessage(workspace, "non-existent-conversation", {
       content: "Hello",
-      mentions: [{ configurationId: GLOBAL_AGENTS_SID.DUST }],
+      mentions: [{ configurationId: GLOBAL_AGENTS_SID.RUBY }],
       context: {
         timezone: "Europe/Paris",
         profilePictureUrl: null,

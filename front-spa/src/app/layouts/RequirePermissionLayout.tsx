@@ -1,10 +1,10 @@
-import { AdminLayout } from "@dust-tt/front/components/layouts/AdminLayout";
-import Custom404 from "@dust-tt/front/components/pages/Custom404";
-import { useWorkspacePermissions } from "@dust-tt/front/lib/swr/permissions.js";
+import { AdminLayout } from "@ruby-ai/front/components/layouts/AdminLayout";
+import Custom404 from "@ruby-ai/front/components/pages/Custom404";
+import { useWorkspacePermissions } from "@ruby-ai/front/lib/swr/permissions.js";
 import type {
   ConcreteResourceType,
   GrantVerb,
-} from "@dust-tt/front/types/group_permissions";
+} from "@ruby-ai/front/types/group_permissions";
 import { Outlet } from "react-router-dom";
 
 interface RequirePermissionLayoutProps {

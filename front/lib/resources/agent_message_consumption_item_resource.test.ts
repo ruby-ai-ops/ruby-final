@@ -37,7 +37,7 @@ async function setupMessageWithEvidence(
     workspace,
     conversation,
     agentConfig: agentConfiguration,
-    runIds: [run.dustRunId],
+    runIds: [run.rubyRunId],
   });
 
   const { action } = await AgentMCPActionFactory.create(auth, {

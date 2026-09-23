@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use dust::databases::table_upserts_background_worker::{
+use ruby::databases::table_upserts_background_worker::{
     REDIS_CLIENT, REDIS_TABLE_UPSERT_HASH_NAME,
 };
 use redis::AsyncCommands;

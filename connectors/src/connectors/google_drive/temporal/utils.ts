@@ -4,7 +4,7 @@ import logger from "@connectors/logger/logger";
 import { ConnectorResource } from "@connectors/resources/connector_resource";
 import type { GoogleDriveObjectType, ModelId } from "@connectors/types";
 import { cacheWithRedis } from "@connectors/types";
-import { removeNulls } from "@dust-tt/client";
+import { removeNulls } from "@ruby-ai/client";
 import type { drive_v3 } from "googleapis";
 import { google } from "googleapis";
 import type { GaxiosResponse } from "googleapis-common";
@@ -116,7 +116,7 @@ const getLabelsNamesFromLabels = async (
   );
 };
 
-export async function driveObjectToDustType(
+export async function driveObjectToRubyType(
   connectorId: ModelId,
   file: drive_v3.Schema$File,
   authCredentials: OAuth2Client

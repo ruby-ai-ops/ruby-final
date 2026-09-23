@@ -1,4 +1,4 @@
-import { Icon } from "@dust-tt/sparkle";
+import { Icon } from "@ruby-ai/ui";
 import type { ComponentType } from "react";
 
 interface EmptyPlaceholderProps {

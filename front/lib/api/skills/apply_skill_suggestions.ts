@@ -15,7 +15,7 @@ import {
   applyInstructionEditsToHtml,
   convertMarkdownToBlockHtml,
 } from "@app/lib/editor/skill_instructions_html";
-import { DustError } from "@app/lib/error";
+import { RubyError } from "@app/lib/error";
 import { extractKnowledgeTagReferences } from "@app/lib/knowledge/format";
 import {
   pruneConflictingSkillAvailabilitySuggestions,
@@ -64,7 +64,7 @@ interface SkillEdits {
 
 function editsForSuggestion(
   suggestion: SkillSuggestionResource
-): Result<SkillEdits, DustError<"invalid_request_error">> {
+): Result<SkillEdits, RubyError<"invalid_request_error">> {
   const data = parseSkillSuggestionData({
     kind: suggestion.kind,
     suggestion: suggestion.suggestion,
@@ -76,7 +76,7 @@ function editsForSuggestion(
 
     case "create":
       return new Err(
-        new DustError(
+        new RubyError(
           "invalid_request_error",
           "Skill creation suggestions cannot be applied to the skill yet."
         )
@@ -183,7 +183,7 @@ function resolveInstructions(
   instructionEdits: SkillInstructionEditItemType[] | undefined
 ): Result<
   AppliedSkillInstructions | undefined,
-  DustError<"invalid_request_error">
+  RubyError<"invalid_request_error">
 > {
   if (!instructionEdits?.length) {
     return new Ok(undefined);
@@ -203,7 +203,7 @@ async function resolveInstructionAttachments(
       attachedKnowledge: SkillAttachedKnowledge[];
       mcpServerViews: MCPServerViewResource[];
     },
-    DustError<"invalid_request_error">
+    RubyError<"invalid_request_error">
   >
 > {
   const toolReferences = extractToolTags(instructions);
@@ -251,7 +251,7 @@ async function resolveInstructionAttachments(
 
   if (unresolved.length > 0) {
     return new Err(
-      new DustError(
+      new RubyError(
         "invalid_request_error",
         `These instructions reference resources you cannot use: ` +
           `${unresolved.join(", ")}. ` +
@@ -280,7 +280,7 @@ async function resolveInstructionRequirements(
       mcpServerViews: MCPServerViewResource[];
       requestedSpaceIds: ModelId[];
     },
-    DustError<"invalid_request_error">
+    RubyError<"invalid_request_error">
   >
 > {
   const attachments = await resolveInstructionAttachments(auth, instructions);
@@ -313,7 +313,7 @@ async function applySkillFieldEdits(
     availability,
     instructionEdits,
   }: SkillEdits
-): Promise<Result<undefined, DustError<"invalid_request_error">>> {
+): Promise<Result<undefined, RubyError<"invalid_request_error">>> {
   const instructions = resolveInstructions(skill, instructionEdits);
   if (instructions.isErr()) {
     return instructions;
@@ -349,7 +349,7 @@ async function applySkillFieldEdits(
     requirements.requestedSpaceIds
   );
   if (editorsAccessError) {
-    return new Err(new DustError("invalid_request_error", editorsAccessError));
+    return new Err(new RubyError("invalid_request_error", editorsAccessError));
   }
 
   // `updateSkill` replaces the whole skill, so every field no suggestion touched is carried over
@@ -395,18 +395,18 @@ async function applyEditorsChange(
   auth: Authenticator,
   skill: SkillResource,
   { usersToAdd, usersToRemove }: SkillEditorsChange
-): Promise<Result<undefined, DustError<"invalid_request_error">>> {
+): Promise<Result<undefined, RubyError<"invalid_request_error">>> {
   const addRes = await skill.addEditors(auth, usersToAdd);
   if (addRes.isErr()) {
     return new Err(
-      new DustError("invalid_request_error", addRes.error.message)
+      new RubyError("invalid_request_error", addRes.error.message)
     );
   }
 
   const removeRes = await skill.removeEditors(auth, usersToRemove);
   if (removeRes.isErr()) {
     return new Err(
-      new DustError("invalid_request_error", removeRes.error.message)
+      new RubyError("invalid_request_error", removeRes.error.message)
     );
   }
 
@@ -437,7 +437,7 @@ export async function applySkillSuggestions(
     skill,
     suggestions,
   }: { skill: SkillResource; suggestions: SkillSuggestionResource[] }
-): Promise<Result<undefined, DustError<"invalid_request_error">>> {
+): Promise<Result<undefined, RubyError<"invalid_request_error">>> {
   const perSuggestionEdits: SkillEdits[] = [];
 
   for (const suggestion of suggestions) {
@@ -457,7 +457,7 @@ export async function applySkillSuggestions(
     });
     if (validation.isErr()) {
       return new Err(
-        new DustError("invalid_request_error", validation.error.message)
+        new RubyError("invalid_request_error", validation.error.message)
       );
     }
     // Write the validator's trimmed name, never the raw suggestion payload.
@@ -472,7 +472,7 @@ export async function applySkillSuggestions(
     });
     if (validation.isErr()) {
       return new Err(
-        new DustError("invalid_request_error", validation.error.message)
+        new RubyError("invalid_request_error", validation.error.message)
       );
     }
     edits = { ...edits, availability: validation.value?.availability };
@@ -487,7 +487,7 @@ export async function applySkillSuggestions(
     );
     if (validation.isErr()) {
       return new Err(
-        new DustError("invalid_request_error", validation.error.message)
+        new RubyError("invalid_request_error", validation.error.message)
       );
     }
 
@@ -498,7 +498,7 @@ export async function applySkillSuggestions(
     const validation = validateSkillDeletion(auth, skill);
     if (validation.isErr()) {
       return new Err(
-        new DustError("invalid_request_error", validation.error.message)
+        new RubyError("invalid_request_error", validation.error.message)
       );
     }
   }

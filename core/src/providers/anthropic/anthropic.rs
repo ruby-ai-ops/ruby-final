@@ -303,7 +303,7 @@ impl LLM for AnthropicLLM {
 
     async fn initialize(&mut self, credentials: Credentials) -> Result<()> {
         let feature_flags = credentials
-            .get("DUST_FEATURE_FLAGS")
+            .get("RUBY_FEATURE_FLAGS")
             .map(|s| s.split(',').collect::<Vec<_>>())
             .unwrap_or_default();
 
@@ -320,7 +320,7 @@ impl LLM for AnthropicLLM {
         let api_key = self.backend.initialize(&credentials).await?;
         self.api_key = Some(api_key);
 
-        match credentials.get("DUST_WORKSPACE_ID") {
+        match credentials.get("RUBY_WORKSPACE_ID") {
             Some(workspace_id) => {
                 self.user_id = Some(workspace_id.clone());
             }
@@ -654,7 +654,7 @@ impl Provider for AnthropicProvider {
         );
         utils::info("Your API key can be found at `https://console.anthropic.com/account/keys`.");
         utils::info("");
-        utils::info("Once ready you can check your setup with `dust provider test anthropic`");
+        utils::info("Once ready you can check your setup with `ruby provider test anthropic`");
 
         Ok(())
     }

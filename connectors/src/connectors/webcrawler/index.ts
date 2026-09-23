@@ -36,8 +36,8 @@ import {
   WEBCRAWLER_MAX_PAGES,
   WebCrawlerHeaderRedactedValue,
 } from "@connectors/types";
-import type { ConnectorProvider, Result } from "@dust-tt/client";
-import { Err, Ok } from "@dust-tt/client";
+import type { ConnectorProvider, Result } from "@ruby-ai/client";
+import { Err, Ok } from "@ruby-ai/client";
 import { FirecrawlError } from "@mendable/firecrawl-js";
 
 import {

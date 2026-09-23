@@ -11,7 +11,7 @@ import { createResourceTest } from "@app/tests/utils/generic_resource_tests";
 import { SkillFactory } from "@app/tests/utils/SkillFactory";
 import type { AttachmentCapabilityContext } from "@app/types/api/assistant/conversation/attachments";
 import type { TextContent } from "@app/types/assistant/generation";
-import { INTERNAL_MIME_TYPES } from "@dust-tt/client";
+import { INTERNAL_MIME_TYPES } from "@ruby-ai/client";
 import assert from "assert";
 import { describe, expect, it } from "vitest";
 import { getSteps, renderUserMessage } from "./helpers";
@@ -89,11 +89,11 @@ describe("renderUserMessage", () => {
     expect(res.content[0].type).toBe("text");
     const text = (res.content[0] as TextContent).text;
 
-    // Should include a dust system block and a Sender line.
-    expect(text).toEqual(`<dust_system>
+    // Should include a ruby system block and a Sender line.
+    expect(text).toEqual(`<ruby_system>
 - Sender: John Doe (:mention_user[John Doe]{sId=user_123}) <john@example.com>
 - Conversation: ${conversation.sId}
-</dust_system>
+</ruby_system>
 
 Hello!`);
   });
@@ -111,10 +111,10 @@ Hello!`);
     expect(res.name).toBe("jdoe");
     expect(res.content[0].type).toBe("text");
     const text = (res.content[0] as TextContent).text;
-    expect(text).toEqual(`<dust_system>
+    expect(text).toEqual(`<ruby_system>
 - Sender: John Doe (:mention_user[John Doe]{sId=user_123}) <john@example.com>
 - Conversation: ${conversation.sId}
-</dust_system>
+</ruby_system>
 
 Hello!`);
   });
@@ -192,9 +192,9 @@ Hello!`);
     const text = (res.content[0] as TextContent).text;
 
     // Should still include the conversation sId even without user info
-    expect(text).toEqual(`<dust_system>
+    expect(text).toEqual(`<ruby_system>
 - Conversation: ${conversation.sId}
-</dust_system>
+</ruby_system>
 
 Just text`);
   });
@@ -225,14 +225,14 @@ describe("skill rendering helpers", () => {
       content: [
         {
           type: "text",
-          text: `<dust_system>
+          text: `<ruby_system>
 The following skills are available for use with the skill_management__enable_skill tool:
 
 - \`commit\`: Create a git commit with a descriptive message.
 - \`review-pr\`: Review a pull request for code quality and correctness.
 
 Pass \`skillName\` exactly as written between backticks above, character for character: same case, same spacing, same punctuation, same prefixes and suffixes. Copy the name rather than retyping it, and do not adjust it to match how other skills in the list are named. Names are matched exactly, so a modified name will not be found.
-</dust_system>`,
+</ruby_system>`,
         },
       ],
     });
@@ -253,11 +253,11 @@ Pass \`skillName\` exactly as written between backticks above, character for cha
       content: [
         {
           type: "text",
-          text: `<dust_system>
+          text: `<ruby_system>
 The following skills were set as favorites by the user and are also available for use with the skill_management__enable_skill tool:
 
 - \`favorite-skill\`: Use my favorite skill.
-</dust_system>`,
+</ruby_system>`,
         },
       ],
     });
@@ -372,9 +372,9 @@ The following skills were set as favorites by the user and are also available fo
           {
             type: "text",
             text:
-              "<dust_system>\n<commit>\n" +
+              "<ruby_system>\n<commit>\n" +
               "Create a git commit with a descriptive message.\n" +
-              "</commit>\n</dust_system>",
+              "</commit>\n</ruby_system>",
           },
         ],
       },
@@ -413,7 +413,7 @@ describe("vision image rendering in getSteps", () => {
       `w/${workspaceId}/conversations/${conversationId}/files/photo.png`;
 
     const visionResource = {
-      uri: "dust://files/conversation/photo.png",
+      uri: "ruby://files/conversation/photo.png",
       mimeType: INTERNAL_MIME_TYPES.TOOL_OUTPUT.MODEL_VISION_IMAGE,
       text: "" as const,
       filePath: gcsPath,
@@ -490,7 +490,7 @@ describe("vision image rendering in getSteps", () => {
     // mimeType (a pure internal type discriminator the model never reads).
     expect(parsed).toEqual([
       {
-        uri: "dust://files/conversation/photo.png",
+        uri: "ruby://files/conversation/photo.png",
         text: "",
         filePath: `w/${workspaceId}/conversations/${conversationId}/files/photo.png`,
         imageContentType: "image/png",

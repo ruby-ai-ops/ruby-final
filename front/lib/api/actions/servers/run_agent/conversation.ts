@@ -27,10 +27,10 @@ import { Err, Ok } from "@app/types/shared/result";
 import type {
   APIError,
   ConversationPublicType,
-  DustAPI,
+  RubyAPI,
   PublicPostContentFragmentRequestBody,
   PublicPostMessagesRequestBody,
-} from "@dust-tt/client";
+} from "@ruby-ai/client";
 
 /**
  * Determines if an error should be considered user-side.
@@ -75,7 +75,7 @@ async function cleanupSubConversationAfterSetupFailure(
 }
 
 async function postMessageAndFetchConversation(
-  api: DustAPI,
+  api: RubyAPI,
   {
     conversationId,
     message,
@@ -133,7 +133,7 @@ async function postMessageAndFetchConversation(
 }
 
 export async function getOrCreateConversation(
-  api: DustAPI,
+  api: RubyAPI,
   auth: Authenticator,
   agentLoopContext: AgentLoopRunContext,
   {

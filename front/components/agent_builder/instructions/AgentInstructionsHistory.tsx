@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Spinner,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { compareDesc } from "date-fns";
 import { format } from "date-fns/format";
 // biome-ignore lint/correctness/noUnusedImports: ignored using `--suppress`

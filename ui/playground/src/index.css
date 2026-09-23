@@ -1,0 +1,84 @@
+/* Single unified Tailwind build for the ui playground.
+ *
+ * Replaces the old `@import "tailwindcss"` + `@config "../tailwind.config.cjs"`
+ * (prefix `s`) bridge. The playground aliases `@ruby-ai/ui` to ui's
+ * source (`../src`), so it consumes unprefixed ui components directly; a
+ * single Tailwind pass that imports ui's source entry (which scans
+ * `ui/src`) plus scans the playground's own sources emits one correctly
+ * ordered `@layer utilities` — no cross-stylesheet collision. */
+
+/* RubyUI's full CSS entry: `@import "tailwindcss"` (preflight + theme +
+   utilities + layer order), tokens (color values), theme.css, ui-theme.css,
+   allotment.css, the @tailwindcss/forms|scrollbar-hide|animate plugins, ui's
+   base/components/utilities layers, and the ui/src source scan. */
+@import "../../src/styles/tailwind.css";
+
+/* Container query variants must be inlined — @tailwindcss/postcss does not
+   resolve @custom-variant from @import'ed files. Keep in sync with ui's
+   tailwind.css (canonical copy). */
+@custom-variant @xxxs (@container (width >= 16rem));
+@custom-variant @xxs (@container (width >= 24rem));
+@custom-variant @xs (@container (width >= 32rem));
+@custom-variant @sm (@container (width >= 40rem));
+@custom-variant @md (@container (width >= 48rem));
+@custom-variant @lg (@container (width >= 64rem));
+@custom-variant @xl (@container (width >= 80rem));
+@custom-variant @xxxs-conversation (@container conversation (width >= 16rem));
+@custom-variant @xxs-conversation (@container conversation (width >= 24rem));
+@custom-variant @xs-conversation (@container conversation (width >= 32rem));
+@custom-variant @sm-conversation (@container conversation (width >= 40rem));
+@custom-variant @md-conversation (@container conversation (width >= 48rem));
+@custom-variant @lg-conversation (@container conversation (width >= 64rem));
+@custom-variant @xl-conversation (@container conversation (width >= 80rem));
+@custom-variant @xxxs-table (@container table (width >= 16rem));
+@custom-variant @xxs-table (@container table (width >= 24rem));
+@custom-variant @xs-table (@container table (width >= 32rem));
+@custom-variant @sm-table (@container table (width >= 40rem));
+@custom-variant @md-table (@container table (width >= 48rem));
+@custom-variant @lg-table (@container table (width >= 64rem));
+@custom-variant @xl-table (@container table (width >= 80rem));
+
+/* Scan the playground's own demo sources. `@source` here resolves relative to
+   this file (ui/playground/src); ui/src is scanned by the imported
+   ui entry. */
+@source "./**/*.{ts,tsx}";
+
+@layer base {
+  html {
+    touch-action: manipulation;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 0;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-synthesis: none;
+  }
+
+  @supports (font-synthesis-weight: none) {
+    html {
+      font-synthesis: initial;
+      font-synthesis-weight: none;
+    }
+  }
+  .ui-richtextarea p.is-editor-empty:first-child::before {
+    @apply italic text-muted-foreground;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+}
+
+.tippy-box[data-theme~="ui"] {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.tippy-box[data-theme~="ui"] > .tippy-content {
+  padding: 0;
+}
+
+.tippy-box[data-theme~="ui"] > .tippy-arrow {
+  display: none;
+}

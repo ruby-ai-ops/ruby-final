@@ -13,7 +13,7 @@ export type ReasoningEffortOf<C extends InputConfig> = NonNullable<
 // each endpoint to declare its properties explicitly and drop the ones that are
 // deprecated in the new router (e.g. `regionalAvailability`, `recommendedTopK`,
 // ...) rather than carrying the whole legacy config forward.
-export type DustStreamEndpointConfiguration<C extends InputConfig> = {
+export type RubyStreamEndpointConfiguration<C extends InputConfig> = {
   modelConfig: ModelConfigurationType;
 } & BaseEndpointConfiguration<C> & {
     // Description
@@ -58,14 +58,14 @@ export function dropTemperature<C extends InputConfig>(config: C): C {
 
 // `configParsers` helper: Gemini accepts the full 0..2 temperature range, but
 // Google strongly recommends `temperature: 1` for Gemini 3 and we follow that
-// recommendation for every Gemini model. This is a Dust product choice, so it
+// recommendation for every Gemini model. This is a Ruby product choice, so it
 // lives here rather than in the endpoint schema, which mirrors the API.
 export function forceTemperatureToOne<C extends InputConfig>(config: C): C {
   return { ...config, temperature: 1 };
 }
 
 // `configParsers` helper: Fireworks accepts temperatures from 0 to 2. Kimi K3
-// uses the lowest supported temperature as a Dust product choice, so keep that
+// uses the lowest supported temperature as a Ruby product choice, so keep that
 // policy in the llms layer rather than narrowing the endpoint schema, which
 // mirrors the provider API.
 // Verified 2026-08-11: https://docs.fireworks.ai/api-reference/post-responses
@@ -108,7 +108,7 @@ export function mapNonNoneReasoningToHigh<C extends InputConfig>(config: C): C {
 }
 
 // `configParsers` helper: models whose documented efforts are low/high/max
-// (Kimi K3) have no `medium` tier. Fold Dust's legacy ladder onto theirs —
+// (Kimi K3) have no `medium` tier. Fold Ruby's legacy ladder onto theirs —
 // low stays low, medium becomes high, high becomes max — so the product keeps
 // offering three levels that each map to a real model effort.
 export function mapReasoningEffortToLowHighMax<C extends InputConfig>(

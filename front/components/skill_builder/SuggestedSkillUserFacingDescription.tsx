@@ -1,7 +1,7 @@
 import { SkillFieldEditSection } from "@app/components/skill_builder/SkillFieldEditSection";
 import { useSkill } from "@app/lib/swr/skill_configurations";
 import type { SkillUserFacingDescriptionSuggestionType } from "@app/types/suggestions/skill_suggestion";
-import { LoadingBlock } from "@dust-tt/sparkle";
+import { LoadingBlock } from "@ruby-ai/ui";
 
 interface SuggestedSkillUserFacingDescriptionProps {
   suggestion: SkillUserFacingDescriptionSuggestionType;

@@ -65,13 +65,13 @@ async function getExistingCommands(): Promise<DiscordCommand[]> {
 function getDesiredCommands(): DiscordSlashCommand[] {
   return [
     {
-      name: "list-dust-agents",
+      name: "list-ruby-agents",
       description: "List available agents for this workspace",
       type: 1,
     },
     {
-      name: "ask-dust-agent",
-      description: "Ask a question to a Dust agent",
+      name: "ask-ruby-agent",
+      description: "Ask a question to a Ruby agent",
       options: [
         {
           name: "agent_name",

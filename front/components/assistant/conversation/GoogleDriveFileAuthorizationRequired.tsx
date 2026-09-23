@@ -20,7 +20,7 @@ import {
   File04,
   LinkExternal01,
   XClose,
-} from "@dust-tt/sparkle";
+} from "@ruby-ai/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface GoogleDriveFileAuthorizationRequiredProps {

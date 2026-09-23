@@ -44,7 +44,7 @@ import type { LightWorkspaceType } from "@app/types/user";
  *
  * `stripeCustomerId` is optional — when omitted the Metronome customer is
  * created without a Stripe billing-provider configuration. This is the path
- * used for free-plan workspaces that may later receive credits via Poke
+ * used for free-plan workspaces that may later receive credits via Admin
  * before they ever subscribe to a paid plan.
  */
 export async function ensureMetronomeCustomerForWorkspace({
