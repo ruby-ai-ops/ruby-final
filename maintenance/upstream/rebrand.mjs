@@ -70,7 +70,16 @@ export function transformEntries(entries, { filter = true } = {}) {
 
 export function ownedFiles(root) {
   return execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd: root, maxBuffer: 32 * 1024 * 1024 })
-    .toString().split('\0').filter(Boolean).filter(name => !maintenancePath(name) && !name.endsWith('.ruby-rebrand-tmp') && fs.existsSync(path.join(root, name)));
+    .toString().split('\0').filter(Boolean).filter(name => {
+      if (maintenancePath(name) || name.endsWith('.ruby-rebrand-tmp')) return false;
+      try { fs.lstatSync(path.join(root,name)); return true; }
+      catch (error) { if (error.code === 'ENOENT') return false; throw error; }
+    });
+}
+
+// Inspect the link text itself, including dangling links; never follow it outside the tree.
+export function readOwnedFile(file) {
+  return fs.lstatSync(file).isSymbolicLink() ? Buffer.from(fs.readlinkSync(file)) : fs.readFileSync(file);
 }
 
 export function rebrand(root) {
@@ -88,12 +97,14 @@ export function rebrand(root) {
     if (name.startsWith('marketing/demo-workspace/upstream/') || name.startsWith('marketing/demo-workspace/embed/bundled-assets/') || name.startsWith('marketing/public/static/workspace-demo/bundled/')) continue;
     if (removedFiles.has(name)) { fs.unlinkSync(source); changed++; continue; }
     const destination = path.join(root, transformPath(name));
-    const bytes = fs.readFileSync(source);
+    const sourceStat = fs.lstatSync(source);
+    const bytes = readOwnedFile(source);
     const next = isText(bytes) ? Buffer.from(transformText(bytes.toString('utf8'))) : bytes;
     if (source !== destination || !bytes.equals(next)) {
       fs.mkdirSync(path.dirname(destination), { recursive: true });
       const temporary = `${destination}.ruby-rebrand-tmp`;
-      fs.writeFileSync(temporary, next, { mode: fs.statSync(source).mode });
+      if (sourceStat.isSymbolicLink()) fs.symlinkSync(next.toString('utf8'), temporary);
+      else fs.writeFileSync(temporary, next, { mode: sourceStat.mode });
       for (let attempt = 0; ; attempt++) {
         try { fs.renameSync(temporary, destination); break; }
         catch (error) {

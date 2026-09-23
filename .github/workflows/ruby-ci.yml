@@ -1,5 +1,7 @@
 name: Ruby CI
 on:
+  push:
+    branches: [ruby/rebrand]
   pull_request:
     branches: [ruby-main]
   workflow_dispatch:

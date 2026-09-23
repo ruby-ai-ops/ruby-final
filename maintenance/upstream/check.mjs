@@ -1,7 +1,6 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ownedFiles, removedFiles } from './rebrand.mjs';
+import { ownedFiles, removedFiles, readOwnedFile } from './rebrand.mjs';
 
 export function hasLegacyBranding(text) {
   const meaningful = text
@@ -14,7 +13,7 @@ export function check(root) {
   const findings = [];
   for (const name of ownedFiles(root)) {
     if (hasLegacyBranding(name) || removedFiles.has(name)) findings.push(`${name}: forbidden path`);
-    const bytes = fs.readFileSync(path.join(root, name));
+    const bytes = readOwnedFile(path.join(root, name));
     if (bytes.includes(0)) continue;
     const lines = bytes.toString('utf8').split('\n');
     lines.forEach((line, index) => { if (hasLegacyBranding(line)) findings.push(`${name}:${index + 1}: legacy reference`); });
