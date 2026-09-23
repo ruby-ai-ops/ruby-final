@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { transformText, transformPath, isExcluded, transformEntries, retiredServiceIdentifiers } from './rebrand.mjs';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { transformText, transformPath, isExcluded, transformEntries, retiredServiceIdentifiers, rebrand } from './rebrand.mjs';
 
 test('encoded artwork and integrity hashes remain byte-for-byte unchanged', () => {
   const content = 'Dust data:image/png;base64,AAADustAAAdsBxAAAA== sha512-AAADUSTAAAA==';
@@ -32,6 +36,9 @@ test('avoids merging the admin application into existing administration scripts'
 test('filters marketing and promotional documents but retains document processing fixtures', () => {
   assert.equal(isExcluded('marketing/pages/index.tsx'), true);
   assert.equal(isExcluded('marketing/assets/gated/guide.pdf'), true);
+  assert.equal(isExcluded('front/public/static/landing/ebook/cover.svg'), true);
+  assert.equal(isExcluded('front/public/static/guides/intro.pdf'), true);
+  assert.equal(isExcluded('front/public/static/downloads/guide.epub'), true);
   assert.equal(isExcluded('core/tests/example.pdf'), false);
   assert.equal(isExcluded('LICENSE'), true);
   assert.equal(isExcluded('front/public/static/fonts/LICENSES.md'), false);
@@ -42,4 +49,17 @@ test('transform is repeatable, handles deletes through snapshots, and refuses co
   assert.equal(once.get('front/ruby.ts').toString(), 'RubyAPI');
   assert.deepEqual(transformEntries(once), once);
   assert.throws(() => transformEntries(new Map([...original, ['front/ruby.ts', Buffer.from('different')]])), /collision/i);
+});
+
+test('applying branding leaves all marketing bytes untouched', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ruby-brand-boundary-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  execFileSync('git', ['init', '-q'], { cwd: root });
+  fs.mkdirSync(path.join(root, 'marketing'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'marketing', 'page.tsx'), 'Dust marketing reference');
+  fs.writeFileSync(path.join(root, 'app.ts'), 'Dust application reference');
+  execFileSync('git', ['add', '.'], { cwd: root });
+  assert.equal(rebrand(root), 1);
+  assert.equal(fs.readFileSync(path.join(root, 'marketing', 'page.tsx'), 'utf8'), 'Dust marketing reference');
+  assert.equal(fs.readFileSync(path.join(root, 'app.ts'), 'utf8'), 'Ruby application reference');
 });

@@ -4,7 +4,7 @@ import { assertSafeUpdate, assertBranded, transformSnapshot } from './policy.mjs
 const snapshot = object => new Map(Object.entries(object).map(([k,v]) => [k, Buffer.from(v)]));
 
 test('mixed changes retain app changes and exclude marketing and protected artwork', () => {
-  const result = transformSnapshot(snapshot({'front/dust.ts':'DustAPI', 'marketing/home.ts':'old campaign', 'sparkle/src/logo/a.svg':'old art'}));
+  const result = transformSnapshot(snapshot({'front/dust.ts':'DustAPI', 'marketing/home.ts':'old campaign', 'sparkle/src/logo/a.svg':'old art', 'sparkle/src/components/Sheet.tsx':'upstream sheet'}));
   assert.deepEqual([...result.keys()], ['front/ruby.ts']);
   assert.equal(result.get('front/ruby.ts').toString(), 'RubyAPI');
 });
