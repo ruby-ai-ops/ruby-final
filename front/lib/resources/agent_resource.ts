@@ -13,6 +13,7 @@ import {
 import { Authenticator } from "@app/lib/auth";
 import { RubyError } from "@app/lib/error";
 import { getEffectiveReasoningEffort } from "@app/lib/llms/model_configurations";
+import { getModelsForAuth } from "@app/lib/model_tiers/enabled_models";
 import { AgentDataSourceConfigurationModel } from "@app/lib/models/agent/actions/data_sources";
 import {
   AgentChildAgentConfigurationModel,
@@ -42,6 +43,7 @@ import {
   AGENT_RESOURCE_CACHE_VERSION,
   agentResourceCacheKey,
   invalidateAgentResourceCache,
+  invalidateAgentResourceCaches,
 } from "@app/lib/resources/agent_resource_cache";
 import { launchAgentSearchIndexation } from "@app/lib/resources/agent_resource_indexation";
 import { AgentUserRelationResource } from "@app/lib/resources/agent_user_relation_resource";
@@ -54,6 +56,7 @@ import { MembershipResource } from "@app/lib/resources/membership_resource";
 import type { SkillFetchContext } from "@app/lib/resources/skill/skill_resource";
 import { SkillResource } from "@app/lib/resources/skill/skill_resource";
 import { SpaceResource } from "@app/lib/resources/space_resource";
+import type { ReadonlyAttributesType } from "@app/lib/resources/storage/types";
 import { generateRandomModelSId } from "@app/lib/resources/string_ids_server";
 import { TagResource } from "@app/lib/resources/tags_resource";
 import { TemplateResource } from "@app/lib/resources/template_resource";
@@ -105,28 +108,6 @@ import { Op, UniqueConstraintError, ValidationError } from "sequelize";
 // grant: once the agent leaves draft status, only explicit grants confer editorship.
 const DRAFT_OWNER_VERBS: GrantVerb[] = ["read", "write", "admin"];
 
-// Columns of the current configuration that `agents` mirrors.
-export type AgentHeadFields = Pick<
-  AgentConfigurationModel,
-  | "name"
-  | "status"
-  | "scope"
-  | "reinforcement"
-  | "lastReinforcementAnalysisAt"
-  | "templateId"
->;
-
-function headFieldsOf(configuration: AgentHeadFields): AgentHeadFields {
-  return {
-    name: configuration.name,
-    status: configuration.status,
-    scope: configuration.scope,
-    reinforcement: configuration.reinforcement,
-    lastReinforcementAnalysisAt: configuration.lastReinforcementAnalysisAt,
-    templateId: configuration.templateId,
-  };
-}
-
 // Agents in these statuses only exist inside the builder — behind its "try" button or before the
 // first save — and are never indexed.
 const NON_INDEXABLE_AGENT_STATUSES: AgentConfigurationStatus[] = [
@@ -144,6 +125,11 @@ export type EditorDeltaErrorCode =
   | "user_not_member"
   | "user_not_found"
   | "internal_error";
+
+const PENDING_AGENT_PLACEHOLDER_NAME = "__PENDING__";
+const PENDING_AGENT_PLACEHOLDER_DESCRIPTION = "";
+const PENDING_AGENT_PLACEHOLDER_PICTURE_URL =
+  "https://ruby.ad/static/systemavatar/ruby_avatar_full.png";
 
 // Human workspace admins manage editors but must grant themselves editor access to change the agent.
 // The admin role alone does not read a hidden agent (see the `hidden-agent-content` contract).
@@ -169,23 +155,6 @@ export type AgentResourceContent = {
   maxStepsPerRun: number;
   createdAt: Date;
   updatedAt: Date;
-};
-
-type AgentResourceExtraBlob = {
-  agentConfigurationModelId: ModelId;
-  scope: AgentConfigurationScope;
-  name: string;
-  description: string;
-  status: AgentConfigurationStatus;
-  pictureUrl: string;
-  templateId: ModelId | null;
-  reinforcement: AgentReinforcementMode;
-  lastReinforcementAnalysisAt: Date | null;
-  versionAuthorId: ModelId | null;
-  requestedSpaceIds: ModelId[];
-  modelConfiguration: AgentModelConfigurationType;
-  codeDefinedSkillIds: string[];
-  content: AgentResourceContent | null;
 };
 
 // The outcome of a `bulkUpdate`: the agents whose save succeeded (`updatedAgentIds`, a change
@@ -285,7 +254,6 @@ const AGENT_CONFIGURATION_KEYS = [
   "skills",
 ] as const satisfies readonly (keyof SaveAgentConfigurationParams)[];
 
-// A `full` resource always exposes its `content`.
 export interface FullAgentResource extends AgentResource {
   readonly variant: "full";
 }
@@ -337,14 +305,24 @@ export type AgentResourceSnapshot = {
 // Ship the cache dark: wired end to end but touching no Redis. Flip to `false` to turn it on.
 const AGENT_RESOURCE_CACHE_DRY_RUN = true;
 
-// The stable identity of an agent, backed by `AgentModel` (so `id` is the agent's `agentModelId`).
-// It comes in two shapes, discriminated by `variant`:
-// - `light`: identity + `agentConfigurationModelId`/`scope`/`name`/`description`/`status`/
-//   `pictureUrl`/`versionAuthorId`/`requestedSpaceIds`/`modelConfiguration`, built without a query
-//   from a configuration already in hand. These core fields are not read-gated — they are carried
-//   by every resource — and are sufficient for permission decisions.
-// - `full`: additionally carries `content` (every remaining `AgentConfigurationModel` column of the
-//   resolved version). Produced by the access-controlled `fetch*` resolvers.
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export interface AgentResource
+  extends Omit<
+    ReadonlyAttributesType<AgentModel>,
+    "name" | "status" | "scope" | "reinforcement"
+  > {
+  readonly agentConfigurationModelId: ModelId;
+  readonly scope: AgentConfigurationScope;
+  readonly name: string;
+  readonly description: string;
+  readonly status: AgentConfigurationStatus;
+  readonly pictureUrl: string;
+  readonly reinforcement: AgentReinforcementMode;
+  readonly versionAuthorId: ModelId | null;
+  readonly modelConfiguration: AgentModelConfigurationType;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 /**
  * @cc [owner:tdraier,label:backend] agent-resource-identity
  * The authoritative resolvers `fetchByModelIdWithAuth`/`fetchByModelIds`/`fetchById(s)` MUST resolve
@@ -365,7 +343,7 @@ const AGENT_RESOURCE_CACHE_DRY_RUN = true;
  * superuser status. The instructions are the only private fields: the head fields (`name`,
  * `status`, `scope`, `templateId`, `reinforcement`, `lastReinforcementAnalysisAt`) are core and
  * carried by every resource. This holds for every `fetch*` resolver and for
- * `fromAgentConfigurationModel`, so a caller allowed to enumerate agents they cannot read (an admin
+ * `fromModels`, so a caller allowed to enumerate agents they cannot read (an admin
  * listing hidden agents, a superuser) sees identity and core fields only. Callers MUST NOT
  * re-attach the instructions to a `light` resource from another read path.
  */
@@ -433,60 +411,61 @@ export class AgentResource
   extends BaseResource<AgentModel>
   implements WithAccessControl
 {
-  readonly sId: string;
-  readonly workspaceId: ModelId;
-  // The agent's creation date (its `agents` row, not the current version's). A core field, so it is
-  // carried by `light` resources too. Only `fetch*`-built resources carry the real date: the `from*`
-  // factories have no `agents` row in hand and stamp a placeholder (see `fromAgentConfiguration`).
-  readonly createdAt: Date;
-  // Bumped whenever the agent's `currentVersion` pointer moves, so it tracks the last edit.
-  readonly updatedAt: Date;
-  readonly agentConfigurationModelId: ModelId;
-  readonly scope: AgentConfigurationScope;
-  readonly name: string;
-  readonly description: string;
-  readonly status: AgentConfigurationStatus;
-  readonly pictureUrl: string;
-  readonly templateId: ModelId | null;
-  readonly reinforcement: AgentReinforcementMode;
-  readonly lastReinforcementAnalysisAt: Date | null;
-  readonly versionAuthorId: ModelId | null;
   private readonly requestedSpaceIds: ModelId[];
-  readonly modelConfiguration: AgentModelConfigurationType;
-  private readonly codeDefinedSkillIds: string[];
-  // Mutable so a light resource can be enriched to full in place once read access is confirmed
-  // (see `fromAgentConfigurationModel`). `variant` is derived from its presence.
+  private codeDefinedSkillIds: string[] = [];
   private _content: AgentResourceContent | null;
 
-  // The loading caller's permission context, stamped by `materializeResource` at the per-call read
-  // boundary — NOT on the caller-independent, cacheable `content`.
   private _verbs: Set<GrantVerb> = new Set();
   private _isRegularApiKey = false;
 
   private constructor(
-    blob: Attributes<AgentModel>,
-    extra: AgentResourceExtraBlob
+    agent: Attributes<AgentModel>,
+    agentConfiguration: Attributes<AgentConfigurationModel>
   ) {
-    super(AgentModel, blob);
+    super(AgentModel, agent);
 
-    this.sId = blob.sId;
-    this.workspaceId = blob.workspaceId;
-    this.createdAt = blob.createdAt;
-    this.updatedAt = blob.updatedAt;
-    this.agentConfigurationModelId = extra.agentConfigurationModelId;
-    this.scope = extra.scope;
-    this.name = extra.name;
-    this.description = extra.description;
-    this.status = extra.status;
-    this.pictureUrl = extra.pictureUrl;
-    this.templateId = extra.templateId;
-    this.reinforcement = extra.reinforcement;
-    this.lastReinforcementAnalysisAt = extra.lastReinforcementAnalysisAt;
-    this.versionAuthorId = extra.versionAuthorId;
-    this.requestedSpaceIds = extra.requestedSpaceIds;
-    this.modelConfiguration = extra.modelConfiguration;
-    this.codeDefinedSkillIds = extra.codeDefinedSkillIds;
-    this._content = extra.content;
+    Object.assign(this, {
+      agentConfigurationModelId: agentConfiguration.id,
+      scope: agentConfiguration.scope,
+      name: agentConfiguration.name,
+      description: agentConfiguration.description,
+      status: agentConfiguration.status,
+      pictureUrl: agentConfiguration.pictureUrl,
+      templateId: agentConfiguration.templateId,
+      reinforcement: agentConfiguration.reinforcement,
+      lastReinforcementAnalysisAt:
+        agentConfiguration.lastReinforcementAnalysisAt,
+      versionAuthorId: agentConfiguration.authorId,
+      modelConfiguration: {
+        providerId: agentConfiguration.providerId,
+        modelId: agentConfiguration.modelId,
+        temperature: agentConfiguration.temperature,
+        reasoningEffort: agentConfiguration.reasoningEffort ?? undefined,
+        responseFormat: agentConfiguration.responseFormat ?? undefined,
+      },
+    } satisfies Pick<
+      AgentResource,
+      | "agentConfigurationModelId"
+      | "scope"
+      | "name"
+      | "description"
+      | "status"
+      | "pictureUrl"
+      | "templateId"
+      | "reinforcement"
+      | "lastReinforcementAnalysisAt"
+      | "versionAuthorId"
+      | "modelConfiguration"
+    >);
+    this.requestedSpaceIds = agentConfiguration.requestedSpaceIds;
+    this._content = {
+      version: agentConfiguration.version,
+      instructions: agentConfiguration.instructions,
+      instructionsHtml: agentConfiguration.instructionsHtml,
+      maxStepsPerRun: agentConfiguration.maxStepsPerRun,
+      createdAt: agentConfiguration.createdAt,
+      updatedAt: agentConfiguration.updatedAt,
+    };
   }
 
   get variant(): "light" | "full" {
@@ -506,122 +485,69 @@ export class AgentResource
     return this._content;
   }
 
-  // Global agents are code-defined and have no `agent`/configuration rows; their
-  // `AgentConfigurationType` is built from synthetic values by `getGlobalAgent(s)`.
   static fromGlobalAgent(
     auth: Authenticator,
     configuration: AgentConfigurationType
   ): AgentResource {
     assert(isGlobalAgentId(configuration.sId));
 
-    return new AgentResource(
+    const workspaceId = auth.getNonNullableWorkspace().id;
+    const now = new Date();
+
+    const resource = new AgentResource(
       {
-        // No `agent` identity row; `-1` mirrors their synthetic configuration id.
         id: -1,
-        workspaceId: auth.getNonNullableWorkspace().id,
+        workspaceId,
         sId: configuration.sId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: now,
+        updatedAt: now,
         currentVersion: configuration.version,
-        name: configuration.name,
+        name: null,
         status: null,
         scope: null,
-        templateId: null,
-        reinforcement: configuration.reinforcement ?? "auto",
+        reinforcement: null,
         lastReinforcementAnalysisAt: null,
+        templateId: null,
       },
       {
-        agentConfigurationModelId: configuration.id,
-        scope: "global",
+        id: configuration.id,
+        workspaceId,
+        sId: configuration.sId,
+        createdAt: now,
+        updatedAt: now,
+        version: configuration.version,
+        agentId: -1,
+        status: "active",
+        scope: "hidden",
+        authorId: -1,
         name: configuration.name,
         description: configuration.description,
-        status: configuration.status,
+        instructions: null,
+        instructionsHtml: null,
+        providerId: configuration.model.providerId,
+        modelId: configuration.model.modelId,
+        temperature: configuration.model.temperature,
+        reasoningEffort: configuration.model.reasoningEffort ?? null,
+        responseFormat: configuration.model.responseFormat,
         pictureUrl: configuration.pictureUrl,
+        maxStepsPerRun: configuration.maxStepsPerRun,
         templateId: null,
         reinforcement: configuration.reinforcement ?? "auto",
         lastReinforcementAnalysisAt: null,
-        versionAuthorId: null,
         requestedSpaceIds: [],
-        modelConfiguration: configuration.model,
-        codeDefinedSkillIds: configuration.codeDefinedSkillIds ?? [],
-        content: null,
       }
     );
+    Object.assign(resource, {
+      scope: "global",
+      status: configuration.status,
+      versionAuthorId: null,
+    } satisfies Pick<AgentResource, "scope" | "status" | "versionAuthorId">);
+    resource._content = null;
+    resource.codeDefinedSkillIds = configuration.codeDefinedSkillIds ?? [];
+
+    return resource;
   }
 
-  // -- Full/light factory --
-
-  // Caller-independent: builds the `full` resource (identity + core + `content`) from a configuration
-  // row and, when available, its agent row, with no read-access decision folded in. This is the shape
-  // the cache stores; the downgrade is applied separately at the read boundary (`materializeResource`).
-  // `agent` is null on the `fromAgentConfigurationModel` path, where only a configuration is in hand;
-  // the identity is then derived from the configuration (its `agentId`/`version` match the agent).
-  private static buildResource(
-    agent: AgentModel | null,
-    configuration: AgentConfigurationModel
-  ): FullAgentResource {
-    const resource = new AgentResource(
-      agent
-        ? {
-            id: agent.id,
-            workspaceId: agent.workspaceId,
-            sId: agent.sId,
-            createdAt: agent.createdAt,
-            updatedAt: agent.updatedAt,
-            currentVersion: agent.currentVersion,
-            name: agent.name,
-            status: agent.status,
-            scope: agent.scope,
-            templateId: agent.templateId,
-            reinforcement: agent.reinforcement,
-            lastReinforcementAnalysisAt: agent.lastReinforcementAnalysisAt,
-          }
-        : {
-            id: configuration.agentId,
-            workspaceId: configuration.workspaceId,
-            sId: configuration.sId,
-            createdAt: configuration.createdAt,
-            updatedAt: configuration.updatedAt,
-            currentVersion: configuration.version,
-            ...headFieldsOf(configuration),
-          },
-      {
-        agentConfigurationModelId: configuration.id,
-        scope: configuration.scope,
-        name: configuration.name,
-        description: configuration.description,
-        status: configuration.status,
-        pictureUrl: configuration.pictureUrl,
-        templateId: configuration.templateId,
-        reinforcement: configuration.reinforcement,
-        lastReinforcementAnalysisAt: configuration.lastReinforcementAnalysisAt,
-        versionAuthorId: configuration.authorId,
-        requestedSpaceIds: configuration.requestedSpaceIds,
-        modelConfiguration: {
-          providerId: configuration.providerId,
-          modelId: configuration.modelId,
-          temperature: configuration.temperature,
-          reasoningEffort: configuration.reasoningEffort ?? undefined,
-          responseFormat: configuration.responseFormat ?? undefined,
-        },
-        codeDefinedSkillIds: [],
-        content: {
-          version: configuration.version,
-          instructions: configuration.instructions,
-          instructionsHtml: configuration.instructionsHtml,
-          maxStepsPerRun: configuration.maxStepsPerRun,
-          createdAt: configuration.createdAt,
-          updatedAt: configuration.updatedAt,
-        },
-      }
-    );
-
-    return resource as FullAgentResource;
-  }
-
-  // Materializes the caller-dependent state onto a full resource (`_verbs`, `_isRegularApiKey`, and
-  // the read-access downgrade to `light`). The resource is a fresh per-call instance, so mutating it
-  // here never affects a cached value.
   private static materializeResource(
     auth: Authenticator,
     cachedResource: FullAgentResource
@@ -637,16 +563,49 @@ export class AgentResource
     return cachedResource;
   }
 
-  // Builds a resource from an already-loaded configuration row: `full` (with `content`) when the
-  // caller can read the agent, `light` otherwise.
-  static fromAgentConfigurationModel(
+  private static fromModels(
     auth: Authenticator,
-    configuration: AgentConfigurationModel
+    agent: AgentModel,
+    agentConfiguration: AgentConfigurationModel
   ): AgentResource {
     return this.materializeResource(
       auth,
-      this.buildResource(null, configuration)
+      new AgentResource(
+        agent.get(),
+        agentConfiguration.get()
+      ) as FullAgentResource
     );
+  }
+
+  static async dangerouslyFromConfigurationModels(
+    auth: Authenticator,
+    agentConfigurations: AgentConfigurationModel[],
+    { transaction }: { transaction?: Transaction } = {}
+  ): Promise<AgentResource[]> {
+    if (agentConfigurations.length === 0) {
+      return [];
+    }
+
+    const workspaceId = auth.getNonNullableWorkspace().id;
+    const agentModelIds = [
+      ...new Set(
+        agentConfigurations.map((configuration) => configuration.agentId)
+      ),
+    ];
+    const agents = await AgentModel.findAll({
+      where: { id: agentModelIds, workspaceId },
+      transaction,
+    });
+    const agentById = new Map(agents.map((agent) => [agent.id, agent]));
+
+    return agentConfigurations.map((configuration) => {
+      const agent = agentById.get(configuration.agentId);
+      assert(
+        agent,
+        `Unexpected: missing agent ${configuration.agentId} for configuration ${configuration.id}`
+      );
+      return this.fromModels(auth, agent, configuration);
+    });
   }
 
   // -- Resolvers: current version, full when readable, light otherwise --
@@ -773,12 +732,16 @@ export class AgentResource
     });
 
     return agents.flatMap((agent) => {
-      // `required: true` + `version = currentVersion` yields exactly one configuration per agent.
-      const configurations = agent.get(
-        "agent_configurations"
-      ) as AgentConfigurationModel[];
-      return configurations.map((configuration) =>
-        this.buildResource(agent, configuration)
+      const { agent_configurations: configurations, ...agentAttributes } =
+        agent.get() as Attributes<AgentModel> & {
+          agent_configurations: AgentConfigurationModel[];
+        };
+      return configurations.map(
+        (configuration) =>
+          new AgentResource(
+            agentAttributes,
+            configuration.get()
+          ) as FullAgentResource
       );
     });
   }
@@ -880,61 +843,70 @@ export class AgentResource
     };
   }
 
-  // Rebuilds a `full` resource from a cached snapshot. Inverse of `toSnapshot`.
   static fromSnapshot(snapshot: AgentResourceSnapshot): FullAgentResource {
     const { content, modelConfiguration } = snapshot;
+    assert(
+      snapshot.versionAuthorId !== null,
+      "Unexpected: cached custom agent is missing its author"
+    );
+    assert(
+      isAgentStatus(snapshot.status),
+      `Unexpected: cached agent has non-agent status "${snapshot.status}"`
+    );
+    assert(
+      snapshot.scope !== "global",
+      "Unexpected: cached a global AgentResource"
+    );
     const lastReinforcementAnalysisAt =
       snapshot.lastReinforcementAnalysisAt !== null
         ? new Date(snapshot.lastReinforcementAnalysisAt)
         : null;
 
-    const resource = new AgentResource(
+    return new AgentResource(
       {
         id: snapshot.agentModelId,
         workspaceId: snapshot.workspaceId,
         sId: snapshot.sId,
-        // The agent row's own timestamp — NOT the version's (`content.createdAt`).
         createdAt: new Date(snapshot.createdAt),
         // `updatedAt` is not surfaced on the resource; the version's stands in harmlessly.
         updatedAt: new Date(content.updatedAt),
         // The cached row is the current version, so its version is the agent's `currentVersion`.
         currentVersion: content.version,
-        name: snapshot.name,
-        status: isAgentStatus(snapshot.status) ? snapshot.status : null,
-        scope: snapshot.scope === "global" ? null : snapshot.scope,
-        templateId: snapshot.templateId,
-        reinforcement: snapshot.reinforcement,
-        lastReinforcementAnalysisAt,
+        name: null,
+        status: null,
+        scope: null,
+        reinforcement: null,
+        lastReinforcementAnalysisAt: null,
+        templateId: null,
       },
       {
-        agentConfigurationModelId: snapshot.agentConfigurationModelId,
+        id: snapshot.agentConfigurationModelId,
+        workspaceId: snapshot.workspaceId,
+        sId: snapshot.sId,
+        createdAt: new Date(content.createdAt),
+        updatedAt: new Date(content.updatedAt),
+        version: content.version,
+        agentId: snapshot.agentModelId,
+        status: snapshot.status,
         scope: snapshot.scope,
         name: snapshot.name,
         description: snapshot.description,
-        status: snapshot.status,
+        instructions: content.instructions,
+        instructionsHtml: content.instructionsHtml,
+        providerId: modelConfiguration.providerId,
+        modelId: modelConfiguration.modelId,
+        temperature: modelConfiguration.temperature,
+        reasoningEffort: modelConfiguration.reasoningEffort ?? null,
+        responseFormat: modelConfiguration.responseFormat ?? undefined,
         pictureUrl: snapshot.pictureUrl,
+        authorId: snapshot.versionAuthorId,
+        maxStepsPerRun: content.maxStepsPerRun,
         templateId: snapshot.templateId,
         reinforcement: snapshot.reinforcement,
         lastReinforcementAnalysisAt,
-        versionAuthorId: snapshot.versionAuthorId,
         requestedSpaceIds: snapshot.requestedSpaceIds,
-        modelConfiguration: {
-          providerId: modelConfiguration.providerId,
-          modelId: modelConfiguration.modelId,
-          temperature: modelConfiguration.temperature,
-          reasoningEffort: modelConfiguration.reasoningEffort ?? undefined,
-          responseFormat: modelConfiguration.responseFormat ?? undefined,
-        },
-        codeDefinedSkillIds: [],
-        content: {
-          ...content,
-          createdAt: new Date(content.createdAt),
-          updatedAt: new Date(content.updatedAt),
-        },
       }
-    );
-
-    return resource as FullAgentResource;
+    ) as FullAgentResource;
   }
 
   async listEditors(
@@ -1346,8 +1318,7 @@ export class AgentResource
    */
   async setCurrentConfiguration(
     auth: Authenticator,
-    configuration: Pick<AgentConfigurationModel, "agentId" | "version"> &
-      AgentHeadFields,
+    configuration: AgentConfigurationModel,
     { transaction }: { transaction: Transaction }
   ): Promise<void> {
     assert(this.scope !== "global");
@@ -1361,7 +1332,12 @@ export class AgentResource
     await AgentModel.update(
       {
         currentVersion: configuration.version,
-        ...headFieldsOf(configuration),
+        name: configuration.name,
+        status: configuration.status,
+        scope: configuration.scope,
+        reinforcement: configuration.reinforcement,
+        lastReinforcementAnalysisAt: configuration.lastReinforcementAnalysisAt,
+        templateId: configuration.templateId,
       },
       { where: { id: this.id, workspaceId: this.workspaceId }, transaction }
     );
@@ -1369,7 +1345,17 @@ export class AgentResource
 
   private async updateAgentIdentity(
     auth: Authenticator,
-    fields: Partial<AgentHeadFields>,
+    fields: Partial<
+      Pick<
+        AgentConfigurationModel,
+        | "name"
+        | "status"
+        | "scope"
+        | "reinforcement"
+        | "lastReinforcementAnalysisAt"
+        | "templateId"
+      >
+    >,
     { transaction }: { transaction?: Transaction } = {}
   ): Promise<boolean> {
     const workspaceId = auth.getNonNullableWorkspace().id;
@@ -1413,23 +1399,40 @@ export class AgentResource
     assert(this.scope !== "global");
     assert(auth.getNonNullableWorkspace().id === this.workspaceId);
 
+    await AgentResource.batchDestroyPermissionsAndGroups(auth, [this], {
+      transaction,
+    });
+  }
+
+  // Removes the agent grants and deletes the now-orphaned `regular_auto` editor groups for a set of
+  // agents, batched so the work does not scale per agent (see `batch-database-queries`).
+  private static async batchDestroyPermissionsAndGroups(
+    auth: Authenticator,
+    agents: AgentResource[],
+    { transaction }: { transaction: Transaction }
+  ): Promise<void> {
+    if (agents.length === 0) {
+      return;
+    }
+
+    const resourceIds = agents.map((agent) => agent.id);
     const grantGroups =
-      await GroupPermissionResource.listRegularAutoGroupsForResource(auth, {
+      await GroupPermissionResource.listRegularAutoGroupsForResources(auth, {
         resourceType: "agent",
-        resourceId: this.id,
+        resourceIds,
         transaction,
       });
-    await GroupPermissionResource.deleteAllForResource(auth, {
+    await GroupPermissionResource.deleteAllForResources(auth, {
       resourceType: "agent",
-      resourceId: this.id,
+      resourceIds,
       transaction,
     });
 
-    for (const grantGroup of grantGroups) {
-      const deleteResult = await grantGroup.delete(auth, { transaction });
-      if (deleteResult.isErr()) {
-        throw deleteResult.error;
-      }
+    const deleteResult = await GroupResource.batchDelete(auth, grantGroups, {
+      transaction,
+    });
+    if (deleteResult.isErr()) {
+      throw deleteResult.error;
     }
   }
 
@@ -1685,14 +1688,23 @@ export class AgentResource
   // (schedule / pending workflow) and favorite / agent-user-relation rows. Returns an error when the
   // Temporal-backed cleanup did not fully complete, so `delete` can abort before removing the
   // versions and a retry can finish it.
-  private async cleanupScopedResourcesForDeletion(
-    auth: Authenticator
+  // Cancels/deletes the scoped resources (triggers, wake-ups, favorites) of a set of agents before
+  // their versions are destroyed. Rows are listed and deleted with scoped (`IN`) queries so DB work
+  // does not scale per agent (see `batch-database-queries`); the unavoidable per-item Temporal calls
+  // (trigger schedule removal, wake-up cancellation) go through `concurrentExecutor`, which the
+  // contract allows for external services. A Temporal failure leaves its row in place, so this
+  // re-checks and returns `Err` if anything survives — after some rows may already be gone (see the
+  // `batch-delete-atomic` contract).
+  private static async batchCleanupScopedResourcesForDeletion(
+    auth: Authenticator,
+    agents: AgentResource[]
   ): Promise<Result<undefined, Error>> {
     const owner = auth.getNonNullableWorkspace();
+    const sIds = agents.map((agent) => agent.sId);
 
-    const triggers = await TriggerResource.listByAgentConfigurationId(
+    const triggers = await TriggerResource.listByAgentConfigurationIds(
       auth,
-      this.sId
+      sIds
     );
     await concurrentExecutor(
       triggers,
@@ -1702,33 +1714,37 @@ export class AgentResource
           logger.error(
             {
               workspaceId: owner.sId,
-              agentConfigurationId: this.sId,
+              agentConfigurationId: trigger.agentConfigurationId,
               triggerId: trigger.sId,
               error: deleteResult.error,
             },
-            `Failed to delete trigger ${trigger.sId} while hard-deleting agent ${this.sId}`
+            `Failed to delete trigger ${trigger.sId} while hard-deleting agent ${trigger.agentConfigurationId}`
           );
         }
       },
       { concurrency: 4 }
     );
 
-    const wakeUps = await WakeUpResource.listByAgentConfigurationId(
+    const wakeUps = await WakeUpResource.listByAgentConfigurationIds(
       auth,
-      this.sId
+      sIds
+    );
+    const cancelResults = await concurrentExecutor(
+      wakeUps,
+      async (wakeUp) => ({ wakeUp, result: await wakeUp.forceCancel(auth) }),
+      { concurrency: 4 }
     );
     const deletableWakeUpIds: ModelId[] = [];
-    for (const wakeUp of wakeUps) {
-      const cleanupResult = await wakeUp.forceCancel(auth);
-      if (cleanupResult.isErr()) {
+    for (const { wakeUp, result } of cancelResults) {
+      if (result.isErr()) {
         logger.error(
           {
             workspaceId: owner.sId,
-            agentConfigurationId: this.sId,
+            agentConfigurationId: wakeUp.agentConfigurationId,
             wakeUpId: wakeUp.sId,
-            error: cleanupResult.error,
+            error: result.error,
           },
-          `Failed cleaning up wake-up ${wakeUp.sId} Temporal state while hard-deleting agent ${this.sId}; leaving row for retry`
+          `Failed cleaning up wake-up ${wakeUp.sId} Temporal state while hard-deleting agent ${wakeUp.agentConfigurationId}; leaving row for retry`
         );
         continue;
       }
@@ -1736,18 +1752,16 @@ export class AgentResource
     }
     await WakeUpResource.deleteByModelIds(auth, deletableWakeUpIds);
 
-    await AgentUserRelationResource.deleteForAgent(auth, this.sId);
+    await AgentUserRelationResource.deleteForAgents(auth, sIds);
 
-    const remainingTriggers = await TriggerResource.listByAgentConfigurationId(
-      auth,
-      this.sId
-    );
-    const remainingWakeUps = await WakeUpResource.listByAgentConfigurationId(
-      auth,
-      this.sId
-    );
-    const remainingFavoriteCount =
-      await AgentUserRelationResource.countForAgent(auth, this.sId);
+    // Three independent, bounded verification reads — run together (not a per-item fan-out, so this
+    // stays within `batch-database-queries`).
+    const [remainingTriggers, remainingWakeUps, remainingFavoriteCount] =
+      await Promise.all([
+        TriggerResource.listByAgentConfigurationIds(auth, sIds),
+        WakeUpResource.listByAgentConfigurationIds(auth, sIds),
+        AgentUserRelationResource.countForAgents(auth, sIds),
+      ]);
 
     if (
       remainingTriggers.length > 0 ||
@@ -1757,7 +1771,7 @@ export class AgentResource
       logger.error(
         {
           workspaceId: owner.sId,
-          agentConfigurationId: this.sId,
+          agentConfigurationIds: sIds,
           remainingTriggerIds: remainingTriggers.map((t) => t.sId),
           remainingWakeUpIds: remainingWakeUps.map((w) => w.sId),
           remainingFavoriteCount,
@@ -1767,7 +1781,7 @@ export class AgentResource
       );
       return new Err(
         new Error(
-          `Agent scoped cleanup incomplete for ${this.sId}; aborted before deleting versions.`
+          `Agent scoped cleanup incomplete for [${sIds.join(", ")}]; aborted before deleting versions.`
         )
       );
     }
@@ -1779,33 +1793,76 @@ export class AgentResource
   // child-agent links, tags, skills, suggestions), the scoped resources (triggers, wake-ups,
   // favorites), the agent's permission grants and groups, and finally the `agents` identity row. The
   // cached entry is invalidated on commit and the agent is removed from the search index. This
-  // permanently destroys the agent. Like archive/restore, it requires the agent `admin` verb, checked
-  // here regardless of any caller-side gate (see `agent-archive-restore-requires-admin`).
+  // permanently destroys the agent. Like archive/restore, it requires the agent `admin` verb (checked
+  // in `batchDelete`, regardless of any caller-side gate; see `agent-archive-restore-requires-admin`).
   async delete(auth: Authenticator): Promise<Result<undefined, Error>> {
-    assert(this.scope !== "global", "Global agents cannot be deleted.");
-    const owner = auth.getNonNullableWorkspace();
-    const workspaceId = owner.id;
-    assert(
-      workspaceId === this.workspaceId,
-      "Unexpected: agent belongs to another workspace"
-    );
-    if (!auth.can("admin", this)) {
-      return new Err(
-        new RubyError(
-          "unauthorized",
-          "Deleting an agent requires the agent `admin` verb."
-        )
-      );
+    return AgentResource.batchDelete(auth, [this]);
+  }
+
+  /**
+   * @cc [owner:tdraier,label:backend] batch-delete-atomic
+   * `batchDelete` MUST hard-delete every passed agent as a set: for each agent it destroys all of its
+   * configuration versions and their satellites (tools and their data-source / table / child-agent
+   * links, tags, skills, suggestions), the permission grants and groups, and the `agents` identity
+   * row. All of these database deletions MUST run in a single transaction so the batch commits
+   * all-or-nothing (destroying every version before its identity keeps the delete valid for any agent,
+   * not only single-version pending drafts). Because the whole identity is removed, `batchDelete` MUST
+   * NOT be called with two resources sharing an `id`. Scoped resources (triggers, wake-ups, favorites)
+   * are cleaned up before the transaction; if any cannot be removed (e.g. a Temporal cancellation
+   * fails), `batchDelete` MUST abort before destroying any configuration version or identity row —
+   * best-effort scoped rows already deleted are tolerated, but no agent is left version-less. `delete`
+   * MUST delegate here so the two paths cannot diverge.
+   */
+  /**
+   * @cc [owner:tdraier,label:backend] batch-delete-search-index
+   * After the deletion commits, `batchDelete` MUST remove from the search index every deleted agent
+   * whose status could have been indexed — one `launchDeleteAgentSearchWorkflow` per such agent (see
+   * `agent-search-after-commit`). Agents whose status is in `NON_INDEXABLE_AGENT_STATUSES` are never
+   * indexed (enforced on write in `makeNew`) and MUST be skipped, so the purge of pending drafts adds
+   * no workflows. Every eligible launch MUST be attempted even if an earlier one fails; the first
+   * error is returned only after all have been attempted.
+   */
+  static async batchDelete(
+    auth: Authenticator,
+    agents: AgentResource[]
+  ): Promise<Result<undefined, Error>> {
+    if (agents.length === 0) {
+      return new Ok(undefined);
     }
 
-    const cleanupRes = await this.cleanupScopedResourcesForDeletion(auth);
+    const owner = auth.getNonNullableWorkspace();
+    const workspaceId = owner.id;
+
+    for (const agent of agents) {
+      assert(agent.scope !== "global", "Global agents cannot be deleted.");
+      assert(
+        workspaceId === agent.workspaceId,
+        "Unexpected: agent belongs to another workspace"
+      );
+      if (!auth.can("admin", agent)) {
+        return new Err(
+          new RubyError(
+            "unauthorized",
+            "Deleting an agent requires the agent `admin` verb."
+          )
+        );
+      }
+    }
+
+    // Scoped-resource cleanup (triggers, wake-ups, favorites) happens before the transaction and must
+    // fully succeed; a failure aborts before any configuration version or identity row is destroyed.
+    const cleanupRes =
+      await AgentResource.batchCleanupScopedResourcesForDeletion(auth, agents);
     if (cleanupRes.isErr()) {
       return cleanupRes;
     }
 
+    const agentModelIds = agents.map((agent) => agent.id);
+    const sIds = agents.map((agent) => agent.sId);
+
     await withTransaction(async (t) => {
       const configurations = await AgentConfigurationModel.findAll({
-        where: { sId: this.sId, workspaceId },
+        where: { agentId: { [Op.in]: agentModelIds }, workspaceId },
         attributes: ["id"],
         transaction: t,
       });
@@ -1885,23 +1942,41 @@ export class AgentResource
       }
 
       // The `agent_configurations` rows (and their FK to `agents`) are gone, so the grants, groups
-      // and the identity row can be removed.
-      await this.destroyPermissionsAndGroups(auth, { transaction: t });
+      // and the identity rows can be removed.
+      await AgentResource.batchDestroyPermissionsAndGroups(auth, agents, {
+        transaction: t,
+      });
       await AgentModel.destroy({
-        where: { id: this.id, workspaceId },
+        where: { id: { [Op.in]: agentModelIds }, workspaceId },
         transaction: t,
       });
 
-      // Drop the cached entry once the deletion commits.
-      await AgentResource.invalidateCache(workspaceId, this.sId, t);
+      // Drop the cached entries once the deletion commits.
+      await invalidateAgentResourceCaches(workspaceId, sIds, t);
     });
 
-    // Remove the agent from the search index after the deletion commits (see
-    // `agent-search-after-commit`).
-    return launchDeleteAgentSearchWorkflow({
-      workspaceId: owner.sId,
-      agentId: this.sId,
-    });
+    // Remove every deleted agent that could have been indexed from the search index after the
+    // deletion commits (see `agent-search-after-commit` / `batch-delete-search-index`). Never-indexed
+    // statuses (pending drafts) are skipped. Launches go through `concurrentExecutor` so every one is
+    // attempted; the first failure is surfaced afterwards.
+    const indexedAgents = agents.filter(
+      (agent) => !NON_INDEXABLE_AGENT_STATUSES.includes(agent.status)
+    );
+    const launchResults = await concurrentExecutor(
+      indexedAgents,
+      (agent) =>
+        launchDeleteAgentSearchWorkflow({
+          workspaceId: owner.sId,
+          agentId: agent.sId,
+        }),
+      { concurrency: 8 }
+    );
+    const failedLaunch = launchResults.find((result) => result.isErr());
+    if (failedLaunch?.isErr()) {
+      return failedLaunch;
+    }
+
+    return new Ok(undefined);
   }
 
   // Whether the caller can read every space backing the agent's tools/skills/data. Space read comes
@@ -2152,6 +2227,34 @@ export class AgentResource
     return AgentResource._saveConfiguration(auth, {
       ...params,
       agentConfigurationId: undefined,
+    });
+  }
+
+  static async createPending(
+    auth: Authenticator
+  ): Promise<Result<AgentResource, Error>> {
+    const user = auth.getNonNullableUser();
+    const { defaultModel } = await getModelsForAuth(auth);
+
+    return AgentResource.makeNew(auth, {
+      name: PENDING_AGENT_PLACEHOLDER_NAME,
+      description: PENDING_AGENT_PLACEHOLDER_DESCRIPTION,
+      instructions: null,
+      instructionsHtml: null,
+      pictureUrl: PENDING_AGENT_PLACEHOLDER_PICTURE_URL,
+      status: "pending",
+      scope: "hidden",
+      model: {
+        providerId: defaultModel.providerId,
+        modelId: defaultModel.modelId,
+        temperature: 0.7,
+        reasoningEffort: defaultModel.defaultReasoningEffort,
+      },
+      templateId: null,
+      requestedSpaceIds: [],
+      tags: [],
+      editors: [user.toJSON()],
+      authorId: user.id,
     });
   }
 
@@ -2570,6 +2673,7 @@ export class AgentResource
         // carries the head fields of the version 0 row written just below. `findOrCreate` covers an
         // identity left behind by an interrupted creation.
         let agentModelId = existingAgent?.agentId;
+        let agentModel: AgentModel | null = null;
         if (!agentModelId) {
           const [agentIdentity] = await AgentModel.findOrCreate({
             where: { sId, workspaceId: owner.id },
@@ -2585,6 +2689,7 @@ export class AgentResource
             transaction: t,
           });
           agentModelId = agentIdentity.id;
+          agentModel = agentIdentity;
         }
 
         const agentConfigurationInstance = await writeAgentConfigurationRow({
@@ -2608,11 +2713,23 @@ export class AgentResource
           transaction: t,
         });
 
+        if (!agentModel) {
+          agentModel = await AgentModel.findOne({
+            where: { id: agentModelId, workspaceId: owner.id },
+            transaction: t,
+          });
+        }
+        assert(
+          agentModel,
+          `Unexpected: agent identity ${agentModelId} missing after save`
+        );
+
         // A brand-new agent's identity was just created at version 0 with its head fields; an
         // upgrade or a pending activation moves the pointer and mirrors the new ones.
         if (existingAgent) {
-          await AgentResource.fromAgentConfigurationModel(
+          await AgentResource.fromModels(
             auth,
+            agentModel,
             agentConfigurationInstance
           ).setCurrentConfiguration(auth, agentConfigurationInstance, {
             transaction: t,
@@ -2630,14 +2747,16 @@ export class AgentResource
 
         // Editors are agent-level grants managed in place by `updateEditorsInPlace`, not a versioned
         // field: an existing agent's editors are already granted and carry across versions untouched,
-        // so a new version re-grants nothing. Only a brand-new agent needs its initial editor grants.
-        if (status === "active" && !existingAgent) {
+        // so a new version re-grants nothing. Only a brand-new agent (active or the pending
+        // placeholder) needs its initial editor grants.
+        if ((status === "active" || status === "pending") && !existingAgent) {
           assert(
             editors.some((e) => e.id === authorId) || isAdmin(owner),
             "Unexpected: author must be an editor or admin"
           );
-          await AgentResource.fromAgentConfigurationModel(
+          await AgentResource.fromModels(
             auth,
+            agentModel,
             agentConfigurationInstance
           ).grantEditors(auth, { editors, transaction: t });
           createdInitialEditorGrant = true;
@@ -2646,8 +2765,9 @@ export class AgentResource
         // Create the MCP actions and skill associations in the same transaction as the
         // configuration row, so any failure rolls the whole save back and never leaves a partial
         // version behind (see `agent-save-atomic`).
-        const savedResource = AgentResource.fromAgentConfigurationModel(
+        const savedResource = AgentResource.fromModels(
           auth,
+          agentModel,
           agentConfigurationInstance
         );
         for (const action of actions) {

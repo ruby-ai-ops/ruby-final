@@ -46,6 +46,10 @@ const meta = {
       control: "text",
       description: "URL to an image or emoji URL",
     },
+    lazyLoad: {
+      control: "boolean",
+      description: "Defer loading and decode an image avatar asynchronously",
+    },
     emoji: {
       control: "text",
       description: "Emoji to display in the avatar",
@@ -183,6 +187,20 @@ export const WithImage: Story = {
     size: "md",
     name: "Aria Doe",
     visual: "https://ruby.ad/static/droidavatar/Droid_Lime_2.jpg",
+  },
+};
+
+/**
+ * Image avatars in long picker lists can defer image loading.
+ *
+ * @summary Lazily loaded image avatar.
+ */
+export const WithLazyImage: Story = {
+  args: {
+    size: "md",
+    name: "Aria Doe",
+    visual: "https://ruby.ad/static/droidavatar/Droid_Lime_2.jpg",
+    lazyLoad: true,
   },
 };
 
