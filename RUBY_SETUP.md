@@ -1,6 +1,6 @@
 # Ruby AI setup and release gate
 
-Repository: `ruby-ai-ops/ruby-final` (private). Production branch: `ruby-main`. Node **24.16.0**, npm **11.11.0**. Install with `npm ci`; Ruby packages resolve from this repository's workspaces. The imported marketing demo installs separately through `npm -w marketing run demo:prepare` and preserves its React 19 runtime.
+Repository: `ruby-ai-ops/ruby-final` (public, as subsequently requested by its owner). Production branch: `ruby-main`. Node **24.16.0**, npm **11.11.0**. Install with `npm ci`; Ruby packages resolve from this repository's workspaces. The imported marketing demo installs separately through `npm -w marketing run demo:prepare` and preserves its React 19 runtime.
 
 The rebrand does not provision infrastructure or deploy anything. Local Docker is not required. GitHub CI uses isolated service containers for database tests; application hosting remains your choice.
 
@@ -31,6 +31,4 @@ Run the manual **Ruby sandbox artifacts** workflow. It builds `rbx` from this so
 
 Hosting and paid resource creation remain deferred. This guide describes required inputs, not services that already exist.
 
-Verified repository limitation: GitHub currently reports that private-repository rulesets are not enforced on the current account plan. Production release is blocked until enforced protection is available and configured; creating a rule alone does not satisfy this requirement.
-
-CI execution is also blocked by GitHub account payment/spending-limit restrictions. [The initial CI attempt](https://github.com/ruby-ai-ops/ruby-final/actions/runs/35803452219) did not start any jobs. Resolve the account restriction, then manually run Ruby CI on the current commit and Ruby sandbox artifacts. Rust/database checks, binary assembly and the service-backed end-to-end stage have not passed yet.
+The initial private-repository CI attempt was blocked before jobs started by account restrictions. The owner subsequently requested public visibility so GitHub checks and branch protection can operate. Verify the current commit's checks and enforced production rule before release; visibility alone is not validation.

@@ -26,3 +26,6 @@ Baseline: 33ca751b3fa75e00e9dac746d5ba3d7adbc5ec54.
 - Remote CI attempt: https://github.com/ruby-ai-ops/ruby-final/actions/runs/35803452219 on c8b32886b03ff6fe2fc41b267902b14ec5c08317. GitHub refused to start both policy and release-gate jobs because of account payment/spending-limit restrictions. No test job ran. Linux, database and sandbox artifact verification remain blocked; no billing changes made.
 - Sandbox source pin was resolved through the annotated rust-v0.115.0 tag to commit f028679abb30051cec2434e624cd99975986b41b. Its binary target is apply_patch; explicitly select Rust 1.94.1 so the nested source toolchain cannot omit the installed musl target.
 - Marketing/home and the embedded demo were visually inspected, including light/dark demo themes. Imported authentication routes now redirect to the app host.
+
+- Owner steering: make this repository public and run GitHub checks. Public visibility was confirmed in GitHub settings. The earlier private-account blockers are historical; CI and enforced protection are being retried on the public repository.
+- A clean npm ci with normal lifecycle scripts passed (3746 installed packages). Windows hook shell quoting failed after installation; portable Node guards now enforce ruby-main/main restrictions and preserve the optional ggshield check.
