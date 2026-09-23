@@ -14,6 +14,20 @@ const preservedDeclarations = new Map([
   ]],
 ]);
 const preservedAlertSlots = ['seatLowPro', 'seatLowMax'];
+const preservedFiles = [
+  'front/styles/product-theme.css',
+  'front/public/static/fonts/Sohne-Regular.ttf',
+  'front/public/static/fonts/RubySerif.ttf',
+];
+const preservedMarkers = new Map([
+  ['front-spa/src/app/main.tsx', ['import "@ruby-ai/front/styles/product-theme.css";']],
+  ['front-spa/src/admin/main.tsx', ['import "@ruby-ai/front/styles/product-theme.css";']],
+  ['front/scripts/metronome_setup.ts', [
+    'default-low-seat-balance-8000-awu',
+    'default-low-seat-balance-1600-awu',
+    'await archiveReplacedDefaultAlerts();',
+  ]],
+]);
 
 function equalEntry(before, after) {
   return !!before && !!after && before.equals(after) && before.gitMode === after.gitMode;
@@ -31,9 +45,17 @@ export function assertRubyBoundaries(ruby, candidate) {
       throw new Error(`Ruby boundary changed: ${name}`);
     }
   }
-  const theme = 'front/styles/product-theme.css';
-  if (ruby.has(theme) && !equalEntry(ruby.get(theme), candidate.get(theme))) {
-    throw new Error(`Ruby boundary changed: ${theme}`);
+  for (const name of preservedFiles) {
+    if (ruby.has(name) && !equalEntry(ruby.get(name), candidate.get(name))) {
+      throw new Error(`Ruby boundary changed: ${name}`);
+    }
+  }
+  for (const [name, markers] of preservedMarkers) {
+    if (!ruby.has(name)) continue;
+    const text = candidate.get(name)?.toString('utf8') ?? '';
+    for (const marker of markers) {
+      if (!text.includes(marker)) throw new Error(`Ruby boundary changed: ${name} ${marker}`);
+    }
   }
   for (const [name, declarations] of preservedDeclarations) {
     if (!ruby.has(name)) continue;

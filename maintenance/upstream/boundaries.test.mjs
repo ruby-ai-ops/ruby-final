@@ -10,6 +10,8 @@ const entry = (value, mode = '100644') => {
 const source = new Map([
   ['marketing/page.tsx', entry('Ruby page')],
   ['front/styles/product-theme.css', entry('Ruby dark theme')],
+  ['front-spa/src/app/main.tsx', entry('import "@ruby-ai/front/styles/product-theme.css";')],
+  ['front-spa/src/admin/main.tsx', entry('import "@ruby-ai/front/styles/product-theme.css";')],
   ['front/lib/plans/pricing.ts', entry('export const CP_PRO_SEAT_COST_MONTHLY = 20;\nexport const CP_MAX_SEAT_COST_YEARLY = 32;')],
   ['front/lib/metronome/constants.ts', entry('export const FREE_SEAT_LIFETIME_AWU_CREDITS = 100;')],
   ['front/lib/metronome/alerts/default_alerts.ts', entry('seatLowPro: "default-low-seat-balance-100-awu",')],
@@ -20,6 +22,7 @@ test('preserves Ruby marketing, theme, pricing and alert values', () => {
   for (const [name, changed] of [
     ['marketing/page.tsx', 'upstream page'],
     ['front/styles/product-theme.css', 'upstream palette'],
+    ['front-spa/src/app/main.tsx', 'missing theme import'],
     ['front/lib/plans/pricing.ts', 'export const CP_PRO_SEAT_COST_MONTHLY = 29;\nexport const CP_MAX_SEAT_COST_YEARLY = 32;'],
     ['front/lib/metronome/constants.ts', 'export const FREE_SEAT_LIFETIME_AWU_CREDITS = 19;'],
     ['front/lib/metronome/alerts/default_alerts.ts', 'seatLowPro: "default-low-seat-balance-1600-awu",'],

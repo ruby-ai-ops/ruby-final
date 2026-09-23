@@ -6,3 +6,6 @@ The same source snapshot and versioned transformation rules MUST produce the sam
 
 @cc [owner:ruby-ai-ops,label:security] source-names-maintenance-only
 Original product names may appear in this maintenance directory for transformation and provenance, but MUST NOT be copied into Ruby application artifacts.
+
+@cc [owner:ruby-ai-ops,label:product;security] preserve-ruby-product-boundaries
+Upstream sync candidates MUST preserve every marketing tree entry, the Ruby app/admin theme and fonts, and the approved pricing, credits, and Metronome alert behavior. A violation MUST fail before a candidate branch is created.
