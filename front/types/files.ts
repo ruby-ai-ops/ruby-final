@@ -11,8 +11,17 @@ const uniq = <T>(arr: T[]): T[] => Array.from(new Set(arr));
 
 export const TABLE_PREFIX = "TABLE:";
 export const RUBY_FILE_CAN_WRITE_HEADER = "X-Ruby-File-Can-Write";
+export const RUBY_FILE_REVISION_HEADER = "X-Ruby-File-Revision";
+export const RUBY_IF_REVISION_MATCH_HEADER = "X-Ruby-If-Revision-Match";
 export const RUBY_FILE_ID_HEADER = "X-Ruby-File-Id";
 export const RUBY_FILE_CONTENT_TYPE_HEADER = "X-Ruby-File-Content-Type";
+
+/**
+ * @cc [owner:flvndvd,label:api;concurrency] file-revision-token
+ * File revisions MUST preserve the exact positive storage generation as a string,
+ * independently of HTTP ETags. Missing or invalid revisions MUST NOT enable Frame writes.
+ */
+export const FileRevisionSchema = z.string().regex(/^[1-9][0-9]*$/);
 
 export type FileStatus = "created" | "failed" | "ready";
 

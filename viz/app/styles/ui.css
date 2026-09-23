@@ -1,4 +1,5 @@
 @import "./ui-scoped.generated.css";
+@import "./document-theme.css";
 
 /* Put .viz-ui on RubyUI UI and its portal containers.
    Put data-viz-ui-slot on model visuals nested inside that UI. */

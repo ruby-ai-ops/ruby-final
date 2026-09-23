@@ -9,6 +9,8 @@ const entry = (value, mode = '100644') => {
 };
 const source = new Map([
   ['marketing/page.tsx', entry('Ruby page')],
+  ['front/lib/api/marketing/integrations.ts', entry('Ruby integration registry')],
+  ['front-api/routes/marketing/integrations.ts', entry('Ruby public route')],
   ['front/styles/product-theme.css', entry('Ruby dark theme')],
   ['front-spa/src/app/main.tsx', entry('import "@ruby-ai/front/styles/product-theme.css";')],
   ['front-spa/src/admin/main.tsx', entry('import "@ruby-ai/front/styles/product-theme.css";')],
@@ -21,6 +23,8 @@ test('preserves Ruby marketing, theme, pricing and alert values', () => {
   assert.doesNotThrow(() => assertRubyBoundaries(source, new Map(source)));
   for (const [name, changed] of [
     ['marketing/page.tsx', 'upstream page'],
+    ['front/lib/api/marketing/integrations.ts', 'upstream registry'],
+    ['front-api/routes/marketing/integrations.ts', 'upstream public route'],
     ['front/styles/product-theme.css', 'upstream palette'],
     ['front-spa/src/app/main.tsx', 'missing theme import'],
     ['front/lib/plans/pricing.ts', 'export const CP_PRO_SEAT_COST_MONTHLY = 29;\nexport const CP_MAX_SEAT_COST_YEARLY = 32;'],

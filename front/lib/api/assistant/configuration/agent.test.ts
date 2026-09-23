@@ -15,10 +15,12 @@ import {
 import { AgentResource } from "@app/lib/resources/agent_resource";
 import { AgentSuggestionResource } from "@app/lib/resources/agent_suggestion_resource";
 import { AgentUserRelationResource } from "@app/lib/resources/agent_user_relation_resource";
+import { DiscoveryItemResource } from "@app/lib/resources/discovery_item_resource";
 import { GroupPermissionResource } from "@app/lib/resources/group_permission_resource";
 import { GroupResource } from "@app/lib/resources/group_resource";
 import { MembershipResource } from "@app/lib/resources/membership_resource";
 import { GroupMembershipModel } from "@app/lib/resources/storage/models/group_memberships";
+import { GroupPinnedItemModel } from "@app/lib/resources/storage/models/group_pinned_items";
 import { generateRandomModelSId } from "@app/lib/resources/string_ids_server";
 import { TriggerResource } from "@app/lib/resources/trigger_resource";
 import { WakeUpResource } from "@app/lib/resources/wakeup_resource";
@@ -147,7 +149,8 @@ describe("getAgentConfigurations", () => {
       { where: { sId: agent.sId, workspaceId: workspace.id } }
     );
     const group = await GroupFactory.regularManual(workspace, "Agent editors");
-    const resource = AgentResource.fromAgentConfiguration(authenticator, agent);
+    const resource = await AgentResource.fetchById(authenticator, agent.sId);
+    assert(resource !== null);
     assert(resource.id !== null);
     await GroupPermissionResource.grant(authenticator, {
       group,
@@ -184,7 +187,8 @@ describe("getAgentConfigurations", () => {
       }
     );
     const group = await GroupFactory.regularManual(workspace, "Agent editors");
-    const resource = AgentResource.fromAgentConfiguration(authenticator, agent);
+    const resource = await AgentResource.fetchById(authenticator, agent.sId);
+    assert(resource !== null);
     assert(resource.id !== null);
     await GroupPermissionResource.grant(authenticator, {
       group,
@@ -227,7 +231,8 @@ describe("getAgentConfigurations", () => {
         requestedRole: "admin",
       });
     assert(impersonatedAuth);
-    const resource = AgentResource.fromAgentConfiguration(authenticator, agent);
+    const resource = await AgentResource.fetchById(authenticator, agent.sId);
+    assert(resource !== null);
     for (const auth of [adminAuth, impersonatedAuth]) {
       expect(auth.can("write", resource)).toBe(false);
       const configuration = await getAgentConfiguration(auth, {
@@ -296,7 +301,8 @@ async function hardDeleteAgentVersion(
   auth: Authenticator,
   version: LightAgentConfigurationType
 ): Promise<void> {
-  const agent = AgentResource.fromAgentConfiguration(auth, version);
+  const agent = await AgentResource.fetchById(auth, version.sId);
+  assert(agent !== null);
   const { agentDeleted } = await withTransaction((t) =>
     destroyAgentConfigurationRow(
       auth,
@@ -558,7 +564,7 @@ describe("stable agent identities", () => {
   });
 
   it("deletes the identity and grants only after its last version is deleted", async () => {
-    const { authenticator, workspace } = await createResourceTest({
+    const { authenticator, globalGroup, workspace } = await createResourceTest({
       role: "admin",
     });
     const firstVersion =
@@ -567,10 +573,11 @@ describe("stable agent identities", () => {
       authenticator,
       firstVersion.sId
     );
-    const agentResource = AgentResource.fromAgentConfiguration(
+    const agentResource = await AgentResource.fetchById(
       authenticator,
-      firstVersion
+      firstVersion.sId
     );
+    assert(agentResource !== null);
     if (agentResource.id === null) {
       throw new Error("Agent identity was not created");
     }
@@ -586,6 +593,14 @@ describe("stable agent identities", () => {
     if (!grantGroup) {
       throw new Error("Agent editor grant was not created");
     }
+    const replaceResult = await DiscoveryItemResource.setPinnedForGroup(
+      authenticator,
+      {
+        groupModelId: globalGroup.id,
+        item: { type: "agent", itemId: firstVersion.sId, position: 0 },
+      }
+    );
+    expect(replaceResult.isOk()).toBe(true);
 
     await hardDeleteAgentVersion(authenticator, secondVersion);
     expect(
@@ -598,6 +613,15 @@ describe("stable agent identities", () => {
         grantGroup.id,
       ])
     ).toHaveLength(1);
+    expect(
+      await GroupPinnedItemModel.count({
+        where: {
+          workspaceId: workspace.id,
+          type: "agent",
+          itemId: firstVersion.sId,
+        },
+      })
+    ).toBe(1);
 
     await hardDeleteAgentVersion(authenticator, firstVersion);
     expect(
@@ -610,6 +634,15 @@ describe("stable agent identities", () => {
         grantGroup.id,
       ])
     ).toHaveLength(0);
+    expect(
+      await GroupPinnedItemModel.count({
+        where: {
+          workspaceId: workspace.id,
+          type: "agent",
+          itemId: firstVersion.sId,
+        },
+      })
+    ).toBe(0);
   });
 });
 
@@ -1141,10 +1174,11 @@ describe("create agent capability", () => {
     // No capability grant for this user; only editing rights on the existing agent matter here.
     // Grant the agent's `editor` role (read + write + admin) so the user can read the agent — a
     // prerequisite for saving it — and is authorized to edit it without the create capability.
-    const editResource = AgentResource.fromAgentConfiguration(
+    const editResource = await AgentResource.fetchById(
       adminAuth,
-      existingAgent
+      existingAgent.sId
     );
+    assert(editResource !== null);
     const grantRes = await GroupPermissionResource.grantToUser(adminAuth, {
       user: user.toJSON(),
       resourceType: "agent",
@@ -1212,16 +1246,17 @@ describe("create agent capability", () => {
 
 describe("AgentResource.archive and AgentResource.restore", () => {
   it("keeps editor grants active while archiving and restoring", async () => {
-    const { authenticator, workspace } = await createResourceTest({
+    const { authenticator, globalGroup, workspace } = await createResourceTest({
       role: "admin",
     });
 
     const agent =
       await AgentConfigurationFactory.createTestAgent(authenticator);
-    const agentResource = AgentResource.fromAgentConfiguration(
+    const agentResource = await AgentResource.fetchById(
       authenticator,
-      agent
+      agent.sId
     );
+    assert(agentResource !== null);
     if (agentResource.id === null) {
       throw new Error("Agent identity was not created");
     }
@@ -1249,11 +1284,23 @@ describe("AgentResource.archive and AgentResource.restore", () => {
       true
     );
 
+    const replaceResult = await DiscoveryItemResource.setPinnedForGroup(
+      authenticator,
+      {
+        groupModelId: globalGroup.id,
+        item: { type: "agent", itemId: agent.sId, position: 0 },
+      }
+    );
+    expect(replaceResult.isOk()).toBe(true);
+
     const archived = await (await AgentResource.fetchById(
       authenticator,
       agent.sId
     ))!.archive(authenticator);
     expect(archived).toEqual(new Ok(true));
+    expect(
+      await DiscoveryItemResource.listPinnedForAuth(authenticator)
+    ).toHaveLength(0);
 
     const membershipsAfterArchive = await GroupMembershipModel.findAll({
       where: {
@@ -1460,10 +1507,11 @@ describe("AgentResource.delete scoped-resource cleanup", () => {
       reason: "Daily wake-up",
     });
 
-    const favoriteResource = AgentResource.fromAgentConfiguration(
+    const favoriteResource = await AgentResource.fetchById(
       authenticator,
-      agent
+      agent.sId
     );
+    assert(favoriteResource !== null);
     const favoriteResult = await favoriteResource.setUserFavorite(
       authenticator,
       true
@@ -2000,7 +2048,8 @@ it("revokes grant-only editors when saving the complete editor set", async () =>
   const agent = await AgentConfigurationFactory.createTestAgent(auth);
   const editor = await UserFactory.basic();
   await MembershipFactory.associate(workspace, editor, { role: "user" });
-  const resource = AgentResource.fromAgentConfiguration(auth, agent);
+  const resource = await AgentResource.fetchById(auth, agent.sId);
+  assert(resource !== null);
   assert(resource.id !== null);
   assert(
     (

@@ -16,6 +16,8 @@ cd "$RUBY_REPO_ROOT"
 
 # Force dependents to wait for a fresh sdks-js build.
 rm -rf sdks/js/dist
+# Same for ui. Its dist is a volume mount, so empty it rather than removing it.
+mkdir -p ui/dist && find ui/dist -mindepth 1 -delete
 
 export RUBY_USE_START_MPROCS=1
 export RUBY_IN_CONTAINER="${RUBY_IN_CONTAINER:-1}"

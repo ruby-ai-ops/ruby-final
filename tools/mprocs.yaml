@@ -126,7 +126,12 @@ procs:
 
   viz:
     cwd: "<CONFIG_DIR>/../viz"
+    env:
+      READY_FILE: "../ui/dist/cjs/index.js"
     shell: |
+      echo "Waiting for ui to compile..."
+      echo "Expecting file: $READY_FILE"
+      while [ ! -f "$READY_FILE" ]; do sleep 1; done
       npm run dev
     autostart: true
 

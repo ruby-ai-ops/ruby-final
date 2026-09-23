@@ -108,6 +108,7 @@ export const getConfig = async ({
         ),
         "@app/lib/platform": path.resolve(__dirname, "../../shared/platform"),
         "@app": path.resolve(__dirname, "../../../front"),
+        jsdom: false,
         redis: false,
       },
       fallback: {
