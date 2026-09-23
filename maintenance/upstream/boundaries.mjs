@@ -1,3 +1,5 @@
+import { marketingOwnedPath } from './rebrand.mjs';
+
 const preservedDeclarations = new Map([
   ['front/lib/plans/pricing.ts', [
     'CP_ENTERPRISE_BASIS',
@@ -41,7 +43,7 @@ function assignment(bytes, name) {
 /** Protects Ruby-owned product values while permitting unrelated upstream edits. */
 export function assertRubyBoundaries(ruby, candidate) {
   for (const name of new Set([...ruby.keys(), ...candidate.keys()])) {
-    if (name.startsWith('marketing/') && !equalEntry(ruby.get(name), candidate.get(name))) {
+    if (marketingOwnedPath(name) && !equalEntry(ruby.get(name), candidate.get(name))) {
       throw new Error(`Ruby boundary changed: ${name}`);
     }
   }

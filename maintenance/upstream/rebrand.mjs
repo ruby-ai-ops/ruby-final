@@ -53,9 +53,11 @@ export function transformText(text) {
 export const transformPath = (name) => transformText(name.replace(/^front\/poke(?=\/|$)/, 'front/admin-app'));
 
 export const isText = bytes => !bytes.includes(0) && Buffer.from(bytes.toString('utf8')).equals(bytes);
+export const marketingOwnedPath = (name) => name.startsWith('marketing/') ||
+  name.startsWith('front/lib/api/marketing/') || name.startsWith('front-api/routes/marketing/');
 
 export function isExcluded(name) {
-  return removedFiles.has(name) || name.startsWith('marketing/') || maintenancePath(name) ||
+  return removedFiles.has(name) || marketingOwnedPath(name) || maintenancePath(name) ||
     name.startsWith('front/public/static/landing/ebook/') ||
     (name.startsWith('front/public/static/') && /\.(?:pdf|epub|mobi|azw3?)$/i.test(name));
 }
@@ -91,14 +93,14 @@ export function rebrand(root) {
   const names = ownedFiles(root);
   const destinations = new Set();
   for (const name of names) {
-    if (removedFiles.has(name) || name.startsWith('marketing/')) continue;
+    if (removedFiles.has(name) || marketingOwnedPath(name)) continue;
     const destination = transformPath(name);
     if (destinations.has(destination.toLowerCase())) throw new Error(`Path collision: ${name} -> ${destination}`);
     destinations.add(destination.toLowerCase());
   }
   let changed = 0;
   for (const name of names) {
-    if (name.startsWith('marketing/')) continue;
+    if (marketingOwnedPath(name)) continue;
     const source = path.join(root, name);
     if (name.startsWith('marketing/demo-workspace/upstream/') || name.startsWith('marketing/demo-workspace/embed/bundled-assets/') || name.startsWith('marketing/public/static/workspace-demo/bundled/')) continue;
     if (removedFiles.has(name)) { fs.unlinkSync(source); changed++; continue; }

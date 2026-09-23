@@ -36,6 +36,8 @@ test('avoids merging the admin application into existing administration scripts'
 test('filters marketing and promotional documents but retains document processing fixtures', () => {
   assert.equal(isExcluded('marketing/pages/index.tsx'), true);
   assert.equal(isExcluded('marketing/assets/gated/guide.pdf'), true);
+  assert.equal(isExcluded('front/lib/api/marketing/integrations.ts'), true);
+  assert.equal(isExcluded('front-api/routes/marketing/integrations.ts'), true);
   assert.equal(isExcluded('front/public/static/landing/ebook/cover.svg'), true);
   assert.equal(isExcluded('front/public/static/guides/intro.pdf'), true);
   assert.equal(isExcluded('front/public/static/downloads/guide.epub'), true);
@@ -56,10 +58,16 @@ test('applying branding leaves all marketing bytes untouched', t => {
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   execFileSync('git', ['init', '-q'], { cwd: root });
   fs.mkdirSync(path.join(root, 'marketing'), { recursive: true });
+  fs.mkdirSync(path.join(root, 'front/lib/api/marketing'), { recursive: true });
+  fs.mkdirSync(path.join(root, 'front-api/routes/marketing'), { recursive: true });
   fs.writeFileSync(path.join(root, 'marketing', 'page.tsx'), 'Dust marketing reference');
+  fs.writeFileSync(path.join(root, 'front/lib/api/marketing/integrations.ts'), 'Dust public catalog');
+  fs.writeFileSync(path.join(root, 'front-api/routes/marketing/integrations.ts'), 'Dust public route');
   fs.writeFileSync(path.join(root, 'app.ts'), 'Dust application reference');
   execFileSync('git', ['add', '.'], { cwd: root });
   assert.equal(rebrand(root), 1);
   assert.equal(fs.readFileSync(path.join(root, 'marketing', 'page.tsx'), 'utf8'), 'Dust marketing reference');
+  assert.equal(fs.readFileSync(path.join(root, 'front/lib/api/marketing/integrations.ts'), 'utf8'), 'Dust public catalog');
+  assert.equal(fs.readFileSync(path.join(root, 'front-api/routes/marketing/integrations.ts'), 'utf8'), 'Dust public route');
   assert.equal(fs.readFileSync(path.join(root, 'app.ts'), 'utf8'), 'Ruby application reference');
 });
