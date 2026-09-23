@@ -10,14 +10,14 @@
     <!-- PWA: web app manifest enables installation and standalone (no browser chrome) launch. -->
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#FBFAF9" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#191715" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#181818" media="(prefers-color-scheme: dark)" />
 
     <!-- PWA: iOS Safari standalone support ("Add to Home Screen"). -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Ruby" />
     <link rel="apple-touch-icon" href="/static/AppIcon_180.png" />
-    <link rel="preload" href="/static/fonts/GeistVariable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/static/fonts/Sohne-Regular.ttf" as="font" type="font/ttf" crossorigin />
     <!-- Datadog RUM (Real User Monitoring) -->
     <script>
       (function (h, o, u, n, d) {
@@ -125,7 +125,10 @@
         stroke: #eeeeec;
       }
       .dark #loading-spinner .loading-spinner-track {
-        stroke: #44403b;
+        stroke: #383838;
+      }
+      .dark #loading-spinner .loading-spinner-arc {
+        stroke: #8e8e8d;
       }
       #loading-spinner .loading-spinner-arc {
         stroke: #79716b;
@@ -161,11 +164,11 @@
         }
       }
       .dark #loading {
-        background-color: rgb(25, 23, 21);
+        background-color: #181818;
       }
       .dark #loading-main {
-        background-color: rgb(31, 28, 25);
-        border-color: rgb(38, 34, 33);
+        background-color: #1e1e1e;
+        border-color: #282828;
       }
       
 

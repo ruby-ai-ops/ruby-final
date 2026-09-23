@@ -2,6 +2,7 @@
 import "@ruby-ai/front/styles/global.css";
 // Unified Tailwind build (ui + front + front-spa sources in one pass)
 import "@spa/index.css";
+import "@ruby-ai/front/styles/product-theme.css";
 
 import App from "@spa/app/App";
 import { initDatadogForSpa, initDatadogRUM } from "@spa/lib/initDatadog";
