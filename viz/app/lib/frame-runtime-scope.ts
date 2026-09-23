@@ -7,6 +7,8 @@ import {
 import type { FrameRuntimeImportName } from "@viz/app/lib/frame-runtime-imports";
 import type { VisualizationDataAPI } from "@viz/app/lib/visualization-api";
 import type { WriteFileParams } from "@viz/app/types";
+import * as rubyDocumentV1 from "@viz/components/ruby/document/v1";
+import * as rubyFrame from "@viz/components/ruby/frame";
 import * as rubySlideshowV1 from "@viz/components/ruby/slideshow/v1";
 import * as rubySlideshowV2 from "@viz/components/ruby/slideshow/v2";
 import * as shadcn from "@viz/components/ui";
@@ -45,6 +47,8 @@ export function createFrameRuntimeImports({
     "@viz/lib/utils": utils,
     "lucide-react": lucide,
     "motion/react": motion,
+    "@ruby-ai/document/v1": rubyDocumentV1,
+    "@ruby-ai/frame": rubyFrame,
     "@ruby-ai/slideshow/v1": rubySlideshowV1,
     "@ruby-ai/slideshow/v2": rubySlideshowV2,
     "@ruby-ai/react-hooks": {

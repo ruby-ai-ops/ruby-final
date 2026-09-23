@@ -35,7 +35,7 @@ function writeSnapshot(root, entries) {
 }
 
 /** Merges in a disposable repository; callers receive no candidate on conflict. */
-export function mergeSnapshots(root, base, ruby, incoming) {
+export function mergeSnapshots(root, base, ruby, incoming, { resolveConflicts } = {}) {
   fs.mkdirSync(root, { recursive: true });
   git(root, ['init', '--quiet']);
   git(root, ['config', 'user.name', 'Ruby Upstream Sync']);
@@ -57,7 +57,12 @@ export function mergeSnapshots(root, base, ruby, incoming) {
   const merged = spawnSync('git', ['merge', '--no-commit', '--no-ff', incomingCommit], { cwd: root, encoding: 'utf8' });
   if (merged.status !== 0) {
     const conflicts = git(root, ['diff', '--name-only', '--diff-filter=U']);
-    throw new Error(`Upstream conflict; production and cursor unchanged.\n${conflicts || merged.stderr}`);
+    if (!resolveConflicts || !conflicts) {
+      throw new Error(`Upstream conflict; production and cursor unchanged.\n${conflicts || merged.stderr}`);
+    }
+    resolveConflicts(conflicts.split('\n'), root);
+    const remaining = git(root, ['diff', '--name-only', '--diff-filter=U']);
+    if (remaining) throw new Error(`Unresolved upstream conflict; production and cursor unchanged.\n${remaining}`);
   }
   return readSnapshot(root);
 }

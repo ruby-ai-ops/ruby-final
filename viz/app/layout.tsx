@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 
 import "./styles/globals.css";
+import "./styles/ui.css";
 
 const geist = localFont({
   src: [
