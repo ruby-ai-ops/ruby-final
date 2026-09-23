@@ -7,23 +7,14 @@ import {
 import { canAdminSeePrivateEntities } from "@app/lib/api/assistant/configuration/private_entities";
 import { getGlobalAgents } from "@app/lib/api/assistant/global_agents/global_agents";
 import type { Authenticator } from "@app/lib/auth";
-import { getModelsForAuth } from "@app/lib/model_tiers/enabled_models";
 import {
   AgentConfigurationModel,
   AgentModel,
 } from "@app/lib/models/agent/agent";
-import { AgentSuggestionModel } from "@app/lib/models/agent/agent_suggestion";
 import { AgentResource } from "@app/lib/resources/agent_resource";
-import { invalidateAgentResourceCaches } from "@app/lib/resources/agent_resource_cache";
-import { AgentUserRelationResource } from "@app/lib/resources/agent_user_relation_resource";
 import { DiscoveryItemResource } from "@app/lib/resources/discovery_item_resource";
-import { GroupPermissionResource } from "@app/lib/resources/group_permission_resource";
 import { canReadRequestedSpaces } from "@app/lib/resources/permission_utils";
 import { SpaceResource } from "@app/lib/resources/space_resource";
-import { GroupMembershipModel } from "@app/lib/resources/storage/models/group_memberships";
-import { GroupModel } from "@app/lib/resources/storage/models/groups";
-import { generateRandomModelSId } from "@app/lib/resources/string_ids_server";
-import { withTransaction } from "@app/lib/utils/sql_utils";
 import { tracer } from "@app/logger/tracer";
 import { launchDeleteAgentSearchWorkflow } from "@app/temporal/es_indexation/client";
 import type {
@@ -44,84 +35,6 @@ import { Err, Ok } from "@app/types/shared/result";
 import { removeNulls } from "@app/types/shared/utils/general";
 import type { Transaction } from "sequelize";
 import { Op, QueryTypes } from "sequelize";
-
-// Placeholder constants for pending agents
-const PENDING_AGENT_PLACEHOLDER_NAME = "__PENDING__";
-const PENDING_AGENT_PLACEHOLDER_DESCRIPTION = "";
-const PENDING_AGENT_PLACEHOLDER_PICTURE_URL =
-  "https://ruby.ad/static/systemavatar/ruby_avatar_full.png";
-
-/**
- * Creates a pending agent configuration.
- * Pending agents are placeholders created when the agent builder is opened for a new agent,
- * before it is saved for the first time. This allows capturing the sId early.
- */
-export async function createPendingAgentConfiguration(
-  auth: Authenticator
-): Promise<Result<{ sId: string }, Error>> {
-  const canCreate = auth.hasWorkspacePermission("create", "agent");
-  if (!canCreate) {
-    return new Err(new Error("Creating agents is restricted."));
-  }
-
-  const owner = auth.getNonNullableWorkspace();
-  const user = auth.getNonNullableUser();
-
-  const sId = generateRandomModelSId();
-  const { defaultModel } = await getModelsForAuth(auth);
-
-  await withTransaction(async (t) => {
-    const agentIdentity = await AgentModel.create(
-      {
-        sId,
-        workspaceId: owner.id,
-        name: PENDING_AGENT_PLACEHOLDER_NAME,
-        status: "pending",
-        scope: "hidden",
-        reinforcement: "auto",
-        templateId: null,
-      },
-      { transaction: t }
-    );
-    const agent = await AgentConfigurationModel.create(
-      {
-        sId,
-        agentId: agentIdentity.id,
-        version: 0,
-        status: "pending",
-        scope: "hidden",
-        name: PENDING_AGENT_PLACEHOLDER_NAME,
-        description: PENDING_AGENT_PLACEHOLDER_DESCRIPTION,
-        instructions: null,
-        providerId: defaultModel.providerId,
-        modelId: defaultModel.modelId,
-        temperature: 0.7,
-        reasoningEffort: defaultModel.defaultReasoningEffort,
-        maxStepsPerRun: 8,
-        reinforcement: "auto",
-        pictureUrl: PENDING_AGENT_PLACEHOLDER_PICTURE_URL,
-        workspaceId: owner.id,
-        authorId: user.id,
-        templateId: null,
-        requestedSpaceIds: [],
-      },
-      { transaction: t }
-    );
-
-    await AgentResource.fromAgentConfigurationModel(auth, agent).grantEditors(
-      auth,
-      {
-        editors: [user.toJSON()],
-        transaction: t,
-      }
-    );
-  });
-
-  // The pending agent's editor grant was created after this authenticator's permission snapshot.
-  await auth.refresh();
-
-  return new Ok({ sId });
-}
 
 export async function getAgentConfigurationsWithVersion<
   V extends AgentFetchVariant,
@@ -605,75 +518,6 @@ export async function syncAgentSearchAfterRowDestroyed(
   return launchDeleteAgentSearchWorkflow({
     workspaceId: auth.getNonNullableWorkspace().sId,
     agentId: agent.sId,
-  });
-}
-
-/**
- * Batch-deletes pending agent configurations and their grant groups.
- */
-export async function batchHardDeletePendingAgentConfigurations(
-  auth: Authenticator,
-  agents: AgentConfigurationModel[]
-) {
-  const workspaceId = auth.getNonNullableWorkspace().id;
-  const agentConfigurationModelIds = agents.map((agent) => agent.id);
-  const agentModelIds = [...new Set(agents.map((agent) => agent.agentId))];
-
-  await withTransaction(async (t) => {
-    const grantGroups =
-      await GroupPermissionResource.listRegularAutoGroupsForResources(auth, {
-        resourceType: "agent",
-        resourceIds: agentModelIds,
-        transaction: t,
-      });
-    await GroupPermissionResource.deleteAllForResources(auth, {
-      resourceType: "agent",
-      resourceIds: agentModelIds,
-      transaction: t,
-    });
-
-    const groupModelIds = grantGroups.map((group) => group.id);
-    if (groupModelIds.length > 0) {
-      await GroupMembershipModel.destroy({
-        where: { groupId: groupModelIds, workspaceId },
-        transaction: t,
-      });
-
-      await GroupModel.destroy({
-        where: { id: groupModelIds, workspaceId },
-        transaction: t,
-      });
-    }
-
-    // Delete agent suggestions before agents (FK constraint)
-    await AgentSuggestionModel.destroy({
-      where: { agentConfigurationId: agentConfigurationModelIds, workspaceId },
-      transaction: t,
-    });
-
-    await AgentUserRelationResource.deleteForAgents(
-      agents.map((a) => a.sId),
-      { workspaceId, transaction: t }
-    );
-
-    await AgentConfigurationModel.destroy({
-      where: { id: agentConfigurationModelIds, workspaceId },
-      transaction: t,
-    });
-
-    // Pending configurations are the only version of their logical agent. The FK protects this
-    // invariant by rolling the transaction back if another configuration still uses an identity.
-    await AgentModel.destroy({
-      where: { id: agentModelIds, workspaceId },
-      transaction: t,
-    });
-
-    // Drop the deleted agents' cached entries once the deletion commits.
-    await invalidateAgentResourceCaches(
-      workspaceId,
-      agents.map((agent) => agent.sId),
-      t
-    );
   });
 }
 
