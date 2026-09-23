@@ -47,6 +47,17 @@ const config = {
   },
   async redirects() {
     return [
+      // Imported marketing links must enter authentication on the application host.
+      {
+        source: "/api/workos/:path*",
+        destination: `${process.env.NEXT_PUBLIC_RUBY_API_URL || "https://app.ruby.ad"}/api/workos/:path*`,
+        permanent: false,
+      },
+      {
+        source: "/api/login",
+        destination: `${process.env.NEXT_PUBLIC_RUBY_API_URL || "https://app.ruby.ad"}/api/login`,
+        permanent: false,
+      },
       {
         source:
           "/blog/how-patch-empowered-70-of-its-team-to-use-ai-agents-weekly",
