@@ -3,6 +3,7 @@ import test from 'node:test';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { mergeSnapshots } from './merge.mjs';
 
 const snapshot = (object) => new Map(Object.entries(object).map(([name, text]) => [name, Buffer.from(text)]));
@@ -19,6 +20,20 @@ test('upstream edits merge while Ruby marketing and unrelated customization surv
 });
 test('conflicting edits fail without returning a candidate', () => {
   assert.throws(() => merge({'app.ts':'base\n'}, {'app.ts':'Ruby edit\n'}, {'app.ts':'upstream edit\n'}), /conflict/i);
+});
+test('explicit review can resolve a named conflict without changing the automatic stop', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ruby-merge-review-'));
+  try {
+    const result = mergeSnapshots(root, snapshot({'app.ts':'base\n'}), snapshot({'app.ts':'Ruby edit\n'}), snapshot({'app.ts':'upstream edit\n'}), {
+      resolveConflicts(conflicts, tempRoot) {
+        assert.deepEqual(conflicts, ['app.ts']);
+        assert.equal(tempRoot, root);
+        fs.writeFileSync(path.join(tempRoot, 'app.ts'), 'Ruby edit + upstream edit\n');
+        execFileSync('git', ['add', 'app.ts'], {cwd: tempRoot});
+      },
+    });
+    assert.equal(result.get('app.ts').toString(), 'Ruby edit + upstream edit\n');
+  } finally { fs.rmSync(root, {recursive: true, force: true}); }
 });
 test('upstream deletion and rename remove old paths', () => {
   const result = merge({'old.ts':'same\n', 'deleted.ts':'bye\n'}, {'old.ts':'same\n', 'deleted.ts':'bye\n'}, {'new.ts':'same\n'});
