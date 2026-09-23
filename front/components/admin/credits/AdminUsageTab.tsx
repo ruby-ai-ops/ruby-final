@@ -1,22 +1,22 @@
+import { useAdminAwuPoolCurrentCycle } from "@app/admin-app/swr/credits";
 import { AdminWorkspaceUsageChart } from "@app/components/admin/analytics/AdminWorkspaceUsageChart";
-import { AlertChip } from "@app/components/admin/credits/AlertChip";
-import { CreditStateLogsLink } from "@app/components/admin/credits/CreditStateLogsLink";
 import { AdminApiKeysUsageTable } from "@app/components/admin/credits/AdminApiKeysUsageTable";
 import { AdminAwuUsageFromAnalyticsChart } from "@app/components/admin/credits/AdminAwuUsageFromAnalyticsChart";
 import { AdminMembersUsageTable } from "@app/components/admin/credits/AdminMembersUsageTable";
 import { AdminTopUpsHistoryTable } from "@app/components/admin/credits/AdminTopUpsHistoryTable";
+import { AlertChip } from "@app/components/admin/credits/AlertChip";
+import { CreditStateLogsLink } from "@app/components/admin/credits/CreditStateLogsLink";
 import { RateLimiterStateChip } from "@app/components/admin/credits/RateLimiterStateChip";
 import { ReconcileCreditStateButton } from "@app/components/admin/credits/ReconcileCreditStateButton";
-import type { RateLimiterState } from "@app/lib/api/credits/members_usage";
 import type {
   AdminCreditUsageConfig,
   AdminProgrammaticAlerts,
   AdminStripeSubscriptionWire,
 } from "@app/lib/api/admin/workspace_info";
+import type { RateLimiterState } from "@app/lib/api/credits/members_usage";
 import { formatCredits, formatCreditsPrecise } from "@app/lib/client/credits";
 import type { DefaultMetronomeAlerts } from "@app/lib/metronome/alerts/default_alerts";
 import type { MetronomeAlertRef } from "@app/lib/metronome/alerts/types";
-import { useAdminAwuPoolCurrentCycle } from "@app/admin-app/swr/credits";
 import type {
   WorkspacePoolCreditState,
   WorkspaceProgrammaticCreditState,
@@ -237,7 +237,9 @@ interface AdminDefaultAlertsCardProps {
 // Account-wide default alerts (created by the Metronome setup script, shared
 // across all customers). Hidden entirely when none resolve (setup not run in
 // this environment).
-function AdminDefaultAlertsCard({ defaultAlerts }: AdminDefaultAlertsCardProps) {
+function AdminDefaultAlertsCard({
+  defaultAlerts,
+}: AdminDefaultAlertsCardProps) {
   const hasAny = Object.values(defaultAlerts).some((alert) => alert !== null);
   if (!hasAny) {
     return null;
@@ -257,11 +259,8 @@ function AdminDefaultAlertsCard({ defaultAlerts }: AdminDefaultAlertsCardProps) 
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">Seat balance</span>
           <AlertChip alert={defaultAlerts.seatEmpty} label="empty (0)" />
-          <AlertChip alert={defaultAlerts.seatLowMax} label="low · max (8k)" />
-          <AlertChip
-            alert={defaultAlerts.seatLowPro}
-            label="low · pro (1.6k)"
-          />
+          <AlertChip alert={defaultAlerts.seatLowMax} label="low · max (500)" />
+          <AlertChip alert={defaultAlerts.seatLowPro} label="low · pro (100)" />
         </div>
       </div>
     </div>

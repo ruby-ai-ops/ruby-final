@@ -1,5 +1,4 @@
 import { resolveFreeSeatAllowance } from "@app/lib/api/users/spend_limit";
-import { FREE_SEAT_LIFETIME_AWU_CREDITS } from "@app/lib/metronome/constants";
 import type { UserResource } from "@app/lib/resources/user_resource";
 import logger from "@app/logger/logger";
 import type { LightWorkspaceType } from "@app/types/user";
@@ -29,9 +28,7 @@ describe("resolveFreeSeatAllowance", () => {
     const warn = vi.spyOn(logger, "warn");
     const error = vi.spyOn(logger, "error");
 
-    expect(resolveFreeSeatAllowance({ kind: "no-grant" }, opts)).toBe(
-      FREE_SEAT_LIFETIME_AWU_CREDITS
-    );
+    expect(resolveFreeSeatAllowance({ kind: "no-grant" }, opts)).toBe(100);
     expect(warn).toHaveBeenCalledTimes(1);
     expect(error).not.toHaveBeenCalled();
   });

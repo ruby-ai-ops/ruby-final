@@ -1,4 +1,5 @@
 import {
+  getAwuAllocationInfoForSeatType,
   getDefaultSeatTypeForContract,
   getSeatSubscriptionsFromContract,
   resolveRequestedSeatTypeForContract,
@@ -7,6 +8,16 @@ import type { SeatLimit } from "@app/lib/resources/workspace_seat_limit_resource
 import { buildCachedContractMock } from "@app/tests/utils/metronome_contracts";
 import type { MembershipSeatType } from "@app/types/memberships";
 import { describe, expect, it } from "vitest";
+
+it("gives Free seats 100 lifetime credits", () => {
+  const { contract, productSeatTypes } = buildCachedContractMock({
+    seats: [{ seatType: "free", entitled: true }],
+  });
+
+  expect(
+    getAwuAllocationInfoForSeatType(contract, "free", productSeatTypes)
+  ).toEqual({ credits: 100, period: "lifetime" });
+});
 
 describe("getDefaultSeatTypeForContract — entitlement", () => {
   const { contract, productSeatTypes } = buildCachedContractMock({

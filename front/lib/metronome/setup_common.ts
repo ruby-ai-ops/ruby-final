@@ -330,7 +330,7 @@ export const PRODUCTS: ProductDef[] = [
   },
   // Pro Seat / Max Seat — SUBSCRIPTION products for the new Business / Enterprise
   // seat-based plans. Used as SEAT_BASED subscriptions in packages with per-seat
-  // INDIVIDUAL recurring credits (Pro: 8000 AWU/mo, Max: 40000 AWU/mo).
+  // INDIVIDUAL recurring credits (Pro: 500 AWU/mo, Max: 2500 AWU/mo).
   {
     name: PRO_SEAT_PRODUCT_NAME,
     type: "SUBSCRIPTION",

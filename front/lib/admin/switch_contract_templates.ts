@@ -4,8 +4,8 @@ import {
 } from "@app/lib/plans/plan_codes";
 import {
   CP_ENTERPRISE_BASIS,
-  CP_MAX_SEAT_COST_YEARLY,
-  CP_PRO_SEAT_COST_YEARLY,
+  CP_ENTERPRISE_MAX_SEAT_COST_YEARLY_DOLLARS,
+  CP_ENTERPRISE_PRO_SEAT_COST_YEARLY_DOLLARS,
 } from "@app/lib/plans/pricing";
 import type { MembershipSeatType } from "@app/types/memberships";
 
@@ -157,12 +157,12 @@ export const SWITCH_CONTRACT_TEMPLATES: SwitchContractTemplate[] = [
       max_yearly: { selected: false },
       pro: {
         selected: true,
-        rate: CP_ENTERPRISE_BASIS + CP_PRO_SEAT_COST_YEARLY,
+        rate: CP_ENTERPRISE_BASIS + CP_ENTERPRISE_PRO_SEAT_COST_YEARLY_DOLLARS,
         paymentSchedule: { frequency: "monthly", periods: 12 },
       },
       max: {
         selected: true,
-        rate: CP_ENTERPRISE_BASIS + CP_MAX_SEAT_COST_YEARLY,
+        rate: CP_ENTERPRISE_BASIS + CP_ENTERPRISE_MAX_SEAT_COST_YEARLY_DOLLARS,
         paymentSchedule: { frequency: "monthly", periods: 12 },
       },
     },
