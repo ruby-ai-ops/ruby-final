@@ -1,0 +1,185 @@
+/* Ruby app and admin only. Marketing and the shared UI theme do not import this file. */
+@font-face {
+  font-family: "Sohne";
+  src: url("/static/fonts/Sohne-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "RubySerif";
+  src: url("/static/fonts/RubySerif.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-sans: Sohne, sans-serif;
+}
+
+:root
+  :is(
+    h1, h2, h3, h4, h5, h6,
+    .heading-base, .heading-lg, .heading-xl, .heading-2xl, .heading-3xl,
+    .heading-4xl, .heading-5xl, .heading-6xl, .heading-7xl, .heading-8xl,
+    .heading-9xl
+  ):not(.font-conversation *):not(.font-mono):not([class*="heading-mono"]) {
+  font-family: RubySerif, Georgia, serif;
+  font-weight: 300;
+}
+
+:root.dark {
+  /* Neutral primitives used by existing dark:stone-* utilities. */
+  --color-stone-50: #f9f9f7;
+  --color-stone-100: #f4f4f2;
+  --color-stone-150: #d5d5d3;
+  --color-stone-200: #f4f4f2;
+  --color-stone-300: #c0c0be;
+  --color-stone-400: #c0c0be;
+  --color-stone-500: #8e8e8d;
+  --color-stone-600: #6e6e6d;
+  --color-stone-700: #383838;
+  --color-stone-725: #424242;
+  --color-stone-750: #565656;
+  --color-stone-775: #2e2e2e;
+  --color-stone-800: #282828;
+  --color-stone-850: #1e1e1e;
+  --color-stone-900: #282828;
+  --color-stone-950: #181818;
+
+  /* App, canvas, and raised surfaces. */
+  --color-app-background: #181818;
+  --color-background: #1e1e1e;
+  --color-panel-background: #1e1e1e;
+  --color-overlay-background: #282828;
+  --color-muted-background: #282828;
+  --color-muted: #282828;
+  --color-modal-background: #2e2e2e;
+  --color-input-bar-background: #383838;
+  --color-sidebar-primary: #2e2e2e;
+
+  /* Text and boundaries. */
+  --color-foreground: #f4f4f2;
+  --color-muted-foreground: #c0c0be;
+  --color-faint: #a4a4a3;
+  --color-border: #282828;
+  --color-separator: #282828;
+  --color-border-dark: #383838;
+  --color-border-darker: #383838;
+  --color-border-form: #383838;
+  --color-border-form-active: #565656;
+  --color-border-focus: oklch(72.15% 0.1521 248.14);
+  --color-ring: oklch(65.39% 0.1893 252.74);
+
+  /* Overlays stay translucent over each surface. */
+  --color-hover: rgba(255, 255, 255, 0.04);
+  --color-selected: rgba(255, 255, 255, 0.095);
+  --color-loading: rgba(255, 255, 255, 0.08);
+}
+
+/* These existing classes bypass the semantic tokens above. */
+:root.dark [class~="bg-input-bar-background"],
+:root.dark [class~="bg-input-bar-background"]:has(.tiptap:focus) {
+  background-color: #383838;
+}
+
+:root.dark [class~="bg-muted-background/90"] {
+  background-color: #383838;
+}
+
+:root.dark [class~="dark:bg-stone-725"] {
+  background-color: #424242;
+  border-color: #5a5a5a;
+}
+
+:root.dark [class~="dark:bg-stone-725"]:hover:not(:disabled):not([aria-disabled="true"]) {
+  background-color: #4a4a4a;
+}
+
+:root.dark [class~="dark:from-stone-50"] {
+  background-image: linear-gradient(to bottom, #f9f9f7, #d5d5d3);
+  color: #181818;
+}
+
+:root.dark :is(button, a)[class~="bg-primary-800"][class~="text-primary-50"]:not(:disabled):not([aria-disabled="true"]) {
+  background-image: linear-gradient(to bottom, #f9f9f7, #d5d5d3);
+  color: #181818;
+}
+
+:root.dark :is(button, a)[class~="bg-primary-800"][class~="text-primary-50"]:hover:not(:disabled),
+:root.dark[data-ruby-admin] button[class~="bg-blue-600"]:hover:not(:disabled) {
+  background-image: linear-gradient(to bottom, #f9f9f7, #f9f9f7);
+}
+
+:root.dark :is(button, a)[class~="bg-primary-800"][class~="text-primary-50"]:active:not(:disabled),
+:root.dark[data-ruby-admin] button[class~="bg-blue-600"]:active:not(:disabled) {
+  background-image: linear-gradient(to bottom, #d5d5d3, #d5d5d3);
+}
+
+:root.dark [class~="dark:hover:bg-white/[0.08]"]:hover:not(:disabled),
+:root.dark [class~="dark:active:bg-white/[0.08]"]:active:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+:root.dark button[data-disabled],
+:root.dark :is(input, textarea, select):disabled,
+:root.dark [aria-disabled="true"] {
+  color: #6e6e6d;
+}
+
+/* Admin's older tables and forms use fixed gray utilities rather than theme tokens. */
+:root.dark[data-ruby-admin] [class~="bg-white"] {
+  background-color: #1e1e1e;
+}
+
+:root.dark[data-ruby-admin] [class~="bg-gray-50"] {
+  background-color: #2e2e2e;
+}
+
+:root.dark[data-ruby-admin] [class~="bg-gray-200"],
+:root.dark[data-ruby-admin] [class~="bg-gray-800"] {
+  background-color: #282828;
+}
+
+:root.dark[data-ruby-admin] [class~="bg-gray-300"] {
+  background-color: #383838;
+}
+
+:root.dark[data-ruby-admin] [class~="border-gray-200"],
+:root.dark[data-ruby-admin] [class~="divide-gray-200"] > :not(:last-child) {
+  border-color: #282828;
+}
+
+:root.dark[data-ruby-admin] [class~="border-gray-300"] {
+  border-color: #383838;
+}
+
+:root.dark[data-ruby-admin] [class~="text-gray-200"],
+:root.dark[data-ruby-admin] [class~="text-gray-800"],
+:root.dark[data-ruby-admin] [class~="text-gray-900"] {
+  color: #f4f4f2;
+}
+
+:root.dark[data-ruby-admin] [class~="text-gray-400"] {
+  color: #a4a4a3;
+}
+
+:root.dark[data-ruby-admin] [class~="text-gray-500"]:not([class~="text-white"]) {
+  color: #8e8e8d;
+}
+
+:root.dark[data-ruby-admin] [class~="text-gray-600"],
+:root.dark[data-ruby-admin] [class~="text-gray-700"] {
+  color: #c0c0be;
+}
+
+:root.dark[data-ruby-admin] [class~="hover:bg-gray-50"]:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+:root.dark[data-ruby-admin] button[class~="bg-blue-600"] {
+  background-image: linear-gradient(to bottom, #f9f9f7, #d5d5d3);
+  color: #181818;
+}

@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-ruby-admin>
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ruby - Admin</title>
+    <link rel="preload" href="/static/fonts/Sohne-Regular.ttf" as="font" type="font/ttf" crossorigin />
   </head>
   <body>
     <script>
@@ -71,7 +72,7 @@
       }
       #loading-text {
         line-height: 1;
-        font-family: system-ui, -apple-system, sans-serif;
+        font-family: Sohne, system-ui, sans-serif;
         font-size: var(--loading-text-size);
         color: #64748b;
         opacity: 0;
@@ -97,10 +98,13 @@
         }
       }
       .dark #loading-header {
-        background-color: #1c222d;
+        background-color: #181818;
       }
       .dark #loading-main {
-        background-color: #111418;
+        background-color: #1e1e1e;
+      }
+      .dark #loading-text {
+        color: #8e8e8d;
       }
     </style>
 
