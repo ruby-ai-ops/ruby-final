@@ -54,6 +54,7 @@ jobs:
         with:
           build-sdks: 'true'
           build-ui: 'true'
+      - run: npm -w ui run test:unit
       - run: node maintenance/upstream/check-artifacts.mjs
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
