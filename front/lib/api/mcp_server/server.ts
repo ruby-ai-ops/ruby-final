@@ -3,23 +3,12 @@ import { registerRubyMcpTools } from "@app/lib/api/mcp_server/tools";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { Icon } from "@modelcontextprotocol/sdk/types.js";
 
-const RUBY_LOGO_SQUARE_SVG_PATH =
-  "/static/landing/logos/ruby/Ruby_LogoSquare.svg";
-const RUBY_LOGO_SQUARE_PNG_PATH =
-  "/static/landing/logos/ruby/Ruby_LogoSquare.png";
-
 function getRubyMcpServerIcons(): Icon[] {
-  const appUrl = config.getAppUrl();
   return [
     {
-      src: `${appUrl}${RUBY_LOGO_SQUARE_SVG_PATH}`,
-      mimeType: "image/svg+xml",
-      sizes: ["any"],
-    },
-    {
-      src: `${appUrl}${RUBY_LOGO_SQUARE_PNG_PATH}`,
+      src: `${config.getAppUrl()}/static/favicon180.png`,
       mimeType: "image/png",
-      sizes: ["48x48"],
+      sizes: ["180x180"],
     },
   ];
 }

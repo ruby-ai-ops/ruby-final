@@ -20,7 +20,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-  RubyLogoSquare,
+  CpuChip01,
   Icon,
 } from "@ruby-ai/ui";
 import type { ComponentType } from "react";
@@ -137,7 +137,7 @@ function ModelRow({ isDark, model }: ModelRowProps) {
     <div className="flex min-w-0 items-center justify-between gap-3 rounded-xl border border-border bg-background p-2">
       <div className="flex min-w-0 items-center gap-2">
         <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted-background">
-          <Icon visual={modelIcon ?? RubyLogoSquare} size="xs" />
+          <Icon visual={modelIcon ?? CpuChip01} size="xs" />
         </div>
         <span className="truncate text-base font-medium text-foreground">
           {model.displayName}

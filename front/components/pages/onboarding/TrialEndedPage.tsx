@@ -1,3 +1,4 @@
+import { RubyBrandLogo as RubyLogo } from "@app/components/brand/RubyBrand";
 import type { PaidPlanTier } from "@app/components/pages/onboarding/SubscriptionPlans";
 import {
   BillingPeriodSwitch,
@@ -9,7 +10,7 @@ import { useRedirectAwayFromCheckoutIfAlreadyPaid } from "@app/lib/client/subscr
 import { useSubmitFunction } from "@app/lib/client/utils";
 import { useAppRouter } from "@app/lib/platform";
 import type { BillingPeriod } from "@app/types/plan";
-import { Card, ContentMessage, RubyLogo } from "@ruby-ai/ui";
+import { Card, ContentMessage } from "@ruby-ai/ui";
 import { useState } from "react";
 
 export function TrialEndedPage() {

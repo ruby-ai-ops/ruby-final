@@ -1,9 +1,10 @@
+import { RubyBrandLogo as RubyLogo } from "@app/components/brand/RubyBrand";
 import { AppLayoutTitle } from "@app/components/ui/AppLayoutTitle";
 import config from "@app/lib/api/config";
 import { LinkWrapper } from "@app/lib/platform";
 import { useSendOtpVerification, useVerifyOtpCode } from "@app/lib/swr/share";
-import { Button, RubyLogo, Input, Label } from "@ruby-ai/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Input, Label } from "@ruby-ai/ui";
 import { usePostHog } from "posthog-js/react";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";

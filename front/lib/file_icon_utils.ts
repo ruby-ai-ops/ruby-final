@@ -1,3 +1,4 @@
+import { RubyBrandIcon as RubyLogoSquare } from "@app/components/brand/RubyBrand";
 import {
   frameContentType,
   frameSlideshowContentType,
@@ -9,7 +10,6 @@ import {
   Brackets,
   ConfluenceLogo,
   DriveLogo,
-  RubyLogoSquare,
   File02,
   GithubLogo,
   GongLogo,

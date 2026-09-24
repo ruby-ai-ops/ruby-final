@@ -8,6 +8,7 @@ import { CreatePodModal } from "@app/components/assistant/conversation/CreatePod
 import { DeleteConversationsDialog } from "@app/components/assistant/conversation/DeleteConversationsDialog";
 import { StackedInAppBanners } from "@app/components/assistant/conversation/InAppBanner";
 import { InputBarContext } from "@app/components/assistant/conversation/input_bar/InputBarContext";
+import { getConversationTitleIcon } from "@app/components/assistant/conversation/sidebar/conversationTitleIcon";
 import { renderPodsList } from "@app/components/assistant/conversation/sidebar/PodList";
 import { PodsBrowsePopover } from "@app/components/assistant/conversation/sidebar/PodsBrowsePopover";
 import { SidebarSearch } from "@app/components/assistant/conversation/sidebar/SidebarSearch";
@@ -1598,6 +1599,7 @@ const ConversationListItem = memo(
         key={conversation.sId}
         selected={activeConversationId === conversation.sId}
         status={showStatusDot ? getConversationDotStatus(conversation) : "idle"}
+        icon={getConversationTitleIcon(conversationLabel)}
         label={conversationLabel}
         labelAnimation={
           showTypingAnimation

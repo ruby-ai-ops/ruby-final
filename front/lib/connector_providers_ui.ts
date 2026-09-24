@@ -1,3 +1,4 @@
+import { RubyBrandIcon as RubyLogoSquare } from "@app/components/brand/RubyBrand";
 import { BigQueryOptionsView } from "@app/components/data_source/BigQueryOptionsView";
 import { createConnectorOptionsPdfEnabled } from "@app/components/data_source/ConnectorOptionsPdfEnabled";
 import { GithubCodeEnableView } from "@app/components/data_source/GithubCodeEnableView";
@@ -20,7 +21,6 @@ import {
   ConfluenceLogo,
   DiscordLogo,
   DriveLogo,
-  RubyLogoSquare,
   Folder,
   GithubLogo,
   Globe01,

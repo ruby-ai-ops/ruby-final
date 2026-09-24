@@ -53,7 +53,7 @@ describe("analyst global agent visibility", () => {
     const agents = await fetchAnalyst("admin");
     expect(agents).toHaveLength(1);
     expect(agents[0].sId).toBe(GLOBAL_AGENTS_SID.ANALYST);
-    expect(agents[0].name).toBe("analyst");
+    expect(agents[0].name).toBe("Analyst");
     expect(agents[0].codeDefinedSkillIds).toContain("workspace-analytics");
     expect(agents[0].codeDefinedSkillIds).toContain("frames");
   });

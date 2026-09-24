@@ -1,3 +1,4 @@
+import { RubyBrandLogo as RubyLogo } from "@app/components/brand/RubyBrand";
 import { PaymentMethodRow } from "@app/components/checkout/PaymentMethodRow";
 import { useDocumentScrollMode } from "@app/hooks/useDocumentScrollMode";
 import config from "@app/lib/api/config";
@@ -34,7 +35,6 @@ import {
   Chip,
   Icon,
   Input,
-  RubyLogoSquare,
   Spinner,
   Tag01,
   XCircle,
@@ -478,7 +478,10 @@ export function CheckoutPage() {
       {/* Left pane: order summary + coupon */}
       <div className="flex w-full flex-col gap-14 overflow-y-auto bg-muted-background p-6 md:w-1/2 md:p-24">
         <div>
-          <Icon visual={RubyLogoSquare} size="lg" />
+          <RubyLogo
+            className="h-12 w-44 dark:[&_text]:fill-[#F4F4F2]"
+            aria-label="Ruby AI"
+          />
         </div>
 
         <div className="flex flex-col gap-11">

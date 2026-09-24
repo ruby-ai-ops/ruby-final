@@ -83,7 +83,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
     case GLOBAL_AGENTS_SID.HELPER:
       return {
         sId: GLOBAL_AGENTS_SID.HELPER,
-        name: "help",
+        name: "Help",
         description: "Help on how to use Ruby",
         pictureUrl:
           "https://ruby.ad/static/systemavatar/helper_avatar_full.png",
@@ -737,7 +737,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
     case GLOBAL_AGENTS_SID.RUBY:
       return {
         sId: GLOBAL_AGENTS_SID.RUBY,
-        name: "ruby",
+        name: "Ruby",
         description: "An agent with context on your company data.",
         pictureUrl: RUBY_AVATAR_URL,
       };
@@ -831,7 +831,7 @@ export function getGlobalAgentMetadata(sId: GLOBAL_AGENTS_SID): AgentMetadata {
     case GLOBAL_AGENTS_SID.ANALYST:
       return {
         sId: GLOBAL_AGENTS_SID.ANALYST,
-        name: "analyst",
+        name: "Analyst",
         description:
           "Agent for admins and managers that answers questions about how " +
           "your workspace is being used.",

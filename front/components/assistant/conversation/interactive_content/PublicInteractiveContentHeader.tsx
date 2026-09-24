@@ -1,4 +1,5 @@
 import { FrameBetaChip } from "@app/components/assistant/conversation/interactive_content/frame/FrameBetaChip";
+import { RubyBrandLogo as RubyLogo } from "@app/components/brand/RubyBrand";
 import { AppLayoutTitle } from "@app/components/ui/AppLayoutTitle";
 import config from "@app/lib/api/config";
 import { LinkWrapper } from "@app/lib/platform";
@@ -7,7 +8,6 @@ import type { UserTypeWithWorkspaces } from "@app/types/user";
 import {
   Button,
   cn,
-  RubyLogo,
   MessageCircle01,
   Rocket02,
   SpaceClosed,

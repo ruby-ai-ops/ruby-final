@@ -16,7 +16,7 @@ import {
  * Font used for agent answers in conversations (Settings > Customization).
  * User messages and thinking blocks keep the app font.
  * - `sans`: Geist, the app font (default).
- * - `serif`: Lora.
+ * - `serif`: Ruby Serif.
  * - `dyslexic`: OpenDyslexic.
  *
  * The preference is stored as user metadata so it follows the user across
@@ -29,7 +29,7 @@ export type ConversationFont = (typeof CONVERSATION_FONTS)[number];
 
 export const CONVERSATION_FONT_LABELS: Record<ConversationFont, string> = {
   sans: "Default",
-  serif: "Lora",
+  serif: "Serif",
   dyslexic: "OpenDyslexic",
 };
 

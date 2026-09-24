@@ -32,8 +32,8 @@ export function buildBrandingAssetStoragePath({
  * or has not uploaded a specific asset yet.
  */
 export const BRANDING_DEFAULT_ASSET_PATHS: Record<BrandingAssetName, string> = {
-  logo: "/static/RubyHorizontalIcon.png",
-  favicon: "/static/favicon.png",
+  logo: "/static/favicon180.png",
+  favicon: "/static/favicon180.png",
   og: "/static/og/ic.png",
 };
 

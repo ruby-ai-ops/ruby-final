@@ -17,8 +17,7 @@ vi.mock("@ruby-ai/ui", () => ({
       {label}
     </button>
   ),
-  RubyLogoSquare: () => null,
-  Icon: () => null,
+  RubyLogo: () => null,
   Page: {
     Header: ({ title }: { title: React.ReactNode }) => <h1>{title}</h1>,
   },

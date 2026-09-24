@@ -1,3 +1,4 @@
+import { RubyBrandIcon } from "@app/components/brand/RubyBrand";
 import { computeIsSelfImprovementAvailable } from "@app/lib/client/self_improvement";
 import { getConversationRoute } from "@app/lib/utils/router";
 import type { AppType } from "@app/types/app";
@@ -21,7 +22,6 @@ import {
   Fingerprint03,
   FolderOpen,
   Globe01,
-  IntersectRuby,
   Lock01,
   Palette,
   PieChart01,
@@ -189,7 +189,7 @@ export const getTopNavigationTabs = (
     id: "conversations",
     label: "Work",
     href: getConversationRoute(owner.sId),
-    icon: IntersectRuby,
+    icon: RubyBrandIcon,
     sizing: "hug",
     isCurrent: (currentRoute) =>
       matchesRoutePattern(currentRoute, [

@@ -1,3 +1,5 @@
+import { RubyBrandIcon as RubyLogoSquare } from "@app/components/brand/RubyBrand";
+
 export { USED_MODEL_CONFIGS } from "@app/types/assistant/models/used_model_configs";
 
 import { getModelConfigByModelId } from "@app/lib/llms/model_configurations";
@@ -7,7 +9,6 @@ import type { ModelMakerIdType } from "@app/types/assistant/models/types";
 import {
   AnthropicLogo,
   DeepseekLogo,
-  RubyLogoSquare,
   FireworksLogo,
   GeminiLogo,
   GrokLogo,

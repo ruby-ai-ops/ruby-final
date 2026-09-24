@@ -1,4 +1,5 @@
-import { Icon, Spinner } from "@ruby-ai/ui";
+import { RubyBrandIcon } from "@app/components/brand/RubyBrand";
+import { Icon } from "@ruby-ai/ui";
 
 const LINE_ANIMATION_STYLE: React.CSSProperties = {
   transformOrigin: "top",
@@ -29,7 +30,9 @@ export function TimelineRow({
       <div className="flex flex-col items-center">
         <div className="flex h-5 w-4 flex-shrink-0 items-center justify-center">
           {spinner ? (
-            <Spinner size="xs" type="tri" />
+            <span role="status" aria-label="Loading">
+              <RubyBrandIcon className="h-4 w-4 animate-pulse" />
+            </span>
           ) : icon === "circle" ? (
             <div className="h-2 w-2 rounded-full border-[1.5px] border-border" />
           ) : icon ? (

@@ -15,7 +15,7 @@ function showNotification(): void {
   if (Notification.permission === "granted") {
     new Notification("Ruby — Action required", {
       body: "A manual action requires your approval.",
-      icon: "/favicon.ico",
+      icon: "/static/favicon180.png",
     });
   }
 }

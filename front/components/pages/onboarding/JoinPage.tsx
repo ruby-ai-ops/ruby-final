@@ -1,3 +1,4 @@
+import { RubyBrandLogo as RubyLogo } from "@app/components/brand/RubyBrand";
 import Custom404 from "@app/components/pages/Custom404";
 import OnboardingLayout from "@app/components/ui/OnboardingLayout";
 import { useRequiredPathParam, useSearchParam } from "@app/lib/platform";
@@ -5,7 +6,6 @@ import { useJoinData } from "@app/lib/swr/workspaces";
 import {
   AlertCircle,
   Button,
-  RubyLogoSquare,
   Hoverable,
   Icon,
   LogIn01,
@@ -94,7 +94,10 @@ export function JoinPage() {
   return (
     <OnboardingLayout owner={workspace}>
       <div className="flex h-full flex-col gap-8 pt-4 md:justify-center md:pt-0">
-        <RubyLogoSquare className="-ml-11 h-10 w-32" />
+        <RubyLogo
+          className="h-10 w-40 dark:[&_text]:fill-[#F4F4F2]"
+          aria-label="Ruby AI"
+        />
         <Page.Header title={`Hello there!`} />
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">

@@ -1,3 +1,4 @@
+import { RubyBrandLogo as RubyLogo } from "@app/components/brand/RubyBrand";
 import { PhoneNumberCodeInput } from "@app/components/trial/PhoneNumberCodeInput";
 import { PhoneNumberInput } from "@app/components/trial/PhoneNumberInput";
 import config from "@app/lib/api/config";
@@ -14,15 +15,8 @@ import {
 import { useAppRouter } from "@app/lib/platform";
 import { useAuthContext, useVerifyData } from "@app/lib/swr/workspaces";
 import { assertNeverAndIgnore } from "@app/types/shared/utils/assert_never";
-import {
-  Button,
-  RubyLogoSquare,
-  Icon,
-  Page,
-  Spinner,
-  Stars02,
-} from "@ruby-ai/ui";
 import { Turnstile } from "@marsidev/react-turnstile";
+import { Button, Icon, Page, Spinner, Stars02 } from "@ruby-ai/ui";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Country } from "react-phone-number-input";
@@ -479,7 +473,10 @@ function PhoneInputStep({
               </div>
             ) : (
               <>
-                <RubyLogoSquare className="-ml-11 h-10 w-32" />
+                <RubyLogo
+                  className="h-10 w-40 dark:[&_text]:fill-[#F4F4F2]"
+                  aria-label="Ruby AI"
+                />
                 <Page.Header title="Phone number" />
                 <p className="-mt-4 text-muted-foreground">
                   To start your free trial, we need to verify your account with
@@ -633,7 +630,10 @@ function CaptchaStep({
       <div className="flex h-full flex-col justify-center">
         <Page.Horizontal>
           <Page.Vertical sizing="grow" gap="lg">
-            <RubyLogoSquare className="-ml-11 h-10 w-32" />
+            <RubyLogo
+              className="h-10 w-40 dark:[&_text]:fill-[#F4F4F2]"
+              aria-label="Ruby AI"
+            />
             <Page.Header title="Verify you're human" />
             <p className="-mt-4 text-muted-foreground">
               A quick check before we send your verification code.

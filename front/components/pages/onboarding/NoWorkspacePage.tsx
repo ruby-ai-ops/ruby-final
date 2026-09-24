@@ -1,3 +1,4 @@
+import { RubyBrandLogo as RubyLogo } from "@app/components/brand/RubyBrand";
 import Custom404 from "@app/components/pages/Custom404";
 import { UserMenu } from "@app/components/UserMenu";
 import WorkspacePicker from "@app/components/WorkspacePicker";
@@ -5,13 +6,7 @@ import { useSearchParam } from "@app/lib/platform";
 import { useUser } from "@app/lib/swr/user";
 import { useWorkspaceLookup } from "@app/lib/swr/workspaces";
 import { isDevelopment } from "@app/types/shared/env";
-import {
-  BarHeader,
-  RubyLogoSquare,
-  Icon,
-  Page,
-  Spinner,
-} from "@ruby-ai/ui";
+import { BarHeader, Page, Spinner } from "@ruby-ai/ui";
 
 export function NoWorkspacePage() {
   const flow = useSearchParam("flow");
@@ -65,7 +60,10 @@ export function NoWorkspacePage() {
       <div className="mx-auto mt-40 flex max-w-2xl flex-col gap-8">
         <div className="flex flex-col gap-2">
           <div className="items-left justify-left flex flex-row">
-            <Icon visual={RubyLogoSquare} size="md" />
+            <RubyLogo
+              className="h-10 w-40 dark:[&_text]:fill-[#F4F4F2]"
+              aria-label="Ruby AI"
+            />
           </div>
           <span className="heading-2xl text-foreground">
             Hello {user?.firstName}!

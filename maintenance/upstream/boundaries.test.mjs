@@ -11,7 +11,7 @@ const source = new Map([
   ['marketing/page.tsx', entry('Ruby page')],
   ['front/lib/api/marketing/integrations.ts', entry('Ruby integration registry')],
   ['front-api/routes/marketing/integrations.ts', entry('Ruby public route')],
-  ['front/styles/product-theme.css', entry('Ruby dark theme')],
+  ['front/styles/product-theme.css', entry(':root { --font-sans: Sohne, sans-serif; }\n:root.dark { --color-app-background: #181818; }')],
   ['front-spa/src/app/main.tsx', entry('import "@ruby-ai/front/styles/product-theme.css";')],
   ['front-spa/src/admin/main.tsx', entry('import "@ruby-ai/front/styles/product-theme.css";')],
   ['front/lib/plans/pricing.ts', entry('export const CP_PRO_SEAT_COST_MONTHLY = 20;\nexport const CP_MAX_SEAT_COST_YEARLY = 32;')],
@@ -41,4 +41,19 @@ test('rejects marketing additions, deletes, and mode changes', () => {
   assert.throws(() => assertRubyBoundaries(source, new Map([...source].filter(([name]) => name !== 'marketing/page.tsx'))), /Ruby boundary/);
   assert.throws(() => assertRubyBoundaries(source, new Map([...source].map(([name, bytes]) =>
     [name, name === 'marketing/page.tsx' ? entry(bytes, '100755') : bytes]))), /Ruby boundary/);
+});
+
+test('permits additive app styling while keeping approved theme rules and tokens', () => {
+  const name = 'front/styles/product-theme.css';
+  const original = source.get(name).toString();
+  const withTheme = (css) => new Map([...source].map(([path, bytes]) =>
+    [path, path === name ? entry(css) : bytes]));
+  assert.doesNotThrow(() => assertRubyBoundaries(source, withTheme(
+    `${original}\n:root.dark [data-ruby-navigation-sidebar] { color: #fff; font-size: 1rem; }`)));
+  assert.throws(() => assertRubyBoundaries(source, withTheme(
+    original.replace('#181818', '#202020'))), /Ruby boundary/);
+  assert.throws(() => assertRubyBoundaries(source, withTheme(
+    `${original}\n:root.dark { --color-app-background: #202020; }`)), /Ruby boundary/);
+  assert.throws(() => assertRubyBoundaries(source, withTheme(
+    original.replace('Sohne', 'Arial'))), /Ruby boundary/);
 });
