@@ -94,7 +94,7 @@ import {
   roundCreditsToMicroCredits,
 } from "@app/lib/credits/units";
 import { getSupportedModelConfig } from "@app/lib/llms/model_configurations";
-import { extractFromString, serializeMention } from "@app/lib/mentions/format";
+import { extractFromString } from "@app/lib/mentions/format";
 import { isFreeOrigin } from "@app/lib/metronome/events";
 import { getWorkspaceCreditPoolStatus } from "@app/lib/metronome/user_block";
 import { AgentStepContentToolExecutionModel } from "@app/lib/models/agent/actions/agent_step_content_tool_execution";
@@ -614,6 +614,7 @@ export async function postUserMessage(
 
   // Auto-inject @ruby for mention-less web/extension messages in single-user conversations.
   // Must run before the plan rate-limit check so the resulting agent message is counted.
+  // Inject into the mentions side-channel only, do not prepend into content.
   // Note: the per-pod default agent is applied client-side via the input bar sticky mention,
   // so the normal pod flow sends an explicit mention and never reaches this backstop.
   if (
@@ -634,7 +635,6 @@ export async function postUserMessage(
 
       if (rubyAgent && rubyAgent.status === "active") {
         mentions.push({ configurationId: rubyAgent.sId });
-        content = `${serializeMention({ id: rubyAgent.sId, type: "agent", label: rubyAgent.name })} ${content}`;
       }
     }
   }

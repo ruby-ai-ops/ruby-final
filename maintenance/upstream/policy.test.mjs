@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import test from 'node:test';
 import { assertSafeUpdate, assertBranded, transformSnapshot } from './policy.mjs';
 const snapshot = object => new Map(Object.entries(object).map(([k,v]) => [k, Buffer.from(v)]));
@@ -14,6 +15,18 @@ test('unknown capitalization fails branding validation instead of being accepted
 });
 test('changed workflow policy requires review even if it would otherwise be excluded', () => {
   assert.throws(() => assertSafeUpdate(snapshot({'.github/workflows/a.yml':'safe'}), snapshot({'.github/workflows/a.yml':'unsafe'})), /manual review/);
+});
+test('an exact reviewed workflow change remains excluded and any drift stops', () => {
+  const before = snapshot({'.github/workflows/deploy.yml':'before'});
+  const after = snapshot({'.github/workflows/deploy.yml':'after'});
+  const fingerprint = text => `100644:${createHash('sha256').update(text).digest('hex')}`;
+  const reviewed = new Map([['.github/workflows/deploy.yml', {
+    before: fingerprint('before'),
+    after: fingerprint('after'),
+  }]]);
+  assert.doesNotThrow(() => assertSafeUpdate(before, after, [], reviewed));
+  assert.throws(() => assertSafeUpdate(before, snapshot({'.github/workflows/deploy.yml':'after another edit'}), [], reviewed), /manual review/);
+  assert.deepEqual([...transformSnapshot(after)].length, 0);
 });
 test('new artwork cannot bypass branding checks by using a generic filename', () => {
   assert.throws(()=>assertSafeUpdate(new Map(),snapshot({'front/public/banner.png':'pixels'})),/branding review/);

@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { transformEntries, transformPath, isExcluded, maintenancePath, isText } from './rebrand.mjs';
 import { hasLegacyBranding } from './check.mjs';
 
@@ -15,12 +16,20 @@ export function transformSnapshot(entries, assets = []) {
     !isExcluded(name) && !protectedPath(transformPath(name), assets))));
 }
 
-export function assertSafeUpdate(previous, incoming, assets = []) {
+const fingerprint = bytes => bytes ? `${bytes.gitMode ?? '100644'}:${createHash('sha256').update(bytes).digest('hex')}` : null;
+
+export function assertSafeUpdate(previous, incoming, assets = [], reviewedWorkflowChanges = new Map()) {
   for (const name of new Set([...previous.keys(), ...incoming.keys()])) {
     const before = previous.get(name);
     const after = incoming.get(name);
     if (before?.equals(after ?? Buffer.alloc(0)) && before.gitMode === after?.gitMode) continue;
-    if (name.startsWith('.github/')) throw new Error(`Workflow or action change requires manual review: ${name}`);
+    if (name.startsWith('.github/')) {
+      const review = reviewedWorkflowChanges.get(name);
+      if (review?.before !== fingerprint(before) || review?.after !== fingerprint(after)) {
+        throw new Error(`Workflow or action change requires manual review: ${name}`);
+      }
+      continue; // Workflows stay excluded from the transformed product snapshot.
+    }
     if (after?.gitMode === '120000') throw new Error(`New or changed symlink requires manual review: ${name}`);
     if (after && !isExcluded(name) && !protectedPath(transformPath(name), assets) &&
         !/(?:^|\/)(?:tests?|fixtures)(?:\/|$)/.test(name) && (!isText(after) || /\.(?:png|jpe?g|webp|avif|heic|heif|bmp|tiff?|gif|ico|svgz?|eps|psd|ai|pdf|mp4|webm|mov|m4v|avi|lottie|zip|tar|gz|7z)$/i.test(name))) {

@@ -198,6 +198,7 @@ export type SaveAgentConfigurationParams = {
   editors: UserType[];
   authorId: ModelId;
   reinforcement?: AgentReinforcementMode;
+  ignoreCreditSpendThresholdAlert?: boolean;
   // MCP action configurations to create atomically with the agent version. Created inside the same
   // transaction as the configuration row (see `agent-save-atomic`), so a failure rolls the whole
   // save back and no partial version is ever committed. Defaults to none.
@@ -262,6 +263,7 @@ const AGENT_CONFIGURATION_KEYS = [
   "templateId",
   "requestedSpaceIds",
   "reinforcement",
+  "ignoreCreditSpendThresholdAlert",
   "tags",
   "actions",
   "skills",
@@ -1016,7 +1018,7 @@ export class AgentResource
    * `invalidateAgentResourceCaches` helpers that lower-level write and deletion paths can import
    * without forming a cycle back to this resource.
    */
-  private static readonly lookup = defineCachedResourceValue<
+  private static readonly store = defineCachedResourceValue<
     AgentResourceCacheKey,
     AgentResourceSnapshot,
     FullAgentResource
@@ -1040,7 +1042,7 @@ export class AgentResource
     agentIds: readonly string[]
   ): Promise<FullAgentResource[]> {
     const workspaceModelId = auth.getNonNullableWorkspace().id;
-    return this.lookup.fetchMany(
+    return this.store.fetchMany(
       agentIds.map((id) => ({ workspaceModelId, id }))
     );
   }
@@ -1452,6 +1454,87 @@ export class AgentResource
     return favoriteCountByAgentId;
   }
 
+  /**
+   * @cc [owner:tdraier,label:backend;performance] agent-user-merge-through-agent-domain
+   * A user identity merge MUST move the secondary user's agent authorship (`authorId` on every
+   * configuration version) and agent-user relations to the primary user through this method, so the
+   * cache invalidation of every reassigned agent and the search reindex of every reassigned agent
+   * and every agent whose duplicate relation was dropped stay owned by the agent domain. When both
+   * users hold a relation to the same agent, the primary's is kept and the secondary's is deleted.
+   * Callers MUST invoke it after migrating the secondary user's group memberships (which carry agent
+   * editor grants), so the reindex sees the final editors. Returns the number of configuration
+   * versions and relations transferred.
+   */
+  static async mergeUsers(
+    auth: Authenticator,
+    {
+      primaryUserModelId,
+      secondaryUserModelId,
+    }: {
+      primaryUserModelId: ModelId;
+      secondaryUserModelId: ModelId;
+    }
+  ): Promise<{
+    agentConfigurationsCount: number;
+    agentUserRelationsCount: number;
+  }> {
+    const workspaceModelId = auth.getNonNullableWorkspace().id;
+
+    const [agentConfigurationsCount, reassignedConfigurations] =
+      await AgentConfigurationModel.update(
+        { authorId: primaryUserModelId },
+        {
+          where: {
+            authorId: secondaryUserModelId,
+            workspaceId: workspaceModelId,
+          },
+          returning: ["sId"],
+        }
+      );
+    const reassignedAgentIds = reassignedConfigurations.map(
+      (configuration) => configuration.sId
+    );
+    await invalidateAgentResourceCaches(workspaceModelId, reassignedAgentIds);
+
+    const primaryRelations = await AgentUserRelationModel.findAll({
+      attributes: ["agentConfiguration"],
+      where: { userId: primaryUserModelId, workspaceId: workspaceModelId },
+    });
+    const duplicateRelations = await AgentUserRelationModel.findAll({
+      attributes: ["agentConfiguration"],
+      where: {
+        userId: secondaryUserModelId,
+        workspaceId: workspaceModelId,
+        agentConfiguration: primaryRelations.map(
+          (relation) => relation.agentConfiguration
+        ),
+      },
+    });
+    const deduplicatedAgentIds = duplicateRelations.map(
+      (relation) => relation.agentConfiguration
+    );
+    await AgentUserRelationModel.destroy({
+      where: {
+        userId: secondaryUserModelId,
+        workspaceId: workspaceModelId,
+        agentConfiguration: deduplicatedAgentIds,
+      },
+    });
+    const [agentUserRelationsCount] = await AgentUserRelationModel.update(
+      { userId: primaryUserModelId },
+      { where: { userId: secondaryUserModelId, workspaceId: workspaceModelId } }
+    );
+
+    // The indexed `last_edited_by_user_id` follows the version author and `favorite_count` drops
+    // with a deleted duplicate favorite.
+    await AgentResource.launchSearchIndexation(auth, [
+      ...reassignedAgentIds,
+      ...deduplicatedAgentIds,
+    ]);
+
+    return { agentConfigurationsCount, agentUserRelationsCount };
+  }
+
   // Applies the same partial change to a batch of agents by running each through `updateConfiguration`,
   // so every rule holds per agent: per-property permissions, the version-or-in-place routing, the
   // no-op skip, and the scope/editor in-place writes with their audit and trigger side effects.
@@ -1547,6 +1630,8 @@ export class AgentResource
       // Preserve the version's author rather than re-attributing it to the caller.
       authorId: this.versionAuthorId ?? auth.getNonNullableUser().id,
       reinforcement: this.reinforcement,
+      ignoreCreditSpendThresholdAlert:
+        this.content.creditSpendCheckpointThresholdAwuCredits === null,
       actions,
       skills,
     };
@@ -2291,6 +2376,10 @@ export class AgentResource
     return new Ok(undefined);
   }
 
+  requestedSpaceModelIds(): readonly ModelId[] {
+    return this.requestedSpaceIds;
+  }
+
   // Whether the caller can read every space backing the agent's tools/skills/data. Space read comes
   // from the caller's governance snapshot (`getReadableSpaceModelIds`), so this needs no extra query.
   // A `kind: "all"` result is the type-wide wildcard grant (a full system key) and reads every space;
@@ -2520,6 +2609,8 @@ export class AgentResource
       reinforcement: this.reinforcement,
       lastReinforcementAnalysisAt:
         this.lastReinforcementAnalysisAt?.toISOString() ?? null,
+      ignoreCreditSpendThresholdAlert:
+        content.creditSpendCheckpointThresholdAwuCredits === null,
       canRead: this._verbs.has("read"),
       // Regular API keys hold `write` from the admin role but may only edit an active version
       // (see the `regular-key-agent-editability` contract on `enrichAgentConfigurations`).
@@ -2593,8 +2684,9 @@ export class AgentResource
    * @cc [owner:tdraier,label:security;product] agent-edit-in-place
    * Saving an existing agent MUST route each changed property by kind and gate it on its own
    * permission: a definition field other than the model and tags (name, description, instructions,
-   * picture, status, template, requested spaces, reinforcement, tools or skills) creates a new
-   * version and MUST require `write`; the `model` creates a new version but MUST require `write` OR
+   * picture, status, template, requested spaces, reinforcement, credit spend alert bypass, tools or
+   * skills) creates a new version and MUST require `write`; the `model` creates a new version but
+   * MUST require `write` OR
    * `admin`, and `tags` a new version requiring `write` OR workspace-admin (see
    * `model-change-requires-edit`/`tags-change-requires-edit`); `scope` is
    * applied in place (no new version) and MUST satisfy
@@ -2913,6 +3005,11 @@ export class AgentResource
    * transaction owned by this method, so a failure in any part leaves no partial agent version behind
    * and needs no external rollback.
    */
+  /**
+   * @cc [owner:avervaet,label:security;product] credit-spend-alert-bypass-manager-only
+   * Only workspace admins and managers MAY change whether an agent bypasses the credit spend
+   * threshold alert; a save by anyone else MUST keep the previously stored value.
+   */
   private static async _saveConfiguration(
     auth: Authenticator,
     {
@@ -2931,6 +3028,7 @@ export class AgentResource
       editors,
       authorId,
       reinforcement,
+      ignoreCreditSpendThresholdAlert,
       actions = [],
       skills = [],
     }: {
@@ -2949,6 +3047,7 @@ export class AgentResource
       editors: UserType[];
       authorId: ModelId;
       reinforcement?: AgentReinforcementMode;
+      ignoreCreditSpendThresholdAlert?: boolean;
       actions?: ServerSideMCPServerConfigurationType[];
       skills?: SkillResource[];
     }
@@ -3035,6 +3134,9 @@ export class AgentResource
           templateModelId: template?.id,
           requestedSpaceIds,
           reinforcement,
+          ignoreCreditSpendThresholdAlert: auth.isManager()
+            ? ignoreCreditSpendThresholdAlert
+            : undefined,
           owner,
           transaction: t,
         });
