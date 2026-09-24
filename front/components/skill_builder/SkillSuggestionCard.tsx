@@ -1,4 +1,3 @@
-import { ConversationalSuggestionCard } from "@app/components/markdown/suggestion/ConversationalSuggestionCard";
 import { getBlockOuterHtml } from "@app/components/shared/utils";
 import { SkillFieldEditSection } from "@app/components/skill_builder/SkillFieldEditSection";
 import { SuggestedSkillAvailability } from "@app/components/skill_builder/SuggestedSkillAvailability";
@@ -347,11 +346,43 @@ function SuggestionDetails({
   }
 }
 
+interface PendingSkillSuggestionDetailsProps {
+  suggestion: SkillSuggestionType;
+  getSkillInstructionsHtml: () => string;
+  getCurrentAgentFacingDescription: () => string;
+  workspaceId: string;
+}
+
+export function PendingSkillSuggestionDetails({
+  suggestion,
+  getSkillInstructionsHtml,
+  getCurrentAgentFacingDescription,
+  workspaceId,
+}: PendingSkillSuggestionDetailsProps) {
+  return (
+    <>
+      <SuggestionDetails
+        suggestion={suggestion}
+        getSkillInstructionsHtml={getSkillInstructionsHtml}
+        getCurrentAgentFacingDescription={getCurrentAgentFacingDescription}
+        workspaceId={workspaceId}
+      />
+
+      {suggestion.source !== "conversational" && (
+        <ConversationFooter
+          visibleSourceConversationIds={suggestion.visibleSourceConversationIds}
+          sourceConversationsCount={suggestion.sourceConversationsCount}
+          workspaceId={workspaceId}
+        />
+      )}
+    </>
+  );
+}
+
 interface SkillSuggestionCardProps {
   suggestion: SkillSuggestionType;
   onAccept?: (suggestion: SkillSuggestionType) => void;
   onDecline?: (suggestion: SkillSuggestionType) => void;
-  onPreview?: () => void;
   getSkillInstructionsHtml: () => string;
   getCurrentAgentFacingDescription: () => string;
   isSelected?: boolean;
@@ -366,7 +397,6 @@ export function SkillSuggestionCard({
   suggestion,
   onAccept,
   onDecline,
-  onPreview,
   getSkillInstructionsHtml,
   getCurrentAgentFacingDescription,
   isSelected = false,
@@ -383,23 +413,6 @@ export function SkillSuggestionCard({
     return <ReviewedSuggestionCard suggestion={suggestion} />;
   }
 
-  const details = (
-    <>
-      <SuggestionDetails
-        suggestion={suggestion}
-        getSkillInstructionsHtml={getSkillInstructionsHtml}
-        getCurrentAgentFacingDescription={getCurrentAgentFacingDescription}
-        workspaceId={workspaceId}
-      />
-
-      <ConversationFooter
-        visibleSourceConversationIds={suggestion.visibleSourceConversationIds}
-        sourceConversationsCount={suggestion.sourceConversationsCount}
-        workspaceId={workspaceId}
-      />
-    </>
-  );
-
   const wrapperClassName = `rounded-xl ${isClickable ? "cursor-pointer transition-shadow" : ""} ${isSelected ? "ring-2 ring-highlight-300" : ""}`;
 
   const wrapperProps = onSelect
@@ -415,22 +428,6 @@ export function SkillSuggestionCard({
         },
       }
     : {};
-
-  if (suggestion.source === "conversational") {
-    return (
-      <ConversationalSuggestionCard
-        title={suggestion.title ?? "Suggestion"}
-        analysis={suggestion.analysis}
-        onAccept={hasActions ? () => onAccept(suggestion) : undefined}
-        onReject={hasActions ? () => onDecline(suggestion) : undefined}
-        onPreview={onPreview}
-        disabled={disabled}
-        isAccepting={isAccepting}
-        isDeclining={isDeclining}
-        collapsibleContent={details}
-      />
-    );
-  }
 
   return (
     <div className={wrapperClassName} {...wrapperProps}>
@@ -465,7 +462,12 @@ export function SkillSuggestionCard({
           <p className="text-sm text-muted-foreground">{suggestion.analysis}</p>
         )}
 
-        {details}
+        <PendingSkillSuggestionDetails
+          suggestion={suggestion}
+          getSkillInstructionsHtml={getSkillInstructionsHtml}
+          getCurrentAgentFacingDescription={getCurrentAgentFacingDescription}
+          workspaceId={workspaceId}
+        />
       </Card>
     </div>
   );

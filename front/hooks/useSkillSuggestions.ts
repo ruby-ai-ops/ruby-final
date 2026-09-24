@@ -21,7 +21,7 @@ import type {
   ReviewableSkillSuggestionSource,
   SkillSuggestionType,
 } from "@app/types/suggestions/skill_suggestion";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { Fetcher } from "swr";
 
 export function useAreSkillSuggestionsEnabled(): boolean {
@@ -37,6 +37,7 @@ interface UseSkillSuggestionsParams {
   kind?: GetSkillSuggestionsQuery["kind"];
   states?: GetSkillSuggestionsQuery["states"];
   sources: ReviewableSkillSuggestionSource[];
+  conversationId?: string | null;
   limit?: number;
   workspaceId: string;
 }
@@ -47,6 +48,7 @@ export function useSkillSuggestions({
   kind,
   states,
   sources,
+  conversationId,
   limit,
   workspaceId,
 }: UseSkillSuggestionsParams) {
@@ -60,6 +62,9 @@ export function useSkillSuggestions({
   sources.forEach((s) => urlParams.append("sources", s));
   if (kind) {
     urlParams.append("kind", kind);
+  }
+  if (conversationId) {
+    urlParams.append("conversationId", conversationId);
   }
   if (limit !== undefined) {
     urlParams.append("limit", limit.toString());
@@ -171,4 +176,89 @@ export function usePatchSkillSuggestions({
   );
 
   return { patchSuggestions };
+}
+
+type SuggestionReviewAction = "accept" | "reject";
+
+export function useSkillSuggestionActions({
+  skillId,
+  workspaceId,
+  mutateSuggestions,
+}: {
+  skillId: string | null;
+  workspaceId: string;
+  mutateSuggestions: ReturnType<
+    typeof useSkillSuggestions
+  >["mutateSuggestions"];
+}) {
+  const { patchSuggestions } = usePatchSkillSuggestions({
+    skillId,
+    workspaceId,
+  });
+  const [pendingActions, setPendingActions] = useState<
+    Record<string, SuggestionReviewAction>
+  >({});
+
+  const getPendingAction = useCallback(
+    (suggestion: { sId: string }): SuggestionReviewAction | null =>
+      pendingActions[suggestion.sId] ?? null,
+    [pendingActions]
+  );
+
+  const setSuggestionState = useCallback(
+    async (
+      suggestion: { sId: string },
+      action: SuggestionReviewAction,
+      options?: { applyToSkill?: boolean }
+    ): Promise<boolean> => {
+      setPendingActions((current) => ({
+        ...current,
+        [suggestion.sId]: action,
+      }));
+
+      const result = await patchSuggestions(
+        [suggestion.sId],
+        action === "accept" ? "approved" : "rejected",
+        options
+      );
+
+      setPendingActions((current) => {
+        const { [suggestion.sId]: _removed, ...rest } = current;
+        return rest;
+      });
+
+      if (!result || result.suggestions.length === 0) {
+        return false;
+      }
+
+      const reviewedById = new Map(result.suggestions.map((s) => [s.sId, s]));
+      void mutateSuggestions(
+        (current) => ({
+          suggestions: (current?.suggestions ?? []).map(
+            (s) => reviewedById.get(s.sId) ?? s
+          ),
+        }),
+        { revalidate: false }
+      );
+
+      return true;
+    },
+    [patchSuggestions, mutateSuggestions]
+  );
+
+  const acceptSuggestion = useCallback(
+    (suggestion: { sId: string }) =>
+      setSuggestionState(suggestion, "accept", { applyToSkill: true }),
+    [setSuggestionState]
+  );
+  const rejectSuggestion = useCallback(
+    (suggestion: { sId: string }) => setSuggestionState(suggestion, "reject"),
+    [setSuggestionState]
+  );
+
+  return {
+    getPendingAction,
+    acceptSuggestion,
+    rejectSuggestion,
+  };
 }
