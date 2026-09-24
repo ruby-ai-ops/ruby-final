@@ -12,7 +12,7 @@ const git = (root, args, extra = {}) => execFileSync('git', args, { cwd: root, e
 const STATE = 'maintenance/upstream/state.json';
 
 /** Creates a branch ref only after validation. Never checks out or changes production. */
-export function createSyncCandidate(root, target, { validate = assertBranded, resolveConflicts } = {}) {
+export function createSyncCandidate(root, target, { validate = assertBranded, resolveConflicts, reviewedWorkflowChanges } = {}) {
   if (!/^[0-9a-f]{40}$/.test(target)) throw new Error('Expected an exact upstream commit');
   if (git(root, ['status', '--porcelain'])) throw new Error('Sync requires a clean checkout');
   const rubyHead = git(root, ['rev-parse', 'HEAD']);
@@ -27,7 +27,7 @@ export function createSyncCandidate(root, target, { validate = assertBranded, re
   const oldSource = readSnapshot(root, state.acceptedCommit);
   const newSource = readSnapshot(root, target);
   const assets = JSON.parse(ruby.get('maintenance/upstream/protected-assets.json')?.toString() ?? '[]');
-  assertSafeUpdate(oldSource, newSource, assets);
+  assertSafeUpdate(oldSource, newSource, assets, reviewedWorkflowChanges);
   const base = transformSnapshot(oldSource, assets);
   const incoming = transformSnapshot(newSource, assets);
   const productChanged = [...new Set([...base.keys(), ...incoming.keys()])].some(name => {
