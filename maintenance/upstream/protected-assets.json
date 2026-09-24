@@ -800,6 +800,8 @@
   "front/public/static/year-in-review-title.svg",
   "marketing/public/static/landing/chatgpt-enterprise/ruby_logo.svg",
   "ui/.storybook/assets/ruby.svg",
+  "ui/src/icons/src/v2-stroke/bar-ultra.svg",
+  "ui/src/icons/src/v2-stroke/check-verified-01.svg",
   "x/adrsimon/mobile/Ruby/Resources/Assets.xcassets/AppIcon.appiconset/RubyLogo.png",
   "x/adrsimon/mobile/RubyUITokens/Sources/RubyUITokens/Resources/Icons.xcassets/Ruby.imageset/ruby.svg",
   "x/adrsimon/mobile/RubyUITokens/Sources/RubyUITokens/Resources/Logos.xcassets/RubyLogo.imageset/Ruby_Logo.svg",

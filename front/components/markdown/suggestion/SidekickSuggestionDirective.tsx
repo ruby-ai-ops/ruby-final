@@ -10,6 +10,10 @@ import { useSidekickSuggestions } from "@app/components/agent_builder/sidekick/S
 import { useConversationSidePanelContext } from "@app/components/assistant/conversation/ConversationSidePanelContext";
 import { AgentSuggestionActionCard } from "@app/components/markdown/suggestion/AgentSuggestionActionCard";
 import {
+  ConversationalSuggestionReviewCard,
+  shouldUseConversationalReviewCard,
+} from "@app/components/markdown/suggestion/ConversationalSuggestionReviewCard";
+import {
   SidekickSuggestionCard,
   SuggestionCardSkeleton,
 } from "@app/components/markdown/suggestion/SidekickSuggestionCard";
@@ -21,8 +25,17 @@ import { useAgentConfiguration } from "@app/lib/swr/assistants";
 import { AGENT_SIDE_PANEL_TYPE } from "@app/types/conversation_side_panel";
 import type { AgentSuggestionKind } from "@app/types/suggestions/agent_suggestion";
 import type { LightWorkspaceType } from "@app/types/user";
+import { LoadingBlock } from "@ruby-ai/ui";
 import { useEffect } from "react";
 import { SKIP, visit } from "unist-util-visit";
+
+function toSuggestionProperties(attributes: Record<string, string>) {
+  return {
+    suggestionId: attributes.sId,
+    kind: attributes.kind,
+    agentId: attributes.agentId,
+  };
+}
 
 /**
  * Remark directive plugin for parsing agent suggestion directives.
@@ -37,11 +50,7 @@ export function sidekickSuggestionDirective() {
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         const data = node.data || (node.data = {});
         data.hName = "agent_suggestion";
-        data.hProperties = {
-          sId: node.attributes.sId,
-          kind: node.attributes.kind,
-          agentId: node.attributes.agentId,
-        };
+        data.hProperties = toSuggestionProperties(node.attributes);
       }
     });
 
@@ -67,7 +76,10 @@ export function sidekickSuggestionDirective() {
           name: "agent_suggestion",
           attributes: attrs,
           children: [],
-          data: { hName: "agent_suggestion", hProperties: attrs },
+          data: {
+            hName: "agent_suggestion",
+            hProperties: toSuggestionProperties(attrs),
+          },
         },
         ...parent.children.slice(index + 1),
       ];
@@ -78,7 +90,7 @@ export function sidekickSuggestionDirective() {
 }
 
 interface SidekickSuggestionPluginProps {
-  sId?: string;
+  suggestionId?: string;
   kind?: AgentSuggestionKind;
 }
 
@@ -90,7 +102,7 @@ interface SidekickSuggestionPluginProps {
  */
 export function getSidekickSuggestionPlugin() {
   const SidekickSuggestionPlugin = ({
-    sId,
+    suggestionId,
     kind,
   }: SidekickSuggestionPluginProps) => {
     const {
@@ -100,34 +112,36 @@ export function getSidekickSuggestionPlugin() {
       hasAttemptedRefetch,
     } = useSidekickSuggestions();
 
-    const suggestion = sId ? getSuggestionWithRelations(sId) : null;
+    const suggestion = suggestionId
+      ? getSuggestionWithRelations(suggestionId)
+      : null;
 
     // Trigger refetch when suggestion not found and not currently fetching.
     // triggerRefetch queues the sId and marks it as attempted after fetch completes.
     useEffect(() => {
       if (
-        sId &&
+        suggestionId &&
         !suggestion &&
         !isSuggestionsValidating &&
-        !hasAttemptedRefetch(sId)
+        !hasAttemptedRefetch(suggestionId)
       ) {
-        triggerRefetch(sId);
+        triggerRefetch(suggestionId);
       }
     }, [
-      sId,
+      suggestionId,
       suggestion,
       isSuggestionsValidating,
       triggerRefetch,
       hasAttemptedRefetch,
     ]);
 
-    if (!sId || !kind) {
+    if (!suggestionId || !kind) {
       return <SuggestionCardSkeleton kind={kind} />;
     }
 
     if (!suggestion) {
       // Show skeleton while validating or haven't completed a refetch attempt
-      if (isSuggestionsValidating || !hasAttemptedRefetch(sId)) {
+      if (isSuggestionsValidating || !hasAttemptedRefetch(suggestionId)) {
         return <SuggestionCardSkeleton kind={kind} />;
       }
       // Don't show anything for suggestions that no longer exist (outdated/deleted)
@@ -135,7 +149,7 @@ export function getSidekickSuggestionPlugin() {
     }
 
     return (
-      <div data-suggestion-s-id={sId}>
+      <div data-suggestion-s-id={suggestionId}>
         <SidekickSuggestionCard agentSuggestion={suggestion} />
       </div>
     );
@@ -173,14 +187,14 @@ interface ConversationAgentSuggestionProps {
   owner: LightWorkspaceType;
   agentId: string;
   kind: ConversationAgentSuggestionKind;
-  sId: string;
+  suggestionId: string;
 }
 
 function ConversationAgentSuggestion({
   owner,
   agentId,
   kind,
-  sId,
+  suggestionId,
 }: ConversationAgentSuggestionProps) {
   const { openPanel } = useConversationSidePanelContext();
 
@@ -190,7 +204,7 @@ function ConversationAgentSuggestion({
       workspaceId: owner.sId,
     });
 
-  const { isSuggestionPending, acceptSuggestion, rejectSuggestion } =
+  const { getPendingAction, acceptSuggestion, rejectSuggestion } =
     useAgentSuggestionActions({
       agentConfigurationId: agentId,
       workspaceId: owner.sId,
@@ -204,20 +218,24 @@ function ConversationAgentSuggestion({
   });
 
   if (isSuggestionsLoading) {
-    return <SuggestionCardSkeleton kind={kind} />;
+    return <LoadingBlock className="h-24 w-full" />;
   }
 
-  const suggestion = suggestions.find((s) => s.sId === sId);
+  const suggestion = suggestions.find((s) => s.sId === suggestionId);
   if (!suggestion || suggestion.kind !== kind) {
     return null;
   }
 
-  return (
-    <div data-suggestion-s-id={sId}>
-      <AgentSuggestionActionCard
-        agentSuggestion={suggestion}
-        pictureUrl={agentConfiguration?.pictureUrl}
-        disabled={isSuggestionPending(suggestion)}
+  const pendingAction = getPendingAction(suggestion);
+
+  if (shouldUseConversationalReviewCard(suggestion)) {
+    return (
+      <ConversationalSuggestionReviewCard
+        target={{
+          type: "agent",
+          suggestion,
+          pictureUrl: agentConfiguration?.pictureUrl,
+        }}
         onAccept={() => void acceptSuggestion(suggestion)}
         onReject={() => void rejectSuggestion(suggestion)}
         onPreview={() =>
@@ -227,13 +245,25 @@ function ConversationAgentSuggestion({
             previewSuggestionIds: [suggestion.sId],
           })
         }
+        isAccepting={pendingAction === "accept"}
+        isRejecting={pendingAction === "reject"}
       />
-    </div>
+    );
+  }
+
+  return (
+    <AgentSuggestionActionCard
+      agentSuggestion={suggestion}
+      pictureUrl={agentConfiguration?.pictureUrl}
+      disabled={pendingAction !== null}
+      onAccept={() => void acceptSuggestion(suggestion)}
+      onReject={() => void rejectSuggestion(suggestion)}
+    />
   );
 }
 
 interface ConversationAgentSuggestionPluginProps {
-  sId?: string;
+  suggestionId?: string;
   kind?: AgentSuggestionKind;
   agentId?: string;
 }
@@ -242,16 +272,19 @@ export function getConversationAgentSuggestionPlugin(
   owner: LightWorkspaceType
 ) {
   const ConversationAgentSuggestionPlugin = ({
-    sId,
+    suggestionId,
     kind,
     agentId,
   }: ConversationAgentSuggestionPluginProps) =>
-    sId && kind && isConversationAgentSuggestionKind(kind) && agentId ? (
+    suggestionId &&
+    kind &&
+    isConversationAgentSuggestionKind(kind) &&
+    agentId ? (
       <ConversationAgentSuggestion
         owner={owner}
         agentId={agentId}
         kind={kind}
-        sId={sId}
+        suggestionId={suggestionId}
       />
     ) : null;
 

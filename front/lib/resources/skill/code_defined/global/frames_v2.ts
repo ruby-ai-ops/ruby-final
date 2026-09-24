@@ -47,7 +47,7 @@ Decide whether the Frame is a throwaway visualization or an application with dur
 writing source. Chat apps, task lists, trackers, forms, CRUD apps, and ${hasDocuments ? "other editable applications" : "anything users can change"}
 default to durable: declare the database plus the read and mutation functions in the
 manifest. Do not store durable application state in memory; use a Frame database.
-${hasDocuments ? "\nDocument saves its narrative text to a JSON file. Durable records inside its custom visuals still need a Frame database.\n" : ""}
+${hasDocuments ? "\nDocument includes selected-text comments and saves its text and discussion in one JSON file. Durable records inside its custom visuals still need a Frame database.\n" : ""}
 
 ## Create a Frame
 
@@ -386,8 +386,10 @@ whole path durable only when every call must be live or the interaction itself i
   shell out to \`rbx\`, \`execFile\`, or \`child_process\` to run \`rbx tools\` from a function.
 
 Discover the exact server name, tool name, and argument shapes from the Computer with
-\`rbx tools --help\` (and trial calls with \`--json\` if needed). Then implement the durable
-function with the typed client:
+\`rbx tools --help\` (and trial calls with \`--json\` if needed). Pass the server exactly as
+\`rbx tools\` lists it: a workspace can hold several instances of one server under their own
+names (e.g. \`gmail1\` and \`gmail2\`), and a line that shows an \`id:\` must be called by that id.
+Then implement the durable function with the typed client:
 
 \`\`\`ts
 import { tools } from "@ruby-ai/pod";
