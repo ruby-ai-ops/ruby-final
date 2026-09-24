@@ -82,13 +82,18 @@ export const IconForAttachmentCitation = ({
   }
 
   if (provider && provider in CONNECTOR_CONFIGURATIONS) {
+    const mainIcon =
+      nodeType === "table" ? Table : nodeType === "folder" ? Folder : File02;
+
+    // Pod files are Ruby's own content: no provider logo to overlay.
+    if (provider === "ruby_project") {
+      return <Icon visual={mainIcon} size={size} />;
+    }
+
     const providerLogo = getConnectorProviderLogoWithFallback({
       provider: provider as ConnectorProvider,
       isDark,
     });
-
-    const mainIcon =
-      nodeType === "table" ? Table : nodeType === "folder" ? Folder : File02;
     return (
       <DoubleIcon
         mainIcon={mainIcon}

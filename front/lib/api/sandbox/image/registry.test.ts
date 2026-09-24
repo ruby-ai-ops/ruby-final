@@ -94,7 +94,7 @@ describe("sandbox image registry", () => {
   test("pins the current ruby-base and sbx bedrock image tags", () => {
     expect(getRubyBaseImage().imageId).toEqual({
       imageName: "ruby-base",
-      tag: "0.8.120",
+      tag: "0.8.121",
     });
     expect(getRubyBaseImage().baseImage).toEqual({
       type: "docker",

@@ -14,6 +14,7 @@ import { Err, Ok } from "@app/types/shared/result";
 import { removeNulls } from "@app/types/shared/utils/general";
 import type {
   AgentSuggestionKind,
+  AgentSuggestionSource,
   AgentSuggestionState,
   AgentSuggestionType,
 } from "@app/types/suggestions/agent_suggestion";
@@ -255,6 +256,8 @@ export class AgentSuggestionResource extends BaseResource<AgentSuggestionModel> 
     filters?: {
       states?: AgentSuggestionState[];
       kind?: AgentSuggestionKind;
+      sources?: AgentSuggestionSource[];
+      conversationModelId?: ModelId;
       limit?: number;
     }
   ): Promise<AgentSuggestionResource[]> {
@@ -280,6 +283,11 @@ export class AgentSuggestionResource extends BaseResource<AgentSuggestionModel> 
       ...(filters?.states &&
         filters.states.length > 0 && { state: filters.states }),
       ...(filters?.kind && { kind: filters.kind }),
+      ...(filters?.sources &&
+        filters.sources.length > 0 && { source: filters.sources }),
+      ...(filters?.conversationModelId !== undefined && {
+        conversationId: filters.conversationModelId,
+      }),
     };
 
     return this.baseFetch(auth, {

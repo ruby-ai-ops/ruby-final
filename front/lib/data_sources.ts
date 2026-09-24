@@ -79,6 +79,14 @@ export function isWebsite(
   return ds.connectorProvider === "webcrawler";
 }
 
+// A pod's own files live behind the `ruby_project` connector, which is Ruby itself rather than an
+// external source, so UIs show them with the plain node icon and no provider logo.
+export function isPodFilesDataSource(
+  ds: DataSource
+): ds is DataSource & WithConnector & { connectorProvider: "ruby_project" } {
+  return ds.connectorProvider === "ruby_project";
+}
+
 export function isManagedConnectorProvider(
   connectorProvider: ConnectorProvider
 ) {

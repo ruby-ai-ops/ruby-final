@@ -27,8 +27,8 @@ import fs from "fs";
 import path from "path";
 
 const RUBY_BEDROCK_IMAGE_VERSION = "1.11.0";
-const RUBY_BASE_IMAGE_VERSION = "0.8.120";
-const RBX_CLI_VERSION = "0.1.65";
+const RUBY_BASE_IMAGE_VERSION = "0.8.121";
+const RBX_CLI_VERSION = "0.1.66";
 // Identity, not coverage list: agent-proxied is a specific Linux user. The
 // nftables ruleset covers SANDBOX_EGRESS_CONTROLLED_UIDS; this constant is
 // the stable identity used when creating the workload account.
