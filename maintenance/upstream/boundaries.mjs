@@ -17,10 +17,10 @@ const preservedDeclarations = new Map([
 ]);
 const preservedAlertSlots = ['seatLowPro', 'seatLowMax'];
 const preservedFiles = [
-  'front/styles/product-theme.css',
   'front/public/static/fonts/Sohne-Regular.ttf',
   'front/public/static/fonts/RubySerif.ttf',
 ];
+const themeFile = 'front/styles/product-theme.css';
 const preservedMarkers = new Map([
   ['front-spa/src/app/main.tsx', ['import "@ruby-ai/front/styles/product-theme.css";']],
   ['front-spa/src/admin/main.tsx', ['import "@ruby-ai/front/styles/product-theme.css";']],
@@ -40,6 +40,38 @@ function assignment(bytes, name) {
   return bytes?.toString('utf8').match(expression)?.[1]?.trim();
 }
 
+function styleRules(bytes) {
+  const text = bytes?.toString('utf8').replace(/\/\*[\s\S]*?\*\//g, '') ?? '';
+  return [...text.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(([, selector, body]) => ({
+    selector: selector.replace(/\s+/g, ' ').trim(),
+    declarations: [...body.matchAll(/([\w-]+)\s*:\s*([^;]+);/g)].map(([, property, value]) =>
+      `${property}:${value.replace(/\s+/g, ' ').trim()}`),
+  }));
+}
+
+function assertThemePreserved(before, after) {
+  if (!after || before.gitMode !== after.gitMode) {
+    throw new Error(`Ruby boundary changed: ${themeFile}`);
+  }
+  const oldRules = styleRules(before);
+  const newRules = styleRules(after);
+  if (!oldRules.length || oldRules.some(({ selector, declarations }) =>
+    !newRules.some((rule) => rule.selector === selector &&
+      declarations.every((declaration) => rule.declarations.includes(declaration))))) {
+    throw new Error(`Ruby boundary changed: ${themeFile}`);
+  }
+  // A later duplicate custom property could silently override the approved palette.
+  const protectedTokens = new Set(oldRules.flatMap(({ declarations }) =>
+    declarations.map((declaration) => declaration.split(':')[0]).filter((name) => name.startsWith('--'))));
+  for (const token of protectedTokens) {
+    const values = (rules) => rules.flatMap(({ declarations }) =>
+      declarations.filter((declaration) => declaration.startsWith(`${token}:`)));
+    if (JSON.stringify(values(oldRules)) !== JSON.stringify(values(newRules))) {
+      throw new Error(`Ruby boundary changed: ${themeFile} ${token}`);
+    }
+  }
+}
+
 /** Protects Ruby-owned product values while permitting unrelated upstream edits. */
 export function assertRubyBoundaries(ruby, candidate) {
   for (const name of new Set([...ruby.keys(), ...candidate.keys()])) {
@@ -51,6 +83,9 @@ export function assertRubyBoundaries(ruby, candidate) {
     if (ruby.has(name) && !equalEntry(ruby.get(name), candidate.get(name))) {
       throw new Error(`Ruby boundary changed: ${name}`);
     }
+  }
+  if (ruby.has(themeFile)) {
+    assertThemePreserved(ruby.get(themeFile), candidate.get(themeFile));
   }
   for (const [name, markers] of preservedMarkers) {
     if (!ruby.has(name)) continue;
