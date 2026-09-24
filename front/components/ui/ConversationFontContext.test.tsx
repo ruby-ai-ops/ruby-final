@@ -1,5 +1,6 @@
 import {
   applyConversationFont,
+  CONVERSATION_FONT_LABELS,
   CONVERSATION_FONT_METADATA_KEY,
   ConversationFontProvider,
   isConversationFont,
@@ -62,6 +63,14 @@ describe("isConversationFont", () => {
     expect(isConversationFont("dyslexic")).toBe(true);
     expect(isConversationFont("comic")).toBe(false);
     expect(isConversationFont(null)).toBe(false);
+  });
+
+  it("labels the Ruby Serif choice without changing saved preference IDs", () => {
+    expect(CONVERSATION_FONT_LABELS).toEqual({
+      sans: "Default",
+      serif: "Serif",
+      dyslexic: "OpenDyslexic",
+    });
   });
 });
 

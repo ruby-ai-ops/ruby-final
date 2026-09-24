@@ -29,8 +29,8 @@ import {
 import type { Authenticator } from "@app/lib/auth";
 import type { GlobalAgentSettingsModel } from "@app/lib/models/agent/agent";
 import {
-  isRubyCompanyPlan,
   isEnterprisePlanPrefix,
+  isRubyCompanyPlan,
 } from "@app/lib/plans/plan_codes";
 import type { MCPServerViewResource } from "@app/lib/resources/mcp_server_view_resource";
 import type {
@@ -473,7 +473,7 @@ export function _getRubyGlobalAgent(
   }
   return _getRubyLikeGlobalAgent(auth, args, {
     agentId: GLOBAL_AGENTS_SID.RUBY,
-    name: "ruby",
+    name: "Ruby",
     preferredModelConfiguration,
     preferredReasoningEffort,
   });

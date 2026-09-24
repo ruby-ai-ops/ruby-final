@@ -39,9 +39,9 @@ import {
   Button,
   ChevronDown,
   ChevronUp,
+  CpuChip01,
   cn,
   DataTable,
-  RubyLogoSquare,
   FilterFunnel01,
   Icon,
   MOTION_EASINGS,
@@ -298,9 +298,7 @@ function buildColumns({
             <div className="flex min-w-0 items-center gap-2">
               <span className="flex size-7 shrink-0 items-center justify-center">
                 <Icon
-                  visual={
-                    getModelLogoByModelId(row.id, isDark) ?? RubyLogoSquare
-                  }
+                  visual={getModelLogoByModelId(row.id, isDark) ?? CpuChip01}
                   size="sm"
                 />
               </span>

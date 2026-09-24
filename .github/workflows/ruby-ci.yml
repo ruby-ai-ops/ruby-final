@@ -114,6 +114,14 @@ jobs:
           REDIS_URI: redis://localhost:5434
           REDIS_CACHE_URI: redis://localhost:5434
         run: npx vitest run lib/api/config.test.ts lib/api/workos_authenticator.test.ts lib/api/admin/cloudflare_access.test.ts lib/api/admin/from_ruby_super_user.test.ts lib/api/sandbox/image/registry.test.ts lib/api/sandbox/image/artifacts.test.ts temporal/agent_loop/config.test.ts lib/dev/ruby_hive_seed_schema.test.ts lib/metronome/setup_new_pricing.test.ts lib/metronome/seat_types.test.ts lib/api/users/spend_limit.test.ts
+      - name: Ruby UI parity contracts
+        working-directory: front
+        env:
+          NODE_ENV: test
+          FRONT_DATABASE_URI: postgres://test:test@localhost:5433/front_test
+          REDIS_URI: redis://localhost:5434
+          REDIS_CACHE_URI: redis://localhost:5434
+        run: npx vitest run components/assistant/conversation/sidebar/conversationTitleIcon.test.ts components/navigation/Navigation.test.tsx components/ui/ConversationFontContext.test.tsx components/pages/email/ValidationPage.test.tsx lib/api/assistant/global_agents/configurations/analyst.test.ts
       - name: Checkout pricing cases
         working-directory: front-api
         env:

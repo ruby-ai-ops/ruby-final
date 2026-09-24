@@ -1,8 +1,8 @@
+import { useAdminMessageConsumption } from "@app/admin-app/swr/message_consumption";
 import { getActionStepIcon } from "@app/components/assistant/conversation/actions/inline/utils";
 import { getModelLogoByModelId } from "@app/components/providers/types";
 import { useTheme } from "@app/components/ui/ThemeContext";
 import { formatCreditValue, toolUsageLabel } from "@app/lib/client/credits";
-import { useAdminMessageConsumption } from "@app/admin-app/swr/message_consumption";
 import type {
   AgentMessageConsumptionDetailsWithModels,
   AgentMessageConsumptionModelDetails,
@@ -13,8 +13,8 @@ import {
   ChevronRight,
   Chip,
   CoinsStacked01,
+  CpuChip01,
   cn,
-  RubyLogoSquare,
   Icon,
   LoadingBlock,
   MOTION_DURATIONS,
@@ -103,7 +103,7 @@ function ModelRow({ directMessageCredits, isDark, model }: ModelRowProps) {
     >
       <div className="flex min-w-0 items-center gap-3">
         <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted-background">
-          <Icon visual={modelIcon ?? RubyLogoSquare} size="xs" />
+          <Icon visual={modelIcon ?? CpuChip01} size="xs" />
         </div>
         <div className="min-w-0">
           <p className="truncate text-sm font-medium text-foreground">

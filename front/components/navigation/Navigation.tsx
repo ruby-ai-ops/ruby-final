@@ -5,10 +5,12 @@ import {
   ToggleNavigationSidebarButton,
 } from "@app/components/navigation/NavigationSidebar";
 import { SidebarContext } from "@app/components/ui/SidebarContext";
+import { useAuth } from "@app/lib/auth/AuthContext";
 import { useUser } from "@app/lib/swr/user";
 import { classNames } from "@app/lib/utils";
 import type { SubscriptionType } from "@app/types/plan";
 import type { WorkspaceType } from "@app/types/user";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
   Button,
   cn,
@@ -19,7 +21,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@ruby-ai/ui";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import type React from "react";
 import { useContext } from "react";
 
@@ -55,7 +56,14 @@ export function Navigation({
 }: NavigationProps) {
   const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext);
 
-  const { user } = useUser();
+  const { user: authenticatedUser } = useAuth();
+  const { user: userWithWorkspaces } = useUser();
+  // Keep the profile and settings menu available when the separate user-details
+  // request fails. The authenticated workspace context already has the user.
+  const user = userWithWorkspaces ?? {
+    ...authenticatedUser,
+    workspaces: [owner],
+  };
 
   if (hideSidebar) {
     return null;

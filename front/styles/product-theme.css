@@ -17,6 +17,7 @@
 
 :root {
   --font-sans: Sohne, sans-serif;
+  --font-serif: RubySerif, Georgia, serif;
 }
 
 :root
@@ -182,4 +183,22 @@
 :root.dark[data-ruby-admin] button[class~="bg-blue-600"] {
   background-image: linear-gradient(to bottom, #f9f9f7, #d5d5d3);
   color: #181818;
+}
+
+/* Keep navigation items legible across Work, Spaces, and Admin. */
+:root.dark [data-ruby-navigation-sidebar] [role="tab"]:not([aria-disabled="true"]),
+:root.dark [data-ruby-navigation-sidebar] [class~="peer/menu-button"]:not([aria-disabled="true"]),
+:root.dark [data-ruby-navigation-sidebar] [data-nav="menu-button"]:not([data-disabled="true"]) [class~="peer/menu-button"],
+:root.dark [data-ruby-navigation-sidebar] [class~="bg-app-background"][class~="text-muted-foreground"],
+:root.dark [data-ruby-navigation-sidebar] [class~="group/tree"] > [class~="truncate"] {
+  color: #fff;
+  font-size: 1rem;
+}
+
+/* Section titles match the compact, muted date and Admin headers. */
+:root.dark [data-ruby-navigation-sidebar] [class~="group/menu-item"] > [class~="notranslate"],
+:root.dark [data-ruby-navigation-sidebar] [class~="group/menu-item"] > button [class~="notranslate"],
+:root.dark [data-ruby-navigation-sidebar] [class~="text-faint"][class~="uppercase"] {
+  color: #a4a4a3;
+  font-size: 0.8125rem;
 }

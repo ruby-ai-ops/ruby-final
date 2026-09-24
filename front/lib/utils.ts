@@ -1,13 +1,12 @@
 import { getResourceIdFromSId } from "@app/lib/resources/string_ids";
 import type { LightAgentConfigurationType } from "@app/types/assistant/agent";
 import { compareAgentsForSort } from "@app/types/assistant/assistant";
-import { isDevelopment } from "@app/types/shared/env";
 import type { TagType } from "@app/types/tag";
 
 export const MODELS_STRING_MAX_LENGTH = 255;
 
 export function getFaviconPath(): string {
-  return isDevelopment() ? "/static/local_favicon.png" : "/static/favicon.png";
+  return "/static/favicon180.png";
 }
 
 export function classNames(...classes: (string | null | boolean)[]) {

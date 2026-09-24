@@ -157,12 +157,12 @@ export function InlineActivitySteps({
     !isDone && isActing && isAgentMessageWithActions
       ? actions.filter((a) => !completedActionIds.has(`action-${a.id}`))
       : [];
-  const isStreamingWithoutContent =
-    (showActiveThinking && !chainOfThought) ||
-    (showActiveWriting && !agentMessage.content);
   const hasActiveSpinnerRow =
     activeActions.length > 0 || activePendingToolCalls.length > 0;
-  const showTrailingLoader = isStreamingWithoutContent && !hasActiveSpinnerRow;
+  // The animated Thinking label already indicates progress; avoid a second
+  // empty loading row beneath it.
+  const showTrailingLoader =
+    showActiveWriting && !agentMessage.content && !hasActiveSpinnerRow;
 
   const hasContent =
     completedSteps.length > 0 ||

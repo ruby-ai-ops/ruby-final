@@ -1,6 +1,7 @@
+import { RubyBrandLogo as RubyLogo } from "@app/components/brand/RubyBrand";
 import config from "@app/lib/api/config";
 import { useSearchParam } from "@app/lib/platform";
-import { Button, RubyLogoSquare, Icon, Page, Spinner } from "@ruby-ai/ui";
+import { Button, Page, Spinner } from "@ruby-ai/ui";
 import { useEffect, useRef, useState } from "react";
 
 const VALIDATION_STATUSES = [
@@ -74,7 +75,10 @@ function ConfirmView({ token }: ConfirmViewProps) {
       <main className="z-10 mx-6">
         <div className="flex h-screen flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Icon visual={RubyLogoSquare} size="lg" />
+            <RubyLogo
+              className="h-12 w-44 dark:[&_text]:fill-[#F4F4F2]"
+              aria-label="Ruby AI"
+            />
             <div className="flex flex-col items-center gap-4">
               <Page.Header
                 title={<span className="text-primary-100">Processing...</span>}
@@ -147,7 +151,10 @@ function ResultView({ status, conversationId, workspaceId }: ResultViewProps) {
       <main className="z-10 mx-6">
         <div className="flex h-screen flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Icon visual={RubyLogoSquare} size="lg" />
+            <RubyLogo
+              className="h-12 w-44 dark:[&_text]:fill-[#F4F4F2]"
+              aria-label="Ruby AI"
+            />
             <div className="flex flex-col items-center gap-4">
               <Page.Header title={<span className={color}>{title}</span>} />
               <p className="text-base text-primary-100">{message}</p>
@@ -203,7 +210,10 @@ function ErrorView({ errorType }: ErrorViewProps) {
       <main className="z-10 mx-6">
         <div className="flex h-screen flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Icon visual={RubyLogoSquare} size="lg" />
+            <RubyLogo
+              className="h-12 w-44 dark:[&_text]:fill-[#F4F4F2]"
+              aria-label="Ruby AI"
+            />
             <div className="flex flex-col items-center gap-4">
               <Page.Header
                 title={<span className="text-warning-500">{title}</span>}

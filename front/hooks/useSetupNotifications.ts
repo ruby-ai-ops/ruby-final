@@ -103,7 +103,7 @@ export const useSetupNotifications = () => {
               tag: notification.result.id,
               icon:
                 notification.result.avatar ??
-                `${rubyFacingUrl}/static/landing/logos/ruby/Ruby_LogoSquare.svg`,
+                `${rubyFacingUrl}/static/favicon180.png`,
               onClick: async () => {
                 if (notification.result.primaryAction?.redirect) {
                   const url = notification.result.primaryAction.redirect.url;

@@ -1,6 +1,7 @@
+import { RubyBrandLogo as RubyLogo } from "@app/components/brand/RubyBrand";
 import config from "@app/lib/api/config";
 import { LinkWrapper, useSearchParam } from "@app/lib/platform";
-import { Button, RubyLogoSquare, Icon, LogIn01, Page } from "@ruby-ai/ui";
+import { Button, LogIn01, Page } from "@ruby-ai/ui";
 
 const defaultErrorMessageClassName = "text-base text-primary-100";
 
@@ -159,7 +160,10 @@ export function LoginErrorPage() {
       <main className="z-10 mx-6">
         <div className="flex h-full flex-col items-center justify-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            <Icon visual={RubyLogoSquare} size="lg" />
+            <RubyLogo
+              className="h-12 w-44 dark:[&_text]:fill-[#F4F4F2]"
+              aria-label="Ruby AI"
+            />
             <div className="flex flex-col items-center gap-6">
               {errorMessage}
             </div>

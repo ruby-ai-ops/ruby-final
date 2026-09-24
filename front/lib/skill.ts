@@ -1,3 +1,4 @@
+import { RubyBrandIcon as RubyLogoSquare } from "@app/components/brand/RubyBrand";
 import {
   getIcon,
   isCustomResourceIconType,
@@ -12,7 +13,7 @@ import type {
   SkillWithoutInstructionsAndToolsType,
   SkillWithRelationsType,
 } from "@app/types/assistant/skill_configuration";
-import { cn, RubyLogoSquare, PuzzlePiece01 } from "@ruby-ai/ui";
+import { cn, PuzzlePiece01 } from "@ruby-ai/ui";
 import type { AvatarSizeType } from "@ruby-ai/ui/dist/esm/components/Avatar";
 import React from "react";
 
