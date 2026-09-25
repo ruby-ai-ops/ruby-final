@@ -14,6 +14,7 @@ import { Ok } from "@app/types/shared/result";
 import { removeNulls } from "@app/types/shared/utils/general";
 import type {
   BatchSuggestionState,
+  BatchSuggestionType,
   LightBatchSuggestionType,
 } from "@app/types/suggestions/batch_suggestion";
 import groupBy from "lodash/groupBy";
@@ -176,16 +177,54 @@ export class BatchSuggestionResource extends BaseResource<BatchSuggestionModel> 
 
     await withTransaction(async (t) => {
       await this.update({ state }, t, { workspaceId });
-      await AgentSuggestionResource.bulkUpdateState(
+      await AgentSuggestionResource.updateStateOfBatchMembers(
         auth,
-        this.agentSuggestions,
+        [this.id],
         state,
         { transaction: t }
       );
-      await SkillSuggestionResource.bulkUpdateState(
+      await SkillSuggestionResource.updateStateOfBatchMembers(
         auth,
-        this.skillSuggestions,
+        [this.id],
         state,
+        { transaction: t }
+      );
+    }, transaction);
+  }
+
+  /**
+   * @cc [owner:fabiencelier,label:product] batch-outdated-as-a-whole
+   * When suggestions are outdated, every batch they belong to MUST be marked `outdated` together
+   * with all its members, in a single transaction.
+   */
+  static async outdateBatchesOf(
+    auth: Authenticator,
+    batchModelIds: ModelId[],
+    { transaction }: { transaction?: Transaction } = {}
+  ): Promise<void> {
+    if (batchModelIds.length === 0) {
+      return;
+    }
+
+    const workspaceId = auth.getNonNullableWorkspace().id;
+    await withTransaction(async (t) => {
+      await this.model.update(
+        { state: "outdated" },
+        {
+          where: { workspaceId, id: batchModelIds },
+          transaction: t,
+        }
+      );
+      await AgentSuggestionResource.updateStateOfBatchMembers(
+        auth,
+        batchModelIds,
+        "outdated",
+        { transaction: t }
+      );
+      await SkillSuggestionResource.updateStateOfBatchMembers(
+        auth,
+        batchModelIds,
+        "outdated",
         { transaction: t }
       );
     }, transaction);
@@ -261,6 +300,20 @@ export class BatchSuggestionResource extends BaseResource<BatchSuggestionModel> 
       sourceConversationId: this.sourceConversationId,
       agentSuggestionIds: this.agentSuggestions.map((s) => s.sId),
       skillSuggestionIds: this.skillSuggestions.map((s) => s.sId),
+    };
+  }
+
+  toJSONWithSuggestions(): BatchSuggestionType {
+    return {
+      id: this.sId,
+      createdAt: this.createdAt.getTime(),
+      updatedAt: this.updatedAt.getTime(),
+      title: this.title,
+      analysis: this.analysis,
+      state: this.state,
+      sourceConversationId: this.sourceConversationId,
+      agentSuggestions: this.agentSuggestions.map((s) => s.toJSON()),
+      skillSuggestions: this.skillSuggestions.map((s) => s.toJSON()),
     };
   }
 }

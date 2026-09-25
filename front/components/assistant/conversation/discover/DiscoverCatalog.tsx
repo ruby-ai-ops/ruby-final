@@ -1,6 +1,7 @@
 import { getSkillAvatarIcon, isRubyProvidedSkill } from "@app/lib/skill";
 import { useUnifiedAgentConfigurations } from "@app/lib/swr/assistants";
 import { useSkillsWithRelations } from "@app/lib/swr/skill_configurations";
+import { useIsMobile } from "@app/lib/swr/useIsMobile";
 import {
   compareForFuzzySort,
   getAgentSearchString,
@@ -23,6 +24,7 @@ import {
   NavigationList,
   NavigationListItem,
   Pin02,
+  SearchInput,
   Spinner,
   Users01,
 } from "@ruby-ai/ui";
@@ -149,8 +151,6 @@ function formatAuthors(authors: readonly string[]): string {
 
 interface DiscoverCatalogProps {
   owner: WorkspaceType;
-  search: string;
-  onClearSearch: () => void;
   onAgentClick: (agent: LightAgentConfigurationType) => void;
   onSkillClick: (skill: DiscoverSkill) => void;
   onPin?: (item: CatalogItem) => void;
@@ -160,8 +160,6 @@ interface DiscoverCatalogProps {
 
 export function DiscoverCatalog({
   owner,
-  search,
-  onClearSearch,
   onAgentClick,
   onSkillClick,
   onPin,
@@ -169,6 +167,7 @@ export function DiscoverCatalog({
   onFiltersChange,
 }: DiscoverCatalogProps) {
   const [filters, setFilters] = useState<CatalogFilters>(DEFAULT_FILTERS);
+  const [search, setSearch] = useState("");
   const { view, kind, tagId } = filters;
 
   const updateFilters = (update: Partial<CatalogFilters>) => {
@@ -247,7 +246,7 @@ export function DiscoverCatalog({
 
   const clearFilters = () => {
     updateFilters(DEFAULT_FILTERS);
-    onClearSearch();
+    setSearch("");
   };
 
   const isInitialLoading =
@@ -256,93 +255,101 @@ export function DiscoverCatalog({
   const isRefreshing = isAgentsLoading && !isInitialLoading;
 
   return (
-    <div className="grid grid-cols-1 gap-10 md:grid-cols-[12rem_1fr]">
-      <nav
-        aria-label="Filter"
-        className="flex flex-col gap-6 self-start md:sticky md:top-6"
-      >
-        <NavigationList>
-          {CATALOG_VIEWS.map((v) => (
-            <NavigationListItem
-              key={v.id}
-              label={v.label}
-              selected={view === v.id}
-              onClick={() => updateFilters({ view: v.id })}
-            />
-          ))}
-        </NavigationList>
-        <NavigationList>
-          {CATALOG_KINDS.map((k) => (
-            <NavigationListItem
-              key={k.id}
-              label={k.label}
-              selected={kind === k.id}
-              onClick={() =>
-                updateFilters(
-                  k.id === "skill"
-                    ? { kind: k.id, tagId: null }
-                    : { kind: k.id }
-                )
-              }
-            />
-          ))}
-        </NavigationList>
-        {tags.length > 0 && kind !== "skill" && (
+    <div className="flex flex-col gap-8">
+      <SearchInput
+        name="discover-search"
+        placeholder="Search for agents or skills"
+        value={search}
+        onChange={(value) => {
+          setSearch(value);
+          onFiltersChange();
+        }}
+      />
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-[12rem_1fr]">
+        <nav aria-label="Filter" className="flex flex-col gap-6 self-start">
           <NavigationList>
-            {tags.map((t) => (
+            {CATALOG_VIEWS.map((v) => (
               <NavigationListItem
-                key={t.sId}
-                label={capitalizeWords(t.name)}
-                selected={tagId === t.sId}
+                key={v.id}
+                label={v.label}
+                selected={view === v.id}
+                onClick={() => updateFilters({ view: v.id })}
+              />
+            ))}
+          </NavigationList>
+          <NavigationList>
+            {CATALOG_KINDS.map((k) => (
+              <NavigationListItem
+                key={k.id}
+                label={k.label}
+                selected={kind === k.id}
                 onClick={() =>
-                  updateFilters({ tagId: tagId === t.sId ? null : t.sId })
+                  updateFilters(
+                    k.id === "skill"
+                      ? { kind: k.id, tagId: null }
+                      : { kind: k.id }
+                  )
                 }
               />
             ))}
           </NavigationList>
-        )}
-      </nav>
-      <section className="relative flex min-w-0 flex-col">
-        {isRefreshing && (
-          <div className="absolute right-0 top-0">
-            <Spinner size="xs" />
-          </div>
-        )}
-        {isInitialLoading ? (
-          <div className="flex justify-center py-6">
-            <Spinner />
-          </div>
-        ) : items.length === 0 ? (
-          <EmptyCTA
-            title="No agents or skills found"
-            message="Try another search or different filters."
-            action={
-              hasActiveFilters && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  label="Clear filters"
-                  onClick={clearFilters}
+          {tags.length > 0 && kind !== "skill" && (
+            <NavigationList>
+              {tags.map((t) => (
+                <NavigationListItem
+                  key={t.sId}
+                  label={capitalizeWords(t.name)}
+                  selected={tagId === t.sId}
+                  onClick={() =>
+                    updateFilters({ tagId: tagId === t.sId ? null : t.sId })
+                  }
                 />
-              )
-            }
-          />
-        ) : (
-          items.map((item) => (
-            <CatalogRow
-              key={`${item.kind}-${getItemId(item)}`}
-              item={item}
-              onUse={() =>
-                item.kind === "agent"
-                  ? onAgentClick(item.agent)
-                  : onSkillClick(item.skill)
+              ))}
+            </NavigationList>
+          )}
+        </nav>
+        <section className="relative flex min-w-0 flex-col">
+          {isRefreshing && (
+            <div className="absolute right-0 top-0">
+              <Spinner size="xs" />
+            </div>
+          )}
+          {isInitialLoading ? (
+            <div className="flex justify-center py-6">
+              <Spinner />
+            </div>
+          ) : items.length === 0 ? (
+            <EmptyCTA
+              title="No agents or skills found"
+              message="Try another search or different filters."
+              action={
+                hasActiveFilters && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    label="Clear filters"
+                    onClick={clearFilters}
+                  />
+                )
               }
-              onPin={onPin && (() => onPin(item))}
-              onDetails={() => onDetails(item)}
             />
-          ))
-        )}
-      </section>
+          ) : (
+            items.map((item) => (
+              <CatalogRow
+                key={`${item.kind}-${getItemId(item)}`}
+                item={item}
+                onUse={() =>
+                  item.kind === "agent"
+                    ? onAgentClick(item.agent)
+                    : onSkillClick(item.skill)
+                }
+                onPin={onPin && (() => onPin(item))}
+                onDetails={() => onDetails(item)}
+              />
+            ))
+          )}
+        </section>
+      </div>
     </div>
   );
 }
@@ -356,35 +363,49 @@ interface CatalogRowProps {
 
 export function CatalogRow({ item, onUse, onPin, onDetails }: CatalogRowProps) {
   const name = getItemName(item);
+  const isMobile = useIsMobile();
+  const avatar =
+    item.kind === "agent" ? (
+      <Avatar size={isMobile ? "md" : "lg"} visual={item.agent.pictureUrl} />
+    ) : (
+      <SkillCatalogAvatar skill={item.skill} size={isMobile ? "md" : "lg"} />
+    );
   return (
-    <div className="group flex items-center gap-4 border-b border-separator py-4 last:border-b-0">
-      <button
-        type="button"
-        aria-label={`Show ${name} details`}
-        onClick={onDetails}
-        className="shrink-0 rounded-2xl transition duration-200 ease-out hover:brightness-110 active:brightness-90"
-      >
-        {item.kind === "agent" ? (
-          <Avatar size="lg" visual={item.agent.pictureUrl} />
-        ) : (
-          <SkillCatalogAvatar skill={item.skill} />
-        )}
-      </button>
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="heading-base notranslate text-foreground">
+    <div
+      className={cn(
+        "group relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2",
+        "border-b border-separator py-4 last:border-b-0 md:gap-y-1"
+      )}
+    >
+      <div className="col-start-1 row-start-1 shrink-0 md:row-span-2">
+        {avatar}
+      </div>
+      <div className="col-start-2 col-end-4 row-start-1 flex min-w-0 items-center gap-2 self-center md:col-end-3 md:self-end">
+        {isMobile ? (
+          <span className="heading-base notranslate truncate text-foreground">
             {name}
           </span>
-          <Chip
-            size="xs"
-            label={
-              item.kind === "agent"
-                ? `@${item.agent.name}`
-                : `/${item.skill.name}`
-            }
-            className="font-mono"
-          />
-        </div>
+        ) : (
+          <button
+            type="button"
+            aria-label={`Show ${name} details`}
+            onClick={onDetails}
+            className="heading-base notranslate cursor-pointer truncate text-left text-foreground after:absolute after:inset-0"
+          >
+            {name}
+          </button>
+        )}
+        <Chip
+          size="xs"
+          label={
+            item.kind === "agent"
+              ? `@${item.agent.name}`
+              : `/${item.skill.name}`
+          }
+          className="shrink-0 font-mono"
+        />
+      </div>
+      <div className="col-start-1 col-end-3 row-start-2 flex min-w-0 flex-col gap-1 self-start md:col-start-2">
         <div className="flex h-5 items-center gap-4 copy-sm">
           <ItemAuthor item={item} />
           <span className="flex items-center gap-1 text-muted-foreground">
@@ -394,19 +415,19 @@ export function CatalogRow({ item, onUse, onPin, onDetails }: CatalogRowProps) {
               {item.kind === "agent" ? "messages" : "uses"}
             </span>
           </span>
-          {item.kind === "agent" && item.agent.usage && (
+          {item.kind === "agent" && (
             <span className="flex items-center gap-1 text-muted-foreground">
               <Icon visual={Users01} size="xs" />
-              {item.agent.usage.userCount.toLocaleString()}
+              {(item.agent.usage?.userCount ?? 0).toLocaleString()}
               <span className="sr-only">members</span>
             </span>
           )}
         </div>
-        <p className="copy-sm text-muted-foreground">
+        <p className="copy-sm line-clamp-2 text-muted-foreground">
           {getItemDescription(item)}
         </p>
       </div>
-      <div className="flex shrink-0 items-center gap-1">
+      <div className="relative col-start-3 row-start-2 flex shrink-0 items-center gap-1 self-end md:row-span-2 md:row-start-1 md:self-center">
         {onPin && (
           <Button
             variant="ghost"
@@ -442,6 +463,9 @@ export function SkillCatalogAvatar({
   skill,
   size = "lg",
 }: SkillCatalogAvatarProps) {
-  const SkillAvatar = useMemo(() => getSkillAvatarIcon(skill), [skill]);
+  const SkillAvatar = useMemo(
+    () => getSkillAvatarIcon(skill.icon),
+    [skill.icon]
+  );
   return <SkillAvatar size={size} className="shrink-0" />;
 }

@@ -7,7 +7,7 @@ import { isAgentLoopRunContext } from "@app/lib/actions/types";
 import type { SingletonAgentSuggestionData } from "@app/lib/api/actions/servers/building_agents_and_skills/agent_suggestion_changes";
 import {
   recordAgentCreationSuggestion,
-  recordSingletonAgentSuggestion,
+  recordSingletonAgentSuggestions,
   validateAgentCreation,
   validateAgentDeletion,
   validateAgentDescriptionChange,
@@ -19,6 +19,7 @@ import {
 import { formatBatchSuggestionDirective } from "@app/lib/api/actions/servers/building_agents_and_skills/directives";
 import type {
   CreateAgentSuggestion,
+  CreateSkillSuggestion,
   DeleteAgentSuggestion,
   DeleteSkillSuggestion,
   EditAgentSuggestion,
@@ -28,8 +29,10 @@ import type {
 } from "@app/lib/api/actions/servers/building_agents_and_skills/metadata";
 import {
   checkSkillSuggestionKindAuthorized,
-  recordSkillSuggestion,
+  recordSkillCreationSuggestion,
+  recordSkillSuggestions,
   validateSkillAvailabilitySuggestion,
+  validateSkillCreation,
   validateSkillDeletionSuggestion,
   validateSkillEditorsSuggestion,
   validateSkillEditSuggestion,
@@ -43,6 +46,10 @@ import { fetchCustomSkillById } from "@app/lib/api/skills/write_access";
 import type { Authenticator } from "@app/lib/auth";
 import { BatchSuggestionResource } from "@app/lib/resources/batch_suggestion_resource";
 import type { SkillResource } from "@app/lib/resources/skill/skill_resource";
+import {
+  extractSkillRefs,
+  hasUnparsableSkillRefTag,
+} from "@app/lib/skills/format";
 import type {
   AgentConfigurationType,
   LightAgentConfigurationType,
@@ -53,7 +60,10 @@ import type { Result } from "@app/types/shared/result";
 import { Err, Ok } from "@app/types/shared/result";
 import { assertNever } from "@app/types/shared/utils/assert_never";
 import type { CreateSuggestionType } from "@app/types/suggestions/agent_suggestion";
-import type { SkillSuggestionData } from "@app/types/suggestions/skill_suggestion";
+import type {
+  SkillCreateSuggestionType,
+  SkillSuggestionData,
+} from "@app/types/suggestions/skill_suggestion";
 import assert from "assert";
 
 /**
@@ -71,6 +81,7 @@ type PlannedChange =
         edits: InstructionSuggestionEditInput[];
       } | null;
     }
+  | { type: "skill_creation"; create: SkillCreateSuggestionType }
   | { type: "skill"; skill: SkillResource; rows: SkillSuggestionData[] };
 
 async function fetchAgentForSuggestion(
@@ -109,6 +120,31 @@ async function planAgentCreation(
   return new Ok({
     type: "agent_creation",
     create: { name: validation.value.name, description, instructions },
+  });
+}
+
+async function planSkillCreation(
+  auth: Authenticator,
+  {
+    name,
+    userFacingDescription,
+    agentFacingDescription,
+    instructions,
+  }: CreateSkillSuggestion
+): Promise<Result<PlannedChange, MCPError>> {
+  const validation = await validateSkillCreation(auth, { name });
+  if (validation.isErr()) {
+    return validation;
+  }
+
+  return new Ok({
+    type: "skill_creation",
+    create: {
+      name,
+      userFacingDescription,
+      agentFacingDescription,
+      instructions,
+    },
   });
 }
 
@@ -373,10 +409,7 @@ async function planSuggestion(
     case "delete_agent":
       return planAgentDeletion(auth, suggestion);
     case "create_skill":
-      // TODO(conversational-building): record a creation on a pending placeholder skill.
-      return new Err(
-        new MCPError("Suggesting a new skill is not supported yet.")
-      );
+      return planSkillCreation(auth, suggestion);
     case "edit_skill":
       return planSkillEdit(auth, suggestion);
     case "delete_skill":
@@ -384,6 +417,83 @@ async function planSuggestion(
     default:
       assertNever(suggestion);
   }
+}
+
+/** The refs the suggestions give to the skills they create. */
+function skillRefsOf(suggestions: Suggestion[]): string[] {
+  return suggestions.flatMap((suggestion) => {
+    switch (suggestion.kind) {
+      case "create_skill":
+        return suggestion.ref ? [suggestion.ref] : [];
+      case "edit_skill":
+      case "create_agent":
+      case "edit_agent":
+      case "delete_agent":
+      case "delete_skill":
+        return [];
+      default:
+        assertNever(suggestion);
+    }
+  });
+}
+
+/** The skill instructions the suggestions write, where skill tags may use a ref. */
+function skillInstructionsOf(suggestions: Suggestion[]): string[] {
+  return suggestions.flatMap((suggestion) => {
+    switch (suggestion.kind) {
+      case "create_skill":
+        return [suggestion.instructions];
+      case "edit_skill":
+        return (suggestion.instructionEdits ?? []).map((edit) => edit.content);
+      case "create_agent":
+      case "edit_agent":
+        // TODO(conversational-building): collect the refs agents use once they can add skills.
+        return [];
+      case "delete_agent":
+      case "delete_skill":
+        return [];
+      default:
+        assertNever(suggestion);
+    }
+  });
+}
+
+/**
+ * Checks that each ref is declared only once, by a skill creation. Every skill tag citing a ref in
+ * the call's instructions must point at one of those declared refs.
+ */
+function validateRefs(suggestions: Suggestion[]): Result<undefined, MCPError> {
+  const pendingSkillRefs = new Set<string>();
+  for (const ref of skillRefsOf(suggestions)) {
+    if (pendingSkillRefs.has(ref)) {
+      return new Err(new MCPError(`The ref "${ref}" is declared twice.`));
+    }
+    pendingSkillRefs.add(ref);
+  }
+
+  for (const content of skillInstructionsOf(suggestions)) {
+    if (hasUnparsableSkillRefTag(content)) {
+      return new Err(
+        new MCPError(
+          'A skill tag citing a ref must be written as <skill ref="name"/>.'
+        )
+      );
+    }
+    // A skill tag can only use the ref of a skill created in this call: that skill gets a pending
+    // skill whose id replaces the ref before storage.
+    const unknownRef = extractSkillRefs(content).find(
+      (ref) => !pendingSkillRefs.has(ref)
+    );
+    if (unknownRef) {
+      return new Err(
+        new MCPError(
+          `The ref "${unknownRef}" is not declared by any skill creation of this call.`
+        )
+      );
+    }
+  }
+
+  return new Ok(undefined);
 }
 
 /** Each existing agent or skill may be targeted by at most one suggestion of the batch. */
@@ -439,14 +549,12 @@ async function recordPlannedChange(
     }
 
     case "agent": {
-      for (const data of change.singletons) {
-        await recordSingletonAgentSuggestion(auth, change.agent, {
-          data,
-          analysis: null,
-          conversation,
-          batch,
-        });
-      }
+      await recordSingletonAgentSuggestions(auth, change.agent, {
+        data: change.singletons,
+        analysis: null,
+        conversation,
+        batch,
+      });
 
       if (change.instructions) {
         const res = await createAgentInstructionSuggestions(auth, {
@@ -463,16 +571,24 @@ async function recordPlannedChange(
       return new Ok(undefined);
     }
 
+    case "skill_creation": {
+      const res = await recordSkillCreationSuggestion(auth, {
+        create: change.create,
+        analysis: null,
+        conversation,
+        batch,
+      });
+      return res.isErr() ? res : new Ok(undefined);
+    }
+
     case "skill": {
-      for (const data of change.rows) {
-        await recordSkillSuggestion(auth, change.skill, {
-          data,
-          analysis: null,
-          title: null,
-          conversation,
-          batch,
-        });
-      }
+      await recordSkillSuggestions(auth, change.skill, {
+        data: change.rows,
+        analysis: null,
+        title: null,
+        conversation,
+        batch,
+      });
       return new Ok(undefined);
     }
 
@@ -485,7 +601,8 @@ async function recordPlannedChange(
  * @cc [owner:fabiencelier,label:product;mcp] suggest-validates-all-before-writing
  * `suggest` MUST validate every suggestion of the call against live state before recording any of
  * them: when one suggestion is invalid or unsupported, or two suggestions target the same agent or
- * skill, the call fails and no batch, placeholder agent or suggestion row is created.
+ * skill, or a ref is declared twice or used without being declared, the call fails and no batch,
+ * placeholder agent or skill, or suggestion row is created.
  */
 export async function suggest(
   auth: Authenticator,
@@ -505,6 +622,11 @@ export async function suggest(
         `"${duplicateTarget}" is targeted by several suggestions: merge them into one.`
       )
     );
+  }
+
+  const refsValidation = validateRefs(suggestions);
+  if (refsValidation.isErr()) {
+    return refsValidation;
   }
 
   const plannedChanges: PlannedChange[] = [];

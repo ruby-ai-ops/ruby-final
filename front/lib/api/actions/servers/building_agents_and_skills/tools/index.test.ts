@@ -45,6 +45,7 @@ import type { ModelId } from "@app/types/shared/model_id";
 import { INSTRUCTIONS_ROOT_TARGET_BLOCK_ID } from "@app/types/suggestions/agent_suggestion";
 import { SKILL_SUGGESTION_KINDS } from "@app/types/suggestions/skill_suggestion";
 import type { WorkspaceType } from "@app/types/user";
+import assert from "assert";
 import { describe, expect, it } from "vitest";
 
 import { TOOLS } from "./index";
@@ -259,6 +260,16 @@ async function createAgentAuthorTestContext() {
   await grantWorkspacePermission(result.workspace, result.user, {
     grantType: "create",
     resourceType: "agent",
+  });
+  await result.authenticator.refresh();
+  return result;
+}
+
+async function createSkillAuthorTestContext() {
+  const result = await createResourceTest({ role: "user" });
+  await grantWorkspacePermission(result.workspace, result.user, {
+    grantType: "create",
+    resourceType: "skill",
   });
   await result.authenticator.refresh();
   return result;
@@ -2719,6 +2730,54 @@ describe("building_agents_and_skills tools", () => {
       expect(pending).toHaveLength(0);
     });
 
+    it("outdates a whole batch when one of its suggestions is superseded", async () => {
+      const { authenticator } = await createResourceTest({ role: "user" });
+      const agent = await AgentConfigurationFactory.createTestAgent(
+        authenticator,
+        { name: "OldHelper" }
+      );
+      const skill = await seedSkill(authenticator, { name: "Old Skill" });
+
+      const firstBatchId = extractBatchId(
+        await runSuggest(authenticator, {
+          title: "Rename both",
+          analysis: "Naming convention.",
+          suggestions: [
+            { kind: "edit_agent", agentId: agent.sId, name: "FirstName" },
+            { kind: "edit_skill", skillId: skill.sId, name: "Renamed Skill" },
+          ],
+        })
+      );
+      // A later rename of the same agent supersedes the first batch's agent rename.
+      const secondBatchId = extractBatchId(
+        await runSuggest(authenticator, {
+          title: "Rename agent",
+          analysis: "Better name.",
+          suggestions: [
+            { kind: "edit_agent", agentId: agent.sId, name: "SecondName" },
+          ],
+        })
+      );
+
+      const first = await BatchSuggestionResource.fetchById(
+        authenticator,
+        firstBatchId
+      );
+      expect(first?.state).toBe("outdated");
+      for (const suggestion of [
+        ...(first?.agentSuggestions ?? []),
+        ...(first?.skillSuggestions ?? []),
+      ]) {
+        expect(suggestion.state).toBe("outdated");
+      }
+
+      const second = await BatchSuggestionResource.fetchById(
+        authenticator,
+        secondBatchId
+      );
+      expect(second?.state).toBe("pending");
+    });
+
     it("refuses two suggestions targeting the same agent", async () => {
       const { authenticator } = await createResourceTest({ role: "user" });
       const agent =
@@ -2816,6 +2875,113 @@ describe("building_agents_and_skills tools", () => {
       expectMcpError(result, "already exists");
     });
 
+    const createSkill = {
+      kind: "create_skill",
+      name: "Meeting Notes",
+      userFacingDescription: "Summarizes meeting notes.",
+      agentFacingDescription: "Use to summarize meeting notes.",
+      instructions: "<p>Summarize the notes.</p>",
+    };
+
+    it("records a skill creation on a pending placeholder skill", async () => {
+      const { authenticator, user } = await createSkillAuthorTestContext();
+
+      const batchId = extractBatchId(
+        await runSuggest(authenticator, {
+          title: "New skill",
+          analysis: "Notes keep coming up.",
+          suggestions: [createSkill],
+        })
+      );
+
+      const batch = await BatchSuggestionResource.fetchById(
+        authenticator,
+        batchId
+      );
+      expect(batch?.skillSuggestions.map((s) => s.toJSON())).toMatchObject([
+        {
+          kind: "create",
+          state: "pending",
+          source: "conversational",
+          suggestion: {
+            name: "Meeting Notes",
+            userFacingDescription: "Summarizes meeting notes.",
+            agentFacingDescription: "Use to summarize meeting notes.",
+            instructions: "<p>Summarize the notes.</p>",
+          },
+        },
+      ]);
+
+      const placeholderId = batch?.skillSuggestions[0]?.skillConfigurationSId;
+      assert(placeholderId);
+      const placeholder = await SkillResource.fetchById(
+        authenticator,
+        placeholderId
+      );
+      expect(placeholder?.status).toBe("pending");
+      const editors = await placeholder?.listEditors(authenticator);
+      expect(editors?.map((editor) => editor.sId)).toEqual([user.sId]);
+    });
+
+    it("records a skill creation and an agent edit in one batch", async () => {
+      const { authenticator } = await createSkillAuthorTestContext();
+      const agent =
+        await AgentConfigurationFactory.createTestAgent(authenticator);
+
+      const batchId = extractBatchId(
+        await runSuggest(authenticator, {
+          title: "Notes skill",
+          analysis: "Move note taking to a skill.",
+          suggestions: [
+            createSkill,
+            {
+              kind: "edit_agent",
+              agentId: agent.sId,
+              description: "Takes notes with a skill.",
+            },
+          ],
+        })
+      );
+
+      const batch = await BatchSuggestionResource.fetchById(
+        authenticator,
+        batchId
+      );
+      expect(batch?.skillSuggestions.map((s) => s.kind)).toEqual(["create"]);
+      expect(batch?.agentSuggestions.map((s) => s.kind)).toEqual([
+        "description",
+      ]);
+    });
+
+    it("refuses creating a skill with the name of an existing skill", async () => {
+      const { authenticator } = await createSkillAuthorTestContext();
+      await seedSkill(authenticator, { name: "Meeting Notes" });
+
+      const result = await runSuggest(authenticator, {
+        title: "New skill",
+        analysis: "New skill.",
+        suggestions: [createSkill],
+      });
+
+      expectMcpError(result, "already exists");
+      const pendingSkills = await SkillResource.listByWorkspace(authenticator, {
+        status: "pending",
+      });
+      expect(pendingSkills).toHaveLength(0);
+    });
+
+    it("refuses creating a skill without the create capability", async () => {
+      const { authenticator } = await createResourceTest({ role: "user" });
+
+      const result = await runSuggest(authenticator, {
+        title: "New skill",
+        analysis: "New skill.",
+        suggestions: [createSkill],
+      });
+
+      expectMcpError(result, "Creating skills is restricted.");
+    });
+
     it("refuses agent instruction edits targeting a block and its child", async () => {
       const { authenticator } = await createResourceTest({ role: "user" });
       const agent = await AgentConfigurationFactory.createTestAgent(
@@ -2864,6 +3030,62 @@ describe("building_agents_and_skills tools", () => {
       });
 
       expectMcpError(result, "does not change anything");
+    });
+
+    describe("refs", () => {
+      it("refuses an unknown ref and writes nothing", async () => {
+        const { authenticator } = await createSkillAuthorTestContext();
+
+        const result = await runSuggest(authenticator, {
+          title: "Notes skill",
+          analysis: "Notes.",
+          suggestions: [
+            {
+              ...createSkill,
+              instructions: '<p>Use <skill ref="missing"/></p>',
+            },
+          ],
+        });
+
+        expectMcpError(result, "is not declared");
+        const pendingSkills = await SkillResource.listByWorkspace(
+          authenticator,
+          { status: "pending" }
+        );
+        expect(pendingSkills).toHaveLength(0);
+      });
+
+      it("refuses a ref declared twice", async () => {
+        const { authenticator } = await createSkillAuthorTestContext();
+
+        const result = await runSuggest(authenticator, {
+          title: "Duplicate",
+          analysis: "Duplicate.",
+          suggestions: [
+            { ...createSkill, ref: "notes" },
+            { ...createSkill, name: "Other Notes", ref: "notes" },
+          ],
+        });
+
+        expectMcpError(result, "declared twice");
+      });
+
+      it("refuses a skill tag whose ref cannot be parsed", async () => {
+        const { authenticator } = await createSkillAuthorTestContext();
+
+        const result = await runSuggest(authenticator, {
+          title: "Notes skill",
+          analysis: "Notes.",
+          suggestions: [
+            {
+              ...createSkill,
+              instructions: '<p>Use <skill ref="bad ref"/></p>',
+            },
+          ],
+        });
+
+        expectMcpError(result, "must be written as");
+      });
     });
   });
 

@@ -46,10 +46,6 @@ import { CONVERSATIONS_UPDATED_EVENT } from "@app/lib/notifications/events";
 import { useAppRouter } from "@app/lib/platform";
 import { SKILL_ICON } from "@app/lib/skill";
 import { getSpaceIcon } from "@app/lib/spaces";
-import {
-  useActivationPod,
-  useActivationRecommendations,
-} from "@app/lib/swr/activation";
 import { useWorkspacePermissions } from "@app/lib/swr/permissions";
 import { TRACKING_AREAS, withTracking } from "@app/lib/tracking";
 import { setTimeoutAsync } from "@app/lib/utils/async_utils";
@@ -58,7 +54,6 @@ import { hasHealthyProviders } from "@app/lib/utils/providersHealth";
 import {
   getAgentBuilderRoute,
   getConversationRoute,
-  getGetStartedRoute,
   getPodRoute,
   getSkillBuilderRoute,
 } from "@app/lib/utils/router";
@@ -79,7 +74,6 @@ import {
   CheckDone01,
   Chip,
   Clock,
-  Counter,
   cn,
   DotsHorizontal,
   DropdownMenu,
@@ -92,7 +86,6 @@ import {
   FolderOpen,
   Icon,
   Label,
-  Lightbulb04,
   MessagePlusCircle,
   NavigationList,
   NavigationListCollapsibleSection,
@@ -434,16 +427,6 @@ export function AgentSidebarMenu({
 
   const { providersHealth } = useAuth();
   const noHealthyProviders = !hasHealthyProviders(providersHealth);
-  const { activationPodId } = useActivationPod({
-    workspaceId: owner.sId,
-  });
-  const showGetStarted = activationPodId !== null;
-  const { recommendations: activationRecsForBadge } =
-    useActivationRecommendations({
-      workspaceId: owner.sId,
-      podId: activationPodId ?? undefined,
-      disabled: !showGetStarted,
-    });
 
   const [podSearchText, setPodSearchText] = useState("");
   const { setSidebarOpen } = useContext(SidebarContext);
@@ -464,12 +447,6 @@ export function AgentSidebarMenu({
   } = usePodConversationsSummary({
     workspaceId: owner.sId,
   });
-
-  // Hide the Learning Space pod from the UI. Users can only see "For you"
-  const visibleSummary = useMemo(
-    () => summary.filter(({ space }) => space.sId !== activationPodId),
-    [summary, activationPodId]
-  );
 
   useEffect(() => {
     const handleConversationsUpdated = () => {
@@ -610,12 +587,12 @@ export function AgentSidebarMenu({
 
   const availablePods = useMemo(
     () =>
-      visibleSummary
+      summary
         .map(({ space }) => space)
         .filter((space) =>
           space.name.toLowerCase().includes(podSearchText.toLowerCase().trim())
         ),
-    [visibleSummary, podSearchText]
+    [summary, podSearchText]
   );
 
   const moveSelectionToPod = useCallback(
@@ -723,9 +700,7 @@ export function AgentSidebarMenu({
   const sidebarTitleFilter = titleFilter;
 
   const starredSection = useMemo(() => {
-    const starredSummary = visibleSummary.filter(
-      ({ space }) => space.isStarred
-    );
+    const starredSummary = summary.filter(({ space }) => space.isStarred);
     const starredCountInSummary = starredSummary.length;
 
     if (starredCountInSummary === 0) {
@@ -765,7 +740,7 @@ export function AgentSidebarMenu({
       </NavigationList>
     );
   }, [
-    visibleSummary,
+    summary,
     owner,
     sidebarTitleFilter,
     moveConversationToPod,
@@ -775,9 +750,7 @@ export function AgentSidebarMenu({
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: ignored using `--suppress`
   const podsSection = useMemo(() => {
-    const nonStarredSummary = visibleSummary.filter(
-      (pod) => !pod.space.isStarred
-    );
+    const nonStarredSummary = summary.filter((pod) => !pod.space.isStarred);
 
     const VISIBLE_PODS = 4;
     const hiddenSummary = nonStarredSummary.slice(VISIBLE_PODS);
@@ -853,7 +826,7 @@ export function AgentSidebarMenu({
     );
   }, [
     owner,
-    visibleSummary,
+    summary,
     setIsCreatePodModalOpen,
     isPodsSectionCollapsed,
     setPodsSectionCollapsed,
@@ -861,153 +834,127 @@ export function AgentSidebarMenu({
     sidebarTitleFilter,
   ]);
 
-  const navItemsSection = (showGetStarted ||
-    (!isMultiSelect && !hideActions)) && (
+  const navItemsSection = !isMultiSelect && !hideActions && (
     <NavigationList className="mx-sidebar-side-spacing pt-1">
-      {showGetStarted && (
-        <NavigationListItem
-          label="For you"
-          icon={Lightbulb04}
-          href={getGetStartedRoute(owner.sId)}
-          selected={router.asPath?.startsWith(getGetStartedRoute(owner.sId))}
-          suffix={
-            activationRecsForBadge.length > 0 ? (
-              <Counter
-                value={activationRecsForBadge.length}
-                size="xs"
-                variant="highlight"
-              />
-            ) : undefined
-          }
-        />
-      )}
-      {!isMultiSelect && !hideActions && (
-        <>
-          <NavigationListItem
-            href={getAgentBuilderRoute(owner.sId, "manage")}
-            icon={Robot}
-            label="Agents"
-            selected={router.asPath.startsWith(
-              `/w/${owner.sId}/builder/agents`
-            )}
-            data-gtm-label="assistantManagementButton"
-            data-gtm-location="sidebarMenu"
-            onClick={withTracking(TRACKING_AREAS.BUILDER, "manage_agents", () =>
-              setSidebarOpen(false)
-            )}
-            keepHoverOnMoreMenu
-            moreMenu={
-              canCreateAgent ? (
-                <div
-                  className={cn(
-                    "absolute right-2 top-1.5",
-                    "transition-opacity",
-                    "[@media(hover:hover)_and_(pointer:fine)]:opacity-0",
-                    "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100",
-                    "has-[[data-state=open]]:opacity-100"
-                  )}
+      <NavigationListItem
+        href={getAgentBuilderRoute(owner.sId, "manage")}
+        icon={Robot}
+        label="Agents"
+        selected={router.asPath.startsWith(`/w/${owner.sId}/builder/agents`)}
+        data-gtm-label="assistantManagementButton"
+        data-gtm-location="sidebarMenu"
+        onClick={withTracking(TRACKING_AREAS.BUILDER, "manage_agents", () =>
+          setSidebarOpen(false)
+        )}
+        keepHoverOnMoreMenu
+        moreMenu={
+          canCreateAgent ? (
+            <div
+              className={cn(
+                "absolute right-2 top-1.5",
+                "transition-opacity",
+                "[@media(hover:hover)_and_(pointer:fine)]:opacity-0",
+                "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100",
+                "has-[[data-state=open]]:opacity-100"
+              )}
+            >
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="xs"
+                    icon={Plus}
+                    label="New"
+                    variant="ghost-secondary"
+                    className="data-[state=open]:bg-hover"
+                    disabled={noHealthyProviders}
+                    onClick={withTracking(
+                      TRACKING_AREAS.NAVIGATION,
+                      "new_agent",
+                      (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }
+                    )}
+                  />
+                </DropdownMenuTrigger>
+                <CreateAgentDropdownContent
+                  owner={owner}
+                  dataGtmLocation="sidebarMenu"
+                  onNavigate={() => setSidebarOpen(false)}
+                  side="bottom"
+                  align="center"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </DropdownMenu>
+            </div>
+          ) : undefined
+        }
+      />
+      <NavigationListItem
+        href={getSkillBuilderRoute(owner.sId, "manage")}
+        icon={SKILL_ICON}
+        label="Skills"
+        selected={router.asPath.startsWith(`/w/${owner.sId}/builder/skills`)}
+        onClick={withTracking(TRACKING_AREAS.BUILDER, "manage_skills", () =>
+          setSidebarOpen(false)
+        )}
+        keepHoverOnMoreMenu
+        moreMenu={
+          canCreateSkill ? (
+            <div
+              className={cn(
+                "absolute right-2 top-1.5",
+                "transition-opacity",
+                "[@media(hover:hover)_and_(pointer:fine)]:opacity-0",
+                "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100",
+                "has-[[data-state=open]]:opacity-100"
+              )}
+            >
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="xs"
+                    icon={Plus}
+                    label="New"
+                    variant="ghost-secondary"
+                    className="data-[state=open]:bg-hover"
+                    onClick={withTracking(
+                      TRACKING_AREAS.NAVIGATION,
+                      "new_skill",
+                      (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }
+                    )}
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  side="bottom"
+                  align="center"
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        size="xs"
-                        icon={Plus}
-                        label="New"
-                        variant="ghost-secondary"
-                        className="data-[state=open]:bg-hover"
-                        disabled={noHealthyProviders}
-                        onClick={withTracking(
-                          TRACKING_AREAS.NAVIGATION,
-                          "new_agent",
-                          (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                          }
-                        )}
-                      />
-                    </DropdownMenuTrigger>
-                    <CreateAgentDropdownContent
-                      owner={owner}
-                      dataGtmLocation="sidebarMenu"
-                      onNavigate={() => setSidebarOpen(false)}
-                      side="bottom"
-                      align="center"
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                  </DropdownMenu>
-                </div>
-              ) : undefined
-            }
-          />
-          <NavigationListItem
-            href={getSkillBuilderRoute(owner.sId, "manage")}
-            icon={SKILL_ICON}
-            label="Skills"
-            selected={router.asPath.startsWith(
-              `/w/${owner.sId}/builder/skills`
-            )}
-            onClick={withTracking(TRACKING_AREAS.BUILDER, "manage_skills", () =>
-              setSidebarOpen(false)
-            )}
-            keepHoverOnMoreMenu
-            moreMenu={
-              canCreateSkill ? (
-                <div
-                  className={cn(
-                    "absolute right-2 top-1.5",
-                    "transition-opacity",
-                    "[@media(hover:hover)_and_(pointer:fine)]:opacity-0",
-                    "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100",
-                    "has-[[data-state=open]]:opacity-100"
-                  )}
-                >
-                  <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        size="xs"
-                        icon={Plus}
-                        label="New"
-                        variant="ghost-secondary"
-                        className="data-[state=open]:bg-hover"
-                        onClick={withTracking(
-                          TRACKING_AREAS.NAVIGATION,
-                          "new_skill",
-                          (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                          }
-                        )}
-                      />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      side="bottom"
-                      align="center"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <DropdownMenuLabel label="New skill" />
-                      <DropdownMenuItem
-                        href={getSkillBuilderRoute(owner.sId, "new")}
-                        icon={SKILL_ICON}
-                        label="From scratch"
-                        onClick={withTracking(
-                          TRACKING_AREAS.BUILDER,
-                          "create_skill",
-                          () => setSidebarOpen(false)
-                        )}
-                      />
-                      <DropdownMenuItem
-                        icon={FolderOpen}
-                        label="From existing"
-                        onClick={() => setIsImportSkillDialogOpen(true)}
-                      />
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              ) : undefined
-            }
-          />
-        </>
-      )}
+                  <DropdownMenuLabel label="New skill" />
+                  <DropdownMenuItem
+                    href={getSkillBuilderRoute(owner.sId, "new")}
+                    icon={SKILL_ICON}
+                    label="From scratch"
+                    onClick={withTracking(
+                      TRACKING_AREAS.BUILDER,
+                      "create_skill",
+                      () => setSidebarOpen(false)
+                    )}
+                  />
+                  <DropdownMenuItem
+                    icon={FolderOpen}
+                    label="From existing"
+                    onClick={() => setIsImportSkillDialogOpen(true)}
+                  />
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          ) : undefined
+        }
+      />
     </NavigationList>
   );
 

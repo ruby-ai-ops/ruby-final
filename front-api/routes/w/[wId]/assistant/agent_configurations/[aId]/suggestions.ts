@@ -1,5 +1,7 @@
+import { isAuthorizedToApplyAgentSuggestions } from "@app/lib/api/assistant/agent_suggestion_authorization";
 import { applyAgentSuggestions } from "@app/lib/api/assistant/apply_agent_suggestions";
 import { getAgentConfiguration } from "@app/lib/api/assistant/configuration/agent";
+import { AgentResource } from "@app/lib/resources/agent_resource";
 import { AgentSuggestionResource } from "@app/lib/resources/agent_suggestion_resource";
 import { ConversationResource } from "@app/lib/resources/conversation_resource";
 import type {
@@ -181,6 +183,19 @@ app.patch(
       }
     }
 
+    const batchedSuggestionIds = suggestions
+      .filter((suggestion) => suggestion.batchId !== null)
+      .map((suggestion) => suggestion.sId);
+    if (batchedSuggestionIds.length > 0) {
+      return apiError(ctx, {
+        status_code: 400,
+        api_error: {
+          type: "invalid_request_error",
+          message: `The following suggestions belong to a batch and must be reviewed with it: ${batchedSuggestionIds.join(", ")}.`,
+        },
+      });
+    }
+
     if (applyToAgent) {
       const alreadyReviewedIds = suggestions
         .filter((suggestion) => suggestion.state !== "pending")
@@ -195,8 +210,23 @@ app.patch(
         });
       }
 
+      const agentResource = await AgentResource.fetchById(auth, agent.sId);
+      if (
+        !agentResource ||
+        !isAuthorizedToApplyAgentSuggestions(auth, agentResource, suggestions)
+      ) {
+        return apiError(ctx, {
+          status_code: 403,
+          api_error: {
+            type: "agent_group_permission_error",
+            message:
+              "You are not allowed to apply one or more of these suggestions to this agent.",
+          },
+        });
+      }
+
       const applyRes = await applyAgentSuggestions(auth, {
-        agent,
+        agent: agentResource,
         suggestions,
       });
       if (applyRes.isErr()) {

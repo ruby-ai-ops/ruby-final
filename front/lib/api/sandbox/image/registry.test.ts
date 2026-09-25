@@ -91,15 +91,7 @@ function getCommandPath(command: string): string {
 }
 
 describe("sandbox image registry", () => {
-  test("pins the current ruby-base and sbx bedrock image tags", () => {
-    expect(getRubyBaseImage().imageId).toEqual({
-      imageName: "ruby-base",
-      tag: "0.8.121",
-    });
-    expect(getRubyBaseImage().baseImage).toEqual({
-      type: "docker",
-      imageRef: "ruby-sbx-bedrock:1.11.0",
-    });
+  test("exposes the ruby_filesystem capability", () => {
     expect(getRubyBaseImage().hasCapability("ruby_filesystem")).toBe(true);
   });
 

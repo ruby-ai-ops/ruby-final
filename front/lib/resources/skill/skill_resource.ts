@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { fetchMCPServerActionConfigurations } from "@app/lib/actions/configuration/mcp";
 import type { MCPServerConfigurationType } from "@app/lib/actions/mcp";
 import { autoInternalMCPServerNameToSId } from "@app/lib/actions/mcp_helper";
@@ -30,7 +31,10 @@ import { SkillReferenceModel } from "@app/lib/models/skill/skill_reference";
 import { SkillSuggestionModel } from "@app/lib/models/skill/skill_suggestion";
 import { SkillUserFavoriteModel } from "@app/lib/models/skill/skill_user_favorite";
 import { updateAgentRequestedSpaceIdsInPlace } from "@app/lib/resources/agent_requested_spaces";
-import type { AgentResource } from "@app/lib/resources/agent_resource";
+import {
+  destroyAgentSkillLinksForCustomSkill,
+  onCustomSkillStatusChanged,
+} from "@app/lib/resources/agent_skills";
 import { BaseResource } from "@app/lib/resources/base_resource";
 import type { ConversationResource } from "@app/lib/resources/conversation_resource";
 import { DataSourceViewResource } from "@app/lib/resources/data_source_view_resource";
@@ -331,6 +335,12 @@ const GLOBAL_SKILL_ROLE_GRANTS: RoleGrant[] = [
  * `create` on the `skill` type means bringing a new skill into the workspace: creating one,
  * importing one (zip, GitHub) or detecting one from files. Every such path MUST require
  * `hasWorkspacePermission("create", "skill")`. Editing an existing skill MUST NOT.
+ */
+/**
+ * @cc [owner:achilleburah,label:product] pending-skill-unlisted
+ * A `pending` skill MUST NOT be returned by a listing unless the caller explicitly requests the
+ * `pending` status (e.g. space cleanup passing every status). Listings MUST default to excluding it,
+ * and it MUST NOT be indexed or returned by search.
  */
 /**
  * @cc [owner:fabiencelier,label:security;product] skill-publish-capability
@@ -694,7 +704,9 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
     // construction are now stale and the caller would not be an editor of the skill they just
     // created. Refresh the snapshot now that the write has committed, as space creation does.
     await auth.refresh();
-    await this.launchSearchIndexation(auth, [skillResource.sId]);
+    if (skillResource.status !== "pending") {
+      await this.launchSearchIndexation(auth, [skillResource.sId]);
+    }
 
     return skillResource;
   }
@@ -773,6 +785,36 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
     );
 
     return new Ok(createdSuggestedSkill);
+  }
+
+  // Creates a pending skill: an empty placeholder, edited only by the caller, that a conversational
+  // `create` suggestion is recorded on. Accepting the suggestion fills it and makes it `active`.
+  static async createPending(
+    auth: Authenticator
+  ): Promise<Result<SkillResource, Error>> {
+    if (!auth.hasWorkspacePermission("create", "skill")) {
+      return new Err(new Error("Creating skills is restricted."));
+    }
+
+    const user = auth.getNonNullableUser();
+    const globalSpace = await SpaceResource.fetchWorkspaceGlobalSpace(auth);
+
+    const pendingSkill = await this.makeNew(
+      auth,
+      {
+        name: `__PENDING__${randomUUID()}`,
+        agentFacingDescription: "",
+        userFacingDescription: "",
+        instructions: "",
+        status: "pending",
+        availability: "editors",
+        editedBy: user.id,
+        requestedSpaceIds: [globalSpace.id],
+      },
+      { mcpServerViews: [] }
+    );
+
+    return new Ok(pendingSkill);
   }
 
   /**
@@ -1259,7 +1301,9 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
         where: {
           id: customSkillIds,
           sId: globalSkillIds,
-          status: onlyActive ? ["active"] : ["active", "archived", "suggested"],
+          status: onlyActive
+            ? ["active"]
+            : ["active", "archived", "suggested", "pending"],
         },
         withInstructions,
         withTools,
@@ -1531,9 +1575,7 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
   /**
    * Returns the fields to identify this skill in related tables (e.g., AgentSkillModel).
    */
-  private get skillReference():
-    | { globalSkillId: string }
-    | { customSkillId: ModelId } {
+  get skillReference(): { globalSkillId: string } | { customSkillId: ModelId } {
     return this.codeDefinedSkillId
       ? { globalSkillId: this.codeDefinedSkillId }
       : { customSkillId: this.id };
@@ -3382,6 +3424,11 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
             { transaction }
           );
 
+          await onCustomSkillStatusChanged(auth, {
+            customSkillModelId: this.id,
+            transaction,
+          });
+
           referencingSkillIds =
             await this.propagateReferenceUpdatesToParentSkills(
               auth,
@@ -3441,6 +3488,11 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
             },
             { transaction }
           );
+
+          await onCustomSkillStatusChanged(auth, {
+            customSkillModelId: this.id,
+            transaction,
+          });
 
           referencingSkillIds =
             await this.propagateReferenceUpdatesToParentSkills(
@@ -3618,6 +3670,13 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
         { previousRequestedSpaceIds },
         { transaction }
       );
+
+      if (statusChanged) {
+        await onCustomSkillStatusChanged(auth, {
+          customSkillModelId: this.id,
+          transaction,
+        });
+      }
       return referencingSkillIds;
     });
 
@@ -3633,9 +3692,12 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
   }
 
   /**
-   * Update only the availability of the skill. Requires the workspace-level "publish"
-   * permission on skills — being an editor is neither required nor sufficient. Does not
-   * touch editedBy.
+   * Update only the availability of the skills. Does not touch the other fields.
+   */
+  /**
+   * @cc [owner:fabiencelier,label:security] availability-change-requires-admin-and-publish
+   * Changing the availability of skills MUST require both the workspace-level `publish` capability
+   * on skills and the `admin` verb on every one of the skills (`write` is not needed).
    */
   static async updateAvailabilities(
     auth: Authenticator,
@@ -3645,6 +3707,10 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
     assert(
       auth.hasWorkspacePermission("publish", "skill"),
       "User is not authorized to update skill availability"
+    );
+    assert(
+      skills.every((skill) => auth.can("admin", skill)),
+      "User is not authorized to update the availability of these skills"
     );
 
     // Making skills auto-discoverable, or changing an already auto-discoverable skill's
@@ -4241,12 +4307,8 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
             { transaction }
           );
 
-        // Delete agent-skill associations.
-        await AgentSkillModel.destroy({
-          where: {
-            customSkillId: this.id,
-            workspaceId: workspace.id,
-          },
+        await destroyAgentSkillLinksForCustomSkill(auth, {
+          customSkillModelId: this.id,
           transaction,
         });
 
@@ -4361,46 +4423,6 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
     }
 
     return new Ok(affectedCount);
-  }
-
-  async addToAgent(
-    auth: Authenticator,
-    agentConfiguration: LightAgentConfigurationType
-  ): Promise<void> {
-    const workspace = auth.getNonNullableWorkspace();
-
-    await AgentSkillModel.create({
-      ...this.skillReference,
-      workspaceId: workspace.id,
-      agentConfigurationId: agentConfiguration.id,
-    });
-  }
-
-  static async addManyToAgent(
-    auth: Authenticator,
-    {
-      agentResource,
-      skills,
-    }: {
-      agentResource: AgentResource;
-      skills: SkillResource[];
-    },
-    { transaction }: { transaction?: Transaction } = {}
-  ): Promise<void> {
-    if (skills.length === 0) {
-      return;
-    }
-
-    const workspace = auth.getNonNullableWorkspace();
-
-    await AgentSkillModel.bulkCreate(
-      skills.map((skill) => ({
-        ...skill.skillReference,
-        workspaceId: workspace.id,
-        agentConfigurationId: agentResource.agentConfigurationModelId,
-      })),
-      { transaction }
-    );
   }
 
   async enableForAgent(
@@ -4858,6 +4880,10 @@ export class SkillResource extends BaseResource<SkillConfigurationModel> {
 
   toRefJSON(): SkillReference {
     return { icon: this.icon, id: this.sId, name: this.name };
+  }
+
+  toSearchFacetJSON(count: number) {
+    return { sId: this.sId, name: this.name, icon: this.icon, count };
   }
 
   toDiscoveryJSON(): DiscoverySkillType {
