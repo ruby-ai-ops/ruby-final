@@ -13,7 +13,6 @@ import { AgentResource } from "@app/lib/resources/agent_resource";
 import { MembershipResource } from "@app/lib/resources/membership_resource";
 import { SkillResource } from "@app/lib/resources/skill/skill_resource";
 import { SubscriptionResource } from "@app/lib/resources/subscription_resource";
-import { TagResource } from "@app/lib/resources/tags_resource";
 import { UserResource } from "@app/lib/resources/user_resource";
 import { WorkspaceResource } from "@app/lib/resources/workspace_resource";
 import { fetchSearchActiveUsers } from "@app/lib/search_usage/usage";
@@ -119,9 +118,8 @@ export async function indexSkillSearchActivity({
     withTools: true,
     withFileAttachments: false,
   });
-  // Suggested skills are not indexed: they have only been suggested and are not
-  // ready to be used yet.
-  if (!skill || skill.status === "suggested") {
+  // Suggested and pending skills are not indexed: they are not ready to be used yet.
+  if (!skill || skill.status === "suggested" || skill.status === "pending") {
     return;
   }
 
@@ -197,9 +195,7 @@ export async function indexAgentSearchActivity({
   const skills = await agent.listSkills(auth, {
     permissionFiltering: "redact_unreadable",
   });
-  const tagsByConfigurationId = await TagResource.listForAgents(auth, [
-    agent.agentConfigurationModelId,
-  ]);
+  const tags = await agent.listTags(auth);
   const actionsByConfigurationId = await fetchMCPServerActionConfigurations(
     auth,
     {
@@ -219,7 +215,7 @@ export async function indexAgentSearchActivity({
     : null;
 
   const document = agent.toSearchDocument(auth, {
-    activeUsersCount: null,
+    activeUsersCount: 0,
     editors: editors ?? [],
     favoriteCount,
     feedbackNegativeCount: feedback.negative,
@@ -231,9 +227,7 @@ export async function indexAgentSearchActivity({
       .filter(isServerSideMCPServerConfiguration)
       .map((action) => action.mcpServerViewId),
     skillIds: skills.map((skill) => skill.sId),
-    tagIds: (tagsByConfigurationId[agent.agentConfigurationModelId] ?? []).map(
-      (tag) => tag.sId
-    ),
+    tagIds: tags.map((tag) => tag.sId),
   });
 
   const result = await indexAgentDocument(document);

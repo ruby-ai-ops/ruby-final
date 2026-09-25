@@ -16,6 +16,11 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
     stage: "ruby_only",
     owner: "aubin-tchoi",
   },
+  new_manage_agents_page: {
+    description: "Enable the search-backed Manage Agents page",
+    stage: "ruby_only",
+    owner: "tdraier",
+  },
   ruby_lean_agent: {
     description:
       "Enable @ruby-lean, a Ruby agent that starts without tools, skills, or company knowledge",
@@ -255,7 +260,7 @@ export const WHITELISTABLE_FEATURES_CONFIG = {
   agent_stream_long_polling: {
     description:
       "Start agent event streams with long polling for this workspace",
-    stage: "ruby_only",
+    stage: "self_serve",
     owner: "id13",
   },
   discord_bot: {

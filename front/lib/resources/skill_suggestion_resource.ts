@@ -93,24 +93,49 @@ export class SkillSuggestionResource extends BaseResource<SkillSuggestionModel> 
       "workspaceId" | "skillConfigurationId"
     >
   ): Promise<SkillSuggestionResource> {
+    const [suggestion] = await this.createSuggestionsForSkill(auth, skill, [
+      blob,
+    ]);
+    return suggestion;
+  }
+
+  /**
+   * Same as `createSuggestionForSkill`, batched: every suggestion is inserted in a single query.
+   * Throws, without inserting anything, if the caller lacks the verb any of the kinds requires.
+   */
+  static async createSuggestionsForSkill(
+    auth: Authenticator,
+    skill: SkillResource,
+    blobs: Omit<
+      CreationAttributes<SkillSuggestionModel>,
+      "workspaceId" | "skillConfigurationId"
+    >[]
+  ): Promise<SkillSuggestionResource[]> {
+    if (blobs.length === 0) {
+      return [];
+    }
+
     const owner = auth.getNonNullableWorkspace();
 
-    if (!isAuthorizedForSkillSuggestionKind(auth, skill, blob.kind)) {
+    if (
+      !blobs.every((blob) =>
+        isAuthorizedForSkillSuggestionKind(auth, skill, blob.kind)
+      )
+    ) {
       throw new Error("User does not have permission to edit this skill");
     }
 
-    const suggestion = await SkillSuggestionModel.create({
-      ...blob,
-      skillConfigurationId: skill.id,
-      workspaceId: owner.id,
-    });
+    const suggestions = await SkillSuggestionModel.bulkCreate(
+      blobs.map((blob) => ({
+        ...blob,
+        skillConfigurationId: skill.id,
+        workspaceId: owner.id,
+      }))
+    );
 
-    return new this(
-      SkillSuggestionModel,
-      suggestion.get(),
-      skill.sId,
-      null,
-      null
+    return suggestions.map(
+      (suggestion) =>
+        new this(SkillSuggestionModel, suggestion.get(), skill.sId, null, null)
     );
   }
 
@@ -427,6 +452,11 @@ export class SkillSuggestionResource extends BaseResource<SkillSuggestionModel> 
     return count > 0;
   }
 
+  /**
+   * @cc [owner:fabiencelier,label:product] batched-state-only-through-batch
+   * `bulkUpdateState` MUST throw, without updating anything, when one of the suggestions belongs to
+   * a batch.
+   */
   static async bulkUpdateState(
     auth: Authenticator,
     suggestions: SkillSuggestionResource[],
@@ -437,24 +467,54 @@ export class SkillSuggestionResource extends BaseResource<SkillSuggestionModel> 
       return;
     }
 
-    // Track the user who accepted/rejected. Do not set for "outdated"
-    // (suggestion became obsolete) or "pending" (reset).
-    const updates: { state: SkillSuggestionState; updatedByUserId?: ModelId } =
-      { state };
-    if (state === "approved" || state === "rejected") {
-      const user = auth.user();
-      if (user) {
-        updates.updatedByUserId = user.id;
-      }
+    if (suggestions.some((s) => s.batchId !== null)) {
+      throw new Error(
+        "Suggestions that belong to a batch can only change state through their batch."
+      );
     }
 
-    await this.model.update(updates, {
+    await this.model.update(this.stateUpdate(auth, state), {
       where: {
         workspaceId: auth.getNonNullableWorkspace().id,
         id: { [Op.in]: suggestions.map((s) => s.id) },
       },
       transaction,
     });
+  }
+
+  /**
+   * Sets the state of every suggestion of the given batches.
+   */
+  static async updateStateOfBatchMembers(
+    auth: Authenticator,
+    batchModelIds: ModelId[],
+    state: SkillSuggestionState,
+    { transaction }: { transaction?: Transaction } = {}
+  ): Promise<void> {
+    if (batchModelIds.length === 0) {
+      return;
+    }
+
+    await this.model.update(this.stateUpdate(auth, state), {
+      where: {
+        workspaceId: auth.getNonNullableWorkspace().id,
+        batchId: batchModelIds,
+      },
+      transaction,
+    });
+  }
+
+  // Track the user who accepted/rejected. Do not set for "outdated" (suggestion became obsolete)
+  // or "pending" (reset).
+  private static stateUpdate(
+    auth: Authenticator,
+    state: SkillSuggestionState
+  ): { state: SkillSuggestionState; updatedByUserId?: ModelId } {
+    const user = auth.user();
+    if ((state === "approved" || state === "rejected") && user) {
+      return { state, updatedByUserId: user.id };
+    }
+    return { state };
   }
 
   async delete(auth: Authenticator): Promise<Result<undefined, Error>> {
